@@ -1,0 +1,28 @@
+[
+{
+	"id": 1457705818352,
+	"name": "Bricks",
+	"url": "app-bricks-v0.1.1.html",
+	"image": "img/app-app-catalog/app-bricks.png",
+	"label_tool": false,
+	"label_game": true,
+	"label_link": false,
+	"enabled_iframe": true,
+	"enabled_fullscreen": true,
+	"forced_fullscreen": true,
+	"hidden": false
+},
+{
+	"id": 1457705827729,
+	"name": "HTML Editor",
+	"url": "app-html-editor-v0.1.1.html",
+	"image": "img/app-app-catalog/app-html-editor.png",
+	"label_tool": true,
+	"label_game": false,
+	"label_link": false,
+	"enabled_iframe": true,
+	"enabled_fullscreen": true,
+	"forced_fullscreen": false,
+	"hidden": false
+}
+]

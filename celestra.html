@@ -1,0 +1,2099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Celestra</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="Author" content="Czigler Ferenc" />
+<meta name="Copyright" content="(C) Copyright Czigler Ferenc" />
+<link rel="stylesheet" href="u87.css" type="text/css" />
+<!--<link rel="icon" href="favicon.ico" type="image/x-icon" />-->
+<script> var CEL = { VERSION: "This is another sample library." }; </script>
+<script src="celestra.min.js"></script>
+<style>
+
+#fsdiv { padding: 20px; }
+
+header {
+  padding: 1rem;
+  /*background-color: #222;*/
+  color: white;
+  /*background-image: url("erik-ringsmuth-2000.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  /*background-attachment: fixed;*/
+  /*background-size: contain;*/
+  background: linear-gradient(27deg, #151515 5px, transparent 5px) 0 5px, linear-gradient(207deg, #151515 5px, transparent 5px) 10px 0px, linear-gradient(27deg, #222 5px, transparent 5px) 0px 10px, linear-gradient(207deg, #222 5px, transparent 5px) 10px 5px, linear-gradient(90deg, #1b1b1b 10px, transparent 10px), linear-gradient(#1d1d1d 25%, #1a1a1a 25%, #1a1a1a 50%, transparent 50%, transparent 75%, #242424 75%, #242424);
+  background-size: 20px 20px;
+  background-color: #131313;
+}
+
+footer a, footer a:link, footer a:visited, footer a:active, footer a:hover,
+nav a, nav a:visited, nav a:active, nav a:hover {
+  color: white !important; /* u87 v0.9.13 */
+}
+
+/*@media (max-width: 575.98px) { td { display: block; width: 100% !important; } }*/
+
+</style>
+</head>
+<body>
+
+<header class="center">
+  <pre class="center b font-l" style="background-color: transparent;/*black*/ color: white; line-height: 1.2;">
+  ___  ____  __    ____  ___  ____  ____    __   
+ / __)( ___)(  )  ( ___)/ __)(_  _)(  _ \  /__\  
+( (__  )__)  )(__  )__) \__ \  )(   )   / /(__)\ 
+ \___)(____)(____)(____)(___/ (__) (_)\_)(__)(__)
+                                                 </pre>
+  <!--<h1 class="heading-d">Celestra</h1>-->
+  <nav><b>
+    <a href="#download" class="nobr">Download</a>
+    &nbsp;//&nbsp;
+    <a href="#functions" class="nobr">Functions</a>
+    &nbsp;//&nbsp;
+    <a href="#samples" class="nobr">Samples</a>
+    &nbsp;//&nbsp;
+    <a href="#license" class="nobr">License</a>
+    &nbsp;//&nbsp;
+    <a href="#footer" class="nobr">Contact</a>
+    &nbsp;//&nbsp;
+    <a href="#" onclick=" CEL.importStyle('u87-dark.css'); " class="nobr"><i>Dark</i></a>
+    &nbsp;/&nbsp;
+    <a href="#" onclick=" CEL.importStyle('u87-blue.css'); " class="nobr"><i>Blue</i></a>
+    &nbsp;/&nbsp;
+    <a href="#" onclick=" CEL.importStyle('u87-light.css'); " class="nobr"><i>Light</i></a>
+  </b></nav>
+</header>
+<main class="container">
+
+
+<h2 id="download">Download</h2>
+
+<p><strong>A helper JavaScript library with useful functions and polyfills.</strong></p>
+
+<p>Tested on desktop browsers (latest Firefox, latest Chrome, latest stable Chromium based Edge) and mobile devices (iOS Safari, Chrome, Firefox and Android Chrome, Samsung Internet, Firefox, Edge). This library isn't compatible with the Node.js.</p>
+
+<p>Latest version: 5.5.0</p>
+<p>Date: 2022-10-10T19:45:23.041Z</p>
+
+<p>The functions are available in the <code>celestra</code> and/or <code>CEL</code> object.</p>
+
+<table class="table-responsive-sm table-striped">
+  <tr>
+    <td class="center"><b>edition</b></td>
+    <td class="center"><b>filename</b></td>
+    <td class="center"><b>size</b></td>
+  </tr>
+  <tr>
+    <td>developer</td>
+    <td><a href="celestra.dev.js" target="_blank">celestra.dev.js</a>
+    </td><td>67238 byte</td>
+  </tr>
+  <tr>
+    <td>minified</td>
+    <td><a href="celestra.min.js" target="_blank">celestra.min.js</a></td>
+    <td>42054 byte</td>
+  </tr>
+  <tr>
+    <td>ES6 module</td>
+    <td><a href="celestra.esm.js" target="_blank">celestra.esm.js</a></td>
+    <td>41916 byte</td>
+  </tr>
+  <tr>
+    <td class="center">CUT testpage<br/>Celestra Unit Tester</td>
+    <td><a href="unittest.html" target="_blank">unittest.html</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td class="center">Version history</td>
+    <td><a href="history.md" target="_blank">history.md</a></td>
+    <td></td>
+  </tr>
+</table>
+
+<p>DEV and MIN editions: If the <code>CEL</code> global variable is used before the loading of the library, then the value of the variable is saved and you can restore with the <code>noConflict();</code> function.</p>
+
+
+<h3>Removed polyfills</h3>
+
+<p>Some polyfills have been removed in v3.1.0 and v3.8.0. With these files can be reusued the old polyfills if needed.</p>
+
+<table class="table-responsive-sm table-striped">
+  <tr>
+    <td class="center"><b>edition</b></td>
+    <td class="center"><b>filename</b></td>
+    <td class="center"><b>size</b></td>
+  </tr>
+  <tr>
+    <td>developer</td>
+    <td><a href="celestra-polyfills.dev.js" target="_blank">celestra-polyfills.dev.js</a></td>
+    <td>18019 byte</td>
+  </tr>
+  <tr>
+    <td>minified</td>
+    <td><a href="celestra-polyfills.min.js" target="_blank">celestra-polyfills.min.js</a></td>
+    <td>11516 byte</td>
+  </tr>
+</table>
+
+
+<h3>Cheatsheets</h3>
+
+<p>Celestra cheatsheet: <a href="celestra-cheatsheet.pdf" target="_blank">celestra-cheatsheet.pdf</a></p>
+<p>JavaScript cheatsheet: <a href="js-cheatsheet.pdf" target="_blank">js-cheatsheet.pdf</a></p>
+
+
+<h3>Apps</h3>
+
+<p>BTC standalone app: <a href="btc.app.html" target="_blank">btc.app.html</a></p>
+<p>RPG dice roller: <a href="testgame.html" target="_blank">testgame.html</a></p>
+<p>Math plugin documentation: <a href="celestra-math.html" target="_blank">celestra-math.html</a></p>
+<p>Math plugin developer source: <a href="celestra-math.dev.js" target="_blank">celestra-math.dev.js</a></p>
+<p>Math plugin minified source: <a href="celestra-math.min.js" target="_blank">celestra-math.min.js</a></p>
+
+
+<h3>How to import the ESM edition</h3>
+
+<pre>&#60;script type="module"&#62;
+
+// import the celestra object
+import { celestra } from "./celestra.esm.js";
+window.celestra = celestra;
+window.CEL = celestra;
+
+// import with default with name
+import { default as celestra } from "./celestra.esm.js";
+window.celestra = celestra;
+window.CEL = celestra;
+
+// import with default export
+import defaultExport from "./celestra.esm.js";
+window.celestra = defaultExport;
+window.CEL = defaultExport;
+
+&#60;/script&#62;</pre>
+
+<h3>Celestra v3.0.0 (Hera) changes</h3>
+
+<ul>
+  <li>Only modern browsers (ES6+) are supported. The Internet Explorer 11 and W10M Edge have been removed from the supported browsers.</li>
+  <li>If you would like to use Celestra with older browsers, then you can download the latest v2.x version here: <a href="https://github.com/Serrin/Celestra/releases" target="_blank">https://github.com/Serrin/Celestra/releases</a></li>
+  <li>The library sources have been merged and all of the ES6E functions are available in the <b>celestra.dev.js</b> and <b>celestra.min.js</b></li>
+  <li>Many functions have been deprecated or removed.</li>
+</ul>
+
+<h3>Celestra v3.6.0 (Galactica) changes</h3>
+
+<ul>
+  <li>CommonJS and AMD module compatibility have been removed.</li>
+  <li>In the ESM (ECMAScript 6 module) edition only the whole celestra object is exported as default export and as standalone object.</li>
+  <li>Many functions have been deprecated or removed.</li>
+</ul>
+
+<h3>Celestra v5.0.0 (Defiant) changes</h3>
+
+<ul>
+  <li>The underscore <code>_</code> short object name has been changed to <code>CEL</code> to avoid the compatibility issues.<br/>If need to use the old short name, then with this code will be available again: <code>window._ = window.celestra;</code>.</li>
+</ul>
+
+<h3>Celestra v5.3.0 (Voyager) changes</h3>
+
+<ul>
+  <li>Added a new code section: <b>Abstract functions</b> and new functions.</li>
+</ul>
+
+
+<hr/>
+<h2 id="functions">Functions</h2>
+
+<p><span class="removed">Removed</span> and <span class="deprecated">Deprecated</span> labels: Don't use these in production.</p>
+
+<h3>Core API</h3>
+
+<p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
+<br/>Example: <code>CEL.randomInt();</code></p>
+
+<div>
+  <table class="table-responsive table-striped">
+    <tr>
+      <td style="width: auto; min-width: 33%;"><b>Name</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>celestra.VERSION;</code></td>
+      <td>The library version.</td>
+    </tr>
+    <tr>
+      <td><code>celestra.noConflict();</code></td>
+      <td>
+        <p>Restore the previous <code>CEL</code> object value and return the <code>celestra</code> object to create a new alias.</p>
+        <p><span class="info">Tip: You can make a new alias without this function too. Example: <code>window._cel = window.celestra;</code></span></p>
+        <p><span class="info">In the ESM edition only returns the celestra object.</code></span></p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>randomID([hyphens=true][,usedate=false]);</code></td>
+      <td>
+        Generate a GUID/UUID v4 random ID. The hyphens and useDate parameters are optional and can be a boolean. The return value is a string.
+        <br/><b>Example:</b>
+        <br/><code>randomID(false);</code>
+        <br/>->
+        <br/><code>"0e0f739a306b4faad62e3e8080826c9c"</code>
+        <br/><code>randomID(true, true);</code>
+        <br/>->
+        <br/><code>"17c3d79b-d413-4443-b4cd-5426c7299726"</code>
+        <br/><code>randomID();</code>
+        <br/>->
+        <br/><code>"bc897cdf-da26-42de-83e2-d1fd458e079f"</code>
+      </td>
+    </tr>
+    <tr>
+      <td><code>signbit(&#60;value&#62;);</code></td>
+      <td>
+        <p>This function is based on this proposal:
+          <br/><a href="https://github.com/tc39/proposal-Math.signbit" target="_blank">https://github.com/tc39/proposal-Math.signbit</a>
+        </p>
+        <pre>Returns whether the sign bit of x is set.
+If n is NaN, the result is false.
+If n is -0, the result is true.
+If n is negative, the result is true.
+Otherwise, the result is false.</pre>
+        <p>The value parameter is mandatory.</p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>delay(&#60;ms&#62;).then(&#60;callback&#62;);</code></td>
+      <td>
+			  <p>A promise based delay function. The ms parameter is mandatory and have to be an integer (milliseconds).</p>
+        <p><b>Sample:</b></p>
+        <p><button onclick="CEL.delay(5000).then(() => alert('5 seconds')).catch(console.log.bind(console))	.finally(() => alert('done'));">try</button></p>
+        <pre>
+CEL.delay(5000)
+  .then(() => alert("5 seconds"))
+  .catch(console.log.bind(console))
+  .finally(() => alert("done"));</pre>
+	    </td>
+    </tr>
+    <tr>
+      <td><code>sleep(&#60;ms&#62;).then(&#60;callback&#62;);</code></td>
+      <td>This is an alias of the <code>delay(&#60;ms&#62;).then(&#60;callback&#62;);</code>.</td>
+    </tr>
+    <tr>
+      <td><code>inherit(&#60;subclass&#62;,&#60;superclass&#62;);</code></td>
+      <td>Prototype inheritance.</td>
+    </tr>
+    <tr>
+      <td><code>randomInt([max]);</code></td>
+      <td>Get a random integer number value within 0 and max value. Without parameter the maximum value is 100.</td>
+    </tr>
+    <tr>
+      <td><code>randomInt(&#60;min&#62;,&#60;max&#62;);</code></td>
+      <td>Get a random integer number value within min and max value.</td>
+    </tr>
+    <tr>
+      <td><code>randomFloat([max]);</code></td>
+      <td>Get a random float number value within 0 and max value. Without parameter the maximum value is 100.</td>
+    </tr>
+    <tr>
+      <td><code>randomFloat(&#60;min&#62;,&#60;max&#62;);</code></td>
+      <td>Get a random float number value within min and max value.</td>
+    </tr>
+    <tr>
+      <td><code>randomBoolean();</code></td>
+      <td>Get a random boolean value. The return value is <code>true</code> or <code>false</code>.</td>
+    </tr>
+    <tr>
+      <td><code>randomString([length[,specialCharactersEnabled=false]]);</code></td>
+      <td>Generate a random string. The length parameter is optional and can be a number and the default value is 100. The specialCharactersEnabled parameter is optional and can be a boolean and the default value is false. Return the generated string.</td>
+    </tr>
+    <tr>
+      <td><code>inRange(&#60;value&#62;,&#60;min&#62;,&#60;max&#62;);</code></td>
+      <td>This function determines whether the provided value is between the min and max values. All of the parameters are mandatory and have to be number. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>b64Encode(&#60;string&#62;);</code></td>
+      <td>Unicode compatible string to base64 converter. Return the encoded string.</td>
+    </tr>
+    <tr>
+      <td><code>b64Decode(&#60;string&#62;);</code></td>
+      <td>Unicode compatible base64 to string converter. Return the original string.</td>
+    </tr>
+    <tr>
+      <td><code>javaHash(&#60;data&#62;[,hexa=false]);</code></td>
+      <td>Java <code>String.hashCode()</code> implementation in Javascript - this is a non-cryptographic hash function. The data parameter is mandatory and can be any type. The hexa parameter is optional and can be a boolean and sets the hexadecimal conversion of the return value and the default value is false. Return the generated integer hash.</td>
+    </tr>
+    <tr>
+      <td><code>getUrlVars([str=location.search]);</code></td>
+      <td>Get the values of the url variables in an object from the <code>location.search</code> <b>(default value)</b> or another given url. The str parameter name is optional and can be a string.
+      <br/>Example: <code>"?showall=true&amp;order_by=updated&amp;o=asc"</code> -> <code>Object { showall: "true", order_by: "updated", o: "asc" }</code></td>
+    </tr>
+    <tr>
+      <td><code>obj2string(&#60;object&#62;);</code></td>
+      <td>Convert object to a querystring. The return value is the string. The object parameter is mandatory.</td>
+    </tr>
+    <tr>
+      <td><code>classof(&#60;variable&#62;[,type[,throw=false]]);</code></td>
+      <td><span class="info">Old name before v5.4.0: <code>getType</code>.</span><br/>Get the real type of a variable. If this is an object, then the return value is the detailed object type (e.g.: array). If the type (string) parameter is given, then the return value (boolean) is the equality of the type of the variable and the second parameter. If the third parameter (boolean) is true and the type of the variable and the second parameter aren't equals, then the function is throwing a <code>TypeError();</code>, else the return value is true.</td>
+    </tr>
+    <tr>
+      <td><code>extend([deep,]&#60;target&#62;,&#60;source1&#62;[,sourceN]);</code></td>
+      <td>This is an enhanced version of the <code>Object.assign</code> method. The deep parameter (boolean) is optional and sets the deep copy (recursive) of the sources.</td>
+    </tr>
+    <tr>
+      <td><code>strPropercase(&#60;string&#62;);</code></td>
+      <td>This function is unicode compatible and capitalizes every word of the given string. The string parameter is mandatory. The return value is a string.<br/><b>Example:</b><br/><code>CEL.strPropercase("arthur conan doyle");</code><br/>-><br/><code>"Arthur Conan Doyle"</code></td>
+    </tr>
+    <tr>
+      <td><code>strPropercase(&#60;string&#62;);</code></td>
+      <td>This function is unicode compatible and capitalizes every word of the given string. The string parameter is mandatory. The return value is a string.<br/><b>Example:</b><br/><code>CEL.strPropercase("arthur conan doyle");</code><br/>-><br/><code>"Arthur Conan Doyle"</code></td>
+    </tr>
+    <tr>
+      <td><code>strTitlecase(&#60;string&#62;);</code></td>
+      <td>Alias of the <code>strPropercase(&#60;string&#62;);</code>.</td>
+    </tr>
+    <tr>
+      <td><code>strCapitalize(&#60;string&#62;);</code></td>
+      <td>This function is unicode compatible and converts the first character to uppercase and the other characters to lowercase. The string parameter is mandatory. The return value is a string.</td>
+    </tr>
+    <tr>
+      <td><code>strUpFirst(&#60;string&#62;);</code></td>
+      <td>This function is unicode compatible and converts the first character to uppercase. The string parameter is mandatory. The return value is a string.</td>
+    </tr>
+    <tr>
+      <td><code>strDownFirst(&#60;string&#62;);</code></td>
+      <td>This function is unicode compatible and converts the first character to lowercase. The string parameter is mandatory. The return value is a string.</td>
+    </tr>
+    <tr>
+      <td><code>strHTMLRemoveTags(&#60;string&#62;);</code></td>
+      <td>Remove HTML tags from the given string. The string parameter is mandatory. The return value is the new string.</td>
+    </tr>
+    <tr>
+      <td><code>strReverse(&#60;string&#62;);</code></td>
+      <td>Returns the reversed variant of the given string. In the ES6 compatible browsers the result will be unicode compatible. The string parameter is mandatory.</td>
+    </tr>
+    <tr>
+      <td><code>strCodePoints(&#60;string&#62;);</code></td>
+      <td>Returns the array of the unicode codepoints of characters of the given string. The string parameter is mandatory.</td>
+    </tr>
+    <tr>
+      <td><code>strFromCodePoints(&#60;collection&#62;);</code></td>
+      <td>Returns the joined string of the given unicode codepoints. The collection parameter is mandatory.</td>
+    </tr>
+    <tr>
+      <td><code>strAt(&#60;string&#62;,&#60;index&#62;);</code></td>
+      <td>Returns the unicode character, which has to be on the given index in the string. The index can be negative value (<code>-1 -> last</code>). If the index is out of the string length, then the return value is an empty string. All of the parameters are mandatory and index has to be an integer.</td>
+    </tr>
+    <tr>
+      <td><code>sizeIn(&#60;object&#62;);</code></td>
+      <td>Returns the count of the owned properties of the given object. The object parameter is mandatory.</td>
+    </tr>
+    <tr>
+      <td><code>forIn(&#60;object&#62;,&#60;callback&#62;);</code></td>
+      <td>The forIn() function executes a provided function once for each object property. The object parameter is mandatory and has to be an object. The callback parameter is mandatory and has to be a function. The parameter function will be called with these arguments: key value, key, object.</td>
+    </tr>
+    <tr>
+      <td><code>filterIn(&#60;object&#62;,&#60;callback&#62;);</code></td>
+      <td>
+        <p></p>The filterIn() function executes a provided function once for each object property and returns a new object with the properties which were be filtered. The object parameter is mandatory and has to be an object. The callback parameter is mandatory and has to be a function. The parameter function will be called with these arguments: key value, key, object.</p>
+        <p><b>Example:</b><pre>var o1 = {"a": 1, "b": 2, "c": 3};
+console.log(o1);
+// Object { a: 1, b: 2, c: 3 }
+var o2 = CEL.filterIn(o1, (v, p, o) => (v > 1));
+console.log(o2);
+// Object { b: 2, c: 3 }</pre>
+      </td>
+    </tr>
+    <tr>
+      <td><code>popIn(&#60;object&#62;,&#60;property&#62;);</code></td>
+      <td>The popIn() function deletes the property in the object and returns the value of the deleted property. If the property doesn't exist in the object, then the return value is undefined. The object parameter is mandatory and has to be an object. The property parameter is mandatory.</td>
+    </tr>
+    <tr>
+      <td><code>unBind(&#60;function&#62;);</code></td>
+      <td><span class="info">Old name before v5.4.1: <code>toFunction</code>.</span><br/>Returns an unbinded function from an object method. The function parameter is mandatory.</td>
+    </tr>
+    <tr>
+      <td><code>bind(&#60;function&#62;,&#60;context&#62;);</code></td>
+      <td>Returns a function that is bound to a context. Both of the parameters are mandatory.</td>
+    </tr>
+    <tr>
+      <td><code>constant(&#60;value&#62;);</code></td>
+      <td>A one time assignment function to create a constant value in ES5. This returns a function, which returns the given value. (In math: <code>f(x)=x</code>)</td>
+    </tr>
+    <tr>
+      <td><code>identity(&#60;value&#62;);</code></td>
+      <td>Return the given value. (In math: <code>f(x)=x</code>)</td>
+    </tr>
+    <tr>
+      <td><code>noop();</code></td>
+      <td>It's an empty function (no operation) that returns undefined and usable for optional callback arguments.</td>
+    </tr>
+    <tr>
+      <td><code>T();</code></td>
+      <td>This function returns true.</td>
+    </tr>
+    <tr>
+      <td><code>F();</code></td>
+      <td>This function returns false.</td>
+    </tr>
+    <tr>
+      <td><code>strHTMLEscape(&#60;string&#62;);</code></td>
+      <td>This function escapes these characters: <code>&#60;</code>, <code>&#62;</code>, <code>&amp;</code>, <code>"</code>, <code>'</code>. The String parameter is mandatory. The return value is the escaped string.</td>
+    </tr>
+    <tr>
+      <td><code>strUnHTMLEscape(&#60;string&#62;);</code></td>
+      <td>This function unescapes these characters: <code>&#60;</code>, <code>&#62;</code>, <code>&amp;</code>, <code>"</code>, <code>'</code>. The String parameter is mandatory. The return value is the unescaped string.</td>
+    </tr>
+    <tr>
+      <td><code>assertEq(&#60;msg&#62;,&#60;value1&#62;,&#60;value2&#62;[,strict=true]);</code></td>
+      <td>This function throws an error with the message if the value1 and value2 aren't equals. The message parameter is mandatory and has to be a string. The strict parameter is optional and can be a booelan. The return value is <code>true</code>, when the test was success.</td>
+    </tr>
+    <tr>
+      <td><code>assertNotEq(&#60;msg&#62;,&#60;value1&#62;,&#60;value2&#62;[,strict=true]);</code></td>
+      <td>This function throws an error with the message if the value1 and value2 are equals. The message parameter is mandatory and has to be a string. The strict parameter is optional and can be a booelan. The return value is <code>true</code>, when the test was success.</td>
+    </tr>
+    <tr>
+      <td><code>assertTrue(&#60;msg&#62;,&#60;value&#62;);</code></td>
+      <td>This function throws an error with the message if the value is false. The message parameter is mandatory and has to be a string. The return value is <code>true</code>, when the test was success.</td>
+    </tr>
+    <tr>
+      <td><code>assertFalse(&#60;msg&#62;,&#60;value&#62;);</code></td>
+      <td>This function throws an error with the message if the value is true. The message parameter is mandatory and has to be a string. The return value is <code>true</code>, when the test was success.</td>
+    </tr>
+  </table>
+</div>
+
+
+<h3>DOM functions</h3>
+
+<p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
+<br/>Example: <code>CEL.domCreate();</code></p>
+
+<div>
+  <table class="table-responsive table-striped">
+    <tr>
+      <td style="width: auto; min-width: 33%;"><b>Name</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>qsa(&#60;selector&#62;[,context]);</code></td>
+      <td>Get matched HTML elements in an array. The context is optional and can be an element or a selector string.</td>
+    </tr>
+    <tr>
+      <td><code>qs(&#60;selector&#62;[,context]);</code></td>
+      <td>Get the first matched HTML element. The context is optional and can be an element or a selector string.</td>
+    </tr>
+    <tr>
+      <td><code>domReady(&#60;callback&#62;);</code></td>
+      <td>Set the document ready (content fully loaded) event.</td>
+    </tr>
+    <tr>
+      <td><code>domCreate(&#60;type&#62;[,properties[,innerHTML]]);</code></td>
+      <td>Create a new HTML element. The type is mandatory and has to be a string. The properties object is optional and sets the element properties. (class, style object/string, data-*, etc.) The innerHTML is optional and can be a string.</td>
+    </tr>
+    <tr>
+      <td><code>domCreate(&#60;element descriptive object&#62;);</code></td>
+      <td>
+        <p>Since v2.0.5, a new element can be created with an object. In this case the element descriptive object is mandatory. The <code>style</code> can be a subobject or a string.</p>
+        <p><b>Sample code:</b></p>
+        <pre>CEL.domCreate({
+  elementType: "a",
+  href: "https://developer.mozilla.org/en-US/",
+  target: "_blank",
+  style: {
+    "background-color": "red",
+    "color": "white"
+  },
+  innerHTML: "MDN Sample url"
+});</pre>
+      </td>
+    </tr>
+    <tr>
+      <td><code>domToElement(&#60;htmlString&#62;);</code></td>
+      <td>This function returns a HTML element which is created from the htmlString parameter. The htmlString parameter is mandatory and has to be a string.</td>
+    </tr>
+    <tr>
+      <td><code>domGetCSS(&#60;element&#62;[,property]);</code></td>
+      <td>Get a CSS property value of an element or all of the css properties in an object. The element is mandatory and has to be a HTML element. The property is optional and can be a string.</td>
+    </tr>
+    <tr>
+      <td><code>domSetCSS(&#60;element&#62;,&#60;property&#62;,&#60;value&#62;);</code></td>
+      <td>Set a CSS property value of an element. The element is mandatory and has to be a HTML element. The property is mandatory and has to be a string. The value is mandatory and has to be a string.</td>
+    </tr>
+    <tr>
+      <td><code>domSetCSS(&#60;element&#62;,&#60;properties&#62;);</code></td>
+      <td>Set CSS property values of an element. The element is mandatory and has to be a HTML element. The properties object is mandatory. The object properties can be the CSS properties and the property values will be applied to the element.</td>
+    </tr>
+    <tr>
+      <td><code>domFadeIn(&#60;element&#62;[, duration[,display]]);</code></td>
+      <td>Fade in and show animation for an element. The element is mandatory and has to be a HTML element. The duration parameter is optional and sets the animation time in milisec (the default is 500ms). The display is optional and can be a string (CSS display property values).</td>
+    </tr>
+    <tr>
+      <td><code>domFadeOut(&#60;element&#62;[,duration]);</code></td>
+      <td>Fade out and hide animation for an element. The element is mandatory and has to be a HTML element. The duration parameter is optional and sets the animation time in milisec (the default is 500ms).</td>
+    </tr>
+    <tr>
+      <td><code>domFadeToggle(&#60;element&#62;[,duration[,display]]);</code></td>
+      <td>Fade in or fade out animation which depends on the state of the element. The element is mandatory and has to be a HTML element. The duration parameter is optional and sets the animation time in millisecond (the default is 500ms). The display is optional and can be a string (CSS display property values).</td>
+    </tr>
+    <tr>
+      <td><code>domShow(&#60;element&#62;[,display]);</code></td>
+      <td>Show an element. The element is mandatory and has to be a HTML element. The display is optional and can be a string (CSS display values).</td>
+    </tr>
+    <tr>
+      <td><code>domHide(&#60;element&#62;);</code></td>
+      <td>Hide an element. The element is mandatory and has to be a HTML element.</td>
+    </tr>
+    <tr>
+      <td><code>domToggle(&#60;element&#62;[,display]);</code></td>
+      <td>Show or hide an element. The element is mandatory and has to be a HTML element. The display is optional and can be a string (CSS display values).</td>
+    </tr>
+    <tr>
+      <td><code>domIsHidden(&#60;element&#62;);</code></td>
+      <td>This function determines whether the element is hidden. The element is mandatory and has to be a HTML element. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>domSiblings(&#60;element&#62;);</code></td>
+      <td>Get the siblings of an element. The element parameter is mandatory and the return value is the array.</td>
+    </tr>
+    <tr>
+      <td><code>domSiblingsPrev(&#60;element&#62;);</code></td>
+      <td>Get the previous siblings of an element. The element parameter is mandatory and the return value is the array.</td>
+    </tr>
+    <tr>
+      <td><code>domSiblingsLeft(&#60;element&#62;);</code></td>
+      <td>Alias of the <code>domSiblingsPrev(&#60;element&#62;);</code>.</td>
+    </tr>
+    <tr>
+      <td><code>domSiblingsNext(&#60;element&#62;);</code></td>
+      <td>Get the next siblings of an element. The element parameter is mandatory and the return value is the array.</td>
+    </tr>
+    <tr>
+      <td><code>domSiblingsRight(&#60;element&#62;);</code></td>
+      <td>Alias of the <code>domSiblingsNext(&#60;element&#62;);</code>.</td>
+    </tr>
+    <tr>
+      <td><code>importScript(&#60;script1&#62;[,scriptN]);</code></td>
+      <td>
+        <p>Load JavaScript files. The first parameter is mandatory and has to be a string. The other parameters are optional and can be a string.</p>
+        <p><b>Tip:</b><br/>To prevent the caching of a js/css file use versioning in the file url. Example: <code>mylib.js?version=1.10.0</code></p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>importStyle(&#60;style1&#62;[,styleN]);</code></td>
+      <td>Load CSS files. The first parameter is mandatory and has to be a string. The other parameters are optional and can be a string.</td>
+    </tr>
+    <tr>
+      <td><code>form2array(&#60;form&#62;);</code></td>
+      <td>Convert (serialize) form input tag names and values to an array with object elements (name and value properties). The return value is the array. The form parameter is mandatory and has to be a html form element.</td>
+    </tr>
+    <tr>
+      <td><code>form2string(&#60;form&#62;);</code></td>
+      <td>Convert (serialize) form input tag names and values to a query string. The return value is the string. The form parameter is mandatory and has to be a html form element.</td>
+    </tr>
+    <tr>
+      <td><code>getDoNotTrack();</code></td>
+      <td>Return the DoNotTrack setting (boolean) of the browser.</td>
+    </tr>
+    <tr>
+      <td><code>getLocation(&#60;success&#62;[,error]);</code></td>
+      <td>Get the current location as an object with the coordinates. The success is mandatory and has to be a function. The error is optional and can be a function.</td>
+    </tr>
+    <tr>
+      <td><code>createFile(&#60;filename&#62;,&#60;content&#62;[,dataType]);</code></td>
+      <td>
+        <p>Create and save file without a server. The filename and content parameters are mandatory and have to be a string. The dataType parameter is optional and can be a string.  The default value of the dataType parameter is <code>text/plain</code>.</p>
+        <p><span class="info">Doesn't work in iOS browsers (Safari, Firefox and Chrome) and W10M Edge 14.</span></p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>getFullscreen();</code></td>
+      <td>
+        Get the fullscreen element. If this isn't set, then the return value is undefined.
+        <br/>Please check the incompatibility issues on the <a href="http://caniuse.com/#search=fullscreen" target="_blank">http://caniuse.com/#search=fullscreen</a> page.
+      </td>
+    </tr>
+    <tr>
+      <td><code>setFullscreenOn(&#60;selector&#62;);</code></td>
+      <td>Set the fullscreen element. The selector can be a css selector string or an element.</td>
+    </tr>
+    <tr>
+      <td><code>setFullscreenOff();</code></td>
+      <td>Set off the fullscreen.</td>
+    </tr>
+    <tr>
+      <td><code>domGetCSSVar(&#60;name&#62;);</code></td>
+      <td>This function returns a value of a CSS variable or an empty string, if the variable is unset. The name parameter is mandatory and has to be a string. If the "--" characters are missing at the begin of the variable name, then the function will add these.</td>
+    </tr>
+    <tr>
+      <td><code>domSetCSSVar(&#60;name&#62;,&#60;value&#62;);</code></td>
+      <td>This function set a value of a CSS variable. Both of the parameters are mandatory and have to be a string. If the "--" characters are missing at the begin of the variable name, then the function will add these.</td>
+    </tr>
+  </table>
+</div>
+
+<h3>AJAX and CORS</h3>
+
+<p class="info">
+  These functions aren't deprecated, but it's recommend to use the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API" target="_blank">Fetch API</a>, because it's <a href="https://caniuse.com/?search=fetch" target="_blank">supported</a> in every modern browsers.
+</p>
+
+<p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
+<br/>Example: <code>CEL.getJson();</code></p>
+
+<div style="overflow-x:auto;">
+  <table class="table-responsive table-striped">
+    <tr>
+      <td style="width: auto; min-width: 33%;"><b>Name</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>ajax(&#60;Options object&#62;);</code></td>
+      <td>Get content and send data via AJAX and CORS.</td>
+    </tr>
+    <tr>
+      <td><code>getJson(&#60;url&#62;,&#60;success&#62;);</code></td>
+      <td>Get TEXT content via AJAX. A shorthand function to the ajax() function.</td>
+    </tr>
+    <tr>
+      <td><code>getText(&#60;url&#62;,&#60;success&#62;);</code></td>
+      <td>Get JSON content via AJAX. A shorthand function to the ajax() function.</td>
+    </tr>
+  </table>
+</div>
+
+<p><b>Options object properties:</b></p>
+<ul>
+  <li>The <b>queryType</b> is optional and can be a <b>string</b> with these values: <code>"ajax"</code> or <code>"cors"</code>. The default value is <code>"ajax"</code>.</li>
+  <li>The <b>type</b> is optional and can be a <b>string</b> with these values: <code>"get"</code> or <code>"post"</code>. The default value is <code>"get"</code>.</li>
+  <li>The <b>url</b> is mandatory and has to be a <b>string</b>.</li>
+  <li>The <b>data</b> is optional and has to be a <b>string</b> if the <code>type === "post"</code>.</li>
+  <li>The <b>format</b> is optional and can be a <b>string</b> with these values: <code>"text"</code> or <code>"json"</code> or <code>"xml"</code>. The default value is <code>"text"</code>.
+  <li>The <b>success</b> is mandatory and has to be a <b>function</b>.</li>
+  <li>The <b>error</b> is optional and can be a <b>function</b>.</li>
+  <li>The <b>user</b> is optional and can be a <b>string</b>.</li>
+  <li>The <b>password</b> is optional, but mandatory if the user is set. This parameter can be a <b>string</b>.</li>
+</ul>
+
+
+<h3 id="typechecking">Type checking functions</h3>
+
+<p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
+<br/>Example: <code>CEL.isString();</code></p>
+
+<div>
+  <table class="table-responsive table-striped">
+    <tr>
+      <td style="width: auto; min-width: 33%;"><b>Name</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>isTruthy(&#60;value&#62;);</td>
+      <td>This function determines whether the provided value is truthy. The return value is boolean. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Glossary/Truthy" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr>
+      <td><code>isFalsy(&#60;value&#62;);</td>
+      <td>This function determines whether the provided value is falsy. The return value is boolean. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Glossary/Falsy" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr>
+      <td><code>isAsyncGeneratorFn(&#60;value&#62;);</td>
+      <td>This function determines whether the provided value is an async generator function. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isConstructorFn(&#60;value&#62;);</td>
+      <td>This function determines whether the provided value is a constructable function. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isPlainObject(&#60;value&#62;);</td>
+      <td>This function determines whether the provided value is an object, which own prototype is the Object.prototype or null. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isDataView(&#60;value&#62;);</td>
+      <td>This function determines whether the provided value is an DataView object. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isError(&#60;value&#62;);</td>
+      <td>This function determines whether the provided value is an error object. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isPromise(&#60;value&#62;);</td>
+      <td>This function determines whether the provided value is a promise object. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isSameObject(&#60;object1&#62;,&#60;object2&#62;);</code></td>
+      <td>This function checks the property and value equality of the given objects. The return value is boolean and both of the parameters are mandatory and have to be an object.</td>
+    </tr>
+    <tr>
+      <td><code>isSameArray(&#60;array1&#62;,&#60;array2&#62;);</code></td>
+      <td>This function checks the value equality of the given arrays. The return value is boolean and both of the parameters are mandatory and have to be an array.</td>
+    </tr>
+    <tr>
+      <td><code>isSameMap(&#60;map1&#62;,&#60;map2&#62;);</code></td>
+      <td>This function checks the property and value equality of the given maps. The return value is boolean and both of the parameters are mandatory and have to be a map.</td>
+    </tr>
+    <tr>
+      <td><code>isSameSet(&#60;set1&#62;,&#60;set2&#62;);</code></td>
+      <td>This function checks the value equality of the given sets. The return value is boolean and both of the parameters are mandatory and have to be a set.</td>
+    </tr>
+    <tr>
+      <td><code>isSameIterator(&#60;iter1&#62;,&#60;iter2&#62;);</code></td>
+      <td>This function checks the value equality of the given iterator. The return value is boolean and both of the parameters are mandatory and have to be a collection (iterator / iterable object).</td>
+    </tr>
+    <tr>
+      <td><code>isAsyncFn(&#60;value&#62;);</td>
+      <td>This function determines whether the provided value is an async function. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isGeneratorFn(&#60;value&#62;);</td>
+      <td>This function determines whether the provided value is a generator function. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isString(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is a string. This function is unicode compatible. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isChar(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is a string with length 1 character. This function is unicode compatible. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isNumber(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is a number. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isFloat(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is a float number. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isNumeric(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is a number or can be converted to number. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isBoolean(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is a boolean. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isObject(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is an object and not null. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isFunction(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is a function. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isCallable(&#60;value&#62;);</code></td>
+      <td>Alias of the <code>isFunction(&#60;value&#62;);</code>.</td>
+    </tr>
+    <tr>
+      <td><code>isEmptyObject(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is an empty object (without properties). The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isEmptyArray(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is an empty array (without values). The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isEmptyMap(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is an empty map (without properties). The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isEmptySet(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is an empty set (without values). The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isEmptyIterator(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is an empty iterator (without values). The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isArraylike(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is an iterable object. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isNull(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is null. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isUndefined(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is undefined. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isNullOrUndefined(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is null or undefined. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isNil(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is null or undefined or NaN. The return value is boolean.</code>.</td>
+    </tr>
+    <tr>
+      <td><code>isPrimitive(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is not null, not object and not function. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isSymbol(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is a symbol. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isMap(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is a map. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isSet(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is a set. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isWeakMap(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is a weakmap. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isWeakSet(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is a weakset. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isIterator(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is an iterator. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isIterable(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is an iterable collection. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isDate(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is a date. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isRegexp(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is a regexp. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isElement(&#60;value&#62;);</code></td>
+      <td>
+        This function determines whether the provided value is a HTML element. The return value is boolean.
+        <p>
+          For other node types (document, text, comment, etc.) checking please read this MDN page:
+          <br/><a href=" https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType" target="_blank"> https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType</a>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>isBigInt(&#60;value&#62;);</td>
+      <td>This function determines whether the provided value is a BigInt. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isArrayBuffer(&#60;value&#62;);</td>
+      <td>This function determines whether the provided value is an arraybuffer. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isTypedArray(&#60;value&#62;);</td>
+      <td>This function determines whether the provided value is a typedarray. The return value is boolean.</td>
+    </tr>
+  </table>
+</div>
+
+<h3 id="cookie">Cookie functions</h3>
+
+<p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
+<br/>Example: <code>CEL.setCookie();</code></p>
+
+<p>
+  Cookie values help:
+  <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie" target="_blank">MDN</a>,
+  <a href="https://web.dev/samesite-cookies-explained" target="_blank">web.dev</a>
+</p>
+
+<div>
+  <table class="table-responsive table-striped">
+    <tr>
+      <td style="width: auto; min-width: 33%;"><b>Name</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>setCookie(&#60;name&#62;,&#60;value&#62;[,hours="8760"[,path="/"[,domain[,secure[,SameSite="Lax"[,HttpOnly]]]]]]);</code></td>
+      <td>
+        <p>Set a cookie.</p>
+        <p><b>Function parameters:</b></p>
+        <ul>
+          <li>The name is mandatory and has to be a string.</li>
+          <li>The value is mandatory and has to be a string.</li>
+          <li>The hours is the expire value and optional and can be a number. <i>(Default value: 8760 = 1 year)</i></li>
+          <li>The path is optional and can be a string. <i>(Default value: "/")</i> To the local path set the <code>""</code> value!</li>
+          <li>The domain is optional and can be a string.</li>
+          <li>The secure is optional and can be a boolean.</li>
+          <li>The SameSite is optional and can be a string. <i>("Lax", "Strict", "None", default value: "Lax")</i></li>
+          <li>The HttpOnly is optional and can be a boolean.</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td><code>setCookie(&#60;Options object&#62;);</code></td>
+      <td>In this case the names of object properties are the same as the function arguments and the default values are the same too.</td>
+    </tr>
+    <tr>
+      <td><code>getCookie([name]);</code></td>
+      <td>
+        Get the value of a cookie or all cookies in an object.
+        <br/>With the name parameter (string) the return value is the current cookie value or null. <br/>Without the parameter the return value is an object with the values or an empty object.
+      </td>
+    </tr>
+    <tr>
+      <td><code>hasCookie(&#60;name&#62;);</code></td>
+      <td>This function determines whether the cookie is set with the name parameter. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>removeCookie(&#60;name&#62;[,path="/"[,domain[,secure[,SameSite="Lax"[,HttpOnly]]]]]);</code></td>
+      <td>
+        <p>Remove a cookie. The return value (boolean) is determines whether the cookie was set with the name before the removing.</p>
+        <p><b>Function parameters:</b></p>
+        <ul>
+          <li>The name is mandatory and has to be a string.</li>
+          <li>The path is optional and can be a string. <i>(Default value: "/")</i> To the local path set the <code>""</code> value!</li>
+          <li>The domain is optional and can be a string.</li>
+          <li>The secure is optional and can be a boolean.</li>
+          <li>The SameSite is optional and can be a string. <i>("Lax", "Strict", "None", default value: "Lax")</i></li>
+          <li>The HttpOnly is optional and can be a boolean.</li>
+        </ul>
+        <p>The return value (boolean) is determines whether the cookie was set with the name before the removing.</p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>removeCookie(&#60;Options object&#62;);</code></td>
+      <td>In this case the names of object properties are the same as the function arguments and the default values are the same too.</td>
+    </tr>
+    <tr>
+      <td><code>clearCookies([path="/"[,domain[,secure[,SameSite="Lax"[,HttpOnly]]]]]);</code></td>
+      <td>
+        <p>Clear all of the cookies. The return value (boolean) is determines whether the cookie was set with the name before the removing.</p>
+        <p><b>Function parameters:</b></p>
+        <ul>
+          <li>The path is optional and can be a string. <i>(Default value: "/")</i> To the local path set the <code>""</code> value!</li>
+          <li>The domain is optional and can be a string.</li>
+          <li>The secure is optional and can be a boolean.</li>
+          <li>The SameSite is optional and can be a string. <i>("Lax", "Strict", "None", default value: "Lax")</i></li>
+          <li>The HttpOnly is optional and can be a boolean.</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td><code>clearCookies(&#60;Options object&#62;);</code></td>
+      <td>In this case the names of object properties are the same as the function arguments and the default values are the same too.</td>
+    </tr>
+  </table>
+</div>
+
+<h3 id="cookie">Collections</h3>
+
+<p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
+<br/>Example: <code>CEL.arrayUnion();</code></p>
+
+<div>
+  <table class="table-responsive table-striped">
+    <tr>
+      <td style="width: auto; min-width: 33%;"><b>Name</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>arrayDeepClone(&#60;array&#62;);</code></td>
+      <td>This function deeply (recursively) clones an array. The return value is the cloned array.</td>
+    </tr>
+    <tr>
+      <td><code>arrayCreate([length=0]);</code></td>
+      <td>This function returns an array with the given length and can handle the -0 as length. The length parameter will be converted to number and if the new value is not an integer number or out of the array size range, then a rangeerror will be thrown.</td>
+    </tr>
+    <tr>
+      <td><code>initial(&#60;collection&#62;);</code></td>
+      <td>
+        <p>Returns an array with the values of the given collection, but without the last value.</p>
+        <p>
+         <b>Example:</b>
+         <br/><code>CEL.initial([-5, 2, -9, 7, 34]);</code>
+         <br/>->
+         <br/><code>[-5, 2, -9, 7]</code>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>shuffle(&#60;collection&#62;);</code></td>
+      <td>
+        <p>Returns an array with the values of the given collection, but in shuffled order.</p>
+        <p>
+         <b>Example:</b>
+         <br/><code>CEL.shuffle(["first",4,5,6,7,8,9,"last"]);</code>
+         <br/>->
+         <br/><code>[4,8,5,6,"last",9,7,"first"]</code>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>withOut(&#60;collection&#62;,&#60;filterCollection&#62;);</code></td>
+      <td>
+        <p>Returns an array with the values of the first collection, but without the values of the filterCollection. All of the parameters are mandatory and can be any type of JavaScript collections.</p>
+        <p>
+         <b>Example:</b>
+         <br/><code>CEL.withOut(["a","b","c","d"], ["b","d"]);</code>
+         <br/>->
+         <br/><code>["a","c"]</code>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>partition(&#60;collection&#62;,&#60;callback&#62;);</code></td>
+      <td>
+        <p>Returns an array, with filtered and negative filtered groups of the elements of the original collection. All of the parameters are mandatory.</p>
+        <p>
+         <b>Example:</b>
+         <br/><code>CEL.partition([-5, 2, -9, 7, 34], (e) => (e > 0) );</code>
+         <br/>->
+         <br/><code>[[2, 7, 34], [-5, -9]]</code>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>group(&#60;collection&#62;,&#60;callback&#62;[,map=false]);</code></td>
+      <td>
+			  <p><span class="info">Old name before v5.4.4: <code>groupBy</code>.</span><br/>Returns an Object or Map with array properties. The keys are the returned values of the given function. The collection parameter is mandatory. The callback parameter is mandatory and has to be a function. The map parameter is optional and has to be a boolean and if it is true, then the return value is a Map instead of Object.</p>
+        <p>
+         <b>Example:</b>
+         <br/><code>CEL.group([1,2,3,4,5], (i) => (i % 2 === 0 ? "even" : "odd");</code>
+         <br/>->
+         <br/><code>{ "even": [ 2, 4 ], "odd": [ 1, 3, 5 ] }</code>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>arrayUnion(&#60;collection1&#62;[,collectionN]);</code></td>
+      <td>Returns the array of unique values including all values from the given collections. The first parameter is mandatory and all parameters can be any type of JavaScript collections. The return value is an Array.</td>
+    </tr>
+    <tr>
+      <td><code>arrayIntersection(&#60;collection1&#62;,&#60;collection2&#62;);</code></td>
+      <td>Returns the array of unique values that are in both of the given collections. All of the parameters are mandatory and can be any type of JavaScript collections. The return value is an Array.</td>
+    </tr>
+    <tr>
+      <td><code>arrayDifference(&#60;collection1&#62;,&#60;collection2&#62;);</code></td>
+      <td>Returns the array of unique values that are in the collection1, excluding the values that are also in the collection2. All of the parameters are mandatory and can be any type of JavaScript collections. The return value is an Array.</td>
+    </tr>
+    <tr>
+      <td><code>arraySymmetricDifference(&#60;collection1&#62;,&#60;collection2&#62;);</code></td>
+      <td>Returns the array of unique values that are only in one of given collections. All of the parameters are mandatory and can be any type of JavaScript collections. The return value is an Array.</td>
+    </tr>
+    <tr>
+      <td><code>setUnion(&#60;collection1&#62;[,collectionN]);</code></td>
+      <td>Returns the set of unique values including all values from the given collections. The first parameter is mandatory and all parameters can be any type of JavaScript collections. The return value is a Set.</td>
+    </tr>
+    <tr>
+      <td><code>setIntersection(&#60;set1&#62;,&#60;set2&#62;);</code></td>
+      <td>Returns the set of unique values that are in both of the given collections. All of the parameters are mandatory and have to be a Set. The return value is a Set.</td>
+    </tr>
+    <tr>
+      <td><code>setDifference(&#60;set1&#62;,&#60;set2&#62;);</code></td>
+      <td>Returns the set of unique values that are in the collection1, excluding the values that are also in the collection2. All of the parameters are mandatory and have to be a Set. The return value is a Set.</td>
+    </tr>
+    <tr>
+      <td><code>setSymmetricDifference(&#60;set1&#62;,&#60;set2&#62;);</code></td>
+      <td>Returns the set of unique values that are only in one of given collections. All of the parameters are mandatory and have to be a Set. The return value is a Set.</td>
+    </tr>
+    <tr>
+      <td><code>isSuperset(&#60;superCollection&#62;,&#60;subCollection&#62;);</code></td>
+      <td>This function determines whether the first provided collection is superset of the second collection. The parameters are mandatory and all parameters can be any type of JavaScript collections. The return value is a boolean.</td>
+    </tr>
+    <tr>
+      <td><code>min(&#60;value1&#62;[,valueN]);</code></td>
+      <td>Returns the minimum value of the given values. The first value parameter is mandatory and can be any type. Works with any type of values, not only with numbers.</td>
+    </tr>
+    <tr>
+      <td><code>max(&#60;value1&#62;[,valueN]);</code></td>
+      <td>Returns the maximum value of the given values. The first value parameter is mandatory and can be any type. Works with any type of values, not only with numbers.</td>
+    </tr>
+    <tr>
+      <td><code>arrayCycle(&#60;collection&#62;[,n=100]);</code></td>
+      <td>Cycle the given collection and returns an array with these elements. The collection parameter is mandatory and can be any type of JavaScript collections. The n parameter is optional and can be an integer. Default parameter value: n = 100.</td>
+    </tr>
+    <tr>
+      <td><code>arrayRepeat(&#60;value&#62;[,step=100]);</code></td>
+      <td>Returns an array with same repeatedly elements. The value parameter is mandatory and the n parameter is optional and can be an integer. Default parameter value: n = 100.</td>
+    </tr>
+    <tr>
+      <td><code>arrayRange([start=0[,end=99[,step=1]]]);</code></td>
+      <td>
+        Returns the array of values between the start and end parameters. All of the parameters are mandatory and have to be a number. Default parameter values: start = 0, end = 99, step = 1.
+        <br/><b>Example:</b><br/><code>CEL.arrayRange("A".codePointAt(0),"Z".codePointAt(0)).map((v)=>String.fromCodePoint(v));</code><br/>-><br/><code>code>Array(26) [ "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" ]</code>
+      </td>
+    </tr>
+    <tr>
+      <td><code>zip(&#60;collection1&#62;[,collectionN]);</code></td>
+      <td>Returns the array of paired values of the given collections. All of the parameters can be any type of JavaScript collections. In the modern browsers compatible with finite iterators. <br/><b>Example:</b><br/><code>CEL.zip(["a","b","c","d"], [3,4,5,6,7,8,9]);</code><br/>-><br/><code>Array (4) [ [ "a", 3 ], [ "b", 4 ], [ "c", 5 ], [ "d", 6 ] ]</code></td>
+    </tr>
+    <tr>
+      <td><code>unzip(&#60;collection&#62;);</code></td>
+      <td>Returns the array of arrays of unpaired values. In the modern browsers compatible with finite iterators. <br/><b>Example:</b><br/><code>CEL.unzip([ [ "a", 3 ], [ "b", 4 ], [ "c", 5 ], [ "d", 6 ] ]);</code><br/>-><br/><code>Array (2) [ ["a","b","c","d"], [3,4,5,6] ]</code></td>
+    </tr>
+    <tr>
+      <td><code>zipObj(&#60;collection1&#62;,&#60;collection2&#62;);</code></td>
+      <td>Returns an object, whose properties are from the first collection and its values are from the second collection. The two collections must be the same size. In the modern browsers compatible with finite iterators.<br/><b>Example:</b><br/><code>zipObj(["a","b","c"],[1,2,3])</code><br/>-><br/><code>{"a":1,"b":2,"c":3}</code></td>
+    </tr>
+    <tr>
+      <td><code>arrayClear(&#60;array&#62;);</code></td>
+      <td>Clear the array and returns the empty array. The array parameter is mandatory.</td>
+    </tr>
+    <tr>
+      <td><code>arrayRemove(&#60;array&#62;,&#60;value&#62;[,all=false]);</code></td>
+      <td>Remove the first or all equivalent values from the array. Returns true, when the value was found and false when not found. The array and value parameters are mandatory. The all parameter is optional and has to be a boolean.</td>
+    </tr>
+    <tr>
+      <td><code>arrayRemoveBy(&#60;array&#62;,&#60;callback&#62;[,all=false]);</code></td>
+      <td>Remove the first or all values from the array with which the given function returns true. Returns true, when the value was found and false when not found. The array and callback parameters are mandatory. The all parameter is optional and has to be a boolean.</td>
+    </tr>
+    <tr>
+      <td><code>arrayUnique(&#60;collection&#62;);</code></td>
+      <td>This function returns a new array with unique values. The value parameter is mandatory and can be any type, that can be converted to array. In modern browsers you can use ES6 types too (Map, Set and iterators).</td>
+    </tr>
+    <tr>
+      <td><code>arrayAdd(&#60;array&#62;,&#60;value&#62;);</code></td>
+      <td>Push the value to the array if the array doesn't contain the value. The return value is true, when the value is added and false, when not added.</td>
+    </tr>
+    <tr>
+      <td><code>arrayMerge(&#60;target&#62;,&#60;source1&#62;[,sourceN]);</code></td>
+      <td>Merge two or more arrays or push any values in the target array. The return value is the target array.</td>
+    </tr>
+    <tr>
+      <td><code>iterRange([start=0[,step=1[,end=Infinity]]]);</code></td>
+      <td>Yield a range (counter) iterator. All of the parameters are optional. Default parameter values: start = 0, step = 1, end = Infinity.</td>
+    </tr>
+    <tr>
+      <td><code>iterCycle(&#60;iter&#62;[,n=Infinity]);</code></td>
+      <td>
+        <p>Yield the items of an iterator over and over. The iter parameter is mandatory and the n parameter is optional and can be an integer. Default parameter value: n = Infinity</p>
+        <p><code>Note: PLease don't use with infinite iterators!</code></p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>iterRepeat(&#60;value&#62;[,n=Infinity]);</code></td>
+      <td>Yield a value over and over. The value parameter is mandatory and the n parameter is optional and can be an integer. Default parameter value: n = Infinity</td>
+    </tr>
+    <tr>
+      <td><code>item(&#60;collection&#62;,&#60;index&#62;);</code></td>
+      <td>This function returns the item from the given collection on the given index. The collection parameter is mandatory and has to be any type of JavaScript collections. The index is mandatory and can be positive number (examples: 0 = the first item, 1 = the second item, 2 = the third item, etc.) Compatible with the Unicode strings.</td>
+    </tr>
+    <tr>
+      <td><code>nth(&#60;collection&#62;,&#60;index&#62;);</code></td>
+      <td>This is an alias of the <code>item(&#60;collection&#62;,&#60;index&#62;);</code>.<td>
+    </tr>
+    <tr>
+      <td><code>size(&#60;collection&#62;);</code></td>
+      <td>This function returns the count of the elements in the given collection. The collection parameter is mandatory. The return value is an integer.</td>
+    </tr>
+    <tr>
+      <td><code>first(&#60;collection&#62;);</code></td>
+      <td>This function returns the first element of the given collection. The collection parameter is mandatory.</td>
+    </tr>
+    <tr>
+      <td><code>head(&#60;collection&#62;);</code></td>
+      <td>This is an alias of the <code>first(&#60;collection&#62;);</code>.</td>
+    </tr>
+    <tr>
+      <td><code>last(&#60;collection&#62;);</code></td>
+      <td>This function returns the last element of the given collection. The collection parameter is mandatory.</td>
+    </tr>
+    <tr>
+      <td><code>reverse(&#60;collection&#62;);</code></td>
+      <td>This function returns an array with values of the given collection in reverse order. The collection parameter is mandatory.</td>
+    </tr>
+    <tr>
+      <td><code>sort(&#60;collection&#62;[,numbers=false]);</code></td>
+      <td>This function sorts the values of the given collection. The collection parameter is mandatory. The numbers paramater is optional (boolean) and set true, if the collection contains only numbers. The return value is an array.</td>
+    </tr>
+    <tr>
+      <td><code>includes(&#60;collection&#62;,&#60;value&#62;);</code></td>
+      <td>This function determines whether a collection includes a certain value among its entries, returning true or false as appropriate. All of the parameters are mandatory.</td>
+    </tr>
+    <tr>
+      <td><code>contains(&#60;collection&#62;,&#60;value&#62;);</code></td>
+      <td>This is an alias of the <code>includes(&#60;collection&#62;,&#60;value&#62;);</code>.</td>
+    </tr>
+    <tr>
+      <td><code>find(&#60;collection&#62;,&#60;callback&#62;);</code></td>
+      <td>This function returns the value of the first element in the collection that satisfies the provided testing function. Otherwise undefined is returned. All of the parameters are mandatory.</td>
+    </tr>
+    <tr>
+      <td><code>findLast(&#60;collection&#62;,&#60;callback&#62;);</code></td>
+      <td>This function returns the value of the last element in the collection that satisfies the provided testing function. Otherwise undefined is returned. All of the parameters are mandatory.</td>
+    </tr>
+    <tr>
+      <td><code>forEach(&#60;collection&#62;,&#60;callback&#62;);</code></td>
+      <td>This function executes a provided function once for each collection element. The collection parameter is mandatory. The callback parameter is mandatory and has to be a function and called with two parameters: the item and the index of the item (only a counter).</td>
+    </tr>
+    <tr>
+      <td><code>forEachRight(&#60;collection&#62;,&#60;callback&#62;);</code></td>
+      <td>This function executes a provided function once for each collection element in reversed order. The collection parameter is mandatory. The callback parameter is mandatory and has to be a function and called with two parameters: the item and the index of the item (only a reversed counter).</td>
+    </tr>
+    <tr>
+      <td><code>map(&#60;collection&#62;,&#60;callback&#62;);</code></td>
+      <td>This function creates a new iterator with the results of calling a provided function on every element in the calling collection. The collection parameter is mandatory. The callback parameter is mandatory and has to be a function and called with two parameters: the item and the index of the item (only a counter).</td>
+    </tr>
+    <tr>
+      <td><code>filter(&#60;collection&#62;,&#60;callback&#62;);</code></td>
+      <td>Filter and yield elements of a collection. The collection parameter is mandatory. The callback parameter is mandatory and has to be a function and called with two parameters: the item and the index of the item (only a counter).</td>
+    </tr>
+    <tr>
+      <td><code>reject(&#60;collection&#62;,&#60;callback&#62;);</code></td>
+      <td>This is the opposite of the function <code>filter(&#60;collection&#62;,&#60;callback&#62;);</code>. The elements to which the given callback gives a false will be yield. The collection parameter is mandatory. The callback parameter is mandatory and has to be a function and called with two parameters: the item and the index of the item (only a counter).</td>
+    </tr>
+    <tr>
+      <td><code>slice(&#60;collection&#62;[,begin=0[,end=Infinity]]);</code></td>
+      <td>Take a slice of a collection and yield the elements. The collection parameter is mandatory. The begin parameter is optional and can be a number and the default value is 0. The end parameter is optional and can be a number and the default value is Infinity.</td>
+    </tr>
+    <tr>
+      <td><code>tail(&#60;collection&#62;);</code></td>
+      <td>Yield the values of a collection but without the first value. The collection parameter is mandatory.</td>
+    </tr>
+    <tr>
+      <td><code>every(&#60;collection&#62;,&#60;callback&#62;);</code></td>
+      <td>This function whether all elements in the collection pass the test implemented by the provided function. It returns a Boolean value and all of the parameters are mandatory. If the collection is empty, then the return value is false.</td>
+    </tr>
+    <tr>
+      <td><code>some(&#60;collection&#62;,&#60;callback&#62;);</code></td>
+      <td>This function tests whether at least one element in the array passes the test implemented by the provided function. It returns a Boolean value and all of the parameters are mandatory. If the collection is empty, then the return value is false.</td>
+    </tr>
+    <tr>
+      <td><code>none(&#60;collection&#62;,&#60;callback&#62;);</code></td>
+      <td>This function whether all elements in the collection do not pass the test implemented by the provided function. It returns a Boolean value and all of the parameters are mandatory. If the collection is empty, then the return value is false.</td>
+    </tr>
+    <tr>
+      <td><code>concat(&#60;collection1&#62;[,collectionN]);</code></td>
+      <td>This function merges the collections and yields the elements of the merged collection. The given collections will be not changed. At least one collection has to been given.</td>
+    </tr>
+    <tr>
+      <td><code>reduce(&#60;collection&#62;,&#60;callback&#62;[,initialvalue]);</code></td>
+      <td>This function executes a reducer function (that you provide) on each element of the collection, returning in a single output value. The collection parameter is mandatory. The callback parameter is mandatory and has to be a function. The initialvalue parameter is optional and can be any variable type of the Javascript.</td>
+    </tr>
+    <tr>
+      <td><code>enumerate(&#60;collection&#62;[,offset=0]);</code></td>
+      <td>
+        <p>Yield generated pairs (arrays) from the elements of a collection and a counter. The collection parameter is mandatory. The offset parameter is optional and can be an integer and it's default value is 0.</p>
+        <p>Example: <code>CEL.enumerate(["Picard", "Riker", "Data"], 2);</code> -> <code>[2, "Picard"]</code>, <code>[3, "Riker"]</code>, <code>[4, "Data"]</code></p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>entries(&#60;collection&#62;[,offset=0]);</code></td>
+      <td>An alias of the <code>enumerate(&#60;collection&#62;);</code>.</td>
+    </tr>
+    <tr>
+      <td><code>flat(&#60;collection&#62;);</code></td>
+      <td>Yield the subelements of the elements of the given collection. The collection parameter is mandatory and all of the elements have to be an iterator or iterable.</td>
+    </tr>
+    <tr>
+      <td><code>join(&#60;collection&#62;[,separator=","]);</code></td>
+      <td>This function creates and returns a new string by concatenating all of the elements in a collection, separated by commas or a specified separator string. The separator is converted to a string if necessary. If the collection has only one item, then that item will be returned without using the separator. The collection parameter is mandatory.</td>
+    </tr>
+    <tr>
+      <td><code>take(&#60;collection&#62;[,n=1]);</code></td>
+      <td>Yield the first N elements of a collection. The collection parameter is mandatory. The n parameter is optional and can be an integer. Default parameter value: n = 1</td>
+    </tr>
+    <tr>
+      <td><code>takeWhile(&#60;collection&#62;,&#60;callback&#62;);</code></td>
+      <td>Yield the elements of a collection while the callback (filter) function returns true. The callback function will be called with the actual element of the collection. The collection parameter is mandatory. The callback parameter is mandatory and has to be a function.</td>
+    </tr>
+    <tr>
+      <td><code>takeRight(&#60;collection&#62;[,n=1]);</code></td>
+      <td>Take the last N elements of a collection. The collection parameter is mandatory. The n parameter is optional and can be an integer. Default parameter value: n = 1. The return value is an array.</td>
+    </tr>
+    <tr>
+      <td><code>takeRightWhile(&#60;collection&#62;,&#60;callback&#62;);</code></td>
+      <td>Yield the elements from the end of a collection while the callback (filter) function returns true. The callback function will be called with the actual element of the collection. The collection parameter is mandatory. The callback parameter is mandatory and has to be a function.</td>
+    </tr>
+    <tr>
+      <td><code>drop(&#60;collection&#62;[,n=1]);</code></td>
+      <td>Drop the first N elements of a collection and yield the remained elements. The original collection will be not changed. The collection parameter is mandatory. The n parameter is optional and can be an integer. Default parameter value: n = 1</td>
+    </tr>
+    <tr>
+      <td><code>dropWhile(&#60;collection&#62;,&#60;callback&#62;);</code></td>
+      <td>Drop the elements of a collection while the callback (filter) function returns true and yield the remained elements. The original collection will be not changed. The callback function will be called with the actual element of the collection. The collection parameter is mandatory. The callback parameter is mandatory and has to be a function.</td>
+    </tr>
+    <tr>
+      <td><code>dropRight(&#60;collection&#62;[,n=1]);</code></td>
+      <td>Drop the last N elements of a collection and return the remained elements in an array. The original collection will be not changed. The collection parameter is mandatory. The n parameter is optional and can be an integer. Default parameter value: n = 1.</td>
+    </tr>
+    <tr>
+      <td><code>dropRightWhile(&#60;collection&#62;,&#60;callback&#62;);</code></td>
+      <td>Drop the elements from the end of a collection while the callback (filter) function returns true and yield the remained elements. The original collection will be not changed. The callback function will be called with the actual element of the collection. The collection parameter is mandatory. The callback parameter is mandatory and has to be a function.</td>
+    </tr>
+  </table>
+</div>
+
+
+<h3>Abstract functions</h3>
+
+<p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
+<br/>Example: <code>CEL.getIn();</code></p>
+
+<div>
+  <table class="table-responsive table-striped">
+    <tr>
+      <td style="width: auto; min-width: 33%;"><b>Name</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>getInV(&#60;value&#62;,&#60;property&#62;);</code></td>
+      <td>TThis function return the property value of the given value and the given value will be converted to object. If the property doesn't exist, then the return value is undefined. The object parameter is mandatory and has to be any value. The property parameter is mandatory and has to be a property type.</td>
+    </tr>
+    <tr>
+      <td><code>getIn(&#60;object&#62;,&#60;property&#62;);</code></td>
+      <td>This function return the property value of the given object. If the property doesn't exist, then the return value is undefined. The object parameter is mandatory and has to be an object. The property parameter is mandatory and has to be a property type.</td>
+    </tr>
+    <tr>
+      <td><code>setIn(&#60;object&#62;,&#60;property&#62;,&#60;value&#62);</code></td>
+      <td>This function set the property value of the given object.The object parameter is mandatory and has to be an object. The property parameter is mandatory and has to be a property type. The value is mandatory and can be any type.</td>
+    </tr>
+    <tr>
+      <td><code>hasIn(&#60;object&#62;,&#60;property&#62;);</code></td>
+      <td>This function determines whether the property is in the given object, but this can be inherited property too, not only the owned. The object parameter is mandatory and has to be an object. The property parameter is mandatory and has to be a property type. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isPropertyKey(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is a valid propertx key (string or symbol). The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>toPropertyKey(&#60;value&#62;);</code></td>
+      <td>This function convert the given value to a valid property key. If the value is not symbol, then will be converted to string, else the symbol will be returned.</td>
+    </tr>
+    <tr>
+      <td><code>toObject(&#60;value&#62;);</code></td>
+      <td>If the given value is not null or undefined, then the return value is an object, which has been converted from the value, else a <code>TypeError()</code> will be throwned.</td>
+    </tr>
+    <tr>
+      <td><code>isSameValue(&#60;value1&#62;,&#60;value2&#62;);</code></td>
+      <td>
+        <p>This function uses the SameValue algorithm and determines whether the provided values are the same values and <code>-0</code> and <code>+0</code> values will be not equal. The <code>NaN</code> values will be equal. The return value is boolean.</p>
+        <p><span class="info">TIP: The <code>Object.is();</code> uses the SameValue algorithm.</span></p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>isSameValueZero(&#60;value1&#62;,&#60;value2&#62;);</code></td>
+      <td>This function uses the SameValueZero algorithm and determines whether the provided values are the same values and <code>-0</code> and <code>+0</code> values will be equal. The <code>NaN</code> values will be equal. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isSameValueNonNumber(&#60;value1&#62;,&#60;value2&#62;);</code></td>
+      <td>This function uses the SameValueNonNumber algorithm and determines whether the provided values are the same values and <code>-0</code> and <code>+0</code> values will be equal. The <code>NaN</code> values will be not equal. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>createDataProperty(&#60;object&#62;,&#60;property&#62;,&#60;value&#62;);</code></td>
+      <td>This function creates a writable, configurable and enumerable property with the given value in the object. The return value is the modified object.</td>
+    <tr>
+    <tr>
+      <td><code>createMethodProperty(&#60;object&#62;,&#60;property&#62;,&#60;value&#62;);</code></td>
+      <td>This function creates a writable, configurable and non-enumerable property with the given value in the object. The return value is the modified object.<br/><b>Example:</b><br/><pre>if (!("at" in Array.prototype)) {
+  CEL.createMethodProperty(Array.prototype, "at ", function(...){...});
+}</pre></td>
+    <tr>
+      <td><code>type(&#60;value&#62;);</code></td>
+      <td>This function returns the typeof operator result of the given value, except the null object (<code>"null"</code> instead of <code>"object"</code>).</td>
+    </tr>
+    <tr>
+      <td><code>isIndex(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is a valid arraylike index number. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>toIndex(&#60;value&#62;);</code></td>
+      <td>This function converts the provided value to a valid arraylike index number. The return value is an unsigned integer (number).</td>
+    </tr>
+    <tr>
+      <td><code>toInteger(&#60;value&#62;);</code></td>
+      <td>This function always converts the provided value to an integer. If the value cannot be converted to an integer, then the return value is 0.</td>
+    </tr>
+    <tr>
+      <td><code>toArray(&#60;value&#62;);</code></td>
+      <td>If the value is an array, then this function returns the value else converts the value to array or the return value is an empty array.</td>
+    </tr>
+  </table>
+</div>
+
+
+<h3 id="polyfills">Polyfills</h3>
+
+<div>
+  <table class="table-responsive table-striped">
+    <tr>
+      <td><code>Object.is()</code></td>
+      <td>The Object.is() method determines whether two values are the same value. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr>
+      <td style="width: auto; min-width: 33%;"><b>Name</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>Number.MIN_SAFE_INTEGER</code></td>
+      <td>he Number.MIN_SAFE_INTEGER constant represents the minimum safe integer in JavaScript (-(2^53 - 1), -9007199254740991). For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MIN_SAFE_INTEGER" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr>
+      <td><code>Number.MAX_SAFE_INTEGER</code></td>
+      <td>The Number.MAX_SAFE_INTEGER constant represents the maximum safe integer in JavaScript (2^53 - 1, 9007199254740991). For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr>
+      <td><code>crypto.randomUUID();</code></td>
+      <td>
+        The randomUUID() method of the Crypto interface is used to generate a v4 UUID using a cryptographically secure random number generator. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Crypto/randomUUID" target="_blank">MDN Article</a>!
+      </td>
+    </tr>
+    <tr>
+      <td><code>Array.prototype.group(&#60;fn&#62;[,thisArg]);</code></td>
+      <td>The group() method grouping of items in an array based on the return value (key) of the given function. The return value is a null-prototype object. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/group" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr>
+      <td><code>Array.prototype.groupToMap(&#60;fn&#62;[,thisArg]);</code></td>
+      <td>The groupToMap() method grouping of items in an array based on the return value (key) of the given function. The return value is a Map object. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/groupToMap" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr>
+      <td><code>Array.prototype.findLast();</code></td>
+      <td>
+        The findLast() method returns the value of the last element in the provided array that satisfies the provided testing function. If no values satisfy the testing function, undefined is returned. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findLast" target="_blank">MDN Article</a>!
+      </td>
+    </tr>
+    <tr>
+      <td><code>Array.prototype.findLastIndex();</code></td>
+      <td>
+        The findLastIndex() method returns the index of the last element in the array that satisfies the provided testing function. Otherwise, it returns -1, indicating that no element passed the test. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findLastIndex" target="_blank">MDN Article</a>!
+      </td>
+    </tr>
+    <tr>
+      <td><code>TypedArray.prototype.findLast();</code></td>
+      <td>
+        The findLast() method returns the value of the last element in the provided array that satisfies the provided testing function. If no values satisfy the testing function, undefined is returned. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/findLast" target="_blank">MDN Article</a>!
+      </td>
+    </tr>
+    <tr>
+      <td><code>TypedArray.prototype.findLastIndex();</code></td>
+      <td>
+        The findLastIndex() method returns the index of the last element in the array that satisfies the provided testing function. Otherwise, it returns -1, indicating that no element passed the test. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/findLastIndex" target="_blank">MDN Article</a>!
+      </td>
+    </tr>
+    <tr>
+      <td><code>Array.prototype.at();</code></td>
+      <td>
+        The at() method takes an integer value and returns the item at that index, allowing for positive and negative integers. Negative integers count back from the last item in the array.
+        For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/at" target="_blank">MDN Article</a>!
+      </td>
+    </tr>
+    <tr>
+      <td><code>TypedArray.prototype.at();</code></td>
+      <td>
+        The at() method takes an integer value and returns the item at that index, allowing for positive and negative integers. Negative integers count back from the last item in the array.
+        For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/at" target="_blank">MDN Article</a>!
+      </td>
+    </tr>
+    <tr>
+      <td><code>String.prototype.at();</code></td>
+      <td>
+        The at() method takes an integer value and returns a new String consisting of the single UTF-16 code unit located at the specified offset. This method allows for positive and negative integers. Negative integers count back from the last string character. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/at" target="_blank">MDN Article</a>!
+      </td>
+    </tr>
+    <tr>
+      <td><code>Object.hasOwn();</code></td>
+      <td>
+        The Object.hasOwn() static method returns true if the specified object has the indicated property as its own property. If the property is inherited, or does not exist, the method returns false. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwn" target="_blank">MDN Article</a>!
+      </td>
+    </tr>
+    <tr>
+      <td><code>String.prototype.trimStart();</code></td>
+      <td>The trimStart() method removes whitespace from the beginning of a string. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/trimStart" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr>
+      <td><code>String.prototype.trimLeft();</code></td>
+      <td>Alias of the <code>String.prototype.trimStart();</code> method.</td>
+    </tr>
+    <tr>
+      <td><code>String.prototype.trimEnd();</code></td>
+      <td>The trimEnd() method removes whitespace from the end of a string. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/trimEnd" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr>
+      <td><code>String.prototype.trimRight();</code></td>
+      <td>Alias of the <code>String.prototype.trimEnd();</code> method.</td>
+    </tr>
+    <tr>
+      <td><code>String.prototype.padStart();</code></td>
+      <td>The padStart() method pads the current string with another string (multiple times, if needed) until the resulting string reaches the given length. The padding is applied from the start (left) of the current string. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/padStart" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr>
+      <td><code>String.prototype.padEnd();</code></td>
+      <td>The padEnd() method pads the current string with a given string (repeated, if needed) so that the resulting string reaches a given length. The padding is applied from the end (right) of the current string. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/padEnd" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr>
+      <td><code>Object.fromEntries();</code></td>
+      <td>The Object.fromEntries() method transforms a list of key-value pairs into an object. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/fromEntries" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr>
+      <td><code>Array.prototype.flat();</code></td>
+      <td>The flat() method creates a new array with all sub-array elements concatenated into it recursively up to the specified depth. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr>
+      <td><code>Array.prototype.flatMap();</code></td>
+      <td>A new array with each element being the result of the callback function and flattened to a depth of 1. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr>
+      <td><code>globalThis;</code></td>
+      <td>The "global" property of the global object, a writable, configurable, non-enumerable alias of <code>window</code>/<code>self</code>. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/globalThis" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr>
+      <td><code>String.prototype.matchAll();</code></td>
+      <td>The matchAll() method returns an iterator of all results matching a string against a regular expression, including capturing groups. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/matchAll" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr>
+      <td><code>String.prototype.replaceAll();</code></td>
+      <td>The replaceAll() method returns a new string with all matches of a pattern replaced by a replacement. The pattern can be a string or a RegExp. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replaceAll" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr>
+      <td>REMOVED polyfills in v3.1.0</td>
+      <td><code>Array.from();</code><br/><code>Array.of();</code><br/><code>Array.prototype.fill();</code><br/><code>Array.prototype.find();</code><br/><code>Array.prototype.findIndex();</code><br/><code>Object.create();</code><br/><code>String.prototype.startsWith();</code><br/><code>String.prototype.endsWith();</code><br/><code>Array.prototype.copyWithin();</code><br/><code>String.fromCodePoint();</code><br/><code>String.prototype.codePointAt();</code>7<br/><code>Number.EPSILON;</code><br/><code>Number.isNaN();</code><br/><code>isNaN();</code><br/><code>Number.isInteger();</code><br/><code>Number.isFinite();</code><br/><code>Number.isSafeInteger();</code><br/><code>Number.parseInt();</code><br/><code>Number.parseFloat();</code><br/><code>Math.acosh();</code><br/><code>Math.asinh();</code><br/><code>Math.atanh();</code><br/><code>Math.cbrt();</code><br/><code>Math.clz32();</code><br/><code>Math.cosh();</code><br/><code>Math.expm1();</code><br/><code>Math.fround();</code><br/><code>Math.hypot();</code><br/><code>Math.imul();</code><br/><code>Math.log1p();</code><br/><code>Math.log10();</code><br/><code>Math.log2();</code><br/><code>Math.sign();</code><br/><code>Math.sinh();</code><br/><code>Math.tanh();</code><br/><code>Math.trunc();</code></td>
+    </tr>
+    <tr>
+      <td>REMOVED polyfills in v3.8.0</td>
+      <td><code>Array.prototype.values();</code><br/><code>Array.prototype.includes();</code><br/><code>String.prototype.includes();</code><br/><code>String.prototype.repeat();</code><br/><code>String.prototype[Symbol.iterator]();</code><br/><code>Object.assign();</code><br/><code>Object.entries();</code><br/><code>Object.values();</code><br/><code>Object.getOwnPropertyDescriptors();</code><br/><code>RegExp.prototype.flags;</code><br/><code>NodeList.prototype.forEach();</code><br/><code>ChildNode.after();</code><br/><code>ChildNode.before();</code><br/><code>ChildNode.remove();</code><br/><code>ChildNode.replaceWith();</code><br/><code>ParentNode.append();</code><br/><code>ParentNode.prepend();</code><br/><code>Element.prototype.matches();</code><br/><code>Element.prototype.closest();</code><br/><code>Element.prototype.toggleAttribute();</code><br/><code>Element.prototype.getAttributeNames();</code><br/><code>window.screenLeft;</code><br/><code>window.screenTop;</code></td>
+    </tr>
+  </table>
+</div>
+
+
+<h3 id="non-standard-polyfills">Non-standard polyfills</h3>
+
+<div>
+  <table class="table-responsive table-striped">
+    <tr>
+      <td style="width: auto; min-width: 33%;"><b>Name</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>BigInt.prototype.toJSON();</code></td>
+      <td>Using <code>JSON.stringify();</code> with any BigInt value will raise a TypeError as BigInt values aren't serialized in JSON by default. This added method can fix this. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr>
+      <td><code>window.GeneratorFunction();</code></td>
+      <td>The GeneratorFunction constructor creates a new generator function object. In JavaScript every generator function is actually a GeneratorFunction object. Note that GeneratorFunction is not a global object, but in the Celestra this is available in the <code>window</code> object. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr>
+      <td><code>window.AsyncFunction();</code></td>
+      <td>The AsyncFunction constructor creates a new async function object. In JavaScript, every asynchronous function is actually an AsyncFunction object. Note that AsyncFunction is not a global object, but in the Celestra this is available in the <code>window</code> object. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncFunction" target="_blank">MDN Article</a>!</td>
+    </tr>
+	</table>
+</div>
+
+
+<hr/>
+<h2 id="samples">Samples</h2>
+
+<p class="big">There are more samples in the <a href="unittest.js" target="_blank">unittest.js</a>.</p>
+
+<div>
+  <table class="table-responsive table-striped">
+    <tr>
+      <td><b>Object name: "celestra"</b></td>
+      <td><button onclick='alert( celestra.randomInt(100,200) );'>Try</button></td>
+      <td><code>alert( celestra.randomInt(100,200) );</code></td>
+    </tr>
+    <tr>
+      <td><b>Object name: "CEL"</b></td>
+      <td><button onclick='alert( CEL.randomInt(100,200) );'>Try</button></td>
+      <td><code>alert( CEL.randomInt(100,200) );</code></td>
+    </tr>
+    <tr>
+      <td><b>VERSION</b></td>
+      <td><button onclick='alert( CEL.VERSION );'>Try</button></td>
+      <td><code>alert( CEL.VERSION );</code></td>
+    </tr>
+    <tr>
+      <td><b>Create an alias without celestra.noConflict();</b></td>
+      <script> var _cel = celestra; </script>
+      <td><button onclick='_cel = celestra; alert( _cel.VERSION ); alert( _cel.randomInt(40,70) ); alert( CEL.VERSION );'>Try</button></td>
+      <td><pre>var _cel = celestra;
+alert( _cel.VERSION );
+alert( _cel.randomInt(40,70) );
+alert( CEL.VERSION );</pre></td>
+    </tr>
+    <tr>
+      <td><b>celestra.noConflict();</b></td>
+      <script> var _C = {}; </script>
+      <td><button onclick='_C = celestra.noConflict(); alert( _C.VERSION ); alert( _C.classof( document.querySelectorAll("div")) ); alert( CEL.VERSION );'>Try</button></td>
+      <td><pre>// in the HTML head before the loading of Celestra:
+var CEL = {};
+CEL.VERSION = "This is another sample library.";
+
+// in the body:
+var _C = {};
+_C = celestra.noConflict();
+alert( _C.VERSION );
+alert( _C.classof( document.querySelectorAll("div")) );
+alert( CEL.VERSION );</pre></td>
+    </tr>
+  </table>
+</div>
+
+<h3>domReady(fn) sample</h3>
+
+<pre>CEL.domReady(function(){
+  CEL.qsa("p",CEL.qs("#div1")).forEach(function fn(el,i) {
+    el.style.color="red";
+  });
+});</pre>
+
+<h3>Testarea</h3>
+
+<p id="p1">p1</p>
+<p id="p2">p2</p>
+
+<div id="div1">
+  <p id="div3">div1 p3</p>
+  <div>div1 divs1</div>
+  <div>div1 divs2</div>
+</div>
+
+<div id="div2">
+  <p id="div2p">div2</p>
+</div>
+
+<h3>Samples</h3>
+
+<div>
+  <table class="table-responsive table-striped">
+    <tr>
+      <td style="min-width: 25%;"><b>domToElement(&#60;htmlString&#62;);</b></td>
+      <td colspan="2">
+        <p><button onclick='CEL.qs("#div2").append( CEL.domToElement("<div>Hello world!</div>") );'>Try</button></p>
+        <p><code>CEL.qs("#div2").append( CEL.domToElement("&#60;div&#62;Hello world!&#60;/div&#62;") );</code></p>
+        <p><button onclick='CEL.qs("#div2").append( CEL.domToElement("<p><span style=\"background-color: yellow; color: blue;\">Hello</span> <span style=\"background-color: blue; color: yellow;\">world</span>!</p>") );'>Try</button></p>
+        <p><code>CEL.qs("#div2").append( CEL.domToElement("&#60;p&#62;&#60;span style=\"background-color: yellow; color: blue;\"&#62;Hello&#60;/span&#62; &#60;span style=\"background-color: blue; color: yellow;\"&#62;world&#60;/span&#62;!&#60;/p&#62;") );</code></p>
+      </td>
+    </tr>
+    <tr>
+      <td><b>domCreate(type,properties,innerHTML); with style object</b></td>
+      <td><button onclick='var el1 = CEL.domCreate("h3", {style: {"background-color": "lightblue", "font-weight": "bold"}}, "H3 Lorem ipsum with style object");  var el2 = CEL.domCreate("p", {}, "Sample created paragraph"); var el3 = CEL.domCreate("br");  var el4 = CEL.domCreate("a", {href: "https://developer.mozilla.org/en-US/", target: "_blank", style: { "background-color": "red", "color": "white"}}, "MDN Sample url"); CEL.qs("#div2").append(el1); el2.append(el3); el2.append(el4); CEL.qs("#div2").append(el2);'>Try</button></td>
+      <td><pre>var el1 = CEL.domCreate("h3", {style: {"background-color": "lightblue", "font-weight": "bold"}}, "H3 Lorem ipsum with style object");
+var el2 = CEL.domCreate("p", {}, "Sample created paragraph");
+var el3 = CEL.domCreate("br");
+var el4 = CEL.domCreate("a", {href: "https://developer.mozilla.org/en-US/", target: "_blank", style: { "background-color": "red", "color": "white"}}, "MDN Sample url");
+CEL.qs("#div2").append(el1);
+el2.append(el3);
+el2.append(el4);
+CEL.qs("#div2").append(el2);</pre></td>
+    </tr>
+    <tr>
+      <td><b>domCreate(type,properties,innerHTML); with style string</b></td>
+      <td><button onclick='var el1 = CEL.domCreate("h3", {style: {"background-color": "lightblue", "font-weight": "bold"}}, "H3 Lorem ipsum with style string");  var el2 = CEL.domCreate("p", {}, "Sample created paragraph"); var el3 = CEL.domCreate("br");  var el4 = CEL.domCreate("a", {href: "https://developer.mozilla.org/en-US/", target: "_blank", style: "background-color: red; color: white;"}, "MDN Sample url"); CEL.qs("#div2").append(el1); el2.append(el3); el2.append(el4); CEL.qs("#div2").append(el2);'>Try</button></td>
+      <td><pre>var el1 = CEL.domCreate("h3", {style: {"background-color": "lightblue", "font-weight": "bold"}}, "H3 Lorem ipsum with style string");
+var el2 = CEL.domCreate("p", {}, "Sample created paragraph");
+var el3 = CEL.domCreate("br");
+var el4 = CEL.domCreate("a", {href: "https://developer.mozilla.org/en-US/", target: "_blank", style: "background-color: red; color: white;"}, "MDN Sample url");
+CEL.qs("#div2").append(el1);
+el2.append(el3);
+el2.append(el4);
+CEL.qs("#div2").append(el2);</pre></td>
+    </tr>
+    <tr>
+      <td><b>domCreate(object); with style object</b></td>
+      <td><button onclick='var el1 = CEL.domCreate({elementType: "h3", style: {"background-color": "lightblue", "font-weight": "bold"}, innerHTML: "H3 Lorem ipsum from object with style object"}); var el2 = CEL.domCreate({elementType: "p", innerHTML: "Sample created paragraph"}); var el3 = CEL.domCreate("br"); var el4 = CEL.domCreate({elementType: "a", href: "https://developer.mozilla.org/en-US/", target: "_blank", style: {"background-color": "red", "color": "white"}, innerHTML: "MDN Sample url"}); CEL.qs("#div2").append(el1); el2.append(el3); el2.append(el4); CEL.qs("#div2").append(el2);'>Try</button></td>
+      <td><pre>var el1 = CEL.domCreate({elementType: "h3", style: {"background-color": "lightblue", "font-weight": "bold"}, innerHTML: "H3 Lorem ipsum from object with style object"});
+var el2 = CEL.domCreate({elementType: "p", innerHTML: "Sample created paragraph"});
+var el3 = CEL.domCreate("br");
+var el4 = CEL.domCreate({elementType: "a", href: "https://developer.mozilla.org/en-US/", target: "_blank", style: {"background-color": "red", "color": "white"}, innerHTML: "MDN Sample url"});
+CEL.qs("#div2").append(el1);
+el2.append(el3);
+el2.append(el4);
+CEL.qs("#div2").append(el2);</pre></td>
+    </tr>
+    <tr>
+      <td><b>domCreate(object); with styles string</b></td>
+      <td><button onclick='var el1 = CEL.domCreate({elementType: "h3", style: {"background-color": "lightblue", "font-weight": "bold"}, innerHTML: "H3 Lorem ipsum from object with style string"}); var el2 = CEL.domCreate({elementType: "p", innerHTML: "Sample created paragraph"}); var el3 = CEL.domCreate("br"); var el4 = CEL.domCreate({elementType: "a", href: "https://developer.mozilla.org/en-US/", target: "_blank", style: "background-color: red; color: white;", innerHTML: "MDN Sample url"}); CEL.qs("#div2").append(el1); el2.append(el3); el2.append(el4); CEL.qs("#div2").append(el2);'>Try</button></td>
+      <td><pre>var el1 = CEL.domCreate({elementType: "h3", style: {"background-color": "lightblue", "font-weight": "bold"}, innerHTML: "H3 Lorem ipsum from object with style string"});
+var el2 = CEL.domCreate({elementType: "p", innerHTML: "Sample created paragraph"});
+var el3 = CEL.domCreate("br");
+var el4 = CEL.domCreate({elementType: "a", href: "https://developer.mozilla.org/en-US/", target: "_blank", style: "background-color: red; color: white;", innerHTML: "MDN Sample url"});
+CEL.qs("#div2").append(el1);
+el2.append(el3);
+el2.append(el4);
+CEL.qs("#div2").append(el2);</pre></td>
+    </tr>
+    <tr>
+      <td><b></b></td>
+      <td></td>
+      <td>
+        <p><a href="?foo=fooValue%20Lorem%20Ipsum%202017%20%C3%A9%C3%A1%C5%B1%C5%91%C3%BA%C3%B6%C3%BC%C3%B3%C3%AD%20%C3%89%C3%81%C5%B0%C5%90%C3%9A%C3%96%C3%9C%C3%93%C3%8D&bar=barValue#url">Test page</a></p>
+      </td>
+    </tr>
+    <tr>
+      <td><b>getUrlVars()</b></td>
+      <td><button onclick='var params = CEL.getUrlVars(); for ( var name in params ) { alert(name+" = "+params[name]); }'>Try</button></td>
+      <td><code>var params = CEL.getUrlVars();<br/>for ( var name in params ) { alert(name+" = "+params[name]); }</code></td>
+    </tr>
+    <tr>
+      <td><b>getUrlVars() found</b></td>
+      <td><button onclick='alert( CEL.getUrlVars()["foo"] );'>Try</button></td>
+      <td><code>alert( CEL.getUrlVars()["foo"] );</code></td>
+    </tr>
+    <tr>
+      <td><b>getUrlVars() not found</b></td>
+      <td><button onclick='alert( CEL.getUrlVars()["foobarbaznotfound"] );'>Try</button></td>
+      <td><code>alert( CEL.getUrlVars()["foobarbaznotfound"] );</code></td>
+    </tr>
+    <tr>
+      <td><b>getUrlVars() with "?showall=true&amp;order_by=updated&amp;o=asc"</b></td>
+      <td><button onclick='var params = CEL.getUrlVars("?showall=true&order_by=updated&o=asc"); for ( var name in params ) { alert(name+" = "+params[name]); }'>Try</button></td>
+      <td><code>var params = CEL.getUrlVars();<br/>for ( var name in params ) { alert(name+" = "+params[name]); }</code></td>
+    </tr>
+    <tr>
+      <td><b>getUrlVars() found with "?testa=a1&amp;testb=b2"</b></td>
+      <td><button onclick='alert( CEL.getUrlVars("?showall=true&order_by=updated&o=asc")["order_by"] );'>Try</button></td>
+      <td><code>alert( CEL.getUrlVars("?showall=true&amp;order_by=updated&amp;o=asc")["order_by"] );</code></td>
+    </tr>
+    <tr>
+      <td><b>getUrlVars() not found with "?testa=a1&amp;testb=b2"</b></td>
+      <td><button onclick='alert( CEL.getUrlVars("?showall=true&order_by=updated&o=asc")["notfound"] );'>Try</button></td>
+      <td><code>alert( CEL.getUrlVars("?showall=true&amp;order_by=updated&amp;o=asc")["notfound"] );</code></td>
+    </tr>
+    <tr>
+      <td><b>getDoNotTrack()</b></td>
+      <td><button onclick='alert( CEL.getDoNotTrack() );'>Try</button></td>
+      <td><code>alert( CEL.getDoNotTrack() );</code></td>
+    </tr>
+<script>
+var txt = "✓ à \r\n\t árvíztűrő tükörfúrógép ÁRVÍZTŰRŐ TÜKÖRFÚRÓGÉP ,?;.:-_* ¤÷×¨¸´˙`˛°˘^ˇ~'+!%/=()|\\<>\"\'\/#&@{}[]€ÍÄíŁß 0123456789 asdfghjklqwertzuiopyxcvbnm ASDFGHJKLQWERTZUIOPYXCVBNM"
+</script>
+    <tr>
+      <td><b>createFile(filename,content,dataType);</b></td>
+      <td colspan="2">
+        <p>Please check the downloaded files in your download folder!</p>
+        <p><code>var txt = "✓ à \r\n\t árvíztűrő tükörfúrógép ÁRVÍZTŰRŐ TÜKÖRFÚRÓGÉP ,?;.:-_* ¤÷×¨¸´˙`˛°˘^ˇ~'+!%/=()|\\&#60;&#62;\"\'\/#&@{}[]€ÍÄíŁß 0123456789 asdfghjklqwertzuiopyxcvbnm ASDFGHJKLQWERTZUIOPYXCVBNM";</code></p>
+        <p>
+          <button onclick='CEL.createFile();'>no parameter</button>
+          <br/><code>CEL.createFile();</code>
+        </p>
+        <p>
+          <button onclick='CEL.createFile("test-createFile-error.txt");'>only filename</button>
+          <br/><code>CEL.createFile("test-createFile-error.txt");</code>
+        </p>
+        <p>
+          <button onclick='CEL.createFile("test-createFile.txt", txt);'>default type</button>
+          <br/><code>CEL.createFile("test-createFile.txt", txt);</code>
+        </p>
+        <p>
+          <button onclick='CEL.createFile("test-createFile.html", txt, "text/html");'>"text/html" type</button>
+          <br/><code>CEL.createFile("test-createFile.html", txt, "text/html");</code>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td><b>getLocation()</b></td>
+      <td colspan="2">
+        <p><button onclick='CEL.getLocation(function (loc){
+          CEL.qs("#location").innerHTML = "latitude: "+loc.coords.latitude+"<br/>longitude: "+loc.coords.longitude+"<br/>"+"<img src=\"https://maps.googleapis.com/maps/api/staticmap?center="+loc.coords.latitude + "," + loc.coords.longitude+"&zoom=14&size="+"400"+"x"+"400"+"&sensor=false\" alt=\"map\">";},function (errorMessage) { CEL.qs("#location").innerHTML = errorMessage; });'>Try</button></p>
+        <p><code>CEL.getLocation(<br/>function (loc){<br/>CEL.qs("#location").innerHTML = "latitude: "+loc.coords.latitude<br/>+"&#60;br/&#62;longitude: "+loc.coords.longitude<br/>+"&#60;br/&#62;"+"&#60;img src=\"https://maps.googleapis.com/maps/api/staticmap?center="<br/>+loc.coords.latitude + "," + loc.coords.longitude<br/>+"&#38;zoom=14&#38;size="+"400"+"x"+"400"+"&#38;sensor=false\" alt=\"map\"&#62;";},<br/>function (errorMessage) { CEL.qs("#location").innerHTML = errorMessage; }<br/>);</code></p>
+        <p id="location"></p>
+      </td>
+    </tr>
+    <tr>
+      <td><b>Fullscreen functions</b></td>
+      <td colspan="2">
+        <div id="fsdiv">
+          <p>
+            <button onclick='alert( CEL.getFullscreen() );'>getFullscreen</button>
+            <br/><code>alert( CEL.getFullscreen() );</code>
+          </p>
+          <p>
+            <button onclick='CEL.setFullscreenOn("#fsdiv");'>setFullscreen fsdiv string</button>
+            <br/><code>CEL.setFullscreenOn("#fsdiv");</code>
+          </p>
+          <p>
+            <button onclick='CEL.setFullscreenOn( CEL.qs("#fsdiv") );'>setFullscreen fsdiv element</button>
+            <br/><code>CEL.setFullscreenOn( CEL.qs("#fsdiv") );</code>
+          </p>
+          <p>
+            <button onclick='CEL.setFullscreenOn(document.documentElement);'>setFullscreen document.documentElement</button>
+            <br/><code>CEL.setFullscreenOn(document.documentElement);</code>
+          </p>
+          <p>
+            <button onclick='CEL.setFullscreenOff();'>setFullscreenOff</button>
+            <br/><code>CEL.setFullscreenOff();</code>
+          </p>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td><b>domFade functions</b></td>
+      <td colspan="2">
+        <div>
+          <div id="domFadetest"><i>This is the fade test area.</i></div><span class="flex-f-1">This is a span.</span>
+          <hr/>
+          <p>
+            <button onclick='CEL.domFadeIn( CEL.qs("#domFadetest") );'>domFadeIn</button>
+            <code>CEL.domFadeIn( CEL.qs("#domFadetest") );</code>
+          </p>
+          <p>
+            <button onclick='CEL.domFadeIn( CEL.qs("#domFadetest"), 2000 );'>domFadeIn duration</button>
+            <code>CEL.domFadeIn( CEL.qs("#domFadetest"), 2000 );</code>
+          </p>
+          <p>
+            <button onclick='CEL.domFadeIn( CEL.qs("#domFadetest"), 2000, "inline-block" );'>domFadeIn duration display</button>
+            <code>CEL.domFadeIn( CEL.qs("#domFadetest"), 2000, "inline-block" );</code>
+          </p>
+          <p>
+            <button onclick='CEL.domFadeOut( CEL.qs("#domFadetest") );'>domFadeOut</button>
+            <code>CEL.domFadeOut( CEL.qs("#domFadetest") );</code>
+          </p>
+          <p>
+            <button onclick='CEL.domFadeOut( CEL.qs("#domFadetest"), 2000 );'>domFadeOut duration</button>
+            <code>CEL.domFadeOut( CEL.qs("#domFadetest"), 2000 );</code>
+          </p>
+          <p>
+            <button onclick='CEL.domFadeToggle( CEL.qs("#domFadetest") );'>domFadeToggle</button>
+            <code>CEL.domFadeToggle( CEL.qs("#domFadetest") );</code>
+          </p>
+          <p>
+            <button onclick='CEL.domFadeToggle( CEL.qs("#domFadetest"), 2000 );'>domFadeToggle duration</button>
+            <code>CEL.domFadeToggle( CEL.qs("#domFadetest"), 2000 );</code>
+          </p>
+          <p>
+            <button onclick='CEL.domFadeToggle( CEL.qs("#domFadetest"), 2000, "inline-block" );'>domFadeToggle duration display</button>
+            <code>CEL.domFadeToggle( CEL.qs("#domFadetest"), 2000, "inline-block" );</code>
+          </p>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td><b>domHide/Show/Toggle functions</b></td>
+      <td colspan="2">
+        <div id="domhidetest"><i>This is the hide/show/toggle test area.</i></div><span class="flex-f-1">This is a span.</span>
+        <hr/>
+        <p>
+          <button onclick='CEL.domShow( CEL.qs("#domhidetest") );'>domShow</button>
+          <code>CEL.domShow( CEL.qs("#domhidetest") );</code>
+        </p>
+        <p>
+          <button onclick='CEL.domShow( CEL.qs("#domhidetest"), "inline-block" );'>domShow display</button>
+          <code>CEL.domShow( CEL.qs("#domhidetest"), "inline-block" );</code>
+        </p>
+        <p>
+          <button onclick='CEL.domHide( CEL.qs("#domhidetest") );'>domHide</button>
+          <code>CEL.domHide( CEL.qs("#domhidetest") );</code>
+        </p>
+        <p>
+          <button onclick='CEL.domToggle( CEL.qs("#domhidetest") );'>domToggle</button>
+          <code>CEL.domToggle( CEL.qs("#domhidetest") );</code>
+        </p>
+        <p>
+          <button onclick='CEL.domToggle( CEL.qs("#domhidetest"), "inline-block" );'>domToggle display</button>
+          <code>CEL.domToggle( CEL.qs("#domhidetest"), "inline-block" );</code>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td><b>domGetCSS and domSetCSS</b></td>
+      <td colspan="2">
+        <div>
+          <p id="csstest1" style="color: red; border: 1px solid red;">Testarea</p>
+          <p>
+            <button onclick='alert( CEL.domGetCSS( CEL.qs("#csstest1"), "width" ) );'>domGetCSS</button>
+            <br/><code>alert( CEL.domGetCSS( CEL.qs("#csstest1"), "width" ) );</code>
+          </p>
+          <p>
+            <button onclick='CEL.domSetCSS( CEL.qs("#csstest1"), "width", "100px" );'>domSetCSS</button>
+            <br/><code>CEL.domSetCSS( CEL.qs("#csstest1"), "width", "100px" );</code>
+          </p>
+          <p>
+            <button onclick='CEL.domSetCSS( CEL.qs("#csstest1"), { color: "green", fontWeight: "bold" } );'>domSetCSS with object</button>
+            <br/><code>CEL.domSetCSS(<br/> CEL.qs("#csstest1"),<br/> { color: "green", fontWeight: "bold" }<br/>);</code>
+          </p>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td><b>importStyle</b></td>
+      <td colspan="2">
+        <div>
+          <p id="csstest2" style="color: braun; border: 1px solid braun;">Testarea</p>
+          <p>
+            <button onclick='CEL.importStyle("testmodule1.css");'>importStyle 1</button>
+            <br/><code>CEL.importStyle("testmodule1.css");</code>
+          </p>
+          <p>
+            <button onclick='CEL.importStyle("testmodule2.css");'>importStyle 2</button>
+            <br/><code>CEL.importStyle("testmodule2.css");</code>
+          </p>
+          <p>
+            <button onclick='CEL.importStyle("testmodule1.css", "testmodule2.css");'>importStyle 3</button>
+            <br/><code>CEL.importStyle("testmodule1.css, "testmodule2.css"");</code>
+          </p>
+          <p>
+            <button onclick='CEL.importStyle("testmodule-notExist.css");'>importStyle 4 error</button>
+            <br/><code>CEL.importStyle("testmodule-notExist.css");</code>
+          </p>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td><b>AJAX and CORS - getJson</b></td>
+      <td><button onclick='CEL.getJson("testdata.json",function(r) { alert("ajax json test (has value):\n"+r[0].image); } );'>Try</button></td>
+      <td><code>CEL.getJson("testdata.json",<br/>function(r) { alert("ajax json test (has value):\n"+r[0].image); } <br/>);</code></td>
+    </tr>
+    <tr>
+      <td><b>AJAX and CORS - getText</b></td>
+      <td><button onclick='CEL.getText("testdata.txt",function(r) {alert("ajax text test:\n"+r); },function(e){ alert(e); } );'>Try</button></td>
+      <td><code>CEL.getText("testdata.txt",<br/>function(r) {alert("ajax text test:\n"+r); },<br/>function(e){ alert(e); } <br/>);</code></td>
+    </tr>
+    <tr>
+      <td><b>Cookie</b></td>
+      <td colspan="2">
+        <p>
+          setCookie();
+          <button onclick='CEL.setCookie("ctest3",cookieTestStr);'>try</button>
+          <code>CEL.setCookie("ctest3",cookieTestStr);</code>
+        </p>
+        <p>
+          hasCookie();
+          <button onclick='alert( CEL.hasCookie("ctest3") );'>try</button>
+          <code>alert( CEL.hasCookie("ctest3") );</code>
+        </p>
+        <p>
+          getCookie(&#60;name&#62;);
+          <button onclick='alert( CEL.getCookie("ctest3") );'>try</button>
+          <code>alert( CEL.getCookie("ctest3") );</code>
+        </p>
+        <p>
+          getCookie();
+          <button onclick='alert( JSON.stringify(CEL.getCookie()) );'>try</button>
+          <code>alert( JSON.stringify(CEL.getCookie()) );</code>
+        </p>
+        <p>
+          removeCookie();
+          <button onclick='alert( CEL.removeCookie("ctest3") );'>try</button>
+          <code>alert( CEL.removeCookie("ctest3") );</code>
+        </p>
+        <p>Test Code:</p>
+        <pre>var cookieTestStr = "✓ à \r\n\t árvíztűrő tükörfúrógép ÁRVÍZTŰRŐ TÜKÖRFÚRÓGÉP ,?;.:-_* ¤÷×¨¸´˙`˛°˘^ˇ~'+!%/=()|\\&#60;&#62; \" \/ # & @{}[]€ ÍÄíŁß 0123456789 asdhjklqweuioyxcbnm ASDHJKLQWEUIOYXCBNM \u00E0\u00E8\u00EC\u00F2\u00F9";
+var cookiestr = "";
+
+cookiestr += "\ndocument.cookie: \""+document.cookie+"\"";
+CEL.setCookie("ctest1",cookieTestStr);
+CEL.setCookie("ctest2",cookieTestStr);
+cookiestr += "document.cookie: \""+document.cookie+"\"";
+cookiestr += "\n"+(CEL.getCookie("ctest1"))+" - (cookie value)"; // cookie value
+cookiestr += "\n"+(CEL.getCookie("ctest2"))+" - (cookie value)"; // cookie value
+cookiestr += "\n"+(CEL.getCookie())+" - (object)"; // object
+cookiestr += "\n"+(CEL.getCookie()["ctest1"])+" - (object value ctest1)"; // object value ctest1
+cookiestr += "\n"+(CEL.getCookie()["ctest2"])+" - (object value ctest2)"; // object value ctest2
+cookiestr += "\n"+(CEL.hasCookie("ctest1"))+" - (true)"; // true
+cookiestr += "\n"+(CEL.hasCookie("ctest2"))+" - (true)"; // true
+cookiestr += "\n"+(CEL.removeCookie("ctest1"))+" - (true)"; // true
+cookiestr += "\n"+(CEL.hasCookie("ctest1"))+" - (false)"; // false
+cookiestr += "\n"+(CEL.hasCookie("ctest2"))+" - (true)"; // true
+cookiestr += "\ndocument.cookie: \""+document.cookie+"\"";
+cookiestr += "\n"+(CEL.removeCookie("ctest1"))+" - (false)"; // false
+cookiestr += "\n"+(CEL.removeCookie("ctest2"))+" - (true)"; // true
+cookiestr += "\n"+(CEL.hasCookie("ctest1"))+" - (false)"; // false
+cookiestr += "\n"+(CEL.hasCookie("ctest2"))+" - (false)"; // false
+cookiestr += "\ndocument.cookie: \""+document.cookie+"\"";
+cookiestr += "\n"+(CEL.removeCookie("ctest1"))+" - (false)"; // false
+cookiestr += "\n"+(CEL.removeCookie("ctest2"))+" - (false)"; // false
+cookiestr += "\n"+(CEL.hasCookie("ctest1"))+" - (false)"; // false
+cookiestr += "\n"+(CEL.hasCookie("ctest2"))+" - (false)"; // false
+
+CEL.qs("#cookieresults").innerHTML = cookiestr;</pre>
+      <p>Test results:</p>
+      <pre id="cookieresults">cookieresults</pre>
+<script>
+var cookieTestStr = "✓ à \r\n\t árvíztűrő tükörfúrógép ÁRVÍZTŰRŐ TÜKÖRFÚRÓGÉP ,?;.:-_* ¤÷×¨¸´˙`˛°˘^ˇ~'+!%/=()|\\&#60;&#62; \" \/ # & @{}[]€ ÍÄíŁß 0123456789 asdhjklqweuioyxcbnm ASDHJKLQWEUIOYXCBNM \u00E0\u00E8\u00EC\u00F2\u00F9";
+var cookiestr = "";
+
+cookiestr += "\ndocument.cookie: \""+document.cookie+"\"";
+CEL.setCookie("ctest1",cookieTestStr);
+CEL.setCookie("ctest2",cookieTestStr);
+cookiestr += "document.cookie: \""+document.cookie+"\"";
+cookiestr += "\n"+(CEL.getCookie("ctest1"))+" - (cookie value)"; // cookie value
+cookiestr += "\n"+(CEL.getCookie("ctest2"))+" - (cookie value)"; // cookie value
+cookiestr += "\n"+(CEL.getCookie())+" - (object)"; // object
+cookiestr += "\n"+(CEL.getCookie()["ctest1"])+" - (object value ctest1)"; // object value ctest1
+cookiestr += "\n"+(CEL.getCookie()["ctest2"])+" - (object value ctest2)"; // object value ctest2
+cookiestr += "\n"+(CEL.hasCookie("ctest1"))+" - (true)"; // true
+cookiestr += "\n"+(CEL.hasCookie("ctest2"))+" - (true)"; // true
+cookiestr += "\n"+(CEL.removeCookie("ctest1"))+" - (true)"; // true
+cookiestr += "\n"+(CEL.hasCookie("ctest1"))+" - (false)"; // false
+cookiestr += "\n"+(CEL.hasCookie("ctest2"))+" - (true)"; // true
+cookiestr += "\ndocument.cookie: \""+document.cookie+"\"";
+cookiestr += "\n"+(CEL.removeCookie("ctest1"))+" - (false)"; // false
+cookiestr += "\n"+(CEL.removeCookie("ctest2"))+" - (true)"; // true
+cookiestr += "\n"+(CEL.hasCookie("ctest1"))+" - (false)"; // false
+cookiestr += "\n"+(CEL.hasCookie("ctest2"))+" - (false)"; // false
+cookiestr += "\ndocument.cookie: \""+document.cookie+"\"";
+cookiestr += "\n"+(CEL.removeCookie("ctest1"))+" - (false)"; // false
+cookiestr += "\n"+(CEL.removeCookie("ctest2"))+" - (false)"; // false
+cookiestr += "\n"+(CEL.hasCookie("ctest1"))+" - (false)"; // false
+cookiestr += "\n"+(CEL.hasCookie("ctest2"))+" - (false)"; // false
+
+CEL.qs("#cookieresults").innerHTML = cookiestr;
+</script>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<script>
+var str = "✓ à \r\n\t árvíztűrő tükörfúrógép ÁRVÍZTŰRŐ TÜKÖRFÚRÓGÉP ,?;.:-_* ¤÷×¨¸´˙`˛°˘^ˇ~'+!%/=()|\\<> \" \/ #&@{}[]€ ÍÄíŁß 0123456789 asdfghjklqwertzuiopyxcvbnm ASDFGHJKLQWERTZUIOPYXCVBNM";
+</script>
+
+
+<hr/>
+<h2 id="license">License</h2>
+
+<div>
+  <p><a href="https://opensource.org/licenses/MIT" target="_blank">https://opensource.org/licenses/MIT</a></p>
+  <h3>MIT License</h3>
+  <p><b>SPDX short identifier: MIT</b></p>
+  <p>Copyright (c) 2017 Ferenc Czigler</p>
+  <p>Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:</p>
+  <p>The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.</p>
+  <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.</p>
+</div>
+
+<div class="margin center">
+  <a title="Fast For Good" rel="nofollow" target="_blank" href="https://www.mozilla.org/firefox/this-browser-comes-highly-recommended/?utm_source=devs-for.firefox.com&utm_medium=referral&utm_campaign=devs-for-firefox&utm_content=Fast-For-Good">
+    <img style="border:0 none;" alt="Fast For Good" srcset="https://code.cdn.mozilla.net/for-firefox/badges/assets/Fast-For-Good.png, https://code.cdn.mozilla.net/for-firefox/badges/assets/Fast-For-Good-2x.png 2x" src="https://code.cdn.mozilla.net/for-firefox/badges/assets/Fast-For-Good.png"/>
+  </a>
+</div>
+
+</main>
+
+<footer id="footer" class="container-fluid bg-black">
+  <div class="container">
+    <div class="flex nogap">
+      <div class="flex-w-33">
+        <p><a href="#download">Download</a></p>
+        <p><a href="#functions">Functions</a></p>
+        <p><a href="#samples">Samples</a></p>
+        <p><a href="#license">License</a></p>
+        <p><a href="http://github.com/Serrin" target="_blank">Contact</a></p>
+      </div>
+      <div class="flex-w-33">
+        <p><b>Celestra Unit Tester</b></p>
+        <p><a href="unittest.html" target="_blank">CUT</a></p>
+      </div>
+      <div class="flex-w-33">
+        <p><b>Themes</b></p>
+        <p><a href="#" onclick=" CEL.importStyle('u87-dark.css'); "><i>Dark</i></a></p>
+        <p><a href="#" onclick=" CEL.importStyle('u87-blue.css'); "><i>Blue</i></a></p>
+        <p><a href="#" onclick=" CEL.importStyle('u87-light.css'); "><i>Light</i></a></p>
+      </div>
+      <div class="flex-w-100">
+        <hr class="hide-on-mobile" />
+        <p>&copy; Copyright 2017 Ferenc Czigler</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

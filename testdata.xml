@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gallery>
+	<picture>
+		<filename>ad2_vapelyfe.jpg</filename>
+		<thumbnail>ad2_vapelyfe.jpg</thumbnail>
+		<alt>ad2_vapelyfe.jpg</alt>
+		<title>Vapelyfe</title>
+		<description>Two of our famous Belgian Waffles</description>
+		<price>$5.95</price>
+		<outerlink>http://google.com</outerlink>
+		<outerlinkname>Google page</outerlinkname>
+	</picture>
+	<picture>
+		<filename>ad2_vapelyfe.jpg</filename>
+		<thumbnail>ad2_vapelyfe.jpg</thumbnail>
+		<alt>ad2_vapelyfe.jpg</alt>
+		<title>Vapelyfe</title>
+		<description>Two of our famous Belgian Waffles</description>
+		<price>$5.95</price>
+		<outerlink>http://google.com</outerlink>
+		<outerlinkname>Google page</outerlinkname>
+	</picture>
+</gallery>

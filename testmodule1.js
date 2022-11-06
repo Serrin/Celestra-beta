@@ -1,0 +1,1 @@
+alert("Module 1 is loaded.");

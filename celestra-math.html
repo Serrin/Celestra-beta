@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Celestra Math plugin</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+<meta name="Author" content="Czigler Ferenc"/>
+<meta name="Copyright" content="(C) Copyright Czigler Ferenc"/>
+<link rel="stylesheet" href="u87.css" type="text/css"/>
+<script src="celestra.min.js"></script>
+<!--<script src="celestra-math.min.js"></script>-->
+<style>
+@media (max-width: 575px) { td { display: block; width: 100% !important; } }
+</style>
+
+</head>
+<body class="container">
+
+<header class="center">
+  <h1>Celestra Math plugin</h1>
+  <nav><b>
+    <a href="#license">License</a>
+    &nbsp;//&nbsp;
+    <a href="#footer">Contact</a>
+  </b></nav>
+</header>
+
+
+<h2>Download and informations</h2>
+
+<p>This is a Celestra Math plugin.</p>
+
+<p>Tested on desktop browsers (latest Chrome, latest Firefox, latest Edge) and mobile devices (iOS Safari, Chrome, Firefox and Android Chrome, Samsung Internet, Firefox, Edge).</p>
+
+<p>Latest version: 5.5.0</p>
+
+<p>Developer edition: <a href="celestra-math.dev.js" target="_blank">celestra-math.dev.js</a></p>
+<p>Minified edition: <a href="celestra-math.min.js" target="_blank">celestra-math.min.js</a></p>
+<p>Cheatsheet: <a href="celestra-cheatsheet.pdf" target="_blank">celestra-cheatsheet.pdf</a></p>
+
+
+<h2>Autotests</h2>
+
+<p><button onclick="CEL.importScript('celestra-math.dev.js');">load celestra-math.dev.js</button></p>
+<p><button onclick="CEL.importScript('celestra-math.min.js');">load celestra-math.min.js</button></p>
+<p><button onclick="mathAutotest();">run autotests</button></p>
+<p><button onclick="window.location.reload(true);">reset page</button></p>
+
+
+<h2>Functions</h2>
+
+<div>
+  <table>
+    <tr>
+      <td><b>Name</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>sum(&#60;value1&#62;[,valueN]);</code></td>
+      <td>This function returns the sum value from the parameter values.</td>
+    </tr>
+    <tr>
+      <td><code>avg(&#60;value1&#62;[,valueN]);</code></td>
+      <td>This function returns the average value from the parameter values.</td>
+    </tr>
+    <tr>
+      <td><code>product(&#60;value1&#62;[,valueN]);</code></td>
+      <td>This function returns the product value from the parameter values.</td>
+    </tr>
+    <tr>
+      <td><code>clamp(&#60;value&#62;,&#60;min&#62;,&#60;max&#62;);</code></td>
+      <td>If the given value is between the min and max values, then this function returns the value. If smaller then the min value, then the return value is the min. If greater then the max value, then the return value is the max.</td>
+    </tr>
+    <tr>
+      <td><code>isEven(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is an even number. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isOdd(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is an odd number. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>toInt8(&#60;value&#62;);</code></td>
+      <td>This function clamps ("minmax") the given value to integer 8 value (-127 to 128).</td>
+    </tr>
+    <tr>
+      <td><code>toUInt8(&#60;value&#62;);</code></td>
+      <td>This function clamps ("minmax") the given value to unsigned integer 8 value (0 to 255).</td>
+    </tr>
+    <tr>
+      <td><code>toInt16(&#60;value&#62;);</code></td>
+      <td>This function clamps ("minmax") the given value to integer 16 value (-32768 to 32767).</td>
+    </tr>
+    <tr>
+      <td><code>toUInt16(&#60;value&#62;);</code></td>
+      <td>This function clamps ("minmax") the given value to unsigned integer 16 value (0 to 65535).</td>
+    </tr>
+    <tr>
+      <td><code>toInt32(&#60;value&#62;);</code></td>
+      <td>This function clamps ("minmax") the given value to integer 32 value (-2147483648 to 2147483647).</td>
+    </tr>
+    <tr>
+      <td><code>toUInt32(&#60;value&#62;);</code></td>
+      <td>This function clamps ("minmax") the given value to unsigned integer 32 value (0 to 4294967295).</td>
+    </tr>
+    <tr>
+      <td><code>toBigInt64(&#60;value&#62;);</code></td>
+      <td>This function clamps ("minmax") the given value to BigInt (Int64) value (-2^63 to 2^63 - 1).</td>
+    </tr>
+    <tr>
+      <td><code>toBigUInt64(&#60;value&#62;);</code></td>
+      <td>This function clamps ("minmax") the given value to unsigned BigInt (Int64) value (0 to 2^64 - 1).</td>
+    </tr>
+    <tr>
+      <td><code>toFloat32(&#60;value&#62;);</code></td>
+      <td>This function clamps ("minmax") the given value to float 32 value (-3.4e38 to 3.4e38).</td>
+    </tr>
+    <tr>
+      <td><code>isInt8(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is an integer between -128 and 127. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isUInt8(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is an integer between 0 and 255. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isInt16(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is an integer between -32768 and 32767. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isUInt16(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is an integer between 0 and 65535. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isInt32(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is an integer between -2147483648 and 2147483647. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isUInt32(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is an integer between 0 and 4294967295. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isBigInt64(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is a BigInt (Int64) value between -2^63 and 2^63 - 1. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isBigUInt64(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is a BigInt (Int64) value between 0 and 2^64 - 1. The return value is boolean.</td>
+    </tr>
+  </table>
+</div>
+
+
+<h3>clamp();</h3>
+
+<table>
+  <tr>
+    <td><button onclick="alert( CEL.clamp(3,2,5) );">clamp - try 1</button></td>
+    <td><code>alert( CEL.clamp(3,2,5) );</code></td>
+  </tr>
+  <tr>
+    <td><button onclick="alert( CEL.clamp(-2.5,3.1,5) );">clamp - try 2</button></td>
+    <td><code>alert( CEL.clamp(-2.5,3.1,5) );</code></td>
+  </tr>
+  <tr>
+    <td><button onclick="alert( CEL.clamp(8,3,5) );">clamp - try 3</button></td>
+    <td><code>alert( CEL.clamp(8,3,5) );</code></td>
+  </tr>
+  <tr>
+    <td><button onclick="alert( CEL.clamp() );">clamp - try without parameter</button></td>
+    <td><code>alert( CEL.clamp() );</code></td>
+  </tr>
+</table>
+
+<h3>product();</h3>
+
+<table>
+  <tr>
+    <td><button onclick="alert( CEL.product(3) );">product - try 1</button></td>
+    <td><code>alert( CEL.sum(3) );</code></td>
+  </tr>
+  <tr>
+    <td><button onclick="alert( CEL.product(3, 5) );">product - try 2</button></td>
+    <td><code>alert( CEL.product(3, 5) );</code></td>
+  </tr>
+  <tr>
+    <td><button onclick="alert( CEL.product(3.14, -5) );">product - try 3</button></td>
+    <td><code>alert( CEL.sum(3.14, -5) );</code></td>
+  </tr>
+  <tr>
+    <td><button onclick="alert( CEL.product(true, 3.14, -9, 'Arthur Dent') );">product - try with many parameter types</button></td>
+    <td><code>alert( CEL.product(true, 3.14, -9, 'Arthur Dent') );</code></td>
+  </tr>
+  <tr>
+    <td><button onclick="alert( CEL.product() );">product - try without parameter</button></td>
+    <td><code>alert( CEL.product() );</code></td>
+  </tr>
+</table>
+
+<h3>sum();</h3>
+
+<table>
+  <tr>
+    <td><button onclick="alert( CEL.sum(3) );">SUM - try 1</button></td>
+    <td><code>alert( CEL.sum(3) );</code></td>
+  </tr>
+  <tr>
+    <td><button onclick="alert( CEL.sum(3, 5) );">SUM - try 2</button></td>
+    <td><code>alert( CEL.sum(3, 5) );</code></td>
+  </tr>
+  <tr>
+    <td><button onclick="alert( CEL.sum(3.14, -5) );">SUM - try 3</button></td>
+    <td><code>alert( CEL.sum(3.14, -5) );</code></td>
+  </tr>
+  <tr>
+    <td><button onclick="alert( CEL.sum(true, 3.14, -9, 'Arthur Dent') );">SUM - try with many parameter types</button></td>
+    <td><code>alert( CEL.sum(true, 3.14, -9, 'Arthur Dent') );</code></td>
+  </tr>
+  <tr>
+    <td><button onclick="alert( CEL.sum() );">SUM - try without parameter</button></td>
+    <td><code>alert( CEL.sum() );</code> </td>
+  </tr>
+</table>
+
+<h3>avg();</h3>
+
+<table>
+  <tr>
+    <td><button onclick="alert( CEL.avg(2, 4, 3) );">AVG1</button></td>
+    <td><code>alert( CEL.avg(2, 4, 3) );</code> </td>
+  </tr>
+  <tr>
+    <td><button onclick="alert( CEL.avg(2, 4, 3.14) );">AVG2</button></td>
+    <td><code>alert( CEL.avg(2, 4, 3.14) );</code> </td>
+  </tr>
+  <tr>
+    <td><button onclick="alert( CEL.avg(2, -8, 3.14) );">AVG3</button></td>
+    <td><code>alert( CEL.avg(2, -8, 3.14) );</code> </td>
+  </tr>
+  <tr>
+    <td><button onclick="alert( CEL.avg(5) );">AVG4</button></td>
+    <td><code>alert( CEL.avg(5) );</code> </td>
+  </tr>
+  <tr>
+    <td><button onclick="alert( CEL.avg() );">AVG5</button></td>
+    <td><code>alert( CEL.avg() );</code> </td>
+  </tr>
+</table>
+
+<h3>isEven();</h3>
+
+<table>
+  <tr>
+    <td><button onclick="alert( CEL.isEven(8) );">isEven1</button></td>
+    <td><code>alert( CEL.isEven(8) );</code></td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td><button onclick="alert( CEL.isEven(9) );">isEven2</button></td>
+    <td><code>alert( CEL.isEven(9) );</code></td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td><button onclick="alert( CEL.isEven(8.5) );">isEven3</button></td>
+    <td><code>alert( CEL.isEven(8.5) );</code></td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td><button onclick="alert( CEL.isEven(9.5) );">isEven4</button></td>
+    <td><code>alert( CEL.isEven(9.5) );</code></td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td><button onclick="alert( CEL.isEven('Arthur Dent') );">isEven5</button></td>
+    <td><code>alert( CEL.isEven('Arthur Dent') );</code></td>
+    <td>false</td>
+  </tr>
+</table>
+
+<h3>isOdd();</h3>
+
+<table>
+  <tr>
+    <td><button onclick="alert( CEL.isOdd(9) );">isOdd2</button></td>
+    <td><code>alert( CEL.isOdd(9) );</code></td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td><button onclick="alert( CEL.isOdd(8) );">isOdd1</button></td>
+    <td><code>alert( CEL.isOdd(8) );</code></td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td><button onclick="alert( CEL.isOdd(8.5) );">isOdd3</button></td>
+    <td><code>alert( CEL.isOdd(8.5) );</code></td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td><button onclick="alert( CEL.isOdd(9.5) );">isOdd4</button></td>
+    <td><code>alert( CEL.isOdd(9.5) );</code></td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td><button onclick="alert( CEL.isOdd('Arthur Dent') );">isOdd5</button></td>
+    <td><code>alert( CEL.isOdd('Arthur Dent') );</code></td>
+    <td>false</td>
+  </tr>
+</table>
+
+
+<h2 id="license">License</h2>
+
+<div>
+  <p><a href="https://opensource.org/licenses/MIT" target="_blank">https://opensource.org/licenses/MIT</a></p>
+
+  <h3>MIT License</h3>
+
+  <p><b>SPDX short identifier: MIT</b></p>
+
+  <p>Copyright (c) 2021 Ferenc Czigler</p>
+
+  <p>Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:</p>
+
+  <p>The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.</p>
+
+  <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.</p>
+</div>
+
+<hr/>
+
+<footer id="footer" class="center"><small>
+  <p>
+    <a href="#license">License</a>
+    &nbsp;//&nbsp;
+    <a href="http://github.com/Serrin" target="_blank">Github</a>
+  </p>
+  <p>&copy; Copyright 2021 Ferenc Czigler</p>
+</small></footer>
+
+<script>
+
+function mathAutotest () {
+  try {
+    // clamp();
+    CEL.assertEq("clamp - try 1", CEL.clamp(3,2,5), 3);
+    CEL.assertEq("clamp - try 2", CEL.clamp(-2.5,3.1,5), 3.1);
+    CEL.assertEq("clamp - try 3", CEL.clamp(8,3,5), 5);
+    CEL.assertEq("clamp - try without parameter", CEL.clamp(), undefined);
+    // product();
+    CEL.assertEq("product - try 1", CEL.product(3), 3);
+    CEL.assertEq("product - try 2", CEL.product(3, 5), 15);
+    CEL.assertEq("product - try 3", CEL.product(3.14, -5), -15.700000000000001);
+    CEL.assertEq("product - try with many parameter types",
+      ""+CEL.product(true, 3.14, -9, 'Arthur Dent'), "NaN");
+    CEL.assertEq("product - try without parameter", CEL.product(), undefined);
+    // sum();
+    CEL.assertEq("SUM - try 1", CEL.sum(3), 3);
+    CEL.assertEq("SUM - try 2", CEL.sum(3, 5), 8);
+    CEL.assertEq("SUM - try 3", CEL.sum(3.14, -5), -1.8599999999999999);
+    CEL.assertEq("SUM - try with many parameter types",
+      CEL.sum(true, 3.14, -9, 'Arthur Dent'), "-4.859999999999999Arthur Dent");
+    CEL.assertEq("SUM - try without parameter", CEL.sum(), undefined);
+    // avg();
+    CEL.assertEq("AVG1", CEL.avg(2, 4, 3), 3);
+    CEL.assertEq("AVG2", CEL.avg(2, 4, 3.14), 3.046666666666667);
+    CEL.assertEq("AVG3", CEL.avg(2, -8, 3.14), -0.9533333333333333);
+    CEL.assertEq("AVG4", CEL.avg(5), 5);
+    CEL.assertEq("AVG5", ""+CEL.avg(), "NaN");
+    // isEven();
+    CEL.assertEq("isEven1", CEL.isEven(8), true);
+    CEL.assertEq("isEven2", CEL.isEven(9), false);
+    CEL.assertEq("isEven3", CEL.isEven(8.5), false);
+    CEL.assertEq("isEven4", CEL.isEven(9.5), false);
+    CEL.assertEq("isEven5", CEL.isEven('Arthur Dent'), false);
+    // isOdd();
+    CEL.assertEq("isOdd2", CEL.isOdd(9), true);
+    CEL.assertEq("isOdd1", CEL.isOdd(8), false);
+    CEL.assertEq("isOdd3", CEL.isOdd(8.5), true);
+    CEL.assertEq("isOdd4", CEL.isOdd(9.5), true);
+    CEL.assertEq("isOdd5", CEL.isOdd('Arthur Dent'), false);
+    // toInt8();
+    CEL.assertEq("toInt8 1", CEL.toInt8(9), 9);
+    CEL.assertEq("toInt8 2", CEL.toInt8(-5), -5);
+    CEL.assertEq("toInt8 3", CEL.toInt8(8.5), 8);
+    CEL.assertEq("toInt8 4", CEL.toInt8(-8.5), -8);
+    CEL.assertEq("toInt8 5", CEL.toInt8(130), 127);
+    CEL.assertEq("toInt8 6", CEL.toInt8(-130), -128);
+    CEL.assertEq("toInt8 7", CEL.toInt8('Arthur Dent'), 0);
+    CEL.assertEq("toInt8 8", CEL.toInt8(Infinity), 127);
+    CEL.assertEq("toInt8 9", CEL.toInt8('-Infinity'), -128);
+    // toUInt8();
+    CEL.assertEq("toUInt8 1", CEL.toUInt8(9), 9);
+    CEL.assertEq("toUInt8 2", CEL.toUInt8(-5), 0);
+    CEL.assertEq("toUInt8 3", CEL.toUInt8(8.5), 8);
+    CEL.assertEq("toUInt8 4", CEL.toUInt8(-8.5), 0);
+    CEL.assertEq("toUInt8 5", CEL.toUInt8(1130), 255);
+    CEL.assertEq("toUInt8 6", CEL.toUInt8('Arthur Dent'), 0);
+    CEL.assertEq("toUInt8 7", CEL.toUInt8(Infinity), 255);
+    CEL.assertEq("toUInt8 8", CEL.toUInt8('-Infinity'), 0);
+    // toInt16();
+    CEL.assertEq("toInt16 1", CEL.toInt16(199), 199);
+    CEL.assertEq("toInt16 2", CEL.toInt16(-1845), -1845);
+    CEL.assertEq("toInt16 3", CEL.toInt16(8.5), 8);
+    CEL.assertEq("toInt16 4", CEL.toInt16(-8.5), -8);
+    CEL.assertEq("toInt16 5", CEL.toInt16(111130), 32767);
+    CEL.assertEq("toInt16 6", CEL.toInt16(-111130), -32768);
+    CEL.assertEq("toInt16 7", CEL.toInt16('Arthur Dent'), 0);
+    CEL.assertEq("toInt16 8", CEL.toInt16(Infinity), 32767);
+    CEL.assertEq("toInt16 9", CEL.toInt16('-Infinity'), -32768);
+    // toUInt16();
+    CEL.assertEq("toUInt16 1", CEL.toUInt16(199), 199);
+    CEL.assertEq("toUInt16 2", CEL.toUInt16(-1845), 0);
+    CEL.assertEq("toUInt16 3", CEL.toUInt16(8.5), 8);
+    CEL.assertEq("toUInt16 4", CEL.toUInt16(-8.5), 0);
+    CEL.assertEq("toUInt16 5", CEL.toUInt16(111130), 65535);
+    CEL.assertEq("toUInt16 6", CEL.toUInt16('Arthur Dent'), 0);
+    CEL.assertEq("toUInt16 7", CEL.toUInt16(Infinity), 65535);
+    CEL.assertEq("toUInt16 8", CEL.toUInt16('-Infinity'), 0);
+    // toInt32();
+    CEL.assertEq("toInt32 1", CEL.toInt32(199), 199);
+    CEL.assertEq("toInt32 2", CEL.toInt32(-1845), -1845);
+    CEL.assertEq("toInt32 3", CEL.toInt32(8.5), 8);
+    CEL.assertEq("toInt32 4", CEL.toInt32(-8.5), -8);
+    CEL.assertEq("toInt32 5", CEL.toInt32(2147483649), 2147483647);
+    CEL.assertEq("toInt32 6", CEL.toInt32(-3147483649), -2147483648);
+    CEL.assertEq("toInt32 7", CEL.toInt32('Arthur Dent'), 0);
+    CEL.assertEq("toInt32 8", CEL.toInt32(Infinity), 2147483647);
+    CEL.assertEq("toInt32 9", CEL.toInt32('-Infinity'), -2147483648);
+    // toUInt32();
+    CEL.assertEq("toUInt32 1", CEL.toUInt32(199), 199);
+    CEL.assertEq("toUInt32 2", CEL.toUInt32(-1845), 0);
+    CEL.assertEq("toUInt32 3", CEL.toUInt32(8.5), 8);
+    CEL.assertEq("toUInt32 4", CEL.toUInt32(-8.5), 0);
+    CEL.assertEq("toUInt32 5", CEL.toUInt32(4294967297), 4294967295);
+    CEL.assertEq("toUInt32 6", CEL.toUInt32('Arthur Dent'), 0);
+    CEL.assertEq("toUInt32 7", CEL.toUInt32(Infinity), 4294967295);
+    CEL.assertEq("toUInt32 8", CEL.toUInt32('-Infinity'), 0);
+    // toBigInt64();
+    CEL.assertEq("toBigInt64 1", CEL.toBigInt64(199), 199n);
+    CEL.assertEq("toBigInt64 2", CEL.toBigInt64(-1845), -1845n);
+    CEL.assertEq("toBigInt64 3", CEL.toBigInt64(8.5), 8n);
+    CEL.assertEq("toBigInt64 4", CEL.toBigInt64(-8.5), -8n);
+    CEL.assertEq("toBigInt64 5", CEL.toBigInt64(9223372036854775809),
+      9223372036854775808n);
+    CEL.assertEq("toBigInt64 6", CEL.toBigInt64('Arthur Dent'), 0n);
+    CEL.assertEq("toBigInt64 7", CEL.toBigInt64(Infinity),
+      9223372036854775808n);
+    CEL.assertEq("toBigInt64 8", CEL.toBigInt64('-Infinity'),
+      -9223372036854775808n);
+    CEL.assertEq("toBigInt64 9", CEL.toBigInt64(18446744073709551617),
+      9223372036854775808n);
+    CEL.assertEq("toBigInt64 10", CEL.toBigInt64(-18446744073709551617),
+      -9223372036854775808n);
+    // toBigUInt64();
+    CEL.assertEq("toBigUInt64 1", CEL.toBigUInt64(199), 199n);
+    CEL.assertEq("toBigUInt64 2", CEL.toBigUInt64(-1845), 0n);
+    CEL.assertEq("toBigUInt64 3", CEL.toBigUInt64(8.5), 8n);
+    CEL.assertEq("toBigUInt64 4", CEL.toBigUInt64(-8.5), 0n);
+    CEL.assertEq("toBigUInt64 5", CEL.toBigUInt64(18446744073709551617),
+      18446744073709551616n);
+    CEL.assertEq("toBigUInt64 6", CEL.toBigUInt64('Arthur Dent'), 0n);
+    CEL.assertEq("toBigUInt64 7", CEL.toBigUInt64(Infinity),
+      18446744073709551616n);
+    CEL.assertEq("toBigUInt64 8", CEL.toBigUInt64('-Infinity'), 0n);
+    CEL.assertEq("toBigUInt64 9", CEL.toBigUInt64(-9223372036854775808n), 0n);
+    // toFloat32();
+    CEL.assertEq("toFloat32 1", CEL.toFloat32(199), 199);
+    CEL.assertEq("toFloat32 2", CEL.toFloat32(-1845), -1845);
+    CEL.assertEq("toFloat32 3", CEL.toFloat32(8.5), 8.5);
+    CEL.assertEq("toFloat32 4", CEL.toFloat32(-8.5), -8.5);
+    CEL.assertEq("toFloat32 5", CEL.toFloat32(-3.4e39), -3.4e+38);
+    CEL.assertEq("toFloat32 6", CEL.toFloat32(3.4e39), +3.4e38);
+    CEL.assertEq("toFloat32 7", CEL.toFloat32('Arthur Dent'), 0);
+    CEL.assertEq("toFloat32 8", CEL.toFloat32(Infinity), 3.4e+38);
+    CEL.assertEq("toFloat32 9", CEL.toFloat32('-Infinity'), -3.4e+38);
+    // isInt8();
+    CEL.assertEq("isInt8 1", CEL.isInt8(34), true);
+    CEL.assertEq("isInt8 2", CEL.isInt8(-34), true);
+    CEL.assertEq("isInt8 3", CEL.isInt8(-129), false);
+    CEL.assertEq("isInt8 4", CEL.isInt8(128), false);
+    CEL.assertEq("isInt8 5", CEL.isInt8(34.5), false);
+    CEL.assertEq("isInt8 6", CEL.isInt8(-34.5), false);
+    CEL.assertEq("isInt8 7", CEL.isInt8('Arthur Dent'), false);
+    CEL.assertEq("isInt8 8", CEL.isInt8(true), false);
+    CEL.assertEq("isInt8 9", CEL.isInt8(false), false);
+    CEL.assertEq("isInt8 10", CEL.isInt8(Infinity), false);
+    CEL.assertEq("isInt8 11", CEL.isInt8(-Infinity), false);
+    CEL.assertEq("isInt8 12", CEL.isInt8([]), false);
+    CEL.assertEq("isInt8 13", CEL.isInt8({}), false);
+    // isUInt8();
+    CEL.assertEq("isUInt8 1", CEL.isUInt8(34), true);
+    CEL.assertEq("isUInt8 2", CEL.isUInt8(-34), false);
+    CEL.assertEq("isUInt8 3", CEL.isUInt8(-1), false);
+    CEL.assertEq("isUInt8 4", CEL.isUInt8(256), false);
+    CEL.assertEq("isUInt8 5", CEL.isUInt8(34.5), false);
+    CEL.assertEq("isUInt8 6", CEL.isUInt8(-34.5), false);
+    CEL.assertEq("isUInt8 7", CEL.isUInt8('Arthur Dent'), false);
+    CEL.assertEq("isUInt8 8", CEL.isUInt8(true), false);
+    CEL.assertEq("isUInt8 9", CEL.isUInt8(false), false);
+    CEL.assertEq("isUInt8 10", CEL.isUInt8(Infinity), false);
+    CEL.assertEq("isUInt8 11", CEL.isUInt8(-Infinity), false);
+    CEL.assertEq("isUInt8 12", CEL.isUInt8([]), false);
+    CEL.assertEq("isUInt8 13", CEL.isUInt8({}), false);
+    // isInt16();
+    CEL.assertEq("isInt16 1", CEL.isInt16(34), true);
+    CEL.assertEq("isInt16 2", CEL.isInt16(-34), true);
+    CEL.assertEq("isInt16 3", CEL.isInt16(-32769), false);
+    CEL.assertEq("isInt16 4", CEL.isInt16(32768), false);
+    CEL.assertEq("isInt16 5", CEL.isInt16(34.5), false);
+    CEL.assertEq("isInt16 6", CEL.isInt16(-34.5), false);
+    CEL.assertEq("isInt16 7", CEL.isInt16('Arthur Dent'), false);
+    CEL.assertEq("isInt16 8", CEL.isInt16(true), false);
+    CEL.assertEq("isInt16 9", CEL.isInt16(false), false);
+    CEL.assertEq("isInt16 10", CEL.isInt16(Infinity), false);
+    CEL.assertEq("isInt16 11", CEL.isInt16(-Infinity), false);
+    CEL.assertEq("isInt16 12", CEL.isInt16([]), false);
+    CEL.assertEq("isInt16 13", CEL.isInt16({}), false);
+    // isUInt16();
+    CEL.assertEq("isUInt16 1", CEL.isUInt16(34), true);
+    CEL.assertEq("isUInt16 2", CEL.isUInt16(-34), false);
+    CEL.assertEq("isUInt16 3", CEL.isUInt16(-1), false);
+    CEL.assertEq("isUInt16 4", CEL.isUInt16(65536), false);
+    CEL.assertEq("isUInt16 5", CEL.isUInt16(34.5), false);
+    CEL.assertEq("isUInt16 6", CEL.isUInt16(-34.5), false);
+    CEL.assertEq("isUInt16 7", CEL.isUInt16('Arthur Dent'), false);
+    CEL.assertEq("isUInt16 8", CEL.isUInt16(true), false);
+    CEL.assertEq("isUInt16 9", CEL.isUInt16(false), false);
+    CEL.assertEq("isUInt16 10", CEL.isUInt16(Infinity), false);
+    CEL.assertEq("isUInt16 11", CEL.isUInt16(-Infinity), false);
+    CEL.assertEq("isUInt16 12", CEL.isUInt16([]), false);
+    CEL.assertEq("isUInt16 13", CEL.isUInt16({}), false);
+    // isInt32();
+    CEL.assertEq("isInt32 1", CEL.isInt32(34), true);
+    CEL.assertEq("isInt32 2", CEL.isInt32(-34), true);
+    CEL.assertEq("isInt32 3", CEL.isInt32(-2147483649), false);
+    CEL.assertEq("isInt32 4", CEL.isInt32(2147483648), false);
+    CEL.assertEq("isInt32 5", CEL.isInt32(34.5), false);
+    CEL.assertEq("isInt32 6", CEL.isInt32(-34.5), false);
+    CEL.assertEq("isInt32 7", CEL.isInt32('Arthur Dent'), false);
+    CEL.assertEq("isInt32 8", CEL.isInt32(true), false);
+    CEL.assertEq("isInt32 9", CEL.isInt32(false), false);
+    CEL.assertEq("isInt32 10", CEL.isInt32(Infinity), false);
+    CEL.assertEq("isInt32 11", CEL.isInt32(-Infinity), false);
+    CEL.assertEq("isInt32 12", CEL.isInt32([]), false);
+    CEL.assertEq("isInt32 13", CEL.isInt32({}), false);
+    // isUInt32();
+    CEL.assertEq("isUInt32 1", CEL.isUInt32(34), true);
+    CEL.assertEq("isUInt32 2", CEL.isUInt32(-34), false);
+    CEL.assertEq("isUInt32 3", CEL.isUInt32(-1), false);
+    CEL.assertEq("isUInt32 4", CEL.isUInt32(4294967296), false);
+    CEL.assertEq("isUInt32 5", CEL.isUInt32(34.5), false);
+    CEL.assertEq("isUInt32 6", CEL.isUInt32(-34.5), false);
+    CEL.assertEq("isUInt32 7", CEL.isUInt32('Arthur Dent'), false);
+    CEL.assertEq("isUInt32 8", CEL.isUInt32(true), false);
+    CEL.assertEq("isUInt32 9", CEL.isUInt32(false), false);
+    CEL.assertEq("isUInt32 10", CEL.isUInt32(Infinity), false);
+    CEL.assertEq("isUInt32 11", CEL.isUInt32(-Infinity), false);
+    CEL.assertEq("isUInt32 12", CEL.isUInt32([]), false);
+    CEL.assertEq("isUInt32 13", CEL.isUInt32({}), false);
+    // isBigInt64();
+    CEL.assertEq("isBigInt64 1", CEL.isBigInt64(34n), true);
+    CEL.assertEq("isBigInt64 2", CEL.isBigInt64(-34n), true);
+    CEL.assertEq("isBigInt64 3", CEL.isBigInt64(-9223372036854775809n), false);
+    CEL.assertEq("isBigInt64 4", CEL.isBigInt64(9223372036854775809n), false);
+    CEL.assertEq("isBigInt64 5", CEL.isBigInt64(34.5), false);
+    CEL.assertEq("isBigInt64 6", CEL.isBigInt64(-34.5), false);
+    CEL.assertEq("isBigInt64 7", CEL.isBigInt64('Arthur Dent'), false);
+    CEL.assertEq("isBigInt64 8", CEL.isBigInt64(true), false);
+    CEL.assertEq("isBigInt64 9", CEL.isBigInt64(false), false);
+    CEL.assertEq("isBigInt64 10", CEL.isBigInt64(Infinity), false);
+    CEL.assertEq("isBigInt64 11", CEL.isBigInt64(-Infinity), false);
+    CEL.assertEq("isBigInt64 12", CEL.isBigInt64([]), false);
+    CEL.assertEq("isBigInt64 13", CEL.isBigInt64({}), false);
+    // isBigUInt64();
+    CEL.assertEq("isBigUInt64 1", CEL.isBigUInt64(34n), true);
+    CEL.assertEq("isBigUInt64 2", CEL.isBigUInt64(-34n), false);
+    CEL.assertEq("isBigUInt64 3", CEL.isBigUInt64(-1n), false);
+    CEL.assertEq("isBigUInt64 4", CEL.isBigUInt64(18446744073709551617n), false);
+    CEL.assertEq("isBigUInt64 5", CEL.isBigUInt64(34.5), false);
+    CEL.assertEq("isBigUInt64 6", CEL.isBigUInt64(-34.5), false);
+    CEL.assertEq("isBigUInt64 7", CEL.isBigUInt64('Arthur Dent'), false);
+    CEL.assertEq("isBigUInt64 8", CEL.isBigUInt64(true), false);
+    CEL.assertEq("isBigUInt64 9", CEL.isBigUInt64(false), false);
+    CEL.assertEq("isBigUInt64 10", CEL.isBigUInt64(Infinity), false);
+    CEL.assertEq("isBigUInt64 11", CEL.isBigUInt64(-Infinity), false);
+    CEL.assertEq("isBigUInt64 12", CEL.isBigUInt64([]), false);
+    CEL.assertEq("isBigUInt64 13", CEL.isBigUInt64({}), false);
+  } catch (e) {
+    alert(e);
+  } finally {
+    alert("End of the test.")
+  }
+}
+
+</script>
+
+
+</body>
+</html>
