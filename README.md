@@ -55,11 +55,11 @@ BTC standalone app: __btc.app.html__
 
 RPG dice roller: __testgame.html__
 
-Math plugin documentation: __celestra-math.html__
+Demo plugin documentation: __celestra-demoPlugin.html__
 
-Math plugin developer source: __celestra-math.dev.js__
+Demo plugin developer source: __celestra-demoPlugin.dev.js__
 
-Math plugin minified source: __celestra-math.min.js__
+Demo plugin minified source: __celestra-demoPlugin.min.js__
 
 
 ### How to import the ESM edition
@@ -115,6 +115,10 @@ window.CEL = defaultExport;
 
 - Added a new code section: __Abstract functions__ and new functions.
 
+
+### Celestra v5.5.0 changes
+
+- The Math functions are available in the main code files (dev, min, esm) instead of the Math plugins.
 
 -----
 
@@ -430,6 +434,39 @@ Name | Description
 `toIndex(<value>);`|This function converts the provided value to a valid arraylike index number. The return value is an unsigned integer (number).
 `toInteger(<value>);`|This function always converts the provided value to an integer. If the value cannot be converted to an integer, then the return value is 0.
 `toArray(<value>);`|If the value is an array, then this function returns the value else converts the value to array or the return value is an empty array.
+
+
+### Math functions
+
+These functions are available in the `celestra` and/or `CEL` objects.
+
+Example: `CEL.sum();`
+
+Name | Description
+---- | -----------
+`sum(value1>[,valueN]);` | This function returns the sum value from the parameter values.
+`avg(<value1>[,valueN]);` | This function returns the average value from the parameter values.
+`product(<value1>[,valueN]);` | This function returns the product value from the parameter values.
+`clamp(<value>,<min>,<max>);` | If the given value is between the min and max values, then this function returns the value. If smaller then the min value, then the return value is the min. If greater then the max value, then the return value is the max.
+`isEven(<value>);` | This function determines whether the provided value is an even number. The return value is boolean.
+`isOdd(<value>);` | This function determines whether the provided value is an odd number. The return value is boolean.
+`toInt8(<value>);` | This function clamps ("minmax") the given value to integer 8 value (-127 to 128).
+`toUInt8(<value>);` | This function clamps ("minmax") the given value to unsigned integer 8 value (0 to 255).
+`toInt16(<value>);` | This function clamps ("minmax") the given value to integer 16 value (-32768 to 32767).
+`toUInt16(<value>);` | This function clamps ("minmax") the given value to unsigned integer 16 value (0 to 65535).
+`toInt32(<value>);` | This function clamps ("minmax") the given value to integer 32 value (-2147483648 to 2147483647).
+`toUInt32(<value>);` | This function clamps ("minmax") the given value to unsigned integer 32 value (0 to 4294967295).
+`toBigInt64(<value>);` | This function clamps ("minmax") the given value to BigInt (Int64) value (-2^63 to 2^63 - 1).
+`toBigUInt64(<value>);` | This function clamps ("minmax") the given value to unsigned BigInt (Int64) value (0 to 2^64 - 1).
+`toFloat32(<value>);` | This function clamps ("minmax") the given value to float 32 value (-3.4e38 to 3.4e38).
+`isInt8(<value>);` | This function determines whether the provided value is an integer between -128 and 127. The return value is boolean.
+`isUInt8(<value>);` | This function determines whether the provided value is an integer between 0 and 255. The return value is boolean.
+`isInt16(<value>);` | This function determines whether the provided value is an integer between -32768 and 32767. The return value is boolean.
+`isUInt16(<value>);` | This function determines whether the provided value is an integer between 0 and 65535. The return value is boolean.
+`isInt32(<value>);` | This function determines whether the provided value is an integer between -2147483648 and 2147483647. The return value is boolean.
+`isUInt32(<value>);` | This function determines whether the provided value is an integer between 0 and 4294967295. The return value is boolean.
+`isBigInt64(<value>);` | This function determines whether the provided value is a BigInt (Int64) value between -2^63 and 2^63 - 1. The return value is boolean.
+`isBigUInt64(<value>);` | This function determines whether the provided value is a BigInt (Int64) value between 0 and 2^64 - 1. The return value is boolean.
 
 
 ### Polyfills

@@ -149,9 +149,9 @@ nav a, nav a:visited, nav a:active, nav a:hover {
 
 <p>BTC standalone app: <a href="btc.app.html" target="_blank">btc.app.html</a></p>
 <p>RPG dice roller: <a href="testgame.html" target="_blank">testgame.html</a></p>
-<p>Math plugin documentation: <a href="celestra-math.html" target="_blank">celestra-math.html</a></p>
-<p>Math plugin developer source: <a href="celestra-math.dev.js" target="_blank">celestra-math.dev.js</a></p>
-<p>Math plugin minified source: <a href="celestra-math.min.js" target="_blank">celestra-math.min.js</a></p>
+<p>Demo plugin documentation: <a href="celestra-demoPlugin.html" target="_blank">celestra-demoPlugin.html</a></p>
+<p>Demo plugin developer source: <a href="celestra-demoPlugin.dev.js" target="_blank">celestra-demoPlugin.dev.js</a></p>
+<p>Demo plugin minified source: <a href="celestra-demoPlugin.min.js" target="_blank">celestra-demoPlugin.min.js</a></p>
 
 
 <h3>How to import the ESM edition</h3>
@@ -202,6 +202,12 @@ window.CEL = defaultExport;
 
 <ul>
   <li>Added a new code section: <b>Abstract functions</b> and new functions.</li>
+</ul>
+
+<h3>Celestra v5.5.0 changes</h3>
+
+<ul>
+  <li>The Math functions are available in the main code files (dev, min, esm) instead of the Math plugins.</li>
 </ul>
 
 
@@ -1401,6 +1407,113 @@ console.log(o2);
     <tr>
       <td><code>toArray(&#60;value&#62;);</code></td>
       <td>If the value is an array, then this function returns the value else converts the value to array or the return value is an empty array.</td>
+    </tr>
+  </table>
+</div>
+
+
+<h3>Math functions</h3>
+
+<p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
+<br/>Example: <code>CEL.sum();</code></p>
+
+<div>
+  <table class="table-responsive table-striped">
+    <tr>
+      <td style="width: auto; min-width: 33%;"><b>Name</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>sum(&#60;value1&#62;[,valueN]);</code></td>
+      <td>This function returns the sum value from the parameter values.</td>
+    </tr>
+    <tr>
+      <td><code>avg(&#60;value1&#62;[,valueN]);</code></td>
+      <td>This function returns the average value from the parameter values.</td>
+    </tr>
+    <tr>
+      <td><code>product(&#60;value1&#62;[,valueN]);</code></td>
+      <td>This function returns the product value from the parameter values.</td>
+    </tr>
+    <tr>
+      <td><code>clamp(&#60;value&#62;,&#60;min&#62;,&#60;max&#62;);</code></td>
+      <td>If the given value is between the min and max values, then this function returns the value. If smaller then the min value, then the return value is the min. If greater then the max value, then the return value is the max.</td>
+    </tr>
+    <tr>
+      <td><code>isEven(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is an even number. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isOdd(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is an odd number. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>toInt8(&#60;value&#62;);</code></td>
+      <td>This function clamps ("minmax") the given value to integer 8 value (-127 to 128).</td>
+    </tr>
+    <tr>
+      <td><code>toUInt8(&#60;value&#62;);</code></td>
+      <td>This function clamps ("minmax") the given value to unsigned integer 8 value (0 to 255).</td>
+    </tr>
+    <tr>
+      <td><code>toInt16(&#60;value&#62;);</code></td>
+      <td>This function clamps ("minmax") the given value to integer 16 value (-32768 to 32767).</td>
+    </tr>
+    <tr>
+      <td><code>toUInt16(&#60;value&#62;);</code></td>
+      <td>This function clamps ("minmax") the given value to unsigned integer 16 value (0 to 65535).</td>
+    </tr>
+    <tr>
+      <td><code>toInt32(&#60;value&#62;);</code></td>
+      <td>This function clamps ("minmax") the given value to integer 32 value (-2147483648 to 2147483647).</td>
+    </tr>
+    <tr>
+      <td><code>toUInt32(&#60;value&#62;);</code></td>
+      <td>This function clamps ("minmax") the given value to unsigned integer 32 value (0 to 4294967295).</td>
+    </tr>
+    <tr>
+      <td><code>toBigInt64(&#60;value&#62;);</code></td>
+      <td>This function clamps ("minmax") the given value to BigInt (Int64) value (-2^63 to 2^63 - 1).</td>
+    </tr>
+    <tr>
+      <td><code>toBigUInt64(&#60;value&#62;);</code></td>
+      <td>This function clamps ("minmax") the given value to unsigned BigInt (Int64) value (0 to 2^64 - 1).</td>
+    </tr>
+    <tr>
+      <td><code>toFloat32(&#60;value&#62;);</code></td>
+      <td>This function clamps ("minmax") the given value to float 32 value (-3.4e38 to 3.4e38).</td>
+    </tr>
+    <tr>
+      <td><code>isInt8(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is an integer between -128 and 127. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isUInt8(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is an integer between 0 and 255. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isInt16(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is an integer between -32768 and 32767. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isUInt16(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is an integer between 0 and 65535. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isInt32(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is an integer between -2147483648 and 2147483647. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isUInt32(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is an integer between 0 and 4294967295. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isBigInt64(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is a BigInt (Int64) value between -2^63 and 2^63 - 1. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isBigUInt64(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is a BigInt (Int64) value between 0 and 2^64 - 1. The return value is boolean.</td>
     </tr>
   </table>
 </div>

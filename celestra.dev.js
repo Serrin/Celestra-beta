@@ -1808,6 +1808,70 @@ const createDataProperty = (O, P, V) => Object.defineProperty(
 /* toArray(<value: array OR iterable OR arraylike>): array */
 function toArray (O) { return (Array.isArray(O) ? O : Array.from(O)); }
 
+/** math **/
+
+const sum = (f, ...a) => a.reduce((acc, v) => acc + v, f);
+
+const avg = (f, ...a) => a.reduce((acc, v) => acc + v, f) / (a.length + 1);
+
+const product = (f, ...a) => a.reduce((acc, v) => acc * v, f);
+
+const clamp = (v, i, a) => (v > a ? a : v < i ? i : v);
+
+function isEven (v) {
+  var r = v % 2;
+  if (!Number.isNaN(r)) { return r === 0; }
+  return false;
+}
+
+function isOdd (v) {
+  var r = v % 2;
+  if (!Number.isNaN(r)) { return r !== 0; }
+  return false;
+}
+
+const toInt8 = (v) =>
+  ((v = Math.min(Math.max(-128, Math.trunc(+v)), 127)) === v) ? v : 0;
+const toUInt8 = (v) =>
+  ((v = Math.min(Math.max(0, Math.trunc(+v)), 255)) === v) ? v : 0;
+
+const toInt16 = (v) =>
+  ((v = Math.min(Math.max(-32768, Math.trunc(+v)), 32767)) === v) ? v : 0;
+const toUInt16 = (v) =>
+  ((v = Math.min(Math.max(0, Math.trunc(+v)), 65535)) === v) ? v : 0;
+
+const toInt32 = (v) =>
+  ((v = Math.min(Math.max(-2147483648, Math.trunc(+v)), 2147483647)) === v)?v:0;
+const toUInt32 = (v) =>
+  ((v = Math.min(Math.max(0, Math.trunc(+v)), 4294967295)) === v) ? v : 0;
+
+const toBigInt64 = (v) => BigInt(typeof v === "bigint"
+  ? (v > Math.pow(2,63)-1 ?Math.pow(2,63)-1:v<Math.pow(-2,63)?Math.pow(-2,63):v)
+  : ((v=Math.min(Math.max(Math.pow(-2,63),Math.trunc(+v)),Math.pow(2,63)-1))===v
+    ) ? v : 0
+);
+const toBigUInt64 = (v) => BigInt(typeof v === "bigint"
+  ? (v > Math.pow(2, 64) - 1 ? Math.pow(2, 64) - 1 : v < 0 ? 0 : v)
+  : ((v=Math.min(Math.max(0, Math.trunc(+v)), Math.pow(2,64) -1)) === v) ? v : 0
+);
+
+const toFloat32 = (v) => ((v = Math.min(Math.max(-3.4e38, +v),3.4e38))===v)?v:0;
+
+const isInt8 = (v) => (Number.isInteger(v) ? (v >= -128 && v <= 127) : false);
+const isUInt8 = (v) => (Number.isInteger(v) ? (v >= 0 && v <= 255) : false);
+
+const isInt16 = (v) => (Number.isInteger(v) ?(v>=-32768 && v <= 32767) : false);
+const isUInt16 = (v) => (Number.isInteger(v) ? (v >= 0 && v <= 65535) : false);
+
+const isInt32 = (v) =>
+  (Number.isInteger(v) ? (v >= -2147483648 && v <= 2147483647) : false);
+const isUInt32 = (v) => (Number.isInteger(v) ? (v>=0 && v<=4294967295) : false);
+
+const isBigInt64 = (v) => (typeof v === "bigint"
+  ? (v >= Math.pow(-2, 63) && v <= Math.pow(2, 63)-1) : false);
+const isBigUInt64 = (v) =>
+  (typeof v === "bigint" ? (v >= 0 && v <= Math.pow(2,64)-1) : false);
+
 /** object header **/
 
 const VERSION = "Celestra v5.5.0 dev";
@@ -2042,7 +2106,31 @@ var celestra = {
   toIndex: toIndex,
   toInteger: toInteger,
   createDataProperty:createDataProperty,
-  toArray: toArray
+  toArray: toArray,
+  /** math **/
+  sum: sum, 
+  avg: avg, 
+  product: product, 
+  clamp: clamp, 
+  isEven: isEven, 
+  isOdd: isOdd, 
+  toInt8: toInt8, 
+  toUInt8: toUInt8, 
+  toInt16: toInt16, 
+  toUInt16: toUInt16,
+  toInt32: toInt32, 
+  toUInt32: toUInt32, 
+  toBigInt64: toBigInt64, 
+  toBigUInt64: toBigUInt64, 
+  toFloat32: toFloat32, 
+  isInt8: isInt8, 
+  isUInt8: isUInt8, 
+  isInt16: isInt16,
+  isUInt16: isUInt16, 
+  isInt32: isInt32, 
+  isUInt32: isUInt32, 
+  isBigInt64: isBigInt64, 
+  isBigUInt64: isBigUInt64
 };
 
 if (typeof window !== "undefined") {

@@ -369,19 +369,19 @@ const _preCel = {
       window.celestra = celestra;
       window.CEL = celestra;
       importStr += "\\nimport the celestra object - "
-        + (typeof celestra.getType === "function");
+        + (typeof celestra.qsa === "function");
       // import with default with name
       import { default as celestra2 } from "./celestra.esm.js";
       //window.celestra = celestra;
       //window.CEL = celestra;
       importStr += "\\nimport with default with name - "
-        + (typeof celestra2.getType === "function");
+        + (typeof celestra2.qsa === "function");
       // import with defaultExport
       import defaultExport from "./celestra.esm.js";
       //window.celestra = defaultExport;
       //window.CEL = defaultExport;
       importStr += "\\nimport with defaultExport - "
-        + (typeof defaultExport.getType === "function");
+        + (typeof defaultExport.qsa === "function");
       alert(importStr);
     `;
     console.log(scrTag);
