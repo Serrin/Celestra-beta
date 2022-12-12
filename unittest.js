@@ -2420,7 +2420,7 @@ CUT.isTrue("toArray();", toArrayA1 === CEL.toArray(toArrayA1)
 /* math */
 
 CUT.addElement("hr");
-CUT.addElement("h3", "Math");
+CUT.addElement("h3", "Math functions");
 
 // clamp();
 CUT.isEqual("clamp - try 1", CEL.clamp(3,2,5), 3);
