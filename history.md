@@ -1,4 +1,27 @@
 
+# Celestra version history
+
+## Celestra v5.5.0
+
+1. Documentation and pdf fixes.
+
+2. `globalThis;` documentation text change: "window/self" -> "`window`/`self`"
+
+3. Remove this line in the __celestra.dev.js__: `//const find = ([...a], fn) => a.find((v, i) => fn(v, i));`
+
+4. Remove these aliases:
+
+|Alias|Function|
+|-----|--------|
+|getType();|classof();|
+|toFunction();|unBind();|
+|groupBy();|group();|
+
+5. Remove the Math plugin and move the functions in the `celestra.dev.js`, `celestra.min.js` and `celestra.esm.js`
+
+6. Add a demo plugin with these files: `celestra-demoPlugin.html`, `celestra-demoPlugin.dev.js` and `celestra-demoPlugin.min.js`
+
+
 ## Celestra v5.4.4
 
 1. Documentation and pdf fixes.
@@ -24,7 +47,7 @@ Array.prototype.groupByToMap(); -> Array.prototype.groupToMap();
 
 1. Documentation and pdf fixes.
 
-2. Remove this line in the __README.md__: 
+2. Remove this line in the __README.md__:
 ````
 Celestra Math plugin cheatsheet: __celestra-math.pdf__
 ````

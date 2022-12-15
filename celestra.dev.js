@@ -1810,65 +1810,96 @@ function toArray (O) { return (Array.isArray(O) ? O : Array.from(O)); }
 
 /** math **/
 
+/* sum(<value1>[,valueN]): number */
 const sum = (f, ...a) => a.reduce((acc, v) => acc + v, f);
 
+/* avg(<value1>[,valueN]): number */
 const avg = (f, ...a) => a.reduce((acc, v) => acc + v, f) / (a.length + 1);
 
+/* product(<value1>[,valueN]): number */
 const product = (f, ...a) => a.reduce((acc, v) => acc * v, f);
 
+/* clamp(<value>,<min>,<max>): number */
 const clamp = (v, i, a) => (v > a ? a : v < i ? i : v);
 
+/* isEven(<value>): boolan */
 function isEven (v) {
   var r = v % 2;
   if (!Number.isNaN(r)) { return r === 0; }
   return false;
 }
 
+/* isOdd(<value>): boolean */
 function isOdd (v) {
   var r = v % 2;
   if (!Number.isNaN(r)) { return r !== 0; }
   return false;
 }
 
+/* toInt8(<value>): int -127..128 */
 const toInt8 = (v) =>
   ((v = Math.min(Math.max(-128, Math.trunc(+v)), 127)) === v) ? v : 0;
+
+/* toUInt8(<value>): int 0..255  */
 const toUInt8 = (v) =>
   ((v = Math.min(Math.max(0, Math.trunc(+v)), 255)) === v) ? v : 0;
 
+/* toInt16(<value>): int -32768..32767 */
 const toInt16 = (v) =>
   ((v = Math.min(Math.max(-32768, Math.trunc(+v)), 32767)) === v) ? v : 0;
+
+/* toUInt16(<value>) int 0..65535 */
 const toUInt16 = (v) =>
   ((v = Math.min(Math.max(0, Math.trunc(+v)), 65535)) === v) ? v : 0;
 
+/* toInt32(<value>): int -2147483648..2147483647 */
 const toInt32 = (v) =>
   ((v = Math.min(Math.max(-2147483648, Math.trunc(+v)), 2147483647)) === v)?v:0;
+
+/* toUInt32(<value>: int 0..4294967295 */
 const toUInt32 = (v) =>
   ((v = Math.min(Math.max(0, Math.trunc(+v)), 4294967295)) === v) ? v : 0;
 
+/* toBigInt64(<value>): bigint */
 const toBigInt64 = (v) => BigInt(typeof v === "bigint"
   ? (v > Math.pow(2,63)-1 ?Math.pow(2,63)-1:v<Math.pow(-2,63)?Math.pow(-2,63):v)
   : ((v=Math.min(Math.max(Math.pow(-2,63),Math.trunc(+v)),Math.pow(2,63)-1))===v
     ) ? v : 0
 );
+
+/* toBigUInt64(<value>): unsigned bigint */
 const toBigUInt64 = (v) => BigInt(typeof v === "bigint"
   ? (v > Math.pow(2, 64) - 1 ? Math.pow(2, 64) - 1 : v < 0 ? 0 : v)
   : ((v=Math.min(Math.max(0, Math.trunc(+v)), Math.pow(2,64) -1)) === v) ? v : 0
 );
 
+/* toFloat32(<value>): float */
 const toFloat32 = (v) => ((v = Math.min(Math.max(-3.4e38, +v),3.4e38))===v)?v:0;
 
+/* isInt8(<value>): boolean */
 const isInt8 = (v) => (Number.isInteger(v) ? (v >= -128 && v <= 127) : false);
+
+/* isUInt8(<value>): boolean */
 const isUInt8 = (v) => (Number.isInteger(v) ? (v >= 0 && v <= 255) : false);
 
+/* isInt16(<value>): boolean */
 const isInt16 = (v) => (Number.isInteger(v) ?(v>=-32768 && v <= 32767) : false);
+
+/* isUInt16(<value>): boolean */
 const isUInt16 = (v) => (Number.isInteger(v) ? (v >= 0 && v <= 65535) : false);
 
+/* isInt32(<value>): boolean */
 const isInt32 = (v) =>
   (Number.isInteger(v) ? (v >= -2147483648 && v <= 2147483647) : false);
+
+/* isUInt32(<value>): boolean */
 const isUInt32 = (v) => (Number.isInteger(v) ? (v>=0 && v<=4294967295) : false);
 
+/* isBigInt64(<value>): boolean */
 const isBigInt64 = (v) => (typeof v === "bigint"
   ? (v >= Math.pow(-2, 63) && v <= Math.pow(2, 63)-1) : false);
+
+/* isBigUInt64(<value>): boolean */
 const isBigUInt64 = (v) =>
   (typeof v === "bigint" ? (v >= 0 && v <= Math.pow(2,64)-1) : false);
 
@@ -2108,28 +2139,28 @@ var celestra = {
   createDataProperty:createDataProperty,
   toArray: toArray,
   /** math **/
-  sum: sum, 
-  avg: avg, 
-  product: product, 
-  clamp: clamp, 
-  isEven: isEven, 
-  isOdd: isOdd, 
-  toInt8: toInt8, 
-  toUInt8: toUInt8, 
-  toInt16: toInt16, 
+  sum: sum,
+  avg: avg,
+  product: product,
+  clamp: clamp,
+  isEven: isEven,
+  isOdd: isOdd,
+  toInt8: toInt8,
+  toUInt8: toUInt8,
+  toInt16: toInt16,
   toUInt16: toUInt16,
-  toInt32: toInt32, 
-  toUInt32: toUInt32, 
-  toBigInt64: toBigInt64, 
-  toBigUInt64: toBigUInt64, 
-  toFloat32: toFloat32, 
-  isInt8: isInt8, 
-  isUInt8: isUInt8, 
+  toInt32: toInt32,
+  toUInt32: toUInt32,
+  toBigInt64: toBigInt64,
+  toBigUInt64: toBigUInt64,
+  toFloat32: toFloat32,
+  isInt8: isInt8,
+  isUInt8: isUInt8,
   isInt16: isInt16,
-  isUInt16: isUInt16, 
-  isInt32: isInt32, 
-  isUInt32: isUInt32, 
-  isBigInt64: isBigInt64, 
+  isUInt16: isUInt16,
+  isInt32: isInt32,
+  isUInt32: isUInt32,
+  isBigInt64: isBigInt64,
   isBigUInt64: isBigUInt64
 };
 
