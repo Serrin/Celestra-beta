@@ -36,10 +36,10 @@ DEV and MIN editions: If the `CEL` global variable is used before the loading of
 
 Some polyfills have been removed in v3.1.0 and v3.8.0. With these files can be reusued the old polyfills if needed.
 
-edition|filename|size
--------|--------|----
-developer|__celestra-polyfills.dev.js__|18019 byte
-minified|__celestra-polyfills.min.js__|11516 byte
+edition|filename
+-------|--------
+developer|__celestra-polyfills.dev.js__
+minified|__celestra-polyfills.min.js__
 
 
 ### Cheatsheets
