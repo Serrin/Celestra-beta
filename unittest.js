@@ -179,7 +179,7 @@ CUT.isNotEqual(
 (function(){
 "use strict";
 
-/* Celestra v5.5.0 testcases */
+/* Celestra v5.5.1 testcases */
 
 /* Not auto tested functions */
 CUT.addElement("hr");

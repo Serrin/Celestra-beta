@@ -15,19 +15,19 @@ __A helper JavaScript library with useful functions and polyfills.__
 
 Tested on desktop browsers (latest Firefox, latest Chrome, latest stable Chromium based Edge) and mobile devices (iOS Safari, Chrome, Firefox and Android Chrome, Samsung Internet, Firefox, Edge). This library isn't compatible with the Node.js.
 
-Latest version: 5.5.0
+Latest version: 5.5.1
 
 Date: 2022-12-15T18:46:13.356Z
 
 The functions are available in the `celestra` and/or `CEL` object.
 
-edition|filename|size
--------|--------|----
-developer|__celestra.dev.js__|67238 byte
-minified|__celestra.min.js__|42054 byte
-ES6 module|__celestra.esm.js__|41916 byte
-CUT testpage<br>Celestra Unit Tester|__unittest.html__|
-Version history|__history.md__|
+edition|filename
+-------|--------
+developer|__celestra.dev.js__
+minified|__celestra.min.js__
+ES6 module|__celestra.esm.js__
+CUT testpage<br>Celestra Unit Tester|__unittest.html__
+Version history|__history.md__
 
 DEV and MIN editions: If the `CEL` global variable is used before the loading of the library, then the value of the variable is saved and you can restore with the `noConflict();` function.
 

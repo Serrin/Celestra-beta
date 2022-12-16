@@ -1,6 +1,6 @@
 /**
  * @name Celestra
- * @version 5.5.0 dev
+ * @version 5.5.1 dev
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
@@ -1905,7 +1905,7 @@ const isBigUInt64 = (v) =>
 
 /** object header **/
 
-const VERSION = "Celestra v5.5.0 dev";
+const VERSION = "Celestra v5.5.1 dev";
 
 /* celestra.noConflict(): celestra object */
 function noConflict () { window.CEL = celestra.__prevCEL__; return celestra; }
