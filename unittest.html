@@ -50,17 +50,22 @@ html, body { font-family: consolas, monospace !important; }
 #bottomlink { right: 20px; bottom: 20px; }
 button {
   /*font-size: 0.9rem;*/
-  font-family: consolas, monospace;
+  /*font-family: consolas, monospace;*/
+  text-align: center !important;
+  border: 2px outset ThreeDLightShadow;
+  border-radius: 4px;
+  color: black;
 }
+textarea, #preCelLog { border-radius: 4px; }
 
 </style>
 </head>
 <body class="container">
 
-<!--div><a href="#top" id="toplink">&Uparrow;</a></div>
-<div><a href="#bottom" id="bottomlink">&Downarrow;</a></div-->
+<!--
 <div><a href="#top"><button id="toplink">&Uparrow;</button></a></div>
 <div><a href="#bottom"><button id="bottomlink">&Downarrow;</button></a></div>
+-->
 
 <header class="center" id="top" name="top">
   <h1>Celestra Unit Tester (CUT)</h1>
@@ -95,7 +100,7 @@ button {
     <td class="noborder">
       <p><button onclick=" CEL.importScript('unittest.js'); preCelLog('load <b>unittest.js</b>'); ">load unittest.js</button></p>
       <p><button onclick=" window.location.reload(true); ">reset page</button></p>
-      <p><button onclick=" saveResults(); ">Save result in HTML</button></p>
+      <p><button onclick=" saveResults(); ">save result in HTML</button></p>
     </td>
     <td class="noborder">
       <div id="preCelLog" class="padding bg-black font-monospace border" style="min-height: 150px; min-width: 250px;"></div>
