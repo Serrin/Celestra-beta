@@ -55,11 +55,11 @@ BTC standalone app: __btc.app.html__
 
 RPG dice roller: __testgame.html__
 
-Demo plugin documentation: __celestra-demoPlugin.html__
+Demo plugin documentation: __celestra-demo-plugin.html__
 
-Demo plugin developer source: __celestra-demoPlugin.dev.js__
+Demo plugin developer source: __celestra-demo-plugin.dev.js__
 
-Demo plugin minified source: __celestra-demoPlugin.min.js__
+Demo plugin minified source: __celestra-demo-plugin.min.js__
 
 
 ### How to import the ESM edition
