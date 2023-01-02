@@ -311,6 +311,26 @@ CUT.isTrue("assertEq(); 2",    CEL.assertEq("lorem ipsum", 1, true, false) );
 CUT.isTrue("assertNotEq(); 1", CEL.assertNotEq("lorem ipsum", 1, 2) );
 CUT.isTrue("assertNotEq(); 2", CEL.assertNotEq("lorem ipsum", 1, 2, false) );
 
+var nanoidStr = CEL.nanoid();
+CUT.isTrue("nanoid 1 - default size 21",
+  CEL.isString(nanoidStr) && nanoidStr.length === 21
+);
+CUT.log("<code>\""+nanoidStr+"\"</code>");
+var nanoidStr = CEL.nanoid(15);
+CUT.isTrue("nanoid 2 - size 15",
+  CEL.isString(nanoidStr) && nanoidStr.length === 15
+);
+CUT.log("<code>\""+nanoidStr+"\"</code>");
+var nanoidStr = CEL.nanoid(36);
+CUT.isTrue("nanoid 3 - size 36",
+  CEL.isString(nanoidStr) && nanoidStr.length === 36);
+CUT.log("<code>\""+nanoidStr+"\"</code>");
+var nanoidStr = CEL.nanoid(5, "abcdeFGHIJK42");
+CUT.isTrue("nanoid 4 - size 5 & \"abcdeFGHIJK42\"",
+  CEL.isString(nanoidStr) && nanoidStr.length === 5
+);
+CUT.log("<code>\""+nanoidStr+"\"</code>");
+
 CUT.addElement(
   CEL.domCreate("div", {"id": "qsaDivTestElement"},
     "#qsaDiv test element"

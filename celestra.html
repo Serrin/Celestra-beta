@@ -303,7 +303,7 @@ CEL.delay(5000)
     </tr>
     <tr>
       <td><code>randomString([length[,specialCharactersEnabled=false]]);</code></td>
-      <td>Generate a random string. The length parameter is optional and can be a number and the default value is 100. The specialCharactersEnabled parameter is optional and can be a boolean and the default value is false. Return the generated string.</td>
+      <td><span class="deprecated">DEPRECATED in v5.5.2</span><br/>Generate a random string. The length parameter is optional and can be a number and the default value is 100. The specialCharactersEnabled parameter is optional and can be a boolean and the default value is false. Return the generated string.</td>
     </tr>
     <tr>
       <td><code>inRange(&#60;value&#62;,&#60;min&#62;,&#60;max&#62;);</code></td>
@@ -443,12 +443,16 @@ console.log(o2);
       <td>This function unescapes these characters: <code>&#60;</code>, <code>&#62;</code>, <code>&amp;</code>, <code>"</code>, <code>'</code>. The String parameter is mandatory. The return value is the unescaped string.</td>
     </tr>
     <tr>
+      <td><code>nanoid([size=21[,alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"]]);</code></td>
+      <td>Generate a nanoid. The size parameter is optional and the default value is 21. The alphabet parameter is optional and the default value is "A-Za-z0-9_-". The return value is the generated nanoid (string).</td>
+    </tr>
+    <tr>
       <td><code>assertEq(&#60;msg&#62;,&#60;value1&#62;,&#60;value2&#62;[,strict=true]);</code></td>
-      <td>This function throws an error with the message if the value1 and value2 aren't equals. The message parameter is mandatory and has to be a string. The strict parameter is optional and can be a booelan. The return value is <code>true</code>, when the test was success.</td>
+      <td>This function throws an error with the message if the value1 and value2 aren't equals. The message parameter is mandatory and has to be a string. The strict parameter is optional and can be a boolean. The return value is <code>true</code>, when the test was success.</td>
     </tr>
     <tr>
       <td><code>assertNotEq(&#60;msg&#62;,&#60;value1&#62;,&#60;value2&#62;[,strict=true]);</code></td>
-      <td>This function throws an error with the message if the value1 and value2 are equals. The message parameter is mandatory and has to be a string. The strict parameter is optional and can be a booelan. The return value is <code>true</code>, when the test was success.</td>
+      <td>This function throws an error with the message if the value1 and value2 are equals. The message parameter is mandatory and has to be a string. The strict parameter is optional and can be a boolean. The return value is <code>true</code>, when the test was success.</td>
     </tr>
     <tr>
       <td><code>assertTrue(&#60;msg&#62;,&#60;value&#62;);</code></td>

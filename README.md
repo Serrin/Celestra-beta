@@ -144,7 +144,7 @@ Name | Description
 `randomFloat([max]);` | Get a random float number value within 0 and max value. Without parameter the maximum value is 100.
 `randomFloat(<min>,<max>);` | Get a random float number value within min and max value.
 `randomBoolean();` | Get a random boolean value. The return value is `true` or `false`.
-`randomString([length[,specialCharactersEnabled=false]]);` | Generate a random string. The length parameter is optional and can be a number and the default value is 100. The specialCharactersEnabled parameter is optional and can be a boolean and the default value is false. Return the generated string.
+`randomString([length[,specialCharactersEnabled=false]]);` | __DEPRECATED in v5.5.2__ <br>Generate a random string. The length parameter is optional and can be a number and the default value is 100. The specialCharactersEnabled parameter is optional and can be a boolean and the default value is false. Return the generated string.
 `inRange(<value>,<min>,<max>);`| This function determines whether the provided value is between the min and max values. All of the parameters are mandatory and have to be number. The return value is boolean.
 `b64Encode(<string>);` | Unicode compatible string to base64 converter. Return the encoded string.
 `b64Decode(<string>);` | Unicode compatible base64 to string converter. Return the original string.
@@ -175,6 +175,7 @@ Name | Description
 `F();` | This function returns false.
 `strHTMLEscape(<string>);` | This function escapes these characters: `<`, `>`, `&`, `"`, `'`. The String parameter is mandatory. The return value is the escaped string.
 `strHTMLUnEscape(<string>);` | This function unescapes these characters: `<`, `>`, `&`, `"`, `'`. The String parameter is mandatory. The return value is the unescaped string.
+`nanoid([size=21[,alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"]]);` | Generate a nanoid. The size parameter is optional and the default value is 21. The alphabet parameter is optional and the default value is "A-Za-z0-9_-". The return value is the generated nanoid (string).
 `assertEq(<msg>,<value1>,<value2>[,strict=true]);` | This function throws an error with the message if the value1 and value2 aren't equals. The message parameter is mandatory and has to be a string. The strict parameter is optional and can be a booelan. The return value is `true`, when the test was success.
 `assertNotEq(<msg>,<value1>,<value2>[,strict=true]);` | This function throws an error with the message if the value1 and value2 are equals. The message parameter is mandatory and has to be a string. The strict parameter is optional and can be a booelan. The return value is `true`, when the test was success.
 `assertTrue(<msg>,<value>);` | This function throws an error with the message if the value is false. The message parameter is mandatory and has to be a string. The return value is `true`, when the test was success.

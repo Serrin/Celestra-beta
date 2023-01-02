@@ -634,6 +634,16 @@ const strHTMLUnEscape = (s) => String(s)
   .replace(/&quot;/g, '"').replace(/&#34;/g, '"')
   .replace(/&apos;/g, "'").replace(/&#39;/g, "'");
 
+/* nanoid([size=21[,alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"]]): string */
+function nanoid (size = 21, alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-") {
+  var r = "", dl = alphabet.length, pos, i = size;
+  while (i--) {
+    do { pos = crypto.getRandomValues(new Uint8Array(1))[0]; } while (pos>=dl);
+    r += alphabet[pos];
+  }
+  return r;
+}
+
 /** DOM **/
 
 /* qsa(<selector: string>[,context: element object]): array */
@@ -1959,6 +1969,7 @@ var celestra = {
   assertFalse: assertFalse,
   strHTMLEscape: strHTMLEscape,
   strHTMLUnEscape: strHTMLUnEscape,
+  nanoid: nanoid,
   /** DOM **/
   qsa: qsa,
   qs: qs,
