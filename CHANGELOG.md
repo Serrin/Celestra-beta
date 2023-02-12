@@ -1,6 +1,32 @@
 
 # Celestra version history
 
+
+## Celestra v5.5.2
+
+1. Documentation and pdf fixes.
+
+2. Add Map and Set objects in the __js-cheatsheet.odt__ and __js-cheatsheet.pdf__.
+
+3. Rename these files:
+
+|Old name|New name|
+|--------|--------|
+|celestra-demoPlugin.html|celestra-demo-plugin.html|
+|celestra-demoPlugin.dev.js|celestra-demo-plugin.dev.js|
+|celestra-demoPlugin.min.js|celestra-demo-plugin.min.js|
+|history.md|CHANGELOG.md|
+
+4. Deprecate the function `randomString([length[,specialCharactersEnabled=false]]);`
+
+5. Add a new function: `nanoid([size=21[,alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"]]);`
+
+6. __Celestra Unit Tester (CUT) v0.8.25:__ 
+- CSS and text changes
+- UP & DOWN buttons have been removed, because these caused errors on the test server.
+- Added UTC, local and Epoch time in the log.
+
+
 ## Celestra v5.5.1
 
 1. Documentation and pdf fixes.

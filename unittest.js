@@ -76,10 +76,14 @@ CUT.clear = function clear () { CUT.__results__.innerHTML = ""; };
 
 //CUT.addElement("hr");
 
+const today = new Date();
+
 CUT.addElement("table",
   "<tr><td>CUT: </td><td><code>"+CUT.VERSION+"</code></td></tr>"
     + "<tr><td>Celestra: </td><td><code>"+celestra.VERSION+"</code></td></tr>"
-    + "<tr><td>Date: </td><td><code>"+(new Date()).toISOString()+"</code></td></tr>"
+    + "<tr><td>UTC date: </td><td><code>"+today.toISOString()+"</code></td></tr>"
+    + "<tr><td>Local date: </td><td><code>"+today.toString()+"</code></td></tr>"
+    + "<tr><td>EPOCH time: </td><td><code>"+(+today) + " (10) / " + ((+today).toString(16)) + " (16) / " + ((+today).toString(36)) + " (36)" +"</code></td></tr>"
     + "<tr><td>navigator.appName: </td><td><code>"+navigator.appName+"</code></td></tr>"
     + "<tr><td>navigator.appCodeName: </td><td><code>"+navigator.appCodeName+"</code></td></tr>"
     + "<tr><td>navigator.product: </td><td><code>"+navigator.product+"</code></td></tr>"

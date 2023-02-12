@@ -17,7 +17,7 @@ Tested on desktop browsers (latest Firefox, latest Chrome, latest stable Chromiu
 
 Latest version: 5.5.2
 
-Date: 2022-12-15T18:26:58.873Z
+Date: 2023-02-10T19:42:08.109Z
 
 The functions are available in the `celestra` and/or `CEL` object.
 
@@ -27,7 +27,7 @@ developer|__celestra.dev.js__
 minified|__celestra.min.js__
 ES6 module|__celestra.esm.js__
 CUT testpage<br>Celestra Unit Tester|__unittest.html__
-Version history|__history.md__
+Version history|__CHANGELOG.md__
 
 DEV and MIN editions: If the `CEL` global variable is used before the loading of the library, then the value of the variable is saved and you can restore with the `noConflict();` function.
 
