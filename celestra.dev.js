@@ -969,6 +969,9 @@ const domSetCSSVar = (n, v) =>
 /* domToTop(): undefined */
 const domToTop = () => window.scrollTo(0,0);
 
+/* domToBottom(): undefined */
+const domToBottom = () => window.scrollTo(0, document.body.scrollHeight);
+
 /** AJAX **/
 /* getJson(); and getText(); shorthands -> ajax(); */
 
@@ -2006,6 +2009,7 @@ var celestra = {
   domGetCSSVar: domGetCSSVar,
   domSetCSSVar: domSetCSSVar,
   domToTop: domToTop,
+  domToBottom: domToBottom,
   /** AJAX **/
   getText: getText,
   getJson: getJson,
