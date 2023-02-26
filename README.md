@@ -15,9 +15,9 @@ __A helper JavaScript library with useful functions and polyfills.__
 
 Tested on desktop browsers (latest Firefox, latest Chrome, latest stable Chromium based Edge) and mobile devices (iOS Safari, Chrome, Firefox and Android Chrome, Samsung Internet, Firefox, Edge). This library isn't compatible with the Node.js.
 
-Latest version: 5.5.2
+Latest version: 5.5.3
 
-Date: 2023-02-10T19:42:08.109Z
+Date: 2023-03-31T19:55:13.050Z
 
 The functions are available in the `celestra` and/or `CEL` object.
 
@@ -223,6 +223,7 @@ Name | Description
 `setFullscreenOff();` | Set off the fullscreen.
 `domGetCSSVar(<name>);` | This function returns a value of a CSS variable or an empty string, if the variable is unset. The name parameter is mandatory and has to be a string. If the "--" characters are missing at the begin of the variable name, then the function will add these.
 `domSetCSSVar(<name>,<value>);` | This function set a value of a CSS variable. Both of the parameters are mandatory and have to be a string. If the "--" characters are missing at the begin of the variable name, then the function will add these.
+`domToTop();` | This function is scrolling to the top of the page.
 
 
 ### AJAX and CORS

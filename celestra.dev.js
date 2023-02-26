@@ -1,6 +1,6 @@
 /**
  * @name Celestra
- * @version 5.5.2 dev
+ * @version 5.5.3 dev
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
@@ -966,6 +966,9 @@ const domGetCSSVar = (n) => getComputedStyle(document.documentElement)
 const domSetCSSVar = (n, v) =>
   document.documentElement.style.setProperty( (n[0] === "-" ? n : "--" + n), v);
 
+/* domToTop(): undefined */
+const domToTop = () => window.scrollTo(0,0);
+
 /** AJAX **/
 /* getJson(); and getText(); shorthands -> ajax(); */
 
@@ -1915,7 +1918,7 @@ const isBigUInt64 = (v) =>
 
 /** object header **/
 
-const VERSION = "Celestra v5.5.2 dev";
+const VERSION = "Celestra v5.5.3 dev";
 
 /* celestra.noConflict(): celestra object */
 function noConflict () { window.CEL = celestra.__prevCEL__; return celestra; }
@@ -2002,6 +2005,7 @@ var celestra = {
   setFullscreenOff: setFullscreenOff,
   domGetCSSVar: domGetCSSVar,
   domSetCSSVar: domSetCSSVar,
+  domToTop: domToTop,
   /** AJAX **/
   getText: getText,
   getJson: getJson,
