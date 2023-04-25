@@ -2,6 +2,24 @@
 # Celestra version history
 
 
+## Celestra v5.5.3
+
+1. Documentation and pdf fixes.
+
+2. Add these functions: `domToTop();`, `domToBottom();`
+
+3. Add these polyfills:
+````javascript
+Array.prototype.toReversed();
+Array.prototype.toSorted();
+Array.prototype.toSpliced();
+Array.prototype.with();
+TypedArray.prototype.toReversed();
+TypedArray.prototype.toSorted();
+TypedArray.prototype.with();
+````
+
+
 ## Celestra v5.5.2
 
 1. Documentation and pdf fixes.
