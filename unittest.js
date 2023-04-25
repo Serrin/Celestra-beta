@@ -1550,6 +1550,43 @@ CUT.isEqual("clearCookies(); <i>(settings object)</i>", "truetruefalsefalse",
 CUT.addElement("hr");
 CUT.addElement("h3", "polyfills");
 
+var arrayCopy = [4,2,5], arrayCopyStr = "[4,2,5]";
+CUT.isTrue("Array.prototype.toReversed();",
+  JSON.stringify(arrayCopy.toReversed()) === "[5,2,4]"
+  && JSON.stringify(arrayCopy) === arrayCopyStr
+);
+CUT.isTrue("Array.prototype.toSorted();",
+  JSON.stringify(arrayCopy.toSorted()) === "[2,4,5]"
+  && JSON.stringify(arrayCopy) === arrayCopyStr
+);
+CUT.isTrue("Array.prototype.toSpliced(); remove",
+  JSON.stringify(arrayCopy.toSpliced(1,1)) === "[4,5]"
+  && JSON.stringify(arrayCopy) === arrayCopyStr
+);
+CUT.isTrue("Array.prototype.toSpliced(); remove and add 2 items",
+  JSON.stringify(arrayCopy.toSpliced(1,1,89,79)) === "[4,89,79,5]"
+  && JSON.stringify(arrayCopy) === arrayCopyStr
+);
+CUT.isTrue("Array.prototype.with();",
+  JSON.stringify(arrayCopy.with(1,7)) === "[4,7,5]"
+  && JSON.stringify(arrayCopy) === arrayCopyStr
+);
+
+var Uint8ArrayCopy = new Uint8Array([4,2,5]);
+var Uint8ArrayCopyStr = "{\"0\":4,\"1\":2,\"2\":5}";
+CUT.isTrue("TypedArray.prototype.toReversed();",
+  JSON.stringify(Uint8ArrayCopy.toReversed()) === "{\"0\":5,\"1\":2,\"2\":4}"
+  && JSON.stringify(Uint8ArrayCopy) === Uint8ArrayCopyStr
+);
+CUT.isTrue("TypedArray.prototype.toSorted();",
+  JSON.stringify(Uint8ArrayCopy.toSorted()) === "{\"0\":2,\"1\":4,\"2\":5}"
+  && JSON.stringify(Uint8ArrayCopy) === Uint8ArrayCopyStr
+);
+CUT.isTrue("TypedArray.prototype.with();",
+  JSON.stringify(Uint8ArrayCopy.with(1,7)) === "{\"0\":4,\"1\":7,\"2\":5}"
+  && JSON.stringify(Uint8ArrayCopy) === Uint8ArrayCopyStr
+);
+
 var objIsStr = "", isArr = [1,2], isTest = { x: 12 };
 objIsStr += Object.is("lorem", "lorem");
 objIsStr += Object.is(-0, -0);

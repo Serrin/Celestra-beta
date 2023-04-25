@@ -348,6 +348,68 @@ if (!("findLastIndex" in Uint8Array.prototype)) {
   });
 }
 
+/* Array.prototype.toReversed(); */
+if (!("toReversed" in Array.prototype)) {
+  Object.defineProperty(Array.prototype, "toReversed", {
+    "configurable": true, "writable": true, "enumerable": false,
+    "value": function () { "use strict"; return this.slice().reverse(); }
+  });
+}
+
+/* Array.prototype.toSorted(); */
+if (!("toSorted" in Array.prototype)) {
+  Object.defineProperty(Array.prototype, "toSorted", {
+    "configurable": true, "writable": true, "enumerable": false,
+    "value": function (cFn) { "use strict"; return this.slice().sort(cFn); }
+  });
+}
+
+/* Array.prototype.toSpliced(); */
+if (!("toSpliced" in Array.prototype)) {
+  Object.defineProperty(Array.prototype, "toSpliced", {
+    "configurable": true, "writable": true, "enumerable": false,
+    "value": function (start, deleteCount, ...items) {
+      var r = this.slice(); r.splice(start, deleteCount, ...items); return r;
+    }
+  });
+}
+
+/* Array.prototype.with(); */
+if (!("with" in Array.prototype)) {
+  Object.defineProperty(Array.prototype, "with", {
+    "configurable": true, "writable": true, "enumerable": false,
+    "value": function (i, v) {
+      "use strict"; var r = this.slice(); r[i] = v; return r;
+    }
+  });
+}
+
+/* TypedArray.prototype.toReversed(); */
+if (!("toReversed" in Uint8Array.prototype)) {
+  Object.defineProperty(Uint8Array.prototype, "toReversed", {
+    "configurable": true, "writable": true, "enumerable": false,
+    "value": function () { "use strict"; return this.slice().reverse(); }
+  });
+}
+
+/* TypedArray.prototype.toSorted(); */
+if (!("toSorted" in Uint8Array.prototype)) {
+  Object.defineProperty(Uint8Array.prototype, "toSorted", {
+    "configurable": true, "writable": true, "enumerable": false,
+    "value": function (cFn) { "use strict"; return this.slice().sort(cFn); }
+  });
+}
+
+/* TypedArray.prototype.with(); */
+if (!("with" in Uint8Array.prototype)) {
+  Object.defineProperty(Uint8Array.prototype, "with", {
+    "configurable": true, "writable": true, "enumerable": false,
+    "value": function (i, v) {
+      "use strict"; var r = this.slice(); r[i] = v; return r;
+    }
+  });
+}
+
 /** non-standard polyfills **/
 
 /* window.GeneratorFunction(); */
