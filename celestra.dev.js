@@ -430,7 +430,7 @@ if (!!window.BigInt && !("toJSON" in BigInt.prototype)) {
   });
 }
 
-/** core api **/
+/** Core API **/
 
 /* randomID([hyphens = true][,usedate = false]) : string */
 function randomID (hyphens = true, useDate = false) {
@@ -696,7 +696,7 @@ function nanoid (size = 21, alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmn
   return r;
 }
 
-/** DOM **/
+/** DOM API **/
 
 /* qsa(<selector: string>[,context: element object]): array */
 const qsa = (s, c = document) => Array.from(c.querySelectorAll(s));
@@ -1024,7 +1024,7 @@ const domToTop = () => window.scrollTo(0,0);
 /* domToBottom(): undefined */
 const domToBottom = () => window.scrollTo(0, document.body.scrollHeight);
 
-/** AJAX **/
+/** AJAX API **/
 /* getJson(); and getText(); shorthands -> ajax(); */
 
 /* getText(<url: string>,<success: function>): undefined */
@@ -1120,7 +1120,7 @@ function ajax (o) {
   }
 }
 
-/** type checking **/
+/** Type checking API **/
 
 /* isTruthy(<value: any>): boolean */
 const isTruthy = (v) => !!v;
@@ -1329,7 +1329,7 @@ const isGeneratorFn = (v) => (Object.getPrototypeOf(v).constructor ===
 const isAsyncFn = (v) => (Object.getPrototypeOf(v).constructor ===
   Object.getPrototypeOf(async function(){}).constructor);
 
-/** cookie **/
+/** Cookie API **/
 
 /* setCookie(<Options object>): undefined */
 /* setCookie(<name: string>,<value: string> [,hours=8760[,path="/"[,domain
@@ -1429,7 +1429,7 @@ function clearCookies (path = "/", domain, secure, SameSite = "Lax", HttpOnly) {
   }
 }
 
-/** collections **/
+/** Collections API **/
 
 /* arrayDeepClone(<array>): array */
 function arrayDeepClone ([...a]) {
@@ -1816,7 +1816,7 @@ function join (it, sep = ",") {
 /* withOut(<collection>,<filterCollection>): array */
 const withOut = ([...a], [...fl]) => a.filter( (e) => fl.indexOf(e) === -1 );
 
-/** abstract **/
+/** Abstract API **/
 
 /* getInV(<value: any>,<property: string>): any OR throw error */
 function getInV (V,P) { if(V==null){ throw TypeError(); } return Object(V)[P]; }
@@ -1876,7 +1876,7 @@ const createDataProperty = (O, P, V) => Object.defineProperty(
 /* toArray(<value: array OR iterable OR arraylike>): array */
 function toArray (O) { return (Array.isArray(O) ? O : Array.from(O)); }
 
-/** math **/
+/** Math API **/
 
 /* sum(<value1>[,valueN]): number */
 const sum = (f, ...a) => a.reduce((acc, v) => acc + v, f);
@@ -2002,7 +2002,7 @@ var celestra = {
   /** object header **/
   VERSION: VERSION,
   noConflict: noConflict,
-  /** core api **/
+  /** Core API **/
   randomID: randomID,
   delay: delay,
   sleep: sleep,
@@ -2045,7 +2045,7 @@ var celestra = {
   strHTMLEscape: strHTMLEscape,
   strHTMLUnEscape: strHTMLUnEscape,
   nanoid: nanoid,
-  /** DOM **/
+  /** DOM API **/
   qsa: qsa,
   qs: qs,
   domReady: domReady,
@@ -2079,11 +2079,11 @@ var celestra = {
   domSetCSSVar: domSetCSSVar,
   domToTop: domToTop,
   domToBottom: domToBottom,
-  /** AJAX **/
+  /** AJAX API **/
   getText: getText,
   getJson: getJson,
   ajax: ajax,
-  /** type checking **/
+  /** Type checking API **/
   isTruthy: isTruthy,
   isFalsy: isFalsy,
   isAsyncGeneratorFn: isAsyncGeneratorFn,
@@ -2132,13 +2132,13 @@ var celestra = {
   isTypedArray: isTypedArray,
   isGeneratorFn: isGeneratorFn,
   isAsyncFn: isAsyncFn,
-  /** cookie **/
+  /** Cookie API **/
   setCookie: setCookie,
   getCookie: getCookie,
   hasCookie: hasCookie,
   removeCookie: removeCookie,
   clearCookies: clearCookies,
-  /** collections **/
+  /** Collections API **/
   arrayDeepClone: arrayDeepClone,
   arrayCreate: arrayCreate,
   initial: initial,
@@ -2208,7 +2208,7 @@ var celestra = {
   flat: flat,
   join: join,
   withOut: withOut,
-  /** abstract **/
+  /** Abstract API **/
   getInV: getInV,
   getIn: getIn,
   setIn: setIn,
@@ -2226,7 +2226,7 @@ var celestra = {
   toInteger: toInteger,
   createDataProperty:createDataProperty,
   toArray: toArray,
-  /** math **/
+  /** Math API **/
   sum: sum,
   avg: avg,
   product: product,

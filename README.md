@@ -177,7 +177,7 @@ Name | Description
 `assertFalse(<msg>,<value>);` | This function throws an error with the message if the value is true. The message parameter is mandatory and has to be a string. The return value is `true`, when the test was success.
 
 
-### DOM functions
+### DOM API
 
 These functions are available in the `celestra` and/or `CEL` objects.
 
@@ -222,7 +222,7 @@ Name | Description
 `domToBottom();` | This function is scrolling to the bottom of the page.
 
 
-### AJAX and CORS
+### AJAX and CORS API
 
 __These functions aren't deprecated, but it's recommend to use the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API), because it's [supported](https://caniuse.com/?search=fetch) in every modern browsers.__
 
@@ -249,7 +249,7 @@ __Options object properties:__
  - The __password__ is optional, but mandatory if the user is set. This parameter can be a __string__.
 
 
-### Type checking functions
+### Type checking API
 
 These functions are available in the `celestra` and/or `CEL` objects.
 
@@ -307,7 +307,7 @@ Name | Description
 `isTypedArray(<value>);` | This function determines whether the provided value is an typedarray. The return value is boolean.
 
 
-### Cookie functions
+### Cookie API
 
 These functions are available in the `celestra` and/or `CEL` objects.
 
@@ -327,7 +327,7 @@ Name | Description
 `clearCookies(<Options object>);` | In this case the names of object properties are the same as the function arguments and the default values are the same too.
 
 
-### Collections
+### Collections API
 
 These functions are available in the `celestra` and/or `CEL` objects.
 
@@ -406,7 +406,7 @@ Name | Description
 `dropRightWhile(<collection>,<callback>);` | Drop the elements from the end of a collection while the callback (filter) function returns true and yield the remained elements. The original collection will be not changed. The callback function will be called with the actual element of the collection. The collection parameter is mandatory. The callback parameter is mandatory and has to be a function.
 
 
-### Abstract functions
+### Abstract API
 
 These functions are available in the `celestra` and/or `CEL` objects.
 
@@ -434,7 +434,7 @@ Name | Description
 `toArray(<value>);`|If the value is an array, then this function returns the value else converts the value to array or the return value is an empty array.
 
 
-### Math functions
+### Math API
 
 These functions are available in the `celestra` and/or `CEL` objects.
 
