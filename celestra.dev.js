@@ -1,6 +1,6 @@
 /**
  * @name Celestra
- * @version 5.5.3 dev
+ * @version 5.5.4 dev
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
@@ -448,27 +448,10 @@ function randomID (hyphens = true, useDate = false) {
   }
 }
 
-/* signbit(<value: any>): boolean */
-const signbit = (v) => (((v = +v) !== v) ? !1 : ((v < 0) || Object.is(v, -0)));
-
 /* delay(<ms: integer>).then(<callback: function>): promise */
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 /* sleep(<ms: integer>).then(<callback: function>): promise */
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
-/* randomInt([max: int] OR <min: int>,<max: int>): int */
-function randomInt (i = 100, a) {
-  if (a == null) { a = i; i = 0; }
-  i = Math.ceil(+i);
-  return Math.floor(Math.random() * (Math.floor(+a) - i + 1) + i);
-}
-
-/* randomFloat([max: float] OR <min: float>,<max: float>): float */
-function randomFloat (i = 100, a) {
-  if (a == null) { a = i; i = 0; }
-  var r = (Math.random() * (a - i + 1)) + i;
-  return r > a ? a : r;
-}
 
 /* randomBoolean(): boolean */
 const randomBoolean = () => (Math.random() >= 0.5);
@@ -481,9 +464,6 @@ function randomString (pl = 100, sc = false) {
   for (var i = 0; i < pl; i++) { s += chars[Math.floor(Math.random()*l)]; }
   return s;
 }
-
-/* inRange(<value: number>,<min: number>,<max: number>): boolean */
-const inRange = (v, i, a) => (v >= i && v <= a);
 
 /* b64Encode(<string>): string */
 function b64Encode (s) {
@@ -616,8 +596,18 @@ const strCodePoints = (s) => Array.from(String(s), (v) => v.codePointAt(0) );
 /* strFromCodePoints(<collection>): string */
 const strFromCodePoints = ([...a]) => String.fromCodePoint.apply(null, a);
 
-/* strAt(<string>,<index: integer>): string */
-const strAt = (s, i) => (Array.from(String(s)).at(i) || "");
+/* strAt(<string>,<index: integer>[,newChar: string]): string */
+function strAt (s, i, nC) {
+  var a = Array.from(String(s));
+  if (nC == null) { return a.at(i) || ""; }
+  i = i < 0 ? a.length + i : i;
+  if (i > a.length) { return a.join(""); }
+  a[i] = nC;
+  return a.join("");
+}
+
+/* strSplice(<string>,<index: integer>,<count: integer>[,add: string]): string */
+const strSplice = (s, i, c, ...add) => Array.from(s).toSpliced(i, c, add.join("")).join("");
 
 /* sizeIn(<object>): integer */
 const sizeIn = (o) => Object.keys(o).length;
@@ -1981,9 +1971,29 @@ const isBigInt64 = (v) => (typeof v === "bigint"
 const isBigUInt64 = (v) =>
   (typeof v === "bigint" ? (v >= 0 && v <= Math.pow(2,64)-1) : false);
 
+/* signbit(<value: any>): boolean */
+const signbit = (v) => (((v = +v) !== v) ? !1 : ((v < 0) || Object.is(v, -0)));
+
+/* randomInt([max: int] OR <min: int>,<max: int>): int */
+function randomInt (i = 100, a) {
+  if (a == null) { a = i; i = 0; }
+  i = Math.ceil(+i);
+  return Math.floor(Math.random() * (Math.floor(+a) - i + 1) + i);
+}
+
+/* randomFloat([max: float] OR <min: float>,<max: float>): float */
+function randomFloat (i = 100, a) {
+  if (a == null) { a = i; i = 0; }
+  var r = (Math.random() * (a - i + 1)) + i;
+  return r > a ? a : r;
+}
+
+/* inRange(<value: number>,<min: number>,<max: number>): boolean */
+const inRange = (v, i, a) => (v >= i && v <= a);
+
 /** object header **/
 
-const VERSION = "Celestra v5.5.3 dev";
+const VERSION = "Celestra v5.5.4 dev";
 
 /* celestra.noConflict(): celestra object */
 function noConflict () { window.CEL = celestra.__prevCEL__; return celestra; }
@@ -1994,14 +2004,10 @@ var celestra = {
   noConflict: noConflict,
   /** core api **/
   randomID: randomID,
-  signbit: signbit,
   delay: delay,
   sleep: sleep,
-  randomInt: randomInt,
-  randomFloat: randomFloat,
   randomBoolean: randomBoolean,
   randomString: randomString,
-  inRange: inRange,
   b64Encode: b64Encode,
   b64Decode: b64Decode,
   javaHash: javaHash,
@@ -2020,6 +2026,7 @@ var celestra = {
   strCodePoints: strCodePoints,
   strFromCodePoints: strFromCodePoints,
   strAt: strAt,
+  strSplice: strSplice,
   sizeIn: sizeIn,
   forIn: forIn,
   filterIn: filterIn,
@@ -2242,7 +2249,11 @@ var celestra = {
   isInt32: isInt32,
   isUInt32: isUInt32,
   isBigInt64: isBigInt64,
-  isBigUInt64: isBigUInt64
+  isBigUInt64: isBigUInt64,
+  signbit: signbit,
+  randomInt: randomInt,
+  randomFloat: randomFloat,
+  inRange: inRange  
 };
 
 if (typeof window !== "undefined") {

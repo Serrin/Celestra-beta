@@ -210,7 +210,7 @@ window.CEL = defaultExport;
 <h3>Core API</h3>
 
 <p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
-<br/>Example: <code>CEL.randomInt();</code></p>
+<br/>Example: <code>CEL.randomID();</code></p>
 
 <div>
   <table class="table-responsive table-striped">
@@ -247,20 +247,6 @@ window.CEL = defaultExport;
       </td>
     </tr>
     <tr>
-      <td><code>signbit(&#60;value&#62;);</code></td>
-      <td>
-        <p>This function is based on this proposal:
-          <br/><a href="https://github.com/tc39/proposal-Math.signbit" target="_blank">https://github.com/tc39/proposal-Math.signbit</a>
-        </p>
-        <pre>Returns whether the sign bit of x is set.
-If n is NaN, the result is false.
-If n is -0, the result is true.
-If n is negative, the result is true.
-Otherwise, the result is false.</pre>
-        <p>The value parameter is mandatory.</p>
-      </td>
-    </tr>
-    <tr>
       <td><code>delay(&#60;ms&#62;).then(&#60;callback&#62;);</code></td>
       <td>
 			  <p>A promise based delay function. The ms parameter is mandatory and have to be an integer (milliseconds).</p>
@@ -282,32 +268,12 @@ CEL.delay(5000)
       <td>Prototype inheritance.</td>
     </tr>
     <tr>
-      <td><code>randomInt([max]);</code></td>
-      <td>Get a random integer number value within 0 and max value. Without parameter the maximum value is 100.</td>
-    </tr>
-    <tr>
-      <td><code>randomInt(&#60;min&#62;,&#60;max&#62;);</code></td>
-      <td>Get a random integer number value within min and max value.</td>
-    </tr>
-    <tr>
-      <td><code>randomFloat([max]);</code></td>
-      <td>Get a random float number value within 0 and max value. Without parameter the maximum value is 100.</td>
-    </tr>
-    <tr>
-      <td><code>randomFloat(&#60;min&#62;,&#60;max&#62;);</code></td>
-      <td>Get a random float number value within min and max value.</td>
-    </tr>
-    <tr>
       <td><code>randomBoolean();</code></td>
       <td>Get a random boolean value. The return value is <code>true</code> or <code>false</code>.</td>
     </tr>
     <tr>
       <td><code>randomString([length[,specialCharactersEnabled=false]]);</code></td>
       <td><span class="deprecated">DEPRECATED in v5.5.2</span><br/><span class="info">You can replace this function with the <code>CEL.nanoid();</code>.</span><br/>Generate a random string. The length parameter is optional and can be a number and the default value is 100. The specialCharactersEnabled parameter is optional and can be a boolean and the default value is false. Return the generated string.</td>
-    </tr>
-    <tr>
-      <td><code>inRange(&#60;value&#62;,&#60;min&#62;,&#60;max&#62;);</code></td>
-      <td>This function determines whether the provided value is between the min and max values. All of the parameters are mandatory and have to be number. The return value is boolean.</td>
     </tr>
     <tr>
       <td><code>b64Encode(&#60;string&#62;);</code></td>
@@ -379,8 +345,15 @@ CEL.delay(5000)
       <td>Returns the joined string of the given unicode codepoints. The collection parameter is mandatory.</td>
     </tr>
     <tr>
-      <td><code>strAt(&#60;string&#62;,&#60;index&#62;);</code></td>
-      <td>Returns the unicode character, which has to be on the given index in the string. The index can be negative value (<code>-1 -> last</code>). If the index is out of the string length, then the return value is an empty string. All of the parameters are mandatory and index has to be an integer.</td>
+      <td><code>strAt(&#60;string&#62;,&#60;index&#62;[,newChar]);</code></td>
+      <td>
+        <p>If the newchar is undefined, then returns the unicode character, which has to be on the given index in the string. The index can be negative value (<code>-1 -> last</code>). If the index is out of the string length, then the return value is an empty string. All of the parameters are mandatory and index has to be an integer.</p>
+        <p>If the newChar is not undefined, then the indexed character will be replaced with the newChar and returns the modified string.</p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>strSplice(&#60;str&#62;,&#60;index&#62;,&#60;count&#62;[,add]);</code></td>
+      <td>This function works like the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice" target="_blank">Array.prototype.splice();</a> and can remove characters on the index or replace with other string. The return value is the modified string.</td>
     </tr>
     <tr>
       <td><code>sizeIn(&#60;object&#62;);</code></td>
@@ -1518,6 +1491,40 @@ console.log(o2);
       <td><code>isBigUInt64(&#60;value&#62;);</code></td>
       <td>This function determines whether the provided value is a BigInt (Int64) value between 0 and 2^64 - 1. The return value is boolean.</td>
     </tr>
+    <tr>
+      <td><code>randomInt([max]);</code></td>
+      <td>Get a random integer number value within 0 and max value. Without parameter the maximum value is 100.</td>
+    </tr>
+    <tr>
+      <td><code>randomInt(&#60;min&#62;,&#60;max&#62;);</code></td>
+      <td>Get a random integer number value within min and max value.</td>
+    </tr>
+    <tr>
+      <td><code>randomFloat([max]);</code></td>
+      <td>Get a random float number value within 0 and max value. Without parameter the maximum value is 100.</td>
+    </tr>
+    <tr>
+      <td><code>randomFloat(&#60;min&#62;,&#60;max&#62;);</code></td>
+      <td>Get a random float number value within min and max value.</td>
+    </tr>
+    <tr>
+      <td><code>signbit(&#60;value&#62;);</code></td>
+      <td>
+        <p>This function is based on this proposal:
+          <br/><a href="https://github.com/tc39/proposal-Math.signbit" target="_blank">https://github.com/tc39/proposal-Math.signbit</a>
+        </p>
+        <pre>Returns whether the sign bit of x is set.
+If n is NaN, the result is false.
+If n is -0, the result is true.
+If n is negative, the result is true.
+Otherwise, the result is false.</pre>
+        <p>The value parameter is mandatory.</p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>inRange(&#60;value&#62;,&#60;min&#62;,&#60;max&#62;);</code></td>
+      <td>This function determines whether the provided value is between the min and max values. All of the parameters are mandatory and have to be number. The return value is boolean.</td>
+    </tr>    
   </table>
 </div>
 

@@ -183,7 +183,7 @@ CUT.isNotEqual(
 (function(){
 "use strict";
 
-/* Celestra v5.5.3 testcases */
+/* Celestra v5.5.4 testcases */
 
 /* Not auto tested functions */
 CUT.addElement("hr");
@@ -297,16 +297,6 @@ CUT.isTrue("randomID(true); with hyphens without date",
 CUT.log("<code>\"" + rIDstr + "\"</code>");
 
 // randomID end
-
-CUT.isTrue(
-  "signbit();",
-  !CEL.signbit("str") && !CEL.signbit("5") && CEL.signbit("-5")
-    && !CEL.signbit("4.2") && CEL.signbit("-4.2") && CEL.signbit(-3.14)
-    && !CEL.signbit(3.14) && CEL.signbit(-1) && !CEL.signbit(1)
-    && !CEL.signbit(0) && CEL.signbit(-0) && !CEL.signbit(+0)
-    && !CEL.signbit(Infinity) && CEL.signbit(-Infinity)
-    && !CEL.signbit(+Infinity)
-);
 
 CUT.isTrue("assertTrue();",    CEL.assertTrue("lorem ipsum", true) );
 CUT.isTrue("assertFalse();",   CEL.assertFalse("lorem ipsum", false) );
@@ -521,17 +511,6 @@ CUT.isEqual("form2string();",
 
 CEL.qs("#testFormDiv").remove();
 
-
-CUT.isTrue("randomInt();", CEL.randomInt() <= 101);
-CUT.isTrue("randomInt(max);", CEL.randomInt(30) <= 30);
-var testRandom = CEL.randomInt(51,55);
-CUT.isTrue("randomInt(min,max);", testRandom >= 51 && testRandom <= 55);
-
-CUT.isTrue("randomFloat();", CEL.randomFloat() <= 101);
-CUT.isTrue("randomFloat(max);", CEL.randomFloat(30) <= 30);
-var testRandom = CEL.randomFloat(51,55);
-CUT.isTrue("randomFloat(min,max);", testRandom >= 51 && testRandom <= 55);
-
 var testRandom = CEL.randomBoolean();
 CUT.isTrue("randomBoolean(); - <code>" + testRandom + "</code>",
   CEL.isBoolean(testRandom) && (testRandom === true || testRandom === false) );
@@ -554,12 +533,6 @@ rndStr = "1" + CEL.randomString(32,false);
 CUT.isEqual("randomString(); random \"btc\" address", true,
   CEL.isString(rndStr) && rndStr.length === 33 );
 CUT.log("<code>"+rndStr+"</code>");
-
-CUT.isTrue("inRange();",
-  CEL.inRange(4,3,6) && CEL.inRange(-3.14, -4.5, 9.21)
-    && !CEL.inRange(2,3,6) && !CEL.inRange(7,3,6)
-    && !CEL.inRange(-5.14, -4.5, 9.21) && !CEL.inRange(-9.24, -4.5, 9.21)
-);
 
 var kayleeStr = "✓ à \r\n\t árvíztűrő tükörfúrógép ÁRVÍZTŰRŐ TÜKÖRFÚRÓGÉP ,?;.:-_* ¤÷×¨¸´˙`˛°˘^ˇ~'+!%/=()|\\<> \" \/ #&@{}[]€ ÍÄíŁß 0123456789 asdfghjklqwertzuiopyxcvbnm ASDFGHJKLQWERTZUIOPYXCVBNM";
 CUT.isEqual("b64Encode();",
@@ -647,16 +620,36 @@ CUT.isEqual("strFromCodePoints(); + strCodePoints();", testUnicodeStr22222,
 
 CUT.isTrue("strAt();",
   CEL.strAt("\uD834\uDF06 ab cd",0) === "\uD834\uDF06"
-    && CEL.strAt("ab \uD834\uDF06 cd",3) === "\uD834\uDF06"
-    && CEL.strAt("ab cd \uD834\uDF06",-1) === "\uD834\uDF06"
-    && CEL.strAt("ab \uD834\uDF06 cd",0) === "a"
-    && CEL.strAt("ab \uD834\uDF06 cd",5) === "c"
-    && CEL.strAt("ab \uD834\uDF06 cd",-1) === "d"
-    && CEL.strAt("",0) === ""
-    && CEL.strAt("",3) === ""
-    && CEL.strAt("",-1) === ""
+    // get
+    && CEL.strAt("ab \uD834\uDF06 cd", 3) === "\uD834\uDF06"
+    && CEL.strAt("ab cd \uD834\uDF06", -1) === "\uD834\uDF06"
+    && CEL.strAt("ab \uD834\uDF06 cd", 0) === "a"
+    && CEL.strAt("ab \uD834\uDF06 cd", 5) === "c"
+    && CEL.strAt("ab \uD834\uDF06 cd", -1) === "d"
+    && CEL.strAt("", 0) === ""
+    && CEL.strAt("", 3) === ""
+    && CEL.strAt("", -1) === ""
+    // set
+    && CEL.strAt("ab \uD834\uDF06 cde", 3, "X") === "ab X cde"
+    && CEL.strAt("ab \uD834\uDF06 cde", -5, "X") === "ab X cde"
+    && CEL.strAt("ab \uD834\uDF06 cde", -2, "X") === "ab \uD834\uDF06 cXe"
+    && CEL.strAt("ab \uD834\uDF06 cde", 13, "X") === "ab \uD834\uDF06 cde"
+    && CEL.strAt("ab \uD834\uDF06 cde", -13, "X") === "ab \uD834\uDF06 cde"
+    && CEL.strAt("ab \uD834\uDF06 cde", 3, "") === "ab  cde"
+    && CEL.strAt("ab \uD834\uDF06 cde", -2, "") === "ab \uD834\uDF06 ce"
+    && CEL.strAt("ab \uD834\uDF06 cde", 12, "") === "ab \uD834\uDF06 cde"
+    && CEL.strAt("ab \uD834\uDF06 cde", -12, "") === "ab \uD834\uDF06 cde"
 );
 
+
+CUT.isTrue("strSplice();",
+  CEL.strSplice("\uD834\uDF06 ab cde",0, 10) === ""
+    && CEL.strSplice("ab \uD834\uDF06 cde", 4, 1) === "ab \uD834\uDF06cde"
+    && CEL.strSplice("ab \uD834\uDF06 cde", 4, 1, "X") === "ab \uD834\uDF06Xcde"
+    && CEL.strSplice("ab \uD834\uDF06 cde", 4, 1, "X", "Y") === "ab \uD834\uDF06XYcde"
+    && CEL.strSplice("ab \uD834\uDF06 cde", 4, 2, "X", "Y") === "ab \uD834\uDF06XYde"
+    && CEL.strSplice("ab \uD834\uDF06 cde", 5, 2, "") === "ab \uD834\uDF06 e"
+);
 
 var FPArray = [1,2,3];
 
@@ -2477,11 +2470,36 @@ CUT.isTrue("toArray();", toArrayA1 === CEL.toArray(toArrayA1)
   && JSON.stringify(CEL.toArray({"length":3, 0:7, 1:8, 2:9})) === "[7,8,9]"
 );
 
-
 /* math */
 
 CUT.addElement("hr");
 CUT.addElement("h3", "Math functions");
+
+CUT.isTrue("inRange();",
+  CEL.inRange(4,3,6) && CEL.inRange(-3.14, -4.5, 9.21)
+    && !CEL.inRange(2,3,6) && !CEL.inRange(7,3,6)
+    && !CEL.inRange(-5.14, -4.5, 9.21) && !CEL.inRange(-9.24, -4.5, 9.21)
+);
+
+CUT.isTrue("randomInt();", CEL.randomInt() <= 101);
+CUT.isTrue("randomInt(max);", CEL.randomInt(30) <= 30);
+var testRandom = CEL.randomInt(51,55);
+CUT.isTrue("randomInt(min,max);", testRandom >= 51 && testRandom <= 55);
+
+CUT.isTrue("randomFloat();", CEL.randomFloat() <= 101);
+CUT.isTrue("randomFloat(max);", CEL.randomFloat(30) <= 30);
+var testRandom = CEL.randomFloat(51,55);
+CUT.isTrue("randomFloat(min,max);", testRandom >= 51 && testRandom <= 55);
+
+CUT.isTrue(
+  "signbit();",
+  !CEL.signbit("str") && !CEL.signbit("5") && CEL.signbit("-5")
+    && !CEL.signbit("4.2") && CEL.signbit("-4.2") && CEL.signbit(-3.14)
+    && !CEL.signbit(3.14) && CEL.signbit(-1) && !CEL.signbit(1)
+    && !CEL.signbit(0) && CEL.signbit(-0) && !CEL.signbit(+0)
+    && !CEL.signbit(Infinity) && CEL.signbit(-Infinity)
+    && !CEL.signbit(+Infinity)
+);
 
 // clamp();
 CUT.isEqual("clamp - try 1", CEL.clamp(3,2,5), 3);
