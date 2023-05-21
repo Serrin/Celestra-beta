@@ -220,6 +220,7 @@ Name | Description
 `domSetCSSVar(<name>,<value>);` | This function set a value of a CSS variable. Both of the parameters are mandatory and have to be a string. If the "--" characters are missing at the begin of the variable name, then the function will add these.
 `domToTop();` | This function is scrolling to the top of the page.
 `domToBottom();` | This function is scrolling to the bottom of the page.
+`domScrollToElement(<element>[,top=true]);` | This function is scrolling to top or the bottom of element. The element parameter is mandatory and the top parameter is optional and can be boolean.
 
 
 ### AJAX and CORS API

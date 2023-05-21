@@ -1024,6 +1024,9 @@ const domToTop = () => window.scrollTo(0,0);
 /* domToBottom(): undefined */
 const domToBottom = () => window.scrollTo(0, document.body.scrollHeight);
 
+/* domScrollToElement(<element>[,top=true]): undefined */
+const domScrollToElement = (e, top = true) => e.scrollIntoView(top);
+
 /** AJAX API **/
 /* getJson(); and getText(); shorthands -> ajax(); */
 
@@ -2079,6 +2082,7 @@ var celestra = {
   domSetCSSVar: domSetCSSVar,
   domToTop: domToTop,
   domToBottom: domToBottom,
+  domScrollToElement: domScrollToElement,
   /** AJAX API **/
   getText: getText,
   getJson: getJson,
