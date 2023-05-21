@@ -11,7 +11,7 @@
 
 ## Download
 
-__A helper JavaScript library with useful functions and polyfills.__
+__A helper JavaScript library with useful functions and polyfills and zero dependencies.__
 
 Tested on desktop browsers (latest Firefox, latest Chrome, latest stable Chromium based Edge) and mobile devices (iOS Safari, Chrome, Firefox and Android Chrome, Samsung Internet, Firefox, Edge). This library isn't compatible with the Node.js.
 
