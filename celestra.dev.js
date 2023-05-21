@@ -1018,10 +1018,12 @@ const domGetCSSVar = (n) => getComputedStyle(document.documentElement)
 const domSetCSSVar = (n, v) =>
   document.documentElement.style.setProperty( (n[0] === "-" ? n : "--" + n), v);
 
-/* domToTop(): undefined */
+/* domScrollToTop(): undefined */
+const domScrollToTop = () => window.scrollTo(0,0);
 const domToTop = () => window.scrollTo(0,0);
 
-/* domToBottom(): undefined */
+/* domScrollToBottom(): undefined */
+const domScrollToBottom = () => window.scrollTo(0, document.body.scrollHeight);
 const domToBottom = () => window.scrollTo(0, document.body.scrollHeight);
 
 /* domScrollToElement(<element>[,top=true]): undefined */
@@ -2080,7 +2082,9 @@ var celestra = {
   setFullscreenOff: setFullscreenOff,
   domGetCSSVar: domGetCSSVar,
   domSetCSSVar: domSetCSSVar,
+  domScrollToTop: domScrollToTop,
   domToTop: domToTop,
+  domScrollToBottom: domScrollToBottom,
   domToBottom: domToBottom,
   domScrollToElement: domScrollToElement,
   /** AJAX API **/
@@ -2257,7 +2261,7 @@ var celestra = {
   signbit: signbit,
   randomInt: randomInt,
   randomFloat: randomFloat,
-  inRange: inRange  
+  inRange: inRange
 };
 
 if (typeof window !== "undefined") {
