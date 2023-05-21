@@ -305,57 +305,6 @@ CEL.delay(5000)
       <td>This is an enhanced version of the <code>Object.assign</code> method. The deep parameter (boolean) is optional and sets the deep copy (recursive) of the sources.</td>
     </tr>
     <tr>
-      <td><code>strPropercase(&#60;string&#62;);</code></td>
-      <td>This function is unicode compatible and capitalizes every word of the given string. The string parameter is mandatory. The return value is a string.<br/><b>Example:</b><br/><code>CEL.strPropercase("arthur conan doyle");</code><br/>-><br/><code>"Arthur Conan Doyle"</code></td>
-    </tr>
-    <tr>
-      <td><code>strPropercase(&#60;string&#62;);</code></td>
-      <td>This function is unicode compatible and capitalizes every word of the given string. The string parameter is mandatory. The return value is a string.<br/><b>Example:</b><br/><code>CEL.strPropercase("arthur conan doyle");</code><br/>-><br/><code>"Arthur Conan Doyle"</code></td>
-    </tr>
-    <tr>
-      <td><code>strTitlecase(&#60;string&#62;);</code></td>
-      <td>Alias of the <code>strPropercase(&#60;string&#62;);</code>.</td>
-    </tr>
-    <tr>
-      <td><code>strCapitalize(&#60;string&#62;);</code></td>
-      <td>This function is unicode compatible and converts the first character to uppercase and the other characters to lowercase. The string parameter is mandatory. The return value is a string.</td>
-    </tr>
-    <tr>
-      <td><code>strUpFirst(&#60;string&#62;);</code></td>
-      <td>This function is unicode compatible and converts the first character to uppercase. The string parameter is mandatory. The return value is a string.</td>
-    </tr>
-    <tr>
-      <td><code>strDownFirst(&#60;string&#62;);</code></td>
-      <td>This function is unicode compatible and converts the first character to lowercase. The string parameter is mandatory. The return value is a string.</td>
-    </tr>
-    <tr>
-      <td><code>strHTMLRemoveTags(&#60;string&#62;);</code></td>
-      <td>Remove HTML tags from the given string. The string parameter is mandatory. The return value is the new string.</td>
-    </tr>
-    <tr>
-      <td><code>strReverse(&#60;string&#62;);</code></td>
-      <td>Returns the reversed variant of the given string. In the ES6 compatible browsers the result will be unicode compatible. The string parameter is mandatory.</td>
-    </tr>
-    <tr>
-      <td><code>strCodePoints(&#60;string&#62;);</code></td>
-      <td>Returns the array of the unicode codepoints of characters of the given string. The string parameter is mandatory.</td>
-    </tr>
-    <tr>
-      <td><code>strFromCodePoints(&#60;collection&#62;);</code></td>
-      <td>Returns the joined string of the given unicode codepoints. The collection parameter is mandatory.</td>
-    </tr>
-    <tr>
-      <td><code>strAt(&#60;string&#62;,&#60;index&#62;[,newChar]);</code></td>
-      <td>
-        <p>If the newchar is undefined, then returns the unicode character, which has to be on the given index in the string. The index can be negative value (<code>-1 -> last</code>). If the index is out of the string length, then the return value is an empty string. All of the parameters are mandatory and index has to be an integer.</p>
-        <p>If the newChar is not undefined, then the indexed character will be replaced with the newChar and returns the modified string.</p>
-      </td>
-    </tr>
-    <tr>
-      <td><code>strSplice(&#60;str&#62;,&#60;index&#62;,&#60;count&#62;[,add]);</code></td>
-      <td>This function works like the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice" target="_blank">Array.prototype.splice();</a> and can remove characters on the index or replace with other string. The return value is the modified string.</td>
-    </tr>
-    <tr>
       <td><code>sizeIn(&#60;object&#62;);</code></td>
       <td>Returns the count of the owned properties of the given object. The object parameter is mandatory.</td>
     </tr>
@@ -408,14 +357,6 @@ console.log(o2);
       <td>This function returns false.</td>
     </tr>
     <tr>
-      <td><code>strHTMLEscape(&#60;string&#62;);</code></td>
-      <td>This function escapes these characters: <code>&#60;</code>, <code>&#62;</code>, <code>&amp;</code>, <code>"</code>, <code>'</code>. The String parameter is mandatory. The return value is the escaped string.</td>
-    </tr>
-    <tr>
-      <td><code>strUnHTMLEscape(&#60;string&#62;);</code></td>
-      <td>This function unescapes these characters: <code>&#60;</code>, <code>&#62;</code>, <code>&amp;</code>, <code>"</code>, <code>'</code>. The String parameter is mandatory. The return value is the unescaped string.</td>
-    </tr>
-    <tr>
       <td><code>nanoid([size=21[,alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"]]);</code></td>
       <td>Generate a nanoid. The size parameter is optional and the default value is 21. The alphabet parameter is optional and the default value is "A-Za-z0-9_-". The return value is the generated nanoid (string).</td>
     </tr>
@@ -434,6 +375,76 @@ console.log(o2);
     <tr>
       <td><code>assertFalse(&#60;msg&#62;,&#60;value&#62;);</code></td>
       <td>This function throws an error with the message if the value is true. The message parameter is mandatory and has to be a string. The return value is <code>true</code>, when the test was success.</td>
+    </tr>
+  </table>
+</div>
+
+
+<h3>String API</h3>
+
+<p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
+<br/>Example: <code>CEL.strPropercase();</code></p>
+
+<div>
+  <table class="table-responsive table-striped">
+    <tr>
+      <td style="width: auto; min-width: 33%;"><b>Name</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>strPropercase(&#60;string&#62;);</code></td>
+      <td>This function is unicode compatible and capitalizes every word of the given string. The string parameter is mandatory. The return value is a string.<br/><b>Example:</b><br/><code>CEL.strPropercase("arthur conan doyle");</code><br/>-><br/><code>"Arthur Conan Doyle"</code></td>
+    </tr>
+    <tr>
+      <td><code>strTitlecase(&#60;string&#62;);</code></td>
+      <td>Alias of the <code>strPropercase(&#60;string&#62;);</code>.</td>
+    </tr>
+    <tr>
+      <td><code>strCapitalize(&#60;string&#62;);</code></td>
+      <td>This function is unicode compatible and converts the first character to uppercase and the other characters to lowercase. The string parameter is mandatory. The return value is a string.</td>
+    </tr>
+    <tr>
+      <td><code>strUpFirst(&#60;string&#62;);</code></td>
+      <td>This function is unicode compatible and converts the first character to uppercase. The string parameter is mandatory. The return value is a string.</td>
+    </tr>
+    <tr>
+      <td><code>strDownFirst(&#60;string&#62;);</code></td>
+      <td>This function is unicode compatible and converts the first character to lowercase. The string parameter is mandatory. The return value is a string.</td>
+    </tr>
+    <tr>
+      <td><code>strReverse(&#60;string&#62;);</code></td>
+      <td>Returns the reversed variant of the given string. In the ES6 compatible browsers the result will be unicode compatible. The string parameter is mandatory.</td>
+    </tr>
+    <tr>
+      <td><code>strCodePoints(&#60;string&#62;);</code></td>
+      <td>Returns the array of the unicode codepoints of characters of the given string. The string parameter is mandatory.</td>
+    </tr>
+    <tr>
+      <td><code>strFromCodePoints(&#60;collection&#62;);</code></td>
+      <td>Returns the joined string of the given unicode codepoints. The collection parameter is mandatory.</td>
+    </tr>
+    <tr>
+      <td><code>strAt(&#60;string&#62;,&#60;index&#62;[,newChar]);</code></td>
+      <td>
+        <p>If the newchar is undefined, then returns the unicode character, which has to be on the given index in the string. The index can be negative value (<code>-1 -> last</code>). If the index is out of the string length, then the return value is an empty string. All of the parameters are mandatory and index has to be an integer.</p>
+        <p>If the newChar is not undefined, then the indexed character will be replaced with the newChar and returns the modified string.</p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>strSplice(&#60;str&#62;,&#60;index&#62;,&#60;count&#62;[,add]);</code></td>
+      <td>This function works like the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice" target="_blank">Array.prototype.splice();</a> and can remove characters on the index or replace with other string. The return value is the modified string.</td>
+    </tr>
+    <tr>
+      <td><code>strHTMLRemoveTags(&#60;string&#62;);</code></td>
+      <td>Remove HTML tags from the given string. The string parameter is mandatory. The return value is the new string.</td>
+    </tr>
+    <tr>
+      <td><code>strHTMLEscape(&#60;string&#62;);</code></td>
+      <td>This function escapes these characters: <code>&#60;</code>, <code>&#62;</code>, <code>&amp;</code>, <code>"</code>, <code>'</code>. The String parameter is mandatory. The return value is the escaped string.</td>
+    </tr>
+    <tr>
+      <td><code>strUnHTMLEscape(&#60;string&#62;);</code></td>
+      <td>This function unescapes these characters: <code>&#60;</code>, <code>&#62;</code>, <code>&amp;</code>, <code>"</code>, <code>'</code>. The String parameter is mandatory. The return value is the unescaped string.</td>
     </tr>
   </table>
 </div>

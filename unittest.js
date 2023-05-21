@@ -210,10 +210,10 @@ CUT.isEqual("Object name: \"celestra\"", true, celestra.randomInt(100, 200)>99);
 CUT.isEqual("Object name: \"CEL\"", true, CEL.randomInt(100,200)>99);
 
 
-/* core api and DOM */
+/* Core API and String API and DOM API */
 
 CUT.addElement("hr");
-CUT.addElement("h3", "core api and DOM");
+CUT.addElement("h3", "Core API and String API and DOM API");
 
 CUT.isEqual("VERSION", true, CEL.VERSION.includes("Celestra v"));
 
@@ -674,8 +674,6 @@ CUT.isEqual("strHTMLUnEscape();",
   CEL.strHTMLUnEscape("&lt;a href=&quot;#&quot; target=&quot;_blank&quot;&gt;&amp;#64;echo&amp;#65;&lt;/a&gt;&apos;str2&#39;")
 );
 
-/* DOM */
-
 CUT.isEqual("domGetCSSVar(); and domSetCSSVar(); without prefix 1", "",
   CEL.domGetCSSVar("testVar1"));
 CEL.domSetCSSVar("testVar1","value1");
@@ -783,7 +781,7 @@ CUT.isTrue("domSiblingsRight();", (
 CEL.qs("#dsDiv").remove();
 
 
-/* Collections */
+/* Collections API */
 
 CUT.addElement("hr");
 CUT.addElement("h3", "Collections");
@@ -1480,10 +1478,10 @@ CUT.isEqual("arrayMerge();",
 );
 
 
-/* cookie */
+/* Cookie API */
 
 CUT.addElement("hr");
-CUT.addElement("h3", "cookie");
+CUT.addElement("h3", "Cookie API");
 
 CEL.setCookie("ctest3", "cookieUnitTestStr");
 CUT.isTrue("setcookie(); + hasCookie(); true", CEL.hasCookie("ctest3"));
@@ -1538,7 +1536,7 @@ CUT.isEqual("clearCookies(); <i>(settings object)</i>", "truetruefalsefalse",
   cookieClearStr);
 
 
-/* polyfills */
+/* Polyfills */
 
 CUT.addElement("hr");
 CUT.addElement("h3", "polyfills");
@@ -2256,10 +2254,10 @@ CUT.isFalse("isSameIterator(); false 2",
   CEL.isSameIterator(new Set([4,6,8,2,6,4]), [4,8,6,2,5]));
 
 
-/* Abstract functions */
+/* Abstract API */
 
 CUT.addElement("hr");
-CUT.addElement("h3", "Abstract functions");
+CUT.addElement("h3", "Abstract API");
 
 var getSetHasObj = {};
 CUT.isTrue("getInV(); + getIn(); + setIn(); + hasIn();",
@@ -2470,10 +2468,10 @@ CUT.isTrue("toArray();", toArrayA1 === CEL.toArray(toArrayA1)
   && JSON.stringify(CEL.toArray({"length":3, 0:7, 1:8, 2:9})) === "[7,8,9]"
 );
 
-/* math */
+/* Math API */
 
 CUT.addElement("hr");
-CUT.addElement("h3", "Math functions");
+CUT.addElement("h3", "Math API");
 
 CUT.isTrue("inRange();",
   CEL.inRange(4,3,6) && CEL.inRange(-3.14, -4.5, 9.21)
@@ -2769,7 +2767,7 @@ CEL.importScript("unittest-is2.js");
 CEL.importScript("unittest-is1.js", "unittest-is2.js", "unittest-is3.js");
 CEL.importScript("unittest-notExist.js");
 
-/* AJAX functions */
+/* AJAX API */
 
 var
   resAjaxJson = "img/app-app-catalog/app-bricks.png",

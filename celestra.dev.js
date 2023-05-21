@@ -549,66 +549,6 @@ function extend (...a) {
   return EXT(...a);
 }
 
-/* strPropercase(<string>): string */
-const strPropercase = (s) => String(s).split(" ").map(function (v) {
-  var a = Array.from(v).map( (c) => c.toLowerCase() );
-  if (a.length > 0) { a[0] = a[0].toUpperCase(); }
-  return a.join("");
-}).join(" ");
-/* strTitlecase(<string>): string */
-const strTitlecase = (s) => String(s).split(" ").map(function (v) {
-  var a = Array.from(v).map( (c) => c.toLowerCase() );
-  if (a.length > 0) { a[0] = a[0].toUpperCase(); }
-  return a.join("");
-}).join(" ");
-
-/* strCapitalize(<string>): string */
-function strCapitalize (s) {
-  var a = [...String(s).toLowerCase()];
-  if (a.length > 0) { a[0] = a[0].toUpperCase(); }
-  return a.join("");
-}
-
-/* strUpFirst(<string>): string */
-function strUpFirst (s) {
-  var a = [...String(s)];
-  if (a.length > 0) { a[0] = a[0].toUpperCase(); }
-  return a.join("");
-}
-
-/* strDownFirst(<string>): string */
-function strDownFirst (s) {
-  var a = [...String(s)];
-  if (a.length > 0) { a[0] = a[0].toLowerCase(); }
-  return a.join("");
-}
-
-/* strHTMLRemoveTags(<string>): string */
-const strHTMLRemoveTags = (s) =>
-  String(s).replace(/<[^>]*>/g, " ").replace(/\s{2,}/g, " ").trim();
-
-/* strReverse(<string>): string */
-const strReverse = (s) => Array.from(String(s)).reverse().join("");
-
-/* strCodePoints(<string>): array of strings */
-const strCodePoints = (s) => Array.from(String(s), (v) => v.codePointAt(0) );
-
-/* strFromCodePoints(<collection>): string */
-const strFromCodePoints = ([...a]) => String.fromCodePoint.apply(null, a);
-
-/* strAt(<string>,<index: integer>[,newChar: string]): string */
-function strAt (s, i, nC) {
-  var a = Array.from(String(s));
-  if (nC == null) { return a.at(i) || ""; }
-  i = i < 0 ? a.length + i : i;
-  if (i > a.length) { return a.join(""); }
-  a[i] = nC;
-  return a.join("");
-}
-
-/* strSplice(<string>,<index: integer>,<count: integer>[,add: string]): string */
-const strSplice = (s, i, c, ...add) => Array.from(s).toSpliced(i, c, add.join("")).join("");
-
 /* sizeIn(<object>): integer */
 const sizeIn = (o) => Object.keys(o).length;
 
@@ -673,6 +613,78 @@ function assertFalse (msg, v) {
   return true;
 }
 
+/* nanoid([size=21[,alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"]]): string */
+function nanoid (size = 21, alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-") {
+  var r = "", dl = alphabet.length, pos, i = size;
+  while (i--) {
+    do { pos = crypto.getRandomValues(new Uint8Array(1))[0]; } while (pos>=dl);
+    r += alphabet[pos];
+  }
+  return r;
+}
+
+/** String API **/
+
+/* strPropercase(<string>): string */
+const strPropercase = (s) => String(s).split(" ").map(function (v) {
+  var a = Array.from(v).map( (c) => c.toLowerCase() );
+  if (a.length > 0) { a[0] = a[0].toUpperCase(); }
+  return a.join("");
+}).join(" ");
+/* strTitlecase(<string>): string */
+const strTitlecase = (s) => String(s).split(" ").map(function (v) {
+  var a = Array.from(v).map( (c) => c.toLowerCase() );
+  if (a.length > 0) { a[0] = a[0].toUpperCase(); }
+  return a.join("");
+}).join(" ");
+
+/* strCapitalize(<string>): string */
+function strCapitalize (s) {
+  var a = [...String(s).toLowerCase()];
+  if (a.length > 0) { a[0] = a[0].toUpperCase(); }
+  return a.join("");
+}
+
+/* strUpFirst(<string>): string */
+function strUpFirst (s) {
+  var a = [...String(s)];
+  if (a.length > 0) { a[0] = a[0].toUpperCase(); }
+  return a.join("");
+}
+
+/* strDownFirst(<string>): string */
+function strDownFirst (s) {
+  var a = [...String(s)];
+  if (a.length > 0) { a[0] = a[0].toLowerCase(); }
+  return a.join("");
+}
+
+/* strReverse(<string>): string */
+const strReverse = (s) => Array.from(String(s)).reverse().join("");
+
+/* strCodePoints(<string>): array of strings */
+const strCodePoints = (s) => Array.from(String(s), (v) => v.codePointAt(0) );
+
+/* strFromCodePoints(<collection>): string */
+const strFromCodePoints = ([...a]) => String.fromCodePoint.apply(null, a);
+
+/* strAt(<string>,<index: integer>[,newChar: string]): string */
+function strAt (s, i, nC) {
+  var a = Array.from(String(s));
+  if (nC == null) { return a.at(i) || ""; }
+  i = i < 0 ? a.length + i : i;
+  if (i > a.length) { return a.join(""); }
+  a[i] = nC;
+  return a.join("");
+}
+
+/* strSplice(<string>,<index: integer>,<count: integer>[,add: string]): string */
+const strSplice = (s, i, c, ...add) => Array.from(s).toSpliced(i, c, add.join("")).join("");
+
+/* strHTMLRemoveTags(<string>): string */
+const strHTMLRemoveTags = (s) =>
+  String(s).replace(/<[^>]*>/g, " ").replace(/\s{2,}/g, " ").trim();
+
 /* strHTMLEscape(<string>): string */
 const strHTMLEscape = (s) => String(s).replace(/&/g, "&amp;")
   .replace(/</g, "&lt;").replace(/>/g, "&gt;")
@@ -685,16 +697,6 @@ const strHTMLUnEscape = (s) => String(s)
   .replace(/&gt;/g, ">").replace(/&#62;/g, ">")
   .replace(/&quot;/g, '"').replace(/&#34;/g, '"')
   .replace(/&apos;/g, "'").replace(/&#39;/g, "'");
-
-/* nanoid([size=21[,alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"]]): string */
-function nanoid (size = 21, alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-") {
-  var r = "", dl = alphabet.length, pos, i = size;
-  while (i--) {
-    do { pos = crypto.getRandomValues(new Uint8Array(1))[0]; } while (pos>=dl);
-    r += alphabet[pos];
-  }
-  return r;
-}
 
 /** DOM API **/
 
@@ -2021,17 +2023,6 @@ var celestra = {
   obj2string: obj2string,
   classof: classof,
   extend: extend,
-  strPropercase: strPropercase,
-  strTitlecase: strTitlecase,
-  strCapitalize: strCapitalize,
-  strUpFirst: strUpFirst,
-  strDownFirst: strDownFirst,
-  strHTMLRemoveTags: strHTMLRemoveTags,
-  strReverse: strReverse,
-  strCodePoints: strCodePoints,
-  strFromCodePoints: strFromCodePoints,
-  strAt: strAt,
-  strSplice: strSplice,
   sizeIn: sizeIn,
   forIn: forIn,
   filterIn: filterIn,
@@ -2047,9 +2038,21 @@ var celestra = {
   assertNotEq: assertNotEq,
   assertTrue: assertTrue,
   assertFalse: assertFalse,
+  nanoid: nanoid,
+  /** String API **/
+  strPropercase: strPropercase,
+  strTitlecase: strTitlecase,
+  strCapitalize: strCapitalize,
+  strUpFirst: strUpFirst,
+  strDownFirst: strDownFirst,
+  strReverse: strReverse,
+  strCodePoints: strCodePoints,
+  strFromCodePoints: strFromCodePoints,
+  strAt: strAt,
+  strSplice: strSplice,
+  strHTMLRemoveTags: strHTMLRemoveTags,
   strHTMLEscape: strHTMLEscape,
   strHTMLUnEscape: strHTMLUnEscape,
-  nanoid: nanoid,
   /** DOM API **/
   qsa: qsa,
   qs: qs,
