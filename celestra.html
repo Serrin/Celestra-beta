@@ -219,16 +219,36 @@ window.CEL = defaultExport;
       <td><b>Description</b></td>
     </tr>
     <tr>
-      <td><code>celestra.VERSION;</code></td>
-      <td>The library version.</td>
-    </tr>
-    <tr>
       <td><code>celestra.noConflict();</code></td>
       <td>
         <p>Restore the previous <code>CEL</code> object value and return the <code>celestra</code> object to create a new alias.</p>
         <p><span class="info">Tip: You can make a new alias without this function too. Example: <code>window._cel = window.celestra;</code></span></p>
         <p><span class="info">In the ESM edition only returns the celestra object.</code></span></p>
       </td>
+    </tr>
+    <tr>
+      <td><code>BASE16;</code></td>
+      <td><code>"0123456789ABCDEF"</code><br/>Can be used with the ID generator functions.</td>
+    </tr>
+    <tr>
+      <td><code>BASE32;</code></td>
+      <td><code>"234567ABCDEFGHIJKLMNOPQRSTUVWXYZ"</code><br/>Can be used with the ID generator functions.</td>
+    </tr>
+    <tr>
+      <td><code>BASE36;</code></td>
+      <td><code>"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"</code><br/>Can be used with the ID generator functions.</td>
+    </tr>
+    <tr>
+      <td><code>BASE58;</code></td>
+      <td><code>"123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"</code><br/>Can be used with the ID generator functions.</td>
+    </tr>
+    <tr>
+      <td><code>BASE62;</code></td>
+      <td><code>"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"</code><br/>Can be used with the ID generator functions.</td>
+    </tr>
+    <tr>
+      <td><code>WORDSAFEALPHABET;</code></td>
+      <td><code>"23456789CFGHJMPQRVWXcfghjmpqvwx"</code><br/>Can be used with the ID generator functions.</td>
     </tr>
     <tr>
       <td><code>randomID([hyphens=true][,usedate=false]);</code></td>
@@ -358,7 +378,11 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>nanoid([size=21[,alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"]]);</code></td>
-      <td>Generate a nanoid. The size parameter is optional and the default value is 21. The alphabet parameter is optional and the default value is "A-Za-z0-9_-". The return value is the generated nanoid (string).</td>
+      <td>Generate a nanoid. The size parameter is optional and the default value is 21. The alphabet parameter is optional and the default value is "A-Za-z0-9_-". The return value is the generated nanoid (string).<br>Example ID: <code>"QsZA2VVTgFIF3D-qFk5oc"</code></td>
+    </tr>
+    <tr>
+      <td><code>timestampID([size=21[,alphabet="123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"]]);</code></td>
+      <td>Generate a timestamp based sortable ID. The size parameter is optional and the default value is 21, but if the given value smaller than 12, then the value will be 12. The alphabet parameter is optional and the default value is <code>"123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"</code>, same as BASE58. The return value is the generated id (string).<br/>Example ID: <code>"00lirtqi4e-wgGn8vGPyY"</code></td>
     </tr>
     <tr>
       <td><code>assertEq(&#60;msg&#62;,&#60;value1&#62;,&#60;value2&#62;[,strict=true]);</code></td>

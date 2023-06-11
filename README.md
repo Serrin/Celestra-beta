@@ -135,12 +135,18 @@ Name | Description
 ---- | -----------
 `celestra.VERSION;` | The library version.
 `celestra.noConflict();` | Restore the previous `CEL` object value and return the `celestra` object to create a new alias.<br>__Tip: You can make a new alias without this function too. Example: `window._cel = window.celestra;`__<br>__In the ESM edition only returns the celestra object.__
+`BASE16;`|`"0123456789ABCDEF"`<BR>Can be used with the ID generator functions.
+`BASE32;`|`"234567ABCDEFGHIJKLMNOPQRSTUVWXYZ"`<BR>Can be used with the ID generator functions.
+`BASE36;`|`"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"`<BR>Can be used with the ID generator functions.
+`BASE58;`|`"123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"`<BR>Can be used with the ID generator functions.|
+`BASE62;`|`"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"`<BR>Can be used with the ID generator functions.
+`WORDSAFEALPHABET;`|`"23456789CFGHJMPQRVWXcfghjmpqvwx"`<BR>Can be used with the ID generator functions.
 `randomID([hyphens=true][,usedate=false]);` | Generate a GUID/UUID v4 random ID. The hyphens and useDate parameters are optional and can be a boolean. The return value is a string.<br><b>Example:</b><br>`randomID(false);`<br>-><br>`"0e0f739a306b4faad62e3e8080826c9c"`<br>`randomID(true, true);`<br>-><br>`"17c3d79b-d413-4443-b4cd-5426c7299726"`<br>`randomID();`<br>-><br>`"bc897cdf-da26-42de-83e2-d1fd458e079f"`
 `delay(<ms>).then(<callback>);` | A promise based delay function. The ms (milliseconds) parameter is mandatory and have to be an integer.<br>__Sample:__<br>`CEL.sleep(5000).then(() => alert("5 seconds")).catch(console.log.bind(console)).finally(() => alert("done"));`
 `sleep(<ms>).then(<callback>);` | This is an alias of the `delay(<ms>).then(<callback>);`.
 `inherit(<subclass>,<superclass>);` | Prototype inheritance.
 `randomBoolean();` | Get a random boolean value. The return value is `true` or `false`.
-`randomString([length[,specialCharactersEnabled=false]]);` | __DEPRECATED in v5.5.2__ <br>__You can replace this function with the__ `CEL.nanoid();`__.__<br>Generate a random string. The length parameter is optional and can be a number and the default value is 100. The specialCharactersEnabled parameter is optional and can be a boolean and the default value is false. Return the generated string.
+`randomString([length[,specialCharactersEnabled=false]]);` | __DEPRECATED in v5.5.2__ <br>__You can replace this function with the__ `CEL.nanoid();`__.__<br>Generate a random string. The length parameter is optional and can be a number and the default value is 100. The specialCharactersEnabled parameter is optional and can be a boolean and the default value is false. Return the generated string.<br>Example ID: `"QsZA2VVTgFIF3D-qFk5oc"`
 `b64Encode(<string>);` | Unicode compatible string to base64 converter. Return the encoded string.
 `b64Decode(<string>);` | Unicode compatible base64 to string converter. Return the original string.
 `javaHash(<data>[,hexa=false]);` | Java `String.hashCode()` implementation in Javascript - this is a non-cryptographic hash function. The data parameter is mandatory and can be any type. The hexa parameter is optional and can be a boolean and sets the hexadecimal conversion of the return value and the default value is false. Return the generated integer hash.
@@ -160,6 +166,7 @@ Name | Description
 `T();` | This function returns true.
 `F();` | This function returns false.
 `nanoid([size=21[,alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"]]);` | Generate a nanoid. The size parameter is optional and the default value is 21. The alphabet parameter is optional and the default value is "A-Za-z0-9_-". The return value is the generated nanoid (string).
+`timestampID([size=21[,alphabet="123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"]]);` | Generate a timestamp based sortable ID. The size parameter is optional and the default value is 21, but if the given value smaller than 12, then the value will be 12. The alphabet parameter is optional and the default value is `"123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"`, same as BASE58. The return value is the generated id (string).<br/>Example ID:`"00lirtqi4e-wgGn8vGPyY"`
 `assertEq(<msg>,<value1>,<value2>[,strict=true]);` | This function throws an error with the message if the value1 and value2 aren't equals. The message parameter is mandatory and has to be a string. The strict parameter is optional and can be a booelan. The return value is `true`, when the test was success.
 `assertNotEq(<msg>,<value1>,<value2>[,strict=true]);` | This function throws an error with the message if the value1 and value2 are equals. The message parameter is mandatory and has to be a string. The strict parameter is optional and can be a booelan. The return value is `true`, when the test was success.
 `assertTrue(<msg>,<value>);` | This function throws an error with the message if the value is false. The message parameter is mandatory and has to be a string. The return value is `true`, when the test was success.

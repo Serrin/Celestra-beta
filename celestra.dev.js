@@ -432,6 +432,13 @@ if (!!window.BigInt && !("toJSON" in BigInt.prototype)) {
 
 /** Core API **/
 
+const BASE16 = "0123456789ABCDEF";
+const BASE32 = "234567ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const BASE36 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const BASE58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+const BASE62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+const WORDSAFEALPHABET= "23456789CFGHJMPQRVWXcfghjmpqvwx";
+
 /* randomID([hyphens = true][,usedate = false]) : string */
 function randomID (hyphens = true, useDate = false) {
   let r = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,
@@ -616,6 +623,17 @@ function assertFalse (msg, v) {
 /* nanoid([size=21[,alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"]]): string */
 function nanoid (size = 21, alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-") {
   var r = "", dl = alphabet.length, pos, i = size;
+  while (i--) {
+    do { pos = crypto.getRandomValues(new Uint8Array(1))[0]; } while (pos>=dl);
+    r += alphabet[pos];
+  }
+  return r;
+}
+
+/* timestampID([size=21[,alphabet="123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"]]): string */
+function timestampID (size = 21, alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz") {
+  var r = Date.now().toString(36).padStart(10, "0") + "-";
+  var dl = alphabet.length, pos, i = ((size > 11) ? size : 12) - 11;
   while (i--) {
     do { pos = crypto.getRandomValues(new Uint8Array(1))[0]; } while (pos>=dl);
     r += alphabet[pos];
@@ -2010,6 +2028,12 @@ var celestra = {
   VERSION: VERSION,
   noConflict: noConflict,
   /** Core API **/
+  BASE16: BASE16,
+  BASE32: BASE32,
+  BASE36: BASE36,
+  BASE58: BASE58,
+  BASE62: BASE62,
+  WORDSAFEALPHABET: WORDSAFEALPHABET,
   randomID: randomID,
   delay: delay,
   sleep: sleep,
@@ -2039,6 +2063,7 @@ var celestra = {
   assertTrue: assertTrue,
   assertFalse: assertFalse,
   nanoid: nanoid,
+  timestampID: timestampID,
   /** String API **/
   strPropercase: strPropercase,
   strTitlecase: strTitlecase,

@@ -217,6 +217,13 @@ CUT.addElement("h3", "Core API and String API and DOM API");
 
 CUT.isEqual("VERSION", true, CEL.VERSION.includes("Celestra v"));
 
+CUT.isEqual("BASE16", CEL.BASE16, "0123456789ABCDEF");
+CUT.isEqual("BASE32", CEL.BASE32, "234567ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+CUT.isEqual("BASE36", CEL.BASE36, "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+CUT.isEqual("BASE58", CEL.BASE58, "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz");
+CUT.isEqual("BASE62", CEL.BASE62, "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
+CUT.isEqual("WORDSAFEALPHABET", CEL.WORDSAFEALPHABET, "23456789CFGHJMPQRVWXcfghjmpqvwx");
+
 CUT.isTrue("v3.8.1 aliases removed in v4.0.0",
   CEL.isUndefined(CEL.someOf)
     && CEL.isUndefined(CEL.everyOf)
@@ -324,6 +331,26 @@ CUT.isTrue("nanoid 4 - size 5 & \"abcdeFGHIJK42\"",
   CEL.isString(nanoidStr) && nanoidStr.length === 5
 );
 CUT.log("<code>\""+nanoidStr+"\"</code>");
+
+var timestampIDStr = CEL.timestampID();
+CUT.isTrue("timestampID 1 - default size 21",
+  CEL.isString(timestampIDStr) && timestampIDStr.length === 21
+);
+CUT.log("<code>\""+timestampIDStr+"\"</code>");
+var timestampIDStr = CEL.timestampID(15);
+CUT.isTrue("timestampID 2 - size 15",
+  CEL.isString(timestampIDStr) && timestampIDStr.length === 15
+);
+CUT.log("<code>\""+timestampIDStr+"\"</code>");
+var timestampIDStr = CEL.timestampID(36);
+CUT.isTrue("timestampID 3 - size 36",
+  CEL.isString(timestampIDStr) && timestampIDStr.length === 36);
+CUT.log("<code>\""+timestampIDStr+"\"</code>");
+var timestampIDStr = CEL.timestampID(5, "abcdeFGHIJK42");
+CUT.isTrue("timestampID 4 - size 5 -> 12 & \"abcdeFGHIJK42\"",
+  CEL.isString(timestampIDStr) && timestampIDStr.length === 12
+);
+CUT.log("<code>\""+timestampIDStr+"\"</code>");
 
 CUT.addElement(
   CEL.domCreate("div", {"id": "qsaDivTestElement"},
