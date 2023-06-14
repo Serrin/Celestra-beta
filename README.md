@@ -129,7 +129,7 @@ window.CEL = defaultExport;
 
 These functions are available in the `celestra` and/or `CEL` objects.
 
-Example: `CEL.randomID();`
+Example: `CEL.sleep();`
 
 Name | Description
 ---- | -----------
@@ -141,12 +141,12 @@ Name | Description
 `BASE58;`|`"123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"`<BR>Can be used with the ID generator functions.|
 `BASE62;`|`"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"`<BR>Can be used with the ID generator functions.
 `WORDSAFEALPHABET;`|`"23456789CFGHJMPQRVWXcfghjmpqvwx"`<BR>Can be used with the ID generator functions.
-`randomID([hyphens=true][,usedate=false]);` | Generate a GUID/UUID v4 random ID. The hyphens and useDate parameters are optional and can be a boolean. The return value is a string.<br><b>Example:</b><br>`randomID(false);`<br>-><br>`"0e0f739a306b4faad62e3e8080826c9c"`<br>`randomID(true, true);`<br>-><br>`"17c3d79b-d413-4443-b4cd-5426c7299726"`<br>`randomID();`<br>-><br>`"bc897cdf-da26-42de-83e2-d1fd458e079f"`
+`randomID([hyphens=true][,usedate=false]);` | __DEPRECATED in v5.5.4__ <br>__Can be replaced with the __`crypto.randomUUID();`,__ which is polyfilled in this library.__<br>Generate a GUID/UUID v4 random ID. The hyphens and useDate parameters are optional and can be a boolean. The return value is a string.<br><b>Example:</b><br>`randomID(false);`<br>-><br>`"0e0f739a306b4faad62e3e8080826c9c"`<br>`randomID(true, true);`<br>-><br>`"17c3d79b-d413-4443-b4cd-5426c7299726"`<br>`randomID();`<br>-><br>`"bc897cdf-da26-42de-83e2-d1fd458e079f"`
 `delay(<ms>).then(<callback>);` | A promise based delay function. The ms (milliseconds) parameter is mandatory and have to be an integer.<br>__Sample:__<br>`CEL.sleep(5000).then(() => alert("5 seconds")).catch(console.log.bind(console)).finally(() => alert("done"));`
 `sleep(<ms>).then(<callback>);` | This is an alias of the `delay(<ms>).then(<callback>);`.
 `inherit(<subclass>,<superclass>);` | Prototype inheritance.
 `randomBoolean();` | Get a random boolean value. The return value is `true` or `false`.
-`randomString([length[,specialCharactersEnabled=false]]);` | __DEPRECATED in v5.5.2__ <br>__You can replace this function with the__ `CEL.nanoid();`__.__<br>Generate a random string. The length parameter is optional and can be a number and the default value is 100. The specialCharactersEnabled parameter is optional and can be a boolean and the default value is false. Return the generated string.<br>Example ID: `"QsZA2VVTgFIF3D-qFk5oc"`
+`randomString([length[,specialCharactersEnabled=false]]);` | __DEPRECATED in v5.5.2__ <br>__Can be replaced with the __`CEL.nanoid();`__.__<br>Generate a random string. The length parameter is optional and can be a number and the default value is 100. The specialCharactersEnabled parameter is optional and can be a boolean and the default value is false. Return the generated string.<br>Example ID: `"QsZA2VVTgFIF3D-qFk5oc"`
 `b64Encode(<string>);` | Unicode compatible string to base64 converter. Return the encoded string.
 `b64Decode(<string>);` | Unicode compatible base64 to string converter. Return the original string.
 `javaHash(<data>[,hexa=false]);` | Java `String.hashCode()` implementation in Javascript - this is a non-cryptographic hash function. The data parameter is mandatory and can be any type. The hexa parameter is optional and can be a boolean and sets the hexadecimal conversion of the return value and the default value is false. Return the generated integer hash.

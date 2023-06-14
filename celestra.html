@@ -210,7 +210,7 @@ window.CEL = defaultExport;
 <h3>Core API</h3>
 
 <p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
-<br/>Example: <code>CEL.randomID();</code></p>
+<br/>Example: <code>CEL.sleep();</code></p>
 
 <div>
   <table class="table-responsive table-striped">
@@ -253,7 +253,9 @@ window.CEL = defaultExport;
     <tr>
       <td><code>randomID([hyphens=true][,usedate=false]);</code></td>
       <td>
-        Generate a GUID/UUID v4 random ID. The hyphens and useDate parameters are optional and can be a boolean. The return value is a string.
+        <span class="deprecated">DEPRECATED in v5.5.4</span>
+        <br/><span class="info">Can be replaced with the <code>crypto.randomUUID();</code>, which is polyfilled in this library.</span>
+        <br/>Generate a GUID/UUID v4 random ID. The hyphens and useDate parameters are optional and can be a boolean. The return value is a string.
         <br/><b>Example:</b>
         <br/><code>randomID(false);</code>
         <br/>->
@@ -293,7 +295,10 @@ CEL.delay(5000)
     </tr>
     <tr>
       <td><code>randomString([length[,specialCharactersEnabled=false]]);</code></td>
-      <td><span class="deprecated">DEPRECATED in v5.5.2</span><br/><span class="info">You can replace this function with the <code>CEL.nanoid();</code>.</span><br/>Generate a random string. The length parameter is optional and can be a number and the default value is 100. The specialCharactersEnabled parameter is optional and can be a boolean and the default value is false. Return the generated string.</td>
+      <td>
+        <span class="deprecated">DEPRECATED in v5.5.2</span>
+        <br/><span class="info">Can be replaced with with the <code>CEL.nanoid();</code>.</span>
+        <br/>Generate a random string. The length parameter is optional and can be a number and the default value is 100. The specialCharactersEnabled parameter is optional and can be a boolean and the default value is false. Return the generated string.</td>
     </tr>
     <tr>
       <td><code>b64Encode(&#60;string&#62;);</code></td>
