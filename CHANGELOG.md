@@ -2,6 +2,77 @@
 # Celestra version history
 
 
+## Celestra v5.5.4
+
+1. Documentation and pdf fixes.
+
+2. Rename this sections:
+
+|Old name|New name|
+|--------|--------|
+|DOM|DOM API|
+|Type checking|Type checking API|
+|Collections|Collections API|
+|Math functions|Math API|
+|Abstract|Abstract API|
+|Cookie|Cookie API|
+|AJAX and CORS|AJAX and CORS API|
+
+3. Add a new section: **String API**
+
+4. Move these functions in the section **String API**:
+````javascript
+strPropercase(<string>);
+strTitlecase(<string>);
+strCapitalize(<string>);
+strUpFirst(<string>);
+strDownFirst(<string>);
+strReverse(<string>);
+strCodePoints(<string>);
+strFromCodePoints(<collection>);
+strAt(<string>,<index>[,newChar]);
+strSplice(<str>,<index>,<count>[,add]);
+strHTMLRemoveTags(<string>);
+strHTMLEscape(<string>);
+strHTMLUnEscape(<string>);
+````
+
+4. Add these alphabets:
+````javascript
+const BASE16 = "0123456789ABCDEF";
+const BASE32 = "234567ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const BASE36 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const BASE58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+const BASE62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+const WORDSAFEALPHABET= "23456789CFGHJMPQRVWXcfghjmpqvwx";
+````
+
+5. Add these functions:
+- `strSplice(<string>,<index: integer>,<count: integer>[,add: string]): string`
+- `domScrollToElement(<element>[,top=true]): undefined`
+- `timestampID([size=21[,alphabet="123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"]]): string`
+
+6. Replace the function `strAt(<string>,<index: integer>): string`
+to `strAt(<string>,<index: integer>[,newChar: string]): string`
+
+7. Move this functions from __Core API__ to __Math functios__:
+````javascript
+signbit();
+randomInt();
+randomFloat();
+inRange();
+````
+
+8. Deprecate this function: `randomID();`
+
+9. Rename these functions and add an alias with the old name:
+
+|Old name|New name|
+|--------|--------|
+|domToTop();|domScrollToTop();|
+|domToBottom();|domScrollToBottom();|
+
+
 ## Celestra v5.5.3
 
 1. Documentation and pdf fixes.
