@@ -1,6 +1,6 @@
 /**
  * @name Celestra
- * @version 5.5.4 dev
+ * @version 5.5.5 dev
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
@@ -1236,7 +1236,7 @@ function isSameSet (s1, s2) {
 
 /* isSameIterator(<iterator1>,<iterator2>): boolean */
 const isSameIterator = ([...a1], [...a2]) =>
-  (a1.sort().length === a2.sort().length && a1.every((v,i) => v === a2[i]));
+  (a1.length === a2.length && a1.every((v,i) => v === a2[i]));
 
 /* isString(<value: any>): boolean */
 const isString = (v) => (typeof v === "string");
@@ -1488,16 +1488,16 @@ const arrayUnion = (...a) => [...new Set(a.map(([...e]) => e).flat())];
 
 /* arrayIntersection(<collection1>,<collection2>): array */
 const arrayIntersection = ([...a], [...b]) =>
-  a.filter((v) => b.includes(v)).filter((e, i, arr) => arr.indexOf(e) === i);
+  a.filter((v) => b.indexOf(v) > -1).filter((e, i, arr) => arr.indexOf(e) === i);
 
 /* arrayDifference(<collection1>,<collection2>): array */
 const arrayDifference = ([...a], [...b]) =>
-  a.filter((v) => !(b.includes(v))).filter((e, i, arr) => arr.indexOf(e) === i);
+  a.filter((v) => b.indexOf(v) === -1).filter((e, i, arr) => arr.indexOf(e) === i);
 
 /* arraySymmetricDifference(<collection1>,<collection2>): array */
 const arraySymmetricDifference = ([...a], [...b]) =>
-  a.filter((v) => !(b.includes(v)))
-    .concat(b.filter((v) => !(a.includes(v))))
+  a.filter((v) => b.indexOf(v) === -1)
+    .concat(b.filter((v) => a.indexOf(v) === -1))
     .filter((e, i, arr) => arr.indexOf(e) === i);
 
 /* setUnion(<collection1>[,collectionN]): set */
@@ -1515,7 +1515,7 @@ const setSymmetricDifference = (a, b) => new Set(
 );
 
 /* isSuperset(<superCollection>,<subCollection>): boolean */
-const isSuperset = ([...sup], [...sub]) => sub.every( (v) => sup.includes(v) );
+const isSuperset = ([...sup], [...sub]) => sub.every( (v)=>sup.indexOf(v)>-1 );
 
 /* min(<value1: any>[,valueN]): any */
 const min = (...a) => a.reduce((acc, v) => (v < acc ? v : acc), a[0]);
@@ -1914,6 +1914,8 @@ const product = (f, ...a) => a.reduce((acc, v) => acc * v, f);
 
 /* clamp(<value>,<min>,<max>): number */
 const clamp = (v, i, a) => (v > a ? a : v < i ? i : v);
+/* minmax(<value>,<min>,<max>): number */
+const minmax = (v, i, a) => (v > a ? a : v < i ? i : v);
 
 /* isEven(<value>): boolan */
 function isEven (v) {
@@ -2018,7 +2020,7 @@ const inRange = (v, i, a) => (v >= i && v <= a);
 
 /** object header **/
 
-const VERSION = "Celestra v5.5.4 dev";
+const VERSION = "Celestra v5.5.5 dev";
 
 /* celestra.noConflict(): celestra object */
 function noConflict () { window.CEL = celestra.__prevCEL__; return celestra; }
@@ -2267,6 +2269,7 @@ var celestra = {
   avg: avg,
   product: product,
   clamp: clamp,
+  minmax: minmax,
   isEven: isEven,
   isOdd: isOdd,
   toInt8: toInt8,

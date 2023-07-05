@@ -15,9 +15,9 @@ __A helper JavaScript library with useful functions and polyfills and zero depen
 
 Tested on desktop browsers (latest Firefox, latest Chrome, latest stable Chromium based Edge) and mobile devices (iOS Safari, Chrome, Firefox and Android Chrome, Samsung Internet, Firefox, Edge). This library isn't compatible with the Node.js.
 
-Latest version: 5.5.4
+Latest version: 5.5.5
 
-Date: 2023-06-21T19:55:13.050Z
+Date: 2023-07-01T19:38:41.746Z
 
 The functions are available in the `celestra` and/or `CEL` object.
 
@@ -466,6 +466,7 @@ Name | Description
 `avg(<value1>[,valueN]);` | This function returns the average value from the parameter values.
 `product(<value1>[,valueN]);` | This function returns the product value from the parameter values.
 `clamp(<value>,<min>,<max>);` | If the given value is between the min and max values, then this function returns the value. If smaller then the min value, then the return value is the min. If greater then the max value, then the return value is the max.
+`minmax(<value>,<min>,<max>);` | This is an alias of the `clamp(<value>,<min>,<max>);`.
 `isEven(<value>);` | This function determines whether the provided value is an even number. The return value is boolean.
 `isOdd(<value>);` | This function determines whether the provided value is an odd number. The return value is boolean.
 `toInt8(<value>);` | This function clamps ("minmax") the given value to integer 8 value (-127 to 128).

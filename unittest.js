@@ -183,7 +183,7 @@ CUT.isNotEqual(
 (function(){
 "use strict";
 
-/* Celestra v5.5.4 testcases */
+/* Celestra v5.5.5 testcases */
 
 /* Not auto tested functions */
 CUT.addElement("hr");
@@ -2274,7 +2274,7 @@ CUT.isFalse("isSameMap(); false 3", CEL.isSameMap(
 ));
 
 CUT.isTrue("isSameIterator(); true",
-  CEL.isSameIterator(new Set([4,6,8,2,6,4]), [4,8,6,2]));
+  CEL.isSameIterator([4,8,6,2], [4,8,6,2]));
 CUT.isFalse("isSameIterator(); false 1",
   CEL.isSameIterator([4,8,6,2,1], [4,8,6,2,5]));
 CUT.isFalse("isSameIterator(); false 2",
@@ -2531,6 +2531,11 @@ CUT.isEqual("clamp - try 1", CEL.clamp(3,2,5), 3);
 CUT.isEqual("clamp - try 2", CEL.clamp(-2.5,3.1,5), 3.1);
 CUT.isEqual("clamp - try 3", CEL.clamp(8,3,5), 5);
 CUT.isEqual("clamp - try without parameter", CEL.clamp(), undefined);
+// minmax();
+CUT.isEqual("minmax - try 1", CEL.minmax(3,2,5), 3);
+CUT.isEqual("minmax - try 2", CEL.minmax(-2.5,3.1,5), 3.1);
+CUT.isEqual("minmax - try 3", CEL.minmax(8,3,5), 5);
+CUT.isEqual("minmax - try without parameter", CEL.minmax(), undefined);
 // product();
 CUT.isEqual("product - try 1", CEL.product(3), 3);
 CUT.isEqual("product - try 2", CEL.product(3, 5), 15);
