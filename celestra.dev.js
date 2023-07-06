@@ -1488,11 +1488,11 @@ const arrayUnion = (...a) => [...new Set(a.map(([...e]) => e).flat())];
 
 /* arrayIntersection(<collection1>,<collection2>): array */
 const arrayIntersection = ([...a], [...b]) =>
-  a.filter((v) => b.indexOf(v) > -1).filter((e, i, arr) => arr.indexOf(e) === i);
+  a.filter((v) => b.indexOf(v) > -1).filter((e,i,arr) => arr.indexOf(e) === i);
 
 /* arrayDifference(<collection1>,<collection2>): array */
 const arrayDifference = ([...a], [...b]) =>
-  a.filter((v) => b.indexOf(v) === -1).filter((e, i, arr) => arr.indexOf(e) === i);
+  a.filter((v) => b.indexOf(v) === -1).filter((e,i,arr) => arr.indexOf(e)===i);
 
 /* arraySymmetricDifference(<collection1>,<collection2>): array */
 const arraySymmetricDifference = ([...a], [...b]) =>
