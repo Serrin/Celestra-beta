@@ -9,6 +9,46 @@
 
 /** polyfills **/
 
+/* Array.fromAsync(<arrayLike>[,mapFn[,thisArg]]); */
+if (!Array.fromAsync) {
+  Array.fromAsync = async function fromAsync (arrayLike, mapfn, thisArg) {
+    const isConstructor = (v) =>
+      (typeof v === "function" && typeof v.prototype === "object");
+    const errorMsg = "Input length exceed the Number.MAX_SAFE_INTEGER.";
+    if (Symbol.asyncIterator in arrayLike || Symbol.iterator in arrayLike) {
+      var r = isConstructor(this) ? new this : Array(0), i = 0;
+      for await (const item of arrayLike) {
+        if (i > Number.MAX_SAFE_INTEGER) {
+          throw TypeError(errorMsg);
+        } else {
+          if (!mapfn) {
+            r[i] = item;
+          } else {
+            r[i] = await mapfn.call(thisArg,item,i);
+          }
+        }
+        i++;
+      }
+      r.length = i;
+      return r;
+    } else {
+      var l=arrayLike.length, r=isConstructor(this) ?new this(l) :Array(l), i=0;
+      while (i < l) {
+        if (i > Number.MAX_SAFE_INTEGER) { throw TypeError(errorMsg); }
+        var item = await arrayLike[i];
+        if (!mapfn) {
+          r[i] = item;
+        } else {
+          r[i] = await mapfn.call(thisArg,item,i);
+        }
+        i++;
+      }
+      r.length = i;
+      return r;
+    }
+  };
+}
+
 /* Object.is(); */
 if (!Object.is) {
   Object.is = function (x, y) {
