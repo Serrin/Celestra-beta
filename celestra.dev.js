@@ -9,7 +9,7 @@
 
 /** polyfills **/
 
-/* Array.fromAsync(<arrayLike>[,mapFn[,thisArg]]); */
+/* Array.fromAsync(); */
 if (!Array.fromAsync) {
   Array.fromAsync = async function fromAsync (arrayLike, mapfn, thisArg) {
     const isConstructor = (v) =>

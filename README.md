@@ -17,11 +17,11 @@ Tested on desktop browsers (latest Firefox, latest Chrome, latest stable Chromiu
 
 Latest version: 5.5.5
 
-Date: 2023-07-01T19:38:41.746Z
+Date: 2023-07-20T19:38:41.746Z
 
 The functions are available in the `celestra` and/or `CEL` object.
 
-edition|filename
+Edition|Filename
 -------|--------
 developer|__celestra.dev.js__
 minified|__celestra.min.js__

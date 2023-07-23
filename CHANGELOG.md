@@ -2,6 +2,27 @@
 # Celestra version history
 
 
+## Celestra v5.5.5
+
+1. Documentation and pdf fixes.
+
+2. Add `Array.fromAsync();` in the __js-cheatsheet.pdf__
+
+3. Add a polyfill: `Array.fromAsync(<arrayLike>[,mapFn[,thisArg]]); `
+
+4. Add an alias of the function `clamp();`: `minmax();`
+
+5. Fix these functions:
+
+|Function|Fix|
+|--------|---|
+|`isSameIterator();`|Remove the method `sort();`|
+|`isSuperset();`|Replace the method `includes();` with `indexOf();`|
+|`arrayIntersection();`|Replace the method `includes();` with `indexOf();`|
+|`arrayDifference();`|Replace the method `includes();` with `indexOf();`|
+|`arraySymmetricDifference();`|Replace the method `includes();` with `indexOf();`|
+
+
 ## Celestra v5.5.4
 
 1. Documentation and pdf fixes.
@@ -37,7 +58,7 @@ strHTMLEscape(<string>);
 strHTMLUnEscape(<string>);
 ````
 
-4. Add these alphabets:
+5. Add these alphabets:
 ````javascript
 const BASE16 = "0123456789ABCDEF";
 const BASE32 = "234567ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -47,15 +68,15 @@ const BASE62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 const WORDSAFEALPHABET= "23456789CFGHJMPQRVWXcfghjmpqvwx";
 ````
 
-5. Add these functions:
+6. Add these functions:
 - `strSplice(<string>,<index: integer>,<count: integer>[,add: string]): string`
 - `domScrollToElement(<element>[,top=true]): undefined`
 - `timestampID([size=21[,alphabet="123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"]]): string`
 
-6. Replace the function `strAt(<string>,<index: integer>): string`
+7. Replace the function `strAt(<string>,<index: integer>): string`
 to `strAt(<string>,<index: integer>[,newChar: string]): string`
 
-7. Move this functions from __Core API__ to __Math functios__:
+8. Move this functions from __Core API__ to __Math functions__:
 ````javascript
 signbit();
 randomInt();
@@ -63,9 +84,9 @@ randomFloat();
 inRange();
 ````
 
-8. Deprecate this function: `randomID();`
+9. Deprecate this function: `randomID();`
 
-9. Rename these functions and add an alias with the old name:
+10. Rename these functions and add an alias with the old name:
 
 |Old name|New name|
 |--------|--------|
