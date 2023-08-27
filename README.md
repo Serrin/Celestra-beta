@@ -15,9 +15,9 @@ __A helper JavaScript library with useful functions and polyfills and zero depen
 
 Tested on desktop browsers (latest Firefox, latest Chrome, latest stable Chromium based Edge) and mobile devices (iOS Safari, Chrome, Firefox and Android Chrome, Samsung Internet, Firefox, Edge). This library isn't compatible with the Node.js.
 
-Latest version: 5.5.5
+Latest version: 5.6.0
 
-Date: 2023-07-20T19:38:41.746Z
+Date: 2023-09-30T19:02:38.245Z
 
 The functions are available in the `celestra` and/or `CEL` object.
 
@@ -141,12 +141,12 @@ Name | Description
 `BASE58;`|`"123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"`<BR>Can be used with the ID generator functions.|
 `BASE62;`|`"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"`<BR>Can be used with the ID generator functions.
 `WORDSAFEALPHABET;`|`"23456789CFGHJMPQRVWXcfghjmpqvwx"`<BR>Can be used with the ID generator functions.
-`randomID([hyphens=true][,usedate=false]);` | __DEPRECATED in v5.5.4__ <br>__Can be replaced with the __`crypto.randomUUID();`,__ which is polyfilled in this library.__<br>Generate a GUID/UUID v4 random ID. The hyphens and useDate parameters are optional and can be a boolean. The return value is a string.<br><b>Example:</b><br>`randomID(false);`<br>-><br>`"0e0f739a306b4faad62e3e8080826c9c"`<br>`randomID(true, true);`<br>-><br>`"17c3d79b-d413-4443-b4cd-5426c7299726"`<br>`randomID();`<br>-><br>`"bc897cdf-da26-42de-83e2-d1fd458e079f"`
+`randomID([hyphens=true][,usedate=false]);` | __DEPRECATED in v5.5.4__ <br>__REMOVED in v5.6.0__ <br> __Can be replaced with the __`crypto.randomUUID();`,__ which is polyfilled in this library.__<br>Generate a GUID/UUID v4 random ID. The hyphens and useDate parameters are optional and can be a boolean. The return value is a string.
 `delay(<ms>).then(<callback>);` | A promise based delay function. The ms (milliseconds) parameter is mandatory and have to be an integer.<br>__Sample:__<br>`CEL.sleep(5000).then(() => alert("5 seconds")).catch(console.log.bind(console)).finally(() => alert("done"));`
 `sleep(<ms>).then(<callback>);` | This is an alias of the `delay(<ms>).then(<callback>);`.
 `inherit(<subclass>,<superclass>);` | Prototype inheritance.
 `randomBoolean();` | Get a random boolean value. The return value is `true` or `false`.
-`randomString([length[,specialCharactersEnabled=false]]);` | __DEPRECATED in v5.5.2__ <br>__Can be replaced with the __`CEL.nanoid();`__.__<br>Generate a random string. The length parameter is optional and can be a number and the default value is 100. The specialCharactersEnabled parameter is optional and can be a boolean and the default value is false. Return the generated string.<br>Example ID: `"QsZA2VVTgFIF3D-qFk5oc"`
+`randomString([length[,specialCharactersEnabled=false]]);` | __DEPRECATED in v5.5.2__ <br>__REMOVED in v5.6.0__ <br>__Can be replaced with the __`CEL.nanoid();`__.__<br>Generate a random string. The length parameter is optional and can be a number and the default value is 100. The specialCharactersEnabled parameter is optional and can be a boolean and the default value is false. Return the generated string.<br>Example ID: `"QsZA2VVTgFIF3D-qFk5oc"`
 `b64Encode(<string>);` | Unicode compatible string to base64 converter. Return the encoded string.
 `b64Decode(<string>);` | Unicode compatible base64 to string converter. Return the original string.
 `javaHash(<data>[,hexa=false]);` | Java `String.hashCode()` implementation in Javascript - this is a non-cryptographic hash function. The data parameter is mandatory and can be any type. The hexa parameter is optional and can be a boolean and sets the hexadecimal conversion of the return value and the default value is false. Return the generated integer hash.
@@ -237,8 +237,8 @@ Name | Description
 `setFullscreenOff();` | Set off the fullscreen.
 `domGetCSSVar(<name>);` | This function returns a value of a CSS variable or an empty string, if the variable is unset. The name parameter is mandatory and has to be a string. If the "--" characters are missing at the begin of the variable name, then the function will add these.
 `domSetCSSVar(<name>,<value>);` | This function set a value of a CSS variable. Both of the parameters are mandatory and have to be a string. If the "--" characters are missing at the begin of the variable name, then the function will add these.
-`domScrollToTop();` |  __Old name before v5.4.0:__ `domToTop`.<br>This function is scrolling to the top of the page.
-`domScrollToBottom();` |  __Old name before v5.4.0:__ `domToBottom`.<br>This function is scrolling to the bottom of the page.
+`domScrollToTop();` |  __Old name before v5.5.4:__ `domToTop`.<br>This function is scrolling to the top of the page.
+`domScrollToBottom();` |  __Old name before v5.5.4:__ `domToBottom`.<br>This function is scrolling to the bottom of the page.
 `domScrollToElement(<element>[,top=true]);` | This function is scrolling to top or the bottom of element. The element parameter is mandatory and the top parameter is optional and can be boolean.
 
 

@@ -183,7 +183,7 @@ CUT.isNotEqual(
 (function(){
 "use strict";
 
-/* Celestra v5.5.5 testcases */
+/* Celestra v5.6.0 testcases */
 
 /* Not auto tested functions */
 CUT.addElement("hr");
@@ -247,63 +247,6 @@ CUT.isTrue("v3.8.1 aliases removed in v4.0.0",
     && CEL.isUndefined(CEL.mapOf)
     && CEL.isUndefined(CEL.forOf)
 );
-
-// randomID begin
-
-var rIDstr = CEL.randomID(false);
-CUT.isTrue("randomID(false); without date without date default",
-  rIDstr.length === 32 && /[0-9a-fA-F]/.test(rIDstr)
-);
-CUT.log("<code>\"" + rIDstr + "\"</code>");
-
-var rIDstr = CEL.randomID();
-CUT.isTrue("randomID(); with hyphens without date default",
-  rIDstr.length === 36
-    && /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/
-      .test(rIDstr)
-    && rIDstr[14] === "4"
-    && "89ab".includes(rIDstr[19])
-);
-CUT.log("<code>\"" + rIDstr + "\"</code>");
-
-var rIDstr = CEL.randomID(false, true);
-CUT.isTrue("randomID(); without hyphens with date",
-  rIDstr.length === 32 && /[0-9a-fA-F]/.test(rIDstr)
-);
-CUT.log("<code>\"" + rIDstr + "\"</code>");
-
-var rIDstr = CEL.randomID(true);
-CUT.isTrue("randomID(true); with hyphens without date",
-  rIDstr.length === 36
-    && /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/
-      .test(rIDstr)
-    && rIDstr[14] === "4"
-    && "89ab".includes(rIDstr[19])
-);
-CUT.log("<code>\"" + rIDstr + "\"</code>");
-
-var rIDstr = CEL.randomID(false, true);
-CUT.isTrue("randomID(false); with date with date",
-  rIDstr.length === 32 && /[0-9a-fA-F]/.test(rIDstr) );
-CUT.log("<code>\"" + rIDstr + "\"</code>");
-
-var rIDstr = CEL.randomID(true, true);
-CUT.isTrue("randomID(); with hyphens with date",
-  rIDstr.length === 36 &&
-  /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/
-    .test(rIDstr)
-);
-CUT.log("<code>\"" + rIDstr + "\"</code>");
-
-var rIDstr = CEL.randomID(true, false);
-CUT.isTrue("randomID(true); with hyphens without date",
-  rIDstr.length === 36 &&
-  /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/
-    .test(rIDstr)
-);
-CUT.log("<code>\"" + rIDstr + "\"</code>");
-
-// randomID end
 
 CUT.isTrue("assertTrue();",    CEL.assertTrue("lorem ipsum", true) );
 CUT.isTrue("assertFalse();",   CEL.assertFalse("lorem ipsum", false) );
@@ -541,25 +484,6 @@ CEL.qs("#testFormDiv").remove();
 var testRandom = CEL.randomBoolean();
 CUT.isTrue("randomBoolean(); - <code>" + testRandom + "</code>",
   CEL.isBoolean(testRandom) && (testRandom === true || testRandom === false) );
-
-var rndStr = CEL.randomString();
-CUT.isTrue("randomString(); default length 100, default false",
-  CEL.isString(rndStr) && rndStr.length === 100);
-CUT.log("<code>"+rndStr+"</code>");
-rndStr = CEL.randomString(10);
-CUT.isTrue("randomString(10) default false",
-  CEL.isString(rndStr) && rndStr.length === 10);
-CUT.log("<code>"+rndStr+"</code>");
-rndStr = CEL.randomString(15,true);
-CUT.isTrue("randomString(15,true);", CEL.isString(rndStr) &&rndStr.length===15);
-CUT.log("<code>"+rndStr+"</code>");
-rndStr = CEL.randomString(20,false);
-CUT.isTrue("randomString(20,false);", CEL.isString(rndStr)&&rndStr.length===20);
-CUT.log("<code>"+rndStr+"</code>");
-rndStr = "1" + CEL.randomString(32,false);
-CUT.isEqual("randomString(); random \"btc\" address", true,
-  CEL.isString(rndStr) && rndStr.length === 33 );
-CUT.log("<code>"+rndStr+"</code>");
 
 var kayleeStr = "✓ à \r\n\t árvíztűrő tükörfúrógép ÁRVÍZTŰRŐ TÜKÖRFÚRÓGÉP ,?;.:-_* ¤÷×¨¸´˙`˛°˘^ˇ~'+!%/=()|\\<> \" \/ #&@{}[]€ ÍÄíŁß 0123456789 asdfghjklqwertzuiopyxcvbnm ASDFGHJKLQWERTZUIOPYXCVBNM";
 CUT.isEqual("b64Encode();",

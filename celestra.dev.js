@@ -1,6 +1,6 @@
 /**
  * @name Celestra
- * @version 5.5.5 dev
+ * @version 5.6.0 dev
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
@@ -479,22 +479,6 @@ const BASE58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 const BASE62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 const WORDSAFEALPHABET= "23456789CFGHJMPQRVWXcfghjmpqvwx";
 
-/* randomID([hyphens = true][,usedate = false]) : string */
-function randomID (hyphens = true, useDate = false) {
-  let r = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,
-    (c)=>(c^crypto.getRandomValues(new Uint8Array(1))[0]&15>>c/4).toString(16)
-  );
-  if (!useDate) { return hyphens ? r : r.replaceAll("-", ""); }
-  if (useDate) {
-    let rA = [...r.replaceAll("-","")], d = (new Date()).getTime().toString(16);
-    for (let i = 0; i < d.length; i++) { rA[i] = d[i]; }
-    rA[12] = "4";
-    r = rA.join("");
-    return !hyphens ? r : r.slice(0, 8)
-      +"-"+r.slice(8,12)+"-"+r.slice(12,16) +"-"+r.slice(16,20)+"-"+r.slice(20);
-  }
-}
-
 /* delay(<ms: integer>).then(<callback: function>): promise */
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 /* sleep(<ms: integer>).then(<callback: function>): promise */
@@ -502,15 +486,6 @@ const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 /* randomBoolean(): boolean */
 const randomBoolean = () => (Math.random() >= 0.5);
-
-/* randomString([length:integer[,specialCharactersEnabled=false]]): string */
-function randomString (pl = 100, sc = false) {
-  var chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  if (sc) { chars += ",?,.:-_*$ß¤Łł÷×¸¨˝´˙`˛°˘^ˇ~§'+!%/=()[]#<>&@{}\"\\/| éáűőúöüóíÉÁŰŐÚÖÜÓÍß"; }
-  var s = "", l = chars.length;
-  for (var i = 0; i < pl; i++) { s += chars[Math.floor(Math.random()*l)]; }
-  return s;
-}
 
 /* b64Encode(<string>): string */
 function b64Encode (s) {
@@ -1080,11 +1055,9 @@ const domSetCSSVar = (n, v) =>
 
 /* domScrollToTop(): undefined */
 const domScrollToTop = () => window.scrollTo(0,0);
-const domToTop = () => window.scrollTo(0,0);
 
 /* domScrollToBottom(): undefined */
 const domScrollToBottom = () => window.scrollTo(0, document.body.scrollHeight);
-const domToBottom = () => window.scrollTo(0, document.body.scrollHeight);
 
 /* domScrollToElement(<element>[,top=true]): undefined */
 const domScrollToElement = (e, top = true) => e.scrollIntoView(top);
@@ -2060,7 +2033,7 @@ const inRange = (v, i, a) => (v >= i && v <= a);
 
 /** object header **/
 
-const VERSION = "Celestra v5.5.5 dev";
+const VERSION = "Celestra v5.6.0 dev";
 
 /* celestra.noConflict(): celestra object */
 function noConflict () { window.CEL = celestra.__prevCEL__; return celestra; }
@@ -2076,11 +2049,9 @@ var celestra = {
   BASE58: BASE58,
   BASE62: BASE62,
   WORDSAFEALPHABET: WORDSAFEALPHABET,
-  randomID: randomID,
   delay: delay,
   sleep: sleep,
   randomBoolean: randomBoolean,
-  randomString: randomString,
   b64Encode: b64Encode,
   b64Decode: b64Decode,
   javaHash: javaHash,
@@ -2153,9 +2124,7 @@ var celestra = {
   domGetCSSVar: domGetCSSVar,
   domSetCSSVar: domSetCSSVar,
   domScrollToTop: domScrollToTop,
-  domToTop: domToTop,
   domScrollToBottom: domScrollToBottom,
-  domToBottom: domToBottom,
   domScrollToElement: domScrollToElement,
   /** AJAX API **/
   getText: getText,
