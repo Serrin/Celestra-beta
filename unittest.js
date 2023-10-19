@@ -1560,75 +1560,23 @@ CUT.isEqual("Object.is();",
 CUT.isEqual("Number.MIN_SAFE_INTEGER;",Number.MIN_SAFE_INTEGER,-9007199254740991);
 CUT.isEqual("Number.MAX_SAFE_INTEGER;",Number.MAX_SAFE_INTEGER,9007199254740991);
 
-var groupArray = [1,2,3,4,5];
-var groupArrayObj = {"length": 5, 0: 1, 1: 2, 2: 3, 3: 4, 4: 5};
-var groupArrayRES = groupArray.group(i => (i % 2 === 0 ? "even": "odd"));
-CUT.isTrue("Array.prototype.group(&#60;fn&#62;[,thisArg]); 1",
-  Object.prototype.toString.call(groupArrayRES).slice(8, -1).toLowerCase()
-    === "object"
-    && Object.keys(groupArrayRES).length === 2
-    && Object.hasOwn(groupArrayRES, "even")
-    && Object.hasOwn(groupArrayRES, "odd")
-    && JSON.stringify(groupArrayRES["even"]) === "[2,4]"
-    && JSON.stringify(groupArrayRES["odd"]) === "[1,3,5]"
+const groupByInventory = [
+  { name: 'asparagus', type: 'vegetables', quantity: 9 },
+  { name: 'bananas', type: 'fruit', quantity: 5 },
+  { name: 'goat', type: 'meat', quantity: 23 },
+  { name: 'cherries', type: 'fruit', quantity: 12 },
+  { name: 'fish', type: 'meat', quantity: 3 },
+];
+
+
+CUT.isEqual("Object.groupBy();",
+  JSON.stringify(Object.groupBy(groupByInventory, ({ quantity }) => (quantity < 6 ? "restock" : "sufficient"))),
+  '{"sufficient":[{"name":"asparagus","type":"vegetables","quantity":9},{"name":"goat","type":"meat","quantity":23},{"name":"cherries","type":"fruit","quantity":12}],"restock":[{"name":"bananas","type":"fruit","quantity":5},{"name":"fish","type":"meat","quantity":3}]}'
 );
-var groupArrayRES = Array.prototype.group.call(
-  groupArray, i => (i % 2 === 0 ? "even": "odd")
-);
-CUT.isTrue("Array.prototype.group(&#60;fn&#62;[,thisArg]); 2",
-  Object.prototype.toString.call(groupArrayRES).slice(8, -1).toLowerCase()
-    === "object"
-    && Object.keys(groupArrayRES).length === 2
-    && Object.hasOwn(groupArrayRES, "even")
-    && Object.hasOwn(groupArrayRES, "odd")
-    && JSON.stringify(groupArrayRES["even"]) === "[2,4]"
-    && JSON.stringify(groupArrayRES["odd"]) === "[1,3,5]"
-);
-var groupArrayRES = Array.prototype.group.call(
-  groupArrayObj, i => (i % 2 === 0 ? "even": "odd")
-);
-CUT.isTrue("Array.prototype.group(&#60;fn&#62;[,thisArg]); 3",
-  Object.prototype.toString.call(groupArrayRES).slice(8, -1).toLowerCase()
-    === "object"
-    && Object.keys(groupArrayRES).length === 2
-    && Object.hasOwn(groupArrayRES, "even")
-    && Object.hasOwn(groupArrayRES, "odd")
-    && JSON.stringify(groupArrayRES["even"]) === "[2,4]"
-    && JSON.stringify(groupArrayRES["odd"]) === "[1,3,5]"
-);
-var groupArrayRES = groupArray.groupToMap(i => (i % 2 === 0 ? "even": "odd"));
-CUT.isTrue("Array.prototype.groupToMap(&#60;fn&#62;[,thisArg]); 1",
-  Object.prototype.toString.call(groupArrayRES).slice(8, -1).toLowerCase()
-    === "map"
-    && groupArrayRES.size === 2
-    && groupArrayRES.has("even")
-    && groupArrayRES.has("odd")
-    && JSON.stringify(groupArrayRES.get("even")) === "[2,4]"
-    && JSON.stringify(groupArrayRES.get("odd")) === "[1,3,5]"
-);
-var groupArrayRES = Array.prototype.groupToMap.call(
-  groupArray, i => (i % 2 === 0 ? "even": "odd")
-);
-CUT.isTrue("Array.prototype.groupToMap(&#60;fn&#62;[,thisArg]); 2",
-  Object.prototype.toString.call(groupArrayRES).slice(8, -1).toLowerCase()
-    === "map"
-    && groupArrayRES.size === 2
-    && groupArrayRES.has("even")
-    && groupArrayRES.has("odd")
-    && JSON.stringify(groupArrayRES.get("even")) === "[2,4]"
-    && JSON.stringify(groupArrayRES.get("odd")) === "[1,3,5]"
-);
-var groupArrayRES = Array.prototype.groupToMap.call(
-  groupArrayObj, i => (i % 2 === 0 ? "even": "odd")
-);
-CUT.isTrue("Array.prototype.groupToMap(&#60;fn&#62;[,thisArg]); 3",
-  Object.prototype.toString.call(groupArrayRES).slice(8, -1).toLowerCase()
-    === "map"
-    && groupArrayRES.size === 2
-    && groupArrayRES.has("even")
-    && groupArrayRES.has("odd")
-    && JSON.stringify(groupArrayRES.get("even")) === "[2,4]"
-    && JSON.stringify(groupArrayRES.get("odd")) === "[1,3,5]"
+
+CUT.isEqual("Map.groupBy();",
+  JSON.stringify(Array.from(Map.groupBy(groupByInventory, ({ quantity }) => (quantity < 6 ? "restock" : "sufficient")))),
+  '[["sufficient",[{"name":"asparagus","type":"vegetables","quantity":9},{"name":"goat","type":"meat","quantity":23},{"name":"cherries","type":"fruit","quantity":12}]],["restock",[{"name":"bananas","type":"fruit","quantity":5},{"name":"fish","type":"meat","quantity":3}]]]'
 );
 
 var rIDstr = crypto.randomUUID();

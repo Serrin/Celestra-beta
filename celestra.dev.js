@@ -9,6 +9,42 @@
 
 /** polyfills **/
 
+/* Object.groupBy(); */
+if (!("groupBy" in Object)) {
+  Object.defineProperty(Object, "groupBy", {
+    "configurable": true, "writable": true, "enumerable": true,
+    "value": function (items, callbackFn) {
+      "use strict";
+      if (!(typeof callbackFn === "function")) { throw new TypeError(); }
+      let r = Object.create(null), i = 0;
+      for (let item of items) {
+        let key = callbackFn(item, i++);
+        if (!(Object.prototype.hasOwnProperty.call(r, key))) { r[key] = []; }
+        r[key].push(item);
+      }
+      return r;
+    }
+  });
+}
+
+/* Map.groupBy(); */
+if (!("groupBy" in Map)) {
+  Object.defineProperty(Map, "groupBy", {
+    "configurable": true, "writable": true, "enumerable": true,
+    "value": function (items, callbackFn) {
+      "use strict";
+      if (!(typeof callbackFn === "function")) { throw new TypeError(); }
+      let r = new Map(), i = 0;
+      for (let item of items) {
+        let key = callbackFn(item, i++);
+        if (!(r.has(key))) { r.set(key, []); }
+        r.get(key).push(item);
+      }
+      return r;
+    }
+  });
+}
+
 /* Array.fromAsync(); */
 if (!Array.fromAsync) {
   Array.fromAsync = async function fromAsync (arrayLike, mapfn, thisArg) {
@@ -49,19 +85,6 @@ if (!Array.fromAsync) {
   };
 }
 
-/* Object.is(); */
-if (!Object.is) {
-  Object.is = function (x, y) {
-    if (x===y) { return x!==0 || 1/x === 1/y; } else { return x!==x && y!==y; }
-  };
-}
-
-/* Number.MIN_SAFE_INTEGER; */
-if(!("MIN_SAFE_INTEGER" in Number)){Number.MIN_SAFE_INTEGER=-9007199254740991;}
-
-/* Number.MAX_SAFE_INTEGER; */
-if(!("MAX_SAFE_INTEGER" in Number)){Number.MAX_SAFE_INTEGER=9007199254740991;}
-
 /* crypto.randomUUID(); */
 if (("crypto" in window) && !("randomUUID" in window.crypto)) {
   window.crypto.randomUUID = function randomUUID () {
@@ -69,85 +92,6 @@ if (("crypto" in window) && !("randomUUID" in window.crypto)) {
       (c)=>(c^crypto.getRandomValues(new Uint8Array(1))[0]&15>>c/4).toString(16)
     );
   };
-}
-
-/* Array.prototype.group(<fn>[,thisArg]); */
-if (!("group" in Array.prototype)) {
-  Object.defineProperty(Array.prototype, "group", {
-    "configurable": true, "writable": true, "enumerable": false,
-    "value": function (fn, thisArg) {
-      "use strict";
-      function toArray (O) { return (Array.isArray(O) ? O : Array.from(O)); }
-      if (!(typeof fn === "function")) { throw new TypeError(); }
-      var a = toArray(this);
-      var key, r = Object.create(null), l = a.length;
-      for (var i = 0; i < l; i++) {
-        key = fn.call(thisArg, a[i], i, a);
-        if (!(Object.prototype.hasOwnProperty.call(r, key))) { r[key] = []; }
-        r[key].push(a[i]);
-      }
-      return r;
-    }
-  });
-}
-
-/* Array.prototype.groupToMap(<fn>[,thisArg]); */
-if (!("groupToMap" in Array.prototype)) {
-  Object.defineProperty(Array.prototype, "groupToMap", {
-    "configurable": true, "writable": true, "enumerable": false,
-    "value": function (fn, thisArg) {
-      "use strict";
-      function toArray (O) { return (Array.isArray(O) ? O : Array.from(O)); }
-      if (!(typeof fn === "function")) { throw new TypeError(); }
-      var a = toArray(this);
-      var key, r = new Map(), l = a.length;
-      for (var i = 0; i < l; i++) {
-        key = fn.call(thisArg, a[i], i, a);
-        if (!(r.has(key))) { r.set(key, []); }
-        r.get(key).push(a[i]);
-      }
-      return r;
-    }
-  });
-}
-
-/* Array.prototype.at(); */
-if (!("at" in Array.prototype)) {
-  Object.defineProperty(Array.prototype, "at", {
-    writable: true, enumerable: false, configurable: true,
-    value: function at(n) {
-      n = Math.trunc(n) || 0;
-      if (n < 0) { n += this.length; }
-      if (n < 0 || n >= this.length) { return undefined; }
-      return this[String(n)];
-    }
-  });
-}
-
-/* TypedArray.prototype.at(); */
-if (!("at" in Uint8Array.prototype)) {
-  Object.defineProperty(Uint8Array.prototype, "at", {
-    writable: true, enumerable: false, configurable: true,
-    value: function at(n) {
-      n = Math.trunc(n) || 0;
-      if (n < 0) { n += this.length; }
-      if (n < 0 || n >= this.length) { return undefined; }
-      return this[String(n)];
-    }
-  });
-}
-
-/* String.prototype.at(); */
-if (!("at" in String.prototype)) {
-  Object.defineProperty(String.prototype, "at", {
-    writable: true, enumerable: false, configurable: true,
-    value: function at(n) {
-      n = Math.trunc(n) || 0;
-      if (n < 0) { n += this.length; }
-      if (n < 0 || n >= this.length) { return undefined; }
-      return String(this)[String(n)];
-    }
-  });
 }
 
 /* Object.hasOwn(); */
@@ -163,147 +107,6 @@ if (!Object.hasOwn) {
   });
 }
 
-/* String.prototype.trimStart(); */
-if (!("trimStart" in String.prototype)) {
-  Object.defineProperty(String.prototype, "trimStart", {
-    writable: true, enumerable: false, configurable: true,
-    value: function () { return String(this).replace(/^\s+/, ""); }
-  });
-}
-
-/* String.prototype.trimLeft(); */
-if (!("trimLeft" in String.prototype)) {
-  Object.defineProperty(String.prototype, "trimLeft", {
-    writable: true, enumerable: false, configurable: true,
-    value: function () { return String(this).replace(/^\s+/, ""); }
-  });
-}
-
-/* String.prototype.trimEnd(); */
-if (!("trimEnd" in String.prototype)) {
-  Object.defineProperty(String.prototype, "trimEnd", {
-    writable: true, enumerable: false, configurable: true,
-    value: function () { return String(this).replace(/\s+$/, ""); }
-  });
-}
-
-/* String.prototype.trimRight(); */
-if (!("trimRight" in String.prototype)) {
-  Object.defineProperty(String.prototype, "trimRight", {
-    writable: true, enumerable: false, configurable: true,
-    value: function () { return String(this).replace(/\s+$/, ""); }
-  });
-}
-
-/* String.prototype.padStart(); */
-if (!("padStart" in String.prototype)) {
-  Object.defineProperty(String.prototype, "padStart", {
-    writable: true, enumerable: false, configurable: true,
-      value: function (len, str) {
-      len = Math.floor(Number(len));
-      if (len <= this.length || len === NaN ) {
-        return String(this);
-      } else {
-        str = String(typeof str !== "undefined" ? str: " ");
-        if (str.length === 0) { return String(this); }
-        var res = "", n = Math.floor( (len - this.length) / str.length) + 1;
-        for (var i = 0; i < n; i++) { res += str; }
-        return res.slice(0, len - this.length) + String(this);
-      }
-    }
-  });
-}
-
-/* String.prototype.padEnd(); */
-if (!("padEnd" in String.prototype)) {
-  Object.defineProperty(String.prototype, "padEnd", {
-    writable: true, enumerable: false, configurable: true,
-      value:  function (len, str) {
-      len = Math.floor(Number(len));
-      if (len <= this.length || len === NaN ) {
-        return String(this);
-      } else {
-        str = String(typeof str !== "undefined" ? str: " ");
-        if (str.length === 0) { return String(this); }
-        var res = "", n = Math.floor( (len - this.length) / str.length) + 1;
-        for (var i = 0; i < n; i++) { res += str; }
-        return String(this) + res.slice(0, len - this.length);
-      }
-    }
-  });
-}
-
-/* String.prototype.replaceAll(); */
-if (!("replaceAll" in String.prototype)) {
-  Object.defineProperty(String.prototype, "replaceAll", {
-    "configurable": true, "writable": true, "enumerable": false,
-    "value": function (searchValue, replaceValue) {
-      "use strict";
-      if (this == null) {
-        throw new TypeError("String.prototype.replaceAll requires |this| not to be null nor undefined");
-      }
-      if (Object.prototype.toString.call(searchValue)
-        .replace(/^\[object (.+)\]$/, "$1").toLowerCase() === "regexp") {
-        if (!searchValue.global) {
-          throw new TypeError("String.prototype.replaceAll must be called with a global RegExp");
-        }
-        return String(this).replace(searchValue, replaceValue);
-      }
-      return String(this).split(String(searchValue)).join(replaceValue);
-    }
-  });
-}
-
-/* Array.prototype.flat(); */
-if (!("flat" in Array.prototype)) {
-  Object.defineProperty(Array.prototype, "flat", {
-    writable: true, enumerable: false, configurable: true,
-      value: function (depth) {
-      if (depth === undefined) {
-        depth = 1;
-      } else {
-        depth = Math.floor(Number(depth));
-        if (isNaN(depth) || depth < 1) { return this; }
-      }
-      function deepFlat (a, cd) {
-        a.forEach(function (e) {
-          if (Array.isArray(e)) {
-            if (cd < depth) { deepFlat(e, cd+1); } else { res.push(e); }
-          } else {
-            res.push(e);
-          }
-        });
-      }
-      var res = [];
-      deepFlat(this, 0);
-      return res;
-    }
-  });
-}
-
-/* Array.prototype.flatMap(); */
-if (!("flatMap" in Array.prototype)) {
-  Object.defineProperty(Array.prototype, "flatMap", {
-    writable: true, enumerable: false, configurable: true,
-    value: function (fn) {
-      var res = [];
-      this.map(fn).forEach(function (e) {
-        if (Array.isArray(e)) { res = res.concat(e); } else { res.push(e); }
-      });
-      return res;
-    }
-  });
-}
-
-/* Object.fromEntries(); */
-if (!Object.fromEntries) {
-  Object.fromEntries = function (entries) {
-    var r = {};
-    for (let e of entries) { r[e[0]] = e[1]; }
-    return r;
-  };
-}
-
 /* globalThis; */
 (function (global) {
   if (!global.globalThis) {
@@ -314,79 +117,6 @@ if (!Object.fromEntries) {
     } else { global.globalThis = global; }
   }
 })(typeof this === "object" ? this : Function("return this")());
-
-/* String.prototype.matchAll(); */
-if (!("matchAll" in String.prototype)) {
-  Object.defineProperty(String.prototype, "matchAll", {
-    writable: true, enumerable: false, configurable: true,
-      value: function* (regex) {
-      function ef (fls, fl) { return (fls.includes(fl) ? fls : fls + fl); }
-      const lc = new RegExp(regex, ef(regex.flags, "g"));
-      let match;
-      while (match = lc.exec(this)) { yield match; }
-    }
-  });
-}
-
-/* Array.prototype.findLast(); */
-if (!("findLast" in Array.prototype)) {
-  Object.defineProperty(Array.prototype, "findLast", {
-    writable: true, enumerable: false, configurable: true,
-    value: function findLast (fn) {
-      if (typeof fn !== "function") {
-        throw new TypeError(String(fn) + " is not a function");
-      }
-      var i = this.length;
-      while (i--) { if (fn(this[i],i,this)) { return this[i]; } }
-      return undefined;
-    }
-  });
-}
-
-/* Array.prototype.findLastIndex(); */
-if (!("findLastIndex" in Array.prototype)) {
-  Object.defineProperty(Array.prototype, "findLastIndex", {
-    writable: true, enumerable: false, configurable: true,
-    value: function findLastIndex (fn) {
-      if (typeof fn !== "function") {
-        throw new TypeError(String(fn) + " is not a function");
-      }
-      var i = this.length;
-      while (i--) { if (fn(this[i],i,this)) { return i; } }
-      return -1;
-    }
-  });
-}
-
-/* TypedArray.prototype.findLast(); */
-if (!("findLast" in Uint8Array.prototype)) {
-  Object.defineProperty(Uint8Array.prototype, "findLast", {
-    writable: true, enumerable: false, configurable: true,
-    value: function findLast (fn) {
-      if (typeof fn !== "function") {
-        throw new TypeError(String(fn) + " is not a function");
-      }
-      var i = this.length;
-      while (i--) { if (fn(this[i],i,this)) { return this[i]; } }
-      return undefined;
-    }
-  });
-}
-
-/* TypedArray.prototype.findLastIndex(); */
-if (!("findLastIndex" in Uint8Array.prototype)) {
-  Object.defineProperty(Uint8Array.prototype, "findLastIndex", {
-    writable: true, enumerable: false, configurable: true,
-    value: function findLastIndex (fn) {
-      if (typeof fn !== "function") {
-        throw new TypeError(String(fn) + " is not a function");
-      }
-      var i = this.length;
-      while (i--) { if (fn(this[i],i,this)) { return i; } }
-      return -1;
-    }
-  });
-}
 
 /* Array.prototype.toReversed(); */
 if (!("toReversed" in Array.prototype)) {
@@ -1494,7 +1224,7 @@ function shuffle([...a]) {
 const partition = ([...a],fn) => [a.filter(fn),a.filter((e,i,a)=>!(fn(e,i,a)))];
 
 /* group(<collection>,<callback: function>[,map=false]): object */
-const group =([...a], fn, map=false) => a[(map?"groupToMap":"group")](fn);
+const group =(items, fn, map=false)=> (map ? Map : Object)["groupBy"](items,fn);
 
 /* arrayUnion(<collection1>[,collectionN]): array */
 const arrayUnion = (...a) => [...new Set(a.map(([...e]) => e).flat())];

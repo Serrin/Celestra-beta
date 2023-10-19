@@ -112,7 +112,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
 
 <h3>Removed polyfills</h3>
 
-<p>Some polyfills have been removed in v3.1.0 and v3.8.0. With these files can be reusued the old polyfills if needed.</p>
+<p>Some polyfills have been removed in v3.1.0 and v3.8.0 and v5.6.0. With these files can be reusued the old polyfills if needed.</p>
 
 <table class="table-responsive-sm table-striped">
   <tr>
@@ -1067,6 +1067,8 @@ console.log(o2);
     <tr>
       <td><code>group(&#60;collection&#62;,&#60;callback&#62;[,map=false]);</code></td>
       <td>
+        <p><span class="deprecated">Deprecated in v5.6.0. Will be removed in 5.7.0.<span></span></p>
+        <p><span class="info">Can be replaced with the <code>Object.groupBy();</code> and <code>Map.groupBy();</code>.<span></span></p>
 			  <p><span class="info">Old name before v5.4.4: <code>groupBy</code>.</span><br/>Returns an Object or Map with array properties. The keys are the returned values of the given function. The collection parameter is mandatory. The callback parameter is mandatory and has to be a function. The map parameter is optional and has to be a boolean and if it is true, then the return value is a Map instead of Object.</p>
         <p>
          <b>Example:</b>
@@ -1578,6 +1580,14 @@ Otherwise, the result is false.</pre>
       <td><b>Description</b></td>
     </tr>
     <tr>
+      <td><code>Object.groupBy();</code></td>
+      <td>The Object.groupBy() static method groups the elements of a given iterable according to the string values returned by a provided callback function. The returned object has separate properties for each group, containing arrays with the elements in the group. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/groupBy" target="_blank">MDN Article</a>!</td>
+    </tr>    
+    <tr>
+      <td><code>Map.groupBy();</code></td>
+      <td>The Map.groupBy() static method groups the elements of a given iterable using the values returned by a provided callback function. The final returned Map uses the unique values from the test function as keys, which can be used to get the array of elements in each group. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/groupBy" target="_blank">MDN Article</a>!</td>
+    </tr>    
+    <tr>
       <td><code>Array.fromAsync();</code></td>
       <td>The Array.fromAsync() static method creates a new, shallow-copied Array instance from an async iterable, iterable, or array-like object. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/fromAsync" target="_blank">MDN Article</a>!</td>
     </tr>
@@ -1608,10 +1618,6 @@ Otherwise, the result is false.</pre>
     <tr>
       <td><code>TypedArray.prototype.with();</code></td>
       <td>The with() method is the copying version of using the bracket notation to change the value of a given index. It returns a new array with the element at the given index replaced with the given value. This method has the same algorithm as Array.prototype.with(). For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/with" target="_blank">MDN Article</a>!</td>
-    </tr>  
-    <tr>
-      <td><code>Object.is();</code></td>
-      <td>The Object.is() method determines whether two values are the same value. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is" target="_blank">MDN Article</a>!</td>
     </tr>
     <tr>
       <td><code>Number.MIN_SAFE_INTEGER</code></td>
@@ -1628,110 +1634,14 @@ Otherwise, the result is false.</pre>
       </td>
     </tr>
     <tr>
-      <td><code>Array.prototype.group(&#60;fn&#62;[,thisArg]);</code></td>
-      <td>The group() method grouping of items in an array based on the return value (key) of the given function. The return value is a null-prototype object. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/group" target="_blank">MDN Article</a>!</td>
-    </tr>
-    <tr>
-      <td><code>Array.prototype.groupToMap(&#60;fn&#62;[,thisArg]);</code></td>
-      <td>The groupToMap() method grouping of items in an array based on the return value (key) of the given function. The return value is a Map object. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/groupToMap" target="_blank">MDN Article</a>!</td>
-    </tr>
-    <tr>
-      <td><code>Array.prototype.findLast();</code></td>
-      <td>
-        The findLast() method returns the value of the last element in the provided array that satisfies the provided testing function. If no values satisfy the testing function, undefined is returned. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findLast" target="_blank">MDN Article</a>!
-      </td>
-    </tr>
-    <tr>
-      <td><code>Array.prototype.findLastIndex();</code></td>
-      <td>
-        The findLastIndex() method returns the index of the last element in the array that satisfies the provided testing function. Otherwise, it returns -1, indicating that no element passed the test. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findLastIndex" target="_blank">MDN Article</a>!
-      </td>
-    </tr>
-    <tr>
-      <td><code>TypedArray.prototype.findLast();</code></td>
-      <td>
-        The findLast() method returns the value of the last element in the provided array that satisfies the provided testing function. If no values satisfy the testing function, undefined is returned. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/findLast" target="_blank">MDN Article</a>!
-      </td>
-    </tr>
-    <tr>
-      <td><code>TypedArray.prototype.findLastIndex();</code></td>
-      <td>
-        The findLastIndex() method returns the index of the last element in the array that satisfies the provided testing function. Otherwise, it returns -1, indicating that no element passed the test. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/findLastIndex" target="_blank">MDN Article</a>!
-      </td>
-    </tr>
-    <tr>
-      <td><code>Array.prototype.at();</code></td>
-      <td>
-        The at() method takes an integer value and returns the item at that index, allowing for positive and negative integers. Negative integers count back from the last item in the array.
-        For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/at" target="_blank">MDN Article</a>!
-      </td>
-    </tr>
-    <tr>
-      <td><code>TypedArray.prototype.at();</code></td>
-      <td>
-        The at() method takes an integer value and returns the item at that index, allowing for positive and negative integers. Negative integers count back from the last item in the array.
-        For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/at" target="_blank">MDN Article</a>!
-      </td>
-    </tr>
-    <tr>
-      <td><code>String.prototype.at();</code></td>
-      <td>
-        The at() method takes an integer value and returns a new String consisting of the single UTF-16 code unit located at the specified offset. This method allows for positive and negative integers. Negative integers count back from the last string character. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/at" target="_blank">MDN Article</a>!
-      </td>
-    </tr>
-    <tr>
       <td><code>Object.hasOwn();</code></td>
       <td>
         The Object.hasOwn() static method returns true if the specified object has the indicated property as its own property. If the property is inherited, or does not exist, the method returns false. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwn" target="_blank">MDN Article</a>!
       </td>
     </tr>
     <tr>
-      <td><code>String.prototype.trimStart();</code></td>
-      <td>The trimStart() method removes whitespace from the beginning of a string. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/trimStart" target="_blank">MDN Article</a>!</td>
-    </tr>
-    <tr>
-      <td><code>String.prototype.trimLeft();</code></td>
-      <td>Alias of the <code>String.prototype.trimStart();</code> method.</td>
-    </tr>
-    <tr>
-      <td><code>String.prototype.trimEnd();</code></td>
-      <td>The trimEnd() method removes whitespace from the end of a string. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/trimEnd" target="_blank">MDN Article</a>!</td>
-    </tr>
-    <tr>
-      <td><code>String.prototype.trimRight();</code></td>
-      <td>Alias of the <code>String.prototype.trimEnd();</code> method.</td>
-    </tr>
-    <tr>
-      <td><code>String.prototype.padStart();</code></td>
-      <td>The padStart() method pads the current string with another string (multiple times, if needed) until the resulting string reaches the given length. The padding is applied from the start (left) of the current string. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/padStart" target="_blank">MDN Article</a>!</td>
-    </tr>
-    <tr>
-      <td><code>String.prototype.padEnd();</code></td>
-      <td>The padEnd() method pads the current string with a given string (repeated, if needed) so that the resulting string reaches a given length. The padding is applied from the end (right) of the current string. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/padEnd" target="_blank">MDN Article</a>!</td>
-    </tr>
-    <tr>
-      <td><code>Object.fromEntries();</code></td>
-      <td>The Object.fromEntries() method transforms a list of key-value pairs into an object. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/fromEntries" target="_blank">MDN Article</a>!</td>
-    </tr>
-    <tr>
-      <td><code>Array.prototype.flat();</code></td>
-      <td>The flat() method creates a new array with all sub-array elements concatenated into it recursively up to the specified depth. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat" target="_blank">MDN Article</a>!</td>
-    </tr>
-    <tr>
-      <td><code>Array.prototype.flatMap();</code></td>
-      <td>A new array with each element being the result of the callback function and flattened to a depth of 1. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap" target="_blank">MDN Article</a>!</td>
-    </tr>
-    <tr>
       <td><code>globalThis;</code></td>
       <td>The "global" property of the global object, a writable, configurable, non-enumerable alias of <code>window</code>/<code>self</code>. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/globalThis" target="_blank">MDN Article</a>!</td>
-    </tr>
-    <tr>
-      <td><code>String.prototype.matchAll();</code></td>
-      <td>The matchAll() method returns an iterator of all results matching a string against a regular expression, including capturing groups. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/matchAll" target="_blank">MDN Article</a>!</td>
-    </tr>
-    <tr>
-      <td><code>String.prototype.replaceAll();</code></td>
-      <td>The replaceAll() method returns a new string with all matches of a pattern replaced by a replacement. The pattern can be a string or a RegExp. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replaceAll" target="_blank">MDN Article</a>!</td>
     </tr>
     <tr>
       <td>REMOVED polyfills in v3.1.0</td>
@@ -1740,6 +1650,10 @@ Otherwise, the result is false.</pre>
     <tr>
       <td>REMOVED polyfills in v3.8.0</td>
       <td><code>Array.prototype.values();</code><br/><code>Array.prototype.includes();</code><br/><code>String.prototype.includes();</code><br/><code>String.prototype.repeat();</code><br/><code>String.prototype[Symbol.iterator]();</code><br/><code>Object.assign();</code><br/><code>Object.entries();</code><br/><code>Object.values();</code><br/><code>Object.getOwnPropertyDescriptors();</code><br/><code>RegExp.prototype.flags;</code><br/><code>NodeList.prototype.forEach();</code><br/><code>ChildNode.after();</code><br/><code>ChildNode.before();</code><br/><code>ChildNode.remove();</code><br/><code>ChildNode.replaceWith();</code><br/><code>ParentNode.append();</code><br/><code>ParentNode.prepend();</code><br/><code>Element.prototype.matches();</code><br/><code>Element.prototype.closest();</code><br/><code>Element.prototype.toggleAttribute();</code><br/><code>Element.prototype.getAttributeNames();</code><br/><code>window.screenLeft;</code><br/><code>window.screenTop;</code></td>
+    </tr>
+    <tr>
+      <td>REMOVED polyfills in v5.6.0</td>
+      <td><code>Array.prototype.at();</code><br/><code>Array.prototype.findLast();</code><br/><code>Array.prototype.findLastIndex();</code><br/><code>Array.prototype.flat();</code><br/><code>Array.prototype.flatMap();</code><br/><code>Array.prototype.group();</code><br/><code>Array.prototype.groupToMap();</code><br/><code>Number.MIN_SAFE_INTEGER;</code><br/><code>Number.MAX_SAFE_INTEGER;</code><br/><code>Object.fromEntries();</code><br/><code>Object.is();</code><br/><code>String.prototype.at();</code><br/><code>String.prototype.matchAll();</code><br/><code>String.prototype.padStart();</code><br/><code>String.prototype.padEnd();</code><br/><code>String.prototype.replaceAll();</code><br/><code>String.prototype.trimStart();</code><br/><code>String.prototype.trimLeft();</code><br/><code>String.prototype.trimEnd();</code><br/><code>String.prototype.trimRight();</code><br/><code>Typedarray.prototype.at();</code><br/><code>TypedArray.prototype.findLast();</code><br/><code>TypedArray.prototype.findLastIndex();</code></td>
     </tr>
   </table>
 </div>
