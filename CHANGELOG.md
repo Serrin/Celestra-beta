@@ -2,6 +2,65 @@
 # Celestra version history
 
 
+## Celestra v5.6.0 Razorback
+
+1. Documentation and pdf fixes.
+````
+HTML - minmax(<value>,<min>,<max>); - This is an alias of the minmax(<value>,<min>,<max>);.
+HTML - REMOVED polyfills in v3.1.0 - String.prototype.codePointAt();7 
+````
+
+2. Remove these aliases: `domToTop();`, `domToBottom();`
+
+3. Remove these functions: `randomString();`, `randomID();`
+
+4. Add these polyfills:
+````
+Object.groupBy();
+Map.groupBy();
+````
+
+5. Fix the function `group(<collection>,<callback>[,map=false]);` with the new, standard function calls.
+
+6. Deprecate this function: `group(<collection>,<callback>[,map=false]);`
+
+7. Add the 4th page in the __celestra-cheatsheet.odt__ and __celestra-cheatsheet.pdf__ with the removed polyfills.
+
+8. Move these polyfills in the **celestra-polyfills.dev.js** and **celestra-polyfills.min.js**
+````
+Array.prototype.at();
+Array.prototype.findLast();
+Array.prototype.findLastIndex();
+Array.prototype.flat();
+Array.prototype.flatMap();
+Array.prototype.group();
+Array.prototype.groupToMap();
+
+Number.MIN_SAFE_INTEGER;
+Number.MAX_SAFE_INTEGER;
+
+Object.fromEntries();
+Object.is();
+
+String.prototype.at();
+String.prototype.matchAll();
+String.prototype.padStart();
+String.prototype.padEnd();
+String.prototype.replaceAll();
+String.prototype.trimStart();
+String.prototype.trimLeft();
+String.prototype.trimEnd();
+String.prototype.trimRight();
+
+Typedarray.prototype.at();
+TypedArray.prototype.findLast();
+TypedArray.prototype.findLastIndex();
+````
+
+9. Close the milestone __5.6.0 Razorback__.
+ 
+
+
 ## Celestra v5.5.5
 
 1. Documentation and pdf fixes.

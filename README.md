@@ -17,7 +17,7 @@ Tested on desktop browsers (latest Firefox, latest Chrome, latest stable Chromiu
 
 Latest version: 5.6.0
 
-Date: 2023-09-30T19:02:38.245Z
+Date: 2023-10-22T19:41:13.967Z
 
 The functions are available in the `celestra` and/or `CEL` object.
 
