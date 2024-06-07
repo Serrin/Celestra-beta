@@ -628,12 +628,12 @@ CUT.isEqual("strHTMLUnEscape();",
 CUT.isEqual("domGetCSSVar(); and domSetCSSVar(); without prefix 1", "",
   CEL.domGetCSSVar("testVar1"));
 CEL.domSetCSSVar("testVar1","value1");
-CUT.isEqual("domGetCSSVar(); and domSetCSSVar(); without prefix 2", "value1",
+CUT.isEqual("domGetCSSVar(); and domSetCSSVar(); without prefix 2 - " + CEL.domGetCSSVar("testVar1"), "value1",
   CEL.domGetCSSVar("testVar1"));
-CUT.isEqual("domGetCSSVar(); and domSetCSSVar(); with prefix 1", "",
+CUT.isEqual("domGetCSSVar(); and domSetCSSVar(); with prefix 1 - " + CEL.domGetCSSVar("--testVar2"), "",
   CEL.domGetCSSVar("--testVar2"));
 CEL.domSetCSSVar("--testVar2","value2");
-CUT.isEqual("domGetCSSVar(); and domSetCSSVar(); with prefix 2", "value2",
+CUT.isEqual("domGetCSSVar(); and domSetCSSVar(); with prefix 2 - " + CEL.domGetCSSVar("--testVar2"), "value2",
   CEL.domGetCSSVar("--testVar2"));
 
 CUT.addElement( CEL.domCreate("p",
@@ -656,12 +656,12 @@ CUT.isTrue("domToElement(); complex element",
 );
 
 CEL.domSetCSS(domTestElement, "width", "300px");
-CUT.isEqual("domSetCSS(); property and domGetCSS();", "300px",
+CUT.isEqual("domSetCSS(); property and domGetCSS(); - " + CEL.domGetCSS(domTestElement, "width"), "300px",
   CEL.domGetCSS(domTestElement, "width"));
 CEL.domSetCSS(domTestElement, {"width": "350px", "font-weight": "bold"});
-CUT.isEqual("domSetCSS(); properties object and domGetCSS();",
+CUT.isEqual("domSetCSS(); properties object and domGetCSS(); - " + CEL.domGetCSS(domTestElement, "width"),
   "350px", CEL.domGetCSS(domTestElement, "width"));
-CUT.isEqual("domSetCSS(); properties object and domGetCSS() object;",
+CUT.isEqual("domSetCSS(); properties object and domGetCSS() object; - " + CEL.domGetCSS(domTestElement)["width"],
   "350px", CEL.domGetCSS(domTestElement)["width"]);
 
 CEL.domHide(domTestElement);

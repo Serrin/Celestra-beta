@@ -13,11 +13,25 @@
 
 __A helper JavaScript library with useful functions and polyfills and zero dependencies.__
 
-Tested on desktop browsers (latest Firefox, latest Chrome, latest stable Chromium based Edge) and mobile devices (iOS Safari, Chrome, Firefox and Android Chrome, Samsung Internet, Firefox, Edge). This library isn't compatible with the Node.js.
+This library isn't compatible with the Node.js.
 
 Latest version: 5.6.1
 
-Date: 2023-12-01T19:12:17.009Z
+Date: 2024-06-06T19:12:17.009Z
+
+__Tested on these browsers:__
+
+- Windows Firefox
+- Windows Chrome
+- Windows Edge
+- iOS Safari
+- iOS Firefox
+- iOS Chrome
+- iOS Edge
+- Android Firefox
+- Android Chrome
+- Android Samsung Internet
+- Android Edge
 
 The functions are available in the `celestra` and/or `CEL` object.
 
