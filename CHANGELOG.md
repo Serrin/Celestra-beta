@@ -2,7 +2,12 @@
 # Celestra version history
 
 
-## Celestra v5.6.0 Razorback
+## Celestra v5.6.1
+
+1. Fixed many errors in the documentation and pdf fixes.
+
+
+## Celestra v5.6.0
 
 1. Documentation and pdf fixes.
 ````
@@ -59,7 +64,6 @@ TypedArray.prototype.findLastIndex();
 
 9. Close the milestone __5.6.0 Razorback__.
  
-
 
 ## Celestra v5.5.5
 

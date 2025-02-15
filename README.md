@@ -15,9 +15,9 @@ __A helper JavaScript library with useful functions and polyfills and zero depen
 
 This library isn't compatible with the Node.js.
 
-Latest version: 5.6.1
+Latest version: 5.6.2
 
-Date: 2024-06-06T19:12:17.009Z
+Date: 2024-09-31T19:43:40.761Z
 
 __Tested on these browsers:__
 
