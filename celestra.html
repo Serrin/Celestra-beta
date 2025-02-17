@@ -1020,7 +1020,7 @@ console.log(o2);
 <h3 id="cookie">Collections API</h3>
 
 <p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
-<br/>Example: <code>CEL.arrayUnion();</code></p>
+<br/>Example: <code>CEL.arrayAdd();</code></p>
 
 <div>
   <table class="table-responsive table-striped">
@@ -1050,11 +1050,17 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>arrayDifference(&#60;collection1&#62;,&#60;collection2&#62;);</code></td>
-      <td>Returns the array of unique values that are in the collection1, excluding the values that are also in the collection2. All of the parameters are mandatory and can be any type of JavaScript collections. The return value is an Array.</td>
+      <td>
+        <p><span class="deprecated">Deprecated in v5.6.2. Will be removed in 5.7.0.<span></span></p>
+        <p>Returns the array of unique values that are in the collection1, excluding the values that are also in the collection2. All of the parameters are mandatory and can be any type of JavaScript collections. The return value is an Array.</p>
+      </td>
     </tr>
     <tr>
       <td><code>arrayIntersection(&#60;collection1&#62;,&#60;collection2&#62;);</code></td>
-      <td>Returns the array of unique values that are in both of the given collections. All of the parameters are mandatory and can be any type of JavaScript collections. The return value is an Array.</td>
+      <td>
+        <p><span class="deprecated">Deprecated in v5.6.2. Will be removed in 5.7.0.<span></span></p>
+        <p>Returns the array of unique values that are in both of the given collections. All of the parameters are mandatory and can be any type of JavaScript collections. The return value is an Array.</p>
+      </td>
     </tr>
     <tr>
       <td><code>arrayMerge(&#60;target&#62;,&#60;source1&#62;[,sourceN]);</code></td>
@@ -1081,11 +1087,17 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>arraySymmetricDifference(&#60;collection1&#62;,&#60;collection2&#62;);</code></td>
-      <td>Returns the array of unique values that are only in one of given collections. All of the parameters are mandatory and can be any type of JavaScript collections. The return value is an Array.</td>
+      <td>
+        <p><span class="deprecated">Deprecated in v5.6.2. Will be removed in 5.7.0.<span></span></p>
+        <p>Returns the array of unique values that are only in one of given collections. All of the parameters are mandatory and can be any type of JavaScript collections. The return value is an Array.</p>
+      </td>
     </tr>
     <tr>
       <td><code>arrayUnion(&#60;collection1&#62;[,collectionN]);</code></td>
-      <td>Returns the array of unique values including all values from the given collections. The first parameter is mandatory and all parameters can be any type of JavaScript collections. The return value is an Array.</td>
+      <td>
+        <p><span class="deprecated">Deprecated in v5.6.2. Will be removed in 5.7.0.<span></span></p>
+        <p>Returns the array of unique values including all values from the given collections. The first parameter is mandatory and all parameters can be any type of JavaScript collections. The return value is an Array.</p>
+      </td>
     </tr>
     <tr>
       <td><code>arrayUnique(&#60;collection&#62;);</code></td>
@@ -1190,7 +1202,10 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>isSuperset(&#60;superCollection&#62;,&#60;subCollection&#62;);</code></td>
-      <td>This function determines whether the first provided collection is superset of the second collection. The parameters are mandatory and all parameters can be any type of JavaScript collections. The return value is a boolean.</td>
+      <td>
+        <p><span class="deprecated">Deprecated in v5.6.2. Will be removed in 5.7.0.<span></span></p>
+        <p>This function determines whether the first provided collection is superset of the second collection. The parameters are mandatory and all parameters can be any type of JavaScript collections. The return value is a boolean.</p>
+      </td>
     </tr>
     <tr>
       <td><code>item(&#60;collection&#62;,&#60;index&#62;);</code></td>
@@ -1269,19 +1284,31 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>setDifference(&#60;set1&#62;,&#60;set2&#62;);</code></td>
-      <td>Returns the set of unique values that are in the collection1, excluding the values that are also in the collection2. All of the parameters are mandatory and have to be a Set. The return value is a Set.</td>
+      <td>
+        <p><span class="deprecated">Deprecated in v5.6.2. Will be removed in 5.7.0.<span></span></p>
+        <p>Returns the set of unique values that are in the collection1, excluding the values that are also in the collection2. All of the parameters are mandatory and have to be a Set. The return value is a Set.</p>
+      </td>
     </tr>
     <tr>
       <td><code>setIntersection(&#60;set1&#62;,&#60;set2&#62;);</code></td>
-      <td>Returns the set of unique values that are in both of the given collections. All of the parameters are mandatory and have to be a Set. The return value is a Set.</td>
+      <td>
+        <p><span class="deprecated">Deprecated in v5.6.2. Will be removed in 5.7.0.<span></span></p>
+        <p>Returns the set of unique values that are in both of the given collections. All of the parameters are mandatory and have to be a Set. The return value is a Set.</p>
+      </td>
     </tr>
     <tr>
       <td><code>setSymmetricDifference(&#60;set1&#62;,&#60;set2&#62;);</code></td>
-      <td>Returns the set of unique values that are only in one of given collections. All of the parameters are mandatory and have to be a Set. The return value is a Set.</td>
+      <td>
+        <p><span class="deprecated">Deprecated in v5.6.2. Will be removed in 5.7.0.<span></span></p>
+        <p>Returns the set of unique values that are only in one of given collections. All of the parameters are mandatory and have to be a Set. The return value is a Set.</p>
+      </td>
     </tr>
     <tr>
       <td><code>setUnion(&#60;collection1&#62;[,collectionN]);</code></td>
-      <td>Returns the set of unique values including all values from the given collections. The first parameter is mandatory and all parameters can be any type of JavaScript collections. The return value is a Set.</td>
+      <td>
+        <p><span class="deprecated">Deprecated in v5.6.2. Will be removed in 5.7.0.<span></span></p>
+        <p>Returns the set of unique values including all values from the given collections. The first parameter is mandatory and all parameters can be any type of JavaScript collections. The return value is a Set.</p>
+      </td>
     </tr>
     <tr>
       <td><code>size(&#60;collection&#62;);</code></td>
