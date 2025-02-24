@@ -46,6 +46,14 @@ Version history|__CHANGELOG.md__
 DEV and MIN editions: If the `CEL` global variable is used before the loading of the library, then the value of the variable is saved and you can restore with the `noConflict();` function.
 
 
+### Github pages
+
+version|page link
+-------|--------
+Stable|__https://github.com/Serrin/Celestra__
+Beta|__https://github.com/Serrin/Celestra-beta__
+
+
 ### Removed polyfills
 
 Some polyfills have been removed in v3.1.0 and v3.8.0 and v5.6.0. With these files can be reusued the old polyfills if needed.

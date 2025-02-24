@@ -65,6 +65,30 @@ nav a, nav a:visited, nav a:active, nav a:hover {
     &nbsp;/&nbsp;
     <a href="#" onclick=" CEL.importStyle('u87-light.css'); " class="nobr"><i>Light</i></a>
   </b></nav>
+  <div class="center">
+    <br/>
+    <a href="#FNcoreAPI" style="color: white !important">Core API</a>
+    &nbsp;//&nbsp;
+    <a href="#FNdomAPI" style="color: white !important">DOM API</a>
+    &nbsp;//&nbsp;
+    <a href="#FNstringAPI" style="color: white !important">String API</a>
+    &nbsp;//&nbsp;
+    <a href="#FNajaxAPI" style="color: white !important">AJAX and CORS API</a>
+    &nbsp;//&nbsp;
+    <a href="#FNcookieAPI" style="color: white !important">Cookie API</a>
+    &nbsp;//&nbsp;
+    <a href="#FNcollectionsAPI" style="color: white !important">Collections API</a>
+    <br/>
+    <a href="#FNtypecheckingAPI" style="color: white !important">Type checking API</a>
+    &nbsp;//&nbsp;
+    <a href="#FNabstractAPI" style="color: white !important">Abstract API</a>
+    &nbsp;//&nbsp;
+    <a href="#FNmathAPI" style="color: white !important">Math API</a>
+    &nbsp;//&nbsp;
+    <a href="#FNpolyfillsAPI" style="color: white !important">Polyfills</a>
+    &nbsp;//&nbsp;
+    <a href="#FNnonstandardpolyfillsAPI" style="color: white !important">Non-standard polyfills</a>
+  </div>
 </header>
 <main class="container">
 
@@ -124,6 +148,24 @@ nav a, nav a:visited, nav a:active, nav a:hover {
 </table>
 
 <p>DEV and MIN editions: If the <code>CEL</code> global variable is used before the loading of the library, then the value of the variable is saved and you can restore with the <code>noConflict();</code> function.</p>
+
+
+<h3>Github pages</h3>
+
+<table class="table-responsive-sm table-striped">
+  <tr>
+    <td class="center"><b>version</b></td>
+    <td class="center"><b>page link</b></td>
+  </tr>
+  <tr>
+    <td>Stable</td>
+    <td><a href="https://github.com/Serrin/Celestra" target="_blank">https://github.com/Serrin/Celestra</a></td>
+  </tr>
+  <tr>
+    <td>Beta</td>
+    <td><a href="https://github.com/Serrin/Celestra-beta" target="_blank">https://github.com/Serrin/Celestra-beta</a></td>
+  </tr>
+</table>
 
 
 <h3>Removed polyfills</h3>
@@ -223,7 +265,7 @@ window.CEL = defaultExport;
 
 <p><span class="removed">Removed</span> and <span class="deprecated">Deprecated</span> labels: Don't use these in production.</p>
 
-<h3>Core API</h3>
+<h3 id="FNcoreAPI">Core API</h3>
 
 <p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
 <br/>Example: <code>CEL.sleep();</code></p>
@@ -421,7 +463,7 @@ console.log(o2);
 </div>
 
 
-<h3>String API</h3>
+<h3 id="FNstringAPI">String API</h3>
 
 <p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
 <br/>Example: <code>CEL.strPropercase();</code></p>
@@ -491,7 +533,7 @@ console.log(o2);
 </div>
 
 
-<h3>DOM API</h3>
+<h3 id="FNdomAPI">DOM API</h3>
 
 <p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
 <br/>Example: <code>CEL.domCreate();</code></p>
@@ -671,7 +713,7 @@ console.log(o2);
   </table>
 </div>
 
-<h3>AJAX and CORS API</h3>
+<h3 id="FNajaxAPI">AJAX and CORS API</h3>
 
 <p class="info">
   These functions aren't deprecated, but it's recommend to use the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API" target="_blank">Fetch API</a>, because it's <a href="https://caniuse.com/?search=fetch" target="_blank">supported</a> in every modern browsers.
@@ -715,7 +757,7 @@ console.log(o2);
 </ul>
 
 
-<h3 id="typechecking">Type checking API</h3>
+<h3 id="FNtypecheckingAPI">Type checking API</h3>
 
 <p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
 <br/>Example: <code>CEL.isString();</code></p>
@@ -927,7 +969,7 @@ console.log(o2);
   </table>
 </div>
 
-<h3 id="cookie">Cookie API</h3>
+<h3 id="FNcookieAPI">Cookie API</h3>
 
 <p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
 <br/>Example: <code>CEL.setCookie();</code></p>
@@ -1017,7 +1059,7 @@ console.log(o2);
   </table>
 </div>
 
-<h3 id="cookie">Collections API</h3>
+<h3 id="FNcollectionsAPI">Collections API</h3>
 
 <p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
 <br/>Example: <code>CEL.arrayAdd();</code></p>
@@ -1386,7 +1428,7 @@ console.log(o2);
 </div>
 
 
-<h3>Abstract API</h3>
+<h3 id="FNabstractAPI">Abstract API</h3>
 
 <p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
 <br/>Example: <code>CEL.getIn();</code></p>
@@ -1474,7 +1516,7 @@ console.log(o2);
 </div>
 
 
-<h3>Math API</h3>
+<h3 id="FNmathAPI">Math API</h3>
 
 <p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
 <br/>Example: <code>CEL.sum();</code></p>
@@ -1615,7 +1657,7 @@ Otherwise, the result is false.</pre>
 </div>
 
 
-<h3 id="polyfills">Polyfills</h3>
+<h3 id="FNpolyfillsAPI">Polyfills</h3>
 
 <div>
   <table class="table-responsive table-striped">
@@ -1695,7 +1737,7 @@ Otherwise, the result is false.</pre>
 </div>
 
 
-<h3 id="non-standard-polyfills">Non-standard polyfills</h3>
+<h3 id="FNnonstandardpolyfillsAPI">Non-standard polyfills</h3>
 
 <div>
   <table class="table-responsive table-striped">
@@ -2225,6 +2267,9 @@ var str = "✓ à \r\n\t árvíztűrő tükörfúrógép ÁRVÍZTŰRŐ TÜKÖRF�
       <div class="flex-w-33">
         <p><b>Celestra Unit Tester</b></p>
         <p><a href="unittest.html" target="_blank">CUT</a></p>
+        <p><b>Github pages</b></p>
+        <p><a href="https://github.com/Serrin/Celestra" target="_blank">Stable</a></p>
+        <p><a href="https://github.com/Serrin/Celestra-beta" target="_blank">Beta</a></p>
       </div>
       <div class="flex-w-33">
         <p><b>Themes</b></p>
