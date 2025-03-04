@@ -1741,6 +1741,12 @@ const isBigInt64 = (v) => (typeof v === "bigint"
 const isBigUInt64 = (v) =>
   (typeof v === "bigint" ? (v >= 0 && v <= Math.pow(2,64)-1) : false);
 
+/* toFloat16(<value>): float16 */
+const toFloat16 = (v) => ((v = Math.min(Math.max(-65504, +v),65504))===v)?v:0;
+
+/* isFloat16(<value>): boolean */
+const isFloat16 = (v) => ((typeof v === "number" && v === v) ?(v>=-65504 && v<=65504) : false);
+
 /* signbit(<value: any>): boolean */
 const signbit = (v) => (((v = +v) !== v) ? !1 : ((v < 0) || Object.is(v, -0)));
 
@@ -2028,6 +2034,8 @@ var celestra = {
   isUInt32: isUInt32,
   isBigInt64: isBigInt64,
   isBigUInt64: isBigUInt64,
+  toFloat16: toFloat16,
+  isFloat16: isFloat16,
   signbit: signbit,
   randomInt: randomInt,
   randomFloat: randomFloat,

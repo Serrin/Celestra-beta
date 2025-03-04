@@ -497,6 +497,7 @@ Name | Description
 `isUInt8(<value>);` | This function determines whether the provided value is an integer between 0 and 255. The return value is boolean.
 `isUInt16(<value>);` | This function determines whether the provided value is an integer between 0 and 65535. The return value is boolean.
 `isUInt32(<value>);` | This function determines whether the provided value is an integer between 0 and 4294967295. The return value is boolean.
+`isFloat16(<value>);` | This function determines whether the provided value is a number between -65504 and 65504. The return value is boolean.
 `minmax(<value>,<min>,<max>);` | This is an alias of the `clamp(<value>,<min>,<max>);`.
 `product(<value1>[,valueN]);` | This function returns the product value from the parameter values.
 `randomFloat([max]);` | Get a random float number value within 0 and max value. Without parameter the maximum value is 100.
@@ -507,6 +508,7 @@ Name | Description
 `sum(value1>[,valueN]);` | This function returns the sum value from the parameter values.
 `toBigInt64(<value>);` | This function clamps ("minmax") the given value to BigInt (Int64) value (-2^63 to 2^63 - 1).
 `toBigUInt64(<value>);` | This function clamps ("minmax") the given value to unsigned BigInt (Int64) value (0 to 2^64 - 1).
+`toFloat16(<value>);` | This function clamps ("minmax") the given value to float 16 value (-65504 to 65504).
 `toFloat32(<value>);` | This function clamps ("minmax") the given value to float 32 value (-3.4e38 to 3.4e38).
 `toInt8(<value>);` | This function clamps ("minmax") the given value to integer 8 value (-127 to 128).
 `toInt16(<value>);` | This function clamps ("minmax") the given value to integer 16 value (-32768 to 32767).

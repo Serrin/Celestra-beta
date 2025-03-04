@@ -2388,6 +2388,45 @@ CUT.isTrue("randomFloat(max);", CEL.randomFloat(30) <= 30);
 var testRandom = CEL.randomFloat(51,55);
 CUT.isTrue("randomFloat(min,max);", testRandom >= 51 && testRandom <= 55);
 
+var float16str = "#" + CEL.toFloat16(0)
+  + "#" + CEL.toFloat16(+0)
+  + "#" + CEL.toFloat16(-0)
+  + "#" + CEL.toFloat16(Number.POSITIVE_INFINITY)
+  + "#" + CEL.toFloat16(Number.NEGATIVE_INFINITY)
+  + "#" + CEL.toFloat16(3.14)
+  + "#" + CEL.toFloat16(-3.14)
+  + "#" + CEL.toFloat16(65504)
+  + "#" + CEL.toFloat16(-65504)
+  + "#" + CEL.toFloat16(65504.0)
+  + "#" + CEL.toFloat16(-65504.0)
+  + "#" + CEL.toFloat16(65504.1)
+  + "#" + CEL.toFloat16(-65504.1)
+  + "#" + CEL.toFloat16(65505)
+  + "#" + CEL.toFloat16(-65505)
+  + "#" + CEL.toFloat16("lorem");
+CUT.isEqual("toFloat16();", float16str,
+  "#0#0#0#65504#-65504#3.14#-3.14#65504#-65504#65504#-65504#65504#-65504#65504#-65504#0"
+);
+CUT.log("<code>\""+float16str+"\"</code>");
+
+var float16str = ""
+  + +CEL.isFloat16(0)
+  + +CEL.isFloat16(+0)
+  + +CEL.isFloat16(-0)
+  + +CEL.isFloat16(65504)
+  + +CEL.isFloat16(-65504)
+  + +CEL.isFloat16(3.14)
+  + +CEL.isFloat16(-3.14)
+  + +CEL.isFloat16(65504.1)
+  + +CEL.isFloat16(-65504.1)
+  + +CEL.isFloat16(65505)
+  + +CEL.isFloat16(-65505)
+  + +CEL.isFloat16("lorem")
+  + +CEL.isFloat16(true)
+  + +CEL.isFloat16([]);
+CUT.isEqual("isFloat16();", float16str, "11111110000000");
+CUT.log("<code>\""+float16str+"\"</code>");
+
 CUT.isTrue(
   "signbit();",
   !CEL.signbit("str") && !CEL.signbit("5") && CEL.signbit("-5")

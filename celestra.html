@@ -1580,6 +1580,10 @@ console.log(o2);
       <td>This function determines whether the provided value is an integer between 0 and 4294967295. The return value is boolean.</td>
     </tr>
     <tr>
+      <td><code>isFloat16(&#60;value&#62;);</code></td>
+      <td>This function determines whether the provided value is a number between -65504 and 65504. The return value is boolean.</td>
+    </tr>
+    <tr>
       <td><code>minmax(&#60;value&#62;,&#60;min&#62;,&#60;max&#62;);</code></td>
       <td>This is an alias of the <code>clamp(&#60;value&#62;,&#60;min&#62;,&#60;max&#62;);</code>.</td>
     </tr>
@@ -1628,6 +1632,10 @@ Otherwise, the result is false.</pre>
     <tr>
       <td><code>toBigUInt64(&#60;value&#62;);</code></td>
       <td>This function clamps ("minmax") the given value to unsigned BigInt (Int64) value (0 to 2^64 - 1).</td>
+    </tr>
+    <tr>
+      <td><code>toFloat16(&#60;value&#62;);</code></td>
+      <td>This function clamps ("minmax") the given value to float 16 value (-65504 to 65504).</td>
     </tr>
     <tr>
       <td><code>toFloat32(&#60;value&#62;);</code></td>
