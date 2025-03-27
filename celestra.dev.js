@@ -209,6 +209,20 @@ const BASE58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 const BASE62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 const WORDSAFEALPHABET= "23456789CFGHJMPQRVWXcfghjmpqvwx";
 
+/* randomUUIDv7(): string */
+function randomUUIDv7 () {
+  let ts = Date.now().toString(16).padStart(12,"0")+"7";
+  let uuid = Array.from(([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,(c)=>(c^crypto.getRandomValues(new Uint8Array(1))[0]&15>>c/4).toString(16)));
+  let i = 0, p = 0;
+  while (i<13) {
+    if (p === 8 || p === 13) { p++; }
+    uuid[p] = ts[i];
+    p++;
+    i++;
+  }
+  return uuid.join("");
+}
+
 /* delay(<ms: integer>).then(<callback: function>): promise */
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 /* sleep(<ms: integer>).then(<callback: function>): promise */
@@ -1199,6 +1213,15 @@ function clearCookies (path = "/", domain, secure, SameSite = "Lax", HttpOnly) {
 
 /** Collections API **/
 
+/* count(<collection>,<callback: function>): integer */
+function count (it, fn) {
+  let i = 0, r = 0;
+  for (let item of it) {
+    if (fn(item, i++)) { r++; }
+  }
+  return r;
+}
+
 /* arrayDeepClone(<array>): array */
 function arrayDeepClone ([...a]) {
   const ADC = (v) => (Array.isArray(v) ? Array.from(v, ADC) : v);
@@ -1785,6 +1808,7 @@ var celestra = {
   BASE58: BASE58,
   BASE62: BASE62,
   WORDSAFEALPHABET: WORDSAFEALPHABET,
+  randomUUIDv7: randomUUIDv7,
   delay: delay,
   sleep: sleep,
   randomBoolean: randomBoolean,
@@ -1922,6 +1946,7 @@ var celestra = {
   removeCookie: removeCookie,
   clearCookies: clearCookies,
   /** Collections API **/
+  count: count,
   arrayDeepClone: arrayDeepClone,
   arrayCreate: arrayCreate,
   initial: initial,

@@ -436,6 +436,10 @@ console.log(o2);
         <br/>Generate a random string. The length parameter is optional and can be a number and the default value is 100. The specialCharactersEnabled parameter is optional and can be a boolean and the default value is false. Return the generated string.</td>
     </tr>
     <tr>
+      <td><code>randomUUIDv7();</td>
+      <td>This function returns a UUID v7, which cointains a timestamp too. For more information please read the <a href="https://www.rfc-editor.org/rfc/rfc9562.html#name-uuid-version-7" target="_blank">this page</a>!<br/>Example result: <code>"0195d74b-b8c8-7302-a7d3-919df45087f3"</code></td>
+    </tr>    
+    <tr>
       <td><code>sizeIn(&#60;object&#62;);</code></td>
       <td>Returns the count of the owned properties of the given object. The object parameter is mandatory.</td>
     </tr>
@@ -1148,6 +1152,10 @@ console.log(o2);
     <tr>
       <td><code>concat(&#60;collection1&#62;[,collectionN]);</code></td>
       <td>This function merges the collections and yields the elements of the merged collection. The given collections will be not changed. At least one collection has to been given.</td>
+    </tr>
+    <tr>
+      <td><code>count((&#60;collection&#62;,&#60;callback&#62;););</code></td>
+      <td>This function executes a counter function (that you provide) on each element of the collection, returning in a single output value. The collection parameter is mandatory. The callback parameter is mandatory and has to be a function.</td>
     </tr>
     <tr>
       <td><code>contains(&#60;collection&#62;,&#60;value&#62;);</code></td>

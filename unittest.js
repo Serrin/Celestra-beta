@@ -255,6 +255,12 @@ CUT.isTrue("assertEq(); 2",    CEL.assertEq("lorem ipsum", 1, true, false) );
 CUT.isTrue("assertNotEq(); 1", CEL.assertNotEq("lorem ipsum", 1, 2) );
 CUT.isTrue("assertNotEq(); 2", CEL.assertNotEq("lorem ipsum", 1, 2, false) );
 
+var randomUUIDv7Result = CEL.randomUUIDv7();
+CUT.isTrue("randomUUIDv7();",
+  CEL.isString(randomUUIDv7Result) && randomUUIDv7Result.length === 36
+);
+CUT.log("<code>\""+randomUUIDv7Result+"\"<code>");
+
 var nanoidStr = CEL.nanoid();
 CUT.isTrue("nanoid 1 - default size 21",
   CEL.isString(nanoidStr) && nanoidStr.length === 21
@@ -736,6 +742,12 @@ CEL.qs("#dsDiv").remove();
 
 CUT.addElement("hr");
 CUT.addElement("h3", "Collections");
+
+CUT.isTrue("count();",
+  CEL.count([1,2,3,4,5,6,7], (x) => x > 3) === 4
+    && CEL.count([1,2,3], (x) => x > 3) === 0
+    && CEL.count([4,5,6], (x) => x > 3) === 3
+);
 
 var arrayDeepCloneA1 = [[0, 1, [2]], [4, 5, [6]]];
 var arrayDeepCloneA2 = CEL.arrayDeepClone(arrayDeepCloneA1);
