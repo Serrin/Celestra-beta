@@ -2,6 +2,37 @@
 # Celestra version history
 
 
+## Celestra v5.6.2
+
+1. Documentation and pdf fixes.
+
+2. Add Github page link in the **celestra.html** and **readme.md**
+ 
+3. Add function categories links in the **celestra.html**
+
+4. Add new contents in the **js-cheatsheet.odt** and **js-cheatsheet.pdf**:
+- new Set methods
+- Float16Array
+- new Iterator methods
+
+5. Add new functions: 
+- `isFloat16(<value>);`
+- `toFloat16(<value>);`
+- `count();`
+- `randomUUIDv7();`
+
+6. Deprecate these functions: 
+- `arrayUnion();`
+- `arrayIntersection();`
+- `arrayDifference();`
+- `arraySymmetricDifference();`
+- `setUnion();`
+- `setIntersection();`
+- `setDifference();`
+- `setSymmetricDifference();`
+- `isSuperset();`
+
+
 ## Celestra v5.6.1
 
 1. Fixed many errors in the documentation and pdf fixes.
