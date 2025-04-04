@@ -183,7 +183,7 @@ CUT.isNotEqual(
 (function(){
 "use strict";
 
-/* Celestra v5.6.2 testcases */
+/* Celestra v5.6.3 testcases */
 
 /* Not auto tested functions */
 CUT.addElement("hr");

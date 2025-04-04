@@ -1,6 +1,6 @@
 /**
  * @name Celestra
- * @version 5.6.2 dev
+ * @version 5.6.3 dev
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
@@ -1792,7 +1792,7 @@ const inRange = (v, i, a) => (v >= i && v <= a);
 
 /** object header **/
 
-const VERSION = "Celestra v5.6.2 dev";
+const VERSION = "Celestra v5.6.3 dev";
 
 /* celestra.noConflict(): celestra object */
 function noConflict () { window.CEL = celestra.__prevCEL__; return celestra; }

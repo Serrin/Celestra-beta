@@ -15,7 +15,7 @@ __A helper JavaScript library with useful functions and polyfills and zero depen
 
 This library isn't compatible with the Node.js.
 
-Latest version: 5.6.2
+Latest version: 5.6.3
 
 Date: 2024-04-01T19:36:08.402Z
 
@@ -66,22 +66,20 @@ minified|__celestra-polyfills.min.js__
 
 ### Cheatsheets
 
-Celestra cheatsheet: __celestra-cheatsheet.pdf__
-
-JavaScript cheatsheet: __js-cheatsheet.pdf__
+edition|filename
+-------|--------
+Celestra cheatsheet|__celestra-cheatsheet.pdf__
+JavaScript cheatsheet|__js-cheatsheet.pdf__
 
 
 ### Apps
 
-BTC standalone app: __btc.app.html__
-
-RPG dice roller: __testgame.html__
-
-Demo plugin documentation: __celestra-demo-plugin.html__
-
-Demo plugin developer source: __celestra-demo-plugin.dev.js__
-
-Demo plugin minified source: __celestra-demo-plugin.min.js__
+app|filename
+-------|--------
+RPG dice roller|___testgame.html__
+Demo plugin documentation|__celestra-demo-plugin.html__
+Demo plugin developer source|__celestra-demo-plugin.dev.js__
+Demo plugin minified source|__celestra-demo-plugin.min.js__
 
 
 ### How to import the ESM edition
