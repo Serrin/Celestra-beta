@@ -51,7 +51,7 @@
 
 1. Documentation and pdf fixes.
 ````
-HTML - minmax(<value>,<min>,<max>); - This is an alias of the minmax(<value>,<min>,<max>);.
+HTML - clamp(<value>,<min>,<max>); - This is an alias of the minmax(<value>,<min>,<max>);.
 HTML - REMOVED polyfills in v3.1.0 - String.prototype.codePointAt();7 
 ````
 

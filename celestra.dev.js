@@ -220,7 +220,9 @@ const WORDSAFEALPHABET= "23456789CFGHJMPQRVWXcfghjmpqvwx";
 /* randomUUIDv7(): string */
 function randomUUIDv7 () {
   let ts = Date.now().toString(16).padStart(12,"0")+"7";
-  let uuid = Array.from(([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,(c)=>(c^crypto.getRandomValues(new Uint8Array(1))[0]&15>>c/4).toString(16)));
+  let uuid = Array.from(([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, (c) =>
+    (c^crypto.getRandomValues(new Uint8Array(1))[0]&15>>c/4).toString(16)
+  ) );
   let i = 0, p = 0;
   while (i<13) {
     if (p === 8 || p === 13) { p++; }
@@ -463,8 +465,9 @@ function strAt (s, i, nC) {
   return a.join("");
 }
 
-/* strSplice(<string>,<index: integer>,<count: integer>[,add: string]): string */
-const strSplice = (s, i, c, ...add) => Array.from(s).toSpliced(i, c, add.join("")).join("");
+/* strSplice(<string>,<index: integer>,<count: integer>[,add: string]):string */
+const strSplice = (s, i, c, ...add) => 
+  Array.from(s).toSpliced(i, c, add.join("")).join("");
 
 /* strHTMLRemoveTags(<string>): string */
 const strHTMLRemoveTags = (s) =>
