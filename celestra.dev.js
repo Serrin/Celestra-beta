@@ -329,7 +329,7 @@ function extend (...a) {
 const sizeIn = (o) => Object.keys(o).length;
 
 /* forIn(<object>,<callback: function>): object */
-const forIn = (o,fn) => { Object.keys(o).forEach((v)=>fn(o[v],v,o)); return o; }
+function forIn (o,fn) { Object.keys(o).forEach((v)=>fn(o[v],v,o)); return o; }
 
 /* filterIn(<object>,<callback: function>): object */
 const filterIn = (o, fn) => Object.keys(o)
@@ -351,7 +351,7 @@ const constant = (v) => () => v;
 const identity = (v) => v;
 
 /* noop(): undefined */
-const noop = () => {};
+function noop () {}
 
 /* T(): true */
 const T = () => true;
@@ -466,7 +466,7 @@ function strAt (s, i, nC) {
 }
 
 /* strSplice(<string>,<index: integer>,<count: integer>[,add: string]):string */
-const strSplice = (s, i, c, ...add) => 
+const strSplice = (s, i, c, ...add) =>
   Array.from(s).toSpliced(i, c, add.join("")).join("");
 
 /* strHTMLRemoveTags(<string>): string */
