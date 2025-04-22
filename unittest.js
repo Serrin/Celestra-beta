@@ -183,7 +183,7 @@ CUT.isNotEqual(
 (function(){
 "use strict";
 
-/* Celestra v5.6.3 testcases */
+/* Celestra v5.6.4 testcases */
 
 /* Not auto tested functions */
 CUT.addElement("hr");
@@ -662,12 +662,12 @@ CUT.isTrue("domToElement(); complex element",
 );
 
 CEL.domSetCSS(domTestElement, "width", "300px");
-CUT.isEqual("domSetCSS(); property and domGetCSS(); - " + CEL.domGetCSS(domTestElement, "width"), "300px",
+CUT.isEqual("domSetCSS(); property and domGetCSS(); - (300px) - " + CEL.domGetCSS(domTestElement, "width"), "300px",
   CEL.domGetCSS(domTestElement, "width"));
 CEL.domSetCSS(domTestElement, {"width": "350px", "font-weight": "bold"});
-CUT.isEqual("domSetCSS(); properties object and domGetCSS(); - " + CEL.domGetCSS(domTestElement, "width"),
+CUT.isEqual("domSetCSS(); properties object and domGetCSS(); - (350px) - " + CEL.domGetCSS(domTestElement, "width"),
   "350px", CEL.domGetCSS(domTestElement, "width"));
-CUT.isEqual("domSetCSS(); properties object and domGetCSS() object; - " + CEL.domGetCSS(domTestElement)["width"],
+CUT.isEqual("domSetCSS(); properties object and domGetCSS() object; (350px)- " + CEL.domGetCSS(domTestElement)["width"],
   "350px", CEL.domGetCSS(domTestElement)["width"]);
 
 CEL.domHide(domTestElement);
@@ -1504,6 +1504,31 @@ CUT.isEqual("clearCookies(); <i>(settings object)</i>", "truetruefalsefalse",
 CUT.addElement("hr");
 CUT.addElement("h3", "polyfills");
 
+
+var iframe = document.createElement("iframe");
+document.body.appendChild(iframe);
+var xError = window.frames[window.frames.length - 1].Error;
+var newxError = new xError();
+var isErrorStr = ""
+ // true
+ + +(Error.isError(newxError))
+ + +(Error.isError(new Error()))
+ + +(Error.isError(new TypeError()))
+ + +(Error.isError(new DOMException()))
+ // false
+ + +(Error.isError({ __proto__: Error.prototype }))
+ + +(Error.isError({}))
+ + +(Error.isError(null))
+ + +(Error.isError(undefined))
+ + +(Error.isError(17))
+ + +(Error.isError(3.14))
+ + +(Error.isError("Error"))
+ + +(Error.isError(true))
+ + +(Error.isError(false));
+CUT.isEqual("Error.isError(); <code>\"" + isErrorStr + "\"</code>",
+  isErrorStr, "1111000000000"
+);
+
 var arrayCopy = [4,2,5], arrayCopyStr = "[4,2,5]";
 CUT.isTrue("Array.prototype.toReversed();",
   JSON.stringify(arrayCopy.toReversed()) === "[5,2,4]"
@@ -1914,11 +1939,29 @@ CUT.isTrue("isDataView(); true",
 );
 CUT.isFalse("isDataView(); false", CEL.isDataView({}, "dataview"));
 
+var iframe = document.createElement("iframe");
+document.body.appendChild(iframe);
+var xError = window.frames[window.frames.length - 1].Error;
+var newxError = new xError();
 var isErrorStr = ""
-  + CEL.isError(new Error) + " " + CEL.isError(new RangeError)
-  + " " + CEL.isError(new SyntaxError) + " " + CEL.isError(new TypeError)
-  + " " + CEL.isError({}) + " " + CEL.isError([]);
-CUT.isEqual("isError();", isErrorStr, "true true true true false false" );
+ // true
+ + +(CEL.isError(newxError))
+ + +(CEL.isError(new Error()))
+ + +(CEL.isError(new TypeError()))
+ + +(CEL.isError(new DOMException()))
+ // false
+ + +(CEL.isError({ __proto__: Error.prototype }))
+ + +(CEL.isError({}))
+ + +(CEL.isError(null))
+ + +(CEL.isError(undefined))
+ + +(CEL.isError(17))
+ + +(CEL.isError(3.14))
+ + +(CEL.isError("Error"))
+ + +(CEL.isError(true))
+ + +(CEL.isError(false));
+CUT.isEqual("isError(); <code>\"" + isErrorStr + "\"</code>",
+  isErrorStr, "1111000000000"
+);
 
 CUT.isTrue("isGeneratorFn(); true",
   CEL.isGeneratorFn(function* fn42g () { yield 42; }));

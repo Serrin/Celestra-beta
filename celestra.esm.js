@@ -1,5 +1,6 @@
 "use strict";
-/** Celestra * @version 5.6.3 esm * @see https://github.com/Serrin/Celestra/ * @license MIT */
+/** Celestra * @version 5.6.4 esm * @see https://github.com/Serrin/Celestra/ * @license MIT */
+if(!("isError" in Error)){Error.isError=function isError(v){let s=Object.prototype.toString.call(v).slice(8,-1).toLowerCase();return(s==="error"||s==="domexception");};}
 if(!("groupBy" in Object)){Object.defineProperty(Object,"groupBy",{"configurable":true,"writable":true,"enumerable":true,"value":function(items,callbackFn){"use strict";if(!(typeof callbackFn==="function")){throw new TypeError();}let r=Object.create(null),i=0;for(let item of items){let key=callbackFn(item,i++);if(!(Object.prototype.hasOwnProperty.call(r,key))){r[key]=[];}r[key].push(item);}return r;}});}
 if(!("groupBy" in Map)){Object.defineProperty(Map,"groupBy",{"configurable":true,"writable":true,"enumerable":true,"value":function(items,callbackFn){"use strict";if(!(typeof callbackFn==="function")){throw new TypeError();}let r=new Map(),i=0;for(let item of items){let key=callbackFn(item,i++);if(!(r.has(key))){r.set(key,[]);}r.get(key).push(item);}return r;}});}
 if(!Array.fromAsync){Array.fromAsync=async function fromAsync(arrayLike,mapfn,thisArg){const isConstructor=(v)=>(typeof v==="function"&&typeof v.prototype==="object");const errorMsg="Input length exceed the Number.MAX_SAFE_INTEGER.";if(Symbol.asyncIterator in arrayLike||Symbol.iterator in arrayLike){var r=isConstructor(this)?new this:Array(0),i=0;for await(const item of arrayLike){if(i>Number.MAX_SAFE_INTEGER){throw TypeError(errorMsg);}else{if(!mapfn){r[i]=item;}else{r[i]=await mapfn.call(thisArg,item,i);}}i++;}r.length=i;return r;}else{var l=arrayLike.length,r=isConstructor(this)?new this(l):Array(l),i=0;while(i<l){if(i>Number.MAX_SAFE_INTEGER){throw TypeError(errorMsg);}var item=await arrayLike[i];if(!mapfn){r[i]=item;}else{r[i]=await mapfn.call(thisArg,item,i);}i++;}r.length=i;return r;}};}
@@ -58,7 +59,7 @@ function strUpFirst(s){var a=[...String(s)];if(a.length>0){a[0]=a[0].toUpperCase
 function strDownFirst(s){var a=[...String(s)];if(a.length>0){a[0]=a[0].toLowerCase();}return a.join("");}
 const strReverse=(s)=>Array.from(String(s)).reverse().join("");
 const strCodePoints=(s)=>Array.from(String(s),(v)=>v.codePointAt(0));
-const strFromCodePoints=([...a])=>String.fromCodePoint.apply(null,a);
+const strFromCodePoints=([...a])=>String.fromCodePoint(...a);
 function strAt(s,i,nC){var a=Array.from(String(s));if(nC==null){return a.at(i)||"";}i=i<0?a.length+i:i;if(i>a.length){return a.join("");}a[i]=nC;return a.join("");}
 const strSplice=(s,i,c,...add)=>Array.from(s).toSpliced(i,c,add.join("")).join("");
 const strHTMLRemoveTags=(s)=>String(s).replace(/<[^>]*>/g," ").replace(/\s{2,}/g," ").trim();
@@ -90,7 +91,7 @@ function form2string(f){var fld,a=[];if(typeof f==="object"&&f.nodeName.toLowerC
 const getDoNotTrack=()=>(navigator.doNotTrack===true|| navigator.doNotTrack===1||navigator.doNotTrack==="1"||window.doNotTrack===true||window.doNotTrack===1||window.doNotTrack==="1"||navigator.msDoNotTrack===true||navigator.msDoNotTrack===1||navigator.msDoNotTrack==="1");
 function getLocation(s,e){if(!e){var e=function(){};}function getE(error){e("ERROR("+error.code+"): "+error.message);}if(navigator.geolocation){navigator.geolocation.getCurrentPosition(s,getE);}else{getE("Geolocation is not supported in this browser.");}}
 function createFile(fln,c,dt){var l=arguments.length;if(l>1){if(l===2){dt="text/plain";}var b=new Blob([c],{type:dt});if(window.navigator.msSaveOrOpenBlob){window.navigator.msSaveBlob(b,fln);}else{var e=window.document.createElement("a");e.href=window.URL.createObjectURL(b);e.download=fln;document.body.appendChild(e);e.click();document.body.removeChild(e);window.URL.revokeObjectURL(e.href);}}else{throw "Celestra createFile error: too few parameters.";}}
-function getFullscreen(){return(document.fullscreenElement||document.mozFullScreenElement||document.webkitFullscreenElement||document.msFullscreenElement||undefined);}
+const getFullscreen=()=>(document.fullscreenElement||document.mozFullScreenElement||document.webkitFullscreenElement||document.msFullscreenElement||undefined);
 function setFullscreenOn(s){if(typeof s==="string"){var e=document.querySelector(s);}else if(typeof s==="object"){var e=s;}if(e.requestFullscreen){e.requestFullscreen();}else if(e.mozRequestFullScreen){e.mozRequestFullScreen();}else if(e.webkitRequestFullscreen){e.webkitRequestFullscreen();}else if(e.msRequestFullscreen){e.msRequestFullscreen();}}
 function setFullscreenOff(){if(document.exitFullscreen){document.exitFullscreen();}else if(document.mozCancelFullScreen){document.mozCancelFullScreen();}else if(document.webkitExitFullscreen){document.webkitExitFullscreen();}else if(document.msExitFullscreen){document.msExitFullscreen();}}
 const domGetCSSVar=(n)=>getComputedStyle(document.documentElement).getPropertyValue(n[0]==="-"?n:"--"+n);
@@ -106,16 +107,16 @@ const isFalsy=(v)=>!v;
 const isAsyncGeneratorFn=(v)=>(Object.getPrototypeOf(v).constructor===Object.getPrototypeOf(async function*(){}).constructor);
 const isConstructorFn=(v)=>(typeof v==="function"&&typeof v.prototype==="object");
 const isPlainObject=(v)=>(v!=null&&typeof v==="object"&&(Object.getPrototypeOf(v)===Object.prototype||Object.getPrototypeOf(v)===null));
-const isEmptyMap=(v)=>(Object.prototype.toString.call(v).slice(8,-1).toLowerCase()==="map"&&v.size===0);
-const isEmptySet=(v)=>(Object.prototype.toString.call(v).slice(8,-1).toLowerCase()==="set"&&v.size===0);
+const isEmptyMap=(v)=>(v instanceof Map&&v.size===0);
+const isEmptySet=(v)=>(v instanceof Set&&v.size===0);
 function isEmptyIterator(it){for(let item of it){return false;}return true;}
-const isDataView=(v)=>(Object.prototype.toString.call(v).slice(8,-1).toLowerCase()==="dataview");
-const isError=(v)=>(Object.prototype.toString.call(v).slice(8,-1).toLowerCase()==="error");
+const isDataView=(v)=>(v instanceof DataView);
+function isError(v){let s=Object.prototype.toString.call(v).slice(8,-1).toLowerCase();return(s==="error"||s==="domexception");}
 const isPromise=(v)=>(v!=null&&typeof v==="object"&&typeof v.then==="function");
 function isSameObject(o1,o2){if(o1.constructor!==o2.constructor){return false;}var a1=Object.keys(o1).sort(),a2=Object.keys(o2).sort();if(a1.length===a2.length){for(var i=0,l=a1.length;i<l;i++){if(a1[i]!==a2[i]||o1[a1[i]]!==o2[a1[i]]){return false;}}return true;}return false;}
 const isSameArray=(a,b)=>(Array.isArray(a)&&Array.isArray(b)&&(a.length===b.length)&&a.every((v,i)=>v===b[i]));
-function isSameMap(m1,m2){if(Object.prototype.toString.call(m1).slice(8,-1).toLowerCase()==="map"&&Object.prototype.toString.call(m2).slice(8,-1).toLowerCase()==="map"&&m1.size===m2.size){for(const item of m1.keys()){if(m1.get(item)!==m2.get(item)){return false;}}return true;}return false;}
-function isSameSet(s1,s2){if(Object.prototype.toString.call(s1).slice(8,-1).toLowerCase()==="set"&&Object.prototype.toString.call(s2).slice(8,-1).toLowerCase()==="set"&&s1.size===s2.size){for(const item of s1){if(!s2.has(item)){return false;}}return true;}return false;}
+function isSameMap(m1,m2){if(m1 instanceof Map&&m2 instanceof Map&&m1.size===m2.size){for(const item of m1.keys()){if(m1.get(item)!==m2.get(item)){return false;}}return true;}return false;}
+function isSameSet(s1,s2){if(s1 instanceof Set&&s2 instanceof Set&&s1.size===s2.size){for(const item of s1){if(!s2.has(item)){return false;}}return true;}return false;}
 const isSameIterator=([...a1],[...a2])=>(a1.length===a2.length&&a1.every((v,i)=>v===a2[i]));
 const isString=(v)=>(typeof v==="string");
 const isChar=(v)=>(typeof v==="string"&&(v.length===1||Array.from(v).length===1));
@@ -135,18 +136,18 @@ const isNullOrUndefined=(v)=>(v==null);
 const isNil=(v)=>(v==null||v!==v);
 const isPrimitive=(v)=>((typeof v!=="object"&&typeof v!=="function")||v===null);
 const isSymbol=(v)=>(typeof v==="symbol");
-const isMap=(v)=>(Object.prototype.toString.call(v).slice(8,-1).toLowerCase()==="map");
-const isSet=(v)=>(Object.prototype.toString.call(v).slice(8,-1).toLowerCase()==="set");
-const isWeakMap=(v)=>(Object.prototype.toString.call(v).slice(8,-1).toLowerCase()==="weakmap");
-const isWeakSet=(v)=>(Object.prototype.toString.call(v).slice(8,-1).toLowerCase()==="weakset");
-const isIterator=(v)=>(v!=null&&typeof v==="object"&&typeof v.next==="function");
-const isDate=(v)=>(Object.prototype.toString.call(v).slice(8,-1).toLowerCase()==="date");
-const isRegexp=(v)=>(Object.prototype.toString.call(v).slice(8,-1).toLowerCase()==="regexp");
+const isMap=(v)=>(v instanceof Map);
+const isSet=(v)=>(v instanceof Set);
+const isWeakMap=(v)=>(v instanceof WeakMap);
+const isWeakSet=(v)=>(v instanceof WeakSet);
+const isIterator=(v)=>("Iterator" in window ?(v instanceof Iterator):(v!=null&&typeof v==="object"&&typeof v.next==="function"));
+const isDate=(v)=>(v instanceof Date);
+const isRegexp=(v)=>(v instanceof RegExp);
 const isElement=(v)=>(v!=null&&typeof v==="object"&&v.nodeType===1);
 const isIterable=(v)=>(v!=null&&typeof v[Symbol.iterator]==="function");
 const isBigInt=(v)=>(typeof v==="bigint");
-const isArrayBuffer=(v)=>(Object.prototype.toString.call(v).slice(8,-1).toLowerCase()==="arraybuffer");
-const isTypedArray=(v)=>["int8array","uint8array","uint8clampedarray","int16array","uint16array","int32array","uint32array","float32array","float64array","bigint64array","biguint64array"].includes(Object.prototype.toString.call(v).slice(8,-1).toLowerCase());
+const isArrayBuffer=(v)=>(v instanceof ArrayBuffer);
+const isTypedArray=(v)=>(v instanceof Int8Array||v instanceof Uint8Array||v instanceof Uint8ClampedArray||v instanceof Int16Array||v instanceof Uint16Array||v instanceof Int32Array||v instanceof Uint32Array||("Float16Array" in window?v instanceof Float16Array:false)||v instanceof Float32Array||v instanceof Float64Array||v instanceof BigInt64Array||v instanceof BigUint64Array);
 const isGeneratorFn=(v)=>(Object.getPrototypeOf(v).constructor===Object.getPrototypeOf(function*(){}).constructor);
 const isAsyncFn=(v)=>(Object.getPrototypeOf(v).constructor===Object.getPrototypeOf(async function(){}).constructor);
 function setCookie(name,value,hours=8760,path="/",domain,secure,SameSite="Lax",HttpOnly){if(typeof name==="object"){var settings=name;name=settings.name;value=settings.value;hours=settings.hours||8760;path=settings.path||"/";domain=settings.domain;secure=settings.secure;SameSite=settings.SameSite||"Lax";HttpOnly=settings.HttpOnly;}var expire=new Date();expire.setTime(expire.getTime()+(Math.round(hours*60*60*1000)));document.cookie=encodeURIComponent(name)+"="+encodeURIComponent(value)+"; expires="+expire.toUTCString()+"; path="+path+(domain?"; domain="+domain:"")+(secure?"; secure":"")+(typeof SameSite==="string"&&SameSite.length>0?"; SameSite="+SameSite:"")+(HttpOnly?"; HttpOnly":"")+";";}
@@ -271,7 +272,7 @@ const signbit=(v)=>(((v=+v)!==v)?!1:((v<0)||Object.is(v,-0)));
 function randomInt(i=100,a){if(a==null){a=i;i=0;}i=Math.ceil(+i);return Math.floor(Math.random()*(Math.floor(+a)-i+1)+i);}
 function randomFloat(i=100,a){if(a==null){a=i;i=0;}var r=(Math.random()*(a-i+1))+i;return r>a?a:r;}
 const inRange=(v,i,a)=>(v>=i&&v<=a);
-const VERSION="Celestra v5.6.3 esm";
+const VERSION="Celestra v5.6.4 esm";
 function noConflict(){return celestra;}
 var celestra = {VERSION:VERSION, noConflict:noConflict, BASE16:BASE16, BASE32:BASE32, BASE36:BASE36, BASE58:BASE58, BASE62:BASE62, WORDSAFEALPHABET:WORDSAFEALPHABET, randomUUIDv7:randomUUIDv7, delay:delay, sleep:sleep, randomBoolean:randomBoolean, b64Encode:b64Encode, b64Decode:b64Decode, javaHash:javaHash, inherit:inherit, getUrlVars:getUrlVars, obj2string:obj2string, classof:classof, extend:extend, sizeIn:sizeIn, forIn:forIn, filterIn:filterIn, popIn:popIn, unBind:unBind, bind:bind, constant:constant, identity:identity, noop:noop, T:T, F:F, assertEq:assertEq, assertNotEq:assertNotEq, assertTrue:assertTrue, assertFalse:assertFalse, nanoid:nanoid, timestampID:timestampID, strPropercase:strPropercase, strTitlecase:strTitlecase, strCapitalize:strCapitalize, strUpFirst:strUpFirst, strDownFirst:strDownFirst, strReverse:strReverse, strCodePoints:strCodePoints, strFromCodePoints:strFromCodePoints, strAt:strAt, strSplice:strSplice, strHTMLRemoveTags:strHTMLRemoveTags, strHTMLEscape:strHTMLEscape, strHTMLUnEscape:strHTMLUnEscape, qsa:qsa, qs:qs, domReady:domReady, domCreate:domCreate, domToElement:domToElement, domGetCSS:domGetCSS, domSetCSS:domSetCSS, domFadeIn:domFadeIn, domFadeOut:domFadeOut, domFadeToggle:domFadeToggle, domHide:domHide, domShow:domShow, domToggle:domToggle, domIsHidden:domIsHidden, domSiblings:domSiblings, domSiblingsPrev:domSiblingsPrev, domSiblingsLeft:domSiblingsLeft, domSiblingsNext:domSiblingsNext, domSiblingsRight:domSiblingsRight, importScript:importScript, importStyle:importStyle, form2array:form2array, form2string:form2string, getDoNotTrack:getDoNotTrack, getLocation:getLocation, createFile:createFile, getFullscreen:getFullscreen, setFullscreenOn:setFullscreenOn, setFullscreenOff:setFullscreenOff, domGetCSSVar:domGetCSSVar, domSetCSSVar:domSetCSSVar, domScrollToTop:domScrollToTop, domScrollToBottom:domScrollToBottom, domScrollToElement:domScrollToElement, getText:getText, getJson:getJson, ajax:ajax, isTruthy:isTruthy, isFalsy:isFalsy, isAsyncGeneratorFn:isAsyncGeneratorFn, isConstructorFn:isConstructorFn, isPlainObject:isPlainObject, isEmptyMap:isEmptyMap, isEmptySet:isEmptySet, isEmptyIterator:isEmptyIterator, isDataView:isDataView, isError:isError, isPromise:isPromise, isSameObject:isSameObject, isSameArray:isSameArray, isSameMap:isSameMap, isSameSet:isSameSet, isSameIterator:isSameIterator, isString:isString, isChar:isChar, isNumber:isNumber, isFloat:isFloat, isNumeric:isNumeric, isBoolean:isBoolean, isObject:isObject, isEmptyObject:isEmptyObject, isFunction:isFunction, isCallable:isCallable, isEmptyArray:isEmptyArray, isArraylike:isArraylike, isNull:isNull, isUndefined:isUndefined, isNullOrUndefined:isNullOrUndefined, isNil:isNil, isPrimitive:isPrimitive, isSymbol:isSymbol, isMap:isMap, isSet:isSet, isWeakMap:isWeakMap, isWeakSet:isWeakSet, isIterator:isIterator, isDate:isDate, isRegexp:isRegexp, isElement:isElement, isIterable:isIterable, isBigInt:isBigInt, isArrayBuffer:isArrayBuffer, isTypedArray:isTypedArray, isGeneratorFn:isGeneratorFn, isAsyncFn:isAsyncFn, setCookie:setCookie, getCookie:getCookie, hasCookie:hasCookie, removeCookie:removeCookie, clearCookies:clearCookies, count:count, arrayDeepClone:arrayDeepClone, arrayCreate:arrayCreate, initial:initial, shuffle:shuffle, partition:partition, group:group, arrayUnion:arrayUnion, arrayIntersection:arrayIntersection, arrayDifference:arrayDifference, arraySymmetricDifference:arraySymmetricDifference, setUnion:setUnion, setIntersection:setIntersection, setDifference:setDifference, setSymmetricDifference:setSymmetricDifference, isSuperset:isSuperset, min:min, max:max, arrayRepeat:arrayRepeat, arrayCycle:arrayCycle, arrayRange:arrayRange, zip:zip, unzip:unzip, zipObj:zipObj, arrayUnique:arrayUnique, arrayAdd:arrayAdd, arrayClear:arrayClear, arrayRemove:arrayRemove, arrayRemoveBy:arrayRemoveBy, arrayMerge:arrayMerge, iterRange:iterRange, iterCycle:iterCycle, iterRepeat:iterRepeat, takeWhile:takeWhile, dropWhile:dropWhile, take:take, drop:drop, forEach:forEach, forEachRight:forEachRight, map:map, filter:filter, reject:reject, slice:slice, tail:tail, item:item, nth:nth, size:size, first:first, head:head, last:last, reverse:reverse, sort:sort, includes:includes, contains:contains, find:find, findLast:findLast, every:every, some:some, none:none, takeRight:takeRight, takeRightWhile:takeRightWhile, dropRight:dropRight, dropRightWhile:dropRightWhile, concat:concat, reduce:reduce, enumerate:enumerate, entries:entries, flat:flat, join:join, withOut:withOut, getInV:getInV, getIn:getIn, setIn:setIn, hasIn:hasIn, isPropertyKey:isPropertyKey, toPropertyKey:toPropertyKey, toObject:toObject, isSameValue:isSameValue, isSameValueZero:isSameValueZero, isSameValueNonNumber:isSameValueNonNumber, createMethodProperty:createMethodProperty, type:type, isIndex:isIndex, toIndex:toIndex, toInteger:toInteger, createDataProperty:createDataProperty, toArray:toArray, sum:sum, avg:avg, product:product, clamp:clamp, minmax:minmax, isEven:isEven, isOdd:isOdd, toInt8:toInt8, toUInt8:toUInt8, toInt16:toInt16, toUInt16:toUInt16, toInt32:toInt32, toUInt32:toUInt32, toBigInt64:toBigInt64, toBigUInt64:toBigUInt64, toFloat32:toFloat32, isInt8:isInt8, isUInt8:isUInt8, isInt16:isInt16, isUInt16:isUInt16, isInt32:isInt32, isUInt32:isUInt32, isBigInt64:isBigInt64, isBigUInt64:isBigUInt64, toFloat16:toFloat16, isFloat16:isFloat16, toFloat16:toFloat16, isFloat16:isFloat16, signbit:signbit, randomInt:randomInt, randomFloat:randomFloat, inRange:inRange};
 /* ESM */

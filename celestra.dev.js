@@ -1,6 +1,6 @@
 /**
  * @name Celestra
- * @version 5.6.3 dev
+ * @version 5.6.4 dev
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
@@ -8,6 +8,14 @@
 "use strict";
 
 /** polyfills **/
+
+/* Error.isError(); */
+if (!("isError" in Error)) {
+  Error.isError = function isError (v) {
+    let s = Object.prototype.toString.call(v).slice(8, -1).toLowerCase();
+    return (s === "error" || s === "domexception");
+  };
+}
 
 /* Object.groupBy(); */
 if (!("groupBy" in Object)) {
@@ -443,7 +451,7 @@ const strReverse = (s) => Array.from(String(s)).reverse().join("");
 const strCodePoints = (s) => Array.from(String(s), (v) => v.codePointAt(0) );
 
 /* strFromCodePoints(<collection>): string */
-const strFromCodePoints = ([...a]) => String.fromCodePoint.apply(null, a);
+const strFromCodePoints = ([...a]) => String.fromCodePoint(...a);
 
 /* strAt(<string>,<index: integer>[,newChar: string]): string */
 function strAt (s, i, nC) {
@@ -761,14 +769,12 @@ function createFile (fln, c, dt) {
 }
 
 /* getFullscreen(): element object OR undefined */
-function getFullscreen () {
-  return (document.fullscreenElement
-    || document.mozFullScreenElement
-    || document.webkitFullscreenElement
-    || document.msFullscreenElement
-    || undefined
-  );
-}
+const getFullscreen = () => ( document.fullscreenElement
+  || document.mozFullScreenElement
+  || document.webkitFullscreenElement
+  || document.msFullscreenElement
+  || undefined
+);
 
 /* setFullscreenOn(<element>): undefined */
 /* setFullscreenOn(<selector string>): undefined */
@@ -924,25 +930,22 @@ const isPlainObject = (v) => (v != null && typeof v === "object" &&
     || Object.getPrototypeOf(v) === null));
 
 /* isEmptyMap(<value: any>): boolean */
-const isEmptyMap = (v) =>
-  (Object.prototype.toString.call(v).slice(8, -1).toLowerCase() === "map"
-    && v.size === 0);
+const isEmptyMap = (v) => (v instanceof Map && v.size === 0);
 
 /* isEmptySet(<value: any>): boolean */
-const isEmptySet = (v) =>
-  (Object.prototype.toString.call(v).slice(8, -1).toLowerCase() === "set"
-    && v.size === 0);
+const isEmptySet = (v) => (v instanceof Set && v.size === 0);
 
 /* isEmptyIterator(<value: any>): boolean */
 function isEmptyIterator (it) {for(let item of it) {return false;} return true;}
 
 /* isDataView(<value: any>): boolean */
-const isDataView = (v) =>
-  (Object.prototype.toString.call(v).slice(8, -1).toLowerCase() === "dataview");
+const isDataView = (v) => (v instanceof DataView);
 
 /* isError(<value: any>): boolean */
-const isError = (v) =>
-  (Object.prototype.toString.call(v).slice(8, -1).toLowerCase() === "error");
+function isError (v) {
+  let s = Object.prototype.toString.call(v).slice(8, -1).toLowerCase();
+  return (s === "error" || s === "domexception");
+}
 
 /* isPromise(<value: any>): boolean */
 const isPromise = (v) =>
@@ -967,9 +970,7 @@ const isSameArray = (a, b) => ( Array.isArray(a) && Array.isArray(b)
 
 /* isSameMap(<map1>,<map2>): boolean */
 function isSameMap (m1, m2) {
-  if (Object.prototype.toString.call(m1).slice(8, -1).toLowerCase() === "map"
-    && Object.prototype.toString.call(m2).slice(8, -1).toLowerCase() === "map"
-    && m1.size === m2.size) {
+  if (m1 instanceof Map && m2 instanceof Map && m1.size === m2.size) {
     for (const item of m1.keys()) {
       if (m1.get(item) !== m2.get(item)) { return false; }
     }
@@ -980,9 +981,7 @@ function isSameMap (m1, m2) {
 
 /* isSameSet(<set1>,<set2>): boolean */
 function isSameSet (s1, s2) {
-  if (Object.prototype.toString.call(s1).slice(8, -1).toLowerCase() === "set"
-    && Object.prototype.toString.call(s2).slice(8, -1).toLowerCase() === "set"
-    && s1.size === s2.size) {
+  if (s1 instanceof Set && s2 instanceof Set && s1.size === s2.size) {
     for (const item of s1) {
       if (!s2.has(item)) { return false; }
     }
@@ -1055,32 +1054,27 @@ const isPrimitive = (v) =>
 const isSymbol = (v) => (typeof v === "symbol");
 
 /* isMap(<value: any>): boolean */
-const isMap = (v) =>
-  (Object.prototype.toString.call(v).slice(8, -1).toLowerCase() === "map");
+const isMap = (v) => (v instanceof Map);
 
 /* isSet(<value: any>): boolean */
-const isSet = (v) =>
-  (Object.prototype.toString.call(v).slice(8, -1).toLowerCase() === "set");
+const isSet = (v) => (v instanceof Set);
 
 /* isWeakMap(<value: any>): boolean */
-const isWeakMap = (v) =>
-  (Object.prototype.toString.call(v).slice(8, -1).toLowerCase() === "weakmap");
+const isWeakMap = (v) => (v instanceof WeakMap);
 
 /* isWeakSet(<value: any>): boolean */
-const isWeakSet = (v) =>
-  (Object.prototype.toString.call(v).slice(8, -1).toLowerCase() === "weakset");
+const isWeakSet = (v) => (v instanceof WeakSet);
 
 /* isIterator(<value: any>): boolean */
-const isIterator = (v) =>
-  (v != null && typeof v === "object" && typeof v.next === "function");
+const isIterator = (v) => ("Iterator" in window ? (v instanceof Iterator)
+  : (v != null && typeof v === "object" && typeof v.next === "function")
+);
 
 /* isDate(<value: any>): boolean */
-const isDate = (v) =>
-  (Object.prototype.toString.call(v).slice(8, -1).toLowerCase() === "date");
+const isDate = (v) => (v instanceof Date);
 
 /* isRegexp(<value: any>): boolean */
-const isRegexp = (v) =>
-  (Object.prototype.toString.call(v).slice(8, -1).toLowerCase() === "regexp");
+const isRegexp = (v) => (v instanceof RegExp);
 
 /* isElement(<value: any>): boolean */
 const isElement = (v) => (v!=null && typeof v === "object" && v.nodeType === 1);
@@ -1092,16 +1086,18 @@ const isIterable = (v) => (v!=null && typeof v[Symbol.iterator] === "function");
 const isBigInt = (v) => (typeof v === "bigint");
 
 /* isArrayBuffer(<value: any>): boolean */
-const isArrayBuffer = (v) =>
-  (Object.prototype.toString.call(v).slice(8,-1).toLowerCase()==="arraybuffer");
+const isArrayBuffer = (v) => (v instanceof ArrayBuffer);
 
 /* isTypedArray(<value: any>): boolean */
-const isTypedArray = (v) =>
-  ["int8array", "uint8array", "uint8clampedarray", "int16array", "uint16array",
-    "int32array", "uint32array", "float32array", "float64array",
-    "bigint64array", "biguint64array"].includes(
-      Object.prototype.toString.call(v).slice(8, -1).toLowerCase()
-    );
+const isTypedArray = (v) => (
+  v instanceof Int8Array || v instanceof Uint8Array
+  || v instanceof Uint8ClampedArray
+  || v instanceof Int16Array || v instanceof Uint16Array
+  || v instanceof Int32Array || v instanceof Uint32Array
+  || ("Float16Array" in window ? v instanceof Float16Array : false)
+  || v instanceof Float32Array || v instanceof Float64Array
+  || v instanceof BigInt64Array || v instanceof BigUint64Array
+);
 
 /* isGeneratorFn(<value: any>): boolean */
 const isGeneratorFn = (v) => (Object.getPrototypeOf(v).constructor ===
@@ -1367,7 +1363,7 @@ function arrayRemoveBy (a, fn, all = false) {
   return found;
 }
 
-/*arrayMerge([flat=false,]<target: array>,<source1: any>[,sourceN: any]):array*/
+/* arrayMerge(<target: array>,<source1: any>[,sourceN: any]): array */
 function arrayMerge (t, ...a) { t.push(... [].concat(...a) ); return t; }
 
 /* iterRange([start=0[,step=1[,end=Infinity]]]): iterator */
@@ -1768,7 +1764,8 @@ const isBigUInt64 = (v) =>
 const toFloat16 = (v) => ((v = Math.min(Math.max(-65504, +v),65504))===v)?v:0;
 
 /* isFloat16(<value>): boolean */
-const isFloat16 = (v) => ((typeof v === "number" && v === v) ?(v>=-65504 && v<=65504) : false);
+const isFloat16 = (v) =>
+  ((typeof v === "number" && v === v) ?(v>=-65504 && v<=65504) : false);
 
 /* signbit(<value: any>): boolean */
 const signbit = (v) => (((v = +v) !== v) ? !1 : ((v < 0) || Object.is(v, -0)));
@@ -1792,7 +1789,7 @@ const inRange = (v, i, a) => (v >= i && v <= a);
 
 /** object header **/
 
-const VERSION = "Celestra v5.6.3 dev";
+const VERSION = "Celestra v5.6.4 dev";
 
 /* celestra.noConflict(): celestra object */
 function noConflict () { window.CEL = celestra.__prevCEL__; return celestra; }

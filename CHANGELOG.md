@@ -2,6 +2,15 @@
 # Celestra version history
 
 
+## Celestra v5.6.3
+
+1. Documentation and pdf fixes.
+
+2. Remove the **btc.app.html**
+
+3. Fix the version number in the **celestra.min.js**
+
+
 ## Celestra v5.6.2
 
 1. Documentation and pdf fixes.

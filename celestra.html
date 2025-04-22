@@ -99,8 +99,8 @@ nav a, nav a:visited, nav a:active, nav a:hover {
 
 <p>This library isn't compatible with the Node.js.</p>
 
-<p>Latest version: 5.6.3</p>
-<p>Date: 2024-04-01T19:36:08.402Z</p>
+<p>Latest version: 5.6.4</p>
+<p>Date: 2024-04-08T19:00:48.303Z</p>
 
 <p><b>Tested on these browsers:</b></p>
 
@@ -877,7 +877,7 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>isError(&#60;value&#62;);</td>
-      <td>This function determines whether the provided value is an error object. The return value is boolean.</td>
+      <td>This function determines whether the passed value is an Error or DOMException. The return value is boolean.</td>
     </tr>
     <tr>
       <td><code>isFalsy(&#60;value&#62;);</td>
@@ -1734,6 +1734,12 @@ Otherwise, the result is false.</pre>
       <td><code>crypto.randomUUID();</code></td>
       <td>
         The randomUUID() method of the Crypto interface is used to generate a v4 UUID using a cryptographically secure random number generator. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Crypto/randomUUID" target="_blank">MDN Article</a>!
+      </td>
+    </tr> 
+    <tr>
+      <td><code>Error.isError();</code></td>
+      <td>
+        The Error.isError() static method determines whether the passed value is an Error or DOMException. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/isError" target="_blank">MDN Article</a>!
       </td>
     </tr>
     <tr>

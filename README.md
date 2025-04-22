@@ -15,9 +15,9 @@ __A helper JavaScript library with useful functions and polyfills and zero depen
 
 This library isn't compatible with the Node.js.
 
-Latest version: 5.6.3
+Latest version: 5.6.4
 
-Date: 2024-04-01T19:36:08.402Z
+Date: 2024-04-08T19:00:48.303Z
 
 __Tested on these browsers:__
 
@@ -316,7 +316,7 @@ Name | Description
 `isEmptyMap(<value>);` | This function determines whether the provided value is an empty map (without properties). The return value is boolean.
 `isEmptyObject(<value>);` | This function determines whether the provided value is an empty object (without properties). The return value is boolean.
 `isEmptySet(<value>);` | This function determines whether the provided value is an empty set (without values). The return value is boolean.
-`isError(<value>);` | This function determines whether the provided value is an error. The return value is boolean.
+`isError(<value>);` | This function determines whether the passed value is an Error or DOMException. The return value is boolean.
 `isFalsy(<value>);` | This function determines whether the provided value is falsy. The return value is boolean. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Glossary/Falsy)!
 `isFloat(<value>);` | This function determines whether the provided value is a float number. The return value is boolean.
 `isFunction(<value>);` | This function determines whether the provided value is a function. The return value is boolean.
@@ -528,6 +528,7 @@ Name | Description
 `Array.prototype.toSpliced();` | The toSpliced() method of an Array instance is the copying version of the splice() method. It returns a new array with some elements removed and/or replaced at a given index. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toSpliced)!
 `Array.prototype.with();` | The with() method of an Array instance is the copying version of using the bracket notation to change the value of a given index. It returns a new array with the element at the given index replaced with the given value. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/with)!
 `crypto.randomUUID();` | The randomUUID() method of the Crypto interface is used to generate a v4 UUID using a cryptographically secure random number generator. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/API/Crypto/randomUUID)!
+`Error.isError();` | The Error.isError() static method determines whether the passed value is an Error or DOMException. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/isError)!
 `globalThis;` | The "global" property of the global object, a writable, configurable, non-enumerable alias of `window`/`self`. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/globalThis)!
 `Map.groupBy();` | The Map.groupBy() static method groups the elements of a given iterable using the values returned by a provided callback function. The final returned Map uses the unique values from the test function as keys, which can be used to get the array of elements in each group. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/groupBy)!
 `Object.groupBy();` | The Object.groupBy() static method groups the elements of a given iterable according to the string values returned by a provided callback function. The returned object has separate properties for each group, containing arrays with the elements in the group. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/groupBy)!
