@@ -112,7 +112,7 @@ const isEmptySet=(v)=>(v instanceof Set&&v.size===0);
 function isEmptyIterator(it){for(let item of it){return false;}return true;}
 const isDataView=(v)=>(v instanceof DataView);
 function isError(v){let s=Object.prototype.toString.call(v).slice(8,-1).toLowerCase();return(s==="error"||s==="domexception");}
-const isPromise=(v)=>(v!=null&&typeof v==="object"&&typeof v.then==="function");
+const isPromise=(v)=>(v instanceof Promise||(v!=null&&typeof v==="object"&&typeof v.then==="function"));
 function isSameObject(o1,o2){if(o1.constructor!==o2.constructor){return false;}var a1=Object.keys(o1).sort(),a2=Object.keys(o2).sort();if(a1.length===a2.length){for(var i=0,l=a1.length;i<l;i++){if(a1[i]!==a2[i]||o1[a1[i]]!==o2[a1[i]]){return false;}}return true;}return false;}
 const isSameArray=(a,b)=>(Array.isArray(a)&&Array.isArray(b)&&(a.length===b.length)&&a.every((v,i)=>v===b[i]));
 function isSameMap(m1,m2){if(m1 instanceof Map&&m2 instanceof Map&&m1.size===m2.size){for(const item of m1.keys()){if(m1.get(item)!==m2.get(item)){return false;}}return true;}return false;}

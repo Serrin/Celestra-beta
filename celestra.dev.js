@@ -951,8 +951,9 @@ function isError (v) {
 }
 
 /* isPromise(<value: any>): boolean */
-const isPromise = (v) =>
-  (v != null && typeof v === "object" && typeof v.then === "function");
+const isPromise = (v) => (v instanceof Promise ||
+  (v != null && typeof v === "object" && typeof v.then === "function")
+);
 
 /* isSameObject(<object1>,<object2>): boolean */
 function isSameObject (o1, o2) {
