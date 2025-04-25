@@ -432,7 +432,7 @@ console.log(o2);
       <td>Java <code>String.hashCode()</code> implementation in Javascript - this is a non-cryptographic hash function. The data parameter is mandatory and can be any type. The hexa parameter is optional and can be a boolean and sets the hexadecimal conversion of the return value and the default value is false. Return the generated integer hash.</td>
     </tr>
     <tr>
-      <td><code>nanoid([size=21[,alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"]]);</code></td>
+      <td><code>nanoid([size=21[, alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"]]);</code></td>
       <td>Generate a nanoid. The size parameter is optional and the default value is 21. The alphabet parameter is optional and the default value is "A-Za-z0-9_-". The return value is the generated nanoid (string).<br>Example ID: <code>"QsZA2VVTgFIF3D-qFk5oc"</code></td>
     </tr>
     <tr>
@@ -528,8 +528,8 @@ console.log(o2);
       <td>This function is unicode compatible and converts the first character to lowercase. The string parameter is mandatory. The return value is a string.</td>
     </tr>
     <tr>
-      <td><code>strFromCodePoints(&#60;collection&#62;);</code></td>
-      <td>Returns the joined string of the given unicode codepoints. The collection parameter is mandatory.</td>
+      <td><code>strFromCodePoints(&#60;iterator&#62;);</code></td>
+      <td>Returns the joined string of the given unicode codepoints. The iterator parameter is mandatory.</td>
     </tr>
     <tr>
       <td><code>strHTMLEscape(&#60;string&#62;);</code></td>
@@ -897,7 +897,7 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>isIterable(&#60;value&#62;);</code></td>
-      <td>This function determines whether the provided value is an iterable collection. The return value is boolean.</td>
+      <td>This function determines whether the provided value is an iterable object. The return value is boolean.</td>
     </tr>
     <tr>
       <td><code>isIterator(&#60;value&#62;);</code></td>
@@ -953,7 +953,7 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>isSameIterator(&#60;iter1&#62;,&#60;iter2&#62;);</code></td>
-      <td>This function checks the value equality of the given iterator. The return value is boolean and both of the parameters are mandatory and have to be a collection (iterator / iterable object).</td>
+      <td>This function checks the value equality of the given iterator. The return value is boolean and both of the parameters are mandatory and have to be an iterator or iterable object.</td>
     </tr>
     <tr>
       <td><code>isSameMap(&#60;map1&#62;,&#60;map2&#62;);</code></td>
@@ -1020,7 +1020,7 @@ console.log(o2);
       <td><b>Description</b></td>
     </tr>
     <tr>
-      <td><code>clearCookies([path="/"[,domain[,secure[,SameSite="Lax"[,HttpOnly]]]]]);</code></td>
+      <td><code>clearCookies([path="/"[, domain[, secure[, SameSite="Lax"[, HttpOnly]]]]]);</code></td>
       <td>
         <p>Clear all of the cookies. The return value (boolean) is determines whether the cookie was set with the name before the removing.</p>
         <p><b>Function parameters:</b></p>
@@ -1049,7 +1049,7 @@ console.log(o2);
       <td>This function determines whether the cookie is set with the name parameter. The return value is boolean.</td>
     </tr>
     <tr>
-      <td><code>removeCookie(&#60;name&#62;[,path="/"[,domain[,secure[,SameSite="Lax"[,HttpOnly]]]]]);</code></td>
+      <td><code>removeCookie(&#60;name&#62;[, path="/"[, domain[, secure[, SameSite="Lax"[, HttpOnly]]]]]);</code></td>
       <td>
         <p>Remove a cookie. The return value (boolean) is determines whether the cookie was set with the name before the removing.</p>
         <p><b>Function parameters:</b></p>
@@ -1069,7 +1069,7 @@ console.log(o2);
       <td>In this case the names of object properties are the same as the function arguments and the default values are the same too.</td>
     </tr>    
     <tr>
-      <td><code>setCookie(&#60;name&#62;,&#60;value&#62;[,hours="8760"[,path="/"[,domain[,secure[,SameSite="Lax"[,HttpOnly]]]]]]);</code></td>
+      <td><code>setCookie(&#60;name&#62;, &#60;value&#62;[, hours="8760"[, path="/"[, domain[, secure[, SameSite="Lax"[, HttpOnly]]]]]]);</code></td>
       <td>
         <p>Set a cookie.</p>
         <p><b>Function parameters:</b></p>
@@ -1116,25 +1116,25 @@ console.log(o2);
       <td>This function returns an array with the given length and can handle the -0 as length. The length parameter will be converted to number and if the new value is not an integer number or out of the array size range, then a rangeerror will be thrown.</td>
     </tr>
     <tr>
-      <td><code>arrayCycle(&#60;collection&#62;[,n=100]);</code></td>
-      <td>Cycle the given collection and returns an array with these elements. The collection parameter is mandatory and can be any type of JavaScript collections. The n parameter is optional and can be an integer. Default parameter value: n = 100.</td>
+      <td><code>arrayCycle(&#60;iterator&#62;[,n=100]);</code></td>
+      <td>Cycle the given iterator and returns an array with these elements. The iterator parameter is mandatory. The n parameter is optional and can be an integer. Default parameter value: n = 100.</td>
     </tr>
     <tr>
       <td><code>arrayDeepClone(&#60;array&#62;);</code></td>
       <td>This function deeply (recursively) clones an array. The return value is the cloned array.</td>
     </tr>
     <tr>
-      <td><code>arrayDifference(&#60;collection1&#62;,&#60;collection2&#62;);</code></td>
+      <td><code>arrayDifference(&#60;iterator1&#62;,&#60;iterator2&#62;);</code></td>
       <td>
         <p><span class="deprecated">Deprecated in v5.6.2. Will be removed in 5.7.0.<span></span></p>
-        <p>Returns the array of unique values that are in the collection1, excluding the values that are also in the collection2. All of the parameters are mandatory and can be any type of JavaScript collections. The return value is an Array.</p>
+        <p>Returns the array of unique values that are in the iterator1, excluding the values that are also in the iterator2. All of the parameters are mandatory. The return value is an Array.</p>
       </td>
     </tr>
     <tr>
-      <td><code>arrayIntersection(&#60;collection1&#62;,&#60;collection2&#62;);</code></td>
+      <td><code>arrayIntersection(&#60;iterator1&#62;,&#60;iterator2&#62;);</code></td>
       <td>
         <p><span class="deprecated">Deprecated in v5.6.2. Will be removed in 5.7.0.<span></span></p>
-        <p>Returns the array of unique values that are in both of the given collections. All of the parameters are mandatory and can be any type of JavaScript collections. The return value is an Array.</p>
+        <p>Returns the array of unique values that are in both of the given iterators. All of the parameters are mandatory. The return value is an Array.</p>
       </td>
     </tr>
     <tr>
@@ -1161,96 +1161,96 @@ console.log(o2);
       <td>Returns an array with same repeatedly elements. The value parameter is mandatory and the n parameter is optional and can be an integer. Default parameter value: n = 100.</td>
     </tr>
     <tr>
-      <td><code>arraySymmetricDifference(&#60;collection1&#62;,&#60;collection2&#62;);</code></td>
+      <td><code>arraySymmetricDifference(&#60;iterator1&#62;,&#60;iterator2&#62;);</code></td>
       <td>
         <p><span class="deprecated">Deprecated in v5.6.2. Will be removed in 5.7.0.<span></span></p>
-        <p>Returns the array of unique values that are only in one of given collections. All of the parameters are mandatory and can be any type of JavaScript collections. The return value is an Array.</p>
+        <p>Returns the array of unique values that are only in one of given iterators. All of the parameters are mandatory. The return value is an Array.</p>
       </td>
     </tr>
     <tr>
-      <td><code>arrayUnion(&#60;collection1&#62;[,collectionN]);</code></td>
+      <td><code>arrayUnion(&#60;iterator1&#62;[,iteratorN]);</code></td>
       <td>
         <p><span class="deprecated">Deprecated in v5.6.2. Will be removed in 5.7.0.<span></span></p>
-        <p>Returns the array of unique values including all values from the given collections. The first parameter is mandatory and all parameters can be any type of JavaScript collections. The return value is an Array.</p>
+        <p>Returns the array of unique values including all values from the given iterators. The first parameter is mandatory. The return value is an Array.</p>
       </td>
     </tr>
     <tr>
-      <td><code>arrayUnique(&#60;collection&#62;);</code></td>
-      <td>This function returns a new array with unique values. The value parameter is mandatory and can be any type, that can be converted to array. In modern browsers you can use ES6 types too (Map, Set and iterators).</td>
+      <td><code>arrayUnique(&#60;iterator&#62;);</code></td>
+      <td>This function returns a new array with unique values. The value parameter is mandatory and can be an iterator. In modern browsers you can use ES6 types too (Map, Set and iterators).</td>
     </tr>
     <tr>
-      <td><code>concat(&#60;collection1&#62;[,collectionN]);</code></td>
-      <td>This function merges the collections and yields the elements of the merged collection. The given collections will be not changed. At least one collection has to been given.</td>
+      <td><code>concat(&#60;iterator1&#62;[,iteratorN]);</code></td>
+      <td>This function merges the iterators and yields the elements of the merged iterator. The given iterators will be not changed. At least one iterator has to been given.</td>
     </tr>
     <tr>
-      <td><code>count((&#60;collection&#62;,&#60;callback&#62;););</code></td>
-      <td>This function executes a counter function (that you provide) on each element of the collection, returning in a single output value. The collection parameter is mandatory. The callback parameter is mandatory and has to be a function.</td>
+      <td><code>count((&#60;iterator&#62;,&#60;callback&#62;););</code></td>
+      <td>This function executes a counter function (that you provide) on each element of the iterator, returning in a single output value. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function.</td>
     </tr>
     <tr>
-      <td><code>contains(&#60;collection&#62;,&#60;value&#62;);</code></td>
-      <td>This is an alias of the <code>includes(&#60;collection&#62;,&#60;value&#62;);</code>.</td>
+      <td><code>contains(&#60;iterator&#62;,&#60;value&#62;);</code></td>
+      <td>This is an alias of the <code>includes(&#60;iterator&#62;,&#60;value&#62;);</code>.</td>
     </tr>
     <tr>
-      <td><code>drop(&#60;collection&#62;[,n=1]);</code></td>
-      <td>Drop the first N elements of a collection and yield the remained elements. The original collection will be not changed. The collection parameter is mandatory. The n parameter is optional and can be an integer. Default parameter value: n = 1</td>
+      <td><code>drop(&#60;iterator&#62;[,n=1]);</code></td>
+      <td>Drop the first N elements of an iterator and yield the remained elements. The iterator parameter is mandatory. The n parameter is optional and can be an integer. Default parameter value: n = 1</td>
     </tr>
     <tr>
-      <td><code>dropRight(&#60;collection&#62;[,n=1]);</code></td>
-      <td>Drop the last N elements of a collection and return the remained elements in an array. The original collection will be not changed. The collection parameter is mandatory. The n parameter is optional and can be an integer. Default parameter value: n = 1.</td>
+      <td><code>dropRight(&#60;iterator&#62;[,n=1]);</code></td>
+      <td>Drop the last N elements of an iterator and return the remained elements in an array. The iterator parameter is mandatory. The n parameter is optional and can be an integer. Default parameter value: n = 1.</td>
     </tr>
     <tr>
-      <td><code>dropRightWhile(&#60;collection&#62;,&#60;callback&#62;);</code></td>
-      <td>Drop the elements from the end of a collection while the callback (filter) function returns true and yield the remained elements. The original collection will be not changed. The callback function will be called with the actual element of the collection. The collection parameter is mandatory. The callback parameter is mandatory and has to be a function.</td>
+      <td><code>dropRightWhile(&#60;iterator&#62;,&#60;callback&#62;);</code></td>
+      <td>Drop the elements from the end of an iterator while the callback (filter) function returns true and yield the remained elements. The callback function will be called with the actual element of the iterator. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function.</td>
     </tr>
     <tr>
-      <td><code>dropWhile(&#60;collection&#62;,&#60;callback&#62;);</code></td>
-      <td>Drop the elements of a collection while the callback (filter) function returns true and yield the remained elements. The original collection will be not changed. The callback function will be called with the actual element of the collection. The collection parameter is mandatory. The callback parameter is mandatory and has to be a function.</td>
+      <td><code>dropWhile(&#60;iterator&#62;,&#60;callback&#62;);</code></td>
+      <td>Drop the elements of an iterator while the callback (filter) function returns true and yield the remained elements. The callback function will be called with the actual element of the iterator. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function.</td>
     </tr>
     <tr>
-      <td><code>entries(&#60;collection&#62;[,offset=0]);</code></td>
-      <td>An alias of the <code>enumerate(&#60;collection&#62;);</code>.</td>
+      <td><code>entries(&#60;iterator&#62;[,offset=0]);</code></td>
+      <td>An alias of the <code>enumerate(&#60;iterator&#62;);</code>.</td>
     </tr>
     <tr>
-      <td><code>enumerate(&#60;collection&#62;[,offset=0]);</code></td>
+      <td><code>enumerate(&#60;iterator&#62;[,offset=0]);</code></td>
       <td>
-        <p>Yield generated pairs (arrays) from the elements of a collection and a counter. The collection parameter is mandatory. The offset parameter is optional and can be an integer and it's default value is 0.</p>
+        <p>Yield generated pairs (arrays) from the elements of a iterator and a counter. The iterator parameter is mandatory. The offset parameter is optional and can be an integer and it's default value is 0.</p>
         <p>Example: <code>CEL.enumerate(["Picard", "Riker", "Data"], 2);</code> -> <code>[2, "Picard"]</code>, <code>[3, "Riker"]</code>, <code>[4, "Data"]</code></p>
       </td>
     </tr>
     <tr>
-      <td><code>every(&#60;collection&#62;,&#60;callback&#62;);</code></td>
-      <td>This function whether all elements in the collection pass the test implemented by the provided function. It returns a Boolean value and all of the parameters are mandatory. If the collection is empty, then the return value is false.</td>
+      <td><code>every(&#60;iterator&#62;,&#60;callback&#62;);</code></td>
+      <td>This function whether all elements in the iterator pass the test implemented by the provided function. It returns a Boolean value and all of the parameters are mandatory. If the iterator is empty, then the return value is false.</td>
     </tr>
     <tr>
-      <td><code>filter(&#60;collection&#62;,&#60;callback&#62;);</code></td>
-      <td>Filter and yield elements of a collection. The collection parameter is mandatory. The callback parameter is mandatory and has to be a function and called with two parameters: the item and the index of the item (only a counter).</td>
+      <td><code>filter(&#60;iterator&#62;,&#60;callback&#62;);</code></td>
+      <td>Filter and yield elements of an iterator. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function and called with two parameters: the item and the index of the item (only a counter).</td>
     </tr>
     <tr>
-      <td><code>find(&#60;collection&#62;,&#60;callback&#62;);</code></td>
-      <td>This function returns the value of the first element in the collection that satisfies the provided testing function. Otherwise undefined is returned. All of the parameters are mandatory.</td>
+      <td><code>find(&#60;iterator&#62;,&#60;callback&#62;);</code></td>
+      <td>This function returns the value of the first element in the iterator that satisfies the provided testing function. Otherwise undefined is returned. All of the parameters are mandatory.</td>
     </tr>
     <tr>
-      <td><code>findLast(&#60;collection&#62;,&#60;callback&#62;);</code></td>
-      <td>This function returns the value of the last element in the collection that satisfies the provided testing function. Otherwise undefined is returned. All of the parameters are mandatory.</td>
+      <td><code>findLast(&#60;iterator&#62;,&#60;callback&#62;);</code></td>
+      <td>This function returns the value of the last element in the iterator that satisfies the provided testing function. Otherwise undefined is returned. All of the parameters are mandatory.</td>
     </tr>
     <tr>
-      <td><code>first(&#60;collection&#62;);</code></td>
-      <td>This function returns the first element of the given collection. The collection parameter is mandatory.</td>
+      <td><code>first(&#60;iterator&#62;);</code></td>
+      <td>This function returns the first element of the given iterator. The iterator parameter is mandatory.</td>
     </tr>
     <tr>
-      <td><code>forEach(&#60;collection&#62;,&#60;callback&#62;);</code></td>
-      <td>This function executes a provided function once for each collection element. The collection parameter is mandatory. The callback parameter is mandatory and has to be a function and called with two parameters: the item and the index of the item (only a counter).</td>
+      <td><code>forEach(&#60;iterator&#62;,&#60;callback&#62;);</code></td>
+      <td>This function executes a provided function once for each iterator items. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function and called with two parameters: the item and the index of the item (only a counter).</td>
     </tr>
     <tr>
-      <td><code>forEachRight(&#60;collection&#62;,&#60;callback&#62;);</code></td>
-      <td>This function executes a provided function once for each collection element in reversed order. The collection parameter is mandatory. The callback parameter is mandatory and has to be a function and called with two parameters: the item and the index of the item (only a reversed counter).</td>
+      <td><code>forEachRight(&#60;iterator&#62;,&#60;callback&#62;);</code></td>
+      <td>This function executes a provided function once for each iterator items in reversed order. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function and called with two parameters: the item and the index of the item (only a reversed counter).</td>
     </tr>
     <tr>
-      <td><code>group(&#60;collection&#62;,&#60;callback&#62;[,map=false]);</code></td>
+      <td><code>group(&#60;iterator&#62;,&#60;callback&#62;[,map=false]);</code></td>
       <td>
         <p><span class="deprecated">Deprecated in v5.6.0. Will be removed in 5.7.0.<span></span></p>
         <p><span class="info">Can be replaced with the <code>Object.groupBy();</code> and <code>Map.groupBy();</code>.<span></span></p>
-			  <p><span class="info">Old name before v5.4.4: <code>groupBy</code>.</span><br/>Returns an Object or Map with array properties. The keys are the returned values of the given function. The collection parameter is mandatory. The callback parameter is mandatory and has to be a function. The map parameter is optional and has to be a boolean and if it is true, then the return value is a Map instead of Object.</p>
+			  <p><span class="info">Old name before v5.4.4: <code>groupBy</code>.</span><br/>Returns an Object or Map with array properties. The keys are the returned values of the given function. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function. The map parameter is optional and has to be a boolean and if it is true, then the return value is a Map instead of Object.</p>
         <p>
          <b>Example:</b>
          <br/><code>CEL.group([1,2,3,4,5], (i) => (i % 2 === 0 ? "even" : "odd");</code>
@@ -1260,17 +1260,17 @@ console.log(o2);
       </td>
     </tr>
     <tr>
-      <td><code>head(&#60;collection&#62;);</code></td>
-      <td>This is an alias of the <code>first(&#60;collection&#62;);</code>.</td>
+      <td><code>head(&#60;iterator&#62;);</code></td>
+      <td>This is an alias of the <code>first(&#60;iterator&#62;);</code>.</td>
     </tr>
     <tr>
-      <td><code>includes(&#60;collection&#62;,&#60;value&#62;);</code></td>
-      <td>This function determines whether a collection includes a certain value among its entries, returning true or false as appropriate. All of the parameters are mandatory.</td>
+      <td><code>includes(&#60;iterator&#62;,&#60;value&#62;);</code></td>
+      <td>This function determines whether an iterator includes a certain value among its entries, returning true or false as appropriate. All of the parameters are mandatory.</td>
     </tr>
     <tr>
-      <td><code>initial(&#60;collection&#62;);</code></td>
+      <td><code>initial(&#60;iterator&#62;);</code></td>
       <td>
-        <p>Returns an array with the values of the given collection, but without the last value.</p>
+        <p>Returns an array with the values of the given iterator, but without the last value.</p>
         <p>
          <b>Example:</b>
          <br/><code>CEL.initial([-5, 2, -9, 7, 34]);</code>
@@ -1283,12 +1283,12 @@ console.log(o2);
       <td><code>isSuperset(&#60;superCollection&#62;,&#60;subCollection&#62;);</code></td>
       <td>
         <p><span class="deprecated">Deprecated in v5.6.2. Will be removed in 5.7.0.<span></span></p>
-        <p>This function determines whether the first provided collection is superset of the second collection. The parameters are mandatory and all parameters can be any type of JavaScript collections. The return value is a boolean.</p>
+        <p>This function determines whether the first provided iterator is superset of the second iterator. The parameters are mandatory and all parameters can be  an iterator. The return value is a boolean.</p>
       </td>
     </tr>
     <tr>
-      <td><code>item(&#60;collection&#62;,&#60;index&#62;);</code></td>
-      <td>This function returns the item from the given collection on the given index. The collection parameter is mandatory and has to be any type of JavaScript collections. The index is mandatory and can be positive number (examples: 0 = the first item, 1 = the second item, 2 = the third item, etc.) Compatible with the Unicode strings.</td>
+      <td><code>item(&#60;iterator&#62;,&#60;index&#62;);</code></td>
+      <td>This function returns the item from the given iterator on the given index. the iterator parameter is mandatory and has to be  an iterator. The index is mandatory and can be positive number (examples: 0 = the first item, 1 = the second item, 2 = the third item, etc.) Compatible with the Unicode strings.</td>
     </tr>
     <tr>
       <td><code>iterCycle(&#60;iter&#62;[,n=Infinity]);</code></td>
@@ -1306,20 +1306,20 @@ console.log(o2);
       <td>Yield a value over and over. The value parameter is mandatory and the n parameter is optional and can be an integer. Default parameter value: n = Infinity</td>
     </tr>
     <tr>
-      <td><code>join(&#60;collection&#62;[,separator=","]);</code></td>
-      <td>This function creates and returns a new string by concatenating all of the elements in a collection, separated by commas or a specified separator string. The separator is converted to a string if necessary. If the collection has only one item, then that item will be returned without using the separator. The collection parameter is mandatory.</td>
+      <td><code>join(&#60;iterator&#62;[,separator=","]);</code></td>
+      <td>This function creates and returns a new string by concatenating all of the elements in an iterator, separated by commas or a specified separator string. The separator is converted to a string if necessary. If the iterator has only one item, then that item will be returned without using the separator. The iterator parameter is mandatory.</td>
     </tr>
     <tr>
-      <td><code>flat(&#60;collection&#62;);</code></td>
-      <td>Yield the subelements of the elements of the given collection. The collection parameter is mandatory and all of the elements have to be an iterator or iterable.</td>
+      <td><code>flat(&#60;iterator&#62;);</code></td>
+      <td>Yield the subelements of the elements of the given iterator. the iterator parameter is mandatory and all of the elements have to be an iterator or iterable.</td>
     </tr>
     <tr>
-      <td><code>last(&#60;collection&#62;);</code></td>
-      <td>This function returns the last element of the given collection. The collection parameter is mandatory.</td>
+      <td><code>last(&#60;iterator&#62;);</code></td>
+      <td>This function returns the last element of the given iterator. The iterator parameter is mandatory.</td>
     </tr>
     <tr>
-      <td><code>map(&#60;collection&#62;,&#60;callback&#62;);</code></td>
-      <td>This function creates a new iterator with the results of calling a provided function on every element in the calling collection. The collection parameter is mandatory. The callback parameter is mandatory and has to be a function and called with two parameters: the item and the index of the item (only a counter).</td>
+      <td><code>map(&#60;iterator&#62;,&#60;callback&#62;);</code></td>
+      <td>This function creates a new iterator with the results of calling a provided function on every element. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function and called with two parameters: the item and the index of the item (only a counter).</td>
     </tr>
     <tr>
       <td><code>max(&#60;value1&#62;[,valueN]);</code></td>
@@ -1330,17 +1330,17 @@ console.log(o2);
       <td>Returns the minimum value of the given values. The first value parameter is mandatory and can be any type. Works with any type of values, not only with numbers.</td>
     </tr>
     <tr>
-      <td><code>none(&#60;collection&#62;,&#60;callback&#62;);</code></td>
-      <td>This function whether all elements in the collection do not pass the test implemented by the provided function. It returns a Boolean value and all of the parameters are mandatory. If the collection is empty, then the return value is false.</td>
+      <td><code>none(&#60;iterator&#62;,&#60;callback&#62;);</code></td>
+      <td>This function whether all elements in the iterator do not pass the test implemented by the provided function. It returns a Boolean value and all of the parameters are mandatory. If the iterator is empty, then the return value is false.</td>
     </tr>
     <tr>
-      <td><code>nth(&#60;collection&#62;,&#60;index&#62;);</code></td>
-      <td>This is an alias of the <code>item(&#60;collection&#62;,&#60;index&#62;);</code>.<td>
+      <td><code>nth(&#60;iterator&#62;,&#60;index&#62;);</code></td>
+      <td>This is an alias of the <code>item(&#60;iterator&#62;,&#60;index&#62;);</code>.<td>
     </tr>
     <tr>
-      <td><code>partition(&#60;collection&#62;,&#60;callback&#62;);</code></td>
+      <td><code>partition(&#60;iterator&#62;,&#60;callback&#62;);</code></td>
       <td>
-        <p>Returns an array, with filtered and negative filtered groups of the elements of the original collection. All of the parameters are mandatory.</p>
+        <p>Returns an array, with filtered and negative filtered groups of the elements of the original iterator. All of the parameters are mandatory.</p>
         <p>
          <b>Example:</b>
          <br/><code>CEL.partition([-5, 2, -9, 7, 34], (e) => (e > 0) );</code>
@@ -1350,53 +1350,53 @@ console.log(o2);
       </td>
     </tr>
     <tr>
-      <td><code>reduce(&#60;collection&#62;,&#60;callback&#62;[,initialvalue]);</code></td>
-      <td>This function executes a reducer function (that you provide) on each element of the collection, returning in a single output value. The collection parameter is mandatory. The callback parameter is mandatory and has to be a function. The initialvalue parameter is optional and can be any variable type of the Javascript.</td>
+      <td><code>reduce(&#60;iterator&#62;,&#60;callback&#62;[,initialvalue]);</code></td>
+      <td>This function executes a reducer function (that you provide) on each element of the iterator, returning in a single output value. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function. The initialvalue parameter is optional and can be any variable type of the Javascript.</td>
     </tr>
     <tr>
-      <td><code>reject(&#60;collection&#62;,&#60;callback&#62;);</code></td>
-      <td>This is the opposite of the function <code>filter(&#60;collection&#62;,&#60;callback&#62;);</code>. The elements to which the given callback gives a false will be yield. The collection parameter is mandatory. The callback parameter is mandatory and has to be a function and called with two parameters: the item and the index of the item (only a counter).</td>
+      <td><code>reject(&#60;iterator&#62;,&#60;callback&#62;);</code></td>
+      <td>This is the opposite of the function <code>filter(&#60;iterator&#62;,&#60;callback&#62;);</code>. The elements to which the given callback gives a false will be yield. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function and called with two parameters: the item and the index of the item (only a counter).</td>
     </tr>
     <tr>
-      <td><code>reverse(&#60;collection&#62;);</code></td>
-      <td>This function returns an array with values of the given collection in reverse order. The collection parameter is mandatory.</td>
+      <td><code>reverse(&#60;iterator&#62;);</code></td>
+      <td>This function returns an array with values of the given iterator in reverse order. The iterator parameter is mandatory.</td>
     </tr>
     <tr>
       <td><code>setDifference(&#60;set1&#62;,&#60;set2&#62;);</code></td>
       <td>
         <p><span class="deprecated">Deprecated in v5.6.2. Will be removed in 5.7.0.<span></span></p>
-        <p>Returns the set of unique values that are in the collection1, excluding the values that are also in the collection2. All of the parameters are mandatory and have to be a Set. The return value is a Set.</p>
+        <p>Returns the set of unique values that are in the iterator1, excluding the values that are also in the iterator2. All of the parameters are mandatory and have to be a Set. The return value is a Set.</p>
       </td>
     </tr>
     <tr>
       <td><code>setIntersection(&#60;set1&#62;,&#60;set2&#62;);</code></td>
       <td>
         <p><span class="deprecated">Deprecated in v5.6.2. Will be removed in 5.7.0.<span></span></p>
-        <p>Returns the set of unique values that are in both of the given collections. All of the parameters are mandatory and have to be a Set. The return value is a Set.</p>
+        <p>Returns the set of unique values that are in both of the given iterators. All of the parameters are mandatory and have to be a Set. The return value is a Set.</p>
       </td>
     </tr>
     <tr>
       <td><code>setSymmetricDifference(&#60;set1&#62;,&#60;set2&#62;);</code></td>
       <td>
         <p><span class="deprecated">Deprecated in v5.6.2. Will be removed in 5.7.0.<span></span></p>
-        <p>Returns the set of unique values that are only in one of given collections. All of the parameters are mandatory and have to be a Set. The return value is a Set.</p>
+        <p>Returns the set of unique values that are only in one of given iterators. All of the parameters are mandatory and have to be a Set. The return value is a Set.</p>
       </td>
     </tr>
     <tr>
-      <td><code>setUnion(&#60;collection1&#62;[,collectionN]);</code></td>
+      <td><code>setUnion(&#60;iterator1&#62;[,iteratorN]);</code></td>
       <td>
         <p><span class="deprecated">Deprecated in v5.6.2. Will be removed in 5.7.0.<span></span></p>
-        <p>Returns the set of unique values including all values from the given collections. The first parameter is mandatory and all parameters can be any type of JavaScript collections. The return value is a Set.</p>
+        <p>Returns the set of unique values including all values from the given iterators. The first parameter is mandatory. The return value is a Set.</p>
       </td>
     </tr>
     <tr>
-      <td><code>size(&#60;collection&#62;);</code></td>
-      <td>This function returns the count of the elements in the given collection. The collection parameter is mandatory. The return value is an integer.</td>
+      <td><code>size(&#60;iterator&#62;);</code></td>
+      <td>This function returns the count of the elements in the given iterator. The iterator parameter is mandatory. The return value is an integer.</td>
     </tr>
     <tr>
-      <td><code>shuffle(&#60;collection&#62;);</code></td>
+      <td><code>shuffle(&#60;iterator&#62;);</code></td>
       <td>
-        <p>Returns an array with the values of the given collection, but in shuffled order.</p>
+        <p>Returns an array with the values of the given iterator, but in shuffled order.</p>
         <p>
          <b>Example:</b>
          <br/><code>CEL.shuffle(["first",4,5,6,7,8,9,"last"]);</code>
@@ -1406,41 +1406,41 @@ console.log(o2);
       </td>
     </tr>
     <tr>
-      <td><code>slice(&#60;collection&#62;[,begin=0[,end=Infinity]]);</code></td>
-      <td>Take a slice of a collection and yield the elements. The collection parameter is mandatory. The begin parameter is optional and can be a number and the default value is 0. The end parameter is optional and can be a number and the default value is Infinity.</td>
+      <td><code>slice(&#60;iterator&#62;[,begin=0[,end=Infinity]]);</code></td>
+      <td>Take a slice of an iterator and yield the elements. The iterator parameter is mandatory. The begin parameter is optional and can be a number and the default value is 0. The end parameter is optional and can be a number and the default value is Infinity.</td>
     </tr>
     <tr>
-      <td><code>some(&#60;collection&#62;,&#60;callback&#62;);</code></td>
-      <td>This function tests whether at least one element in the array passes the test implemented by the provided function. It returns a Boolean value and all of the parameters are mandatory. If the collection is empty, then the return value is false.</td>
+      <td><code>some(&#60;iterator&#62;,&#60;callback&#62;);</code></td>
+      <td>This function tests whether at least one element in the array passes the test implemented by the provided function. It returns a Boolean value and all of the parameters are mandatory. If the iterator is empty, then the return value is false.</td>
     </tr>
     <tr>
-      <td><code>sort(&#60;collection&#62;[,numbers=false]);</code></td>
-      <td>This function sorts the values of the given collection. The collection parameter is mandatory. The numbers paramater is optional (boolean) and set true, if the collection contains only numbers. The return value is an array.</td>
+      <td><code>sort(&#60;iterator&#62;[,numbers=false]);</code></td>
+      <td>This function sorts the values of the given iterator. The iterator parameter is mandatory. The numbers paramater is optional (boolean) and set true, if the iterator contains only numbers. The return value is an array.</td>
     </tr>
     <tr>
-      <td><code>tail(&#60;collection&#62;);</code></td>
-      <td>Yield the values of a collection but without the first value. The collection parameter is mandatory.</td>
+      <td><code>tail(&#60;iterator&#62;);</code></td>
+      <td>Yield the values of an iterator but without the first value. The iterator parameter is mandatory.</td>
     </tr>
     <tr>
-      <td><code>take(&#60;collection&#62;[,n=1]);</code></td>
-      <td>Yield the first N elements of a collection. The collection parameter is mandatory. The n parameter is optional and can be an integer. Default parameter value: n = 1</td>
+      <td><code>take(&#60;iterator&#62;[,n=1]);</code></td>
+      <td>Yield the first N elements of an iterator. The iterator parameter is mandatory. The n parameter is optional and can be an integer. Default parameter value: n = 1</td>
     </tr>
     <tr>
-      <td><code>takeRight(&#60;collection&#62;[,n=1]);</code></td>
-      <td>Take the last N elements of a collection. The collection parameter is mandatory. The n parameter is optional and can be an integer. Default parameter value: n = 1. The return value is an array.</td>
+      <td><code>takeRight(&#60;iterator&#62;[,n=1]);</code></td>
+      <td>Take the last N elements of an iterator. The iterator parameter is mandatory. The n parameter is optional and can be an integer. Default parameter value: n = 1. The return value is an array.</td>
     </tr>
     <tr>
-      <td><code>takeRightWhile(&#60;collection&#62;,&#60;callback&#62;);</code></td>
-      <td>Yield the elements from the end of a collection while the callback (filter) function returns true. The callback function will be called with the actual element of the collection. The collection parameter is mandatory. The callback parameter is mandatory and has to be a function.</td>
+      <td><code>takeRightWhile(&#60;iterator&#62;,&#60;callback&#62;);</code></td>
+      <td>Yield the elements from the end of an iterator while the callback (filter) function returns true. The callback function will be called with the actual element of the iterator. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function.</td>
     </tr>
     <tr>
-      <td><code>takeWhile(&#60;collection&#62;,&#60;callback&#62;);</code></td>
-      <td>Yield the elements of a collection while the callback (filter) function returns true. The callback function will be called with the actual element of the collection. The collection parameter is mandatory. The callback parameter is mandatory and has to be a function.</td>
+      <td><code>takeWhile(&#60;iterator&#62;,&#60;callback&#62;);</code></td>
+      <td>Yield the elements of an iterator while the callback (filter) function returns true. The callback function will be called with the actual element of the iterator. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function.</td>
     </tr>
     <tr>
-      <td><code>withOut(&#60;collection&#62;,&#60;filterCollection&#62;);</code></td>
+      <td><code>withOut(&#60;iterator&#62;,&#60;filterIterator&#62;);</code></td>
       <td>
-        <p>Returns an array with the values of the first collection, but without the values of the filterCollection. All of the parameters are mandatory and can be any type of JavaScript collections.</p>
+        <p>Returns an array with the values of the first iterator, but without the values of the filterIterator. All of the parameters are mandatory.</p>
         <p>
          <b>Example:</b>
          <br/><code>CEL.withOut(["a","b","c","d"], ["b","d"]);</code>
@@ -1450,16 +1450,16 @@ console.log(o2);
       </td>
     </tr>
     <tr>
-      <td><code>unzip(&#60;collection&#62;);</code></td>
+      <td><code>unzip(&#60;iterator&#62;);</code></td>
       <td>Returns the array of arrays of unpaired values. In the modern browsers compatible with finite iterators. <br/><b>Example:</b><br/><code>CEL.unzip([ [ "a", 3 ], [ "b", 4 ], [ "c", 5 ], [ "d", 6 ] ]);</code><br/>-><br/><code>Array (2) [ ["a","b","c","d"], [3,4,5,6] ]</code></td>
     </tr>
     <tr>
-      <td><code>zip(&#60;collection1&#62;[,collectionN]);</code></td>
-      <td>Returns the array of paired values of the given collections. All of the parameters can be any type of JavaScript collections. In the modern browsers compatible with finite iterators. <br/><b>Example:</b><br/><code>CEL.zip(["a","b","c","d"], [3,4,5,6,7,8,9]);</code><br/>-><br/><code>Array (4) [ [ "a", 3 ], [ "b", 4 ], [ "c", 5 ], [ "d", 6 ] ]</code></td>
+      <td><code>zip(&#60;iterator1&#62;[,iteratorN]);</code></td>
+      <td>Returns the array of paired values of the given iterators. In the modern browsers compatible with finite iterators. <br/><b>Example:</b><br/><code>CEL.zip(["a","b","c","d"], [3,4,5,6,7,8,9]);</code><br/>-><br/><code>Array (4) [ [ "a", 3 ], [ "b", 4 ], [ "c", 5 ], [ "d", 6 ] ]</code></td>
     </tr>
     <tr>
-      <td><code>zipObj(&#60;collection1&#62;,&#60;collection2&#62;);</code></td>
-      <td>Returns an object, whose properties are from the first collection and its values are from the second collection. The two collections must be the same size. In the modern browsers compatible with finite iterators.<br/><b>Example:</b><br/><code>zipObj(["a","b","c"],[1,2,3])</code><br/>-><br/><code>{"a":1,"b":2,"c":3}</code></td>
+      <td><code>zipObj(&#60;iterator1&#62;,&#60;iterator2&#62;);</code></td>
+      <td>Returns an object, whose properties are from the first iterator and its values are from the second iterator. The two iterators must be the same size. In the modern browsers compatible with finite iterators.<br/><b>Example:</b><br/><code>zipObj(["a","b","c"],[1,2,3])</code><br/>-><br/><code>{"a":1,"b":2,"c":3}</code></td>
     </tr>
   </table>
 </div>
