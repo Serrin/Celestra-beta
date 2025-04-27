@@ -1192,7 +1192,7 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>drop(&#60;iterator&#62;[,n=1]);</code></td>
-      <td>Drop the first N elements of an iterator and yield the remained elements. The iterator parameter is mandatory. The n parameter is optional and can be an integer. Default parameter value: n = 1</td>
+      <td><span class="info">Can be replaced with <code>Iterator.from(iterable/iterator).drop();</code></span><br/>Drop the first N elements of an iterator and yield the remained elements. The iterator parameter is mandatory. The n parameter is optional and can be an integer. Default parameter value: n = 1</td>
     </tr>
     <tr>
       <td><code>dropRight(&#60;iterator&#62;[,n=1]);</code></td>
@@ -1219,15 +1219,15 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>every(&#60;iterator&#62;,&#60;callback&#62;);</code></td>
-      <td>This function whether all elements in the iterator pass the test implemented by the provided function. It returns a Boolean value and all of the parameters are mandatory. If the iterator is empty, then the return value is false.</td>
+      <td><span class="info">Can be replaced with <code>Iterator.from(iterable/iterator).every();</code></span><br/>This function whether all elements in the iterator pass the test implemented by the provided function. It returns a Boolean value and all of the parameters are mandatory. If the iterator is empty, then the return value is false.</td>
     </tr>
     <tr>
       <td><code>filter(&#60;iterator&#62;,&#60;callback&#62;);</code></td>
-      <td>Filter and yield elements of an iterator. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function and called with two parameters: the item and the index of the item (only a counter).</td>
+      <td><span class="info">Can be replaced with <code>Iterator.from(iterable/iterator).filter();</code></span><br/>Filter and yield elements of an iterator. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function and called with two parameters: the item and the index of the item (only a counter).</td>
     </tr>
     <tr>
       <td><code>find(&#60;iterator&#62;,&#60;callback&#62;);</code></td>
-      <td>This function returns the value of the first element in the iterator that satisfies the provided testing function. Otherwise undefined is returned. All of the parameters are mandatory.</td>
+      <td><span class="info">Can be replaced with <code>Iterator.from(iterable/iterator).find();</code></span><br/>This function returns the value of the first element in the iterator that satisfies the provided testing function. Otherwise undefined is returned. All of the parameters are mandatory.</td>
     </tr>
     <tr>
       <td><code>findLast(&#60;iterator&#62;,&#60;callback&#62;);</code></td>
@@ -1239,7 +1239,7 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>forEach(&#60;iterator&#62;,&#60;callback&#62;);</code></td>
-      <td>This function executes a provided function once for each iterator items. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function and called with two parameters: the item and the index of the item (only a counter).</td>
+      <td><span class="info">Can be replaced with <code>Iterator.from(iterable/iterator).forEach();</code></span><br/>This function executes a provided function once for each iterator items. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function and called with two parameters: the item and the index of the item (only a counter).</td>
     </tr>
     <tr>
       <td><code>forEachRight(&#60;iterator&#62;,&#60;callback&#62;);</code></td>
@@ -1319,7 +1319,7 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>map(&#60;iterator&#62;,&#60;callback&#62;);</code></td>
-      <td>This function creates a new iterator with the results of calling a provided function on every element. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function and called with two parameters: the item and the index of the item (only a counter).</td>
+      <td><span class="info">Can be replaced with <code>Iterator.from(iterable/iterator).map();</code></span><br/>This function creates a new iterator with the results of calling a provided function on every element. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function and called with two parameters: the item and the index of the item (only a counter).</td>
     </tr>
     <tr>
       <td><code>max(&#60;value1&#62;[,valueN]);</code></td>
@@ -1351,7 +1351,7 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>reduce(&#60;iterator&#62;,&#60;callback&#62;[,initialvalue]);</code></td>
-      <td>This function executes a reducer function (that you provide) on each element of the iterator, returning in a single output value. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function. The initialvalue parameter is optional and can be any variable type of the Javascript.</td>
+      <td><span class="info">Can be replaced with <code>Iterator.from(iterable/iterator).reduce();</code></span><br/>This function executes a reducer function (that you provide) on each element of the iterator, returning in a single output value. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function. The initialvalue parameter is optional and can be any variable type of the Javascript.</td>
     </tr>
     <tr>
       <td><code>reject(&#60;iterator&#62;,&#60;callback&#62;);</code></td>
@@ -1411,7 +1411,7 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>some(&#60;iterator&#62;,&#60;callback&#62;);</code></td>
-      <td>This function tests whether at least one element in the array passes the test implemented by the provided function. It returns a Boolean value and all of the parameters are mandatory. If the iterator is empty, then the return value is false.</td>
+      <td><span class="info">Can be replaced with <code>Iterator.from(iterable/iterator).some();</code></span><br/>This function tests whether at least one element in the array passes the test implemented by the provided function. It returns a Boolean value and all of the parameters are mandatory. If the iterator is empty, then the return value is false.</td>
     </tr>
     <tr>
       <td><code>sort(&#60;iterator&#62;[,numbers=false]);</code></td>
@@ -1423,7 +1423,7 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>take(&#60;iterator&#62;[,n=1]);</code></td>
-      <td>Yield the first N elements of an iterator. The iterator parameter is mandatory. The n parameter is optional and can be an integer. Default parameter value: n = 1</td>
+      <td><span class="info">Can be replaced with <code>Iterator.from(iterable/iterator).take();</code></span><br/>Yield the first N elements of an iterator. The iterator parameter is mandatory. The n parameter is optional and can be an integer. Default parameter value: n = 1</td>
     </tr>
     <tr>
       <td><code>takeRight(&#60;iterator&#62;[,n=1]);</code></td>
