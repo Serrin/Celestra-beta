@@ -552,9 +552,9 @@ REMOVED polyfills in v5.6.0 | `Array.prototype.at();`<br>`Array.prototype.findLa
 
 Name | Description
 ---- | -----------
-`BigInt.prototype.toJSON();` | Using `JSON.stringify();` with any BigInt value will raise a TypeError as BigInt values aren't serialized in JSON by default. This added method can fix this. (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
-`window.AsyncFunction();` | The AsyncFunction constructor creates a new async function object. In JavaScript, every asynchronous function is actually an AsyncFunction object. Note that AsyncFunction is not a global object, but in the Celestra this is available in the `window` object.
-`window.GeneratorFunction();` | The GeneratorFunction constructor creates a new generator function object. In JavaScript every generator function is actually a GeneratorFunction object. Note that GeneratorFunction is not a global object, but in the Celestra this is available in the `window` object.
+`BigInt.prototype.toJSON();` | Using `JSON.stringify();` with any BigInt value will raise a TypeError as BigInt values aren't serialized in JSON by default. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt#use_within_json)!
+`window.AsyncFunction();` | The AsyncFunction constructor creates a new async function object. In JavaScript, every asynchronous function is actually an AsyncFunction object. Note that AsyncFunction is not a global object, but in the Celestra this is available in the `window` object. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncFunction)!
+`window.GeneratorFunction();` | The GeneratorFunction constructor creates a new generator function object. In JavaScript every generator function is actually a GeneratorFunction object. Note that GeneratorFunction is not a global object, but in the Celestra this is available in the `window` object. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction)!
 
 
 -----
