@@ -1,5 +1,49 @@
+````
+        ___  ____  __    ____  ___  ____  ____    __
+       / __)( ___)(  )  ( ___)/ __)(_  _)(  _ \  /__\
+      ( (__  )__)  )(__  )__) \__ \  )(   )   / /(__)\
+       \___)(____)(____)(____)(___/ (__) (_)\_)(__)(__)
+
+````
 
 # Celestra version history
+
+
+## Celestra v5.6.5
+
+1. Documentation and pdf fixes.
+
+2. Add MDN links at the polyfills in the __celestra-cheatsheet.odt__ and __celestra-cheatsheet.pdf__
+
+3. Add page number in the __celestra-cheatsheet.odt__ and __celestra-cheatsheet.pdf__
+
+4. Add a new polyfill: `Error.isError();`
+
+5. Deprecate this function: `isError();`
+
+6. Replace these functions with a new version:
+````javascript
+forIn();
+getFullscreen();
+isArrayBuffer();
+isDataView();
+isDate();
+isEmptyMap();
+isEmptySet();
+isError();
+isIterator();
+isMap();
+isPromise();
+isRegexp();
+isSameMap();
+isSameSet();
+isSet();
+isTypedArray();
+isWeakMap();
+isWeakSet();
+noop();
+strFromCodePoints();
+```` 
 
 
 ## Celestra v5.6.3

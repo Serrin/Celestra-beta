@@ -1,6 +1,6 @@
 /**
  * @name Celestra
- * @version 5.6.4 dev
+ * @version 5.6.45dev
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
@@ -294,6 +294,18 @@ function classof (v, t, th = false) {
   if (!th) { return ot === t.toLowerCase(); }
   if (ot !== t.toLowerCase()) {
     throw TypeError("Celestra classof(); type error: " + ot + " - "  + t);
+  }
+  return true;
+}
+
+/* getType(<variable: any>): string */
+/* getType(<variable: any>[,type: string[,throw=false]]): boolean or throw */
+function getType (v, t, th = false) {
+  var ot = Object.prototype.toString.call(v).slice(8, -1).toLowerCase();
+  if (arguments.length < 2) { return ot; }
+  if (!th) { return ot === t.toLowerCase(); }
+  if (ot !== t.toLowerCase()) {
+    throw TypeError("Celestra getType(); type error: " + ot + " - "  + t);
   }
   return true;
 }
@@ -1793,7 +1805,7 @@ const inRange = (v, i, a) => (v >= i && v <= a);
 
 /** object header **/
 
-const VERSION = "Celestra v5.6.4 dev";
+const VERSION = "Celestra v5.6.5 dev";
 
 /* celestra.noConflict(): celestra object */
 function noConflict () { window.CEL = celestra.__prevCEL__; return celestra; }
@@ -1820,6 +1832,7 @@ var celestra = {
   getUrlVars: getUrlVars,
   obj2string: obj2string,
   classof: classof,
+  getType: getType,
   extend: extend,
   sizeIn: sizeIn,
   forIn: forIn,

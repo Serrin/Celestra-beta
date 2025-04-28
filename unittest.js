@@ -183,7 +183,7 @@ CUT.isNotEqual(
 (function(){
 "use strict";
 
-/* Celestra v5.6.4 testcases */
+/* Celestra v5.6.5 testcases */
 
 /* Not auto tested functions */
 CUT.addElement("hr");
@@ -399,6 +399,62 @@ if (!!window.BigInt) {
   CEL.classof(BigInt(456))
     +"  "+CEL.classof(BigInt(456), "bigint")
     +"  "+CEL.classof(BigInt(456), "object")
+  );
+}
+
+
+CUT.isEqual("getType(); ES5 values",
+  "array  number  string  object  htmldocument  boolean  nodelist  htmlparagraphelement  null  undefined  function  date  regexp",
+  CEL.getType([1,2,3])+"  "+CEL.getType(1998)+"  "+CEL.getType("hello world")
+    + "  " +CEL.getType({a:1,b:2})+"  "+CEL.getType(document)
+    + "  " +CEL.getType(true)+"  "+CEL.getType(document.querySelectorAll("p"))
+    + "  " +CEL.getType(document.querySelector("p"))+"  "+CEL.getType(null)
+    + "  " +CEL.getType(undefined)+"  "+CEL.getType(function(){})
+    + "  " +CEL.getType(new Date())+"  "+CEL.getType(/^\[object (.+)\]$/g)
+);
+CUT.isEqual("getType(); ES5 all true",
+  "true  true  true  true  true  true  true  true  true  true  true  true  true",
+ CEL.getType([1,2,3], "array")+"  "+CEL.getType(1998, "number")
+    +"  "+CEL.getType("hello world", "string")+"  "+CEL.getType({a:1,b:2}, "object")
+    +"  "+CEL.getType(document, "htmldocument")+"  "+CEL.getType(true, "boolean")
+    +"  "+CEL.getType(document.querySelectorAll("p"), "nodelist")
+    +"  "+CEL.getType(document.querySelector("p"), "htmlparagraphelement")
+    +"  "+CEL.getType(null, "null")+"  "+CEL.getType(undefined, "undefined")
+    +"  "+CEL.getType(function(){}, "function")+"  "+CEL.getType(new Date(), "date")
+    +"  "+CEL.getType(/^\[object (.+)\]$/g, "regexp")
+);
+CUT.isEqual("getType(); ES5 all false",
+  "false  false  false  false  false  false  false  false  false  false  false  false  false",
+  CEL.getType([1,2,3], "number")+"  "+CEL.getType(1998, "array")
+    +"  "+CEL.getType("hello world", "object")+"  "+CEL.getType({a:1,b:2}, "string")
+    +"  "+CEL.getType(document, "boolean")+"  "+CEL.getType(true, "htmldocument")
+    +"  "+CEL.getType(document.querySelectorAll("p"), "htmlheadingelement")
+    +"  "+CEL.getType(document.querySelector("p"), "nodelist")
+    +"  "+CEL.getType(null, "undefined")+"  "+CEL.getType(undefined, "null")
+    +"  "+CEL.getType(function(){}, "object")+"  "+CEL.getType(new Date(), "array")
+    +"  "+CEL.getType(/^\[object (.+)\]$/g, "string")
+);
+
+CUT.isEqual("getType(); ES6 values", "map  set  weakmap  weakset",
+  CEL.getType(new Map()) +"  "+CEL.getType(new Set())
+    +"  "+CEL.getType(new WeakMap())
+    +"  "+CEL.getType(new WeakSet())
+);
+CUT.isEqual("getType(); ES6 all true", "true  true  true  true",
+  CEL.getType(new Map(), "map") +"  "+CEL.getType(new Set(), "set")
+    +"  "+CEL.getType(new WeakMap(), "weakmap")
+    +"  "+CEL.getType(new WeakSet(), "weakset")
+);
+CUT.isEqual("getType(); ES6 all false", "false  false  false  false",
+  CEL.getType(new Map(), "object") +"  "+CEL.getType(new Set(), "object")
+    +"  "+CEL.getType(new WeakMap(), "object")
+    +"  "+CEL.getType(new WeakSet(), "object")
+);
+if (!!window.BigInt) {
+  CUT.isEqual("getType(); ES6 bigint", "bigint  true  false",
+  CEL.getType(BigInt(456))
+    +"  "+CEL.getType(BigInt(456), "bigint")
+    +"  "+CEL.getType(BigInt(456), "object")
   );
 }
 

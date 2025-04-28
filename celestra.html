@@ -99,7 +99,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
 
 <p>This library isn't compatible with the Node.js.</p>
 
-<p>Latest version: 5.6.4</p>
+<p>Latest version: 5.6.5</p>
 <p>Date: 2024-04-27T19:47:52.938Z</p>
 
 <p><b>Tested on these browsers:</b></p>
@@ -253,6 +253,10 @@ window.CEL = defaultExport;
 
 &#60;/script&#62;</pre>
 
+<p><b>Another way to import</b></p>
+
+<pre>&#60;script type="module"&#62; import "./celestra.min.js"; &#60;/script&#62;</pre>
+
 <h3>Celestra v3.0.0 (Hera) changes</h3>
 
 <ul>
@@ -371,7 +375,7 @@ window.CEL = defaultExport;
     </tr>
     <tr>
       <td><code>classof(&#60;variable&#62;[,type[,throw=false]]);</code></td>
-      <td><span class="info">Old name before v5.4.0: <code>getType</code>.</span><br/>Get the real type of a variable. If this is an object, then the return value is the detailed object type (e.g.: array). If the type (string) parameter is given, then the return value (boolean) is the equality of the type of the variable and the second parameter. If the third parameter (boolean) is true and the type of the variable and the second parameter aren't equals, then the function is throwing a <code>TypeError();</code>, else the return value is true.</td>
+      <td>Get the real type of a variable. If this is an object, then the return value is the detailed object type (e.g.: array). If the type (string) parameter is given, then the return value (boolean) is the equality of the type of the variable and the second parameter. If the third parameter (boolean) is true and the type of the variable and the second parameter aren't equals, then the function is throwing a <code>TypeError();</code>, else the return value is true.</td>
     </tr>
     <tr>
       <td><code>constant(&#60;value&#62;);</code></td>
@@ -413,6 +417,10 @@ console.log(o2);
     <tr>
       <td><code>forIn(&#60;object&#62;,&#60;callback&#62;);</code></td>
       <td>The forIn() function executes a provided function once for each object property. The object parameter is mandatory and has to be an object. The callback parameter is mandatory and has to be a function. The parameter function will be called with these arguments: key value, key, object.</td>
+    </tr>
+    <tr>
+      <td><code>getType(&#60;variable&#62;[,type[,throw=false]]);</code></td>
+      <td>This is an alias of the <code>classof(&#60;variable&#62;[,type[,throw=false]]);</code>.</td>
     </tr>
     <tr>
       <td><code>getUrlVars([str=location.search]);</code></td>
