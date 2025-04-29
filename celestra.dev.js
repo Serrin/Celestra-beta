@@ -464,7 +464,7 @@ const strReverse = (s) => Array.from(String(s)).reverse().join("");
 /* strCodePoints(<string>): array of strings */
 const strCodePoints = (s) => Array.from(String(s), (v) => v.codePointAt(0) );
 
-/* strFromCodePoints(<collection>): string */
+/* strFromCodePoints(<iterator>): string */
 const strFromCodePoints = ([...a]) => String.fromCodePoint(...a);
 
 /* strAt(<string>,<index: integer>[,newChar: string]): string */
@@ -938,6 +938,9 @@ const isAsyncGeneratorFn = (v) => (Object.getPrototypeOf(v).constructor ===
 /* isConstructorFn(<value: any>): boolean */
 const isConstructorFn = (v) =>
   (typeof v === "function" && typeof v.prototype === "object");
+/* isClass(<value: any>): boolean */
+const isClass = (v) =>
+  (typeof v === "function" && typeof v.prototype === "object");
 
 /* isPlainObject(<value: any>): boolean */
 const isPlainObject = (v) => (v != null && typeof v === "object" &&
@@ -1225,7 +1228,7 @@ function clearCookies (path = "/", domain, secure, SameSite = "Lax", HttpOnly) {
 
 /** Collections API **/
 
-/* count(<collection>,<callback: function>): integer */
+/* count(<iterator>,<callback: function>): integer */
 function count (it, fn) {
   let i = 0, r = 0;
   for (let item of it) {
@@ -1243,10 +1246,10 @@ function arrayDeepClone ([...a]) {
 /* arrayCreate(<length: any>): array OR throw error */
 const arrayCreate = (length = 0) => Array( (1/+length === 1/-0) ? 0 : +length );
 
-/* initial(<collection>): array */
+/* initial(<iterator>): array */
 const initial = ([...a]) => a.slice(0, -1);
 
-/* shuffle(<collection>): array */
+/* shuffle(<iterator>): array */
 function shuffle([...a]) {
   for (let i = a.length - 1; i > 0; i--) {
     let j = Math.floor(Math.random() * (i + 1));
@@ -1255,30 +1258,30 @@ function shuffle([...a]) {
   return a;
 }
 
-/* partition(<collection>,<callback: function>): array */
+/* partition(<iterator>,<callback: function>): array */
 const partition = ([...a],fn) => [a.filter(fn),a.filter((e,i,a)=>!(fn(e,i,a)))];
 
-/* group(<collection>,<callback: function>[,map=false]): object */
+/* group(<iterator>,<callback: function>[,map=false]): object */
 const group =(items, fn, map=false)=> (map ? Map : Object)["groupBy"](items,fn);
 
-/* arrayUnion(<collection1>[,collectionN]): array */
+/* arrayUnion(<iterator1>[,iteratorN]): array */
 const arrayUnion = (...a) => [...new Set(a.map(([...e]) => e).flat())];
 
-/* arrayIntersection(<collection1>,<collection2>): array */
+/* arrayIntersection(<iterator1>,<iterator2>): array */
 const arrayIntersection = ([...a], [...b]) =>
   a.filter((v) => b.indexOf(v) > -1).filter((e,i,arr) => arr.indexOf(e) === i);
 
-/* arrayDifference(<collection1>,<collection2>): array */
+/* arrayDifference(<iterator1>,<iterator2>): array */
 const arrayDifference = ([...a], [...b]) =>
   a.filter((v) => b.indexOf(v) === -1).filter((e,i,arr) => arr.indexOf(e)===i);
 
-/* arraySymmetricDifference(<collection1>,<collection2>): array */
+/* arraySymmetricDifference(<iterator1>,<iterator2>): array */
 const arraySymmetricDifference = ([...a], [...b]) =>
   a.filter((v) => b.indexOf(v) === -1)
     .concat(b.filter((v) => a.indexOf(v) === -1))
     .filter((e, i, arr) => arr.indexOf(e) === i);
 
-/* setUnion(<collection1>[,collectionN]): set */
+/* setUnion(<iterator1>[,iteratorN]): set */
 const setUnion = (...a) => new Set(a.map(([...e]) => e).flat());
 
 /* setIntersection(<set1>,<set2>): set */
@@ -1304,14 +1307,14 @@ const max = (...a) => a.reduce((acc, v) => (v > acc ? v : acc), a[0]);
 /* arrayRepeat(<value: any>[,n=100]): array */
 const arrayRepeat = (v, n = 100) => Array(n).fill(v);
 
-/* arrayCycle(<collection>[,n=100]): array */
+/* arrayCycle(<iterator>[,n=100]): array */
 const arrayCycle = ([...a], n = 100) => Array(n).fill(a).flat();
 
 /* arrayRange([start=0[,end=99[,step=1]]]): array */
 const arrayRange = (s = 0, e = 99, st = 1) =>
   Array.from({length: (e - s) / st + 1}, (v, i) => s + (i * st));
 
-/* zip(<collection1>[,collectionN]): array */
+/* zip(<iterator1>[,iteratorN]): array */
 function zip (...a) {
   a = a.map((v) => Array.from(v));
   let r = [], i, j, l = a.length, min = a[0].length, item;
@@ -1326,7 +1329,7 @@ function zip (...a) {
   return r;
 }
 
-/* unzip(<collection>): array */
+/* unzip(<iterator>): array */
 function unzip ([...a]) {
   a = a.map(([...v]) => v);
   let r = [], i, j, l1 = a[0].length, l2 = a.length;
@@ -1337,14 +1340,14 @@ function unzip ([...a]) {
   return r;
 }
 
-/* zipObj(<collection1>,<collection2>): object */
+/* zipObj(<iterator1>,<iterator2>): object */
 function zipObj ([...a1], [...a2]) {
   var r = [], i, l = (a1.length < a2.length ? a1.length : a2.length);
   for (i = 0; i < l; i++) { r.push([a1[i], a2[i]]); }
   return Object.fromEntries(r);
 }
 
-/* arrayUnique(<collection>[,callback: function]): array */
+/* arrayUnique(<iterator>[,callback: function]): array */
 const arrayUnique = (a) => [...new Set(a)];
 
 /* arrayAdd(<array>,<value: any>): boolean */
@@ -1394,7 +1397,7 @@ function* iterCycle ([...a], n=Infinity){ let i=0; while(i<n) {yield* a; i++;} }
 /* iterRepeat(<value: any>[,n=Infinity]): iterator */
 function* iterRepeat (v, n=Infinity) { let i=0; while (i<n) { yield v; i++; } }
 
-/* takeWhile(<collection>,<callback: function>): iterator */
+/* takeWhile(<iterator>,<callback: function>): iterator */
 function* takeWhile (it, fn) {
   for (let item of it) {
     if (!fn(item)) { break; }
@@ -1402,7 +1405,7 @@ function* takeWhile (it, fn) {
   }
 }
 
-/* dropWhile(<collection>,<callback: function>): iterator */
+/* dropWhile(<iterator>,<callback: function>): iterator */
 function* dropWhile (it, fn) {
   let d = true;
   for (let item of it) {
@@ -1411,7 +1414,7 @@ function* dropWhile (it, fn) {
   }
 }
 
-/* take(<collection>[,n=1]): iterator */
+/* take(<iterator>[,n=1]): iterator */
 function* take (it, n = 1) {
   let i = n;
   for (let item of it) {
@@ -1421,7 +1424,7 @@ function* take (it, n = 1) {
   }
 }
 
-/* drop(<collection>[,n=1]): iterator */
+/* drop(<iterator>[,n=1]): iterator */
 function* drop (it, n = 1) {
   let i = n;
   for (let item of it) {
@@ -1429,16 +1432,16 @@ function* drop (it, n = 1) {
   }
 }
 
-/* forEach(<collection>,<callback: function>): undefined */
+/* forEach(<iterator>,<callback: function>): undefined */
 function forEach (it, fn) { let i = 0; for (let item of it) { fn(item, i++); } }
 
-/* forEachRight(<collection>,<callback: function>): undefined */
+/* forEachRight(<iterator>,<callback: function>): undefined */
 function forEachRight ([...a],fn){ let i=a.length; while (i--) { fn(a[i],i); } }
 
-/* map(<collection>,<callback: function>): iterator */
+/* map(<iterator>,<callback: function>): iterator */
 function* map (it, fn) { let i=0; for (let item of it) { yield fn(item,i++); } }
 
-/* filter(<collection>,<callback: function>): iterator */
+/* filter(<iterator>,<callback: function>): iterator */
 function* filter (it, fn) {
   let i = 0;
   for (let item of it) {
@@ -1446,7 +1449,7 @@ function* filter (it, fn) {
   }
 }
 
-/* reject(<collection>,<callback: function>): iterator */
+/* reject(<iterator>,<callback: function>): iterator */
 function* reject (it, fn) {
   let i = 0;
   for (let item of it) {
@@ -1454,7 +1457,7 @@ function* reject (it, fn) {
   }
 }
 
-/* slice(<collection>[,begin=0[,end=Infinity]]): iterator */
+/* slice(<iterator>[,begin=0[,end=Infinity]]): iterator */
 function* slice (it, begin = 0, end = Infinity) {
   let i = 0;
   for (let item of it) {
@@ -1463,7 +1466,7 @@ function* slice (it, begin = 0, end = Infinity) {
   }
 }
 
-/* tail(<collection>): iterator */
+/* tail(<iterator>): iterator */
 function* tail (it) {
   let first = true;
   for (let item of it) {
@@ -1471,37 +1474,37 @@ function* tail (it) {
   }
 }
 
-/* item(<collection>,<index: integer>): any */
+/* item(<iterator>,<index: integer>): any */
 function item (it,p) {let i=0; for(let item of it) {if(i++===p) {return item;}}}
-/* nth(<collection>,<index: integer>): any */
+/* nth(<iterator>,<index: integer>): any */
 function nth (it,p) { let i=0; for(let item of it) {if(i++===p) {return item;}}}
 
-/* size(<collection>): integer */
+/* size(<iterator>): integer */
 function size (it) { let i = 0; for (let item of it) { i++; } return i; }
 
-/* first(<collection>): any */
+/* first(<iterator>): any */
 function first (it) { for (let item of it) { return item; } }
-/* head(<collection>): any */
+/* head(<iterator>): any */
 function head (it) { for (let item of it) { return item; } }
 
-/* last(<collection>): any */
+/* last(<iterator>): any */
 function last (it) { let item; for (item of it) { } return item; }
 
-/* reverse(<collection>): array */
+/* reverse(<iterator>): array */
 const reverse = ([...a]) => a.reverse();
 
-/* sort(<collection>[,numbers=false]): array */
+/* sort(<iterator>[,numbers=false]): array */
 const sort = ([...a], ns) => a.sort(ns
   ? (a,b) => { if (a<b){return -1;} if(a>b){return 1;} return 0; } : undefined);
 
-/* includes(<collection>,<value: any>): boolean */
+/* includes(<iterator>,<value: any>): boolean */
 function includes (it, v) {
   for (let item of it) {
     if (item === v) { return true; }
   }
   return false;
 }
-/* contains(<collection>,<value: any>): boolean */
+/* contains(<iterator>,<value: any>): boolean */
 function contains (it, v) {
   for (let item of it) {
     if (item === v) { return true; }
@@ -1509,7 +1512,7 @@ function contains (it, v) {
   return false;
 }
 
-/* find(<collection>,<callback: function>): any */
+/* find(<iterator>,<callback: function>): any */
 function find (it, fn) {
   let i = 0;
   for (let item of it) {
@@ -1517,7 +1520,7 @@ function find (it, fn) {
   }
 }
 
-/* findLast(<collection>,<callback: function>): any */
+/* findLast(<iterator>,<callback: function>): any */
 function findLast (it, fn) {
   let i = 0, r;
   for (let item of it) {
@@ -1526,7 +1529,7 @@ function findLast (it, fn) {
   return r;
 }
 
-/* every(<collection>,<callback: function>): boolean */
+/* every(<iterator>,<callback: function>): boolean */
 function every (it, fn) {
   let i = 0;
   for (let item of it) {
@@ -1536,7 +1539,7 @@ function every (it, fn) {
   return true;
 }
 
-/* some(<collection>,<callback: function>): boolean */
+/* some(<iterator>,<callback: function>): boolean */
 function some (it, fn) {
   let i = 0;
   for (let item of it) {
@@ -1545,7 +1548,7 @@ function some (it, fn) {
   return false;
 }
 
-/* none(<collection>,<callback: function>): boolean */
+/* none(<iterator>,<callback: function>): boolean */
 function none (it, fn) {
   let i = 0;
   for (let item of it) {
@@ -1555,10 +1558,10 @@ function none (it, fn) {
   return true;
 }
 
-/* takeRight(<collection>[,n=1]): array */
+/* takeRight(<iterator>[,n=1]): array */
 const takeRight = ([...a], n = 1) => a.reverse().slice(0, n);
 
-/* takeRightWhile(<collection>,<callback: function>): iterator */
+/* takeRightWhile(<iterator>,<callback: function>): iterator */
 function* takeRightWhile ([...a], fn) {
   let i = 0;
   for (let item of a.reverse()) {
@@ -1566,10 +1569,10 @@ function* takeRightWhile ([...a], fn) {
   }
 }
 
-/* dropRight(<collection>[,n=1]): array */
+/* dropRight(<iterator>[,n=1]): array */
 const dropRight = ([...a], n = 1) => a.reverse().slice(n);
 
-/* dropRightWhile(<collection>,<callback: function>): iterator */
+/* dropRightWhile(<iterator>,<callback: function>): iterator */
 function* dropRightWhile ([...a], fn) {
   let d = true, i = 0;
   for (let item of a.reverse()) {
@@ -1578,10 +1581,22 @@ function* dropRightWhile ([...a], fn) {
   }
 }
 
-/* concat(<collection1>[,collectionN]): iterator */
-function* concat () { for (let item of arguments) { yield* item; } }
+/* concat(<iterator1>[,iteratorN]): iterator */
+function* concat () {
+  for (let item of arguments) {
+    if (typeof item[Symbol.iterator] === "function" ||
+      ("Iterator" in window ? (item instanceof Iterator)
+        : (typeof item === "object" && typeof item.next === "function")
+      )
+    ) {
+      yield* item;
+    } else {
+      yield item;
+    }
+  }
+}
 
-/* reduce(<collection>,<callback: function>[,initialvalue: any]): any */
+/* reduce(<iterator>,<callback: function>[,initialvalue: any]): any */
 function reduce (it, fn, iv) {
   let acc = iv, i = 0;
   for (let item of it) {
@@ -1594,21 +1609,33 @@ function reduce (it, fn, iv) {
   return acc;
 }
 
-/* enumerate(<collection>[,offset=0]): iterator */
+/* enumerate(<iterator>[,offset=0]): iterator */
 function* enumerate (it, offset = 0) {
   let i = offset;
   for (let item of it) { yield [i++, item]; }
 }
-/* entries(<collection>[,offset=0]): iterator */
+/* entries(<iterator>[,offset=0]): iterator */
 function* entries (it, offset = 0) {
   let i = offset;
   for (let item of it) { yield [i++, item]; }
 }
 
-/* flat(<collection>): iterator */
-function* flat (it) { for (let item of it) { yield* item; } }
+/* flat(<iterator>): iterator */
+function* flat (it) {
+  for (let item of it) {
+    if (typeof item[Symbol.iterator] === "function" ||
+      ("Iterator" in window ? (item instanceof Iterator)
+        : (typeof item === "object" && typeof item.next === "function")
+      )
+    ) {
+      yield* item;
+    } else {
+      yield item;
+    }
+  }
+}
 
-/* join(<collection>[,separator=","]): string */
+/* join(<iterator>[,separator=","]): string */
 function join (it, sep = ",") {
   sep = String(sep);
   let r = "";
@@ -1616,7 +1643,7 @@ function join (it, sep = ",") {
   return r.slice(sep.length);
 }
 
-/* withOut(<collection>,<filterCollection>): array */
+/* withOut(<iterator>,<filterIterator>): array */
 const withOut = ([...a], [...fl]) => a.filter( (e) => fl.indexOf(e) === -1 );
 
 /** Abstract API **/
@@ -1677,7 +1704,7 @@ const createDataProperty = (O, P, V) => Object.defineProperty(
 );
 
 /* toArray(<value: array OR iterable OR arraylike>): array */
-function toArray (O) { return (Array.isArray(O) ? O : Array.from(O)); }
+const toArray = (O) => (Array.isArray(O) ? O : Array.from(O));
 
 /** Math API **/
 
@@ -1691,9 +1718,9 @@ const avg = (f, ...a) => a.reduce((acc, v) => acc + v, f) / (a.length + 1);
 const product = (f, ...a) => a.reduce((acc, v) => acc * v, f);
 
 /* clamp(<value>,<min>,<max>): number */
-const clamp = (v, i, a) => (v > a ? a : v < i ? i : v);
+const clamp = (v, min, max) => (v > max ? max : v < min ? min : v);
 /* minmax(<value>,<min>,<max>): number */
-const minmax = (v, i, a) => (v > a ? a : v < i ? i : v);
+const minmax = (v, min, max) => (v > max ? max : v < min ? min : v);
 
 /* isEven(<value>): boolan */
 function isEven (v) {
@@ -1801,7 +1828,7 @@ function randomFloat (i = 100, a) {
 }
 
 /* inRange(<value: number>,<min: number>,<max: number>): boolean */
-const inRange = (v, i, a) => (v >= i && v <= a);
+const inRange = (v, min, max) => (v >= min && v <= max);
 
 /** object header **/
 
@@ -1909,6 +1936,7 @@ var celestra = {
   isFalsy: isFalsy,
   isAsyncGeneratorFn: isAsyncGeneratorFn,
   isConstructorFn: isConstructorFn,
+  isClass: isClass,
   isPlainObject: isPlainObject,
   isEmptyMap: isEmptyMap,
   isEmptySet: isEmptySet,

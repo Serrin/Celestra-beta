@@ -1170,8 +1170,8 @@ CUT.isEqual("dropRightWhile(); full list", whileSum, 72);
 
 
 CUT.isEqual("concat(); one","[4,5,6]",JSON.stringify([...CEL.concat([4,5,6])]));
-CUT.isEqual("concat(); more", "[\"1\",\"2\",\"3\",4,5,6,7,8,9]",
-  JSON.stringify([...CEL.concat("123", [4,5,6].values(), new Set([7,8,9]))])
+CUT.isEqual("concat(); more", "[\"1\",\"2\",\"3\",4,5,6,7,8,9,10]",
+  JSON.stringify([...CEL.concat("123", [4,5,6].values(), new Set([7,8,9]), 10)])
 );
 
 var reduceArray = [4,5,6,7,8,9];
@@ -1193,9 +1193,9 @@ CUT.isEqual("entries(); with offset",
   JSON.stringify([...CEL.entries(["Picard","Riker","Data"],2)]),
   "[[2,\"Picard\"],[3,\"Riker\"],[4,\"Data\"]]" );
 
-CUT.isEqual("flat();", "[1,2,3,4,5,6,7,8,9]",
+CUT.isEqual("flat();", "[1,2,3,4,5,6,7,8,9,10]",
   JSON.stringify([...CEL.flat([[1,2,3].values(),
-  new Set([4,5,6,6,7,7,4]),[8,9]])]) );
+  new Set([4,5,6,6,7,7,4]),[8,9],10])]) );
 
 var joinSet = new Set([2,4,6,4,8,2]);
 CUT.isEqual("join();",
@@ -1967,6 +1967,12 @@ CUT.isTrue("isConstructorFn();",
   CEL.isConstructorFn(Array)
     && !CEL.isConstructorFn(Array.from)
     && !CEL.isConstructorFn(0)
+);
+
+CUT.isTrue("isClass();",
+  CEL.isClass(Array)
+    && !CEL.isClass(Array.from)
+    && !CEL.isClass(0)
 );
 
 CUT.isTrue("isPlainObject();",

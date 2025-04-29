@@ -433,7 +433,10 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>inherit(&#60;subclass&#62;,&#60;superclass&#62;);</code></td>
-      <td>Prototype inheritance.</td>
+      <td>
+        <p><span class="deprecated">Deprecated in v5.6.5. Will be removed in 5.7.0.</span></p>
+        <p>Prototype inheritance.</p>
+      </td>
     </tr>    
     <tr>
       <td><code>javaHash(&#60;data&#62;[,hexa=false]);</code></td>
@@ -842,6 +845,10 @@ console.log(o2);
       <td>This function determines whether the provided value is a string with length 1 character. This function is unicode compatible. The return value is boolean.</td>
     </tr>
     <tr>
+      <td><code>isClass(&#60;value&#62;);</td>
+      <td>Alias of the <code>isConstructorFn(&#60;value&#62;);</code>.</td>
+    </tr>
+    <tr>
       <td><code>isConstructorFn(&#60;value&#62;);</td>
       <td>This function determines whether the provided value is a constructable function. The return value is boolean.</td>
     </tr>
@@ -1134,7 +1141,7 @@ console.log(o2);
     <tr>
       <td><code>arrayDifference(&#60;iterator1&#62;,&#60;iterator2&#62;);</code></td>
       <td>
-        <p><span class="deprecated">Deprecated in v5.6.2. Will be removed in 5.7.0.<span></span></p>
+        <p><span class="deprecated">Deprecated in v5.6.2. Will be removed in 5.7.0.</span></p>
         <p>Returns the array of unique values that are in the iterator1, excluding the values that are also in the iterator2. All of the parameters are mandatory. The return value is an Array.</p>
       </td>
     </tr>

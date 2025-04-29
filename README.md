@@ -185,7 +185,7 @@ Name | Description
 `getType(<variable>[,type[,throw=false]]);` | This is an alias of the `classof(<variable>[,type[,throw=false]]);`.
 `getUrlVars([str=location.search]);` | Get the values of the url variables in an object from the `location.search` _(default value)_ or another given url. The str parameter name is optional and can be a string. Example: `"?showall=true&order_by=updated&o=asc"` -> `Object { showall: "true", order_by: "updated", o: "asc" }`
 `identity(<value>);` | Return the given value. (In math: `f(x)=x`)
-`inherit(<subclass>,<superclass>);` | Prototype inheritance.
+`inherit(<subclass>,<superclass>);` | __Deprecated in v5.6.5. Will be removed in 5.7.0.__ <br> Prototype inheritance.
 `javaHash(<data>[,hexa=false]);` | Java `String.hashCode()` implementation in Javascript - this is a non-cryptographic hash function. The data parameter is mandatory and can be any type. The hexa parameter is optional and can be a boolean and sets the hexadecimal conversion of the return value and the default value is false. Return the generated integer hash.
 `nanoid([size=21[, alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"]]);` | Generate a nanoid. The size parameter is optional and the default value is 21. The alphabet parameter is optional and the default value is "A-Za-z0-9_-". The return value is the generated nanoid (string).
 `noop();` | It's an empty function (no operation) that returns undefined and usable for optional callback arguments.
@@ -314,6 +314,7 @@ Name | Description
 `isBoolean(<value>);` | This function determines whether the provided value is a boolean. The return value is boolean.
 `isCallable(<value>);` | Alias of the `isFunction(<value>);`.
 `isChar(<value>);` | This function determines whether the provided value is a string with length 1 character. This function is unicode compatible. The return value is boolean.
+`isClass(<value>);` | Alias of the `isConstructorFn(<value>);`.
 `isConstructorFn(<value>);` | This function determines whether the provided value is a constructable function. The return value is boolean.
 `isDataView(<value>);` | This function determines whether the provided value is an DataView object. The return value is boolean.
 `isDate(<value>);` | This function determines whether the provided value is a date. The return value is boolean.
