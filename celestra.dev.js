@@ -9,6 +9,47 @@
 
 /** polyfills **/
 
+/* Math.sumPrecise(); */
+if (!("sumPrecise" in Math)) {
+  Math.sumPrecise = function sumPrecise ([...a]) {
+    /* empty iterator */
+    if (a.length === 0) { return -0; }
+    /* iterator with items */
+    if (a.every((v) => typeof v === "number")) {
+      /* return NaN + Infinity + -Infinity */
+      let inf = a.indexOf(Infinity) >- 1, negInf = a.indexOf(-Infinity) >- 1;
+      if (a.some((v) => v !== v) || (inf && negInf)) { return NaN; }
+      if (inf) { return Infinity; }
+      if (negInf) { return -Infinity; }
+      /* sum hi */
+      let hi = a.filter((v) => (v === 1e20 || v === -1e20))
+        .reduce((acc, v) => acc + v, 0);
+      /* sum lo - Kahan sum */
+      let lo = 0.0, c = 0.0;
+      for (let item of a.filter((v) => (v !== 1e20 && v !== -1e20))) {
+        let y = item - c; let t = lo + y; c = (t - lo) - y; lo = t;
+      }
+      /* return sum values */
+      /*
+      if (lo === 0 && hi === 0) { return lo; }
+      if (lo === 0 && hi !== 0) { return hi; }
+      if (lo !== 0 && hi === 0) { return lo; }
+      if (lo > 0 && hi > 0) { return hi; }
+      if (lo > 0 && hi < 0) { return lo + hi; }
+      if (lo < 0 && hi < 0) { return hi; }
+      if (lo < 0 && hi > 0) { return lo + hi; }
+      */
+      if ((lo === 0 && hi !== 0) || (lo > 0 && hi > 0) || (lo < 0 && hi < 0)) {
+        return hi;
+      }
+      if ((lo > 0 && hi < 0) || (lo < 0 && hi > 0)) { return lo + hi; }
+      return lo;
+    }
+    /* not number items -> TypeError */
+    throw new TypeError("values passed to Math.sumPrecise must be numbers");
+  };
+}
+
 /* Error.isError(); */
 if (!("isError" in Error)) {
   Error.isError = function isError (v) {

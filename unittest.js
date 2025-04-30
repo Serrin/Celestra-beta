@@ -1561,6 +1561,64 @@ CUT.addElement("hr");
 CUT.addElement("h3", "polyfills");
 
 
+
+CUT.isEqual("Math.sumPrecise(); 1", Math.sumPrecise([]), -0);
+CUT.isEqual("Math.sumPrecise(); 2", Math.sumPrecise([Infinity]), Infinity);
+CUT.isEqual("Math.sumPrecise(); 3", Math.sumPrecise([0.1,0.2,1e20,-1e20,1e20,Infinity]), Infinity);
+CUT.isEqual("Math.sumPrecise(); 4", Math.sumPrecise([-Infinity]), -Infinity);
+CUT.isEqual("Math.sumPrecise(); 5", Math.sumPrecise([0.1,0.2,1e20,-1e20,1e20,-Infinity]), -Infinity);
+CUT.isEqual("Math.sumPrecise(); 6", Math.sumPrecise([-4234233,1e20]), 99999999999995770000);
+CUT.isEqual("Math.sumPrecise(); 7", Math.sumPrecise([-4234233.5,1e20]), 99999999999995770000);
+CUT.isEqual("Math.sumPrecise(); 8", Math.sumPrecise([4234233,-1e20]), -99999999999995770000);
+CUT.isEqual("Math.sumPrecise(); 9", Math.sumPrecise([4234233.5,-1e20]), -99999999999995770000);
+CUT.isEqual("Math.sumPrecise(); 10", Math.sumPrecise([0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1]), 1);
+CUT.isEqual("Math.sumPrecise(); 11", Math.sumPrecise([1, 2]), 3);
+CUT.isEqual("Math.sumPrecise(); 12", Math.sumPrecise([1,2,3]), 6);
+CUT.isEqual("Math.sumPrecise(); 13", Math.sumPrecise([42]), 42);
+CUT.isEqual("Math.sumPrecise(); 14", Math.sumPrecise([42,-98]), -56);
+CUT.isEqual("Math.sumPrecise(); 15", Math.sumPrecise([42,3.14]), 45.14);
+CUT.isEqual("Math.sumPrecise(); 16", Math.sumPrecise([42,-53.14]), -11.14);
+CUT.isEqual("Math.sumPrecise(); 17", Math.sumPrecise([0.1,0.2]), 0.30000000000000004);
+CUT.isEqual("Math.sumPrecise(); 18", Math.sumPrecise([1e20, 0.1, -1e20]), 0.1);
+CUT.isEqual("Math.sumPrecise(); 19", Math.sumPrecise([2, 1e20-1]), 100000000000000000000);
+CUT.isEqual("Math.sumPrecise(); 20", Math.sumPrecise([1e20, 0.1]), 100000000000000000000);
+CUT.isEqual("Math.sumPrecise(); 21", Math.sumPrecise([1e20]), 100000000000000000000);
+CUT.isEqual("Math.sumPrecise(); 22", Math.sumPrecise([-2, -1e20 + 1]), -100000000000000000000);
+CUT.isEqual("Math.sumPrecise(); 23", Math.sumPrecise([0.1, -1e20]), -100000000000000000000);
+CUT.isEqual("Math.sumPrecise(); 24", Math.sumPrecise([-1e20]), -100000000000000000000);
+CUT.isNotEqual("Math.sumPrecise(); 25", Math.sumPrecise([-Infinity,0.1,Infinity]), NaN);
+CUT.isNotEqual("Math.sumPrecise(); 26", Math.sumPrecise([Infinity,0.1,-Infinity]), NaN);
+CUT.isNotEqual("Math.sumPrecise(); 27", Math.sumPrecise([Infinity,0.1,0.2,-Infinity]), NaN);
+CUT.isNotEqual("Math.sumPrecise(); 28", Math.sumPrecise([0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,+"tz"]), NaN);
+try {
+  console.log(Math.sumPrecise(5));
+} catch (e) { CUT.isTrue("Math.sumPrecise(); 30 - " + Error.isError(e), true); }
+try {
+  console.log(Math.sumPrecise("1848"));
+} catch (e) { CUT.isTrue("Math.sumPrecise(); 31 - " + Error.isError(e), true); }
+try {
+  console.log(Math.sumPrecise("1848a"));
+} catch (e) { CUT.isTrue("Math.sumPrecise(); 32 - " + Error.isError(e), true); }
+try {
+  console.log(Math.sumPrecise([0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,"0.1"]));
+} catch (e) { CUT.isTrue("Math.sumPrecise(); 33 - " + Error.isError(e), true); }
+try {
+  console.log(Math.sumPrecise([0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,true]));
+} catch (e) { CUT.isTrue("Math.sumPrecise(); 34 - " + Error.isError(e), true); }
+try {
+  console.log(Math.sumPrecise([0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,BigInt(5)]));
+} catch (e) { CUT.isTrue("Math.sumPrecise(); 35 - " + Error.isError(e), true); }
+try {
+  console.log(Math.sumPrecise([Infinity,"0.1",0.2]));
+} catch (e) { CUT.isTrue("Math.sumPrecise(); 36 - " + Error.isError(e), true); }
+try {
+  console.log(Math.sumPrecise([-Infinity,"0.1",0.2]));
+} catch (e) { CUT.isTrue("Math.sumPrecise(); 37 - " + Error.isError(e), true); }
+try {
+  console.log(Math.sumPrecise([-Infinity,"1",0.2]));
+} catch (e) { CUT.isTrue("Math.sumPrecise(); 38 - " + Error.isError(e), true); }
+
+
 var iframe = document.createElement("iframe");
 document.body.appendChild(iframe);
 var xError = window.frames[window.frames.length - 1].Error;
