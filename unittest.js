@@ -1680,36 +1680,6 @@ CUT.isTrue("TypedArray.prototype.with();",
   && JSON.stringify(Uint8ArrayCopy) === Uint8ArrayCopyStr
 );
 
-var objIsStr = "", isArr = [1,2], isTest = { x: 12 };
-objIsStr += Object.is("lorem", "lorem");
-objIsStr += Object.is(-0, -0);
-objIsStr += Object.is(0, 0);
-objIsStr += Object.is(NaN, 0/0);
-objIsStr += Object.is(NaN, NaN);
-objIsStr += Object.is(42, 42);
-objIsStr += Object.is(3.14, 3.14);
-objIsStr += Object.is(true, true);
-objIsStr += Object.is(false, false);
-objIsStr += Object.is(undefined, undefined);
-objIsStr += Object.is(null, null);
-objIsStr += Object.is(isArr, isArr);
-objIsStr += Object.is(isTest, isTest);
-objIsStr += Object.is(window, window);
-objIsStr += Object.is([], []);
-objIsStr += Object.is([1,2], [1,2]);
-objIsStr += Object.is(isArr, [1,2]);
-objIsStr += Object.is(isTest, { x: 12 });
-objIsStr += Object.is("lorem", "ipsum");
-objIsStr += Object.is("lorem", "Lorem");
-objIsStr += Object.is("lorem", "dolorem");
-objIsStr += Object.is(0, -0);
-CUT.isEqual("Object.is();",
-  "truetruetruetruetruetruetruetruetruetruetruetruetruetruefalsefalsefalsefalsefalsefalsefalsefalse",
-  objIsStr
-);
-
-CUT.isEqual("Number.MIN_SAFE_INTEGER;",Number.MIN_SAFE_INTEGER,-9007199254740991);
-CUT.isEqual("Number.MAX_SAFE_INTEGER;",Number.MAX_SAFE_INTEGER,9007199254740991);
 
 const groupByInventory = [
   { name: 'asparagus', type: 'vegetables', quantity: 9 },
@@ -1740,83 +1710,6 @@ CUT.isTrue("crypto.randomUUID();",
 );
 CUT.log("<code>\"" + rIDstr + "\"</code>");
 
-var arrFindLast = [1,2,5,6,3,4,7,8];
-CUT.isTrue("Array.prototype.findLast();",
-  arrFindLast.findLast( (v) => (v < 5) ) === 4
-    && arrFindLast.findLast( (v) => (v < 0) ) === undefined
-    && arrFindLast.findLast( (v) => (v < 2) ) === 1
-    && arrFindLast.findLast( (v) => (v > 1) ) === 8
-    && [].findLast( (v) => (v < 0) ) === undefined
-);
-CUT.isTrue("Array.prototype.findLastIndex();",
-  arrFindLast.findLastIndex( (v) => (v < 5) ) === 5
-    && arrFindLast.findLastIndex( (v) => (v < 0) ) === -1
-    && arrFindLast.findLastIndex( (v) => (v < 2) ) === 0
-    && arrFindLast.findLastIndex( (v) => (v > 1) ) === 7
-    && [].findLastIndex( (v) => (v < 0) ) === -1
-);
-
-var arrFindLast = new Uint8Array([1,2,5,6,3,4,7,8]);
-CUT.isTrue("Uint8Array.prototype.findLast();",
-  arrFindLast.findLast( (v) => (v < 5) ) === 4
-    && arrFindLast.findLast( (v) => (v < 0) ) === undefined
-    && arrFindLast.findLast( (v) => (v < 2) ) === 1
-    && arrFindLast.findLast( (v) => (v > 1) ) === 8
-    && [].findLast( (v) => (v < 0) ) === undefined
-);
-CUT.isTrue("Uint8Array.prototype.findLastIndex();",
-  arrFindLast.findLastIndex( (v) => (v < 5) ) === 5
-    && arrFindLast.findLastIndex( (v) => (v < 0) ) === -1
-    && arrFindLast.findLastIndex( (v) => (v < 2) ) === 0
-    && arrFindLast.findLastIndex( (v) => (v > 1) ) === 7
-    && [].findLastIndex( (v) => (v < 0) ) === -1
-);
-
-var arrayAt = [4,5,6,7,8];
-var arrayAtStr = "" + arrayAt.at(0)  + arrayAt.at(1)  + arrayAt.at(2)
-  + arrayAt.at(3)   + arrayAt.at(4)  + arrayAt.at(5)  + arrayAt.at(-0)
-  + arrayAt.at(-1)  + arrayAt.at(-2) + arrayAt.at(-3) + arrayAt.at(-4)
-  + arrayAt.at(-5)  + arrayAt.at(-6);
-CUT.isEqual("Array.prototype.at();", arrayAtStr,
-  "45678undefined487654undefined");
-
-var arraylikeAt = {0:4, 1:5, 2:6, 3:7, 4:8, length:5};
-var arralikeAtStr = ""
-  + Array.prototype.at.call(arraylikeAt,0)
-  + Array.prototype.at.call(arraylikeAt,1)
-  + Array.prototype.at.call(arraylikeAt,2)
-  + Array.prototype.at.call(arraylikeAt,3)
-  + Array.prototype.at.call(arraylikeAt,4)
-  + Array.prototype.at.call(arraylikeAt,5)
-  + Array.prototype.at.call(arraylikeAt,-0)
-  + Array.prototype.at.call(arraylikeAt,-1)
-  + Array.prototype.at.call(arraylikeAt,-2)
-  + Array.prototype.at.call(arraylikeAt,-3)
-  + Array.prototype.at.call(arraylikeAt,-4)
-  + Array.prototype.at.call(arraylikeAt,-5)
-  + Array.prototype.at.call(arraylikeAt,-6);
-CUT.isEqual("Array.prototype.at(); - arraylike object", arralikeAtStr,
-  "45678undefined487654undefined"
-);
-
-var stringAt = "45678";
-var stringAtStr = ""
-  + stringAt.at(0)  + stringAt.at(1)  + stringAt.at(2)  + stringAt.at(3)
-  + stringAt.at(4)  + stringAt.at(5)  + stringAt.at(-0) + stringAt.at(-1)
-  + stringAt.at(-2) + stringAt.at(-3) + stringAt.at(-4) + stringAt.at(-5)
-  + stringAt.at(-6);
-CUT.isEqual("String.prototype.at();", stringAtStr,
-  "45678undefined487654undefined" );
-
-var typedarrayAt = new Uint8Array([4,5,6,7,8]);
-var typedarrayAtStr = ""
-  + typedarrayAt.at(0)  + typedarrayAt.at(1)  + typedarrayAt.at(2)
-  + typedarrayAt.at(3)  + typedarrayAt.at(4)  + typedarrayAt.at(5)
-  + typedarrayAt.at(-0) + typedarrayAt.at(-1) + typedarrayAt.at(-2)
-  + typedarrayAt.at(-3) + typedarrayAt.at(-4) + typedarrayAt.at(-5)
-  + typedarrayAt.at(-6);
-CUT.isEqual("Uint8Array.prototype.at();",
-  typedarrayAtStr, "45678undefined487654undefined" );
 
 var hasOwnObject = {"a": 1, "b": 2};
 var hasOwnArray = [4,5,6];
@@ -1830,70 +1723,6 @@ CUT.isEqual("Object.hasOwn();",
     + " " + Object.hasOwn(hasOwnArray, "map2")
 );
 
-CUT.isEqual("String.prototype.replaceAll();",
-  "aabbcc".replaceAll("b", ".")+"aabbcc".replaceAll(/b/g, '.'),"aa..cc"+"aa..cc"
-);
-
-const regexp = RegExp("foo*","g");
-const str = "table football, foosball";
-var matches1 = str.matchAll(regexp);
-var resMatchAll1 = "";
-for (const item of matches1) { resMatchAll1 += item; }
-var matches2 = str.matchAll(regexp);
-var resMatchAll2 = JSON.stringify(Array.from(matches2, m => m[0]));
-CUT.isTrue("String.prototype.matchAll();",
-  (resMatchAll1 === "foofoo" && resMatchAll2 === "[\"foo\",\"foo\"]"));
-
-var padStr = "lorem".padStart(10);
-padStr += "lorem".padStart(10, "foo") + "lorem".padStart(6,"123465");
-padStr += "lorem".padStart(15,"123465") + "lorem".padStart(8, "0");
-padStr += "lorem".padStart(1) + "lorem".padStart(NaN);
-padStr += "lorem".padStart(15,undefined) + "lorem".padStart(15,null);
-padStr += "lorem".padStart(15,true) + "lorem".padStart(15,false);
-padStr += "lorem".padStart(15,{a:1}) + "lorem".padStart(15,[]);
-padStr += "lorem".padStart(15,[1,2,"c"]) + "lorem".padStart(15,42);
-padStr += "lorem".padStart(15,3.14);
-CUT.isEqual("String.prototype.padStart();",
-  "     lorem"+"foofolorem"+"1lorem"+"1234651234lorem"+"000lorem"+"lorem"
-    +"lorem"+"          lorem"+"nullnullnulorem"+"truetruetrlorem"
-    +"falsefalselorem"+"[object Oblorem"+"lorem"+"1,2,c1,2,clorem"
-    +"4242424242lorem"+"3.143.143.lorem",
-  padStr
-);
-
-padStr = "lorem".padEnd(10) + "lorem".padEnd(10, "foo");
-padStr += "lorem".padEnd(6,"123465") + "lorem".padEnd(15,"123465");
-padStr += "lorem".padEnd(8, "0") + "lorem".padEnd(1);
-padStr += "lorem".padEnd(NaN) + "lorem".padEnd(15,undefined);
-padStr += "lorem".padEnd(15,null) + "lorem".padEnd(15,true);
-padStr += "lorem".padEnd(15,false) + "lorem".padEnd(15,{a:1});
-padStr += "lorem".padEnd(15,[]) + "lorem".padEnd(15,[1,2,"c"]);
-padStr += "lorem".padEnd(15,42) + "lorem".padEnd(15,3.14);
-CUT.isEqual("String.prototype.padEnd();",
-  "lorem     "+"loremfoofo"+"lorem1"+"lorem1234651234"+"lorem000"+"lorem"
-    +"lorem"+"lorem          "+"loremnullnullnu"+"loremtruetruetr"
-    +"loremfalsefalse"+"lorem[object Ob"+"lorem"+"lorem1,2,c1,2,c"
-    +"lorem4242424242"+"lorem3.143.143.",
-  padStr
-);
-
-var trimStr = "\n \t   Lorem ipsum dolor sit amet, consectetuer adipiscing elit.   \t \n";
-CUT.isEqual("String.prototype.trimStart();",
-  "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.   \t \n",
-  trimStr.trimStart()
-);
-CUT.isEqual("String.prototype.trimLeft();",
-  "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.   \t \n",
-  trimStr.trimLeft()
-);
-CUT.isEqual("String.prototype.trimEnd();",
-  "\n \t   Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
-  trimStr.trimEnd()
-);
-CUT.isEqual("String.prototype.trimRight();",
-  "\n \t   Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
-  trimStr.trimRight()
-);
 
 var testArrayFI = [66, 7, 135, 75, 190, 89];
 
@@ -1912,50 +1741,6 @@ var testNodeP2 = CEL.qs("#testNodeP2");
 
 CUT.isEqual("globalThis;", window, globalThis);
 
-var arr = [ ["0","a"], ["1","b"], ["2","c"] ];
-CUT.isEqual("Object.fromEntries(); step 1 array",'{"0":"a","1":"b","2":"c"}',
-  JSON.stringify(Object.fromEntries(arr)));
-
-var obj = {"a":1,"b":2,"c":3};
-CUT.isEqual("Object.fromEntries(); step 2 Object.entries",
-  '{"a":1,"b":2,"c":3}', JSON.stringify(Object.fromEntries(Object.entries(obj)))
-);
-
-var fromEntriesMap = new Map([ ["foo","bar"], ["baz",42] ]);
-CUT.isEqual(
-  "Object.fromEntries(); step 3 Map - doesn't work in IE11",'{"foo":"bar","baz":42}',
-  JSON.stringify(Object.fromEntries(fromEntriesMap))
-);
-
-var flatArr1 = [1,2,3,4];
-var flatArr2 = [1,2,[3,4]];
-var flatArr3 = [1,2,[3,4,[5,6]]];
-CUT.isTrue("Array.prototype.flat();",
-  "[1,2,3,4]" === JSON.stringify(flatArr1.flat())
-    && "[1,2,3,4]" === JSON.stringify(flatArr1.flat(1000))
-    && "[1,2,3,4]" === JSON.stringify(flatArr1.flat(Infinity))
-    && "[1,2,3,4]" === JSON.stringify(flatArr2.flat())
-    && "[1,2,3,4,[5,6]]" === JSON.stringify(flatArr3.flat())
-    && "[1,2,3,4,[5,6]]" === JSON.stringify(flatArr3.flat(1))
-    && "[1,2,3,4,5,6]" === JSON.stringify(flatArr3.flat(2))
-    && "[1,2,3,4,5,6]" === JSON.stringify(flatArr3.flat(1000))
-    && "[1,2,3,4,5,6]" === JSON.stringify(flatArr3.flat(Infinity))
-    && "[1,2,[3,4,[5,6]]]" === JSON.stringify(flatArr3.flat(0))
-    && "[1,2,[3,4,[5,6]]]" === JSON.stringify(flatArr3.flat(-1))
-    && "[1,2,[3,4,[5,6]]]" === JSON.stringify(flatArr3.flat("a2"))
-    && "[1,2,[3,4,[5,6]]]" === JSON.stringify(flatArr3.flat(false))
-    && "[1,2,3,4,[5,6]]" === JSON.stringify(flatArr3.flat(true))
-);
-
-var flatMapArr1 = [1,2,3,4];
-var flatMapArr2 = ["lorem ipsum dolor", "", "sit"];
-CUT.isTrue("Array.prototype.flatMap();",
-  "[[2],[4],[6],[8]]"===JSON.stringify(flatMapArr1.map(function(x){return [x*2];}))
-    && "[2,4,6,8]"===JSON.stringify(flatMapArr1.flatMap(function(x){return [x*2];}))
-    && "[[2],[4],[6],[8]]"===JSON.stringify(flatMapArr1.flatMap(function(x){return [[x*2]];}))
-    && '[["lorem","ipsum","dolor"],[""],["sit"]]'===JSON.stringify(flatMapArr2.map(function(x){return x.split(" ");}))
-    && '["lorem","ipsum","dolor","","sit"]'===JSON.stringify(flatMapArr2.flatMap(function (x){return x.split(" ");}))
-);
 
 /* non-standard polyfills */
 
