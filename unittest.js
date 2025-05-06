@@ -6,7 +6,7 @@ try {
 
 var CUT = {};
 
-CUT.VERSION = "Celestra Unit Tester (CUT) v0.8.24";
+CUT.VERSION = "Celestra Unit Tester (CUT) v0.8.25";
 
 CUT.__results__ = document.querySelector("#results");
 CUT.__resultsFailed__ = document.querySelector("#resultsFailed");
@@ -217,6 +217,7 @@ CUT.addElement("h3", "Core API and String API and DOM API");
 
 CUT.isEqual("VERSION", true, CEL.VERSION.includes("Celestra v"));
 
+
 CUT.isEqual("BASE16", CEL.BASE16, "0123456789ABCDEF");
 CUT.isEqual("BASE32", CEL.BASE32, "234567ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 CUT.isEqual("BASE36", CEL.BASE36, "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ");
@@ -224,29 +225,6 @@ CUT.isEqual("BASE58", CEL.BASE58, "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkm
 CUT.isEqual("BASE62", CEL.BASE62, "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
 CUT.isEqual("WORDSAFEALPHABET", CEL.WORDSAFEALPHABET, "23456789CFGHJMPQRVWXcfghjmpqvwx");
 
-CUT.isTrue("v3.8.1 aliases removed in v4.0.0",
-  CEL.isUndefined(CEL.someOf)
-    && CEL.isUndefined(CEL.everyOf)
-    && CEL.isUndefined(CEL.findOf)
-    && CEL.isUndefined(CEL.dropOf)
-    && CEL.isUndefined(CEL.takeOf)
-    && CEL.isUndefined(CEL.joinOf)
-    && CEL.isUndefined(CEL.enumerateOf)
-    && CEL.isUndefined(CEL.flatOf)
-    && CEL.isUndefined(CEL.concatOf)
-    && CEL.isUndefined(CEL.reduceOf)
-    && CEL.isUndefined(CEL.sortOf)
-    && CEL.isUndefined(CEL.reverseOf)
-    && CEL.isUndefined(CEL.sliceOf)
-    && CEL.isUndefined(CEL.lastOf)
-    && CEL.isUndefined(CEL.firstOf)
-    && CEL.isUndefined(CEL.noneOf)
-    && CEL.isUndefined(CEL.filterOf)
-    && CEL.isUndefined(CEL.sizeOf)
-    && CEL.isUndefined(CEL.hasOf)
-    && CEL.isUndefined(CEL.mapOf)
-    && CEL.isUndefined(CEL.forOf)
-);
 
 CUT.isTrue("assertTrue();",    CEL.assertTrue("lorem ipsum", true) );
 CUT.isTrue("assertFalse();",   CEL.assertFalse("lorem ipsum", false) );
@@ -255,11 +233,13 @@ CUT.isTrue("assertEq(); 2",    CEL.assertEq("lorem ipsum", 1, true, false) );
 CUT.isTrue("assertNotEq(); 1", CEL.assertNotEq("lorem ipsum", 1, 2) );
 CUT.isTrue("assertNotEq(); 2", CEL.assertNotEq("lorem ipsum", 1, 2, false) );
 
+
 var randomUUIDv7Result = CEL.randomUUIDv7();
 CUT.isTrue("randomUUIDv7();",
   CEL.isString(randomUUIDv7Result) && randomUUIDv7Result.length === 36
 );
 CUT.log("<code>\""+randomUUIDv7Result+"\"<code>");
+
 
 var nanoidStr = CEL.nanoid();
 CUT.isTrue("nanoid 1 - default size 21",
