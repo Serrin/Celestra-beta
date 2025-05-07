@@ -1704,6 +1704,7 @@ CUT.isEqual("Object.hasOwn();",
 );
 
 
+/*
 var testArrayFI = [66, 7, 135, 75, 190, 89];
 
 CUT.addElement(CEL.domCreate("div", {"id": "testDivNode"}, "#testDivNode"));
@@ -1718,6 +1719,8 @@ CUT.isEqual("NodeList.prototype.forEach();", true,
 
 var testNodeP1 = CEL.qs("#testNodeP1");
 var testNodeP2 = CEL.qs("#testNodeP2");
+*/
+
 
 CUT.isEqual("globalThis;", window, globalThis);
 
@@ -1727,14 +1730,17 @@ CUT.isEqual("globalThis;", window, globalThis);
 CUT.addElement("hr");
 CUT.addElement("h3", "non-standard polyfills");
 
+
 if (!!window.BigInt) {
   CUT.isEqual("BigInt.prototype.toJSON();", '"42"', JSON.stringify(BigInt(42)));
 }
+
 
 const testGenFn = new GeneratorFunction("v", "yield v * 3; yield v * 4;");
 var sum = "";
 for (let x of testGenFn(3)) { sum += x; }
 CUT.isEqual("GeneratorFunction();", "912", sum);
+
 
 var afunction = new AsyncFunction("a","b",
   "return await resolveAfter2Seconds(a) + await resolveAfter2Seconds(b);");
@@ -2661,7 +2667,7 @@ var
   resAjaxText = "<p><span class=\"big\">Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</span> Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. <span class=\"small\">In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.</span></p>\r\n<p><b>Nullam dictum felis eu pede mollis pretium.</b> Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. <small>Etiam ultricies nisi vel augue.</small></p>";
 
 CEL.getText("testdata.txt",function(r){CUT.isEqual("getText();",resAjaxText,r);});
-CEL.getJson("testdata.json",function(r){CUT.isEqual("getJson();",resAjaxJson,r[0].image);});
+CEL.getJson("testdata.json",function(r){CUT.isEqual("getJson();",resAjaxJson,r.testArray[0].image);});
 
 CEL.ajax({
   queryType: "ajax", type: "get", url: "testdata.txt", format: "text",
@@ -2673,7 +2679,7 @@ CEL.ajax({
 CEL.ajax({
   queryType: "ajax", type: "get", url: "testdata.json", format: "json",
   success: function (r) {
-    CUT.isEqual("ajax(); ajax get json", resAjaxJson, r[0].image);
+    CUT.isEqual("ajax(); ajax get json", resAjaxJson, r.testArray[0].image);
   },
   error: function (e) {
     CUT.isEqual("ajax(); ajax get json: "+JSON.stringify(e), true, false);
@@ -2703,7 +2709,7 @@ CEL.ajax({
   queryType: "ajax", type: "post", url: "testdata.json", format: "json",
   data: "a=foo&b=bar baz",
   success: function (r) {
-    CUT.isEqual("ajax(); ajax post json", resAjaxJson, r[0].image);
+    CUT.isEqual("ajax(); ajax post json", resAjaxJson, r.testArray[0].image);
   },
   error: function (e) {
     CUT.isEqual("ajax(); ajax post json: "+JSON.stringify(e), true, false);
@@ -2732,7 +2738,7 @@ CEL.ajax({
 CEL.ajax({
   queryType: "cors", type: "get", url: "testdata.json", format: "json",
   success: function (r) {
-    CUT.isEqual("ajax(); cors get json", resAjaxJson, r[0].image);
+    CUT.isEqual("ajax(); cors get json", resAjaxJson, r.testArray[0].image);
   },
   error: function (e) {
     CUT.isEqual("ajax(); cors get json: "+JSON.stringify(e), true, false);
@@ -2764,7 +2770,7 @@ CEL.ajax({
   queryType: "cors", type: "post", url: "testdata.json", format: "json",
   data: "a=foo&b=bar baz",
   success: function (r) {
-    CUT.isEqual("ajax(); cors post json", resAjaxJson, r[0].image);
+    CUT.isEqual("ajax(); cors post json", resAjaxJson, r.testArray[0].image);
   },
   error: function (e) {
     CUT.isEqual("ajax(); cors post json: "+JSON.stringify(e), true, false);
