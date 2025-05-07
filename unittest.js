@@ -2658,25 +2658,17 @@ CUT.addElement("ul", "<li>1x domReady(); (core api) is working</li>"
 CEL.domReady(function () { CUT.isTrue("domReady(); (core api) is working", true); });
 
 
-/* importScript(); and importScripts(); */
-try {
-  CEL.importScript("unittest-notExist.js");
-} catch (e) {
-  CUT.isFalse("importScript(); (core api) - error single loading", Error.isError(e));
-}
-try {
-  CEL.importScript("unittest-is1.js", "unittest-is2.js", "unittest-is3.js");
-} catch (e) {
-  CUT.isFalse("importScript(); (core api) - error multi loading", Error.isError(e));
-}
+/* importScript(); */
+CEL.importScript("unittest-notExist.js");
+CEL.importScript("unittest-is1.js", "unittest-is2.js", "unittest-is3.js");
 CEL.importScript("unittest-is1.js");
 CEL.importScript("unittest-is2.js");
-//CEL.importScript("unittest-is1.js", "unittest-is2.js", "unittest-is3.js");
 /*
 Uncaught URIError: Loading failed for the script with source unittest-notExist.js
 The error cannot be caught here, because not happens here. 
-In the adding of the HTML script tag acauses the error.
+In the adding of the HTML script tag causes the error.
 */
+
 
 /* Array.fromAsync(); */
 async function* asyncIterable () {
