@@ -6,7 +6,7 @@ try {
 
 var CUT = {};
 
-CUT.VERSION = "Celestra Unit Tester (CUT) v0.8.25";
+CUT.VERSION = "Celestra Unit Tester (CUT) v0.8.26";
 
 CUT.__results__ = document.querySelector("#results");
 CUT.__resultsFailed__ = document.querySelector("#resultsFailed");
@@ -2639,32 +2639,107 @@ CUT.isEqual("isBigUInt64 13", CEL.isBigUInt64({}), false);
 CUT.addElement("hr");
 CUT.addElement("h3", "AJAX, domReady(); and other callbacks");
 
-CEL.domReady(function () { CUT.isTrue("domReady(); is working", true); });
 
-/* importScript(); and importScripts(); */
 CUT.addElement("p", "Here have to be these results:");
 CUT.addElement("ul", "<li>1x domReady(); (core api) is working</li>"
   + "<li>2x importScript(); (core api) - first script loaded</li>"
   + "<li>2x importScript(); (core api) - second script loaded</li>"
   + "<li>1x importScript(); (core api) - with more scripts"
-  + "<li>1x importScript(); (core api) with error</li>"
+  + "<li>1x importScript(); (core api) - with error</li>"
+  //+ "<li>1x importScript(); (core api) - error multi loading</li>"
+  //+ "<li>1x importScript(); (core api) - error single loading</li>"
   + "<li>1x getJson()</li>"
   + "<li>1x getText()</li>"
   + "<li>12x ajax()</li>"
   + "<li>8x Array.fromAsync()</li>"
 );
 
+
+CEL.domReady(function () { CUT.isTrue("domReady(); (core api) is working", true); });
+
+
+/* importScript(); and importScripts(); */
+try {
+  CEL.importScript("unittest-notExist.js");
+} catch (e) {
+  CUT.isFalse("importScript(); (core api) - error single loading", Error.isError(e));
+}
+try {
+  CEL.importScript("unittest-is1.js", "unittest-is2.js", "unittest-is3.js");
+} catch (e) {
+  CUT.isFalse("importScript(); (core api) - error multi loading", Error.isError(e));
+}
 CEL.importScript("unittest-is1.js");
 CEL.importScript("unittest-is2.js");
-CEL.importScript("unittest-is1.js", "unittest-is2.js", "unittest-is3.js");
-CEL.importScript("unittest-notExist.js");
+//CEL.importScript("unittest-is1.js", "unittest-is2.js", "unittest-is3.js");
+/*
+Uncaught URIError: Loading failed for the script with source unittest-notExist.js
+The error cannot be caught here, because not happens here. 
+In the adding of the HTML script tag acauses the error.
+*/
+
+/* Array.fromAsync(); */
+async function* asyncIterable () {
+  for (let i = 0; i < 5; i++) {
+    await new Promise((resolve)=> setTimeout(resolve,100*i));
+    yield i;
+  }
+}
+Array.fromAsync(asyncIterable()).then((res) =>
+  CUT.isEqual("Array.fromAsync(); - asyncIterable: [0,1,2,3,4]",
+    JSON.stringify(res), "[0,1,2,3,4]"
+  )
+);
+Array.fromAsync(asyncIterable(), (x) => x*2).then((res) =>
+  CUT.isEqual("Array.fromAsync(); - asyncIterable + fn: [0,2,4,6,8]",
+    JSON.stringify(res), "[0,2,4,6,8]"
+  )
+);
+Array.fromAsync([4,5,6,7,8]).then((res) =>
+  CUT.isEqual("Array.fromAsync(); - [4,5,6,7,8]: [4,5,6,7,8]",
+    JSON.stringify(res), "[4,5,6,7,8]"
+  )
+);
+Array.fromAsync([4,5,6,7,8], (x) => x*2).then((res) =>
+  CUT.isEqual("Array.fromAsync(); - [4,5,6,7,8] + fn: [8,10,12,14,16]",
+    JSON.stringify(res), "[8,10,12,14,16]"
+  )
+);
+Array.fromAsync(new Set([4,5,6,6,10])).then((res) =>
+  CUT.isEqual("Array.fromAsync(); - Set: [4,5,6,10]", JSON.stringify(res),
+    "[4,5,6,10]"
+  )
+);
+Array.fromAsync(new Set([4,5,6,6,10]), (x) => x*2).then((res) =>
+  CUT.isEqual("Array.fromAsync(); - Set + fn: [8,10,12,20]",
+    JSON.stringify(res), "[8,10,12,20]"
+  )
+);
+Array.fromAsync({"0": 3, "1": 4, "2": 5, length: 3}).then((res) =>
+  CUT.isEqual("Array.fromAsync(); - arraylike: [3,4,5]",
+    JSON.stringify(res), "[3,4,5]"
+  )
+);
+Array.fromAsync({"0": 3, "1": 4, "2": 5, length: 3}, (x) => x*2).then((res) =>
+  CUT.isEqual("Array.fromAsync(); - arraylike + fn: [6,8,10]",
+    JSON.stringify(res), "[6,8,10]"
+  )
+);
+
 
 /* AJAX API */
+
+/*
+XML Parsing Error: not well-formed
+Location: testdata.json
+Line Number 1, Column 1:
+-> MIME Content-Type: application/json can fix it
+*/
 
 var
   resAjaxJson = "img/app-app-catalog/app-bricks.png",
   resAjaxXml = "Vapelyfe",
-  resAjaxText = "<p><span class=\"big\">Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</span> Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. <span class=\"small\">In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.</span></p>\r\n<p><b>Nullam dictum felis eu pede mollis pretium.</b> Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. <small>Etiam ultricies nisi vel augue.</small></p>";
+  resAjaxText = "<p><span class=\"big\">Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</span> Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. <small>In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.</small></p>";
 
 CEL.getText("testdata.txt",function(r){CUT.isEqual("getText();",resAjaxText,r);});
 CEL.getJson("testdata.json",function(r){CUT.isEqual("getJson();",resAjaxJson,r.testArray[0].image);});
@@ -2789,38 +2864,7 @@ CEL.ajax({
   }
 });
 
-/* Array.fromAsync(); */
-async function* asyncIterable () {
-  for (let i = 0; i < 5; i++) {
-    await new Promise((resolve)=> setTimeout(resolve,100*i));
-    yield i;
-  }
-}
-Array.fromAsync(asyncIterable()).then((res) =>
-    CUT.isEqual("Array.fromAsync(); - asyncIterable: [0,1,2,3,4]",JSON.stringify(res),"[0,1,2,3,4]")
-  );
-Array.fromAsync(asyncIterable(), (x) => x*2).then((res) =>
-  CUT.isEqual("Array.fromAsync(); - asyncIterable + fn: [0,2,4,6,8]",JSON.stringify(res),"[0,2,4,6,8]")
-);
-Array.fromAsync([4,5,6,7,8]).then((res) =>
-  CUT.isEqual("Array.fromAsync(); - [4,5,6,7,8]: [4,5,6,7,8]",JSON.stringify(res),"[4,5,6,7,8]")
-);
-Array.fromAsync([4,5,6,7,8], (x) => x*2).then((res) =>
-  CUT.isEqual("Array.fromAsync(); - [4,5,6,7,8] + fn: [8,10,12,14,16]",JSON.stringify(res),"[8,10,12,14,16]")
-);
-Array.fromAsync(new Set([4,5,6,6,10])).then((res) =>
-  CUT.isEqual("Array.fromAsync(); - Set: [4,5,6,10]",JSON.stringify(res),"[4,5,6,10]")
-);
-Array.fromAsync(new Set([4,5,6,6,10]), (x) => x*2).then((res) =>
-  CUT.isEqual("Array.fromAsync(); - Set + fn: [8,10,12,20]",JSON.stringify(res),"[8,10,12,20]")
-);
-Array.fromAsync({"0": 3, "1": 4, "2": 5, length: 3}).then((res) =>
-  CUT.isEqual("Array.fromAsync(); - arraylike: [3,4,5]",JSON.stringify(res),"[3,4,5]")
-);
-Array.fromAsync({"0": 3, "1": 4, "2": 5, length: 3}, (x) => x*2).then((res) =>
-  CUT.isEqual("Array.fromAsync(); - arraylike + fn: [6,8,10]",JSON.stringify(res),"[6,8,10]")
-);
 
 }());
 
-} catch (e) { alert("CUT global try-catch:\n" + e); }
+} catch (e) { CUT.isTrue("<span class=\"failed\">[CUT global try-catch]</span> " + e, false); }
