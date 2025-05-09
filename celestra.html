@@ -1502,13 +1502,32 @@ console.log(o2);
     <tr>
       <td><code>createDataProperty(&#60;object&#62;,&#60;property&#62;,&#60;value&#62;);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function creates a writable, configurable and enumerable property with the given value in the object. The return value is the modified object.</td>
+    </tr>
     <tr>
+      <td><code>createDataPropertyOrThrow(&#60;object&#62;,&#60;property&#62;,&#60;value&#62;);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function creates a writable, configurable and enumerable property with the given value in the object. The return value is the modified object or throw an error, if this was unsuccessful.</td>
+    </tr>
     <tr>
       <td><code>createMethodProperty(&#60;object&#62;,&#60;property&#62;,&#60;value&#62;);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function creates a writable, configurable and non-enumerable property with the given value in the object. The return value is the modified object.<br/><b>Example:</b><br/><pre>if (!("at" in Array.prototype)) {
-  CEL.createMethodProperty(Array.prototype, "at ", function(...){...});
+  CEL.createMethodProperty(Array.prototype, "at", function(...){...});
 }</pre></td>
     </tr>
+    <tr>
+      <td><code>createMethodPropertyOrThrow(&#60;object&#62;,&#60;property&#62;,&#60;value&#62;);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function creates a writable, configurable and non-enumerable property with the given value in the object. The return value is the modified object or throw an error, if this was unsuccessful.<br/><b>Example:</b><br/><pre>if (!("at" in Array.prototype)) {
+  CEL.createMethodPropertyOrThrow(Array.prototype, "at", function(...){...});
+}</pre></td>
+    </tr>
+    <tr>
+      <td><code>createPolyfillMethod(&#60;object&#62;,&#60;property&#62;,&#60;value&#62;);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function creates a writable, configurable and non-enumerable property with the given value in the object if the property doesn't exist in the object. The return value boolean and checks that the creating of the method was successfull.<br/><b>Example:</b><br/><pre>CEL.createPolyfillMethod(Array.prototype, "at", function(...){...});</pre>
+    </td>
+    </tr>
+    <tr>
+      <td><code>createPolyfillProperty(&#60;object&#62;,&#60;property&#62;,&#60;value&#62;);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function creates a writable, configurable and enumerable property with the given value in the object if the property doesn't exist in the object. The return value boolean and checks that the creating of the property was successfull.</td>
+    </tr> 
     <tr>
       <td><code>getIn(&#60;object&#62;,&#60;property&#62;);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function return the property value of the given object. If the property doesn't exist, then the return value is undefined. The object parameter is mandatory and has to be an object. The property parameter is mandatory and has to be a property type.</td>
@@ -1560,6 +1579,10 @@ console.log(o2);
       <td><code>toInteger(&#60;value&#62;);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function always converts the provided value to an integer. If the value cannot be converted to an integer, then the return value is 0.</td>
     </tr>
+    <tr>
+      <td><code>toLength(&#60;value&#62;);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Alias of <code>toIndex(&#60;value&#62;);</code>.</td>
+    </tr>    
     <tr>
       <td><code>toObject(&#60;value&#62;);</code></td>
       <td>If the given value is not null or undefined, then the return value is an object, which has been converted from the value, else a <code>TypeError()</code> will be throwned.</td>

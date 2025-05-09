@@ -2214,11 +2214,41 @@ CUT.isEqual("createMethodProperty();", createMethodPropertySTR,
   "false[object Object]true"
 );
 
+function createMethodPropertyOrThrowFN () {};
+var createMethodPropertyOrThrowSTR = "" + ("getX" in createMethodPropertyOrThrowFN.prototype);
+createMethodPropertyOrThrowSTR += CEL.createMethodPropertyOrThrow(
+  createMethodPropertyOrThrowFN.prototype, "getX", function () { return this.x; }
+);
+createMethodPropertyOrThrowSTR += ("getX" in createMethodPropertyOrThrowFN.prototype);
+CUT.isEqual("createMethodPropertyOrThrow();", createMethodPropertyOrThrowSTR,
+  "false[object Object]true"
+);
+
+
+var createPolyfillMethodObj = {"a": 1, "b": 2};
+CUT.isTrue("createPolyfillMethod();",
+  CEL.createPolyfillMethod(createPolyfillMethodObj,"c",3) &&
+  !(Object.keys(createPolyfillMethodObj).includes("c")) &&
+  ("c" in createPolyfillMethodObj)
+);
+CUT.log("<code>\"" + JSON.stringify(createPolyfillMethodObj) + "\"</code>");
+
+
+var createPolyfillPropertyObj = {"a": 1, "b": 2};
+CUT.isTrue("createPolyfillProperty();",
+  CEL.createPolyfillProperty(createPolyfillPropertyObj,"c",3) &&
+  Object.keys(createPolyfillPropertyObj).includes("c") &&
+  ("c" in createPolyfillPropertyObj)
+);
+CUT.log("<code>\"" + JSON.stringify(createPolyfillPropertyObj) + "\"</code>");
+
+
 CUT.isEqual("type();",
  "nullundefinedobjectfunctionnumberstring",
  CEL.type(null) + CEL.type(undefined)
   + CEL.type([]) + CEL.type(CEL.noop) + CEL.type(42) + CEL.type("42")
 );
+
 
 CUT.isEqual("isIndex();", "1100000000000000000000", ""
   + +CEL.isIndex(3)
@@ -2270,6 +2300,31 @@ CUT.isEqual("toIndex();", "3031021474836470214748364700300003000000", ""
   +CEL.toIndex(null)
 );
 
+CUT.isEqual("toLength();", "3031021474836470214748364700300003000000", ""
+  +CEL.toLength(3)
+  +CEL.toLength(0)
+  +CEL.toLength("3")
+  +CEL.toLength(true)
+  +CEL.toLength(-0)
+  +CEL.toLength(Infinity)
+  +CEL.toLength(-Infinity)
+  +CEL.toLength("Infinity")
+  +CEL.toLength("-Infinity")
+  +CEL.toLength(-3)
+  +CEL.toLength(3.14)
+  +CEL.toLength(-3.14)
+  +CEL.toLength("fasdas")
+  +CEL.toLength(false)
+  +CEL.toLength("-3")
+  +CEL.toLength("3.14")
+  +CEL.toLength("-3.14")
+  +CEL.toLength("adsasd")
+  +CEL.toLength({})
+  +CEL.toLength([])
+  +CEL.toLength(undefined)
+  +CEL.toLength(null)
+);
+
 CUT.isEqual("toInteger();",
   "3333-3-3-3-31002147483647-21474836482147483647-21474836480000000",
   ""
@@ -2297,16 +2352,30 @@ CUT.isEqual("toInteger();",
   +CEL.toIndex(null)
 );
 
+
 function createDataPropertyFN () {};
 var createDataPropertySTR= ""+Object.hasOwn(createDataPropertyFN.prototype,"x");
-createDataPropertySTR += CEL.createDataProperty(
+createDataPropertySTR += CEL.createDataPropertyOrThrow(
   createDataPropertyFN.prototype, "x", 42
 );
 var createDataPropertyFNObject = new createDataPropertyFN();
 createDataPropertySTR += createDataPropertyFNObject.x === 42;
+CUT.isEqual("createDataPropertyOrThrow();",
+  createDataPropertySTR, "false[object Object]true"
+);
+
+
+function createDataPropertyOrThrowFN () {};
+var createDataPropertySTR= ""+Object.hasOwn(createDataPropertyOrThrowFN.prototype,"x");
+createDataPropertySTR += CEL.createDataPropertyOrThrow(
+  createDataPropertyOrThrowFN.prototype, "x", 42
+);
+var createDataPropertyOrThrowObjectFN = new createDataPropertyOrThrowFN();
+createDataPropertySTR += createDataPropertyOrThrowObjectFN.x === 42;
 CUT.isEqual("createDataProperty();",
   createDataPropertySTR, "false[object Object]true"
 );
+
 
 var toArrayA1 = [4,5,6];
 CUT.isTrue("toArray();", toArrayA1 === CEL.toArray(toArrayA1)

@@ -1,6 +1,6 @@
 /**
  * @name Celestra
- * @version 5.6.45dev
+ * @version 5.6.5 dev
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
@@ -1708,7 +1708,17 @@ const isPropertyKey = (v) => (typeof v === "string" || typeof v === "symbol");
 const toPropertyKey = (v) => (typeof v === "symbol" ? v : String(v));
 
 /* toObject(<value: any>): object OR throw error */
-function toObject (v) { if (v==null) { throw TypeError(); } return Object(v); }
+function toObject (O) {
+  if (O == null) { throw new TypeError(); }
+  switch(typeof O) {
+    case "boolean": return new Number(O);
+    case "string": return new String(O);
+    case "bigint": return BigInt(O);
+    case "symbol": return O;
+    case "object": return O;
+    default: return Object(O);
+  }
+}
 
 /* isSameValue(<value1: any>,<value2: any>): boolean */
 const isSameValue = (v1, v2) =>
@@ -1725,6 +1735,35 @@ const createMethodProperty = (O, P, V) => Object.defineProperty(
   O, P, {value: V, writable: true, enumerable: false, configurable: true}
 );
 
+/*createMethodPropertyOrThrow(<object>,<property>,<value:any>):object or throw*/
+function createMethodPropertyOrThrow (O, P, V) {
+  Object.defineProperty(O, P, {
+    writable: true, enumerable: false, configurable: true, value: V
+  });
+  if (!(Object.hasOwn(O, P))) { throw new Error(); }
+  return O;
+}
+
+/* createPolyfillMethod(<object>,<property>,<value: any>): boolean */
+function createPolyfillMethod (O, P, V) {
+  if (!(Object.hasOwn(O, P))) {
+    Object.defineProperty(O, P, {
+      writable: true, enumerable: false, configurable: true, value: V
+    });
+  }
+  return Object.hasOwn(O, P);
+}
+
+/* createPolyfillProperty(<object>,<property>,<value: any>): boolean */
+function createPolyfillProperty (O, P, V) {
+  if (!(Object.hasOwn(O, P))) {
+    Object.defineProperty(O, P, {
+      writable: true, enumerable: true, configurable: true, value: V
+    });
+  }
+  return Object.hasOwn(O, P);
+}
+
 /* type(<value>): string */
 const type = (v) => ((v === null) ? "null" : (typeof v));
 
@@ -1735,6 +1774,10 @@ const isIndex = (v) => (Number.isSafeInteger(v) && v >= 0 && 1/v !== 1/-0);
 const toIndex = (v) =>
   ((v = Math.min(Math.max(0, Math.trunc(+v)), 2147483647)) === v) ? v : 0;
 
+/* toLength(<value: any>): unsigned integer */
+const toLength = (v) =>
+  ((v = Math.min(Math.max(0, Math.trunc(+v)), 2147483647)) === v) ? v : 0;
+
 /* toInteger(<value: any>): integer */
 const toInteger = (v) =>
   ((v = Math.min(Math.max(-2147483648, Math.trunc(+v)), 2147483647)) === v)?v:0;
@@ -1743,6 +1786,15 @@ const toInteger = (v) =>
 const createDataProperty = (O, P, V) => Object.defineProperty(
   O, P, {value: V, writable: true, enumerable: true, configurable: true}
 );
+
+/* createDataPropertyOrThrow(<object>,<property>,<value:any>): object or throw*/
+function createDataPropertyOrThrow (O, P, V) {
+  Object.defineProperty(O, P, {
+    writable: true, enumerable: true, configurable: true, value: V
+  });
+  if (!(Object.hasOwn(O, P))) { throw new Error(); }
+  return O;
+}
 
 /* toArray(<value: array OR iterable OR arraylike>): array */
 const toArray = (O) => (Array.isArray(O) ? O : Array.from(O));
@@ -1878,10 +1930,20 @@ const VERSION = "Celestra v5.6.5 dev";
 /* celestra.noConflict(): celestra object */
 function noConflict () { window.CEL = celestra.__prevCEL__; return celestra; }
 
+/** undocumented functions **/
+/* Please don't use these in production! */
+
+const _slice = Function.prototype.call.bind(Array.prototype.slice);
+
+const _forEach = Function.prototype.call.bind(Array.prototype.forEach);
+
 var celestra = {
   /** object header **/
   VERSION: VERSION,
   noConflict: noConflict,
+  /** undocumented functions **/
+  _slice: _slice,
+  _forEach: _forEach,
   /** Core API **/
   BASE16: BASE16,
   BASE32: BASE32,
@@ -2111,11 +2173,16 @@ var celestra = {
   isSameValueZero: isSameValueZero,
   isSameValueNonNumber: isSameValueNonNumber,
   createMethodProperty: createMethodProperty,
+  createMethodPropertyOrThrow: createMethodPropertyOrThrow,
+  createPolyfillMethod: createPolyfillMethod,
+  createPolyfillProperty: createPolyfillProperty,
   type: type,
   isIndex: isIndex,
   toIndex: toIndex,
+  toLength: toLength,
   toInteger: toInteger,
-  createDataProperty:createDataProperty,
+  createDataProperty: createDataProperty,
+  createDataPropertyOrThrow: createDataPropertyOrThrow,
   toArray: toArray,
   /** Math API **/
   sum: sum,
