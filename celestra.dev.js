@@ -389,7 +389,9 @@ const filterIn = (o, fn) => Object.keys(o)
   .reduce( (r, p) => { if (fn(o[p], p, o)) { r[p] = o[p]; } return r; }, {} );
 
 /* popIn(<object>,<property: string>): any OR undefined*/
-function popIn (o,p){if(Object.hasOwn(o,p)){var v=o[p]; delete o[p]; return v;}}
+function popIn (o,p) {
+  if (Object.hasOwn(o, p)) { var v = o[p]; delete o[p]; return v; }
+}
 
 /* unBind(<function>): function */
 const unBind = (fn) => Function.prototype.call.bind(fn);
@@ -802,7 +804,7 @@ function getLocation (s, e) {
   }
 }
 
-/* createFile(<filename:string>,<content:string>[,dataType:string]):undefined */
+/* createFile(<filename:string>,<content:string>[,dataType:string]): undefined*/
 function createFile (fln, c, dt) {
   var l = arguments.length;
   if (l > 1) {
@@ -1310,11 +1312,11 @@ const arrayUnion = (...a) => [...new Set(a.map(([...e]) => e).flat())];
 
 /* arrayIntersection(<iterator1>,<iterator2>): array */
 const arrayIntersection = ([...a], [...b]) =>
-  a.filter((v) => b.indexOf(v) > -1).filter((e,i,arr) => arr.indexOf(e) === i);
+  a.filter((v) => b.indexOf(v) > -1).filter((e,i, arr) => arr.indexOf(e) === i);
 
 /* arrayDifference(<iterator1>,<iterator2>): array */
 const arrayDifference = ([...a], [...b]) =>
-  a.filter((v) => b.indexOf(v) === -1).filter((e,i,arr) => arr.indexOf(e)===i);
+  a.filter((v) => b.indexOf(v) === -1).filter((e,i,arr) => arr.indexOf(e)=== i);
 
 /* arraySymmetricDifference(<iterator1>,<iterator2>): array */
 const arraySymmetricDifference = ([...a], [...b]) =>
@@ -1337,7 +1339,7 @@ const setSymmetricDifference = (a, b) => new Set(
 );
 
 /* isSuperset(<superCollection>,<subCollection>): boolean */
-const isSuperset = ([...sup], [...sub]) => sub.every( (v)=>sup.indexOf(v)>-1 );
+const isSuperset = ([...sup], [...sub]) => sub.every( (v) => sup.indexOf(v)>-1);
 
 /* min(<value1: any>[,valueN]): any */
 const min = (...a) => a.reduce((acc, v) => (v < acc ? v : acc), a[0]);
@@ -1436,7 +1438,7 @@ function* iterRange (s = 0, st = 1, e = Infinity) {
 function* iterCycle ([...a], n=Infinity){ let i=0; while(i<n) {yield* a; i++;} }
 
 /* iterRepeat(<value: any>[,n=Infinity]): iterator */
-function* iterRepeat (v, n=Infinity) { let i=0; while (i<n) { yield v; i++; } }
+function* iterRepeat (v, n=Infinity) { let i= 0; while (i<n) { yield v; i++; } }
 
 /* takeWhile(<iterator>,<callback: function>): iterator */
 function* takeWhile (it, fn) {
@@ -1944,20 +1946,20 @@ function noConflict () { window.CEL = celestra.__prevCEL__; return celestra; }
 /** undocumented functions **/
 /* Please don't use these in production! */
 
-const _slice = Function.prototype.call.bind(Array.prototype.slice);
+const _call = Function.prototype.call.bind(Function.prototype.call);
 
 const _forEach = Function.prototype.call.bind(Array.prototype.forEach);
 
-const _call = Function.prototype.call.bind(Function.prototype.call);
+const _slice = Function.prototype.call.bind(Array.prototype.slice);
 
 var celestra = {
   /** object header **/
   VERSION: VERSION,
   noConflict: noConflict,
   /** undocumented functions **/
-  _slice: _slice,
-  _forEach: _forEach,
   _call: _call,
+  _forEach: _forEach,
+  _slice: _slice,
   /** Core API **/
   BASE16: BASE16,
   BASE32: BASE32,
