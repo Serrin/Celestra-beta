@@ -1764,6 +1764,17 @@ function createPolyfillProperty (O, P, V) {
   return Object.hasOwn(O, P);
 }
 
+/* deleteOwnProperty(<object>,<property>[,Throw=false]): number or throw error*/
+function deleteOwnProperty (O, P, Throw = false) {
+  if (Object.hasOwn(O, P)) {
+    delete O[P];
+    var r = Object.hasOwn(O, P);
+    if (r && Throw) { throw new Error("Celestra.deleteOwnProperty(); error"); }
+    return +!r;
+  }
+  return -1;
+}
+
 /* type(<value>): string */
 const type = (v) => ((v === null) ? "null" : (typeof v));
 
@@ -1937,6 +1948,8 @@ const _slice = Function.prototype.call.bind(Array.prototype.slice);
 
 const _forEach = Function.prototype.call.bind(Array.prototype.forEach);
 
+const _call = Function.prototype.call.bind(Function.prototype.call);
+
 var celestra = {
   /** object header **/
   VERSION: VERSION,
@@ -1944,6 +1957,7 @@ var celestra = {
   /** undocumented functions **/
   _slice: _slice,
   _forEach: _forEach,
+  _call: _call,
   /** Core API **/
   BASE16: BASE16,
   BASE32: BASE32,
@@ -2176,6 +2190,7 @@ var celestra = {
   createMethodPropertyOrThrow: createMethodPropertyOrThrow,
   createPolyfillMethod: createPolyfillMethod,
   createPolyfillProperty: createPolyfillProperty,
+  deleteOwnProperty: deleteOwnProperty,
   type: type,
   isIndex: isIndex,
   toIndex: toIndex,

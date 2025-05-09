@@ -2243,6 +2243,21 @@ CUT.isTrue("createPolyfillProperty();",
 CUT.log("<code>\"" + JSON.stringify(createPolyfillPropertyObj) + "\"</code>");
 
 
+var deleteOwnPropertyObj = {"a": 1, "b": 2}, deleteOwnPropertyStr = ""; 
+deleteOwnPropertyStr += CEL.deleteOwnProperty(deleteOwnPropertyObj, "a");
+deleteOwnPropertyStr += CEL.deleteOwnProperty(deleteOwnPropertyObj, "a");
+deleteOwnPropertyStr += CEL.deleteOwnProperty(deleteOwnPropertyObj, "a");
+var deleteOwnPropertyObj = {"a": 1, "b": 2};
+try {
+  deleteOwnPropertyStr += CEL.deleteOwnProperty(deleteOwnPropertyObj, "a", true);
+} catch (e) { console.log(e); }
+try {
+  deleteOwnPropertyStr += CEL.deleteOwnProperty(deleteOwnPropertyObj, "a", true);
+} catch (e) { console.log(e); }
+"1-1-11-1"
+CUT.isEqual("deleteOwnProperty();", deleteOwnPropertyStr, "1-1-11-1");
+CUT.log("<code>\"" + deleteOwnPropertyStr + "\"</code>")
+
 CUT.isEqual("type();",
  "nullundefinedobjectfunctionnumberstring",
  CEL.type(null) + CEL.type(undefined)
