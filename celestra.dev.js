@@ -1804,6 +1804,14 @@ const toLength = (v) =>
 const toInteger = (v) =>
   ((v = Math.min(Math.max(-2147483648, Math.trunc(+v)), 2147483647)) === v)?v:0;
 
+/* ToIntegerOrInfinity(<value: any>): integer OR Infinity OR -Infinity */
+function toIntegerOrInfinity (v) {
+  v = Number(v);
+  if (1/v === Infinity || 1/v === -Infinity || v !== v) { return 0; }
+  if (v === Infinity || v === -Infinity) { return v; }
+  return Math.trunc(v);
+}
+
 /* createDataProperty(<object>,<property>,<value: any>): object */
 const createDataProperty = (O, P, V) => Object.defineProperty(
   O, P, {value: V, writable: true, enumerable: true, configurable: true}
@@ -2209,6 +2217,7 @@ var celestra = {
   toIndex: toIndex,
   toLength: toLength,
   toInteger: toInteger,
+  toIntegerOrInfinity:toIntegerOrInfinity,
   createDataProperty: createDataProperty,
   createDataPropertyOrThrow: createDataPropertyOrThrow,
   toArray: toArray,
