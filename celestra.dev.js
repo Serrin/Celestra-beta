@@ -1794,15 +1794,16 @@ const isLength = (v) => (Number.isSafeInteger(v) && v >= 0 && 1/v !== 1/-0);
 
 /* toIndex(<value: any>): unsigned integer */
 const toIndex = (v) =>
-  ((v = Math.min(Math.max(0, Math.trunc(+v)), 2147483647)) === v) ? v : 0;
+  ((v = Math.min(Math.max(0, Math.trunc(Number(v))), 2147483647)) === v) ? v :0;
 
 /* toLength(<value: any>): unsigned integer */
 const toLength = (v) =>
-  ((v = Math.min(Math.max(0, Math.trunc(+v)), 2147483647)) === v) ? v : 0;
+  ((v = Math.min(Math.max(0, Math.trunc(Number(v))), 2147483647)) === v) ? v :0;
 
 /* toInteger(<value: any>): integer */
 const toInteger = (v) =>
-  ((v = Math.min(Math.max(-2147483648, Math.trunc(+v)), 2147483647)) === v)?v:0;
+  ((v = Math.min(Math.max(-2147483648, Math.trunc(Number(v))), 2147483647))
+    === v) ? v : 0;
 
 /* ToIntegerOrInfinity(<value: any>): integer OR Infinity OR -Infinity */
 function toIntegerOrInfinity (v) {
@@ -1861,43 +1862,44 @@ function isOdd (v) {
 
 /* toInt8(<value>): int -127..128 */
 const toInt8 = (v) =>
-  ((v = Math.min(Math.max(-128, Math.trunc(+v)), 127)) === v) ? v : 0;
+  ((v = Math.min(Math.max(-128, Math.trunc(Number(v))), 127)) === v) ? v : 0;
 
 /* toUInt8(<value>): int 0..255  */
 const toUInt8 = (v) =>
-  ((v = Math.min(Math.max(0, Math.trunc(+v)), 255)) === v) ? v : 0;
+  ((v = Math.min(Math.max(0, Math.trunc(Number(v))), 255)) === v) ? v : 0;
 
 /* toInt16(<value>): int -32768..32767 */
 const toInt16 = (v) =>
-  ((v = Math.min(Math.max(-32768, Math.trunc(+v)), 32767)) === v) ? v : 0;
+  ((v = Math.min(Math.max(-32768, Math.trunc(Number(v))), 32767)) === v) ? v :0;
 
 /* toUInt16(<value>) int 0..65535 */
 const toUInt16 = (v) =>
-  ((v = Math.min(Math.max(0, Math.trunc(+v)), 65535)) === v) ? v : 0;
+  ((v = Math.min(Math.max(0, Math.trunc(Number(v))), 65535)) === v) ? v : 0;
 
 /* toInt32(<value>): int -2147483648..2147483647 */
 const toInt32 = (v) =>
-  ((v = Math.min(Math.max(-2147483648, Math.trunc(+v)), 2147483647)) === v)?v:0;
+  ((v = Math.min(Math.max(-2147483648, Math.trunc(Number(v))), 2147483647))
+    === v) ? v : 0;
 
 /* toUInt32(<value>: int 0..4294967295 */
 const toUInt32 = (v) =>
-  ((v = Math.min(Math.max(0, Math.trunc(+v)), 4294967295)) === v) ? v : 0;
+  ((v = Math.min(Math.max(0, Math.trunc(Number(v))), 4294967295)) === v) ? v :0;
 
 /* toBigInt64(<value>): bigint */
 const toBigInt64 = (v) => BigInt(typeof v === "bigint"
   ? (v > Math.pow(2,63)-1 ?Math.pow(2,63)-1:v<Math.pow(-2,63)?Math.pow(-2,63):v)
-  : ((v=Math.min(Math.max(Math.pow(-2,63),Math.trunc(+v)),Math.pow(2,63)-1))===v
-    ) ? v : 0
+  : ((v=Math.min(Math.max(Math.pow(-2,63),Math.trunc(Number(v))),Math.pow(2,63)-1))
+    === v ) ? v : 0
 );
 
 /* toBigUInt64(<value>): unsigned bigint */
 const toBigUInt64 = (v) => BigInt(typeof v === "bigint"
   ? (v > Math.pow(2, 64) - 1 ? Math.pow(2, 64) - 1 : v < 0 ? 0 : v)
-  : ((v=Math.min(Math.max(0, Math.trunc(+v)), Math.pow(2,64) -1)) === v) ? v : 0
+  : ((v=Math.min(Math.max(0, Math.trunc(Number(v))), Math.pow(2,64) -1)) === v) ? v : 0
 );
 
 /* toFloat32(<value>): float */
-const toFloat32 = (v) => ((v = Math.min(Math.max(-3.4e38, +v),3.4e38))===v)?v:0;
+const toFloat32 = (v) => ((v = Math.min(Math.max(-3.4e38, Number(v)),3.4e38))===v)?v:0;
 
 /* isInt8(<value>): boolean */
 const isInt8 = (v) => (Number.isInteger(v) ? (v >= -128 && v <= 127) : false);
@@ -1927,20 +1929,21 @@ const isBigUInt64 = (v) =>
   (typeof v === "bigint" ? (v >= 0 && v <= Math.pow(2,64)-1) : false);
 
 /* toFloat16(<value>): float16 */
-const toFloat16 = (v) => ((v = Math.min(Math.max(-65504, +v),65504))===v)?v:0;
+const toFloat16 = (v) => ((v = Math.min(Math.max(-65504, Number(v)),65504))
+  === v ) ? v : 0;
 
 /* isFloat16(<value>): boolean */
 const isFloat16 = (v) =>
   ((typeof v === "number" && v === v) ?(v>=-65504 && v<=65504) : false);
 
 /* signbit(<value: any>): boolean */
-const signbit = (v) => (((v = +v) !== v) ? !1 : ((v < 0) || Object.is(v, -0)));
+const signbit = (v) => (((v = Number(v))!==v) ? !1 :((v<0) || Object.is(v,-0)));
 
 /* randomInt([max: int] OR <min: int>,<max: int>): int */
 function randomInt (i = 100, a) {
   if (a == null) { a = i; i = 0; }
-  i = Math.ceil(+i);
-  return Math.floor(Math.random() * (Math.floor(+a) - i + 1) + i);
+  i = Math.ceil(Number(i));
+  return Math.floor(Math.random() * (Math.floor(Number(a)) - i + 1) + i);
 }
 
 /* randomFloat([max: float] OR <min: float>,<max: float>): float */
