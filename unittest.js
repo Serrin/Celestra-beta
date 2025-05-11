@@ -2453,6 +2453,26 @@ CUT.isEqual("isSameValue(); " + "<code>" + isSameValueStr + "</code>",
   isSameValueStr, "1101110100011111110"
 );
 
+
+CUT.isEqual("toPrimitiveValue();", "111111111111111", ""
+  + +(typeof CEL.toPrimitiveValue(null) === "object")
+  + +(typeof CEL.toPrimitiveValue(undefined) === "undefined")
+  + +(typeof CEL.toPrimitiveValue(true) === "boolean")
+  + +(typeof CEL.toPrimitiveValue(42n) === "bigint")
+  + +(typeof CEL.toPrimitiveValue(Object(42n)) === "bigint")
+  + +(typeof CEL.toPrimitiveValue(42) === "number")
+  + +(typeof CEL.toPrimitiveValue("lorem ipsum") === "string")
+  + +(typeof CEL.toPrimitiveValue(Symbol(42)) === "symbol")
+  + +(typeof CEL.toPrimitiveValue(new Boolean(true)) === "boolean")
+  + +(typeof CEL.toPrimitiveValue(new Number(42)) === "number")
+  + +(typeof CEL.toPrimitiveValue(new String("lorem ipsum")) === "string")
+  + +(typeof CEL.toPrimitiveValue({"a":1}) === "object")
+  + +(Array.isArray(CEL.toPrimitiveValue([])))
+  + +(CEL.toPrimitiveValue(new Map()) instanceof Map)
+  + +(CEL.toPrimitiveValue(new Set()) instanceof Set)
+);
+
+
 var isSameValueZerofoo = { "a": 1 }, isSameValueZerobar = { "a": 1 };
 var isSameValueZeroStr = ""
   + +CEL.isSameValueZero(25, 25)
@@ -2477,6 +2497,7 @@ var isSameValueZeroStr = ""
 CUT.isEqual("isSameValueZero(); " + "<code>" + isSameValueZeroStr + "</code>",
   isSameValueZeroStr, "1101110101111111110"
 );
+
 
 var isSameValueNonNumberfoo = { "a": 1 }, isSameValueNonNumberbar = { "a": 1 };
 var isSameValueNonNumberStr = ""
@@ -2503,6 +2524,7 @@ CUT.isEqual("isSameValueNonNumber(); "+"<code>"+isSameValueNonNumberStr+"</code>
   isSameValueNonNumberStr, "1101110101111001110"
 );
 
+
 function createMethodPropertyFN () {};
 var createMethodPropertySTR = "" + ("getX" in createMethodPropertyFN.prototype);
 createMethodPropertySTR += CEL.createMethodProperty(
@@ -2512,6 +2534,7 @@ createMethodPropertySTR += ("getX" in createMethodPropertyFN.prototype);
 CUT.isEqual("createMethodProperty();", createMethodPropertySTR,
   "false[object Object]true"
 );
+
 
 function createMethodPropertyOrThrowFN () {};
 var createMethodPropertyOrThrowSTR = ""
@@ -2580,6 +2603,23 @@ CUT.isEqual("isIndex();", "1100000000000000000000", ""
   + +CEL.isIndex(undefined) + +CEL.isIndex(null)
 );
 
+
+CUT.isEqual("isLength();", "1100000000000000000000", ""
+  + +CEL.isLength(3) + +CEL.isLength(0) + +CEL.isLength("3")
+  + +CEL.isLength(true)
+  + +CEL.isLength(-0)
+  + +CEL.isLength(Infinity) + +CEL.isLength(-Infinity)
+  + +CEL.isLength("Infinity") + +CEL.isLength("-Infinity")
+  + +CEL.isLength(-3) + +CEL.isLength(3.14) + +CEL.isLength(-3.14)
+  + +CEL.isLength("fasdas")
+  + +CEL.isLength(false)
+  + +CEL.isLength("-3") + +CEL.isLength("3.14") + +CEL.isLength("-3.14")
+  + +CEL.isLength("adsasd")
+  + +CEL.isLength({}) + +CEL.isLength([])
+  + +CEL.isLength(undefined) + +CEL.isLength(null)
+);
+
+
 CUT.isEqual("toIndex();", "3031021474836470214748364700300003000000", ""
   + CEL.toIndex(3) + CEL.toIndex(0) + CEL.toIndex("3") + CEL.toIndex(true)
   + CEL.toIndex(-0)
@@ -2593,6 +2633,7 @@ CUT.isEqual("toIndex();", "3031021474836470214748364700300003000000", ""
   + CEL.toIndex({}) + CEL.toIndex([])
   + CEL.toIndex(undefined) + CEL.toIndex(null)
 );
+
 
 CUT.isEqual("toLength();", "3031021474836470214748364700300003000000", ""
   + CEL.toLength(3) + CEL.toLength(0) + CEL.toLength("3")
@@ -2608,6 +2649,7 @@ CUT.isEqual("toLength();", "3031021474836470214748364700300003000000", ""
   + CEL.toLength({}) + CEL.toLength([])
   + CEL.toLength(undefined) + CEL.toLength(null)
 );
+
 
 CUT.isEqual("toInteger();",
   "3333-3-3-3-31002147483647-21474836482147483647-21474836480000000", ""

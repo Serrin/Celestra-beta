@@ -1709,17 +1709,24 @@ const isPropertyKey = (v) => (typeof v === "string" || typeof v === "symbol");
 /* toPropertyKey(<value: any>): string OR symbol */
 const toPropertyKey = (v) => (typeof v === "symbol" ? v : String(v));
 
-/* toObject(<value: any>): object OR throw error */
+/* toObject(<value: any>): object OR symbol OR function OR throw error */
 function toObject (O) {
   if (O == null) { throw new TypeError(); }
-  switch(typeof O) {
-    case "boolean": return new Number(O);
-    case "string": return new String(O);
-    case "bigint": return BigInt(O);
-    case "symbol": return O;
-    case "object": return O;
-    default: return Object(O);
+  if (["symbol", "object", "function"].includes(typeof O)) { return O; }
+  return Object(O);
+}
+
+/* toPrimitiveValue(<value: any>):
+  primitive OR object OR symbol OR function OR throw error */
+function toPrimitiveValue (O) {
+  // null, undefined, Function Boolean, BigInt, Number, String, Symbol
+  if (O == null || typeof O !== "object") { return O; }
+  // object
+  var ot = Object.prototype.toString.call(O).slice(8, -1);
+  if (["Boolean", "BigInt", "Number", "String"].includes(ot)) {
+    return window[ot](O);
   }
+  return O;
 }
 
 /* isSameValue(<value1: any>,<value2: any>): boolean */
@@ -1782,6 +1789,8 @@ const type = (v) => ((v === null) ? "null" : (typeof v));
 
 /* isIndex(<value: any>): boolean */
 const isIndex = (v) => (Number.isSafeInteger(v) && v >= 0 && 1/v !== 1/-0);
+/* isLength(<value: any>): boolean */
+const isLength = (v) => (Number.isSafeInteger(v) && v >= 0 && 1/v !== 1/-0);
 
 /* toIndex(<value: any>): unsigned integer */
 const toIndex = (v) =>
@@ -2185,6 +2194,7 @@ var celestra = {
   isPropertyKey: isPropertyKey,
   toPropertyKey: toPropertyKey,
   toObject: toObject,
+  toPrimitiveValue: toPrimitiveValue,
   isSameValue: isSameValue,
   isSameValueZero: isSameValueZero,
   isSameValueNonNumber: isSameValueNonNumber,
@@ -2195,6 +2205,7 @@ var celestra = {
   deleteOwnProperty: deleteOwnProperty,
   type: type,
   isIndex: isIndex,
+  isLength: isLength,
   toIndex: toIndex,
   toLength: toLength,
   toInteger: toInteger,
