@@ -9,6 +9,65 @@
 # Celestra version history
 
 
+## Celestra v5.6.5
+
+1. Documentation and pdf fixes.
+
+2. Add stabilities in the __celestra.html__ and __README.md__:
+````
+0 - Removed.
+1 - Deprecated and will be removed.
+2 - Deprecated.
+3 - Not deprecated, but can get only fixes.
+4 - Stable.
+````
+
+3. Replace "Unary plus" (+x) number conversions with the Number(); function to handle the BigInt values
+
+4. Deprecate the function `inherit();`
+
+5. Add a new polyfill: `Math.sumPrecise();`
+
+6. Add these functions:
+
+````javascript
+getType();  -> alias of classof(); (readd)
+isClass();  -> alias of isConstructorFn();
+````
+
+7. Add these abstract functions:
+
+````javascript
+createDataPropertyOrThrow();
+createMethodPropertyOrThrow();
+createPolyfillMethod();
+createPolyfillProperty();
+deleteOwnProperty();
+isLength(); -> alias of isIndex();
+toLength(); -> alias of toIndex();
+toIntegerOrInfinity();
+toPrimitive();
+toPrimitiveValue();
+````
+
+8. Replace these functions with a new version:
+
+````javascript
+clamp();
+concat(); (fix to handle non-iterable items)
+flat();   (fix to handle non-iterable items)
+inRange();
+minmax();
+toArray();
+toInteger();
+toObject();
+```` 
+
+9. __Celestra Unit Tester (CUT) v0.8.26:__ 
+- CSS and text changes
+- The global try-catch will add a failed line instead of an alert.
+
+
 ## Celestra v5.6.4
 
 1. Documentation and pdf fixes.
