@@ -500,6 +500,7 @@ Name | Description
 `toIntegerOrInfinity(<value>);`| __Stability: 4 - Stable.__<BR>This function always converts the provided value to an integer or Infitiy or -Infinity. If the value cannot be converted to an integer, then the return value is 0.
 `toLength(<value>);`| __Stability: 4 - Stable.__<BR>Alias of `toIndex(<value>);`.
 `toObject(<value>);`| __Stability: 4 - Stable.__<BR>If the given value is not null or undefined, then the return value is an object, which has been converted from the value, else a `TypeError()` will be throwned.<BR>If the given value is an object, function or symbol, then the original value will return.
+`toPrimitive(<value>);`| __Stability: 4 - Stable.__<BR>ECMAScript "ToPrimitive" algorithm.
 `toPrimitiveValue(<value>);`| __Stability: 4 - Stable.__<BR>If the given value is null or undefined, then a `TypeError()` will be throwned.<BR>If the given value is an object, which can be converted to a primitive variable, then the return value is a primitive variable.<BR>If the given value is a not convertable object (array, map, set, etc.), function or symbol, then the original value will return.
 `toPropertyKey(<value>);`|__Stability: 4 - Stable.__<BR>This function convert the given value to a valid property key. If the value is not symbol, then will be converted to string, else the symbol will be returned.
 `type(<value>);`| __Stability: 4 - Stable.__<BR>This function returns the typeof operator result of the given value, except the null object (`"null"` instead of `"object"`).

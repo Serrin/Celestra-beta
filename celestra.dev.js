@@ -1729,6 +1729,33 @@ function toPrimitiveValue (O) {
   return O;
 }
 
+/* toPrimitive(<value: any>): primitive OR throw error */
+function toPrimitive (O, hint = "default") {
+  const _apply = Function.prototype.call.bind(Function.prototype.apply);
+  const _isPrimitive = (v) =>
+    ((typeof v !== "object" && typeof v !== "function") || v === null);
+  if (_isPrimitive(O)) { return O; }
+  /* try Call obj[Symbol.toPrimitive](hint) */
+  let method = O[Symbol.toPrimitive];
+  if (method != null) {
+    let r = _apply(method, O, []);
+    if (_isPrimitive(r)) { return r; }
+  } else {
+    /* "string"              -> ["toString", "valueOf"] */
+    /* "number" or "default" -> ["valueOf", "toString"] */
+    for (let item of
+      (hint === "string" ? ["toString", "valueOf"] : ["valueOf", "toString"])
+    ) {
+      method = O[item];
+      if (typeof method === "function") {
+        let r = _apply(method, O, []);
+        if (_isPrimitive(r)) { return r; }
+      }
+    }
+  }
+  throw new TypeError("celestra.toPrimitive(): Cannot convert object to primitive value");
+}
+
 /* isSameValue(<value1: any>,<value2: any>): boolean */
 const isSameValue = (v1, v2) =>
   ((v1 === v2) ? (v1 !== 0 || 1/v1 === 1/v2) : (v1 !== v1 && v2 !== v2));
@@ -1966,6 +1993,8 @@ function noConflict () { window.CEL = celestra.__prevCEL__; return celestra; }
 /** undocumented functions **/
 /* Please don't use these in production! */
 
+const _apply = Function.prototype.call.bind(Function.prototype.apply);
+
 const _call = Function.prototype.call.bind(Function.prototype.call);
 
 const _forEach = Function.prototype.call.bind(Array.prototype.forEach);
@@ -1977,6 +2006,7 @@ var celestra = {
   VERSION: VERSION,
   noConflict: noConflict,
   /** undocumented functions **/
+  _apply: _apply,
   _call: _call,
   _forEach: _forEach,
   _slice: _slice,
@@ -2206,6 +2236,7 @@ var celestra = {
   toPropertyKey: toPropertyKey,
   toObject: toObject,
   toPrimitiveValue: toPrimitiveValue,
+  toPrimitive: toPrimitive,
   isSameValue: isSameValue,
   isSameValueZero: isSameValueZero,
   isSameValueNonNumber: isSameValueNonNumber,

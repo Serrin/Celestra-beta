@@ -274,49 +274,49 @@ CUT.isTrue("assertNotEq(); 2", CEL.assertNotEq("lorem ipsum", 1, 2, false) );
 
 var randomUUIDv7Result = CEL.randomUUIDv7();
 CUT.isTrue("randomUUIDv7();",
-  CEL.isString(randomUUIDv7Result) && randomUUIDv7Result.length === 36
+  typeof randomUUIDv7Result === "string" && randomUUIDv7Result.length === 36
 );
 CUT.log("<code>\"" + randomUUIDv7Result + "\"<code>");
 
 
 var nanoidStr = CEL.nanoid();
 CUT.isTrue("nanoid 1 - default size 21",
-  CEL.isString(nanoidStr) && nanoidStr.length === 21
+  typeof nanoidStr === "string" && nanoidStr.length === 21
 );
 CUT.log("<code>\"" + nanoidStr + "\"</code>");
 var nanoidStr = CEL.nanoid(15);
 CUT.isTrue("nanoid 2 - size 15",
-  CEL.isString(nanoidStr) && nanoidStr.length === 15
+  typeof nanoidStr === "string" && nanoidStr.length === 15
 );
 CUT.log("<code>\"" + nanoidStr + "\"</code>");
 var nanoidStr = CEL.nanoid(36);
 CUT.isTrue("nanoid 3 - size 36",
-  CEL.isString(nanoidStr) && nanoidStr.length === 36
+  typeof nanoidStr === "string" && nanoidStr.length === 36
 );
 CUT.log("<code>\"" + nanoidStr + "\"</code>");
 var nanoidStr = CEL.nanoid(5, "abcdeFGHIJK42");
 CUT.isTrue("nanoid 4 - size 5 & \"abcdeFGHIJK42\"",
-  CEL.isString(nanoidStr) && nanoidStr.length === 5
+  typeof nanoidStr === "string" && nanoidStr.length === 5
 );
 CUT.log("<code>\"" + nanoidStr + "\"</code>");
 
 var timestampIDStr = CEL.timestampID();
 CUT.isTrue("timestampID 1 - default size 21",
-  CEL.isString(timestampIDStr) && timestampIDStr.length === 21
+  typeof nanoidStr === "string" && timestampIDStr.length === 21
 );
 CUT.log("<code>\"" + timestampIDStr + "\"</code>");
 var timestampIDStr = CEL.timestampID(15);
 CUT.isTrue("timestampID 2 - size 15",
-  CEL.isString(timestampIDStr) && timestampIDStr.length === 15
+  typeof timestampIDStr === "string" && timestampIDStr.length === 15
 );
 CUT.log("<code>\"" + timestampIDStr + "\"</code>");
 var timestampIDStr = CEL.timestampID(36);
 CUT.isTrue("timestampID 3 - size 36",
-  CEL.isString(timestampIDStr) && timestampIDStr.length === 36);
+  typeof timestampIDStr === "string" && timestampIDStr.length === 36);
 CUT.log("<code>\"" + timestampIDStr + "\"</code>");
 var timestampIDStr = CEL.timestampID(5, "abcdeFGHIJK42");
 CUT.isTrue("timestampID 4 - size 5 -> 12 & \"abcdeFGHIJK42\"",
-  CEL.isString(timestampIDStr) && timestampIDStr.length === 12
+  typeof timestampIDStr === "string" && timestampIDStr.length === 12
 );
 CUT.log("<code>\"" + timestampIDStr + "\"</code>");
 
@@ -561,7 +561,7 @@ CEL.qs("#testFormDiv").remove();
 
 var testRandom = CEL.randomBoolean();
 CUT.isTrue("randomBoolean(); - <code>" + testRandom + "</code>",
-  CEL.isBoolean(testRandom) && (testRandom === true || testRandom === false)
+  typeof testRandom === "boolean" && (testRandom === true || testRandom === false)
 );
 
 var kayleeStr = "✓ à \r\n\t árvíztűrő tükörfúrógép ÁRVÍZTŰRŐ TÜKÖRFÚRÓGÉP ,?;.:-_* ¤÷×¨¸´˙`˛°˘^ˇ~'+!%/=()|\\<> \" \/ #&@{}[]€ ÍÄíŁß 0123456789 asdfghjklqwertzuiopyxcvbnm ASDFGHJKLQWERTZUIOPYXCVBNM";
@@ -1485,7 +1485,7 @@ try {
 } catch (e) {alert(e);}
 
 function __setEquals__(set1, set2) {
-  if (!CEL.isSet(set1) || !CEL.isSet(set2)) { return false; }
+  if (!(set1 instanceof Set) || !(set2 instanceof Set)) { return false; }
   if (set1.size !== set2.size) { return false; }
   if (JSON.stringify(Array.from(set1)) !== JSON.stringify(Array.from(set2))) {
     return false;
@@ -2470,6 +2470,15 @@ CUT.isEqual("toPrimitiveValue();", "111111111111111", ""
   + +(Array.isArray(CEL.toPrimitiveValue([])))
   + +(CEL.toPrimitiveValue(new Map()) instanceof Map)
   + +(CEL.toPrimitiveValue(new Set()) instanceof Set)
+);
+
+
+CUT.isEqual("toPrimitive();", "11111", ""
+  + +(CEL.toPrimitive(new Object(100)) === 100)
+  + +(CEL.toPrimitive(new Object(100)) + "" === "100")
+  + +(CEL.toPrimitive({"a":1, toString: ()=>42}, "number") === 42)
+  + +(CEL.toPrimitive([1,2]) === "1,2")
+  + +(CEL.toPrimitive(()=>56) === "()=>56")
 );
 
 
