@@ -13,6 +13,8 @@
 <script src="celestra.min.js"></script>
 <style>
 
+html, body { font-size: 15px;  }
+
 #fsdiv { padding: 20px; }
 
 header {
@@ -99,7 +101,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
 
 <p>This library isn't compatible with the Node.js.</p>
 
-<p>Latest version: 5.6.5</p>
+<p>Latest version: 5.6.6</p>
 <p>Date: 2025-05-12T19:32:20.488Z</p>
 
 <p><b>Tested on these browsers:</b></p>
@@ -474,7 +476,7 @@ console.log(o2);
     </tr>    
     <tr>
       <td><code>sizeIn(&#60;object&#62;);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Returns the count of the owned properties of the given object. The object parameter is mandatory.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Returns the count of the owned properties and symbols of the given object. The object parameter is mandatory. The return value is an integer.</td>
     </tr>
     <tr>
       <td><code>popIn(&#60;object&#62;,&#60;property&#62;);</code></td>
@@ -587,6 +589,12 @@ console.log(o2);
       <td>
         <p><span class="info">Stability: 4 - Stable.</span><br/>Create and save file without a server. The filename and content parameters are mandatory and have to be a string. The dataType parameter is optional and can be a string.  The default value of the dataType parameter is <code>text/plain</code>.</p>
         <p><span class="info">Doesn't work in iOS browsers (Safari, Firefox and Chrome) and W10M Edge 14.</span></p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>domClear(&#60;element&#62;);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>Remove all child element of the given element. The parameter is mandatory.
       </td>
     </tr>
     <tr>
@@ -1641,7 +1649,7 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>clamp(&#60;value&#62;,&#60;min&#62;,&#60;max&#62;);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>If the given value is between the min and max values, then this function returns the value. If smaller then the min value, then the return value is the min. If greater then the max value, then the return value is the max.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>If the given value is between the min and max values, then this function returns the value. If smaller then the min value, then the return value is the min. If greater then the max value, then the return value is the max. All of the parameters are mandatory and can be number or bigint and if not these types, then will be converted to number. The return value is number or bigint or throw a rangeerror, if the parameters are invalid.</td>
     </tr>
     <tr>
       <td><code>inRange(&#60;value&#62;,&#60;min&#62;,&#60;max&#62;);</code></td>
@@ -1858,7 +1866,7 @@ Otherwise, the result is false.</pre>
     </tr>
     <tr>
       <td>REMOVED polyfills in v5.6.0</td>
-      <td><code>Array.prototype.at();</code><br/><code>Array.prototype.findLast();</code><br/><code>Array.prototype.findLastIndex();</code><br/><code>Array.prototype.flat();</code><br/><code>Array.prototype.flatMap();</code><br/><code>Array.prototype.group();</code><br/><code>Array.prototype.groupToMap();</code><br/><code>Number.MIN_SAFE_INTEGER;</code><br/><code>Number.MAX_SAFE_INTEGER;</code><br/><code>Object.fromEntries();</code><br/><code>Object.is();</code><br/><code>String.prototype.at();</code><br/><code>String.prototype.matchAll();</code><br/><code>String.prototype.padStart();</code><br/><code>String.prototype.padEnd();</code><br/><code>String.prototype.replaceAll();</code><br/><code>String.prototype.trimStart();</code><br/><code>String.prototype.trimLeft();</code><br/><code>String.prototype.trimEnd();</code><br/><code>String.prototype.trimRight();</code><br/><code>Typedarray.prototype.at();</code><br/><code>TypedArray.prototype.findLast();</code><br/><code>TypedArray.prototype.findLastIndex();</code></td>
+      <td><code>Array.prototype.at();</code><br/><code>Array.prototype.findLast();</code><br/><code>Array.prototype.findLastIndex();</code><br/><code>Array.prototype.flat();</code><br/><code>Array.prototype.flatMap();</code><br/><code>Number.MIN_SAFE_INTEGER;</code><br/><code>Number.MAX_SAFE_INTEGER;</code><br/><code>Object.fromEntries();</code><br/><code>Object.is();</code><br/><code>String.prototype.at();</code><br/><code>String.prototype.matchAll();</code><br/><code>String.prototype.padStart();</code><br/><code>String.prototype.padEnd();</code><br/><code>String.prototype.replaceAll();</code><br/><code>String.prototype.trimStart();</code><br/><code>String.prototype.trimLeft();</code><br/><code>String.prototype.trimEnd();</code><br/><code>String.prototype.trimRight();</code><br/><code>Typedarray.prototype.at();</code><br/><code>TypedArray.prototype.findLast();</code><br/><code>TypedArray.prototype.findLastIndex();</code></td>
     </tr>
   </table>
 </div>

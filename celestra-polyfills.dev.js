@@ -1,7 +1,7 @@
 
 /**
  * @name Celestra Removed Polyfills
- * @version 5.6.5 dev
+ * @version 5.6.6 dev
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
@@ -83,8 +83,6 @@ Array.prototype.findLast();
 Array.prototype.findLastIndex();
 Array.prototype.flat();
 Array.prototype.flatMap();
-Array.prototype.group();
-Array.prototype.groupToMap();
 Number.MIN_SAFE_INTEGER;
 Number.MAX_SAFE_INTEGER;
 Object.fromEntries();
@@ -705,46 +703,6 @@ if (!("flatMap" in Array.prototype)) {
         if (Array.isArray(e)) { res = res.concat(e); } else { res.push(e); }
       });
       return res;
-    }
-  });
-}
-
-/* Array.prototype.group(); */
-if (!("group" in Array.prototype)) {
-  Object.defineProperty(Array.prototype, "group", {
-    "configurable": true, "writable": true, "enumerable": false,
-    "value": function (fn, thisArg) {
-      "use strict";
-      function toArray (O) { return (Array.isArray(O) ? O : Array.from(O)); }
-      if (!(typeof fn === "function")) { throw new TypeError(); }
-      var a = toArray(this);
-      var key, r = Object.create(null), l = a.length;
-      for (var i = 0; i < l; i++) {
-        key = fn.call(thisArg, a[i], i, a);
-        if (!(Object.prototype.hasOwnProperty.call(r, key))) { r[key] = []; }
-        r[key].push(a[i]);
-      }
-      return r;
-    }
-  });
-}
-
-/* Array.prototype.groupToMap(); */
-if (!("groupToMap" in Array.prototype)) {
-  Object.defineProperty(Array.prototype, "groupToMap", {
-    "configurable": true, "writable": true, "enumerable": false,
-    "value": function (fn, thisArg) {
-      "use strict";
-      function toArray (O) { return (Array.isArray(O) ? O : Array.from(O)); }
-      if (!(typeof fn === "function")) { throw new TypeError(); }
-      var a = toArray(this);
-      var key, r = new Map(), l = a.length;
-      for (var i = 0; i < l; i++) {
-        key = fn.call(thisArg, a[i], i, a);
-        if (!(r.has(key))) { r.set(key, []); }
-        r.get(key).push(a[i]);
-      }
-      return r;
     }
   });
 }

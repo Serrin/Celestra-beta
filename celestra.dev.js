@@ -1,6 +1,6 @@
 /**
  * @name Celestra
- * @version 5.6.5 dev
+ * @version 5.6.6 dev
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
@@ -379,7 +379,8 @@ function extend (...a) {
 }
 
 /* sizeIn(<object>): integer */
-const sizeIn = (o) => Object.keys(o).length;
+const sizeIn = (O) => Object.getOwnPropertyNames(O).length
+  + Object.getOwnPropertySymbols(O).length;
 
 /* forIn(<object>,<callback: function>): object */
 function forIn (o,fn) { Object.keys(o).forEach((v)=>fn(o[v],v,o)); return o; }
@@ -869,6 +870,9 @@ const domScrollToBottom = () => window.scrollTo(0, document.body.scrollHeight);
 
 /* domScrollToElement(<element>[,top=true]): undefined */
 const domScrollToElement = (e, top = true) => e.scrollIntoView(top);
+
+/* domClear(<element>): undefined */
+const domClear = (el) => Array.from(el.children).forEach((item)=>item.remove());
 
 /** AJAX API **/
 /* getJson(); and getText(); shorthands -> ajax(); */
@@ -1869,9 +1873,47 @@ const avg = (f, ...a) => a.reduce((acc, v) => acc + v, f) / (a.length + 1);
 const product = (f, ...a) => a.reduce((acc, v) => acc * v, f);
 
 /* clamp(<value>,<min>,<max>): number */
-const clamp = (v, min, max) => (v > max ? max : v < min ? min : v);
+function clamp (v, min, max) {
+  if (typeof v !== "number" && typeof v !== "bigint") { v = Number(v); }
+  if (typeof min !== "number" && typeof min !== "bigint") { min = Number(min); }
+  if (typeof max !== "number" && typeof max !== "bigint") { max = Number(max); }
+  var nV = Number(v);
+  var nMin = Number(min);
+  var nMax = Number(max);
+  if (min !== min) { throw new RangeError(); }
+  if (max !== max) { throw new RangeError(); }
+  if (1/nMin === Infinity && 1/nMax === -Infinity) { throw new RangeError(); }
+  if (min > max) { throw new RangeError(); }
+  if (v !== v) { return NaN; }
+  if (1/nMin === -Infinity && 1/nMax === Infinity) { return +0; }
+  if (1/nV === Infinity && 1/nMin === -Infinity) { return -0; }
+  if (v < min) { return min; }
+  if (1/nV === -Infinity && 1/nMax === Infinity) { return -0; }
+  if (1/nV === Infinity && 1/nMax === -Infinity) { return -0; }
+  if (v > max) { return max; }
+  return v;
+}
 /* minmax(<value>,<min>,<max>): number */
-const minmax = (v, min, max) => (v > max ? max : v < min ? min : v);
+function minmax (v, min, max) {
+  if (typeof v !== "number" && typeof v !== "bigint") { v = Number(v); }
+  if (typeof min !== "number" && typeof min !== "bigint") { min = Number(min); }
+  if (typeof max !== "number" && typeof max !== "bigint") { max = Number(max); }
+  var nV = Number(v);
+  var nMin = Number(min);
+  var nMax = Number(max);
+  if (min !== min) { throw new RangeError(); }
+  if (max !== max) { throw new RangeError(); }
+  if (1/nMin === Infinity && 1/nMax === -Infinity) { throw new RangeError(); }
+  if (min > max) { throw new RangeError(); }
+  if (v !== v) { return NaN; }
+  if (1/nMin === -Infinity && 1/nMax === Infinity) { return +0; }
+  if (1/nV === Infinity && 1/nMin === -Infinity) { return -0; }
+  if (v < min) { return min; }
+  if (1/nV === -Infinity && 1/nMax === Infinity) { return -0; }
+  if (1/nV === Infinity && 1/nMax === -Infinity) { return -0; }
+  if (v > max) { return max; }
+  return v;
+}
 
 /* isEven(<value>): boolan */
 function isEven (v) {
@@ -1985,7 +2027,7 @@ const inRange = (v, min, max) => (v >= min && v <= max);
 
 /** object header **/
 
-const VERSION = "Celestra v5.6.5 dev";
+const VERSION = "Celestra v5.6.6 dev";
 
 /* celestra.noConflict(): celestra object */
 function noConflict () { window.CEL = celestra.__prevCEL__; return celestra; }
@@ -1999,6 +2041,8 @@ const _call = Function.prototype.call.bind(Function.prototype.call);
 
 const _forEach = Function.prototype.call.bind(Array.prototype.forEach);
 
+const _map = Function.prototype.call.bind(Array.prototype.map);
+
 const _slice = Function.prototype.call.bind(Array.prototype.slice);
 
 var celestra = {
@@ -2009,6 +2053,7 @@ var celestra = {
   _apply: _apply,
   _call: _call,
   _forEach: _forEach,
+  _map: _map,
   _slice: _slice,
   /** Core API **/
   BASE16: BASE16,
@@ -2096,6 +2141,7 @@ var celestra = {
   domScrollToTop: domScrollToTop,
   domScrollToBottom: domScrollToBottom,
   domScrollToElement: domScrollToElement,
+  domClear: domClear,
   /** AJAX API **/
   getText: getText,
   getJson: getJson,

@@ -215,7 +215,7 @@ CUT.isNotEqual(
 (function(){
 "use strict";
 
-/* Celestra v5.6.5 testcases */
+/* Celestra v5.6.6 testcases */
 
 /* Not auto tested functions */
 CUT.addElement("hr");
@@ -625,9 +625,11 @@ CUT.isEqual("javaHash();",
     + " / " + CEL.b64Decode(CEL.b64Encode(CEL.javaHash(kayleeStr, false)))
 );
 
-var FPObject = {a: 2, b: 3, c: 4};
+CUT.isEqual("sizeIn();", 5, CEL.sizeIn({"a": 1, "b": 2, "c": 3,
+  [Symbol.iterator]: function () {}, [Symbol.toPrimitive]: function () {}
+}));
 
-CUT.isEqual("sizeIn();", "" + CEL.sizeIn(FPObject) + CEL.sizeIn({}), "30");
+var FPObject = {a: 2, b: 3, c: 4};
 
 var forInStr = "";
 CEL.forIn(FPObject, (e) => forInStr += (e*2) );
@@ -816,37 +818,46 @@ CUT.isEqual("domSetCSS(); properties object and domGetCSS() object; (350px)- "
 CEL.domHide(domTestElement);
 CUT.isEqual("domHide();", "none", CEL.domGetCSS(domTestElement, "display"));
 
+
+// domShow();
 CEL.domShow(domTestElement);
 CUT.isEqual("domShow();", "block", CEL.domGetCSS(domTestElement, "display"));
-
 CEL.domHide(domTestElement);
 CEL.domShow(domTestElement, "inline-block");
 CUT.isEqual("domShow(); inline-block", "inline-block",
   CEL.domGetCSS(domTestElement, "display")
 );
 
+
+// domToggle();
 CEL.domToggle(domTestElement);
 CUT.isEqual("domToggle(); hide","none",CEL.domGetCSS(domTestElement,"display"));
-
 CEL.domToggle(domTestElement);
 CUT.isEqual("domToggle(); show", "block",
   CEL.domGetCSS(domTestElement, "display")
 );
-
 CEL.domToggle(domTestElement, "inline-block");
 CUT.isEqual("domToggle(); hide inline-block", "none",
   CEL.domGetCSS(domTestElement, "display")
 );
 
+
+// domHide();
 CEL.domToggle(domTestElement, "inline-block");
 CUT.isEqual("domHide(); show inline-block", "inline-block",
   CEL.domGetCSS(domTestElement, "display")
 );
 
+
+// domIsHidden();
 CEL.domShow(domTestElement);
 CUT.isFalse("domIsHidden(); false", CEL.domIsHidden(domTestElement));
+
+
+// domIsHidden();
 CEL.domHide(domTestElement);
 CUT.isTrue("domIsHidden(); true", CEL.domIsHidden(domTestElement));
+
 
 CUT.addElement(
   CEL.domCreate("div", {"id": "dsDiv"},
@@ -887,6 +898,12 @@ CUT.isTrue("domSiblingsRight();", (
   )
 );
 CEL.qs("#dsDiv").remove();
+
+
+// domClear();
+var domClearElement = CEL.domToElement("<div><p>1</p><p>2</p><p>3</p>div>");
+CEL.domClear(domClearElement);
+CUT.isEqual("domClear();", 0, domClearElement.children.length);
 
 
 /* Collections API */
@@ -2833,6 +2850,8 @@ var float16str = ""
 CUT.isEqual("isFloat16();", float16str, "11111110000000");
 CUT.log("<code>\"" + float16str + "\"</code>");
 
+
+// signbit();
 CUT.isTrue(
   "signbit();",
   !CEL.signbit("str") && !CEL.signbit("5") && CEL.signbit("-5")
@@ -2843,281 +2862,351 @@ CUT.isTrue(
     && !CEL.signbit(+Infinity)
 );
 
+
 // clamp();
-CUT.isEqual("clamp - try 1", CEL.clamp(3, 2, 5), 3);
-CUT.isEqual("clamp - try 2", CEL.clamp(-2.5, 3.1, 5), 3.1);
-CUT.isEqual("clamp - try 3", CEL.clamp(8, 3, 5), 5);
-CUT.isEqual("clamp - try without parameter", CEL.clamp(), undefined);
+try { CEL.clamp(15, 10, NaN); } catch (e) {
+  CUT.isTrue("clamp(); 01", Error.isError(e));
+}
+try { CEL.clamp(15, 10, NaN); } catch (e) {
+  CUT.isTrue("clamp(); 02", Error.isError(e));
+}
+try { CEL.clamp(15, Infinity, -Infinity) } catch (e) {
+  CUT.isTrue("clamp(); 03", Error.isError(e));
+}
+try { CEL.clamp(15, 10, 5); } catch (e) {
+  CUT.isTrue("clamp(); 04", Error.isError(e));
+}
+CUT.isNotEqual("clamp(); 05", NaN, CEL.clamp(NaN, 10,   15));
+CUT.isEqual("clamp(); 06",    0,   CEL.clamp(15,  -0,   0));
+CUT.isEqual("clamp(); 07",    -0,  CEL.clamp(0,   -0,   15));
+CUT.isEqual("clamp(); 08",    15,  CEL.clamp(10,  15,   20));
+CUT.isEqual("clamp(); 09",    -0,  CEL.clamp(-0,  -10,  0));
+CUT.isEqual("clamp(); 10",    -0,  CEL.clamp(0,   -10,  -0));
+CUT.isEqual("clamp(); 11",    20,  CEL.clamp(25,   10,  20));
+CUT.isEqual("clamp(); 12",    15,  CEL.clamp(15,   10,  20));
+CUT.isEqual("clamp(); 13",    +0,  CEL.clamp(15,   -0n, 0));
+CUT.isEqual("clamp(); 14",    -0,  CEL.clamp(0n,   -0,  15));
+CUT.isEqual("clamp(); 15",    15,  CEL.clamp(10,   15,  20n));
+CUT.isEqual("clamp(); 16",    0n,  CEL.clamp(-0n,  -10, 0));
+CUT.isEqual("clamp(); 17",    0,   CEL.clamp(0,    -10, -0n));
+CUT.isEqual("clamp(); 18",    20,  CEL.clamp(25,   10n, 20));
+CUT.isEqual("clamp(); 19",    15n, CEL.clamp(15n,  10n, 20n));
+
 
 // minmax();
-CUT.isEqual("minmax - try 1", CEL.minmax(3, 2, 5), 3);
-CUT.isEqual("minmax - try 2", CEL.minmax(-2.5, 3.1, 5), 3.1);
-CUT.isEqual("minmax - try 3", CEL.minmax(8, 3, 5), 5);
-CUT.isEqual("minmax - try without parameter", CEL.minmax(), undefined);
+try { CEL.minmax(15, 10, NaN); } catch (e) {
+  CUT.isTrue("minmax(); 01", Error.isError(e));
+}
+try { CEL.minmax(15, 10, NaN); } catch (e) {
+  CUT.isTrue("minmax(); 02", Error.isError(e));
+}
+try { CEL.minmax(15, Infinity, -Infinity) } catch (e) {
+  CUT.isTrue("minmax(); 03", Error.isError(e));
+}
+try { CEL.minmax(15, 10, 5); } catch (e) { 
+  CUT.isTrue("minmax(); 04", Error.isError(e));
+}
+CUT.isNotEqual("minmax(); 05", NaN, CEL.minmax(NaN, 10,  15));
+CUT.isEqual("minmax(); 06",    0,   CEL.minmax(15,  -0,  0));
+CUT.isEqual("minmax(); 07",    -0,  CEL.minmax(0,   -0,  15));
+CUT.isEqual("minmax(); 08",    15,  CEL.minmax(10,  15,  20));
+CUT.isEqual("minmax(); 09",    -0,  CEL.minmax(-0,  -10, 0));
+CUT.isEqual("minmax(); 10",    -0,  CEL.minmax(0,   -10, -0));
+CUT.isEqual("minmax(); 11",    20,  CEL.minmax(25,  10,  20));
+CUT.isEqual("minmax(); 12",    15,  CEL.minmax(15,  10,  20));
+CUT.isEqual("minmax(); 13",    +0,  CEL.minmax(15,  -0n, 0));
+CUT.isEqual("minmax(); 14",    -0,  CEL.minmax(0n,  -0,  15));
+CUT.isEqual("minmax(); 15",    15,  CEL.minmax(10,  15,  20n));
+CUT.isEqual("minmax(); 16",    0n,  CEL.minmax(-0n, -10, 0));
+CUT.isEqual("minmax(); 17",    0,   CEL.minmax(0,   -10, -0n));
+CUT.isEqual("minmax(); 18",    20,  CEL.minmax(25,  10n, 20));
+CUT.isEqual("minmax(); 19",    15n, CEL.minmax(15n, 10n, 20n));
+
 
 // product();
-CUT.isEqual("product - try 1", CEL.product(3), 3);
-CUT.isEqual("product - try 2", CEL.product(3, 5), 15);
-CUT.isEqual("product - try 3", CEL.product(3.14, -5), -15.700000000000001);
-CUT.isEqual("product - try with many parameter types",
+CUT.isEqual("product(); - 1", CEL.product(3), 3);
+CUT.isEqual("product(); - 2", CEL.product(3, 5), 15);
+CUT.isEqual("product(); - 3", CEL.product(3.14, -5), -15.700000000000001);
+CUT.isEqual("product(); - with many parameter types",
   "" + CEL.product(true, 3.14, -9, 'Arthur Dent'), "NaN"
 );
-CUT.isEqual("product - try without parameter", CEL.product(), undefined);
+CUT.isEqual("product(); - try without parameter", CEL.product(), undefined);
+
 
 // sum();
-CUT.isEqual("SUM - try 1", CEL.sum(3), 3);
-CUT.isEqual("SUM - try 2", CEL.sum(3, 5), 8);
-CUT.isEqual("SUM - try 3", CEL.sum(3.14, -5), -1.8599999999999999);
-CUT.isEqual("SUM - try with many parameter types",
+CUT.isEqual("sum(); - 1", CEL.sum(3), 3);
+CUT.isEqual("sum(); - 2", CEL.sum(3, 5), 8);
+CUT.isEqual("sum(); - 3", CEL.sum(3.14, -5), -1.8599999999999999);
+CUT.isEqual("sum(); - 4 - with many parameter types",
   CEL.sum(true, 3.14, -9, 'Arthur Dent'), "-4.859999999999999Arthur Dent"
 );
-CUT.isEqual("SUM - try without parameter", CEL.sum(), undefined);
+CUT.isEqual("sum(); - 5 - without parameter", CEL.sum(), undefined);
+
 
 // avg();
-CUT.isEqual("AVG1", CEL.avg(2, 4, 3), 3);
-CUT.isEqual("AVG2", CEL.avg(2, 4, 3.14), 3.046666666666667);
-CUT.isEqual("AVG3", CEL.avg(2, -8, 3.14), -0.9533333333333333);
-CUT.isEqual("AVG4", CEL.avg(5), 5);
-CUT.isEqual("AVG5", "" + CEL.avg(), "NaN");
+CUT.isEqual("avg(); 1", CEL.avg(2, 4, 3), 3);
+CUT.isEqual("avg(); 2", CEL.avg(2, 4, 3.14), 3.046666666666667);
+CUT.isEqual("avg(); 3", CEL.avg(2, -8, 3.14), -0.9533333333333333);
+CUT.isEqual("avg(); 4", CEL.avg(5), 5);
+CUT.isEqual("avg(); 5", "" + CEL.avg(), "NaN");
+
 
 // isEven();
-CUT.isEqual("isEven1", CEL.isEven(8), true);
-CUT.isEqual("isEven2", CEL.isEven(9), false);
-CUT.isEqual("isEven3", CEL.isEven(8.5), false);
-CUT.isEqual("isEven4", CEL.isEven(9.5), false);
-CUT.isEqual("isEven5", CEL.isEven("Arthur Dent"), false);
+CUT.isEqual("isEven(); 1", CEL.isEven(8), true);
+CUT.isEqual("isEven(); 2", CEL.isEven(9), false);
+CUT.isEqual("isEven(); 3", CEL.isEven(8.5), false);
+CUT.isEqual("isEven(); 4", CEL.isEven(9.5), false);
+CUT.isEqual("isEven(); 5", CEL.isEven("Arthur Dent"), false);
+
 
 // isOdd();
-CUT.isEqual("isOdd2", CEL.isOdd(9), true);
-CUT.isEqual("isOdd1", CEL.isOdd(8), false);
-CUT.isEqual("isOdd3", CEL.isOdd(8.5), true);
-CUT.isEqual("isOdd4", CEL.isOdd(9.5), true);
-CUT.isEqual("isOdd5", CEL.isOdd("Arthur Dent"), false);
+CUT.isEqual("isOdd(); 2", CEL.isOdd(9), true);
+CUT.isEqual("isOdd(); 1", CEL.isOdd(8), false);
+CUT.isEqual("isOdd(); 3", CEL.isOdd(8.5), true);
+CUT.isEqual("isOdd(); 4", CEL.isOdd(9.5), true);
+CUT.isEqual("isOdd(); 5", CEL.isOdd("Arthur Dent"), false);
+
 
 // toInt8();
-CUT.isEqual("toInt8 1", CEL.toInt8(9), 9);
-CUT.isEqual("toInt8 2", CEL.toInt8(-5), -5);
-CUT.isEqual("toInt8 3", CEL.toInt8(8.5), 8);
-CUT.isEqual("toInt8 4", CEL.toInt8(-8.5), -8);
-CUT.isEqual("toInt8 5", CEL.toInt8(130), 127);
-CUT.isEqual("toInt8 6", CEL.toInt8(-130), -128);
-CUT.isEqual("toInt8 7", CEL.toInt8("Arthur Dent"), 0);
-CUT.isEqual("toInt8 8", CEL.toInt8(Infinity), 127);
-CUT.isEqual("toInt8 9", CEL.toInt8("-Infinity"), -128);
+CUT.isEqual("toInt8(); 1", CEL.toInt8(9), 9);
+CUT.isEqual("toInt8(); 2", CEL.toInt8(-5), -5);
+CUT.isEqual("toInt8(); 3", CEL.toInt8(8.5), 8);
+CUT.isEqual("toInt8(); 4", CEL.toInt8(-8.5), -8);
+CUT.isEqual("toInt8(); 5", CEL.toInt8(130), 127);
+CUT.isEqual("toInt8(); 6", CEL.toInt8(-130), -128);
+CUT.isEqual("toInt8(); 7", CEL.toInt8("Arthur Dent"), 0);
+CUT.isEqual("toInt8(); 8", CEL.toInt8(Infinity), 127);
+CUT.isEqual("toInt8(); 9", CEL.toInt8("-Infinity"), -128);
+
 
 // toUInt8();
-CUT.isEqual("toUInt8 1", CEL.toUInt8(9), 9);
-CUT.isEqual("toUInt8 2", CEL.toUInt8(-5), 0);
-CUT.isEqual("toUInt8 3", CEL.toUInt8(8.5), 8);
-CUT.isEqual("toUInt8 4", CEL.toUInt8(-8.5), 0);
-CUT.isEqual("toUInt8 5", CEL.toUInt8(1130), 255);
-CUT.isEqual("toUInt8 6", CEL.toUInt8("Arthur Dent"), 0);
-CUT.isEqual("toUInt8 7", CEL.toUInt8(Infinity), 255);
-CUT.isEqual("toUInt8 8", CEL.toUInt8("-Infinity"), 0);
+CUT.isEqual("toUInt8(); 1", CEL.toUInt8(9), 9);
+CUT.isEqual("toUInt8(); 2", CEL.toUInt8(-5), 0);
+CUT.isEqual("toUInt8(); 3", CEL.toUInt8(8.5), 8);
+CUT.isEqual("toUInt8(); 4", CEL.toUInt8(-8.5), 0);
+CUT.isEqual("toUInt8(); 5", CEL.toUInt8(1130), 255);
+CUT.isEqual("toUInt8(); 6", CEL.toUInt8("Arthur Dent"), 0);
+CUT.isEqual("toUInt8(); 7", CEL.toUInt8(Infinity), 255);
+CUT.isEqual("toUInt8(); 8", CEL.toUInt8("-Infinity"), 0);
+
 
 // toInt16();
-CUT.isEqual("toInt16 1", CEL.toInt16(199), 199);
-CUT.isEqual("toInt16 2", CEL.toInt16(-1845), -1845);
-CUT.isEqual("toInt16 3", CEL.toInt16(8.5), 8);
-CUT.isEqual("toInt16 4", CEL.toInt16(-8.5), -8);
-CUT.isEqual("toInt16 5", CEL.toInt16(111130), 32767);
-CUT.isEqual("toInt16 6", CEL.toInt16(-111130), -32768);
-CUT.isEqual("toInt16 7", CEL.toInt16("Arthur Dent"), 0);
-CUT.isEqual("toInt16 8", CEL.toInt16(Infinity), 32767);
-CUT.isEqual("toInt16 9", CEL.toInt16("-Infinity"), -32768);
+CUT.isEqual("toInt16(); 1", CEL.toInt16(199), 199);
+CUT.isEqual("toInt16(); 2", CEL.toInt16(-1845), -1845);
+CUT.isEqual("toInt16(); 3", CEL.toInt16(8.5), 8);
+CUT.isEqual("toInt16(); 4", CEL.toInt16(-8.5), -8);
+CUT.isEqual("toInt16(); 5", CEL.toInt16(111130), 32767);
+CUT.isEqual("toInt16(); 6", CEL.toInt16(-111130), -32768);
+CUT.isEqual("toInt16(); 7", CEL.toInt16("Arthur Dent"), 0);
+CUT.isEqual("toInt16(); 8", CEL.toInt16(Infinity), 32767);
+CUT.isEqual("toInt16(); 9", CEL.toInt16("-Infinity"), -32768);
+
 
 // toUInt16();
-CUT.isEqual("toUInt16 1", CEL.toUInt16(199), 199);
-CUT.isEqual("toUInt16 2", CEL.toUInt16(-1845), 0);
-CUT.isEqual("toUInt16 3", CEL.toUInt16(8.5), 8);
-CUT.isEqual("toUInt16 4", CEL.toUInt16(-8.5), 0);
-CUT.isEqual("toUInt16 5", CEL.toUInt16(111130), 65535);
-CUT.isEqual("toUInt16 6", CEL.toUInt16("Arthur Dent"), 0);
-CUT.isEqual("toUInt16 7", CEL.toUInt16(Infinity), 65535);
-CUT.isEqual("toUInt16 8", CEL.toUInt16("-Infinity"), 0);
+CUT.isEqual("toUInt16(); 1", CEL.toUInt16(199), 199);
+CUT.isEqual("toUInt16(); 2", CEL.toUInt16(-1845), 0);
+CUT.isEqual("toUInt16(); 3", CEL.toUInt16(8.5), 8);
+CUT.isEqual("toUInt16(); 4", CEL.toUInt16(-8.5), 0);
+CUT.isEqual("toUInt16(); 5", CEL.toUInt16(111130), 65535);
+CUT.isEqual("toUInt16(); 6", CEL.toUInt16("Arthur Dent"), 0);
+CUT.isEqual("toUInt16(); 7", CEL.toUInt16(Infinity), 65535);
+CUT.isEqual("toUInt16(); 8", CEL.toUInt16("-Infinity"), 0);
+
 
 // toInt32();
-CUT.isEqual("toInt32 1", CEL.toInt32(199), 199);
-CUT.isEqual("toInt32 2", CEL.toInt32(-1845), -1845);
-CUT.isEqual("toInt32 3", CEL.toInt32(8.5), 8);
-CUT.isEqual("toInt32 4", CEL.toInt32(-8.5), -8);
-CUT.isEqual("toInt32 5", CEL.toInt32(2147483649), 2147483647);
-CUT.isEqual("toInt32 6", CEL.toInt32(-3147483649), -2147483648);
-CUT.isEqual("toInt32 7", CEL.toInt32("Arthur Dent"), 0);
-CUT.isEqual("toInt32 8", CEL.toInt32(Infinity), 2147483647);
-CUT.isEqual("toInt32 9", CEL.toInt32("-Infinity"), -2147483648);
+CUT.isEqual("toInt32(); 1", CEL.toInt32(199), 199);
+CUT.isEqual("toInt32(); 2", CEL.toInt32(-1845), -1845);
+CUT.isEqual("toInt32(); 3", CEL.toInt32(8.5), 8);
+CUT.isEqual("toInt32(); 4", CEL.toInt32(-8.5), -8);
+CUT.isEqual("toInt32(); 5", CEL.toInt32(2147483649), 2147483647);
+CUT.isEqual("toInt32(); 6", CEL.toInt32(-3147483649), -2147483648);
+CUT.isEqual("toInt32(); 7", CEL.toInt32("Arthur Dent"), 0);
+CUT.isEqual("toInt32(); 8", CEL.toInt32(Infinity), 2147483647);
+CUT.isEqual("toInt32(); 9", CEL.toInt32("-Infinity"), -2147483648);
+
 
 // toUInt32();
-CUT.isEqual("toUInt32 1", CEL.toUInt32(199), 199);
-CUT.isEqual("toUInt32 2", CEL.toUInt32(-1845), 0);
-CUT.isEqual("toUInt32 3", CEL.toUInt32(8.5), 8);
-CUT.isEqual("toUInt32 4", CEL.toUInt32(-8.5), 0);
-CUT.isEqual("toUInt32 5", CEL.toUInt32(4294967297), 4294967295);
-CUT.isEqual("toUInt32 6", CEL.toUInt32("Arthur Dent"), 0);
-CUT.isEqual("toUInt32 7", CEL.toUInt32(Infinity), 4294967295);
-CUT.isEqual("toUInt32 8", CEL.toUInt32("-Infinity"), 0);
+CUT.isEqual("toUInt32(); 1", CEL.toUInt32(199), 199);
+CUT.isEqual("toUInt32(); 2", CEL.toUInt32(-1845), 0);
+CUT.isEqual("toUInt32(); 3", CEL.toUInt32(8.5), 8);
+CUT.isEqual("toUInt32(); 4", CEL.toUInt32(-8.5), 0);
+CUT.isEqual("toUInt32(); 5", CEL.toUInt32(4294967297), 4294967295);
+CUT.isEqual("toUInt32(); 6", CEL.toUInt32("Arthur Dent"), 0);
+CUT.isEqual("toUInt32(); 7", CEL.toUInt32(Infinity), 4294967295);
+CUT.isEqual("toUInt32(); 8", CEL.toUInt32("-Infinity"), 0);
+
 
 // toBigInt64();
-CUT.isEqual("toBigInt64 1", CEL.toBigInt64(199), 199n);
-CUT.isEqual("toBigInt64 2", CEL.toBigInt64(-1845), -1845n);
-CUT.isEqual("toBigInt64 3", CEL.toBigInt64(8.5), 8n);
-CUT.isEqual("toBigInt64 4", CEL.toBigInt64(-8.5), -8n);
-CUT.isEqual("toBigInt64 5", CEL.toBigInt64(9223372036854775809),
+CUT.isEqual("toBigInt64(); 1", CEL.toBigInt64(199), 199n);
+CUT.isEqual("toBigInt64(); 2", CEL.toBigInt64(-1845), -1845n);
+CUT.isEqual("toBigInt64(); 3", CEL.toBigInt64(8.5), 8n);
+CUT.isEqual("toBigInt64(); 4", CEL.toBigInt64(-8.5), -8n);
+CUT.isEqual("toBigInt64(); 5", CEL.toBigInt64(9223372036854775809),
   9223372036854775808n
 );
-CUT.isEqual("toBigInt64 6", CEL.toBigInt64("Arthur Dent"), 0n);
-CUT.isEqual("toBigInt64 7", CEL.toBigInt64(Infinity), 9223372036854775808n);
-CUT.isEqual("toBigInt64 8", CEL.toBigInt64("-Infinity"), -9223372036854775808n);
-CUT.isEqual("toBigInt64 9", CEL.toBigInt64(18446744073709551617),
+CUT.isEqual("toBigInt64(); 6", CEL.toBigInt64("Arthur Dent"), 0n);
+CUT.isEqual("toBigInt64(); 7", CEL.toBigInt64(Infinity), 9223372036854775808n);
+CUT.isEqual("toBigInt64(); 8", CEL.toBigInt64("-Infinity"), -9223372036854775808n);
+CUT.isEqual("toBigInt64(); 9", CEL.toBigInt64(18446744073709551617),
   9223372036854775808n
 );
-CUT.isEqual("toBigInt64 10", CEL.toBigInt64(-18446744073709551617),
+CUT.isEqual("toBigInt64(); 10", CEL.toBigInt64(-18446744073709551617),
   -9223372036854775808n
 );
 
+
 // toBigUInt64();
-CUT.isEqual("toBigUInt64 1", CEL.toBigUInt64(199), 199n);
-CUT.isEqual("toBigUInt64 2", CEL.toBigUInt64(-1845), 0n);
-CUT.isEqual("toBigUInt64 3", CEL.toBigUInt64(8.5), 8n);
-CUT.isEqual("toBigUInt64 4", CEL.toBigUInt64(-8.5), 0n);
-CUT.isEqual("toBigUInt64 5", CEL.toBigUInt64(18446744073709551617),
+CUT.isEqual("toBigUInt64(); 1", CEL.toBigUInt64(199), 199n);
+CUT.isEqual("toBigUInt64(); 2", CEL.toBigUInt64(-1845), 0n);
+CUT.isEqual("toBigUInt64(); 3", CEL.toBigUInt64(8.5), 8n);
+CUT.isEqual("toBigUInt64(); 4", CEL.toBigUInt64(-8.5), 0n);
+CUT.isEqual("toBigUInt64(); 5", CEL.toBigUInt64(18446744073709551617),
   18446744073709551616n
 );
-CUT.isEqual("toBigUInt64 6", CEL.toBigUInt64("Arthur Dent"), 0n);
-CUT.isEqual("toBigUInt64 7", CEL.toBigUInt64(Infinity), 18446744073709551616n);
-CUT.isEqual("toBigUInt64 8", CEL.toBigUInt64("-Infinity"), 0n);
-CUT.isEqual("toBigUInt64 9", CEL.toBigUInt64(-9223372036854775808n), 0n);
+CUT.isEqual("toBigUInt64(); 6", CEL.toBigUInt64("Arthur Dent"), 0n);
+CUT.isEqual("toBigUInt64(); 7", CEL.toBigUInt64(Infinity), 18446744073709551616n);
+CUT.isEqual("toBigUInt64(); 8", CEL.toBigUInt64("-Infinity"), 0n);
+CUT.isEqual("toBigUInt64(); 9", CEL.toBigUInt64(-9223372036854775808n), 0n);
+
 
 // toFloat32();
-CUT.isEqual("toFloat32 1", CEL.toFloat32(199), 199);
-CUT.isEqual("toFloat32 2", CEL.toFloat32(-1845), -1845);
-CUT.isEqual("toFloat32 3", CEL.toFloat32(8.5), 8.5);
-CUT.isEqual("toFloat32 4", CEL.toFloat32(-8.5), -8.5);
-CUT.isEqual("toFloat32 5", CEL.toFloat32(-3.4e39), -3.4e+38);
-CUT.isEqual("toFloat32 6", CEL.toFloat32(3.4e39), +3.4e38);
-CUT.isEqual("toFloat32 7", CEL.toFloat32("Arthur Dent"), 0);
-CUT.isEqual("toFloat32 8", CEL.toFloat32(Infinity), 3.4e+38);
-CUT.isEqual("toFloat32 9", CEL.toFloat32("-Infinity"), -3.4e+38);
+CUT.isEqual("toFloat32(); 1", CEL.toFloat32(199), 199);
+CUT.isEqual("toFloat32(); 2", CEL.toFloat32(-1845), -1845);
+CUT.isEqual("toFloat32(); 3", CEL.toFloat32(8.5), 8.5);
+CUT.isEqual("toFloat32(); 4", CEL.toFloat32(-8.5), -8.5);
+CUT.isEqual("toFloat32(); 5", CEL.toFloat32(-3.4e39), -3.4e+38);
+CUT.isEqual("toFloat32(); 6", CEL.toFloat32(3.4e39), +3.4e38);
+CUT.isEqual("toFloat32(); 7", CEL.toFloat32("Arthur Dent"), 0);
+CUT.isEqual("toFloat32(); 8", CEL.toFloat32(Infinity), 3.4e+38);
+CUT.isEqual("toFloat32(); 9", CEL.toFloat32("-Infinity"), -3.4e+38);
+
 
 // isInt8();
-CUT.isEqual("isInt8 1", CEL.isInt8(34), true);
-CUT.isEqual("isInt8 2", CEL.isInt8(-34), true);
-CUT.isEqual("isInt8 3", CEL.isInt8(-129), false);
-CUT.isEqual("isInt8 4", CEL.isInt8(128), false);
-CUT.isEqual("isInt8 5", CEL.isInt8(34.5), false);
-CUT.isEqual("isInt8 6", CEL.isInt8(-34.5), false);
-CUT.isEqual("isInt8 7", CEL.isInt8("Arthur Dent"), false);
-CUT.isEqual("isInt8 8", CEL.isInt8(true), false);
-CUT.isEqual("isInt8 9", CEL.isInt8(false), false);
-CUT.isEqual("isInt8 10", CEL.isInt8(Infinity), false);
-CUT.isEqual("isInt8 11", CEL.isInt8(-Infinity), false);
-CUT.isEqual("isInt8 12", CEL.isInt8([]), false);
-CUT.isEqual("isInt8 13", CEL.isInt8({}), false);
+CUT.isEqual("isInt8(); 01", CEL.isInt8(34), true);
+CUT.isEqual("isInt8(); 02", CEL.isInt8(-34), true);
+CUT.isEqual("isInt8(); 03", CEL.isInt8(-129), false);
+CUT.isEqual("isInt8(); 04", CEL.isInt8(128), false);
+CUT.isEqual("isInt8(); 05", CEL.isInt8(34.5), false);
+CUT.isEqual("isInt8(); 06", CEL.isInt8(-34.5), false);
+CUT.isEqual("isInt8(); 07", CEL.isInt8("Arthur Dent"), false);
+CUT.isEqual("isInt8(); 08", CEL.isInt8(true), false);
+CUT.isEqual("isInt8(); 09", CEL.isInt8(false), false);
+CUT.isEqual("isInt8(); 10", CEL.isInt8(Infinity), false);
+CUT.isEqual("isInt8(); 11", CEL.isInt8(-Infinity), false);
+CUT.isEqual("isInt8(); 12", CEL.isInt8([]), false);
+CUT.isEqual("isInt8(); 13", CEL.isInt8({}), false);
+
 
 // isUInt8();
-CUT.isEqual("isUInt8 1", CEL.isUInt8(34), true);
-CUT.isEqual("isUInt8 2", CEL.isUInt8(-34), false);
-CUT.isEqual("isUInt8 3", CEL.isUInt8(-1), false);
-CUT.isEqual("isUInt8 4", CEL.isUInt8(256), false);
-CUT.isEqual("isUInt8 5", CEL.isUInt8(34.5), false);
-CUT.isEqual("isUInt8 6", CEL.isUInt8(-34.5), false);
-CUT.isEqual("isUInt8 7", CEL.isUInt8("Arthur Dent"), false);
-CUT.isEqual("isUInt8 8", CEL.isUInt8(true), false);
-CUT.isEqual("isUInt8 9", CEL.isUInt8(false), false);
-CUT.isEqual("isUInt8 10", CEL.isUInt8(Infinity), false);
-CUT.isEqual("isUInt8 11", CEL.isUInt8(-Infinity), false);
-CUT.isEqual("isUInt8 12", CEL.isUInt8([]), false);
-CUT.isEqual("isUInt8 13", CEL.isUInt8({}), false);
+CUT.isEqual("isUInt8(); 01", CEL.isUInt8(34), true);
+CUT.isEqual("isUInt8(); 02", CEL.isUInt8(-34), false);
+CUT.isEqual("isUInt8(); 03", CEL.isUInt8(-1), false);
+CUT.isEqual("isUInt8(); 04", CEL.isUInt8(256), false);
+CUT.isEqual("isUInt8(); 05", CEL.isUInt8(34.5), false);
+CUT.isEqual("isUInt8(); 06", CEL.isUInt8(-34.5), false);
+CUT.isEqual("isUInt8(); 07", CEL.isUInt8("Arthur Dent"), false);
+CUT.isEqual("isUInt8(); 08", CEL.isUInt8(true), false);
+CUT.isEqual("isUInt8(); 09", CEL.isUInt8(false), false);
+CUT.isEqual("isUInt8(); 10", CEL.isUInt8(Infinity), false);
+CUT.isEqual("isUInt8(); 11", CEL.isUInt8(-Infinity), false);
+CUT.isEqual("isUInt8(); 12", CEL.isUInt8([]), false);
+CUT.isEqual("isUInt8(); 13", CEL.isUInt8({}), false);
+
 
 // isInt16();
-CUT.isEqual("isInt16 1", CEL.isInt16(34), true);
-CUT.isEqual("isInt16 2", CEL.isInt16(-34), true);
-CUT.isEqual("isInt16 3", CEL.isInt16(-32769), false);
-CUT.isEqual("isInt16 4", CEL.isInt16(32768), false);
-CUT.isEqual("isInt16 5", CEL.isInt16(34.5), false);
-CUT.isEqual("isInt16 6", CEL.isInt16(-34.5), false);
-CUT.isEqual("isInt16 7", CEL.isInt16("Arthur Dent"), false);
-CUT.isEqual("isInt16 8", CEL.isInt16(true), false);
-CUT.isEqual("isInt16 9", CEL.isInt16(false), false);
-CUT.isEqual("isInt16 10", CEL.isInt16(Infinity), false);
-CUT.isEqual("isInt16 11", CEL.isInt16(-Infinity), false);
-CUT.isEqual("isInt16 12", CEL.isInt16([]), false);
-CUT.isEqual("isInt16 13", CEL.isInt16({}), false);
+CUT.isEqual("isInt16(); 01", CEL.isInt16(34), true);
+CUT.isEqual("isInt16(); 02", CEL.isInt16(-34), true);
+CUT.isEqual("isInt16(); 03", CEL.isInt16(-32769), false);
+CUT.isEqual("isInt16(); 04", CEL.isInt16(32768), false);
+CUT.isEqual("isInt16(); 05", CEL.isInt16(34.5), false);
+CUT.isEqual("isInt16(); 06", CEL.isInt16(-34.5), false);
+CUT.isEqual("isInt16(); 07", CEL.isInt16("Arthur Dent"), false);
+CUT.isEqual("isInt16(); 08", CEL.isInt16(true), false);
+CUT.isEqual("isInt16(); 09", CEL.isInt16(false), false);
+CUT.isEqual("isInt16(); 10", CEL.isInt16(Infinity), false);
+CUT.isEqual("isInt16(); 11", CEL.isInt16(-Infinity), false);
+CUT.isEqual("isInt16(); 12", CEL.isInt16([]), false);
+CUT.isEqual("isInt16(); 13", CEL.isInt16({}), false);
+
 
 // isUInt16();
-CUT.isEqual("isUInt16 1", CEL.isUInt16(34), true);
-CUT.isEqual("isUInt16 2", CEL.isUInt16(-34), false);
-CUT.isEqual("isUInt16 3", CEL.isUInt16(-1), false);
-CUT.isEqual("isUInt16 4", CEL.isUInt16(65536), false);
-CUT.isEqual("isUInt16 5", CEL.isUInt16(34.5), false);
-CUT.isEqual("isUInt16 6", CEL.isUInt16(-34.5), false);
-CUT.isEqual("isUInt16 7", CEL.isUInt16("Arthur Dent"), false);
-CUT.isEqual("isUInt16 8", CEL.isUInt16(true), false);
-CUT.isEqual("isUInt16 9", CEL.isUInt16(false), false);
-CUT.isEqual("isUInt16 10", CEL.isUInt16(Infinity), false);
-CUT.isEqual("isUInt16 11", CEL.isUInt16(-Infinity), false);
-CUT.isEqual("isUInt16 12", CEL.isUInt16([]), false);
-CUT.isEqual("isUInt16 13", CEL.isUInt16({}), false);
+CUT.isEqual("isUInt16(); 01", CEL.isUInt16(34), true);
+CUT.isEqual("isUInt16(); 02", CEL.isUInt16(-34), false);
+CUT.isEqual("isUInt16(); 03", CEL.isUInt16(-1), false);
+CUT.isEqual("isUInt16(); 04", CEL.isUInt16(65536), false);
+CUT.isEqual("isUInt16(); 05", CEL.isUInt16(34.5), false);
+CUT.isEqual("isUInt16(); 06", CEL.isUInt16(-34.5), false);
+CUT.isEqual("isUInt16(); 07", CEL.isUInt16("Arthur Dent"), false);
+CUT.isEqual("isUInt16(); 08", CEL.isUInt16(true), false);
+CUT.isEqual("isUInt16(); 09", CEL.isUInt16(false), false);
+CUT.isEqual("isUInt16(); 10", CEL.isUInt16(Infinity), false);
+CUT.isEqual("isUInt16(); 11", CEL.isUInt16(-Infinity), false);
+CUT.isEqual("isUInt16(); 12", CEL.isUInt16([]), false);
+CUT.isEqual("isUInt16(); 13", CEL.isUInt16({}), false);
+
 
 // isInt32();
-CUT.isEqual("isInt32 1", CEL.isInt32(34), true);
-CUT.isEqual("isInt32 2", CEL.isInt32(-34), true);
-CUT.isEqual("isInt32 3", CEL.isInt32(-2147483649), false);
-CUT.isEqual("isInt32 4", CEL.isInt32(2147483648), false);
-CUT.isEqual("isInt32 5", CEL.isInt32(34.5), false);
-CUT.isEqual("isInt32 6", CEL.isInt32(-34.5), false);
-CUT.isEqual("isInt32 7", CEL.isInt32("Arthur Dent"), false);
-CUT.isEqual("isInt32 8", CEL.isInt32(true), false);
-CUT.isEqual("isInt32 9", CEL.isInt32(false), false);
-CUT.isEqual("isInt32 10", CEL.isInt32(Infinity), false);
-CUT.isEqual("isInt32 11", CEL.isInt32(-Infinity), false);
-CUT.isEqual("isInt32 12", CEL.isInt32([]), false);
-CUT.isEqual("isInt32 13", CEL.isInt32({}), false);
+CUT.isEqual("isInt32(); 01", CEL.isInt32(34), true);
+CUT.isEqual("isInt32(); 02", CEL.isInt32(-34), true);
+CUT.isEqual("isInt32(); 03", CEL.isInt32(-2147483649), false);
+CUT.isEqual("isInt32(); 04", CEL.isInt32(2147483648), false);
+CUT.isEqual("isInt32(); 05", CEL.isInt32(34.5), false);
+CUT.isEqual("isInt32(); 06", CEL.isInt32(-34.5), false);
+CUT.isEqual("isInt32(); 07", CEL.isInt32("Arthur Dent"), false);
+CUT.isEqual("isInt32(); 08", CEL.isInt32(true), false);
+CUT.isEqual("isInt32(); 09", CEL.isInt32(false), false);
+CUT.isEqual("isInt32(); 10", CEL.isInt32(Infinity), false);
+CUT.isEqual("isInt32(); 11", CEL.isInt32(-Infinity), false);
+CUT.isEqual("isInt32(); 12", CEL.isInt32([]), false);
+CUT.isEqual("isInt32(); 13", CEL.isInt32({}), false);
+
 
 // isUInt32();
-CUT.isEqual("isUInt32 1", CEL.isUInt32(34), true);
-CUT.isEqual("isUInt32 2", CEL.isUInt32(-34), false);
-CUT.isEqual("isUInt32 3", CEL.isUInt32(-1), false);
-CUT.isEqual("isUInt32 4", CEL.isUInt32(4294967296), false);
-CUT.isEqual("isUInt32 5", CEL.isUInt32(34.5), false);
-CUT.isEqual("isUInt32 6", CEL.isUInt32(-34.5), false);
-CUT.isEqual("isUInt32 7", CEL.isUInt32("Arthur Dent"), false);
-CUT.isEqual("isUInt32 8", CEL.isUInt32(true), false);
-CUT.isEqual("isUInt32 9", CEL.isUInt32(false), false);
-CUT.isEqual("isUInt32 10", CEL.isUInt32(Infinity), false);
-CUT.isEqual("isUInt32 11", CEL.isUInt32(-Infinity), false);
-CUT.isEqual("isUInt32 12", CEL.isUInt32([]), false);
-CUT.isEqual("isUInt32 13", CEL.isUInt32({}), false);
+CUT.isEqual("isUInt32(); 01", CEL.isUInt32(34), true);
+CUT.isEqual("isUInt32(); 02", CEL.isUInt32(-34), false);
+CUT.isEqual("isUInt32(); 03", CEL.isUInt32(-1), false);
+CUT.isEqual("isUInt32(); 04", CEL.isUInt32(4294967296), false);
+CUT.isEqual("isUInt32(); 05", CEL.isUInt32(34.5), false);
+CUT.isEqual("isUInt32(); 06", CEL.isUInt32(-34.5), false);
+CUT.isEqual("isUInt32(); 07", CEL.isUInt32("Arthur Dent"), false);
+CUT.isEqual("isUInt32(); 08", CEL.isUInt32(true), false);
+CUT.isEqual("isUInt32(); 09", CEL.isUInt32(false), false);
+CUT.isEqual("isUInt32(); 10", CEL.isUInt32(Infinity), false);
+CUT.isEqual("isUInt32(); 11", CEL.isUInt32(-Infinity), false);
+CUT.isEqual("isUInt32(); 12", CEL.isUInt32([]), false);
+CUT.isEqual("isUInt32(); 13", CEL.isUInt32({}), false);
+
 
 // isBigInt64();
-CUT.isEqual("isBigInt64 1", CEL.isBigInt64(34n), true);
-CUT.isEqual("isBigInt64 2", CEL.isBigInt64(-34n), true);
-CUT.isEqual("isBigInt64 3", CEL.isBigInt64(-9223372036854775809n), false);
-CUT.isEqual("isBigInt64 4", CEL.isBigInt64(9223372036854775809n), false);
-CUT.isEqual("isBigInt64 5", CEL.isBigInt64(34.5), false);
-CUT.isEqual("isBigInt64 6", CEL.isBigInt64(-34.5), false);
-CUT.isEqual("isBigInt64 7", CEL.isBigInt64("Arthur Dent"), false);
-CUT.isEqual("isBigInt64 8", CEL.isBigInt64(true), false);
-CUT.isEqual("isBigInt64 9", CEL.isBigInt64(false), false);
-CUT.isEqual("isBigInt64 10", CEL.isBigInt64(Infinity), false);
-CUT.isEqual("isBigInt64 11", CEL.isBigInt64(-Infinity), false);
-CUT.isEqual("isBigInt64 12", CEL.isBigInt64([]), false);
-CUT.isEqual("isBigInt64 13", CEL.isBigInt64({}), false);
+CUT.isEqual("isBigInt64(); 01", CEL.isBigInt64(34n), true);
+CUT.isEqual("isBigInt64(); 02", CEL.isBigInt64(-34n), true);
+CUT.isEqual("isBigInt64(); 03", CEL.isBigInt64(-9223372036854775809n), false);
+CUT.isEqual("isBigInt64(); 04", CEL.isBigInt64(9223372036854775809n), false);
+CUT.isEqual("isBigInt64(); 05", CEL.isBigInt64(34.5), false);
+CUT.isEqual("isBigInt64(); 06", CEL.isBigInt64(-34.5), false);
+CUT.isEqual("isBigInt64(); 07", CEL.isBigInt64("Arthur Dent"), false);
+CUT.isEqual("isBigInt64(); 08", CEL.isBigInt64(true), false);
+CUT.isEqual("isBigInt64(); 09", CEL.isBigInt64(false), false);
+CUT.isEqual("isBigInt64(); 10", CEL.isBigInt64(Infinity), false);
+CUT.isEqual("isBigInt64(); 11", CEL.isBigInt64(-Infinity), false);
+CUT.isEqual("isBigInt64(); 12", CEL.isBigInt64([]), false);
+CUT.isEqual("isBigInt64(); 13", CEL.isBigInt64({}), false);
+
 
 // isBigUInt64();
-CUT.isEqual("isBigUInt64 1", CEL.isBigUInt64(34n), true);
-CUT.isEqual("isBigUInt64 2", CEL.isBigUInt64(-34n), false);
-CUT.isEqual("isBigUInt64 3", CEL.isBigUInt64(-1n), false);
-CUT.isEqual("isBigUInt64 4", CEL.isBigUInt64(18446744073709551617n), false);
-CUT.isEqual("isBigUInt64 5", CEL.isBigUInt64(34.5), false);
-CUT.isEqual("isBigUInt64 6", CEL.isBigUInt64(-34.5), false);
-CUT.isEqual("isBigUInt64 7", CEL.isBigUInt64("Arthur Dent"), false);
-CUT.isEqual("isBigUInt64 8", CEL.isBigUInt64(true), false);
-CUT.isEqual("isBigUInt64 9", CEL.isBigUInt64(false), false);
-CUT.isEqual("isBigUInt64 10", CEL.isBigUInt64(Infinity), false);
-CUT.isEqual("isBigUInt64 11", CEL.isBigUInt64(-Infinity), false);
-CUT.isEqual("isBigUInt64 12", CEL.isBigUInt64([]), false);
-CUT.isEqual("isBigUInt64 13", CEL.isBigUInt64({}), false);
+CUT.isEqual("isBigUInt64(); 01", CEL.isBigUInt64(34n), true);
+CUT.isEqual("isBigUInt64(); 02", CEL.isBigUInt64(-34n), false);
+CUT.isEqual("isBigUInt64(); 03", CEL.isBigUInt64(-1n), false);
+CUT.isEqual("isBigUInt64(); 04", CEL.isBigUInt64(18446744073709551617n), false);
+CUT.isEqual("isBigUInt64(); 05", CEL.isBigUInt64(34.5), false);
+CUT.isEqual("isBigUInt64(); 06", CEL.isBigUInt64(-34.5), false);
+CUT.isEqual("isBigUInt64(); 07", CEL.isBigUInt64("Arthur Dent"), false);
+CUT.isEqual("isBigUInt64(); 08", CEL.isBigUInt64(true), false);
+CUT.isEqual("isBigUInt64(); 09", CEL.isBigUInt64(false), false);
+CUT.isEqual("isBigUInt64(); 10", CEL.isBigUInt64(Infinity), false);
+CUT.isEqual("isBigUInt64(); 11", CEL.isBigUInt64(-Infinity), false);
+CUT.isEqual("isBigUInt64(); 12", CEL.isBigUInt64([]), false);
+CUT.isEqual("isBigUInt64(); 13", CEL.isBigUInt64({}), false);
 
 
 /* Async */
