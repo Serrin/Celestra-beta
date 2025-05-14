@@ -2935,12 +2935,17 @@ CUT.isEqual("product(); - try without parameter", CEL.product(), undefined);
 
 // sum();
 CUT.isEqual("sum(); - 1", CEL.sum(3), 3);
+CUT.log("<code>" + CEL.sum(3) + "</code>");
 CUT.isEqual("sum(); - 2", CEL.sum(3, 5), 8);
+CUT.log("<code>" + CEL.sum(3, 5) + "</code>");
 CUT.isEqual("sum(); - 3", CEL.sum(3.14, -5), -1.8599999999999999);
+CUT.log("<code>" + CEL.sum(3.14, -5) + "</code>");
 CUT.isEqual("sum(); - 4 - with many parameter types",
-  CEL.sum(true, 3.14, -9, 'Arthur Dent'), "-4.859999999999999Arthur Dent"
+  CEL.sum(true, 3.14, -9, "Arthur Dent"), "-4.859999999999999Arthur Dent"
 );
-CUT.isEqual("sum(); - 5 - without parameter", CEL.sum(), undefined);
+CUT.log("<code>" + CEL.sum(true, 3.14, -9, "Arthur Dent") + "</code>");
+CUT.isEqual("sum(); - 5 - without parameter", CEL.sum(), 0);
+CUT.log("<code>" + String(CEL.sum()) + "</code>");
 
 
 // avg();

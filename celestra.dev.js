@@ -1864,7 +1864,10 @@ const toArray = (O) => (Array.isArray(O) ? O : Array.from(O));
 /** Math API **/
 
 /* sum(<value1>[,valueN]): number */
-const sum = (f, ...a) => a.reduce((acc, v) => acc + v, f);
+//const sum = (f, ...a) => a.reduce((acc, v) => acc + v, f);
+const sum = (...a) => (a.every((v) => typeof v === "number") ?
+  Math.sumPrecise(a) : a.slice(1).reduce((acc, v) => acc + v, a[0])
+);
 
 /* avg(<value1>[,valueN]): number */
 const avg = (f, ...a) => a.reduce((acc, v) => acc + v, f) / (a.length + 1);

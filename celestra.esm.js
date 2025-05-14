@@ -258,7 +258,7 @@ function toIntegerOrInfinity(v){v=Number(v);if(1/v===Infinity||1/v===-Infinity||
 const createDataProperty=(O,P,V)=>Object.defineProperty(O,P,{value:V,writable:true,enumerable:true,configurable:true});
 function createDataPropertyOrThrow(O,P,V){Object.defineProperty(O,P,{writable:true,enumerable:true,configurable:true,value:V});if(!(Object.hasOwn(O,P))){throw new Error();}return O;}
 const toArray=(O)=>(Array.isArray(O)?O:Array.from(O));
-const sum=(f,...a)=>a.reduce((acc,v)=>acc+v,f);
+const sum=(...a)=>(a.every((v)=>typeof v==="number")?Math.sumPrecise(a):a.slice(1).reduce((acc,v)=>acc+v,a[0]));
 const avg=(f,...a)=>a.reduce((acc,v)=>acc+v,f)/(a.length+1);
 const product=(f,...a)=>a.reduce((acc,v)=>acc*v,f);
 function clamp(v,min,max){if(typeof v!=="number"&&typeof v!=="bigint"){v=Number(v);}if(typeof min!=="number"&&typeof min!=="bigint"){min=Number(min);}if(typeof max!=="number"&&typeof max!=="bigint"){max=Number(max);}var nV=Number(v);var nMin=Number(min);var nMax=Number(max);if(min!==min){throw new RangeError();}if(max!==max){throw new RangeError();}if(1/nMin===Infinity&&1/nMax===-Infinity){throw new RangeError();}if(min>max){throw new RangeError();}if(v!==v){return NaN;}if(1/nMin===-Infinity&&1/nMax===Infinity){return +0;}if(1/nV===Infinity&&1/nMin===-Infinity){return -0;}if(v<min){return min;}if(1/nV===-Infinity&&1/nMax===Infinity){return -0;}if(1/nV===Infinity&&1/nMax===-Infinity){return -0;}if(v>max){return max;}return v;}
