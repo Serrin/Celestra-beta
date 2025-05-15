@@ -234,6 +234,7 @@ Name | Description
 `strPropercase(<string>);` | __Stability: 4 - Stable.__<BR>This function is unicode compatible and capitalizes every word of the given string. The string parameter is mandatory. The return value is a string.<BR>__Example:__<BR>
 `strSplice(<str>,<index>,<count>[,add]);`| __Stability: 4 - Stable.__<BR>This function works like the [Array.prototype.splice();](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice), but with strings and can remove characters on the index or replace with other string. The return value is the modified string.
 `strTitlecase(<string>);` | __Stability: 4 - Stable.__<BR>Alias of the `strPropercase(<string>);`.
+`strTruncate(<string>,<newLength>[,omission = ""]);` | __Stability: 4 - Stable.__<BR>This function truncats the given string to the new length. If the new length is bigger than the original length, then the return value is the original string. The omission parameter is optional.<BR>__Samples:__<BR>`CEL.strTruncate("Arthur Dent", 6);` -> `"Arthur"`<BR>`CEL.strTruncate("Arthur Dent", 6, "...");` -> `"Art..."`<BR>`CEL.strTruncate("Arthur Dent", 20, "...");` -> `"Arthur Dent"`
 `strUpFirst(<string>);` | __Stability: 4 - Stable.__<BR>This function is unicode compatible and converts the first character to uppercase. The string parameter is mandatory. The return value is a string.
 
 
@@ -350,7 +351,7 @@ Name | Description
 `isNullOrUndefined(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is null or undefined. The return value is boolean.
 `isNumber(<value>);` | __Stability: 3 - Not deprecated, but can get only fixes.__<BR>This function determines whether the provided value is a number. The return value is boolean.
 `isNumeric(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a number or can be converted to number. The return value is boolean.
-`isObject(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an object and not null. The return value is boolean.
+`isObject(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an object or function and not null. The return value is boolean.
 `isPlainObject(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an object, which own prototype is the Object.prototype or null. The return value is boolean.
 `isPrimitive(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is not null, not object and not function. The return value is boolean.
 `isPromise(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a promise object. The return value is boolean.
@@ -495,6 +496,7 @@ Name | Description
 `isSameValueNonNumber(<value1>,<value2>);`| __Stability: 4 - Stable.__<BR>This function uses the SameValueNonNumber algorithm and determines whether the provided values are the same values and `-0` and `+0` values will be equal. The `NaN` values will be not equal. The return value is boolean.
 `isSameValueZero(<value1>,<value2>);`| __Stability: 4 - Stable.__<BR>This function uses the SameValueZero algorithm and determines whether the provided values are the same values and `-0` and `+0` values will be equal. The `NaN` values will be equal. The return value is boolean.
 `setIn(<object>,<property>,<value>);` | __Stability: 4 - Stable.__<BR>This function set the property value of the given object. The object parameter is mandatory and has to be an object. The property parameter is mandatory and has to be a property type. The value is mandatory and can be any type.
+`requireObjectCoercible(<value>);` | __Stability: 4 - Stable.__<BR>This function throws an error if the given value is a value that cannot be converted to an object (null or undefined), else the return value is given value (boolean, number, string, symbol, bigint, object). If the value is a string, then return value is undefined. The parameter is mandatory.
 `toArray(<value>);`| __Stability: 4 - Stable.__<BR>If the value is an array, then this function returns the value else converts the value to array or the return value is an empty array.
 `toIndex(<value>);`| __Stability: 4 - Stable.__<BR>This function converts the provided value to a valid arraylike index number. The return value is an unsigned integer (number).
 `toInteger(<value>);`| __Stability: 4 - Stable.__<BR>This function always converts the provided value to an integer. If the value cannot be converted to an integer, then the return value is 0.

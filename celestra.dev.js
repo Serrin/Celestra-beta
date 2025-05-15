@@ -468,6 +468,15 @@ function timestampID (size = 21, alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZab
 
 /** String API **/
 
+/* strTruncate(<string>,<newLength>[,omission = ""]): string */
+function strTruncate (str, newLen, omission = "") {
+  str = String(str);
+  omission = String(omission);
+  var strUC = Array.from(str);
+  if (newLen >= strUC.length) { return str; }
+  return strUC.slice(0, newLen-Array.from(omission).length).join("") + omission;
+}
+
 /* strPropercase(<string>): string */
 const strPropercase = (s) => String(s).split(" ").map(function (v) {
   var a = Array.from(v).map( (c) => c.toLowerCase() );
@@ -1081,7 +1090,9 @@ const isNumeric = (v) => ( (typeof v === "number" && v === v)
 const isBoolean = (v) => (typeof v === "boolean");
 
 /* isObject(<value: any>): boolean */
-const isObject = (v) => (v != null && typeof v === "object");
+const isObject = (v) => (
+  v != null && (typeof v === "object" || typeof v === "function")
+);
 
 /* isEmptyObject(<value: any>): boolean */
 const isEmptyObject = (v) =>
@@ -1695,6 +1706,14 @@ const withOut = ([...a], [...fl]) => a.filter( (e) => fl.indexOf(e) === -1 );
 
 /** Abstract API **/
 
+/* requireObjectCoercible(<value: any>): value or throw error */
+function requireObjectCoercible (O) {
+  if (O == null) { throw new TypeError("celestra.requireObjectCoercible(); error"); }
+  return (["boolean", "number", "string", "symbol", "bigint", "object"]
+    .includes(typeof O) ? O : undefined
+  );
+}
+
 /* getInV(<value: any>,<property: string>): any OR throw error */
 function getInV (V,P) { if(V==null){ throw TypeError(); } return Object(V)[P]; }
 
@@ -1716,7 +1735,7 @@ const toPropertyKey = (v) => (typeof v === "symbol" ? v : String(v));
 /* toObject(<value: any>): object OR symbol OR function OR throw error */
 function toObject (O) {
   if (O == null) { throw new TypeError(); }
-  if (["symbol", "object", "function"].includes(typeof O)) { return O; }
+  if (["object", "function"].includes(typeof O)) { return O; }
   return Object(O);
 }
 
@@ -2096,6 +2115,7 @@ var celestra = {
   nanoid: nanoid,
   timestampID: timestampID,
   /** String API **/
+  strTruncate: strTruncate,
   strPropercase: strPropercase,
   strTitlecase: strTitlecase,
   strCapitalize: strCapitalize,
@@ -2277,6 +2297,7 @@ var celestra = {
   join: join,
   withOut: withOut,
   /** Abstract API **/
+  requireObjectCoercible: requireObjectCoercible,
   getInV: getInV,
   getIn: getIn,
   setIn: setIn,

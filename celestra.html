@@ -566,6 +566,18 @@ console.log(o2);
       <td><code>strTitlecase(&#60;string&#62;);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>Alias of the <code>strPropercase(&#60;string&#62;);</code>.</td>
     </tr>
+    <tr>
+      <td><code>strTruncate(&#60;string&#62;,&#60;newLength&#62;[,omission = ""]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span>
+        <br/>This function truncats the given string to the new length. If the new length is bigger than the original length, then the return value is the original string. The omission parameter is optional.
+        <BR><b>Samples:</b>
+        <br/><code>CEL.strTruncate("Arthur Dent", 6);</code> -> <code>"Arthur"</code>
+        <br/><code>CEL.strTruncate("Arthur Dent", 6, "...");</code> -> <code>"Art..."</code>
+        <br/><code>CEL.strTruncate("Arthur Dent", 20, "...");</code> -> <code>"Arthur Dent"</code>
+      </td>
+    </tr>    
+    <tr>
       <td><code>strUpFirst(&#60;string&#62;);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function is unicode compatible and converts the first character to uppercase. The string parameter is mandatory. The return value is a string.</td>
     </tr>
@@ -950,7 +962,7 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>isObject(&#60;value&#62;);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an object and not null. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an object or function and not null. The return value is boolean.</td>
     </tr>
     <tr>
       <td><code>isPlainObject(&#60;value&#62;);</td>
@@ -1583,6 +1595,10 @@ console.log(o2);
     <tr>
       <td><code>setIn(&#60;object&#62;,&#60;property&#62;,&#60;value&#62);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function set the property value of the given object.The object parameter is mandatory and has to be an object. The property parameter is mandatory and has to be a property type. The value is mandatory and can be any type.</td>
+    </tr>
+    <tr>
+      <td><code>requireObjectCoercible(&#60;value&#62;);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function throws an error if the given value is a value that cannot be converted to an object (null or undefined), else the return value is given value (boolean, number, string, symbol, bigint, object). If the value is a string, then return value is undefined. The parameter is mandatory.</td>
     </tr>
     <tr>
       <td><code>toArray(&#60;value&#62;);</code></td>

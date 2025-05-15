@@ -636,16 +636,27 @@ CEL.forIn(FPObject, (e) => forInStr += (e*2) );
 CUT.isEqual("forIn();", "468", forInStr);
 CUT.isEqual("forIn(); return value",FPObject,CEL.forIn(FPObject, function(){}));
 
+
 CUT.isEqual("filterIn();", "{\"b\":2,\"c\":3}",
   JSON.stringify( CEL.filterIn({"a": 1, "b": 2, "c": 3},(v, p, o) => (v>1)) )
 );
+
 
 CUT.isEqual("popIn();", "1undefined",
   "" + CEL.popIn({"a":1}, "a") + CEL.popIn({}, "a")
 );
 
+
 CUT.isEqual("getDoNotTrack();", true,
   CEL.getDoNotTrack() === true || CEL.getDoNotTrack() === false
+);
+
+
+CUT.isEqual("strTruncate();", "ArthurArt...Arthur DentArthur Dent", ""
+  + CEL.strTruncate("Arthur Dent", 6)
+  + CEL.strTruncate("Arthur Dent", 6, "...")
+  + CEL.strTruncate("Arthur Dent", 20)
+  + CEL.strTruncate("Arthur Dent", 20, "...")
 );
 
 CUT.isTrue("strPropercase();",
@@ -2147,10 +2158,13 @@ CUT.isFalse("isFloat(); false 2", CEL.isFloat("str"));
 CUT.isTrue("isBoolean(); true", CEL.isBoolean(false));
 CUT.isFalse("isBoolean(); false", CEL.isBoolean(98));
 
-CUT.isTrue("isObject(); 1 true {}", CEL.isObject({}));
+CUT.isTrue("isObject(); 1 true object {\"a\":1}", CEL.isObject({"a":1}));
+CUT.isTrue("isObject(); 1 true object Object(42);", CEL.isObject(Object(42)));
+CUT.isTrue("isObject(); 1 true function", CEL.isObject(function(){}));
 CUT.isTrue("isObject(); 2 true array", CEL.isObject([]));
 CUT.isFalse("isObject(); 3 false null", CEL.isObject(null));
-CUT.isFalse("isObject(); 4 false number", CEL.isObject(98));
+CUT.isFalse("isObject(); 3 false undefined", CEL.isObject(undefined));
+CUT.isFalse("isObject(); 4 false number", CEL.isObject(42));
 
 CUT.isTrue("isEmptyObject(); 1 true", CEL.isEmptyObject({}));
 CUT.isFalse("isEmptyObject(); 2 false ", CEL.isEmptyObject({a:1}));
@@ -2423,6 +2437,34 @@ CUT.isFalse("isSameIterator(); false 2",
 
 CUT.addElement("hr");
 CUT.addElement("h3", "Abstract API");
+
+
+// requireObjectCoercible();
+CUT.isEqual("requireObjectCoercible(); 1 boolan", true,
+  CEL.requireObjectCoercible(true)
+);
+CUT.isEqual("requireObjectCoercible(); 2 number", 42,
+  CEL.requireObjectCoercible(42)
+);
+CUT.isEqual("requireObjectCoercible(); 3 string", "Arthur Dent",
+  CEL.requireObjectCoercible("Arthur Dent")
+);
+CUT.isEqual("requireObjectCoercible(); 4 symbol", "Symbol(42)",
+  CEL.requireObjectCoercible(Symbol(42)).toString()
+);
+CUT.isEqual("requireObjectCoercible(); 5 object", "{\"a\":1}",
+  JSON.stringify(CEL.requireObjectCoercible({"a":1}))
+);
+CUT.isEqual("requireObjectCoercible(); 6 function -> undefined", undefined,
+  CEL.requireObjectCoercible(function(){})
+);
+try { CEL.requireObjectCoercible(null) } catch (e) {
+  CUT.isTrue("requireObjectCoercible(); 7 null -> error", Error.isError(e));
+}
+try { CEL.requireObjectCoercible(undefined) } catch (e) {
+  CUT.isTrue("requireObjectCoercible(); 8 undefined -> error",Error.isError(e));
+}
+
 
 var getSetHasObj = {};
 CUT.isTrue("getInV(); + getIn(); + setIn(); + hasIn();",
@@ -2903,7 +2945,7 @@ try { CEL.minmax(15, 10, NaN); } catch (e) {
 try { CEL.minmax(15, Infinity, -Infinity) } catch (e) {
   CUT.isTrue("minmax(); 03", Error.isError(e));
 }
-try { CEL.minmax(15, 10, 5); } catch (e) { 
+try { CEL.minmax(15, 10, 5); } catch (e) {
   CUT.isTrue("minmax(); 04", Error.isError(e));
 }
 CUT.isNotEqual("minmax(); 05", NaN, CEL.minmax(NaN, 10,  15));
