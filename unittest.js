@@ -2422,6 +2422,7 @@ CUT.isFalse("isSameMap(); false 3", CEL.isSameMap(
   new Map([["str", 1], [17, "x"], [true, 42]]), [["str",1], [17,"x"], [true,42]]
 ));
 
+
 CUT.isTrue("isSameIterator(); true",
   CEL.isSameIterator([4, 8, 6, 2], [4, 8, 6, 2])
 );
@@ -2437,6 +2438,17 @@ CUT.isFalse("isSameIterator(); false 2",
 
 CUT.addElement("hr");
 CUT.addElement("h3", "Abstract API");
+
+
+// isLessThan ();
+CUT.isEqual("isLessThan();", "110001", "" + 
+  + +(CEL.isLessThan(1, 2))
+  + +(CEL.isLessThan(1, 2, true))
+  + +(CEL.isLessThan(1, 2, false))
+  + +(CEL.isLessThan(2, 1))
+  + +(CEL.isLessThan(2, 1, true))
+  + +(CEL.isLessThan(2, 1, false))
+);
 
 
 // requireObjectCoercible();

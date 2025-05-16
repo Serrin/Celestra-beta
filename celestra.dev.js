@@ -1706,9 +1706,14 @@ const withOut = ([...a], [...fl]) => a.filter( (e) => fl.indexOf(e) === -1 );
 
 /** Abstract API **/
 
+/* isLessThan(<v1: any>,<v2: any>[,leftFirst = true]): boolean */
+const isLessThan = (v1, v2, leftFirst = true) => (leftFirst ? (v1<v2) :(v1>v2));
+
 /* requireObjectCoercible(<value: any>): value or throw error */
 function requireObjectCoercible (O) {
-  if (O == null) { throw new TypeError("celestra.requireObjectCoercible(); error"); }
+  if (O == null) { throw new TypeError(
+    Object.prototype.toString.call(O) + " is not coercible to Object."
+  ); }
   return (["boolean", "number", "string", "symbol", "bigint", "object"]
     .includes(typeof O) ? O : undefined
   );
@@ -1721,7 +1726,7 @@ function getInV (V,P) { if(V==null){ throw TypeError(); } return Object(V)[P]; }
 const getIn = (O, P) => O[P];
 
 /* setIn(<object>,<property: string>,<value: any>): object */
-const setIn = (O, P, V) => { O[P] = V; return O; }
+function setIn (O, P, V) { O[P] = V; return O; }
 
 /* hasIn(<object>,<property: string>): boolean */
 const hasIn = (O, P) => (P in O);
@@ -2297,6 +2302,7 @@ var celestra = {
   join: join,
   withOut: withOut,
   /** Abstract API **/
+  isLessThan: isLessThan,
   requireObjectCoercible: requireObjectCoercible,
   getInV: getInV,
   getIn: getIn,
