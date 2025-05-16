@@ -1789,7 +1789,11 @@ const isSameValue = (v1, v2) =>
   ((v1 === v2) ? (v1 !== 0 || 1/v1 === 1/v2) : (v1 !== v1 && v2 !== v2));
 
 /* isSameValueZero(<value1: any>,<value2: any>): boolean */
-const isSameValueZero = (v1, v2) => (v1 === v2 || (v1 !== v1 && v2 !== v2));
+// const isSameValueZero = (v1, v2) => (v1 === v2 || (v1 !== v1 && v2 !== v2));
+const isSameValueZero = (v1, v2) =>
+  ((typeof v1 === "number" && typeof v2 === "number") ?
+    (v1 === v2 || (v1 !== v1 && v2 !== v2)) : (v1 === v2)
+  );
 
 /* isSameValueNonNumber(<value1: any>,<value2: any>): boolean */
 const isSameValueNonNumber = (v1, v2) => (v1 === v2);
