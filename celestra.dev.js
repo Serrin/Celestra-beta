@@ -1706,6 +1706,10 @@ const withOut = ([...a], [...fl]) => a.filter( (e) => fl.indexOf(e) === -1 );
 
 /** Abstract API **/
 
+/* isSameType(<value1>,<value2>): boolean */
+const isSameType = (v1, v2) =>
+  (v1 == null && v1 === v2) ? true : (typeof v1 === typeof v2);
+
 /* isLessThan(<v1: any>,<v2: any>[,leftFirst = true]): boolean */
 const isLessThan = (v1, v2, leftFirst = true) => (leftFirst ? (v1<v2) :(v1>v2));
 
@@ -1790,10 +1794,7 @@ const isSameValue = (v1, v2) =>
 
 /* isSameValueZero(<value1: any>,<value2: any>): boolean */
 // const isSameValueZero = (v1, v2) => (v1 === v2 || (v1 !== v1 && v2 !== v2));
-const isSameValueZero = (v1, v2) =>
-  ((typeof v1 === "number" && typeof v2 === "number") ?
-    (v1 === v2 || (v1 !== v1 && v2 !== v2)) : (v1 === v2)
-  );
+const isSameValueZero = (v1, v2) => (v1 === v2 || (v1 !== v1 && v2 !== v2));
 
 /* isSameValueNonNumber(<value1: any>,<value2: any>): boolean */
 const isSameValueNonNumber = (v1, v2) => (v1 === v2);
@@ -2306,6 +2307,7 @@ var celestra = {
   join: join,
   withOut: withOut,
   /** Abstract API **/
+  isSameType: isSameType,
   isLessThan: isLessThan,
   requireObjectCoercible: requireObjectCoercible,
   getInV: getInV,
