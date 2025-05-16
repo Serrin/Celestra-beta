@@ -521,7 +521,7 @@ if (!!window.BigInt) {
 
 // extend();
 var extendObj1 = {a: "1", b: "2"};
-var extendObj2 = 
+var extendObj2 =
   {c: "3", d: "4", baz: {e: 5, fn: function(num) {return num*num;} } };
 var extObj1 = CEL.extend(true, {} , extendObj1, extendObj2);
 CUT.isEqual("extend(); true", "1 2 3 4 5 121",
@@ -591,29 +591,23 @@ CUT.isEqual("getUrlVars(); empty object", "{}",
 CUT.addElement(CEL.domCreate("div", {"id": "testFormDiv"},
   " <form id='form1'><br/>Text: <input type='text' name='name' value='foo éáűőúöüóíéáűőúöüóí'><br/>Password: <input type='password' name='password' value='bar'><br/>Number: <input type='number' name='number' value='97'><br/> Radio: <input type='radio' name='radio' value='male' checked='checked'>Male <input type='radio' name='radio' value='female'>Female<br/> <select name='animals'> <option value='dog'>dog</option> <option value='cat'>cat</option> <option value='cow'>cow</option> <option value='hippos'>hippos</option> </select><br/> <select name='animals-multiple' multiple='multiple'> <option value='dog' selected='selected'>dog</option> <option value='cat'>cat</option> <option value='cow'>cow</option> <option value='hippos' selected='selected'>hippos</option> </select><br/>Checkbox1: <input type='checkbox' name='checkbox1' value='true' checked='checked'>true<br/>Checkbox2: <input type='checkbox' name='checkbox2' value='false'>false<br/>Textarea1: <textarea name='textarea1'>textarea1</textarea><br/><input type='submit' value='Submit'><br/><input type='reset' value='Reset'><br/><input type='button' value='Button1'><br/><button>Button2</button> </form> "
 ));
-
-
 // form2array();
 CUT.isEqual("form2array();",
   '[{"name":"name","value":"foo%20%C3%A9%C3%A1%C5%B1%C5%91%C3%BA%C3%B6%C3%BC%C3%B3%C3%AD%C3%A9%C3%A1%C5%B1%C5%91%C3%BA%C3%B6%C3%BC%C3%B3%C3%AD"},{"name":"password","value":"bar"},{"name":"number","value":"97"},{"name":"radio","value":"male"},{"name":"animals","value":"dog"},{"name":"animals-multiple","value":"dog"},{"name":"animals-multiple","value":"hippos"},{"name":"checkbox1","value":"true"},{"name":"textarea1","value":"textarea1"}]',
   JSON.stringify(CEL.form2array(CEL.qs("#form1")))
 );
-
-
 // form2string();
 CUT.isEqual("form2string();",
   "name=foo+%C3%A9%C3%A1%C5%B1%C5%91%C3%BA%C3%B6%C3%BC%C3%B3%C3%AD%C3%A9%C3%A1%C5%B1%C5%91%C3%BA%C3%B6%C3%BC%C3%B3%C3%AD&password=bar&number=97&radio=male&animals=dog&animals-multiple=dog&animals-multiple=hippos&checkbox1=true&textarea1=textarea1",
   CEL.form2string(CEL.qs("#form1"))
 );
-
-
 CEL.qs("#testFormDiv").remove();
 
 
 // randomBoolean();
 var testRandom = CEL.randomBoolean();
 CUT.isTrue("randomBoolean(); - <code>" + testRandom + "</code>",
-  typeof testRandom === "boolean" && (testRandom === true || testRandom === false)
+  typeof testRandom === "boolean" && (testRandom === true || testRandom===false)
 );
 
 
@@ -632,49 +626,55 @@ CUT.isEqual("b64Decode(); + b64Encode();",
 // javaHash();
 CUT.isEqual("javaHash();",
   "-0.578: 1334063883 / 4f84330b / 13340638830: 48 / 30 / 48 / 3.14: 1565118 / 1565118 / 156511842: 1662 / 67e / 1662true: 3569038 / 36758e / 3569038\"true\": 3569038 / 36758e / 3569038false: 97196323 / 5cb1923 / 97196323\"false\": 97196323 / 5cb1923 / 97196323null: 3392903339290333c587\"null\": 3392903 / 33c587 / 3392903undefined: 0 / 0 / 0\"undefined\": -1038130864 / -3de09eb0 / -1038130864\"\": 0 / 0 / 0[]: 0 / 0 / 0[1,2]: 48503 / bd77 / 48503[3,4]: 50427 / c4fb / 50427{}: -1074417128 / -400a4de8 / -1074417128{a:1}: -1074417128 / -400a4de8 / -1074417128{b:2}: -1074417128 / -400a4de8 / -1074417128str variable: -313568218 / -12b0abda / -313568218str variable + b64Encode: LTMxMzU2ODIxOA== / LTEyYjBhYmRh / LTMxMzU2ODIxOA==str variable + b64Encode + b64Decode: -313568218 / -12b0abda / -313568218",
-  "-0.578: " + CEL.javaHash(-0.578) + " / " + CEL.javaHash(-0.578, true) + " / "
-    + CEL.javaHash(-0.578, false)
-    + "0: " + CEL.javaHash(0) + " / " + CEL.javaHash(0,true)
+  "-0.578: "
+    + CEL.javaHash(-0.578)
+    + " / " + CEL.javaHash(-0.578, true)
+    + " / " + CEL.javaHash(-0.578, false) + "0: " + CEL.javaHash(0)
+    + " / " + CEL.javaHash(0,true)
     + " / " + CEL.javaHash(0, false)
     + " / " + "3.14: " + CEL.javaHash(3.14) + " / " + CEL.javaHash(3.14)
-    + " / " + CEL.javaHash(3.14, false)
-    + "42: " + CEL.javaHash(42) + " / " + CEL.javaHash(42, true)
-    + " / " + CEL.javaHash(42, false)
-    + "true: " + CEL.javaHash(true)  + " / " + CEL.javaHash(true, true)
-    + " / " + CEL.javaHash(true, false)
-    + "\"true\": " + CEL.javaHash("true") + " / " + CEL.javaHash("true", true)
-    + " / " + CEL.javaHash("true", false)
-    + "false: " + CEL.javaHash(false) + " / " + CEL.javaHash(false, true)
-    + " / " + CEL.javaHash(false, false)
-    + "\"false\": " + CEL.javaHash("false") + " / " + CEL.javaHash("false",true)
-    + " / " + CEL.javaHash("false", false)
-    + "null: " + CEL.javaHash(null) + CEL.javaHash(null)
-    + CEL.javaHash(null, true, false)
-    + "\"null\": " + CEL.javaHash("null") + " / " + CEL.javaHash("null", true)
+    + " / " + CEL.javaHash(3.14, false) + "42: " + CEL.javaHash(42)
+    + " / " + CEL.javaHash(42, true)
+    + " / " + CEL.javaHash(42, false) + "true: " + CEL.javaHash(true)
+    + " / " + CEL.javaHash(true, true)
+    + " / " + CEL.javaHash(true, false) + "\"true\": " + CEL.javaHash("true")
+    + " / " + CEL.javaHash("true", true)
+    + " / " + CEL.javaHash("true", false) + "false: " + CEL.javaHash(false)
+    + " / " + CEL.javaHash(false, true)
+    + " / " + CEL.javaHash(false, false) + "\"false\": " + CEL.javaHash("false")
+    + " / " + CEL.javaHash("false",true)
+    + " / " + CEL.javaHash("false", false) + "null: " + CEL.javaHash(null)
+      + CEL.javaHash(null) + CEL.javaHash(null, true, false)
+      + "\"null\": " + CEL.javaHash("null")
+    + " / " + CEL.javaHash("null", true)
     + " / " + CEL.javaHash("null", false)
-    + "undefined: " + CEL.javaHash(undefined)
+      + "undefined: " + CEL.javaHash(undefined)
     + " / " + CEL.javaHash(undefined, true)
-    + " / " + CEL.javaHash(undefined, false)
-    + "\"undefined\": " + CEL.javaHash("undefined")
+    + " / " + CEL.javaHash(undefined, false) + "\"undefined\": "
+      + CEL.javaHash("undefined")
     + " / " + CEL.javaHash("undefined", true)
     + " / " + CEL.javaHash("undefined", false)
-    + "\"\": " + CEL.javaHash("") + " / " + CEL.javaHash("",true)
+    + "\"\": " + CEL.javaHash("")
+    + " / " + CEL.javaHash("",true)
     + " / " + CEL.javaHash("",false)
-    + "[]: " + CEL.javaHash([]) + " / " + CEL.javaHash([],true)
+    + "[]: " + CEL.javaHash([])
+    + " / " + CEL.javaHash([],true)
     + " / " + CEL.javaHash([],false)
-    + "[1,2]: " + CEL.javaHash([1,2]) + " / " + CEL.javaHash([1,2],true)
-    + " / " + CEL.javaHash([1,2], false)
-    + "[3,4]: " + CEL.javaHash([3,4]) + " / " + CEL.javaHash([3,4], true)
-    + " / " + CEL.javaHash([3,4], false)
-    + "{}: " + CEL.javaHash({}) + " / " + CEL.javaHash({}, true)
-    + " / " + CEL.javaHash({},false)
-    + "{a:1}: " + CEL.javaHash({a:1}) + " / " + CEL.javaHash({a:1}, true)
-    + " / " + CEL.javaHash({a:1},false)
-    + "{b:2}: " + CEL.javaHash({b:2}) + " / " + CEL.javaHash({b:2}, true)
+    + "[1,2]: " + CEL.javaHash([1,2])
+    + " / " + CEL.javaHash([1,2],true)
+    + " / " + CEL.javaHash([1,2], false) + "[3,4]: " + CEL.javaHash([3,4])
+    + " / " + CEL.javaHash([3,4], true)
+    + " / " + CEL.javaHash([3,4], false) + "{}: " + CEL.javaHash({})
+    + " / " + CEL.javaHash({}, true)
+    + " / " + CEL.javaHash({},false) + "{a:1}: " + CEL.javaHash({a:1})
+    + " / " + CEL.javaHash({a:1}, true)
+    + " / " + CEL.javaHash({a:1},false) + "{b:2}: " + CEL.javaHash({b:2})
+    + " / " + CEL.javaHash({b:2}, true)
     + " / " + CEL.javaHash({b:2}, false)
-    + "str variable: " + CEL.javaHash(kayleeStr)
-    + " / " + CEL.javaHash(kayleeStr,true) + " / "+CEL.javaHash(kayleeStr,false)
-    + "str variable + b64Encode: " + CEL.b64Encode(CEL.javaHash(kayleeStr))
+      + "str variable: " + CEL.javaHash(kayleeStr)
+    + " / " + CEL.javaHash(kayleeStr,true)
+    + " / "+CEL.javaHash(kayleeStr,false) + "str variable + b64Encode: "
+      + CEL.b64Encode(CEL.javaHash(kayleeStr))
     + " / " + CEL.b64Encode(CEL.javaHash(kayleeStr, true))
     + " / " + CEL.b64Encode(CEL.javaHash(kayleeStr, false))
     + "str variable + b64Encode + b64Decode: "
@@ -770,15 +770,19 @@ CUT.isEqual("strReverse(); with unicode 1",
 );
 
 
-const testUnicodeStr22222 = "foo \uD834\uDF06 bar \uD835\uDC01 baz";
 // strCodePoints();
 CUT.isEqual("strCodePoints();",
   "[102,111,111,32,119558,32,98,97,114,32,119809,32,98,97,122]",
-  JSON.stringify(CEL.strCodePoints(testUnicodeStr22222))
+  JSON.stringify(CEL.strCodePoints("foo \uD834\uDF06 bar \uD835\uDC01 baz"))
 );
+
+
 // strFromCodePoints();
-CUT.isEqual("strFromCodePoints(); + strCodePoints();", testUnicodeStr22222,
-  CEL.strFromCodePoints(CEL.strCodePoints(testUnicodeStr22222))
+CUT.isEqual("strFromCodePoints(); + strCodePoints();",
+  "foo \uD834\uDF06 bar \uD835\uDC01 baz",
+  CEL.strFromCodePoints(CEL.strCodePoints(
+    "foo \uD834\uDF06 bar \uD835\uDC01 baz")
+  )
 );
 
 
@@ -786,24 +790,24 @@ CUT.isEqual("strFromCodePoints(); + strCodePoints();", testUnicodeStr22222,
 CUT.isTrue("strAt();",
   CEL.strAt("\uD834\uDF06 ab cd",0) === "\uD834\uDF06"
     // get
-    && CEL.strAt("ab \uD834\uDF06 cd", 3) === "\uD834\uDF06"
+    && CEL.strAt("ab \uD834\uDF06 cd", 3)  === "\uD834\uDF06"
     && CEL.strAt("ab cd \uD834\uDF06", -1) === "\uD834\uDF06"
-    && CEL.strAt("ab \uD834\uDF06 cd", 0) === "a"
-    && CEL.strAt("ab \uD834\uDF06 cd", 5) === "c"
+    && CEL.strAt("ab \uD834\uDF06 cd", 0)  === "a"
+    && CEL.strAt("ab \uD834\uDF06 cd", 5)  === "c"
     && CEL.strAt("ab \uD834\uDF06 cd", -1) === "d"
-    && CEL.strAt("", 0) === ""
-    && CEL.strAt("", 3) === ""
+    && CEL.strAt("", 0)  === ""
+    && CEL.strAt("", 3)  === ""
     && CEL.strAt("", -1) === ""
     // set
-    && CEL.strAt("ab \uD834\uDF06 cde", 3, "X") === "ab X cde"
-    && CEL.strAt("ab \uD834\uDF06 cde", -5, "X") === "ab X cde"
-    && CEL.strAt("ab \uD834\uDF06 cde", -2, "X") === "ab \uD834\uDF06 cXe"
-    && CEL.strAt("ab \uD834\uDF06 cde", 13, "X") === "ab \uD834\uDF06 cde"
+    && CEL.strAt("ab \uD834\uDF06 cde", 3, "X")   === "ab X cde"
+    && CEL.strAt("ab \uD834\uDF06 cde", -5, "X")  === "ab X cde"
+    && CEL.strAt("ab \uD834\uDF06 cde", -2, "X")  === "ab \uD834\uDF06 cXe"
+    && CEL.strAt("ab \uD834\uDF06 cde", 13, "X")  === "ab \uD834\uDF06 cde"
     && CEL.strAt("ab \uD834\uDF06 cde", -13, "X") === "ab \uD834\uDF06 cde"
-    && CEL.strAt("ab \uD834\uDF06 cde", 3, "") === "ab  cde"
-    && CEL.strAt("ab \uD834\uDF06 cde", -2, "") === "ab \uD834\uDF06 ce"
-    && CEL.strAt("ab \uD834\uDF06 cde", 12, "") === "ab \uD834\uDF06 cde"
-    && CEL.strAt("ab \uD834\uDF06 cde", -12, "") === "ab \uD834\uDF06 cde"
+    && CEL.strAt("ab \uD834\uDF06 cde", 3, "")    === "ab  cde"
+    && CEL.strAt("ab \uD834\uDF06 cde", -2, "")   === "ab \uD834\uDF06 ce"
+    && CEL.strAt("ab \uD834\uDF06 cde", 12, "")   === "ab \uD834\uDF06 cde"
+    && CEL.strAt("ab \uD834\uDF06 cde", -12, "")  === "ab \uD834\uDF06 cde"
 );
 
 
@@ -818,9 +822,6 @@ CUT.isTrue("strSplice();",
       === "ab \uD834\uDF06XYde"
     && CEL.strSplice("ab \uD834\uDF06 cde", 5, 2, "") === "ab \uD834\uDF06 e"
 );
-
-
-var FPArray = [1,2,3];
 
 
 // "unBind();
@@ -1118,9 +1119,9 @@ CUT.isEqual("withOut();",
 
 
 // partition();
-var arrPartition = [-5, 2, -9, 7, 34];
 CUT.isEqual("partition();",
-  JSON.stringify(CEL.partition(arrPartition, (e)=> (e>0))), "[[2,7,34],[-5,-9]]"
+  JSON.stringify(CEL.partition([-5, 2, -9, 7, 34], (e)=> (e>0))),
+  "[[2,7,34],[-5,-9]]"
 );
 
 
@@ -1181,12 +1182,9 @@ for (let i = 0; i < 3; i++) { sum += itrr2.next().value; }
 CUT.isEqual("iterRepeat(); infinity", "HW2HW2HW2", sum);
 
 
-var FPArray = [1, 2, 3];
-
-
 // forEach();
 var forEachStr = "";
-CEL.forEach(FPArray, function (e) { forEachStr += (e*2); });
+CEL.forEach([1, 2, 3], function (e) { forEachStr += (e*2); });
 CUT.isEqual("forEach(); 1 ES5 Array", "246", forEachStr);
 forEachStr = "";
 CEL.forEach("cat, dog, pig", function (e) { forEachStr += e.toUpperCase(); });
@@ -1213,7 +1211,7 @@ CUT.isEqual("forEach(); 7 ES6 Set values(); iterator", 45, forEachCount);
 
 // forEachRight();
 var forEachStr = "";
-CEL.forEachRight(FPArray, function (e) { forEachStr += (e*2); });
+CEL.forEachRight([1, 2, 3], function (e) { forEachStr += (e*2); });
 CUT.isEqual("forEachRight();", "642", forEachStr);
 
 
@@ -1249,99 +1247,122 @@ for (let item of CEL.map((new Set([1, 2, 3])).values(),
 CUT.isEqual("map(); 7 ES6 Set values(); iterator", "369", mapStr);
 
 
-var FParray2 = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
-
-
 // take();
 var iterStr = "";
-for (let item of CEL.take(FParray2, 0)) { iterStr += item; }
+for (let item of CEL.take(["A","B","C","D", "E", "F", "G", "H", "I", "J"], 0)) {
+  iterStr += item;
+}
 CUT.isEqual("take(); - step 1 - 0", "", iterStr);
 var iterStr = "";
-for (let item of CEL.take(FParray2, 7)) { iterStr += item; }
+for (let item of CEL.take(["A","B","C","D", "E", "F", "G", "H", "I", "J"], 7)) {
+  iterStr += item;
+}
 CUT.isEqual("take(); - step 2 - 7", "ABCDEFG", iterStr);
 var iterStr = "";
-for (let item of CEL.take(FParray2, 12)) { iterStr += item; }
+for (let item of CEL.take(["A","B","C","D","E", "F", "G", "H", "I", "J"], 12)) {
+  iterStr += item;
+}
 CUT.isEqual("take(); - step 3 - 12", "ABCDEFGHIJ", iterStr);
 var iterStr = "";
-for (let item of CEL.take(FParray2)) { iterStr += item; }
+for (let item of CEL.take(["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"])) {
+  iterStr += item;
+}
 CUT.isEqual("take(); - step 4 - default 1", "A", iterStr);
 
 
 // drop();
 var iterStr = "";
-for (let item of CEL.drop(FParray2, 0)) { iterStr += item; }
+for (let item of CEL.drop(["A","B","C","D", "E", "F", "G", "H", "I", "J"], 0)) {
+  iterStr += item;
+}
 CUT.isEqual("drop(); - step 1 - 0", "ABCDEFGHIJ", iterStr);
 var iterStr = "";
-for (let item of CEL.drop(FParray2, 7)) { iterStr += item; }
+for (let item of CEL.drop(["A","B","C","D", "E", "F", "G", "H", "I", "J"], 7)) {
+  iterStr += item;
+}
 CUT.isEqual("drop(); - step 2 - 7", "HIJ", iterStr);
 var iterStr = "";
-for (let item of CEL.drop(FParray2, 12)) { iterStr += item; }
+for (let item of CEL.drop(["A","B","C","D","E", "F", "G", "H", "I", "J"], 12)) {
+  iterStr += item;
+}
 CUT.isEqual("drop(); - step 3 - 12", "", iterStr);
 var iterStr = "";
-for (let item of CEL.drop(FParray2)) { iterStr += item; }
+for (let item of CEL.drop(["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"])) {
+  iterStr += item;
+}
 CUT.isEqual("drop(); - step 4 - default 1", "BCDEFGHIJ", iterStr);
-
-
-var FPArray3 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 
 // filter();
 var iterStr = "";
-for (let item of CEL.filter(FPArray3, (v) => (v>3 && v<9))) { iterStr += item; }
+for (let item of CEL.filter([1,2,3,4,5, 6, 7, 8, 9, 10], (v) => (v>3 && v<9))) {
+  iterStr += item;
+}
 CUT.isEqual("filter();", "45678", iterStr);
 
 
 // reject();
 var iterStr = "";
-for (let item of CEL.reject(FPArray3, (v) => (v>3 && v<9))) { iterStr += item; }
+for (let item of CEL.reject([1,2,3,4,5, 6, 7, 8, 9, 10], (v) => (v>3 && v<9))) {
+  iterStr += item;
+}
 CUT.isEqual("reject();", "123910", iterStr);
 
 
 // slice();
 var iterStr = "";
-for (let item of CEL.slice(FPArray3,0,4)) { iterStr += item; }
+for (let item of CEL.slice([1,2,3,4,5,6,7,8, 9, 10], 0, 4)) { iterStr += item; }
 CUT.isEqual("slice(); - step 1 - 0 to 4", "12345", iterStr);
 var iterStr = "";
-for (let item of CEL.slice(FPArray3,5)) { iterStr += item; }
+for (let item of CEL.slice([1,2,3,4,5, 6, 7, 8, 9, 10], 5)) { iterStr += item; }
 CUT.isEqual("slice(); - step 2 - 5 to Infinity", "678910", iterStr);
 var iterStr = "";
-for (let item of CEL.slice(FPArray3,4,8)) { iterStr += item; }
+for (let item of CEL.slice([1,2,3,4,5,6,7,8, 9, 10], 4, 8)) { iterStr += item; }
 CUT.isEqual("slice(); - step 3 - 4 to 8", "56789", iterStr);
 var iterStr = "";
-for (let item of CEL.slice(FPArray3)) { iterStr += item; }
+for (let item of CEL.slice([1, 2, 3, 4, 5,6, 7, 8, 9, 10])) { iterStr += item; }
 CUT.isEqual("slice(); - step 4 - all", "12345678910", iterStr);
 
 
 // tail();
 var iterStr = "";
-for (let item of CEL.tail(FPArray3)) { iterStr += item; }
+for (let item of CEL.tail([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])) { iterStr += item; }
 CUT.isEqual("tail();", "2345678910", iterStr);
-
-
-var whileArray = [0, 2, 4, 6, 8, 10, 12, 14, 16];
 
 
 // takeWhile();
 var whileSum = 0;
-for (let item of CEL.takeWhile(whileArray, (e) => (e<10))) { whileSum += item; }
+for (let item of CEL.takeWhile([0, 2, 4, 6, 8, 10, 12, 14,16], (e) => (e<10))) {
+  whileSum += item;
+}
 CUT.isEqual("takeWhile(); values", whileSum, 20);
 whileSum = 0;
-for (let item of CEL.takeWhile(whileArray, (e) => (e<0))) { whileSum += item; }
+for (let item of CEL.takeWhile([0, 2, 4, 6, 8, 10, 12, 14, 16], (e) => (e<0))) {
+  whileSum += item;
+}
 CUT.isEqual("takeWhile(); empty list", whileSum, 0);
 whileSum = 0;
-for (let item of CEL.takeWhile(whileArray, (e) => (e<30))) { whileSum += item; }
+for (let item of CEL.takeWhile([0, 2, 4, 6, 8, 10, 12, 14,16], (e) => (e<30))) {
+  whileSum += item;
+}
 CUT.isEqual("takeWhile(); full list", whileSum, 72);
 
 
 // dropWhile();
 whileSum = 0;
-for (let item of CEL.dropWhile(whileArray, (e) => (e<10))) { whileSum += item; }
+for (let item of CEL.dropWhile([0, 2, 4, 6, 8, 10, 12, 14,16], (e) => (e<10))) {
+  whileSum += item;
+}
 CUT.isEqual("dropWhile(); values", whileSum, 52);
 whileSum = 0;
-for (let item of CEL.dropWhile(whileArray, (e) => (e<30))) { whileSum += item; }
+for (let item of CEL.dropWhile([0, 2, 4, 6, 8, 10, 12, 14,16], (e) => (e<30))) {
+  whileSum += item;
+}
 CUT.isEqual("dropWhile(); empty list", whileSum, 0);
 whileSum = 0;
-for (let item of CEL.dropWhile(whileArray, (e) => (e< 0))) { whileSum += item; }
+for (let item of CEL.dropWhile([0, 2, 4, 6, 8, 10, 12, 14,16], (e) => (e< 0))) {
+  whileSum += item;
+}
 CUT.isEqual("dropWhile(); full list", whileSum, 72);
 
 
@@ -1447,83 +1468,105 @@ CUT.isTrue("findLast();",
 
 // every();
 CUT.isTrue("every(); true", CEL.every([2, 9, 3, 5, 8], (v) => v > 1));
-CUT.isFalse("every(); false 1 - some", CEL.every([2, 9, 3, 5, 8], (v)=>v>3));
-CUT.isFalse("every(); false 1 - none", CEL.every([2, 9, 3, 5, 8], (v)=>v<0));
+CUT.isFalse("every(); false 1 - some", CEL.every([2, 9, 3, 5, 8], (v)=> v > 3));
+CUT.isFalse("every(); false 1 - none", CEL.every([2, 9, 3, 5, 8], (v) =>v < 0));
 CUT.isFalse("every(); false 3 - empty", CEL.every([], (v) => v > 3));
 
 
 // some();
 CUT.isTrue("some(); true", CEL.some([2, 9, 3, 5, 8], (v) => v > 3));
-CUT.isFalse("some(); false 1 - none", CEL.some([2, 9, 3, 5, 8], (v) => v<0));
+CUT.isFalse("some(); false 1 - none", CEL.some([2, 9, 3, 5, 8], (v) => v < 0));
 CUT.isFalse("some(); false 2 - empty", CEL.some([], (v) => v < 0));
 
 
 // none();
 CUT.isTrue("none(); true", CEL.none([2, 9, 3, 5, 8], (v) => v < 0));
-CUT.isFalse("none(); false 1 - every",CEL.none([2, 9, 3, 5, 8], (v) => v>1));
+CUT.isFalse("none(); false 1 - every",CEL.none([2, 9, 3, 5, 8], (v) => v > 1));
 CUT.isFalse("none(); false 2 - some",
   CEL.none([2, 9, 3, 5, 8], (v) => v > 3)
 );
 CUT.isFalse("none(); false 3 - empty", CEL.none([], (v) => v > 3));
 
 
-FParray2.reverse();
-
-
 // takeRight();
 var iterStr = "";
-for (let item of CEL.takeRight(FParray2, 0)) { iterStr += item; }
+for (let item of CEL.takeRight(["J","I","H","G","F","E","D","C","B", "A"], 0)) {
+  iterStr += item;
+}
 CUT.isEqual("takeRight(); - step 1 - 0", "", iterStr);
 var iterStr = "";
-for (let item of CEL.takeRight(FParray2, 7)) { iterStr += item; }
+for (let item of CEL.takeRight(["J","I","H","G","F","E","D","C","B", "A"], 7)) {
+  iterStr += item;
+}
 CUT.isEqual("takeRight(); - step 2 - 7", "ABCDEFG", iterStr);
 var iterStr = "";
-for (let item of CEL.takeRight(FParray2, 12)) { iterStr += item; }
+for (let item of CEL.takeRight(["J","I","H","G","F","E","D","C","B","A"], 12)) {
+  iterStr += item;
+}
 CUT.isEqual("takeRight(); - step 3 - 12", "ABCDEFGHIJ", iterStr);
 var iterStr = "";
-for (let item of CEL.takeRight(FParray2)) { iterStr += item; }
+for (let item of CEL.takeRight(["J","I","H","G","F","E", "D", "C", "B", "A"])) {
+  iterStr += item;
+}
 CUT.isEqual("takeRight(); - step 4 - default 1", "A", iterStr);
 
 
 // dropRight();
 var iterStr = "";
-for (let item of CEL.dropRight(FParray2, 0)) { iterStr += item; }
+for (let item of CEL.dropRight(["J","I","H","G","F","E","D","C","B", "A"], 0)) {
+  iterStr += item;
+}
 CUT.isEqual("dropRight(); - step 1 - 0", "ABCDEFGHIJ", iterStr);
 var iterStr = "";
-for (let item of CEL.dropRight(FParray2, 7)) { iterStr += item; }
+for (let item of CEL.dropRight(["J","I","H","G","F","E","D","C","B", "A"], 7)) {
+  iterStr += item;
+}
 CUT.isEqual("dropRight(); - step 2 - 7", "HIJ", iterStr);
 var iterStr = "";
-for (let item of CEL.dropRight(FParray2, 12)) { iterStr += item; }
+for (let item of CEL.dropRight(["J","I","H","G","F","E","D","C","B","A"], 12)) {
+  iterStr += item;
+}
 CUT.isEqual("dropRight(); - step 3 - 12", "", iterStr);
 var iterStr = "";
-for (let item of CEL.dropRight(FParray2)) { iterStr += item; }
+for (let item of CEL.dropRight(["J","I","H","G","F","E", "D", "C", "B", "A"])) {
+  iterStr += item;
+}
 CUT.isEqual("dropRight(); - step 4 - default 1", "BCDEFGHIJ", iterStr);
-
-
-whileArray.reverse();
 
 
 // takeRightWhile();
 var whileSum = 0;
-for (let item of CEL.takeRightWhile(whileArray, (e) => (e<10))){whileSum+=item;}
+for (let item of CEL.takeRightWhile([16,14,12,10,8,6,4,2, 0], (e) => (e <10))) {
+  whileSum+=item;
+}
 CUT.isEqual("takeRightWhile(); values", whileSum, 20);
 var whileSum = 0;
-for (let item of CEL.takeRightWhile(whileArray, (e) => (e<0))) {whileSum+=item;}
+for (let item of CEL.takeRightWhile([16,14,12,10,8,6,4,2, 0], (e) => (e < 0))) {
+  whileSum+=item;
+}
 CUT.isEqual("takeRightWhile(); empty list", whileSum, 0);
 var whileSum = 0;
-for (let item of CEL.takeRightWhile(whileArray, (e) => (e<30))){whileSum+=item;}
+for (let item of CEL.takeRightWhile([16,14,12,10,8,6,4,2,0], (e) => (e < 30))) {
+  whileSum+=item;
+}
 CUT.isEqual("takeRightWhile(); full list", whileSum, 72);
 
 
 // dropRightWhile();
 var whileSum = 0;
-for (let item of CEL.dropRightWhile(whileArray, (e) => (e<10))){whileSum+=item;}
+for (let item of CEL.dropRightWhile([16,14,12,10,8,6,4,2,0], (e) => (e < 10))) {
+  whileSum += item;
+}
 CUT.isEqual("dropRightWhile(); values", whileSum, 52);
 var whileSum = 0;
-for (let item of CEL.dropRightWhile(whileArray, (e) => (e<30))){whileSum+=item;}
+for (let item of CEL.dropRightWhile([16,14,12,10,8,6,4,2,0], (e) => (e < 30))) {
+  whileSum+=item;
+}
 CUT.isEqual("dropRightWhile(); empty list", whileSum, 0);
 var whileSum = 0;
-for (let item of CEL.dropRightWhile(whileArray, (e) => (e<0))) {whileSum+=item;}
+for (let item of CEL.dropRightWhile([16,14,12,10,8,6,4,2, 0], (e) => (e < 0))) {
+  whileSum+=item;
+}
 CUT.isEqual("dropRightWhile(); full list", whileSum, 72);
 
 
@@ -1550,7 +1593,7 @@ CUT.isEqual("enumerate();",
   "[[0,\"Picard\"],[1,\"Riker\"],[2,\"Data\"]]"
 );
 CUT.isEqual("enumerate(); with offset",
-  JSON.stringify([...CEL.enumerate(["Picard","Riker","Data"],2)]),
+  JSON.stringify([...CEL.enumerate(["Picard","Riker","Data"], 2)]),
   "[[2,\"Picard\"],[3,\"Riker\"],[4,\"Data\"]]"
 );
 
@@ -1561,7 +1604,7 @@ CUT.isEqual("entries();",
   "[[0,\"Picard\"],[1,\"Riker\"],[2,\"Data\"]]"
 );
 CUT.isEqual("entries(); with offset",
-  JSON.stringify([...CEL.entries(["Picard","Riker","Data"],2)]),
+  JSON.stringify([...CEL.entries(["Picard","Riker","Data"], 2)]),
   "[[2,\"Picard\"],[3,\"Riker\"],[4,\"Data\"]]"
 );
 
@@ -1582,9 +1625,6 @@ CUT.isEqual("join();",
     + CEL.join(joinSet, true) + CEL.join(joinSet, 11)
 );
 CUT.isEqual("join(); - empty", "", CEL.join([]))
-
-
-var FPArray = [1, 2, 3];
 
 
 // arrayCycle();
@@ -1623,8 +1663,7 @@ CUT.isEqual("arrayRange(); - 1 - step default 1",
 CUT.isEqual("arrayRange(); - 2 - step 3",
   "[1,4,7,10,13,16]", JSON.stringify(CEL.arrayRange(1, 16, 3))
 );
-CUT.isEqual(
-  "arrayRange(); - 3 - step 3.2 <i>(can be failed - float storage)<i>",
+CUT.isEqual("arrayRange(); - 3 - step 3.2 <i>(can be failed - float)<i>",
   "[1,4.2,7.4,10.600000000000001,13.8,17]",
   JSON.stringify(CEL.arrayRange(1, 17, 3.2))
 );
@@ -1638,8 +1677,6 @@ CUT.isEqual("arrayRange(); - 4 - with 1 parameter",
 );
 
 
-// zip();
-var a = ["a", "b", "c", "d"];
 var b = [3, 4, 5, 6, 7, 8, 9];
 var zipA = ["a1", "a2", "a3"];
 var zipB = ["b1", "b2", "b3"];
@@ -1647,6 +1684,9 @@ var zipC = ["c1", "c2", "c3", "c4", "c5"];
 var zipD = ["d1", "d2"];
 var zipE = ["e1", "e2", "e3", "e4"];
 var zipF = ["a", "b", "c", "d"];
+
+
+// zip();
 CUT.isEqual("zip(); ES5 1","[[\"a1\",\"c1\"],[\"a2\",\"c2\"],[\"a3\",\"c3\"]]",
   JSON.stringify(CEL.zip(zipA, zipC))
 );
@@ -1656,7 +1696,8 @@ CUT.isEqual("zip(); ES5 2",
 );
 CUT.isEqual("zip(); ES6 1", "[[\"a\",3],[\"b\",4],[\"c\",5],[\"d\",6]]",
   JSON.stringify(CEL.zip(
-    new Set(a), new Map([[2,3],[3,4],[4,5],[5,6],[6,7], [7, 8], [8,9]]).values()
+    new Set(["a", "b", "c", "d"]),
+    new Map([[2,3],[3,4],[4,5],[5,6],[6,7], [7, 8], [8,9]]).values()
   ))
 );
 CUT.isEqual("zip(); ES6 2",
@@ -1689,11 +1730,12 @@ CUT.isEqual("zipObj();",
 
 // min();
 // max();
-var a = [21,11,41,51,31];
-CUT.isEqual("min(); array", 11, CEL.min(...a));
-CUT.isEqual("max(); array", 51, CEL.max(...a));
-CUT.isEqual("min(); Set", 11, CEL.min(...new Set(a)));
-CUT.isEqual("max(); Set keys", 51, CEL.max(...new Set(a).keys()));
+CUT.isEqual("min(); array", 11, CEL.min(...[21, 11, 41, 51, 31]));
+CUT.isEqual("max(); array", 51, CEL.max(...[21, 11, 41, 51, 31]));
+CUT.isEqual("min(); Set", 11, CEL.min(...new Set([21, 11, 41, 51, 31])));
+CUT.isEqual("max(); Set keys", 51,
+  CEL.max(...new Set([21, 11, 41, 51, 31]).keys())
+);
 CUT.isEqual("min(); number test", CEL.min(5, 10, 3), 3);
 CUT.isEqual("max(); number test", CEL.max(5, 10, 3), 10);
 
@@ -1712,12 +1754,9 @@ CUT.isFalse("isSuperset(); - ES6 - false",
 );
 
 
-// var a = [21, 11, 41, 51, 31];
-
-
 // arrayUnion();
 // arrayIntersection();
-//arraySymmetricDifference();
+// arraySymmetricDifference();
 var a = [1, 2, 3, 4], b = [3, 4, 5, 6], c = [5, 6, 7, 8];
 CUT.isEqual(
   "arrayUnion(); ES5","[1,2,3,4,5,6,7,8]", JSON.stringify(CEL.arrayUnion(a,b,c))
@@ -1740,7 +1779,7 @@ try {
   );
   CUT.isEqual("arrayDifference(); ES6", "[1,2]",
     JSON.stringify(
-      CEL.arrayDifference(new Map([[1,2],[2,3],[3,4],[4,5]]).keys(),b.values())
+      CEL.arrayDifference(new Map([[1,2],[2,3],[3,4],[4,5]]).keys(), b.values())
     )
   );
   CUT.isEqual("arraySymmetricDifference(); ES6", "[1,2,5,6]",
@@ -1760,22 +1799,30 @@ function __setEquals__(set1, set2) {
   }
   return true;
 }
-var a = [1, 2, 3, 4], b = [3, 4, 5, 6], c = [5, 6, 7, 8];
-var sa = new Set(a), sb = new Set(b), sc = new Set(c);
 CUT.isTrue("setUnion(); ES6",
   __setEquals__(
-    CEL.setUnion(new Map([[2, 1], [3, 2], [4, 3], [5, 4]]).values(), sb, c),
-    CEL.setUnion(a,new Map([[2, 3], [3, 4], [4,5], [5,6]]).values(),sc.values())
+    CEL.setUnion(new Map([[2, 1], [3, 2], [4, 3], [5, 4]]).values(),
+      new Set([3, 4, 5, 6]), [5 , 6, 7, 8]
+    ),
+    CEL.setUnion([1, 2, 3, 4],new Map([[2,3], [3, 4], [4, 5], [5, 6]]).values(),
+      new Set([5,6,7,8]).values()
+    )
   )
 );
 CUT.isTrue("setIntersection(); ES6",
-  __setEquals__(new Set([3, 4]), CEL.setIntersection(sa, sb))
+  __setEquals__(new Set([3, 4]), CEL.setIntersection(
+    new Set([1, 2, 3, 4]), new Set([3, 4, 5, 6])
+  ))
 );
 CUT.isTrue("setDifference(); ES6",
-  __setEquals__(new Set([1, 2]), CEL.setDifference(sa, sb))
+  __setEquals__(new Set([1, 2]), CEL.setDifference(
+    new Set([1, 2, 3,4]), new Set([3, 4, 5, 6])
+  ))
 );
 CUT.isTrue("setSymmetricDifference(); ES6",
-  __setEquals__(new Set([1, 2, 5, 6]), CEL.setSymmetricDifference(sa, sb))
+  __setEquals__(new Set([1, 2, 5, 6]), CEL.setSymmetricDifference(
+    new Set([1, 2, 3, 4]), new Set([3, 4, 5, 6])
+  ))
 );
 
 
@@ -1920,7 +1967,7 @@ CUT.isEqual("arrayUnique(); 3 ES6 - Array and Map values(); iterator",
   JSON.stringify(CEL.arrayUnique([1, 2, 2, 3, 4, 4, 5, 6, 6, 7])),
   JSON.stringify(
     CEL.arrayUnique((new Map([
-      ["extendObj1", 1], ["extendObj2", 2], ["baz1", 2], ["foo2", 3], ["bar2", 4],
+      ["extendObj1", 1], ["extendObj2", 2], ["baz1", 2], ["foo2",3], ["bar2",4],
       ["baz2", 4], ["foo3", 5], ["bar3", 6], ["baz3", 6], ["foo4", 7]
     ])).values())
   )
@@ -2079,16 +2126,16 @@ CUT.isEqual("Math.sumPrecise(); 24",
   Math.sumPrecise([-1e20]), -100000000000000000000
 );
 CUT.isNotEqual("Math.sumPrecise(); 25",
-  Math.sumPrecise([-Infinity,0.1,Infinity]), NaN
+  Math.sumPrecise([Infinity, 0.1, 0.2, -Infinity]), NaN
 );
 CUT.isNotEqual("Math.sumPrecise(); 26",
-  Math.sumPrecise([Infinity,0.1,-Infinity]), NaN
+  Math.sumPrecise([Infinity, 0.1, 0.2, -Infinity]), NaN
 );
 CUT.isNotEqual("Math.sumPrecise(); 27",
-  Math.sumPrecise([Infinity,0.1,0.2,-Infinity]), NaN
+  Math.sumPrecise([Infinity, 0.1, 0.2, -Infinity]), NaN
 );
 CUT.isNotEqual("Math.sumPrecise(); 28",
-  Math.sumPrecise([0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,+"tz"]), NaN
+  Math.sumPrecise([0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, +"tz"]), NaN
 );
 try {
   console.log(Math.sumPrecise(5));
@@ -2107,7 +2154,7 @@ try {
 } catch (e) { CUT.isTrue("Math.sumPrecise(); 34 - " + Error.isError(e), true); }
 try {
   console.log(
-    Math.sumPrecise([0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,BigInt(5)])
+    Math.sumPrecise([0.1,0.1,0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, BigInt(5)])
   );
 } catch (e) { CUT.isTrue("Math.sumPrecise(); 35 - " + Error.isError(e), true); }
 try {
@@ -2148,50 +2195,49 @@ CUT.isEqual("Error.isError(); <code>\"" + isErrorStr + "\"</code>", isErrorStr,
 );
 
 
-var arrayCopy = [4, 2, 5], arrayCopyStr = "[4,2,5]";
+var arrayCopy = [4, 2, 5];
 // Array.prototype.toReversed();
 CUT.isTrue("Array.prototype.toReversed();",
   JSON.stringify(arrayCopy.toReversed()) === "[5,2,4]"
-  && JSON.stringify(arrayCopy) === arrayCopyStr
+  && JSON.stringify(arrayCopy) === "[4,2,5]"
 );
 // Array.prototype.toSorted();
 CUT.isTrue("Array.prototype.toSorted();",
   JSON.stringify(arrayCopy.toSorted()) === "[2,4,5]"
-  && JSON.stringify(arrayCopy) === arrayCopyStr
+  && JSON.stringify(arrayCopy) === "[4,2,5]"
 );
 // Array.prototype.toSpliced();
 CUT.isTrue("Array.prototype.toSpliced(); remove",
   JSON.stringify(arrayCopy.toSpliced(1,1)) === "[4,5]"
-  && JSON.stringify(arrayCopy) === arrayCopyStr
+  && JSON.stringify(arrayCopy) === "[4,2,5]"
 );
 //Array.prototype.toSpliced();
 CUT.isTrue("Array.prototype.toSpliced(); remove and add 2 items",
   JSON.stringify(arrayCopy.toSpliced(1,1,89,79)) === "[4,89,79,5]"
-  && JSON.stringify(arrayCopy) === arrayCopyStr
+  && JSON.stringify(arrayCopy) === "[4,2,5]"
 );
 // Array.prototype.with();
 CUT.isTrue("Array.prototype.with();",
   JSON.stringify(arrayCopy.with(1,7)) === "[4,7,5]"
-  && JSON.stringify(arrayCopy) === arrayCopyStr
+  && JSON.stringify(arrayCopy) === "[4,2,5]"
 );
 
 
 var Uint8ArrayCopy = new Uint8Array([4, 2, 5]);
-var Uint8ArrayCopyStr = "{\"0\":4,\"1\":2,\"2\":5}";
 // TypedArray.prototype.toReversed();
 CUT.isTrue("TypedArray.prototype.toReversed();",
   JSON.stringify(Uint8ArrayCopy.toReversed()) === "{\"0\":5,\"1\":2,\"2\":4}"
-  && JSON.stringify(Uint8ArrayCopy) === Uint8ArrayCopyStr
+  && JSON.stringify(Uint8ArrayCopy) === "{\"0\":4,\"1\":2,\"2\":5}"
 );
 // TypedArray.prototype.toSorted();
 CUT.isTrue("TypedArray.prototype.toSorted();",
   JSON.stringify(Uint8ArrayCopy.toSorted()) === "{\"0\":2,\"1\":4,\"2\":5}"
-  && JSON.stringify(Uint8ArrayCopy) === Uint8ArrayCopyStr
+  && JSON.stringify(Uint8ArrayCopy) === "{\"0\":4,\"1\":2,\"2\":5}"
 );
 //TypedArray.prototype.with();
 CUT.isTrue("TypedArray.prototype.with();",
   JSON.stringify(Uint8ArrayCopy.with(1,7)) === "{\"0\":4,\"1\":7,\"2\":5}"
-  && JSON.stringify(Uint8ArrayCopy) === Uint8ArrayCopyStr
+  && JSON.stringify(Uint8ArrayCopy) === "{\"0\":4,\"1\":2,\"2\":5}"
 );
 
 
@@ -2231,8 +2277,7 @@ CUT.log("<code>\"" + rIDstr + "\"</code>");
 
 
 // Object.hasOwn();
-var hasOwnObject = {"a": 1, "b": 2};
-var hasOwnArray = [4, 5, 6];
+var hasOwnObject = {"a": 1, "b": 2}, hasOwnArray = [4, 5, 6];
 CUT.isEqual("Object.hasOwn();", "true false false true false false", ""
     + Object.hasOwn(hasOwnObject, "a")
     + " " + Object.hasOwn(hasOwnObject, "hasOwnProperty")
@@ -2290,7 +2335,6 @@ CUT.isEqual("AsyncFunction();", "asyncfunction", CEL.classof(afunction));
 
 
 /* type checking */
-
 CUT.addElement("hr");
 CUT.addElement("h3", "type checking");
 
@@ -2363,13 +2407,13 @@ CUT.isFalse("isEmptyMap(); false 2 array", CEL.isEmptyMap([]));
 
 // isEmptySet();
 CUT.isTrue("isEmptySet(); true", CEL.isEmptySet(new Set()));
-CUT.isFalse("isEmptySet(); false 1", CEL.isEmptySet(new Set([4,5,6])));
+CUT.isFalse("isEmptySet(); false 1", CEL.isEmptySet(new Set([4, 5, 6])));
 CUT.isFalse("isEmptySet(); false 2 array", CEL.isEmptySet([]));
 
 
 // isEmptyIterator();
 CUT.isTrue("isEmptyIterator(); true", CEL.isEmptyIterator([]));
-CUT.isFalse("isEmptyIterator(); false", CEL.isEmptyIterator([4,5,6]));
+CUT.isFalse("isEmptyIterator(); false", CEL.isEmptyIterator([4, 5, 6]));
 
 
 // isDataView();
@@ -2410,7 +2454,11 @@ CUT.isFalse("isGeneratorFn(); false 1 fn",
   CEL.isGeneratorFn(function fn42 () { return 42; })
 );
 CUT.isFalse("isGeneratorFn(); false 2 async fn",
-  CEL.isGeneratorFn(new AsyncFunction("a","b","return await resolveAfter2Seconds(a) + await resolveAfter2Seconds(b);"))
+  CEL.isGeneratorFn(
+    new AsyncFunction("a", "b",
+      "return await resolveAfter2Seconds(a) + await resolveAfter2Seconds(b);"
+    )
+  )
 );
 CUT.isFalse("isGeneratorFn(); false 3 number", CEL.isGeneratorFn(42));
 
@@ -2418,7 +2466,9 @@ CUT.isFalse("isGeneratorFn(); false 3 number", CEL.isGeneratorFn(42));
 // isAsyncFn();
 CUT.isTrue("isAsyncFn(); true",
   CEL.isAsyncFn(
-    new AsyncFunction("a","b","return await resolveAfter2Seconds(a) + await resolveAfter2Seconds(b);")
+    new AsyncFunction("a", "b",
+      "return await resolveAfter2Seconds(a) + await resolveAfter2Seconds(b);"
+    )
   )
 );
 CUT.isFalse("isAsyncFn(); false 1 fn",
@@ -2650,27 +2700,27 @@ CUT.isFalse("isPromise(); - false ", CEL.isPromise({}));
 
 // isSymbol();
 CUT.isTrue("isSymbol(); true", CEL.isSymbol(Symbol("str")));
-CUT.isFalse("isSymbol(); false", CEL.isSymbol(CEL.noop));
+CUT.isFalse("isSymbol(); false", CEL.isSymbol(function(){}));
 
 
 // isMap();
 CUT.isTrue("isMap(); true", CEL.isMap(new Map()));
-CUT.isFalse("isMap(); false", CEL.isMap(CEL.noop));
+CUT.isFalse("isMap(); false", CEL.isMap(function(){}));
 
 
 // isSet();
 CUT.isTrue("isSet(); true", CEL.isSet(new Set()));
-CUT.isFalse("isSet(); false", CEL.isSet(CEL.noop));
+CUT.isFalse("isSet(); false", CEL.isSet(function(){}));
 
 
 // isWeakMap();
 CUT.isTrue("isWeakMap(); true", CEL.isWeakMap(new WeakMap()));
-CUT.isFalse("isWeakMap(); false", CEL.isWeakMap(CEL.noop));
+CUT.isFalse("isWeakMap(); false", CEL.isWeakMap(function(){}));
 
 
 // isWeakSet();
 CUT.isTrue("isWeakSet(); true", CEL.isWeakSet(new WeakSet()));
-CUT.isFalse("isWeakSet(); false", CEL.isWeakSet(CEL.noop));
+CUT.isFalse("isWeakSet(); false", CEL.isWeakSet(function(){}));
 
 
 // isIterator();
@@ -2691,7 +2741,7 @@ CUT.isFalse("isIterator(); false - Array", CEL.isIterator([4, 5, 7]));
 
 // isIterable();
 CUT.isTrue("isIterable(); true", CEL.isIterable([]) && CEL.isIterable("")
-    && CEL.isIterable(new Map([[1,2],[3,4]])) && CEL.isIterable(new Set([1,2]))
+  && CEL.isIterable(new Map([[1, 2], [3, 4]])) && CEL.isIterable(new Set([1,2]))
 );
 CUT.isFalse("isIterable(); false", CEL.isIterable(42) || CEL.isIterable(3.14)
   || CEL.isIterable({a:1,b:2}) || CEL.isIterable(true) ||CEL.isIterable(false)
@@ -2713,30 +2763,29 @@ CUT.addElement("h3", "isSame<type>(); functions");
 
 
 // isSameArray();
-CUT.isTrue("isSameArray(); step 1", CEL.isSameArray([], []) );
-CUT.isTrue("isSameArray(); step 2", CEL.isSameArray([5, 4, 5], [5, 4, 5]) );
-CUT.isFalse("isSameArray(); step 3", CEL.isSameArray([5, 4, 5], [4, 5, 6]) );
-CUT.isFalse("isSameArray(); step 4", CEL.isSameArray([5, 4, 6], [4, 5, 5]) );
-CUT.isFalse("isSameArray(); step 5", CEL.isSameArray([5, 4, 5], [4, 4, 5]) );
+CUT.isTrue("isSameArray(); step 1", CEL.isSameArray([], []));
+CUT.isTrue("isSameArray(); step 2", CEL.isSameArray([5, 4, 5], [5, 4, 5]));
+CUT.isFalse("isSameArray(); step 3", CEL.isSameArray([5, 4, 5], [4, 5, 6]));
+CUT.isFalse("isSameArray(); step 4", CEL.isSameArray([5, 4, 6], [4, 5, 5]));
+CUT.isFalse("isSameArray(); step 5", CEL.isSameArray([5, 4, 5], [4, 4, 5]));
 CUT.isFalse("isSameArray(); step 6", CEL.isSameArray([5, 5], [5, 5, 4]) );
 CUT.isFalse("isSameArray(); step 7", CEL.isSameArray([5, 5, 4], [5, 5]) );
 CUT.isFalse("isSameArray(); step 8", CEL.isSameArray([5 ,5],
   new Map([[5, 5], [5, 5]]))
 );
-CUT.isFalse("isSameArray(); step 9", CEL.isSameArray([5,5], new Set([5,5])) );
-CUT.isFalse("isSameArray(); step 10", CEL.isSameArray([], {}) );
-CUT.isFalse("isSameArray(); step 11", CEL.isSameArray({}, {}) );
-CUT.isFalse("isSameArray(); step 12", CEL.isSameArray("4", "4") );
-CUT.isFalse("isSameArray(); step 13", CEL.isSameArray(4, 4) );
-CUT.isFalse("isSameArray(); step 14", CEL.isSameArray(4, 5) );
+CUT.isFalse("isSameArray(); step 9", CEL.isSameArray([5, 5], new Set([5, 5])) );
+CUT.isFalse("isSameArray(); step 10", CEL.isSameArray([], {}));
+CUT.isFalse("isSameArray(); step 11", CEL.isSameArray({}, {}));
+CUT.isFalse("isSameArray(); step 12", CEL.isSameArray("4", "4"));
+CUT.isFalse("isSameArray(); step 13", CEL.isSameArray(4, 4));
+CUT.isFalse("isSameArray(); step 14", CEL.isSameArray(4, 5));
 
 
 // isSameObject();
-var
-  isSameObjectO1 = { "p1": 4, "p2": 5, "p3": 6 },
-  isSameObjectO2 = { "p1": 4, "p2": 5, "p3": 6 },
-  isSameObjectO3 = { "p1": 4, "p2": 5, "p3": 7 },
-  isSameObjectO4 = { "p1": 4, "p2": 5, "p3": 6, "p4": 7 };
+var isSameObjectO1 = {"p1": 4, "p2": 5, "p3": 6};
+var isSameObjectO2 = {"p1": 4, "p2": 5, "p3": 6};
+var isSameObjectO3 = {"p1": 4, "p2": 5, "p3": 7};
+var isSameObjectO4 = {"p1": 4, "p2": 5, "p3": 6, "p4": 7};
 CUT.isTrue("isSameObject(); true 1",
   CEL.isSameObject(isSameObjectO1, isSameObjectO2)
 );
@@ -2950,7 +2999,7 @@ CUT.isEqual("toPrimitive();", "11111", ""
 
 
 // isSameValueZero
-var isSameValueZerofoo = { "a": 1 }, isSameValueZerobar = { "a": 1 };
+var isSameValueZerofoo = {"a": 1}, isSameValueZerobar = {"a": 1};
 var isSameValueZeroStr = ""
   + +CEL.isSameValueZero(25, 25)
   + +CEL.isSameValueZero("foo", "foo")
@@ -2977,7 +3026,7 @@ CUT.isEqual("isSameValueZero(); " + "<code>" + isSameValueZeroStr + "</code>",
 
 
 // isSameValueNonNumber();
-var isSameValueNonNumberfoo = { "a": 1 }, isSameValueNonNumberbar = { "a": 1 };
+var isSameValueNonNumberfoo = {"a": 1}, isSameValueNonNumberbar = {"a": 1};
 var isSameValueNonNumberStr = ""
   + +CEL.isSameValueNonNumber(25, 25)
   + +CEL.isSameValueNonNumber("foo", "foo")
@@ -3068,7 +3117,7 @@ CUT.log("<code>\"" + deleteOwnPropertyStr + "\"</code>")
 // type();
 CUT.isEqual("type();",
  "nullundefinedobjectfunctionnumberstring",
-  CEL.type(null) + CEL.type(undefined) + CEL.type([]) + CEL.type(CEL.noop)
+  CEL.type(null) + CEL.type(undefined) + CEL.type([]) + CEL.type(function(){})
     + CEL.type(42) + CEL.type("42")
 );
 
@@ -3165,7 +3214,8 @@ CUT.isEqual("toLength();", "3031021474836470214748364700300003000000", ""
   + CEL.toLength(-Infinity)
   + CEL.toLength("Infinity")
   + CEL.toLength("-Infinity")
-  + CEL.toLength(-3) + CEL.toLength(3.14)
+  + CEL.toLength(-3)
+  + CEL.toLength(3.14)
   + CEL.toLength(-3.14)
   + CEL.toLength("fasdas")
   + CEL.toLength(false)
@@ -3300,14 +3350,20 @@ CUT.isTrue("randomFloat(min,max);", testRandom >= 51 && testRandom <= 55);
 
 // toFloat16();
 var float16str = "#" + CEL.toFloat16(0)
-  + "#" + CEL.toFloat16(+0) + "#" + CEL.toFloat16(-0)
+  + "#" + CEL.toFloat16(+0)
+  + "#" + CEL.toFloat16(-0)
   + "#" + CEL.toFloat16(Number.POSITIVE_INFINITY)
   + "#" + CEL.toFloat16(Number.NEGATIVE_INFINITY)
-  + "#" + CEL.toFloat16(3.14) + "#" + CEL.toFloat16(-3.14)
-  + "#" + CEL.toFloat16(65504) + "#" + CEL.toFloat16(-65504)
-  + "#" + CEL.toFloat16(65504.0) + "#" + CEL.toFloat16(-65504.0)
-  + "#" + CEL.toFloat16(65504.1) + "#" + CEL.toFloat16(-65504.1)
-  + "#" + CEL.toFloat16(65505) + "#" + CEL.toFloat16(-65505)
+  + "#" + CEL.toFloat16(3.14)
+  + "#" + CEL.toFloat16(-3.14)
+  + "#" + CEL.toFloat16(65504)
+  + "#" + CEL.toFloat16(-65504)
+  + "#" + CEL.toFloat16(65504.0)
+  + "#" + CEL.toFloat16(-65504.0)
+  + "#" + CEL.toFloat16(65504.1)
+  + "#" + CEL.toFloat16(-65504.1)
+  + "#" + CEL.toFloat16(65505)
+  + "#" + CEL.toFloat16(-65505)
   + "#" + CEL.toFloat16("lorem");
 CUT.isEqual("toFloat16();", float16str,
   "#0#0#0#65504#-65504#3.14#-3.14#65504#-65504#65504#-65504#65504#-65504#65504#-65504#0"
@@ -3317,11 +3373,17 @@ CUT.log("<code>\"" + float16str + "\"</code>");
 
 // isFloat16();
 var float16str = ""
-  + +CEL.isFloat16(0) + +CEL.isFloat16(+0) + +CEL.isFloat16(-0)
-  + +CEL.isFloat16(65504) + +CEL.isFloat16(-65504)
-  + +CEL.isFloat16(3.14) + +CEL.isFloat16(-3.14)
-  + +CEL.isFloat16(65504.1) + +CEL.isFloat16(-65504.1)
-  + +CEL.isFloat16(65505) + +CEL.isFloat16(-65505)
+  + +CEL.isFloat16(0)
+  + +CEL.isFloat16(+0)
+  + +CEL.isFloat16(-0)
+  + +CEL.isFloat16(65504)
+  + +CEL.isFloat16(-65504)
+  + +CEL.isFloat16(3.14)
+  + +CEL.isFloat16(-3.14)
+  + +CEL.isFloat16(65504.1)
+  + +CEL.isFloat16(-65504.1)
+  + +CEL.isFloat16(65505)
+  + +CEL.isFloat16(-65505)
   + +CEL.isFloat16("lorem")
   + +CEL.isFloat16(true)
   + +CEL.isFloat16([]);
@@ -3332,11 +3394,20 @@ CUT.log("<code>\"" + float16str + "\"</code>");
 // signbit();
 CUT.isTrue(
   "signbit();",
-  !CEL.signbit("str") && !CEL.signbit("5") && CEL.signbit("-5")
-    && !CEL.signbit("4.2") && CEL.signbit("-4.2") && CEL.signbit(-3.14)
-    && !CEL.signbit(3.14) && CEL.signbit(-1) && !CEL.signbit(1)
-    && !CEL.signbit(0) && CEL.signbit(-0) && !CEL.signbit(+0)
-    && !CEL.signbit(Infinity) && CEL.signbit(-Infinity)
+  !CEL.signbit("str")
+    && !CEL.signbit("5")
+    && CEL.signbit("-5")
+    && !CEL.signbit("4.2")
+    && CEL.signbit("-4.2")
+    && CEL.signbit(-3.14)
+    && !CEL.signbit(3.14)
+    && CEL.signbit(-1)
+    && !CEL.signbit(1)
+    && !CEL.signbit(0)
+    && CEL.signbit(-0)
+    && !CEL.signbit(+0)
+    && !CEL.signbit(Infinity)
+    && CEL.signbit(-Infinity)
     && !CEL.signbit(+Infinity)
 );
 
