@@ -9,6 +9,51 @@
 # Celestra version history
 
 
+## Celestra v5.6.6
+
+1. Documentation and pdf fixes.
+
+2. Add the "_Javascript Equality comparisons and sameness_" page in the __js-cheatsheet.odt__ and __js-cheatsheet.odt__
+
+3. Add these functions:
+
+````javascript
+domClear();
+strTruncate();
+````
+
+4. Add these abstract functions:
+
+````javascript
+deletePropertyOrThrow();
+isLessThan();
+isSameType();
+requireObjectCoercible();
+````
+
+5. Replace these functions with a new version:
+
+````javascript
+arrayCreate();
+clamp();
+createDataPropertyOrThrow();
+createMethodPropertyOrThrow();
+createPolyfillMethod();
+createPolyfillProperty();
+getInV();
+isObject();
+minmax();
+sizeIn();
+setIn();
+sum();      // use Math.sumPrecise(); if all items are number
+toObject();
+```` 
+
+6. __Celestra Unit Tester (CUT) v0.8.27:__ 
+- CSS and text changes
+- Small fixes
+
+
 ## Celestra v5.6.5
 
 1. Documentation and pdf fixes.
