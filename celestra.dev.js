@@ -231,12 +231,12 @@ if (!("with" in Uint8Array.prototype)) {
 
 /** non-standard polyfills **/
 
-/* window.GeneratorFunction(); */
+/* window.GeneratorFunction; */
 if (!window.GeneratorFunction) {
   window.GeneratorFunction = Object.getPrototypeOf(function*(){}).constructor;
 }
 
-/* window.AsyncFunction(); */
+/* window.AsyncFunction; */
 if (!window.AsyncFunction) {
   window.AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
 }
@@ -636,7 +636,7 @@ function domFadeOut (e, dur) {
 /* domFadeToggle(<element>[,duration = 500[,display = ""]]): undefined */
 function domFadeToggle (e, dur, d = "") {
   if (window.getComputedStyle(e, null).display === "none") {
-    /* domFadeIn(); */
+    /* same as domFadeIn(); */
     var s = e.style, step = 25/(dur || 500);
     s.opacity = (s.opacity || 0);
     s.display = (d || "");
@@ -644,7 +644,7 @@ function domFadeToggle (e, dur, d = "") {
       (s.opacity=parseFloat(s.opacity)+step)>1 ?s.opacity=1:setTimeout(fade,25);
     })();
   } else {
-    /* domFadeOut(); */
+    /* same as domFadeOut(); */
     var s = e.style, step = 25/(dur || 500);
     s.opacity = (s.opacity || 1);
     (function fade () {
@@ -884,7 +884,7 @@ const domScrollToElement = (e, top = true) => e.scrollIntoView(top);
 const domClear = (el) => Array.from(el.children).forEach((item)=>item.remove());
 
 /** AJAX API **/
-/* getJson(); and getText(); shorthands -> ajax(); */
+/* getJson(); and getText(); shorthands to ajax(); */
 
 /* getText(<url: string>,<success: function>): undefined */
 function getText (u, s) { celestra.ajax({url: u, success: s}); }
@@ -1010,7 +1010,7 @@ const isEmptyMap = (v) => (v instanceof Map && v.size === 0);
 const isEmptySet = (v) => (v instanceof Set && v.size === 0);
 
 /* isEmptyIterator(<value: any>): boolean */
-function isEmptyIterator (it) {for(let item of it) {return false;} return true;}
+function isEmptyIterator (it) {for(let _item of it){return false;} return true;}
 
 /* isDataView(<value: any>): boolean */
 const isDataView = (v) => (v instanceof DataView);
@@ -1040,8 +1040,8 @@ function isSameObject (o1, o2) {
 }
 
 /* isSameArray(<array1>,<array2>): boolean */
-const isSameArray = (a, b) => ( Array.isArray(a) && Array.isArray(b)
-  && (a.length === b.length) && a.every((v,i) => v === b[i]) );
+const isSameArray = (a, b) => (Array.isArray(a) && Array.isArray(b)
+  && (a.length === b.length) && a.every((v,i) => v === b[i]));
 
 /* isSameMap(<map1>,<map2>): boolean */
 function isSameMap (m1, m2) {
@@ -1302,7 +1302,9 @@ function arrayDeepClone ([...a]) {
 }
 
 /* arrayCreate(<length: any>): array OR throw error */
-const arrayCreate = (length = 0) => Array( (1/+length === 1/-0) ? 0 : +length );
+const arrayCreate = (length = 0) =>
+  Array(((1/Number(length) === 1/-0) || (length > (Math.pow(2, 32) - 1)))
+    ? 0 : Number(length));
 
 /* initial(<iterator>): array */
 const initial = ([...a]) => a.slice(0, -1);
@@ -1706,6 +1708,12 @@ const withOut = ([...a], [...fl]) => a.filter( (e) => fl.indexOf(e) === -1 );
 
 /** Abstract API **/
 
+/* isSameType(<object>,<property>): undefined */
+function deletePropertyOrThrow (O, P) {
+  delete O[P];
+  if (P in O) { throw new Error("Object Property delete error: "+O+"["+P+"]"); }
+}
+
 /* isSameType(<value1>,<value2>): boolean */
 const isSameType = (v1, v2) =>
   (v1 == null && v1 === v2) ? true : (typeof v1 === typeof v2);
@@ -1724,13 +1732,24 @@ function requireObjectCoercible (O) {
 }
 
 /* getInV(<value: any>,<property: string>): any OR throw error */
-function getInV (V,P) { if(V==null){ throw TypeError(); } return Object(V)[P]; }
+function getInV (O, P) {
+  if (O == null ) {
+    throw TypeError("celestra.getInV(); error: " + O +"[" + P + "]");
+  }
+  return Object(O)[P];
+}
 
 /* getIn(<object>,<property: string>): any */
 const getIn = (O, P) => O[P];
 
-/* setIn(<object>,<property: string>,<value: any>): object */
-function setIn (O, P, V) { O[P] = V; return O; }
+/* setIn(<object>,<property: string>,<value: any>[,Throw=false]): object */
+function setIn (O, P, V, Throw = false) {
+  O[P] = V;
+  if (O[P] !== V && Throw) {
+    throw new TypeError("celestra.setIn(); error: " + O + "[" + P + "]");
+  }
+  return (O[P] === V);
+}
 
 /* hasIn(<object>,<property: string>): boolean */
 const hasIn = (O, P) => (P in O);
@@ -1743,7 +1762,7 @@ const toPropertyKey = (v) => (typeof v === "symbol" ? v : String(v));
 
 /* toObject(<value: any>): object OR symbol OR function OR throw error */
 function toObject (O) {
-  if (O == null) { throw new TypeError(); }
+  if (O == null) { throw new TypeError("celestra.toObject(); error: " + O); }
   if (["object", "function"].includes(typeof O)) { return O; }
   return Object(O);
 }
@@ -1809,7 +1828,9 @@ function createMethodPropertyOrThrow (O, P, V) {
   Object.defineProperty(O, P, {
     writable: true, enumerable: false, configurable: true, value: V
   });
-  if (!(Object.hasOwn(O, P))) { throw new Error(); }
+  if (O[P] !== V) {
+    throw new Error("celestra.createMethodPropertyOrThrow(); error: " + O +"[" + P + "]");
+  }
   return O;
 }
 
@@ -1820,7 +1841,7 @@ function createPolyfillMethod (O, P, V) {
       writable: true, enumerable: false, configurable: true, value: V
     });
   }
-  return Object.hasOwn(O, P);
+  return (O[P] === V);
 }
 
 /* createPolyfillProperty(<object>,<property>,<value: any>): boolean */
@@ -1830,7 +1851,7 @@ function createPolyfillProperty (O, P, V) {
       writable: true, enumerable: true, configurable: true, value: V
     });
   }
-  return Object.hasOwn(O, P);
+  return (O[P] === V);
 }
 
 /* deleteOwnProperty(<object>,<property>[,Throw=false]): number or throw error*/
@@ -1883,7 +1904,9 @@ function createDataPropertyOrThrow (O, P, V) {
   Object.defineProperty(O, P, {
     writable: true, enumerable: true, configurable: true, value: V
   });
-  if (!(Object.hasOwn(O, P))) { throw new Error(); }
+  if (O[P] !== V) {
+    throw new Error("celestra.createDataPropertyOrThrow(); error: "+O+"["+P+"]");
+  }
   return O;
 }
 
@@ -2307,6 +2330,7 @@ var celestra = {
   join: join,
   withOut: withOut,
   /** Abstract API **/
+  deletePropertyOrThrow: deletePropertyOrThrow,
   isSameType: isSameType,
   isLessThan: isLessThan,
   requireObjectCoercible: requireObjectCoercible,

@@ -85,7 +85,9 @@ input:hover, input:focus, button:hover {
   <div id="results" class="padding"></div>
 
   <footer id="footer" class="center"><small>
-    <p>Contact me on <a href="http://github.com/Serrin" target="_blank">Github</a></p>
+    <p>Contact me on <a href="http://github.com/Serrin" target="_blank">
+      Github</a>
+    </p>
     <p>&copy; Copyright 2018 Ferenc Czigler</p>
   </small></footer>
 
@@ -106,7 +108,9 @@ CEL.domReady(function () {
     var diceValue = parseInt(dice.value),
       repeat = parseInt(rolls.value);
     for (var i=0; i<repeat; i++) {
-      results.append( CEL.domCreate("span",{},"<i>#"+(i+1)+":</i> <b>"+CEL.randomInt(1,diceValue)+"</b>") );
+      results.append( CEL.domCreate("span", {}, "<i>#" + ( i + 1) + ":</i> <b>"
+        +CEL.randomInt(1,diceValue) + "</b>") 
+      );
     }
   }
 

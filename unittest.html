@@ -157,6 +157,10 @@ results
     <td><code>CEL.classof(42,'string', true);</code></td>
   </tr>
   <tr>
+    <td><button onclick=" try { CEL.classof(42,'string', true); } catch (e) { alert(e); } ">getType(); throw</button></td>
+    <td><code>CEL.getType(42,'string', true);</code></td>
+  </tr>
+  <tr>
     <td><button onclick="var alertStr = ''; try { CEL.assertTrue('assertTrue();', false); } catch(e) { alertStr += e + '\n'; } try { CEL.assertFalse('assertFalse();', true); } catch(e) { alertStr += e + '\n'; } try { CEL.assertEq('assertEq(); 1', true, 2); } catch(e) { alertStr += e + '\n'; } try { CEL.assertEq('assertEq(); 2', true, 2, false); } catch(e) { alertStr += e + '\n'; } try { CEL.assertNotEq('assertNotEq(); 1', 1, 1); } catch(e) { alertStr += e + '\n'; } try { CEL.assertNotEq('assertNotEq(); 2', true, 1, false); } catch(e) { alertStr += e; } alert(alertStr);">assert functions</button></td>
     <td>
       <p>1x alert, 6x cases</p>

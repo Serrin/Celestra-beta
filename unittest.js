@@ -208,9 +208,15 @@ CUT.isNotEqual(
   0, false, false
 );
 
+} catch (e) {
+  alert("CUT initialisation error: "+ e);
+}
+
 
 /* ======================================================================== */
 
+
+try {
 
 (function(){
 "use strict";
@@ -1105,6 +1111,10 @@ CUT.isTrue("arrayCreate(); return array false",
 var arrayCreateArr = CEL.arrayCreate(4294967295);
 CUT.isTrue("arrayCreate(); return array 4294967295 max size",
   Array.isArray(arrayCreateArr) && arrayCreateArr.length === 4294967295
+);
+var arrayCreateArr = CEL.arrayCreate(Math.pow(2, 32));
+CUT.isTrue("arrayCreate(); return array with length 0 (Math.pow(2, 32)",
+  Array.isArray(arrayCreateArr) && arrayCreateArr.length === 0
 );
 var arrayCreateArr = CEL.arrayCreate();
 CUT.isTrue("arrayCreate(); return array without parameter",
@@ -2851,6 +2861,16 @@ CUT.addElement("hr");
 CUT.addElement("h3", "Abstract API");
 
 
+// deletePropertyOrThrow();
+var deletePropertyOrThrowObj = {"a": 1, "b": 2};
+try {
+  CEL.deletePropertyOrThrow(deletePropertyOrThrowObj, "b");
+} catch (e) { console.log(e); }
+CUT.isEqual("deletePropertyOrThrow();", "{\"a\":1}",
+  JSON.stringify(deletePropertyOrThrowObj)
+);
+
+
 // isSameType();
 CUT.isEqual("isSameType();", "11111111000", "" +
   // true
@@ -2914,11 +2934,11 @@ try { CEL.requireObjectCoercible(undefined) } catch (e) {
 // setIn();
 // hasIn();
 var getSetHasObj = {};
-CUT.isTrue("getInV(); + getIn(); + setIn(); + hasIn();",
+CUT.isTrue("getIn(); + getInV(); + setIn(); + hasIn();",
   !CEL.hasIn(getSetHasObj, "pr1")
     && CEL.getIn(getSetHasObj, "pr1") === undefined
     && CEL.getInV(getSetHasObj, "pr1") === undefined
-    && CEL.setIn(getSetHasObj, "pr1", 42) === getSetHasObj
+    && CEL.setIn(getSetHasObj, "pr1", 42) === true
     && CEL.hasIn(getSetHasObj, "pr1")
     && CEL.getIn(getSetHasObj, "pr1") === 42
     && CEL.getInV(getSetHasObj, "pr1") === 42

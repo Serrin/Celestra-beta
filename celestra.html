@@ -1553,6 +1553,10 @@ console.log(o2);
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function deletes an own property in the given object. If Throw is true and the deleting was unsuccessful, then an error will be thrown.<br/><b>Return values:</b><br/>1 - The property was own and the delete was successful.<BR>0 - The property is own and the delete was unsuccessful.<br/>-1 - The property is not own or not exists.</td>
     </tr>
     <tr>
+      <td><code>deletePropertyOrThrow(&#60;object&#62;,&#60;property&#62;[,Throw = false]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function deletes a property in the given object. If the deleting was unsuccessful, then an error will be thrown.</td>
+    </tr>
+    <tr>
       <td><code>getIn(&#60;object&#62;,&#60;property&#62;);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function return the property value of the given object. If the property doesn't exist, then the return value is undefined. The object parameter is mandatory and has to be an object. The property parameter is mandatory and has to be a property type.</td>
     </tr>
@@ -1606,8 +1610,8 @@ console.log(o2);
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function throws an error if the given value is a value that cannot be converted to an object (null or undefined), else the return value is given value (boolean, number, string, symbol, bigint, object). If the value is a string, then return value is undefined. The parameter is mandatory.</td>
     </tr>
     <tr>
-      <td><code>setIn(&#60;object&#62;,&#60;property&#62;,&#60;value&#62);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function set the property value of the given object.The object parameter is mandatory and has to be an object. The property parameter is mandatory and has to be a property type. The value is mandatory and can be any type.</td>
+      <td><code>setIn(&#60;object&#62;,&#60;property&#62;,&#60;value&#62;[,Throw=false]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function set the property value of the given object. The object parameter is mandatory and has to be an object. The property parameter is mandatory and has to be a property type. The value is mandatory and can be any type. The return value is the successfully or throws an error, if this was unsuccessful and the Throw is true.</td>
     </tr>
     <tr>
       <td><code>toArray(&#60;value&#62;);</code></td>
