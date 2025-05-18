@@ -1,6 +1,6 @@
 /**
  * @name Celestra
- * @version 5.6.6 dev
+ * @version 5.7.0 dev
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
@@ -308,13 +308,6 @@ function javaHash (s, hx = false) {
   }
   if (hx) { return h.toString(16); }
   return h;
-}
-
-/* inherit(<subclass: function>,<superclass: function>): function */
-function inherit (c, p) {
-  c.prototype = Object.create(p.prototype);
-  c.prototype.constructor = c;
-  return c;
 }
 
 /* getUrlVars([str=location.search]): string */
@@ -2082,7 +2075,7 @@ const inRange = (v, min, max) => (v >= min && v <= max);
 
 /** object header **/
 
-const VERSION = "Celestra v5.6.6 dev";
+const VERSION = "Celestra v5.7.0 dev";
 
 /* celestra.noConflict(): celestra object */
 function noConflict () { window.CEL = celestra.__prevCEL__; return celestra; }
@@ -2124,7 +2117,6 @@ var celestra = {
   b64Encode: b64Encode,
   b64Decode: b64Decode,
   javaHash: javaHash,
-  inherit: inherit,
   getUrlVars: getUrlVars,
   obj2string: obj2string,
   classof: classof,

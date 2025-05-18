@@ -15,7 +15,7 @@ __A helper JavaScript library with useful functions and polyfills and zero depen
 
 This library isn't compatible with the Node.js.
 
-Latest version: 5.6.6
+Latest version: 5.7.0
 
 Date: 2025-05-17T19:53:29.986Z
 
@@ -153,7 +153,7 @@ __Another way to import__
 
 ### Stabilities
 
-<BR>__Stability: 0 - Removed.__
+__Stability: 0 - Removed.__
 
 __Stability: 1 - Deprecated and will be removed.__
 
@@ -199,7 +199,7 @@ Name | Description
 `getType(<variable>[,type[,throw=false]]);` | __Stability: 4 - Stable.__<BR>This is an alias of the `classof(<variable>[,type[,throw=false]]);`.
 `getUrlVars([str=location.search]);` | __Stability: 4 - Stable.__<BR>Get the values of the url variables in an object from the `location.search` _(default value)_ or another given url. The str parameter name is optional and can be a string. Example: `"?showall=true&order_by=updated&o=asc"` -> `Object { showall: "true", order_by: "updated", o: "asc" }`
 `identity(<value>);` | __Stability: 4 - Stable.__<BR>Return the given value. (In math: `f(x)=x`)
-`inherit(<subclass>,<superclass>);` | __Stability: 1 - Deprecated and will be removed.__<BR>Prototype inheritance.
+`inherit(<subclass>,<superclass>);` | __Stability: 0 - Removed in v5.7.0.__<BR>__Please use ES6 classes instead of this!__<BR>Prototype inheritance.
 `javaHash(<data>[,hexa=false]);` | __Stability: 3 - Not deprecated, but can get only fixes.__<BR>Java `String.hashCode()` implementation in Javascript - this is a non-cryptographic hash function. The data parameter is mandatory and can be any type. The hexa parameter is optional and can be a boolean and sets the hexadecimal conversion of the return value and the default value is false. Return the generated integer hash.
 `nanoid([size=21[,alphabet= "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"]]);` | __Stability: 4 - Stable.__<BR>Generate a nanoid. The size parameter is optional and the default value is 21. The alphabet parameter is optional and the default value is "A-Za-z0-9_-". The return value is the generated nanoid (string).
 `noop();` | __Stability: 4 - Stable.__<BR>It's an empty function (no operation) that returns undefined and usable for optional callback arguments.
@@ -338,7 +338,7 @@ Name | Description
 `isEmptyMap(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an empty map (without properties). The return value is boolean.
 `isEmptyObject(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an empty object (without properties). The return value is boolean.
 `isEmptySet(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an empty set (without values). The return value is boolean.
-`isError(<value>);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the passed value is an Error or DOMException. The return value is boolean.
+`isError(<value>);` | __Stability: 0 - Removed in v5.7.0.__<BR>Please use `Error.isError();` instead of this!
 `isFalsy(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is falsy. The return value is boolean. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Glossary/Falsy)!
 `isFloat(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a float number. The return value is boolean.
 `isFunction(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a function. The return value is boolean.
@@ -404,15 +404,15 @@ Name | Description
 `arrayCreate([length=0]);`| __Stability: 4 - Stable.__<BR>This function returns an array with the given length and can handle the -0 as length. The length parameter will be converted to number and if the new value is not an integer number or out of the array size range, then a rangeerror will be thrown.
 `arrayCycle(<iterator>[,n=100]);` | __Stability: 4 - Stable.__<BR>Cycle the given iterator and returns an array with these elements. The iterator parameter is mandatory. The n parameter is optional and can be an integer. Default parameter value: n = 100.
 `arrayDeepClone(<array>);`| __Stability: 4 - Stable.__<BR>This function deeply (recursively) clones an array. The return value is the cloned array.
-`arrayDifference(<iterator1>,<iterator2>);` | __Stability: 1 - Deprecated and will be removed.__<BR>Returns the array of unique values that are in the iterator1, excluding the values that are also in the iterator2. All of the parameters are mandatory. The return value is an Array.
-`arrayIntersection(<iterator1>,<iterator2>);` | __Stability: 1 - Deprecated and will be removed.__<BR>Returns the array of unique values that are in both of the given iterators. All of the parameters are mandatory. The return value is an Array.
+`arrayDifference(<iterator1>,<iterator2>);` | __Stability: 3 - Not deprecated, but can get only fixes.__<BR>Returns the array of unique values that are in the iterator1, excluding the values that are also in the iterator2. All of the parameters are mandatory. The return value is an Array.
+`arrayIntersection(<iterator1>,<iterator2>);` | __Stability: 3 - Not deprecated, but can get only fixes.__<BR>Returns the array of unique values that are in both of the given iterators. All of the parameters are mandatory. The return value is an Array.
 `arrayMerge(<target>,<source1>[,sourceN]);` | __Stability: 4 - Stable.__<BR>Merge two or more arrays or push any values in the target array. The return value is the target array.
 `arrayRange([start=0[,end=99[,step=1]]]);` | __Stability: 4 - Stable.__<BR>Returns the array of values between the start and end parameters. All of the parameters are mandatory and have to be a number. Default parameter values: start = 0, end = 99, step = 1.<BR>__Example:__<BR>`CEL.arrayRange("A".codePointAt(0),"Z".codePointAt(0)).map((v)=>String.fromCodePoint(v));`<BR>-><BR>`Array(26) [ "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" ]`
 `arrayRemove(<array>,<value>[,all=false]);` | __Stability: 4 - Stable.__<BR>Remove the first or all equivalent values from the array. Returns true, when the value was found and false when not found. The array and value parameters are mandatory. The all parameter is optional and has to be a boolean.
 `arrayRemoveBy(<array>,<callback>[,all=false]);` | __Stability: 4 - Stable.__<BR>Remove the first or all values from the array with which the given function returns true. Returns true, when the value was found and false when not found. The array and value parameters are mandatory. The all parameter is optional and has to be a boolean.
 `arrayRepeat(<value>[,n=100]);` | __Stability: 4 - Stable.__<BR>Returns an array with same repeatedly elements. The value parameter is mandatory and the n parameter is optional and can be an integer. Default parameter value: n = 100.
-`arraySymmetricDifference(<iterator1>,<iterator2>);` | __Stability: 1 - Deprecated and will be removed.__<BR>Returns the array of unique values that are only in one of given iterators. All of the parameters are mandatory. The return value is an Array.
-`arrayUnion(<iterator1>[,iteratorN]);` | __Stability: 1 - Deprecated and will be removed.__<BR>Returns the array of unique values including all values from the given iterators. The first parameter is mandatory. The return value is an Array.
+`arraySymmetricDifference(<iterator1>,<iterator2>);` | __Stability: 3 - Not deprecated, but can get only fixes.__<BR>Returns the array of unique values that are only in one of given iterators. All of the parameters are mandatory. The return value is an Array.
+`arrayUnion(<iterator1>[,iteratorN]);` | __Stability: 3 - Not deprecated, but can get only fixes.__<BR>Returns the array of unique values including all values from the given iterators. The first parameter is mandatory. The return value is an Array.
 `arrayUnique(<iterator>);` | __Stability: 4 - Stable.__<BR>This function returns a new array with unique values. The value parameter is mandatory and can be an iterator. In modern browsers you can use ES6 types too (Map, Set and iterators).
 `concat(<iterator1>[,iteratorN]);` | __Stability: 4 - Stable.__<BR>This function merges the iterators and yields the elements of the merged iterator. At least one iterator has to been given.
 `count(<iterator>,<callback>);` | __Stability: 4 - Stable.__<BR>This function executes a counter function (that you provide) on each element of the iterator, returning in a single output value. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function.
@@ -430,11 +430,11 @@ Name | Description
 `first(<iterator>);` | __Stability: 4 - Stable.__<BR>This function returns the first element of the given iterator. The iterator parameter is mandatory.
 `forEach(<iterator>,<callback>);` | __Stability: 3 - Not deprecated, but can get only fixes.__<BR>__Can be replaced with `Iterator.from(iterable/iterator).forEach();`__<BR>This function executes a provided function once for each iterator items. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function and called with two parameters: the item and the index of the item (only a counter).
 `forEachRight(<iterator>,<callback>);` | __Stability: 4 - Stable.__<BR>This function executes a provided function once for each iterator items in reversed order. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function and called with two parameters: the item and the index of the item (only a reversed counter).
-`group(<iterator>,<callback>[,map=false]);` | __Stability: 1 - Deprecated and will be removed.__<BR>__Can be replaced with the `Object.groupBy();` and `Map.groupBy();`.__ <BR> __Old name before v5.4.4:__ `groupBy`.<BR>Returns an Object or Map with array properties. The keys are the returned values of the given function. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function. The map parameter is optional and has to be a boolean and if it is true, then the return value is a Map instead of Object.<BR>__Example:__<BR>`CEL.group([1,2,3,4,5], (i) => (i % 2 === 0 ? "even" : "odd");`<BR>-><BR>`{ "even": [ 2, 4 ], "odd": [ 1, 3, 5 ] }`
+`group(<iterator>,<callback>[,map=false]);` | __Stability: 0 - Removed in v5.7.0.__<BR>__Can be replaced with the `Object.groupBy();` and `Map.groupBy();`__.
 `head(<iterator>);` | __Stability: 4 - Stable.__<BR>This is an alias of the `first(<iterator>);`.
 `includes(<iterator>,<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether an iterator includes a certain value among its entries, returning true or false as appropriate. All of the parameters are mandatory.
 `initial(<iterator>);` | __Stability: 4 - Stable.__<BR>Returns an array with the values of the given iterator, but without the last value. <BR>__Example:__<BR>`CEL.initial([-5, 2, -9, 7, 34]);`<BR>-><BR>`[-5, 2, -9, 7]`
-`isSuperset(<superCollection>,<subCollection>);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the first provided iterator is superset of the second iterator. The parameters are mandatory. The return value is a boolean.
+`isSuperset(<superCollection>,<subCollection>);` | __Stability: 3 - Not deprecated, but can get only fixes.__<BR>This function determines whether the first provided iterator is superset of the second iterator. The parameters are mandatory. The return value is a boolean.
 `item(<iterator>,<index>);` | __Stability: 4 - Stable.__<BR>This function returns the item from the given iterator on the given index. the iterator parameter is mandatory. The index is mandatory and can be positive number (examples: 0 = the first item, 1 = the second item, 2 = the third item, etc.) Compatible with the Unicode strings.
 `iterCycle(<iter>[,n=Infinity]);` | __Stability: 4 - Stable.__<BR>Yield the items of an iterator over and over. The iter parameter is mandatory and the n parameter is optional and can be an integer. Default parameter value: n = Infinity __Note: PLease don't use with infinite iterators!__
 `iterRange([start=0[,step=1[,end=Infinity]]]);` | __Stability: 4 - Stable.__<BR>Yield a range (counter) iterator. All of the parameters are optional. Default parameter values: start = 0, step = 1, end = Infinity.
@@ -451,10 +451,10 @@ Name | Description
 `reduce(<iterator>,<callback>[,initialvalue]);` | __Stability: 3 - Not deprecated, but can get only fixes.__<BR>__Can be replaced with `Iterator.from(iterable/iterator).reduce();`__<BR>This function executes a reducer function (that you provide) on each element of the iterator, returning in a single output value. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function. The initialvalue parameter is optional and can be any variable type of the Javascript.
 `reject(<iterator>,<callback>);` | __Stability: 4 - Stable.__<BR>This is the opposite of the function `filter(<iterator>,<callback>);`. The elements to which the given callback gives a false will be yield. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function and called with two parameters: the item and the index of the item (only a counter).
 `reverse(<iterator>);` | __Stability: 4 - Stable.__<BR>This function returns an array with values of the given iterator in reverse order. The iterator parameter is mandatory.
-`setDifference(<set1>,<set2>);` | __Stability: 1 - Deprecated and will be removed.__<BR>Returns the set of unique values that are in the iterator1, excluding the values that are also in the iterator2. All of the parameters are mandatory and have to be a Set. The return value is a Set.
-`setIntersection(<set1>,<set2>);` | __Stability: 1 - Deprecated and will be removed.__<BR>Returns the set of unique values that are in both of the given iterators. All of the parameters are mandatory and have to be a Set. The return value is a Set.
-`setSymmetricDifference(<set1>,<set2>);` | __Stability: 1 - Deprecated and will be removed.__<BR>Returns the set of unique values that are only in one of given iterators. All of the parameters are mandatory and have to be a Set. The return value is a Set.
-`setUnion(<iterator1>[,iteratorN]);` | __Stability: 1 - Deprecated and will be removed.__<BR>Returns the set of unique values including all values from the given iterators. The first parameter is mandatory. The return value is a Set.
+`setDifference(<set1>,<set2>);` | __Stability: 3 - Not deprecated, but can get only fixes.__<BR>Returns the set of unique values that are in the iterator1, excluding the values that are also in the iterator2. All of the parameters are mandatory and have to be a Set. The return value is a Set.
+`setIntersection(<set1>,<set2>);` | __Stability: 3 - Not deprecated, but can get only fixes.__<BR>Returns the set of unique values that are in both of the given iterators. All of the parameters are mandatory and have to be a Set. The return value is a Set.
+`setSymmetricDifference(<set1>,<set2>);` | __Stability: 3 - Not deprecated, but can get only fixes.__<BR>Returns the set of unique values that are only in one of given iterators. All of the parameters are mandatory and have to be a Set. The return value is a Set.
+`setUnion(<iterator1>[,iteratorN]);` | __Stability: 3 - Not deprecated, but can get only fixes.__<BR>Returns the set of unique values including all values from the given iterators. The first parameter is mandatory. The return value is a Set.
 `size(<iterator>);` | __Stability: 4 - Stable.__<BR>This function returns the count of the elements in the given iterator. The iterator parameter is mandatory. The return value is an integer.
 `shuffle(<iterator>);` | __Stability: 4 - Stable.__<BR>Returns an array with the values of the given iterator, but in shuffled order. <BR>__Example:__<BR>`CEL.shuffle(["first",4,5,6,7,8,9,"last"]);`<BR>-><BR>`[4,8,5,6,"last",9,7,"first"]`
 `slice(<iterator>[,begin=0[,end=Infinity]]);` | __Stability: 4 - Stable.__<BR>Take a slice of an iterator and yield the elements. The iterator parameter is mandatory. The begin parameter is optional and can be a number and the default value is 0. The end parameter is optional and can be a number and the default value is Infinity.

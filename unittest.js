@@ -221,7 +221,9 @@ try {
 (function(){
 "use strict";
 
-/* Celestra v5.6.6 testcases */
+
+/* Celestra v5.7.0 testcases */
+
 
 /* Not auto tested functions */
 CUT.addElement("hr");
@@ -553,32 +555,6 @@ CUT.isEqual("obj2string();",
   CEL.obj2string(obj2stringObj)
 );
 CUT.log("<code>\"" + CEL.obj2string(obj2stringObj) + "\"</code>");
-
-
-/* inherit(); begin */
-function Human (name,age) { this.name = name; this.age = age; }
-Human.prototype.getName = function () { return this.name;}
-Human.prototype.getAge = function () { return this.age;}
-function Worker (name, age, job) {
-  this.name = name; this.age = age; this.job = job;
-}
-CEL.inherit(Worker,Human);
-Worker.prototype.setJob = function (job) { this.job = job;}
-Worker.prototype.getJob = function () { return this.job;}
-var David = new Human("David", 27);
-var Amy = new Worker("Amy", 25, "Engineer");
-CUT.isEqual("inherit();",
-  "David, 27" +"Amy, 25, Engineer" + "David instanceof Human: true"
-    + "David instanceof Worker: false" + "Amy instanceof Human: true"
-    + "Amy instanceof Worker: true",
-  David.getName() + ", " + David.getAge()
-    + Amy.getName() + ", " + Amy.getAge() + ", " + Amy.getJob()
-    + "David instanceof Human: " + (David instanceof Human)
-    + "David instanceof Worker: " + (David instanceof Worker)
-    + "Amy instanceof Human: " + (Amy instanceof Human)
-    + "Amy instanceof Worker: " + (Amy instanceof Worker)
-);
-/* inherit(); end */
 
 
 //getUrlVars();
@@ -1132,25 +1108,6 @@ CUT.isEqual("withOut();",
 CUT.isEqual("partition();",
   JSON.stringify(CEL.partition([-5, 2, -9, 7, 34], (e)=> (e>0))),
   "[[2,7,34],[-5,-9]]"
-);
-
-
-// group();
-var strGroup = JSON.stringify( CEL.group([1, 2, 3, 4, 5],
-  (i) => (i % 2 === 0 ? "even" : "odd"))
-);
-CUT.isTrue("group(); 1", strGroup === "{\"odd\":[1,3,5],\"even\":[2,4]}"
-  || strGroup === "{\"even\":[2,4],\"odd\":[1,3,5]}"
-);
-var RESGroupToMap=CEL.group([1,2,3,4,5], (i)=>(i%2===0 ? "even" : "odd"), true);
-CUT.isTrue("group(); 2 map",
-  Object.prototype.toString.call(RESGroupToMap).slice(8, -1).toLowerCase()
-    === "map"
-    && RESGroupToMap.size === 2
-    && RESGroupToMap.has("even")
-    && RESGroupToMap.has("odd")
-    && JSON.stringify(RESGroupToMap.get("even")) === "[2,4]"
-    && JSON.stringify(RESGroupToMap.get("odd")) === "[1,3,5]"
 );
 
 
@@ -2431,29 +2388,6 @@ CUT.isTrue("isDataView(); true",
   CEL.isDataView(new DataView(new ArrayBuffer(2)), "dataview")
 );
 CUT.isFalse("isDataView(); false", CEL.isDataView({}, "dataview"));
-
-
-// isError
-var iframe = document.createElement("iframe");
-document.body.appendChild(iframe);
-var xError = window.frames[window.frames.length - 1].Error;
-var newxError = new xError();
-var isErrorStr = ""
- // true
- + +(CEL.isError(newxError))
- + +(CEL.isError(new Error()))
- + +(CEL.isError(new TypeError()))
- + +(CEL.isError(new DOMException()))
- // false
- + +(CEL.isError({ __proto__: Error.prototype }))
- + +(CEL.isError({}))
- + +(CEL.isError(null)) + +(CEL.isError(undefined))
- + +(CEL.isError(17)) + +(CEL.isError(3.14))
- + +(CEL.isError("Error"))
- + +(CEL.isError(true)) + +(CEL.isError(false));
-CUT.isEqual("isError(); <code>\"" + isErrorStr + "\"</code>", isErrorStr,
-  "1111000000000"
-);
 
 
 // isGeneratorFn();

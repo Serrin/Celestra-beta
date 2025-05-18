@@ -101,7 +101,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
 
 <p>This library isn't compatible with the Node.js.</p>
 
-<p>Latest version: 5.6.6</p>
+<p>Latest version: 5.7.0</p>
 <p>Date: 2025-05-17T19:53:29.986Z</p>
 
 <p><b>Tested on these browsers:</b></p>
@@ -447,7 +447,7 @@ console.log(o2);
     <tr>
       <td><code>inherit(&#60;subclass&#62;,&#60;superclass&#62;);</code></td>
       <td>
-        <span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>Prototype inheritance.
+        <span class="removed">Stability: 0 - Removed in v5.7.0.</span><br/><span class="info">Please use ES6 classes instead of this!</span><br/>Prototype inheritance.
       </td>
     </tr>    
     <tr>
@@ -910,7 +910,7 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>isError(&#60;value&#62;);</td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the passed value is an Error or DOMException. The return value is boolean.</td>
+      <td><span class="removed">Stability: 0 - Removed in v5.7.0.</span><br/><span class="info">Please use <code>Error.isError();</code> instead of this!</span></td>
     </tr>
     <tr>
       <td><code>isFalsy(&#60;value&#62;);</td>
@@ -1163,14 +1163,14 @@ console.log(o2);
     <tr>
       <td><code>arrayDifference(&#60;iterator1&#62;,&#60;iterator2&#62;);</code></td>
       <td>
-        <span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>
+        <span class="info">Stability: 3 - Not deprecated, but can get only fixes.</span><br/>
         <p>Returns the array of unique values that are in the iterator1, excluding the values that are also in the iterator2. All of the parameters are mandatory. The return value is an Array.</p>
       </td>
     </tr>
     <tr>
       <td><code>arrayIntersection(&#60;iterator1&#62;,&#60;iterator2&#62;);</code></td>
       <td>
-        <span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>
+        <span class="info">Stability: 3 - Not deprecated, but can get only fixes.</span><br/>
         <p>Returns the array of unique values that are in both of the given iterators. All of the parameters are mandatory. The return value is an Array.</p>
       </td>
     </tr>
@@ -1200,14 +1200,14 @@ console.log(o2);
     <tr>
       <td><code>arraySymmetricDifference(&#60;iterator1&#62;,&#60;iterator2&#62;);</code></td>
       <td>
-        <span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>
+        <span class="info">Stability: 3 - Not deprecated, but can get only fixes.</span><br/>
         <p>Returns the array of unique values that are only in one of given iterators. All of the parameters are mandatory. The return value is an Array.</p>
       </td>
     </tr>
     <tr>
       <td><code>arrayUnion(&#60;iterator1&#62;[,iteratorN]);</code></td>
       <td>
-        <span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>
+        <span class="info">Stability: 3 - Not deprecated, but can get only fixes.</span><br/>
         <p>Returns the array of unique values including all values from the given iterators. The first parameter is mandatory. The return value is an Array.</p>
       </td>
     </tr>
@@ -1286,15 +1286,8 @@ console.log(o2);
     <tr>
       <td><code>group(&#60;iterator&#62;,&#60;callback&#62;[,map=false]);</code></td>
       <td>
-        <span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>
-        <p><span class="info">Can be replaced with the <code>Object.groupBy();</code> and <code>Map.groupBy();</code>.<span></span></p>
-			  <p><span class="info">Old name before v5.4.4: <code>groupBy</code>.</span><br/>Returns an Object or Map with array properties. The keys are the returned values of the given function. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function. The map parameter is optional and has to be a boolean and if it is true, then the return value is a Map instead of Object.</p>
-        <p>
-         <b>Example:</b>
-         <br/><code>CEL.group([1,2,3,4,5], (i) => (i % 2 === 0 ? "even" : "odd");</code>
-         <br/>->
-         <br/><code>{ "even": [ 2, 4 ], "odd": [ 1, 3, 5 ] }</code>
-        </p>
+        <span class="removed">Stability: 0 - Removed in v5.7.0.</span><br/>
+        <span class="info">Can be replaced with the <code>Object.groupBy();</code> and <code>Map.groupBy();</code>.
       </td>
     </tr>
     <tr>
@@ -1321,7 +1314,7 @@ console.log(o2);
     <tr>
       <td><code>isSuperset(&#60;superCollection&#62;,&#60;subCollection&#62;);</code></td>
       <td>
-        <span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>
+        <span class="info">Stability: 3 - Not deprecated, but can get only fixes.</span><br/>
         <p>This function determines whether the first provided iterator is superset of the second iterator. The parameters are mandatory and all parameters can be  an iterator. The return value is a boolean.</p>
       </td>
     </tr>
@@ -1405,28 +1398,28 @@ console.log(o2);
     <tr>
       <td><code>setDifference(&#60;set1&#62;,&#60;set2&#62;);</code></td>
       <td>
-        <span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>
+        <span class="info">Stability: 3 - Not deprecated, but can get only fixes.</span><br/>
         <p>Returns the set of unique values that are in the iterator1, excluding the values that are also in the iterator2. All of the parameters are mandatory and have to be a Set. The return value is a Set.</p>
       </td>
     </tr>
     <tr>
       <td><code>setIntersection(&#60;set1&#62;,&#60;set2&#62;);</code></td>
       <td>
-        <span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>
+        <span class="info">Stability: 3 - Not deprecated, but can get only fixes.</span><br/>
         <p>Returns the set of unique values that are in both of the given iterators. All of the parameters are mandatory and have to be a Set. The return value is a Set.</p>
       </td>
     </tr>
     <tr>
       <td><code>setSymmetricDifference(&#60;set1&#62;,&#60;set2&#62;);</code></td>
       <td>
-        <span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>
+        <span class="info">Stability: 3 - Not deprecated, but can get only fixes.</span><br/>
         <p>Returns the set of unique values that are only in one of given iterators. All of the parameters are mandatory and have to be a Set. The return value is a Set.</p>
       </td>
     </tr>
     <tr>
       <td><code>setUnion(&#60;iterator1&#62;[,iteratorN]);</code></td>
       <td>
-        <span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>
+        <span class="info">Stability: 3 - Not deprecated, but can get only fixes.</span><br/>
         <p>Returns the set of unique values including all values from the given iterators. The first parameter is mandatory. The return value is a Set.</p>
       </td>
     </tr>
