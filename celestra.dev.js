@@ -784,17 +784,9 @@ function form2string (f) {
 }
 
 /* getDoNotTrack(): boolean */
-const getDoNotTrack = () => (
-  navigator.doNotTrack === true
-    || navigator.doNotTrack === 1
-    || navigator.doNotTrack === "1"
-    || window.doNotTrack === true
-    || window.doNotTrack === 1
-    || window.doNotTrack === "1"
-    || navigator.msDoNotTrack === true
-    || navigator.msDoNotTrack === 1
-    || navigator.msDoNotTrack === "1"
-);
+const getDoNotTrack = () =>
+  [navigator.doNotTrack, window.doNotTrack, navigator.msDoNotTrack]
+    .some((e) => (e === true || e === 1 || e === "1"));
 
 /* getLocation(<success: function>[,error: function]): undefined */
 function getLocation (s, e) {
@@ -1008,12 +1000,6 @@ function isEmptyIterator (it) {for(let _item of it){return false;} return true;}
 /* isDataView(<value: any>): boolean */
 const isDataView = (v) => (v instanceof DataView);
 
-/* isError(<value: any>): boolean */
-function isError (v) {
-  let s = Object.prototype.toString.call(v).slice(8, -1).toLowerCase();
-  return (s === "error" || s === "domexception");
-}
-
 /* isPromise(<value: any>): boolean */
 const isPromise = (v) => (v instanceof Promise ||
   (v != null && typeof v === "object" && typeof v.then === "function")
@@ -1092,9 +1078,11 @@ const isEmptyObject = (v) =>
   (v != null && typeof v === "object" && Object.keys(v).length === 0);
 
 /* isFunction(<value: any>): boolean */
-const isFunction = (v) => (typeof v === "function");
+const isFunction = (O) => (typeof v === "function" ||
+  Object.prototype.toString.call(O) === "[object Function]");
 /* isCallable(<value: any>): boolean */
-const isCallable = (v) => (typeof v === "function");
+const isCallable = (O) => (typeof v === "function" ||
+  Object.prototype.toString.call(O) === "[object Function]");
 
 /* isEmptyArray(<value: any>): boolean */
 const isEmptyArray = (v) => (Array.isArray(v) && v.length === 0);
@@ -1295,9 +1283,16 @@ function arrayDeepClone ([...a]) {
 }
 
 /* arrayCreate(<length: any>): array OR throw error */
-const arrayCreate = (length = 0) =>
-  Array(((1/Number(length) === 1/-0) || (length > (Math.pow(2, 32) - 1)))
-    ? 0 : Number(length));
+function arrayCreate (l = 0) {
+  l = Number(l);
+	if (1 / l === -Infinity) { l = 0; }
+	if (l > (Math.pow(2, 32) - 1)) {
+    throw new RangeError(
+      "celestra.arrayCreate(); error: Invalid array length " + l
+    );
+	}
+	return Array(l);
+}
 
 /* initial(<iterator>): array */
 const initial = ([...a]) => a.slice(0, -1);
@@ -1313,9 +1308,6 @@ function shuffle([...a]) {
 
 /* partition(<iterator>,<callback: function>): array */
 const partition = ([...a],fn) => [a.filter(fn),a.filter((e,i,a)=>!(fn(e,i,a)))];
-
-/* group(<iterator>,<callback: function>[,map=false]): object */
-const group =(items, fn, map=false)=> (map ? Map : Object)["groupBy"](items,fn);
 
 /* arrayUnion(<iterator1>[,iteratorN]): array */
 const arrayUnion = (...a) => [...new Set(a.map(([...e]) => e).flat())];
@@ -1544,7 +1536,7 @@ function head (it) { for (let item of it) { return item; } }
 function last (it) { let item; for (item of it) { } return item; }
 
 /* reverse(<iterator>): array */
-const reverse = ([...a]) => a.reverse();
+function* reverse ([...a]) { var i = a.length; while (i--) { yield a[i]; } }
 
 /* sort(<iterator>[,numbers=false]): array */
 const sort = ([...a], ns) => a.sort(ns
@@ -1717,11 +1709,9 @@ const isLessThan = (v1, v2, leftFirst = true) => (leftFirst ? (v1<v2) :(v1>v2));
 /* requireObjectCoercible(<value: any>): value or throw error */
 function requireObjectCoercible (O) {
   if (O == null) { throw new TypeError(
-    Object.prototype.toString.call(O) + " is not coercible to Object."
-  ); }
-  return (["boolean", "number", "string", "symbol", "bigint", "object"]
-    .includes(typeof O) ? O : undefined
-  );
+    Object.prototype.toString.call(O) + " is not coercible to Object.");
+  }
+  return O;
 }
 
 /* getInV(<value: any>,<property: string>): any OR throw error */
@@ -2205,7 +2195,6 @@ var celestra = {
   isEmptySet: isEmptySet,
   isEmptyIterator: isEmptyIterator,
   isDataView: isDataView,
-  isError: isError,
   isPromise: isPromise,
   isSameObject: isSameObject,
   isSameArray: isSameArray,
@@ -2257,7 +2246,6 @@ var celestra = {
   initial: initial,
   shuffle: shuffle,
   partition: partition,
-  group: group,
   arrayUnion: arrayUnion,
   arrayIntersection: arrayIntersection,
   arrayDifference: arrayDifference,

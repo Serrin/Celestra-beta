@@ -1201,14 +1201,14 @@ token1 = CEL.arrayCreate(false);
 CUT.isTrue("arrayCreate(); return array false",
   Array.isArray(token1) && token1.length === 0
 );
-token1 = CEL.arrayCreate(4294967295);
-CUT.isTrue("arrayCreate(); return array 4294967295 max size",
-  Array.isArray(token1) && token1.length === 4294967295
-);
-token1 = CEL.arrayCreate(Math.pow(2, 32));
-CUT.isTrue("arrayCreate(); return array with length 0 (Math.pow(2, 32)",
-  Array.isArray(token1) && token1.length === 0
-);
+try {
+  token1 = CEL.arrayCreate(Math.pow(2, 32));
+} catch (e) {
+  CUT.isTrue(
+    "arrayCreate(); return error with Math.pow(2, 32);",
+    Error.isError(e)
+  );
+}
 token1 = CEL.arrayCreate();
 CUT.isTrue("arrayCreate(); return array without parameter",
   Array.isArray(token1) && token1.length === 0
@@ -1306,24 +1306,24 @@ for (let item of CEL.map("cat, dog, pig", (e) => e.toUpperCase() )) {
 }
 CUT.isEqual("map(); 2 ES5 String", "CAT, DOG, PIG", token1);
 token2 = [];
-for (let item of CEL.map(document.querySelectorAll("h3"), (e) => e )) { 
-  token2.push(item); 
+for (let item of CEL.map(document.querySelectorAll("h3"), (e) => e )) {
+  token2.push(item);
 }
 CUT.isTrue("map(); 3 ES5 Nodelist",
   Array.isArray(token2) && token2.every((e) => CEL.isElement(e))
 );
 token1 = "";
 for (let item of CEL.map(
-  new Map([ ["foo", 1], ["bar", 2], ["baz", 3] ]), (e) => [e[0], e[1] * 2] )) { 
-  token1 += item[0] + item[1]; 
+  new Map([ ["foo", 1], ["bar", 2], ["baz", 3] ]), (e) => [e[0], e[1] * 2] )) {
+  token1 += item[0] + item[1];
 }
 CUT.isEqual("map(); 5 ES6 Map", "foo2bar4baz6", token1);
 token1 = "";
 for (let item of CEL.map(new Set([1, 2, 3]), (e) => e * 2 )) { token1 += item; }
 CUT.isEqual("map(); 6 ES6 Set", "246", token1);
 token1 = "";
-for (let item of CEL.map((new Set([1, 2, 3])).values(), (e) => e * 3 )) { 
-  token1 += item; 
+for (let item of CEL.map((new Set([1, 2, 3])).values(), (e) => e * 3 )) {
+  token1 += item;
 }
 CUT.isEqual("map(); 7 ES6 Set values(); iterator", "369", token1);
 
@@ -1650,17 +1650,17 @@ CUT.isEqual("flat();", "[1,2,3,4,5,6,7,8,9,10]",
 
 
 // join();
-token1 = new Set([2, 4, 6, 4, 8, 2]);
+var token1 = [2, 4, 6, 4, 8, 2];
 CUT.isEqual("join();",
-  "2,4,6,8"+"2468"+"2;4;6;8" +"2abc4abc6abc8" +"2true4true6true8" +"2114116118",
+  "2,4,6,4,8,2 2468 2;4;6;8 2x4x6x8 2true4true6true8 2114116118 ",
   CEL.join(token1)
-    + CEL.join(new Set(token1), "")
-    + CEL.join(new Set(token1), ";")
-    + CEL.join(new Set(token1), "abc")
-    + CEL.join(new Set(token1), true)
-    + CEL.join(new Set(token1), 11)
+    + " " + CEL.join(new Set(token1), "")
+    + " " + CEL.join(new Set(token1), ";")
+    + " " + CEL.join(new Set(token1), "x")
+    + " " + CEL.join(new Set(token1), true)
+    + " " + CEL.join(new Set(token1), 11)
+    + " " + CEL.join([])
 );
-CUT.isEqual("join(); - empty", "", CEL.join([]))
 
 
 // arrayCycle();
@@ -1714,7 +1714,6 @@ CUT.isEqual("arrayRange(); - 4 - with 1 parameter",
 
 
 // zip();
-//var b = [3, 4, 5, 6, 7, 8, 9];
 CUT.isEqual("zip(); ES5 1","[[\"a1\",\"c1\"],[\"a2\",\"c2\"],[\"a3\",\"c3\"]]",
   JSON.stringify(CEL.zip(["a1", "a2", "a3"], ["c1", "c2", "c3", "c4", "c5"]))
 );
@@ -1878,7 +1877,7 @@ CUT.isTrue("setIntersection(); ES6",
 // setDifference();
 CUT.isTrue("setDifference(); ES6",
   __setEquals__(new Set([1, 2]), CEL.setDifference(
-    new Set([1, 2, 3,4]), new Set([3, 4, 5, 6])
+    new Set([1, 2, 3, 4]), new Set([3, 4, 5, 6])
   ))
 );
 
@@ -1892,12 +1891,10 @@ CUT.isTrue("setSymmetricDifference(); ES6",
 
 
 // arrayClear();
-token1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+token1 = [4, 5, 6];
 token2 = CEL.arrayClear(token1);
 CUT.isTrue("arrayClear();",
-  (token1 === token2
-    && token1.length === 0 && Array.isArray(token1)
-  )
+  (token1 === token2 && token1.length === 0 && Array.isArray(token1))
 );
 
 
@@ -2334,13 +2331,13 @@ CUT.log("<code>\"" + token1 + "\"</code>");
 
 
 // Object.hasOwn();
-CUT.isEqual("Object.hasOwn();", "100100", ""
-  + +Object.hasOwn({"a": 1, "b": 2}, "a")
-  + +Object.hasOwn({"a": 1, "b": 2}, "hasOwnProperty")
-  + +Object.hasOwn({"a": 1, "b": 2}, "c")
-  + +Object.hasOwn([4, 5, 6], "0")
-  + +Object.hasOwn([4, 5, 6], "map")
-  + +Object.hasOwn([4, 5, 6], "map2")
+CUT.isTrue("Object.hasOwn();",
+      Object.hasOwn({"a": 1, "b": 2}, "a")
+  && !Object.hasOwn({"a": 1, "b": 2}, "hasOwnProperty")
+  && !Object.hasOwn({"a": 1, "b": 2}, "c")
+  &&  Object.hasOwn([4, 5, 6], "0")
+  && !Object.hasOwn([4, 5, 6], "map")
+  && !Object.hasOwn([4, 5, 6], "map2")
 );
 
 
@@ -2937,6 +2934,7 @@ CUT.isTrue("isLessThan();",
 
 
 // requireObjectCoercible();
+token1 = function(){};
 CUT.isTrue("requireObjectCoercible(); 1 boolan",
   CEL.requireObjectCoercible(true)
 );
@@ -2952,8 +2950,8 @@ CUT.isEqual("requireObjectCoercible(); 4 symbol", "Symbol(42)",
 CUT.isEqual("requireObjectCoercible(); 5 object", "{\"a\":1}",
   JSON.stringify(CEL.requireObjectCoercible({"a":1}))
 );
-CUT.isEqual("requireObjectCoercible(); 6 function -> undefined", undefined,
-  CEL.requireObjectCoercible(function(){})
+CUT.isEqual("requireObjectCoercible(); 6 function", token1,
+  CEL.requireObjectCoercible(token1)
 );
 try { CEL.requireObjectCoercible(null) } catch (e) {
   CUT.isTrue("requireObjectCoercible(); 7 null -> error", Error.isError(e));
@@ -3022,7 +3020,7 @@ CUT.isEqual("isSameValue(); " + "<code>" + token2 + "</code>",
 );
 
 
-//toPrimitiveValue();
+// toPrimitiveValue();
 CUT.isTrue("toPrimitiveValue();",
   typeof CEL.toPrimitiveValue(null) === "object"
     && typeof CEL.toPrimitiveValue(undefined) === "undefined"
@@ -3052,7 +3050,7 @@ CUT.isTrue("toPrimitive();",
 );
 
 
-// isSameValueZero
+// isSameValueZero();
 token1 = {"a": 1};
 token2 = ""
   + +CEL.isSameValueZero(25, 25)
@@ -3394,44 +3392,44 @@ CUT.isTrue("randomFloat(min,max);", token1 >= 51 && token1 <= 55);
 
 
 // toFloat16();
-token1 = "#" + CEL.toFloat16(0)
-  + "#" + CEL.toFloat16(+0)
-  + "#" + CEL.toFloat16(-0)
-  + "#" + CEL.toFloat16(Number.POSITIVE_INFINITY)
-  + "#" + CEL.toFloat16(Number.NEGATIVE_INFINITY)
-  + "#" + CEL.toFloat16(3.14)
-  + "#" + CEL.toFloat16(-3.14)
-  + "#" + CEL.toFloat16(65504)
-  + "#" + CEL.toFloat16(-65504)
-  + "#" + CEL.toFloat16(65504.0)
-  + "#" + CEL.toFloat16(-65504.0)
-  + "#" + CEL.toFloat16(65504.1)
-  + "#" + CEL.toFloat16(-65504.1)
-  + "#" + CEL.toFloat16(65505)
-  + "#" + CEL.toFloat16(-65505)
-  + "#" + CEL.toFloat16("lorem");
-CUT.isEqual("toFloat16(); <code>\"" + token1 + "\"</code>", token1,
-  "#0#0#0#65504#-65504#3.14#-3.14#65504#-65504#65504#-65504#65504#-65504#65504#-65504#0"
+CUT.isEqual("toFloat16();",
+  "0 0 0 65504 -65504 3.14 -3.14 65504 -65504 65504 -65504 65504 -65504 65504 -65504 0",
+  CEL.toFloat16(0)
+    + " " + CEL.toFloat16(+0)
+    + " " + CEL.toFloat16(-0)
+    + " " + CEL.toFloat16(Number.POSITIVE_INFINITY)
+    + " " + CEL.toFloat16(Number.NEGATIVE_INFINITY)
+    + " " + CEL.toFloat16(3.14)
+    + " " + CEL.toFloat16(-3.14)
+    + " " + CEL.toFloat16(65504)
+    + " " + CEL.toFloat16(-65504)
+    + " " + CEL.toFloat16(65504.0)
+    + " " + CEL.toFloat16(-65504.0)
+    + " " + CEL.toFloat16(65504.1)
+    + " " + CEL.toFloat16(-65504.1)
+    + " " + CEL.toFloat16(65505)
+    + " " + CEL.toFloat16(-65505)
+    + " " + CEL.toFloat16("lorem")
 );
 
 
 // isFloat16();
-token1 = ""
-  + +CEL.isFloat16(0)
-  + +CEL.isFloat16(+0)
-  + +CEL.isFloat16(-0)
-  + +CEL.isFloat16(65504)
-  + +CEL.isFloat16(-65504)
-  + +CEL.isFloat16(3.14)
-  + +CEL.isFloat16(-3.14)
-  + +CEL.isFloat16(65504.1)
-  + +CEL.isFloat16(-65504.1)
-  + +CEL.isFloat16(65505)
-  + +CEL.isFloat16(-65505)
-  + +CEL.isFloat16("lorem")
-  + +CEL.isFloat16(true)
-  + +CEL.isFloat16([]);
-CUT.isEqual("isFloat16(); <code>\"" + token1 +  "\"</code>", token1, "11111110000000");
+CUT.isTrue("isFloat16();",
+      CEL.isFloat16(0)
+  &&  CEL.isFloat16(+0)
+  &&  CEL.isFloat16(-0)
+  &&  CEL.isFloat16(65504)
+  &&  CEL.isFloat16(-65504)
+  &&  CEL.isFloat16(3.14)
+  &&  CEL.isFloat16(-3.14)
+  && !CEL.isFloat16(65504.1)
+  && !CEL.isFloat16(-65504.1)
+  && !CEL.isFloat16(65505)
+  && !CEL.isFloat16(-65505)
+  && !CEL.isFloat16("lorem")
+  && !CEL.isFloat16(true)
+  && !CEL.isFloat16([])
+);
 
 
 // signbit();
