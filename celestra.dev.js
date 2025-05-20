@@ -285,7 +285,7 @@ const randomBoolean = () => (Math.random() >= 0.5);
 /* b64Encode(<string>): string */
 function b64Encode (s) {
   return btoa(encodeURIComponent(String(s)).replace(/%([0-9A-F]{2})/g,
-    function toSolidBytes (match, p1) { return String.fromCharCode("0x" + p1); }
+    function toSolidBytes (_match, p1) { return String.fromCharCode("0x" + p1); }
   ));
 }
 
@@ -408,36 +408,6 @@ const T = () => true;
 /* F(): false */
 const F = () => false;
 
-/* assertEq(<message: string>,<value1: any>,<value2: any>[,strict=true]):
-  true OR throw error */
-function assertEq (msg, v1, v2, strict = true) {
-  if (strict ? v1 !== v2 : v1 != v2) {
-    throw new Error("[assertEq] - " + msg + " - " +  v1 + " - " + v2);
-  }
-  return true;
-}
-
-/* assertNotEq(<message: string>,<value1: any>,<value2: any>[,strict=true]):
-  true OR throw error */
-function assertNotEq (msg, v1, v2, strict = true) {
-  if (strict ? v1 === v2 : v1 == v2) {
-    throw new Error("[assertNotEq] - " + msg + " - " +  v1 + " - " + v2);
-  }
-  return true;
-}
-
-/* assertTrue(<message: string>,<value: any>): true (boolean) OR throw error */
-function assertTrue (msg, v) {
-  if (!v) { throw new Error("[assertTrue] " + msg); }
-  return true;
-}
-
-/* assertFalse(<message: string>,<value: any>): true (boolean) OR throw error */
-function assertFalse (msg, v) {
-  if (!!v) { throw new Error("[assertFalse] " + msg); }
-  return true;
-}
-
 /* nanoid([size=21[,alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"]]): string */
 function nanoid (size = 21, alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-") {
   var r = "", dl = alphabet.length, pos, i = size;
@@ -457,6 +427,75 @@ function timestampID (size = 21, alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZab
     r += alphabet[pos];
   }
   return r;
+}
+
+/** Assertion API **/
+
+/* assert(<value: boolean>[, message = "value"]): true OR throw error */
+function assert (v, message = "value") {
+  if (typeof v !== "boolean") {
+    throw new TypeError("[assertTrue] [TypeError] " + message + " - " + v);
+  }
+  if (!v) { throw new Error("[assert] " + message + " - " + v); }
+  return true;
+}
+
+/* assertTrue(<value: boolean>[, message = "value"]): true OR throw error */
+function assertTrue (v, message = "value") {
+  if (typeof v !== "boolean") {
+    throw new TypeError("[assertTrue] [TypeError] " + message + " - " + v);
+  }
+  if (!v) { throw new Error("[assertTrue] " + message + " - " + v); }
+  return true;
+}
+
+/* assertFalse(<value: boolean>[, message = "value"]): true OR throw error */
+function assertFalse (v, message = "value") {
+  if (typeof v !== "boolean") {
+    throw new TypeError("[assertFalse] [TypeError] " + message + " - " + v);
+  }
+  if (v) { throw new Error("[assertFalse] " + message + " - " + v); }
+  return true;
+}
+
+/* assertEqual(<value1: any>,<value2: any>[, message = "values"]):
+  true OR throw error */
+/* loose equality + NaN equality */
+function assertEqual (v1, v2, message = "values") {
+  if (!(v1 == v2 || (v1 !== v1 && v2 !== v2))) {
+    throw new Error("[assertEqual] - " + message + " - " +  v1 + " - " + v2);
+  }
+  return true;
+}
+
+/* assertStrictEqual(<value1: any>,<value2: any>[, message = "values"]):
+  true OR throw error */
+/* SameValue equality */
+function assertStrictEqual (v1, v2, message = "values") {
+  if (!((v1 === v2) ? (v1 !== 0 || 1/v1 === 1/v2) : (v1 !== v1 && v2 !== v2))) {
+    throw new Error("[assertStrictEqual] " + message + " - " + v1 + " - " + v2);
+  }
+  return true;
+}
+
+/* assertNotEqual(<value1: any>,<value2: any>[, message = "values"]):
+  true OR throw error */
+/* loose equality + NaN equality */
+function assertNotEqual (v1, v2, message = "values") {
+  if (v1 == v2 || (v1 !== v1 && v2 !== v2)) {
+    throw new Error("[assertNotEqual] " + message + " - " +  v1 + " - " + v2);
+  }
+  return true;
+}
+
+/* assertNotStrictEqual(<value1: any>,<value2: any>[, message = "values"]):
+  true OR throw error */
+/* SameValue equality */
+function assertNotStrictEqual (v1, v2, message = "values") {
+  if ((v1 === v2) ? (v1 !== 0 || 1/v1 === 1/v2) : (v1 !== v1 && v2 !== v2)) {
+    throw new Error("[assertNotStrictEqual] " + message + " - " +v1 +" - " +v2);
+  }
+  return true;
 }
 
 /** String API **/
@@ -557,7 +596,7 @@ function domReady (fn) {
   if (document.readyState !== "loading") {
     fn();
   } else {
-    document.addEventListener("DOMContentLoaded", function (event) { fn(); });
+    document.addEventListener("DOMContentLoaded", function (_event) { fn(); });
   }
 }
 
@@ -995,14 +1034,15 @@ const isEmptyMap = (v) => (v instanceof Map && v.size === 0);
 const isEmptySet = (v) => (v instanceof Set && v.size === 0);
 
 /* isEmptyIterator(<value: any>): boolean */
-function isEmptyIterator (it) {for(let _item of it){return false;} return true;}
+function isEmptyIterator (it) {for (let _item of it){return false;}return true;}
 
 /* isDataView(<value: any>): boolean */
 const isDataView = (v) => (v instanceof DataView);
 
 /* isPromise(<value: any>): boolean */
 const isPromise = (v) => (v instanceof Promise ||
-  (v != null && typeof v === "object" && typeof v.then === "function")
+  (v != null && typeof v === "object"
+    && typeof v.then === "function" && typeof v.catch  === "function")
 );
 
 /* isSameObject(<object1>,<object2>): boolean */
@@ -1357,7 +1397,7 @@ const arrayCycle = ([...a], n = 100) => Array(n).fill(a).flat();
 
 /* arrayRange([start=0[,end=99[,step=1]]]): array */
 const arrayRange = (s = 0, e = 99, st = 1) =>
-  Array.from({length: (e - s) / st + 1}, (v, i) => s + (i * st));
+  Array.from({length: (e - s) / st + 1}, (_v, i) => s + (i * st));
 
 /* zip(<iterator1>[,iteratorN]): array */
 function zip (...a) {
@@ -1525,7 +1565,7 @@ function item (it,p) {let i=0; for(let item of it) {if(i++===p) {return item;}}}
 function nth (it,p) { let i=0; for(let item of it) {if(i++===p) {return item;}}}
 
 /* size(<iterator>): integer */
-function size (it) { let i = 0; for (let item of it) { i++; } return i; }
+function size (it) { let i = 0; for (let _item of it) { i++; } return i; }
 
 /* first(<iterator>): any */
 function first (it) { for (let item of it) { return item; } }
@@ -1535,7 +1575,7 @@ function head (it) { for (let item of it) { return item; } }
 /* last(<iterator>): any */
 function last (it) { let item; for (item of it) { } return item; }
 
-/* reverse(<iterator>): array */
+/* reverse(<iterator>): iterator */
 function* reverse ([...a]) { var i = a.length; while (i--) { yield a[i]; } }
 
 /* sort(<iterator>[,numbers=false]): array */
@@ -2123,12 +2163,16 @@ var celestra = {
   noop: noop,
   T: T,
   F: F,
-  assertEq: assertEq,
-  assertNotEq: assertNotEq,
-  assertTrue: assertTrue,
-  assertFalse: assertFalse,
   nanoid: nanoid,
   timestampID: timestampID,
+  /** Assertion API **/
+  assert: assert,
+  assertTrue: assertTrue,
+  assertFalse: assertFalse,
+  assertEqual: assertEqual,
+  assertStrictEqual: assertStrictEqual,
+  assertNotEqual: assertNotEqual,
+  assertNotStrictEqual: assertNotStrictEqual,
   /** String API **/
   strTruncate: strTruncate,
   strPropercase: strPropercase,

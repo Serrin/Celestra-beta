@@ -75,14 +75,16 @@ nav a, nav a:visited, nav a:active, nav a:hover {
     &nbsp;//&nbsp;
     <a href="#FNstringAPI" style="color: white !important">String API</a>
     &nbsp;//&nbsp;
+    <a href="#FNassertionAPI" style="color: white !important">Assertion API</a>
+    <br/>
     <a href="#FNajaxAPI" style="color: white !important">AJAX and CORS API</a>
     &nbsp;//&nbsp;
     <a href="#FNcookieAPI" style="color: white !important">Cookie API</a>
     &nbsp;//&nbsp;
     <a href="#FNcollectionsAPI" style="color: white !important">Collections API</a>
-    <br/>
-    <a href="#FNtypecheckingAPI" style="color: white !important">Type checking API</a>
     &nbsp;//&nbsp;
+    <a href="#FNtypecheckingAPI" style="color: white !important">Type checking API</a>
+    <br/>
     <a href="#FNabstractAPI" style="color: white !important">Abstract API</a>
     &nbsp;//&nbsp;
     <a href="#FNmathAPI" style="color: white !important">Math API</a>
@@ -580,6 +582,66 @@ console.log(o2);
     <tr>
       <td><code>strUpFirst(&#60;string&#62;);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function is unicode compatible and converts the first character to uppercase. The string parameter is mandatory. The return value is a string.</td>
+    </tr>
+  </table>
+</div>
+
+
+<h3 id="FNassertionAPI">Assertion API</h3>
+
+<p>There are information about the equalities in the <a href="js-cheatsheet.pdf" target="_blank">js-cheatsheet.pdf</a>.</p>
+
+<p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
+<br/>Example: <code>CEL.assert();</code></p>
+
+<div>
+  <table class="table-responsive table-striped">
+    <tr>
+      <td style="width: auto; min-width: 33%;"><b>Name</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>assert(&#60;value: boolean&#62;[,message="value"]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value is false. The message parameter is optional. If the value is not boolean, then a typeerror will be thrown. The return value is <code>true</code>, when the test was success.
+      </td>
+    </tr>
+    <tr>
+      <td><code>assertEqual(&#60;value1&#62;,&#60;value2&#62;,[,message="values"]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 aren't equals. (<i>Loose equality + NaN equality</i>) The message parameter is optional. The return value is <code>true</code>, when the test was success.
+      </td>
+    <tr>
+      <td><code>assertFalse(&#60;value: boolean&#62;[,message="value"]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value is true. The message parameter is optional. If the value is not boolean, then a typeerror will be thrown. The return value is <code>true</code>, when the test was success.
+      </td>
+    </tr>
+    <tr>
+      <td><code>assertNotEqual(&#60;value1&#62;,&#60;value2&#62;,[,message="values"]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 are equals. (<i>Loose equality + NaN equality</i>) The message parameter is optional. The return value is <code>true</code>, when the test was success.
+      </td>
+    <tr>
+    <tr>
+      <td><code>assertNotStrictEqual(&#60;value1&#62;,&#60;value2&#62;,[,message="values"]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 are equals. (<i>SameValue equality</i>) The message parameter is optional. The return value is <code>true</code>, when the test was success.
+      </td>
+    <tr>
+    <tr>
+      <td><code>assertStrictEqual(&#60;value1&#62;,&#60;value2&#62;,[,message="values"]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 aren't equals. (<i>SameValue equality</i>) The message parameter is optional. The return value is <code>true</code>, when the test was success.
+      </td>
+    <tr>
+    <tr>
+      <td><code>assertTrue(&#60;value: boolean&#62;[,message="value"]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>This is an alias of the <code>assert(&#60;value: boolean&#62;[,message="value"]);</code>.
+      </td>
+    </tr>
+      
     </tr>
   </table>
 </div>
@@ -1393,7 +1455,7 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>reverse(&#60;iterator&#62;);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns an array with values of the given iterator in reverse order. The iterator parameter is mandatory.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns an iterator with values of the given iterator in reverse order. The iterator parameter is mandatory.</td>
     </tr>
     <tr>
       <td><code>setDifference(&#60;set1&#62;,&#60;set2&#62;);</code></td>

@@ -161,20 +161,6 @@ results
     <td><code>CEL.getType(42,'string', true);</code></td>
   </tr>
   <tr>
-    <td><button onclick="var alertStr = ''; try { CEL.assertTrue('assertTrue();', false); } catch(e) { alertStr += e + '\n'; } try { CEL.assertFalse('assertFalse();', true); } catch(e) { alertStr += e + '\n'; } try { CEL.assertEq('assertEq(); 1', true, 2); } catch(e) { alertStr += e + '\n'; } try { CEL.assertEq('assertEq(); 2', true, 2, false); } catch(e) { alertStr += e + '\n'; } try { CEL.assertNotEq('assertNotEq(); 1', 1, 1); } catch(e) { alertStr += e + '\n'; } try { CEL.assertNotEq('assertNotEq(); 2', true, 1, false); } catch(e) { alertStr += e; } alert(alertStr);">assert functions</button></td>
-    <td>
-      <p>1x alert, 6x cases</p>
-      <pre>var alertStr = '';
-try { CEL.assertTrue('assertTrue();', false); } catch(e) { alertStr += e + '\n'; }
-try { CEL.assertFalse('assertFalse();', true); } catch(e) { alertStr += e + '\n'; }
-try { CEL.assertEq('assertEq(); 1', true, 2); } catch(e) { alertStr += e + '\n'; }
-try { CEL.assertEq('assertEq(); 2', true, 2, false); } catch(e) { alertStr += e + '\n'; }
-try { CEL.assertNotEq('assertNotEq(); 1', 1, 1); } catch(e) { alertStr += e + '\n'; }
-try { CEL.assertNotEq('assertNotEq(); 2', true, 1, false); } catch(e) { alertStr += e; }
-alert(alertStr);</pre>
-    </td>
-  </tr>
-  <tr>
     <td><button onclick="var arrayCreateErrorStr = ''; try { CEL.arrayCreate(4.5); } catch (e) { arrayCreateErrorStr += 'arrayCreate(); error 4.5 - ' + e + '\n'; } try { CEL.arrayCreate(-4.5); } catch (e) { arrayCreateErrorStr += 'arrayCreate(); error -4.5 - ' + e + '\n'; } try { CEL.arrayCreate('-5'); } catch (e) { arrayCreateErrorStr += 'arrayCreate(); error \'-5\' - ' + e + '\n'; } try { CEL.arrayCreate('4.5'); } catch (e) { arrayCreateErrorStr += 'arrayCreate(); error \'4.5\' - ' + e + '\n'; } try { CEL.arrayCreate('-4.5'); } catch (e) { arrayCreateErrorStr += 'arrayCreate(); error \'-4.5\' - ' + e + '\n'; } try { CEL.arrayCreate(Infinity); } catch (e) { arrayCreateErrorStr += 'arrayCreate(); error Infinity - ' + e + '\n'; } try { CEL.arrayCreate(-Infinity); } catch (e) { arrayCreateErrorStr += 'arrayCreate(); error -Infinity - ' + e + '\n'; } try { CEL.arrayCreate(4294967296); } catch (e) { arrayCreateErrorStr += 'arrayCreate(); error 4294967296 - ' + e + '\n'; } alert(arrayCreateErrorStr);">arrayCreate(); errors</button></td>
     <td>
       <p>1x alert, 8x cases</p>

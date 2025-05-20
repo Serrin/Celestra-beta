@@ -184,10 +184,6 @@ Name | Description
 `WORDSAFEALPHABET;`|__Stability: 4 - Stable.__<BR>`"23456789CFGHJMPQRVWXcfghjmpqvwx"`<BR>Can be used with the ID generator functions.
 `b64Encode(<string>);` | __Stability: 4 - Stable.__<BR>Unicode compatible string to base64 converter. Return the encoded string.
 `b64Decode(<string>);` | __Stability: 4 - Stable.__<BR>Unicode compatible base64 to string converter. Return the original string.
-`assertEq(<msg>,<value1>,<value2>[,strict=true]);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value1 and value2 aren't equals. The message parameter is mandatory and has to be a string. The strict parameter is optional and can be a booelan. The return value is `true`, when the test was success.
-`assertFalse(<msg>,<value>);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value is true. The message parameter is mandatory and has to be a string. The return value is `true`, when the test was success.
-`assertNotEq(<msg>,<value1>,<value2>[,strict=true]);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value1 and value2 are equals. The message parameter is mandatory and has to be a string. The strict parameter is optional and can be a booelan. The return value is `true`, when the test was success.
-`assertTrue(<msg>,<value>);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value is false. The message parameter is mandatory and has to be a string. The return value is `true`, when the test was success.
 `bind(<function>,<context>);` | __Stability: 4 - Stable.__<BR>Returns a function that is bound to a context. Both of the parameters are mandatory.
 `classof(<variable>[,type[,throw=false]]);` | __Stability: 4 - Stable.__<BR>Get the real type of a variable. If this is an object, then the return value is the detailed object type (e.g.: array). If the type (string) parameter is given, then the return value (boolean) is the equality of the type of the variable and the second parameter. If the third parameter (boolean) is true and the type of the variable and the second parameter aren't equals, then the function is throwing a `TypeError();`, else the return value is true.
 `constant(<value>);` | __Stability: 4 - Stable.__<BR>A one time assignment function to create a constant value in ES5. This returns a function, which returns the given value. (In math: `f(x)=x`)
@@ -236,6 +232,25 @@ Name | Description
 `strTitlecase(<string>);` | __Stability: 4 - Stable.__<BR>Alias of the `strPropercase(<string>);`.
 `strTruncate(<string>,<newLength>[,omission = ""]);` | __Stability: 4 - Stable.__<BR>This function truncats the given string to the new length. If the new length is bigger than the original length, then the return value is the original string. The omission parameter is optional.<BR>__Samples:__<BR>`CEL.strTruncate("Arthur Dent", 6);` -> `"Arthur"`<BR>`CEL.strTruncate("Arthur Dent", 6, "...");` -> `"Art..."`<BR>`CEL.strTruncate("Arthur Dent", 20, "...");` -> `"Arthur Dent"`
 `strUpFirst(<string>);` | __Stability: 4 - Stable.__<BR>This function is unicode compatible and converts the first character to uppercase. The string parameter is mandatory. The return value is a string.
+
+
+### Assertion API
+
+There are information about the equalities in the __js-cheatsheet.pdf__.
+
+These functions are available in the `celestra` and/or `CEL` objects.
+
+Example: `CEL.assert();`
+
+Name | Description
+---- | -----------
+`assert(<value: boolean>[,message="value"]);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value is false. The message parameter is optional. If the value is not boolean, then a typeerror will be thrown. The return value is `true`, when the test was success.
+`assertEqual(<value1>,<value2>[,message="values"]);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value1 and value2 aren't equals. (_Loose equality + NaN equality_) The message parameter is optional. The return value is `true`, when the test was success.
+`assertFalse(<value: boolean>[,message = "value"]);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value is true. The message parameter is optional. If the value is not boolean, then a typeerror will be thrown. The return value is `true`, when the test was success.
+`assertNotEqual(<value1>,<value2>[,message="values"]);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value1 and value2 are equals. (_Loose equality + NaN equality_) The message parameter is optional. The return value is `true`, when the test was success.
+`assertNotStrictEqual(<value1>,<value2>[,message="values"]);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value1 and value2 are equals. (_SameValue equality_) The message parameter is optional. The return value is `true`, when the test was success.
+`assertStrictEqual(<value1>,<value2>[,message="values"]);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value1 and value2 aren't equals. (_SameValue equality_) The message parameter is optional. The return value is `true`, when the test was success.
+`assertTrue(<value: boolean>[,message = "value"]);` | __Stability: 4 - Stable.__<BR> This is an alias of the `assert(<msg>,<value>);`.
 
 
 ### DOM API
@@ -450,7 +465,7 @@ Name | Description
 `partition(<iterator>,<callback>);` | __Stability: 4 - Stable.__<BR>Returns an array, with filtered and negative filtered groups of the elements of the original iterator. All of the parameters are mandatory.<BR>__Example:__<BR>`CEL.partition([-5, 2, -9, 7, 34], (e) => (e > 0) );`<BR>-><BR>`[[2, 7, 34], [-5, -9]]]`
 `reduce(<iterator>,<callback>[,initialvalue]);` | __Stability: 3 - Not deprecated, but can get only fixes.__<BR>__Can be replaced with `Iterator.from(iterable/iterator).reduce();`__<BR>This function executes a reducer function (that you provide) on each element of the iterator, returning in a single output value. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function. The initialvalue parameter is optional and can be any variable type of the Javascript.
 `reject(<iterator>,<callback>);` | __Stability: 4 - Stable.__<BR>This is the opposite of the function `filter(<iterator>,<callback>);`. The elements to which the given callback gives a false will be yield. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function and called with two parameters: the item and the index of the item (only a counter).
-`reverse(<iterator>);` | __Stability: 4 - Stable.__<BR>This function returns an array with values of the given iterator in reverse order. The iterator parameter is mandatory.
+`reverse(<iterator>);` | __Stability: 4 - Stable.__<BR>This function returns an iterator with values of the given iterator in reverse order. The iterator parameter is mandatory.
 `setDifference(<set1>,<set2>);` | __Stability: 3 - Not deprecated, but can get only fixes.__<BR>Returns the set of unique values that are in the iterator1, excluding the values that are also in the iterator2. All of the parameters are mandatory and have to be a Set. The return value is a Set.
 `setIntersection(<set1>,<set2>);` | __Stability: 3 - Not deprecated, but can get only fixes.__<BR>Returns the set of unique values that are in both of the given iterators. All of the parameters are mandatory and have to be a Set. The return value is a Set.
 `setSymmetricDifference(<set1>,<set2>);` | __Stability: 3 - Not deprecated, but can get only fixes.__<BR>Returns the set of unique values that are only in one of given iterators. All of the parameters are mandatory and have to be a Set. The return value is a Set.

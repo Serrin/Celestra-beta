@@ -298,24 +298,6 @@ CUT.isEqual("WORDSAFEALPHABET;", CEL.WORDSAFEALPHABET,
 );
 
 
-// "assertTrue();
-CUT.isTrue("assertTrue();", CEL.assertTrue("lorem ipsum", true));
-
-
-// assertFalse();
-CUT.isTrue("assertFalse();", CEL.assertFalse("lorem ipsum", false));
-
-
-// assertEq();
-CUT.isTrue("assertEq(); 1", CEL.assertEq("lorem ipsum", 1, 1));
-CUT.isTrue("assertEq(); 2", CEL.assertEq("lorem ipsum", 1, true, false));
-
-
-// assertNotEq();
-CUT.isTrue("assertNotEq(); 1", CEL.assertNotEq("lorem ipsum", 1, 2));
-CUT.isTrue("assertNotEq(); 2", CEL.assertNotEq("lorem ipsum", 1, 2, false));
-
-
 // crypto.randomUUID();
 token1 = CEL.randomUUIDv7();
 CUT.isTrue("randomUUIDv7();",
@@ -1142,6 +1124,119 @@ CEL.qs("#dsDiv").remove();
 token1 = CEL.domToElement("<div><p>1</p><p>2</p><p>3</p>div>");
 CEL.domClear(token1);
 CUT.isEqual("domClear();", 0, token1.children.length);
+
+
+/* Assertion API */
+CUT.addElement("hr");
+CUT.addElement("h3", "Assertion API");
+
+
+// assert();
+CUT.isTrue("assert(); 1 true", CEL.assert(true, "assert true"));
+CUT.isTrue("assert(); 2 true ", CEL.assert(true, "assert true"));
+try {
+  CEL.assert(false, "assert false");
+} catch (e) { CUT.isTrue("assert(); 3 error", Error.isError(e)); }
+try {
+  CEL.assert(false);
+} catch (e) { CUT.isTrue("assert(); 4 error", Error.isError(e)); }
+try {
+  CEL.assert(null, "assert not boolean");
+} catch (e) { CUT.isTrue("assert(); 5 error", Error.isError(e)); }
+try {
+  CEL.assert(null);
+} catch (e) { CUT.isTrue("assert(); 6 error", Error.isError(e)); }
+
+
+// assertTrue();
+CUT.isTrue("assertTrue(); 1 true", CEL.assertTrue(true, "assertTrue true"));
+CUT.isTrue("assertTrue(); 2 true", CEL.assertTrue(true, "assertTrue true"));
+try {
+  CEL.assertTrue(false, "assertTrue false");
+} catch (e) { CUT.isTrue("assertTrue(); 3 error", Error.isError(e)); }
+try {
+  CEL.assertTrue(false);
+} catch (e) { CUT.isTrue("assertTrue(); 4 error", Error.isError(e)); }
+try {
+  CEL.assertTrue(null, "assertTrue not boolean");
+} catch (e) { CUT.isTrue("assertTrue(); 5 error", Error.isError(e)); }
+try {
+  CEL.assertTrue(null);
+} catch (e) { CUT.isTrue("assertTrue(); 6 error", Error.isError(e)); }
+
+
+// assertFalse();
+CUT.isTrue("assertFalse(); 1 true", CEL.assertFalse(false,"assertFalse false"));
+try {
+  CEL.assertFalse(true,"assertFalse true");
+} catch (e) { CUT.isTrue("assertFalse(); 2 error", Error.isError(e)); }
+try {
+  CEL.assertFalse(true);
+} catch (e) { CUT.isTrue("assertFalse(); 3 error", Error.isError(e)); }
+CUT.isTrue("assertFalse(); 4 true", CEL.assertFalse(false));
+try {
+  CEL.assertFalse(null,"assertFalse not boolean");
+} catch (e) { CUT.isTrue("assertFalse(); 5 error", Error.isError(e)); }
+try {
+  CEL.assertFalse(null);
+} catch (e) { CUT.isTrue("assertFalse(); 6 error", Error.isError(e)); }
+
+
+// assertEqual();
+CUT.isTrue("assertEqual(); 1 true", CEL.assertEqual(NaN, NaN));
+CUT.isTrue("assertEqual(); 2 true", CEL.assertEqual(42, 42));
+CUT.isTrue("assertEqual(); 3 true", CEL.assertEqual(42, "42", ""));
+try {
+  CEL.assertEqual(null,false,"assertEqual null false");
+} catch (e) { CUT.isTrue("assertEqual(); 4 error", Error.isError(e)); }
+try {
+  CEL.assertEqual(null,false);
+} catch (e) { CUT.isTrue("assertEqual(); 5 error", Error.isError(e)); }
+
+
+// assertStrictEqual();
+CUT.isTrue("assertStrictEqual(); 1 true", CEL.assertStrictEqual(NaN, NaN));
+CUT.isTrue("assertStrictEqual(); 2 true", CEL.assertStrictEqual(42, 42));
+try {
+  CEL.assertStrictEqual(42, "42", "assertStrictEqual 42 \"42\"");
+} catch (e) { CUT.isTrue("assertStrictEqual(); 3 error", Error.isError(e)); }
+try {
+  CEL.assertStrictEqual(42, "42");
+} catch (e) { CUT.isTrue("assertStrictEqual(); 3 error", Error.isError(e)); }
+try {
+  CEL.assertStrictEqual(null, false, "assertStrictEqual null false");
+} catch (e) { CUT.isTrue("assertStrictEqual(); 4 error", Error.isError(e)); }
+
+
+// assertNotEqual();
+CUT.isTrue("assertNotEqual(); 1 true", CEL.assertNotEqual(null,false, "lorem"));
+try {
+  CEL.assertNotEqual(NaN, NaN);
+} catch (e) { CUT.isTrue("assertNotEqual(); 2 error", Error.isError(e)); }
+try {
+  CEL.assertNotEqual(42, 42);
+} catch (e) { CUT.isTrue("assertNotEqual(); 3 error", Error.isError(e)); }
+try {
+  CEL.assertNotEqual(42, "42", "assertNotEqual 42 \"42\"");
+} catch (e) { CUT.isTrue("assertNotEqual(); 4 error", Error.isError(e)); }
+
+
+// assertNotStrictEqual();
+CUT.isTrue("assertNotStrictEqual(); 1 true", 
+  CEL.assertNotStrictEqual(42, "42", "assertNotStrictEqual 42 \"42\"")
+);
+CUT.isTrue("assertNotStrictEqual(); 2 true", 
+  CEL.assertNotStrictEqual(null, false, "assertNotStrictEqual null false")
+);
+try {
+  CEL.assertNotStrictEqual(NaN, NaN);
+} catch (e) { CUT.isTrue("assertNotStrictEqual(); 3 error", Error.isError(e)); }
+try {
+  CEL.assertNotStrictEqual(42, 42);
+} catch (e) { CUT.isTrue("assertNotStrictEqual(); 4 error", Error.isError(e)); }
+try {
+  CEL.assertNotStrictEqual(42, "42", "lorem");
+} catch (e) { CUT.isTrue("assertNotStrictEqual(); 4 error", Error.isError(e)); }
 
 
 /* Collections API */

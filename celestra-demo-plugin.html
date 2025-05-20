@@ -108,8 +108,8 @@
 function demoAutotest () {
   try {
     // collect();
-    CEL.assertEq(
-      "collect", JSON.stringify(CEL.collect([4,5,6].values())), "[4,5,6]"
+    CEL.assertStrictEqual(
+      JSON.stringify(CEL.collect([4,5,6].values())), "[4,5,6]", "collect();"
     );
   } catch (e) {
     alert(e);
