@@ -6,7 +6,7 @@ try {
 
 var CUT = {};
 
-CUT.VERSION = "Celestra Unit Tester (CUT) v0.8.27";
+CUT.VERSION = "Celestra Unit Tester (CUT) v0.8.28";
 
 CUT.__results__ = document.querySelector("#results");
 CUT.__resultsFailed__ = document.querySelector("#resultsFailed");
@@ -69,14 +69,42 @@ CUT.addElement = function addElement (elementType, iHtml) {
 /* log(<innerHTML>); */
 CUT.log = function log (iHtml) { CUT.addElement("p", iHtml); };
 
+/* logCode(<innerHTML>); */
+CUT.logCode = function log (iHtml) {
+  CUT.addElement("p", "<code>" + iHtml + "</code>");
+};
+
 /* clear(); */
 CUT.clear = function clear () { CUT.__results__.innerHTML = ""; };
+
+/* concat(<item1, item2, ...itemN>): string */
+CUT.concat = function concat (...args) {
+  let r = "";
+  for (let item of args) { r += item; }
+  return r;
+};
+
+/* join(<iterator>[, separator = " "]): string */
+CUT.join = function join (it, separator = " ") {
+  separator = String(separator);
+  let r = "";
+  for (let item of it) { r += separator + item; }
+  return r.slice(separator.length);
+}
+
+/* take(<iterator>[,n=1]): iterator); */
+CUT.take = function* take (it, n = 1) {
+  let i = n;
+  for (let item of it) {
+    if (i <= 0) { break; }
+    yield item;
+    i--;
+  }
+}
 
 
 /* ======================================================================== */
 
-
-//CUT.addElement("hr");
 
 const today = new Date();
 
@@ -158,7 +186,7 @@ window.saveResults = function saveResults () {
 /* ======================================================================== */
 
 
-/* Selftest */
+/** Selftest **/
 CUT.addElement("hr");
 CUT.addElement("h3", "CUT Selftest");
 
@@ -229,7 +257,7 @@ var token6 = 0, token7 = 0, token8 = 0, token9 = 0, token10 = 0;
 /* Celestra v5.7.0 testcases */
 
 
-/* Not auto tested functions */
+/** Not auto tested functions **/
 CUT.addElement("hr");
 CUT.addElement("h3", "Not auto tested functions");
 CUT.addElement("ul",
@@ -246,59 +274,59 @@ CUT.addElement("ul",
 );
 
 
-/* Celestra object */
+/** Celestra object **/
 CUT.addElement("hr");
 CUT.addElement("h3", "Celestra object");
 
 
-// Celestra object
+/* Celestra object */
 CUT.isEqual("Object name: \"celestra\"", true, celestra.randomInt(100, 200)>99);
 
 
-// CEL object
+/* CEL object */
 CUT.isEqual("Object name: \"CEL\"", true, CEL.randomInt(100, 200) > 99);
 
 
-/* Core API and String API and DOM API */
+/** Core API and String API and DOM API **/
 CUT.addElement("hr");
 CUT.addElement("h3", "Core API and String API and DOM API");
 
 
-// VERSION;
+/* VERSION; */
 CUT.isTrue("VERSION;", CEL.VERSION.includes("Celestra v"));
 
 
-// BASE16;
+/* BASE16; */
 CUT.isEqual("BASE16;", CEL.BASE16, "0123456789ABCDEF");
 
 
-// BASE32
+/* BASE32 */
 CUT.isEqual("BASE32;", CEL.BASE32, "234567ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 
 
-// BASE36;
+/* BASE36; */
 CUT.isEqual("BASE36;", CEL.BASE36, "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 
 
-// BASE58;
+/* BASE58; */
 CUT.isEqual("BASE58;", CEL.BASE58,
   "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
 );
 
 
-// BASE62;
+/* BASE62; */
 CUT.isEqual("BASE62;", CEL.BASE62,
   "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 );
 
 
-// WORDSAFEALPHABET;
+/* WORDSAFEALPHABET; */
 CUT.isEqual("WORDSAFEALPHABET;", CEL.WORDSAFEALPHABET,
   "23456789CFGHJMPQRVWXcfghjmpqvwx"
 );
 
 
-// crypto.randomUUID();
+/* crypto.randomUUID(); */
 token1 = CEL.randomUUIDv7();
 CUT.isTrue("randomUUIDv7();",
   token1.length === 36
@@ -307,49 +335,49 @@ CUT.isTrue("randomUUIDv7();",
     && token1[14] === "7"
     && "89ab".includes(token1[19])
 );
-CUT.log("<code>\"" + token1 + "\"</code>");
+CUT.logCode(token1);
 
 
-// nanoid();
+/* nanoid(); */
 token1 = CEL.nanoid();
 CUT.isTrue("nanoid 1 - default size 21",
   typeof token1 === "string" && token1.length === 21
 );
-CUT.log("<code>\"" + token1 + "\"</code>");
+CUT.logCode(token1);
 token1 = CEL.nanoid(15);
 CUT.isTrue("nanoid 2 - size 15", typeof token1==="string" &&token1.length===15);
-CUT.log("<code>\"" + token1 + "\"</code>");
+CUT.logCode(token1);
 token1 = CEL.nanoid(36);
 CUT.isTrue("nanoid 3 - size 36", typeof token1==="string" &&token1.length===36);
-CUT.log("<code>\"" + token1 + "\"</code>");
+CUT.logCode(token1);
 token1 = CEL.nanoid(5, "abcdeFGHIJK42");
 CUT.isTrue("nanoid 4 - size 5 & \"abcdeFGHIJK42\"",
   typeof token1 === "string" && token1.length === 5
 );
-CUT.log("<code>\"" + token1 + "\"</code>");
+CUT.logCode(token1);
 
 
-// timestampID();
+/* timestampID(); */
 token1 = CEL.timestampID();
 CUT.isTrue("timestampID 1 - default size 21",
   typeof token1 === "string" && token1.length === 21
 );
-CUT.log("<code>\"" + token1 + "\"</code>");
+CUT.logCode(token1);
 token1 = CEL.timestampID(15);
 CUT.isTrue("timestampID 2 - size 15",
   typeof token1 === "string" && token1.length === 15
 );
-CUT.log("<code>\"" + token1 + "\"</code>");
+CUT.logCode(token1);
 token1 = CEL.timestampID(36);
 CUT.isTrue("timestampID 3 - size 36",
   typeof token1 === "string" && token1.length === 36
 );
-CUT.log("<code>\"" + token1 + "\"</code>");
+CUT.logCode(token1);
 token1 = CEL.timestampID(5, "abcdeFGHIJK42");
 CUT.isTrue("timestampID 4 - size 5 -> 12 & \"abcdeFGHIJK42\"",
   typeof token1 === "string" && token1.length === 12
 );
-CUT.log("<code>\"" + token1 + "\"</code>");
+CUT.logCode(token1);
 
 
 CUT.addElement(
@@ -361,7 +389,7 @@ CUT.addElement(
 );
 
 
-// qs();
+/* qs(); */
 CUT.isEqual("qs(); selector",
   document.querySelector("#qsaDivTestElement"), CEL.qs("#qsaDivTestElement")
 );
@@ -375,7 +403,7 @@ CUT.isEqual("qs(); selector + element 2",
 );
 
 
-// qsa();
+/* qsa(); */
 token1 = CEL.qsa("#qsaDivTestElement > p")
 CUT.isTrue("qsa(); selector",
   Array.isArray(token1) && token1.length === 2
@@ -404,19 +432,21 @@ CUT.isTrue("qsa(); forEach",
 /* classof(); begin */
 CUT.isEqual("classof(); ES5 values",
   "array number string object htmldocument boolean nodelist htmlparagraphelement null undefined function date regexp",
-  CEL.classof([1, 2, 3])
-    + " " + CEL.classof(1998)
-    + " " + CEL.classof("hello world")
-    + " " + CEL.classof({a: 1, b: 2})
-    + " " + CEL.classof(document)
-    + " " + CEL.classof(true)
-    + " " + CEL.classof(document.querySelectorAll("p"))
-    + " " + CEL.classof(CEL.qs("p"))
-    + " " + CEL.classof(null)
-    + " " + CEL.classof(undefined)
-    + " " + CEL.classof(function () {})
-    + " " + CEL.classof(new Date())
-    + " " + CEL.classof(/^\[object (.+)\]$/g)
+  CUT.join([
+    CEL.classof([1, 2, 3]),
+    CEL.classof(1998),
+    CEL.classof("hello world"),
+    CEL.classof({a: 1, b: 2}),
+    CEL.classof(document),
+    CEL.classof(true),
+    CEL.classof(document.querySelectorAll("p")),
+    CEL.classof(CEL.qs("p")),
+    CEL.classof(null),
+    CEL.classof(undefined),
+    CEL.classof(function () {}),
+    CEL.classof(new Date()),
+    CEL.classof(/^\[object (.+)\]$/g)
+  ])
 );
 CUT.isTrue("classof(); ES5 all true",
   CEL.classof([1, 2, 3], "array")
@@ -449,10 +479,12 @@ CUT.isFalse("classof(); ES5 all false",
     || CEL.classof(/^\[object (.+)\]$/g, "string")
 );
 CUT.isEqual("classof(); ES6 values", "map set weakmap weakset",
-  CEL.classof(new Map())
-    + " " + CEL.classof(new Set())
-    + " " + CEL.classof(new WeakMap())
-    + " " + CEL.classof(new WeakSet())
+  CUT.join([
+    CEL.classof(new Map()),
+    CEL.classof(new Set()),
+    CEL.classof(new WeakMap()),
+    CEL.classof(new WeakSet())
+  ])
 );
 CUT.isTrue("classof(); ES6 all true",
   CEL.classof(new Map(), "map")
@@ -467,10 +499,12 @@ CUT.isFalse("classof(); ES6 all false",
     || CEL.classof(new WeakSet(), "object")
 );
 if (!!window.BigInt) {
-  CUT.isEqual("classof(); ES6 bigint", "bigint10",
-  CEL.classof(BigInt(456))
-    + +CEL.classof(BigInt(456), "bigint")
-    + +CEL.classof(BigInt(456), "object")
+  CUT.isEqual("classof(); ES6 bigint", "bigint true false",
+    CUT.join([
+      CEL.classof(BigInt(456)),
+      CEL.classof(BigInt(456), "bigint"),
+      CEL.classof(BigInt(456), "object")
+    ])
   );
 }
 /* classof(); end */
@@ -479,19 +513,21 @@ if (!!window.BigInt) {
 /* getType(); begin */
 CUT.isEqual("getType(); ES5 values",
   "array number string object htmldocument boolean nodelist htmlparagraphelement null undefined function date regexp",
-  CEL.getType([1, 2, 3])
-    + " " + CEL.getType(1998)
-    + " " + CEL.getType("hello world")
-    + " " + CEL.getType({a:1,b:2})
-    + " " + CEL.getType(document)
-    + " " + CEL.getType(true)
-    + " " + CEL.getType(document.querySelectorAll("p"))
-    + " " + CEL.getType(CEL.qs("p"))
-    + " " + CEL.getType(null)
-    + " " + CEL.getType(undefined)
-    + " " + CEL.getType(function () {})
-    + " " + CEL.getType(new Date())
-    + " " + CEL.getType(/^\[object (.+)\]$/g)
+  CUT.join([
+    CEL.getType([1, 2, 3]),
+    CEL.getType(1998),
+    CEL.getType("hello world"),
+    CEL.getType({a:1,b:2}),
+    CEL.getType(document),
+    CEL.getType(true),
+    CEL.getType(document.querySelectorAll("p")),
+    CEL.getType(CEL.qs("p")),
+    CEL.getType(null),
+    CEL.getType(undefined),
+    CEL.getType(function () {}),
+    CEL.getType(new Date()),
+    CEL.getType(/^\[object (.+)\]$/g)
+  ])
 );
 CUT.isTrue("getType(); ES5 all true",
   CEL.getType([1, 2, 3], "array")
@@ -524,10 +560,12 @@ CUT.isFalse("getType(); ES5 all false",
     || CEL.getType(/^\[object (.+)\]$/g, "string")
 );
 CUT.isEqual("getType(); ES6 values", "map set weakmap weakset",
-  CEL.getType(new Map())
-    + " " + CEL.getType(new Set())
-    + " " + CEL.getType(new WeakMap())
-    + " " + CEL.getType(new WeakSet())
+  CUT.join([
+    CEL.getType(new Map()),
+    CEL.getType(new Set()),
+    CEL.getType(new WeakMap()),
+    CEL.getType(new WeakSet())
+  ])
 );
 CUT.isTrue("getType(); ES6 all true",
   CEL.getType(new Map(), "map")
@@ -542,16 +580,18 @@ CUT.isFalse("getType(); ES6 all false",
     || CEL.getType(new WeakSet(), "object")
 );
 if (!!window.BigInt) {
-  CUT.isEqual("getType(); ES6 bigint", "bigint10",
-  CEL.getType(BigInt(456))
-    + +CEL.getType(456n, "bigint")
-    + +CEL.getType(456n, "object")
+  CUT.isEqual("getType(); ES6 bigint", "bigint true false",
+    CUT.join([
+      CEL.getType(BigInt(456)),
+      CEL.getType(456n, "bigint"),
+      CEL.getType(456n, "object")
+    ])
   );
 }
 /* getType(); end */
 
 
-// extend();
+/* extend(); */
 token1 = {a: "1", b: "2"};
 token2 = {c: "3", d: "4", baz: {e: 5, fn: function (n) {return n * n; }}};
 token3 = CEL.extend(true, {} , token1, token2);
@@ -568,7 +608,7 @@ CUT.isEqual("extend(); false 2", "12345121",
 );
 
 
-// obj2string();
+/* obj2string(); */
 token1 = CEL.obj2string(
   {str:"éáűőúöüóíÉÁŰŐÚÖÜÓÍ", bool:true, pi:3.141592653589793}
 );
@@ -576,10 +616,10 @@ CUT.isEqual("obj2string();",
   "str=%C3%A9%C3%A1%C5%B1%C5%91%C3%BA%C3%B6%C3%BC%C3%B3%C3%AD%C3%89%C3%81%C5%B0%C5%90%C3%9A%C3%96%C3%9C%C3%93%C3%8D&bool=true&pi=3.141592653589793",
   token1
 );
-CUT.log("<code>\"" + token1 + "\"</code>");
+CUT.logCode(token1);
 
 
-//getUrlVars();
+/*getUrlVars(); */
 CUT.isEqual(
   'getUrlVars(); prop order_by from <code>"?showall=true&order_by=updated&o=asc"</code>',
   "updated", CEL.getUrlVars("?showall=true&order_by=updated&o=asc")["order_by"]
@@ -595,12 +635,12 @@ CUT.isEqual("getUrlVars(); empty object", "{}",
 CUT.addElement(CEL.domCreate("div", {"id": "testFormDiv"},
   " <form id='form1'><br/>Text: <input type='text' name='name' value='foo éáűőúöüóíéáűőúöüóí'><br/>Password: <input type='password' name='password' value='bar'><br/>Number: <input type='number' name='number' value='97'><br/> Radio: <input type='radio' name='radio' value='male' checked='checked'>Male <input type='radio' name='radio' value='female'>Female<br/> <select name='animals'> <option value='dog'>dog</option> <option value='cat'>cat</option> <option value='cow'>cow</option> <option value='hippos'>hippos</option> </select><br/> <select name='animals-multiple' multiple='multiple'> <option value='dog' selected='selected'>dog</option> <option value='cat'>cat</option> <option value='cow'>cow</option> <option value='hippos' selected='selected'>hippos</option> </select><br/>Checkbox1: <input type='checkbox' name='checkbox1' value='true' checked='checked'>true<br/>Checkbox2: <input type='checkbox' name='checkbox2' value='false'>false<br/>Textarea1: <textarea name='textarea1'>textarea1</textarea><br/><input type='submit' value='Submit'><br/><input type='reset' value='Reset'><br/><input type='button' value='Button1'><br/><button>Button2</button> </form> "
 ));
-// form2array();
+/* form2array(); */
 CUT.isEqual("form2array();",
   '[{"name":"name","value":"foo%20%C3%A9%C3%A1%C5%B1%C5%91%C3%BA%C3%B6%C3%BC%C3%B3%C3%AD%C3%A9%C3%A1%C5%B1%C5%91%C3%BA%C3%B6%C3%BC%C3%B3%C3%AD"},{"name":"password","value":"bar"},{"name":"number","value":"97"},{"name":"radio","value":"male"},{"name":"animals","value":"dog"},{"name":"animals-multiple","value":"dog"},{"name":"animals-multiple","value":"hippos"},{"name":"checkbox1","value":"true"},{"name":"textarea1","value":"textarea1"}]',
   JSON.stringify(CEL.form2array(CEL.qs("#form1")))
 );
-// form2string();
+/* form2string(); */
 CUT.isEqual("form2string();",
   "name=foo+%C3%A9%C3%A1%C5%B1%C5%91%C3%BA%C3%B6%C3%BC%C3%B3%C3%AD%C3%A9%C3%A1%C5%B1%C5%91%C3%BA%C3%B6%C3%BC%C3%B3%C3%AD&password=bar&number=97&radio=male&animals=dog&animals-multiple=dog&animals-multiple=hippos&checkbox1=true&textarea1=textarea1",
   CEL.form2string(CEL.qs("#form1"))
@@ -608,12 +648,12 @@ CUT.isEqual("form2string();",
 CEL.qs("#testFormDiv").remove();
 
 
-// randomBoolean();
+/* randomBoolean(); */
 CUT.isEqual("randomBoolean();", typeof CEL.randomBoolean(), "boolean");
 
 
-// b64Decode();
-// b64Encode();
+/* b64Decode(); */
+/* b64Encode(); */
 token1 = "✓ à \r\n\t árvíztűrő tükörfúrógép ÁRVÍZTŰRŐ TÜKÖRFÚRÓGÉP ,?;.:-_* ¤÷×¨¸´˙`˛°˘^ˇ~'+!%/=()|\\<> \" \/ #&@{}[]€ ÍÄíŁß 0123456789 asdfghjklqwertzuiopyxcvbnm ASDFGHJKLQWERTZUIOPYXCVBNM";
 CUT.isEqual("b64Encode();",
   "4pyTIMOgIA0KCSDDoXJ2w616dMWxcsWRIHTDvGvDtnJmw7pyw7Nnw6lwIMOBUlbDjVpUxbBSxZAgVMOcS8OWUkbDmlLDk0fDiVAgLD87LjotXyogwqTDt8OXwqjCuMK0y5lgy5vCsMuYXsuHficrISUvPSgpfFw8PiAiIC8gIyZAe31bXeKCrCDDjcOEw63FgcOfIDAxMjM0NTY3ODkgYXNkZmdoamtscXdlcnR6dWlvcHl4Y3Zibm0gQVNERkdISktMUVdFUlRaVUlPUFlYQ1ZCTk0=",
@@ -627,148 +667,85 @@ CUT.isEqual("b64Decode(); + b64Encode();",
 /* javaHash(); begin */
 token1 = "✓ à \r\n\t árvíztűrő tükörfúrógép ÁRVÍZTŰRŐ TÜKÖRFÚRÓGÉP ,?;.:-_* ¤÷×¨¸´˙`˛°˘^ˇ~'+!%/=()|\\<> \" \/ #&@{}[]€ ÍÄíŁß 0123456789 asdfghjklqwertzuiopyxcvbnm ASDFGHJKLQWERTZUIOPYXCVBNM";
 CUT.isEqual("javaHash();",
-  "-0.578: 1334063883 / 4f84330b / 13340638830: 48 / 30 / 48 / 3.14: 1565118 / 1565118 / 156511842: 1662 / 67e / 1662true: 3569038 / 36758e / 3569038\"true\": 3569038 / 36758e / 3569038false: 97196323 / 5cb1923 / 97196323\"false\": 97196323 / 5cb1923 / 97196323null: 3392903339290333c587\"null\": 3392903 / 33c587 / 3392903undefined: 0 / 0 / 0\"undefined\": -1038130864 / -3de09eb0 / -1038130864\"\": 0 / 0 / 0[]: 0 / 0 / 0[1,2]: 48503 / bd77 / 48503[3,4]: 50427 / c4fb / 50427{}: -1074417128 / -400a4de8 / -1074417128{a:1}: -1074417128 / -400a4de8 / -1074417128{b:2}: -1074417128 / -400a4de8 / -1074417128str variable: -313568218 / -12b0abda / -313568218str variable + b64Encode: LTMxMzU2ODIxOA== / LTEyYjBhYmRh / LTMxMzU2ODIxOA==str variable + b64Encode + b64Decode: -313568218 / -12b0abda / -313568218", ""
-    + "-0.578: "
-    + CEL.javaHash(-0.578)
-    + " / "
-    + CEL.javaHash(-0.578, true)
-    + " / "
-    + CEL.javaHash(-0.578, false)
-    + "0: "
-    + CEL.javaHash(0)
-    + " / "
-    + CEL.javaHash(0,true)
-    + " / "
-    + CEL.javaHash(0, false)
-    + " / "
-    + "3.14: "
-    + CEL.javaHash(3.14)
-    + " / "
-    + CEL.javaHash(3.14)
-    + " / "
-    + CEL.javaHash(3.14, false)
-    + "42: "
-    + CEL.javaHash(42)
-    + " / "
-    + CEL.javaHash(42, true)
-    + " / "
-    + CEL.javaHash(42, false)
-    + "true: "
-    + CEL.javaHash(true)
-    + " / "
-    + CEL.javaHash(true, true)
-    + " / "
-    + CEL.javaHash(true, false)
-    + "\"true\": "
-    + CEL.javaHash("true")
-    + " / "
-    + CEL.javaHash("true", true)
-    + " / "
-    + CEL.javaHash("true", false)
-    + "false: "
-    + CEL.javaHash(false)
-    + " / "
-    + CEL.javaHash(false, true)
-    + " / "
-    + CEL.javaHash(false, false)
-    + "\"false\": "
-    + CEL.javaHash("false")
-    + " / "
-    + CEL.javaHash("false",true)
-    + " / "
-    + CEL.javaHash("false", false)
-    + "null: "
-    + CEL.javaHash(null)
-    + CEL.javaHash(null)
-    + CEL.javaHash(null, true, false)
-    + "\"null\": "
-    + CEL.javaHash("null")
-    + " / "
-    + CEL.javaHash("null", true)
-    + " / "
-    + CEL.javaHash("null", false)
-    + "undefined: "
-    + CEL.javaHash(undefined)
-    + " / "
-    + CEL.javaHash(undefined, true)
-    + " / "
-    + CEL.javaHash(undefined, false)
-    + "\"undefined\": "
-    + CEL.javaHash("undefined")
-    + " / "
-    + CEL.javaHash("undefined", true)
-    + " / "
-    + CEL.javaHash("undefined", false)
-    + "\"\": "
-    + CEL.javaHash("")
-    + " / "
-    + CEL.javaHash("",true)
-    + " / "
-    + CEL.javaHash("",false)
-    + "[]: "
-    + CEL.javaHash([])
-    + " / "
-    + CEL.javaHash([],true)
-    + " / "
-    + CEL.javaHash([],false)
-    + "[1,2]: "
-    + CEL.javaHash([1,2])
-    + " / "
-    + CEL.javaHash([1,2],true)
-    + " / "
-    + CEL.javaHash([1,2], false)
-    + "[3,4]: "
-    + CEL.javaHash([3,4])
-    + " / "
-    + CEL.javaHash([3,4], true)
-    + " / "
-    + CEL.javaHash([3,4], false)
-    + "{}: "
-    + CEL.javaHash({})
-    + " / "
-    + CEL.javaHash({}, true)
-    + " / "
-    + CEL.javaHash({},false)
-    + "{a:1}: "
-    + CEL.javaHash({a:1})
-    + " / "
-    + CEL.javaHash({a:1}, true)
-    + " / "
-    + CEL.javaHash({a:1},false)
-    + "{b:2}: "
-    + CEL.javaHash({b:2})
-    + " / "
-    + CEL.javaHash({b:2}, true)
-    + " / "
-    + CEL.javaHash({b:2}, false)
-    + "str variable: " + CEL.javaHash(token1)
-    + " / "
-    + CEL.javaHash(token1, true)
-    + " / "
-    + CEL.javaHash(token1, false)
-    + "str variable + b64Encode: "
-    + CEL.b64Encode(CEL.javaHash(token1))
-    + " / "
-    + CEL.b64Encode(CEL.javaHash(token1, true))
-    + " / "
-    + CEL.b64Encode(CEL.javaHash(token1, false))
-    + "str variable + b64Encode + b64Decode: "
-    + CEL.b64Decode(CEL.b64Encode(CEL.javaHash(token1)))
-    + " / "
-    + CEL.b64Decode(CEL.b64Encode(CEL.javaHash(token1, true)))
-    + " / "
-    + CEL.b64Decode(CEL.b64Encode(CEL.javaHash(token1, false)))
+  "1334063883 4f84330b 1334063883 48 30 48 1565118 17e1be 1565118 1662 67e 1662 3569038 36758e 3569038 3569038 36758e 3569038 97196323 5cb1923 97196323 97196323 5cb1923 97196323 3392903 33c587 3392903 33c587 3392903 0 0 0 -1038130864 -3de09eb0 -1038130864 0 0 0 0 0 0 48503 bd77 48503 50427 c4fb 50427 -1074417128 -400a4de8 -1074417128 -1074417128 -400a4de8 -1074417128 -1074417128 -400a4de8 -1074417128 -313568218 -12b0abda -313568218 LTMxMzU2ODIxOA== LTEyYjBhYmRh LTMxMzU2ODIxOA== -313568218 -12b0abda -313568218",
+  CUT.join([
+    CEL.javaHash(-0.578),
+    CEL.javaHash(-0.578, true),
+    CEL.javaHash(-0.578, false),
+    CEL.javaHash(0),
+    CEL.javaHash(0, true),
+    CEL.javaHash(0, false),
+    CEL.javaHash(3.14),
+    CEL.javaHash(3.14, true),
+    CEL.javaHash(3.14, false),
+    CEL.javaHash(42),
+    CEL.javaHash(42, true),
+    CEL.javaHash(42, false),
+    CEL.javaHash(true),
+    CEL.javaHash(true, true),
+    CEL.javaHash(true, false),
+    CEL.javaHash("true"),
+    CEL.javaHash("true", true),
+    CEL.javaHash("true", false),
+    CEL.javaHash(false),
+    CEL.javaHash(false, true),
+    CEL.javaHash(false, false),
+    CEL.javaHash("false"),
+    CEL.javaHash("false",true),
+    CEL.javaHash("false", false),
+    CEL.javaHash(null),
+    CEL.javaHash(null, true, false),
+    CEL.javaHash("null"),
+    CEL.javaHash("null", true),
+    CEL.javaHash("null", false),
+    CEL.javaHash(undefined),
+    CEL.javaHash(undefined, true),
+    CEL.javaHash(undefined, false),
+    CEL.javaHash("undefined"),
+    CEL.javaHash("undefined", true),
+    CEL.javaHash("undefined", false),
+    CEL.javaHash(""),
+    CEL.javaHash("", true),
+    CEL.javaHash("", false),
+    CEL.javaHash([]),
+    CEL.javaHash([],true),
+    CEL.javaHash([],false),
+    CEL.javaHash([1,2]),
+    CEL.javaHash([1,2], true),
+    CEL.javaHash([1,2], false),
+    CEL.javaHash([3,4]),
+    CEL.javaHash([3,4], true),
+    CEL.javaHash([3,4], false),
+    CEL.javaHash({}),
+    CEL.javaHash({}, true),
+    CEL.javaHash({}, false),
+    CEL.javaHash({a:1}),
+    CEL.javaHash({a:1}, true),
+    CEL.javaHash({a:1}, false),
+    CEL.javaHash({b:2}),
+    CEL.javaHash({b:2}, true),
+    CEL.javaHash({b:2}, false),
+    CEL.javaHash(token1),
+    CEL.javaHash(token1, true),
+    CEL.javaHash(token1, false),
+    CEL.b64Encode(CEL.javaHash(token1)),
+    CEL.b64Encode(CEL.javaHash(token1, true)),
+    CEL.b64Encode(CEL.javaHash(token1, false)),
+    CEL.b64Decode(CEL.b64Encode(CEL.javaHash(token1))),
+    CEL.b64Decode(CEL.b64Encode(CEL.javaHash(token1, true))),
+    CEL.b64Decode(CEL.b64Encode(CEL.javaHash(token1, false)))
+  ])
 );
 /* javaHash(); end */
 
 
-// sizeIn();
+/* sizeIn(); */
 CUT.isEqual("sizeIn();", 5, CEL.sizeIn({"a": 1, "b": 2, "c": 3,
   [Symbol.iterator]: function () {}, [Symbol.toPrimitive]: function () {}
 }));
 
 
-// forIn();
+/* forIn(); */
 token1 = {"a": 2, "b": 3, "c": 4};
 token2 = "";
 CEL.forIn(token1, (e) => token2 += (e*2) );
@@ -776,65 +753,67 @@ CUT.isEqual("forIn();", "468", token2);
 CUT.isEqual("forIn(); return value", token1, CEL.forIn(token1, function () {}));
 
 
-// filterIn();
+/* filterIn(); */
 CUT.isEqual("filterIn();", "{\"b\":2,\"c\":3}",
   JSON.stringify(CEL.filterIn({"a": 1, "b": 2, "c": 3}, (v, p, o) => (v > 1)))
 );
 
 
-// popIn();
+/* popIn(); */
 token1 = {"a": 1};
-CUT.isEqual("popIn();", "1undefined",
-  "" + CEL.popIn(token1, "a") + CEL.popIn(token1, "a")
+CUT.isEqual("popIn();", "1 undefined",
+  CUT.join([CEL.popIn(token1, "a"), CEL.popIn(token1, "a")])
 );
 
 
-// getDoNotTrack();
+/* getDoNotTrack(); */
 CUT.isEqual("getDoNotTrack();", typeof CEL.getDoNotTrack(), "boolean");
 
 
-// strTruncate();
+/* strTruncate(); */
 CUT.isEqual("strTruncate();", "Arthur Art... Arthur Dent Arthur Dent",
-  CEL.strTruncate("Arthur Dent", 6)
-    + " " + CEL.strTruncate("Arthur Dent", 6, "...")
-    + " " + CEL.strTruncate("Arthur Dent", 20)
-    + " " + CEL.strTruncate("Arthur Dent", 20, "...")
+  CUT.join([
+    CEL.strTruncate("Arthur Dent", 6),
+    CEL.strTruncate("Arthur Dent", 6, "..."),
+    CEL.strTruncate("Arthur Dent", 20),
+    CEL.strTruncate("Arthur Dent", 20, "...")
+  ])
 );
 
 
-// strPropercase();
+/* strPropercase(); */
 CUT.isTrue("strPropercase();",
   CEL.strPropercase("arthur conan doyle") === "Arthur Conan Doyle" &&
   CEL.strPropercase("arthur conan   doyle") === "Arthur Conan   Doyle"
 );
 
 
-// strTitlecase();
+/* strTitlecase(); */
 CUT.isTrue("strTitlecase();",
   CEL.strTitlecase("arthur conan doyle") === "Arthur Conan Doyle" &&
   CEL.strTitlecase("arthur conan   doyle") === "Arthur Conan   Doyle"
 );
 
 
-// strCapitalize();
+/* strCapitalize(); */
 CUT.isEqual("strCapitalize();", CEL.strCapitalize("lorEm Ipsum"),"Lorem ipsum");
 
 
-// strUpFirst();
+/* strUpFirst(); */
 CUT.isEqual("strUpFirst();", CEL.strUpFirst("lorEm Ipsum"), "LorEm Ipsum");
 
 
-// strDownFirst();
+/* strDownFirst(); */
 CUT.isEqual("strDownFirst();", CEL.strDownFirst("LorEm Ipsum"), "lorEm Ipsum");
 
 
-// trHTMLRemoveTags
+/* trHTMLRemoveTags */
 CUT.isEqual("strHTMLRemoveTags();","lorem ipsum dolor sit amet , consectetuer",
   CEL.strHTMLRemoveTags("<p><img src=\"x.js\" /><img src=\"x.js\"/><img src=\"x.js\">lorem</p><p><a href=\"#\"><b>ipsum<br /><br/><br>dolor</b></a><script src=\"x.js\"></script></p>< p>< img src=\"x.js\" />< img src=\"x.js\"/>< img src=\"x.js\">sit< /p>< p>< a href=\"#\">< b>amet< br />< br/>< br>, consectetuer< /b>< / b>< /a>< script src=\"x.js\">< /script>< /p>")
 );
 
 
-// strReverse();
+/* strReverse(); */
 token1 = CEL.strReverse("I've seen things you people wouldn't believe. Attack ships on fire off the shoulder of Orion. I watched C-beams glitter in the dark near the Tannhäuser Gate. All those moments will be lost in time, like tears in rain. Time to die.");
 CUT.isEqual("strReverse(); without unicode",
   ".eid ot emiT .niar ni sraet ekil ,emit ni tsol eb lliw stnemom esoht llA .etaG resuähnnaT eht raen krad eht ni rettilg smaeb-C dehctaw I .noirO fo redluohs eht ffo erif no spihs kcattA .eveileb t'ndluow elpoep uoy sgniht nees ev'I",
@@ -847,23 +826,23 @@ CUT.isEqual("strReverse(); with unicode 1",
 );
 
 
-// strCodePoints();
+/* strCodePoints(); */
 CUT.isEqual("strCodePoints();",
   "[102,111,111,32,119558,32,98,97,114,32,119809,32,98,97,122]",
   JSON.stringify(CEL.strCodePoints("foo \uD834\uDF06 bar \uD835\uDC01 baz"))
 );
 
 
-// strFromCodePoints();
+/* strFromCodePoints(); */
 token1 = "foo \uD834\uDF06 bar \uD835\uDC01 baz";
 CUT.isEqual("strFromCodePoints(); + strCodePoints();",
   token1, CEL.strFromCodePoints(CEL.strCodePoints(token1))
 );
 
 
-// strAt();
+/* strAt(); */
 CUT.isTrue("strAt();",
-  // get
+  /* get */
   CEL.strAt("\uD834\uDF06 ab cd",0) === "\uD834\uDF06"
   && CEL.strAt("ab \uD834\uDF06 cd", 3)  === "\uD834\uDF06"
   && CEL.strAt("ab cd \uD834\uDF06", -1) === "\uD834\uDF06"
@@ -873,7 +852,7 @@ CUT.isTrue("strAt();",
   && CEL.strAt("", 0)  === ""
   && CEL.strAt("", 3)  === ""
   && CEL.strAt("", -1) === ""
-  // set
+  /* set */
   && CEL.strAt("ab \uD834\uDF06 cde", 3, "X")   === "ab X cde"
   && CEL.strAt("ab \uD834\uDF06 cde", -5, "X")  === "ab X cde"
   && CEL.strAt("ab \uD834\uDF06 cde", -2, "X")  === "ab \uD834\uDF06 cXe"
@@ -886,7 +865,7 @@ CUT.isTrue("strAt();",
 );
 
 
-// strSplice
+/* strSplice */
 CUT.isTrue("strSplice();",
   CEL.strSplice("\uD834\uDF06 ab cde",0, 10) === ""
     && CEL.strSplice("ab \uD834\uDF06 cde", 4, 1) === "ab \uD834\uDF06cde"
@@ -897,54 +876,54 @@ CUT.isTrue("strSplice();",
 );
 
 
-// "unBind();
+/* "unBind(); */
 CUT.isEqual("unBind();", true,
   Array.isArray(CEL.unBind([].slice)(document.querySelectorAll("h3")))
 );
 
 
-// bind();
+/* bind(); */
 CUT.isTrue("bind();",
   CEL.bind(document.querySelectorAll,document)("h3").length > 0
 );
 
 
-// constant();
+/* constant(); */
 CUT.isEqual("constant();", 3.14, CEL.constant(3.14)());
 
 
-// identity();
+/* identity(); */
 CUT.isEqual("identity();", 100, CEL.identity(60) + CEL.identity(40));
 
 
-// noop();
+/* noop(); */
 CUT.isEqual("noop();", undefined, CEL.noop());
 
 
-// T();
+/* T(); */
 CUT.isTrue("T();", CEL.T());
 
 
-// F();
+/* F(); */
 CUT.isFalse("F();", CEL.F());
 
 
-// strHTMLEscape();
+/* strHTMLEscape(); */
 CUT.isEqual("strHTMLEscape();",
   "&lt;a href=&quot;#&quot; target=&quot;_blank&quot;&gt;&amp;#64;echo&amp;#65;&lt;/a&gt;&apos;str2&apos;",
   CEL.strHTMLEscape('<a href="#" target="_blank">&#64;echo&#65;</a>\'str2\'')
 );
 
 
-// strHTMLUnEscape();
+/* strHTMLUnEscape(); */
 CUT.isEqual("strHTMLUnEscape();",
   '<a href="#" target="_blank">&#64;echo&#65;</a>\'str2\'',
   CEL.strHTMLUnEscape("&lt;a href=&quot;#&quot; target=&quot;_blank&quot;&gt;&amp;#64;echo&amp;#65;&lt;/a&gt;&apos;str2&#39;")
 );
 
 
-// domGetCSSVar();
-// domSetCSSVar();
+/* domGetCSSVar(); */
+/* domSetCSSVar(); */
 CUT.isEqual("domGetCSSVar(); and domSetCSSVar(); without prefix 1", "",
   CEL.domGetCSSVar("testVar1"));
 CEL.domSetCSSVar("testVar1", "value1");
@@ -963,13 +942,13 @@ CUT.isEqual("domGetCSSVar(); and domSetCSSVar(); with prefix 2 - "
 );
 
 
-// domTestElement variable
+/* domTestElement variable */
 CUT.addElement( CEL.domCreate("p",
   {"id": "domTestElement", style: {"width": "250px"}}, "DOM test element"));
 var domTestElement = CEL.qs("#domTestElement");
 
 
-// domCreate();
+/* domCreate(); */
 CUT.isTrue("domCreate(); with style object", CEL.isElement(domTestElement));
 CUT.isTrue("domCreate(); with style string",
   CEL.isElement(CEL.domCreate("p",
@@ -990,7 +969,7 @@ CUT.isTrue("domCreate(object); with style string",
 );
 
 
-// domToElement();
+/* domToElement(); */
 CUT.isTrue("domToElement(); simple element",
   CEL.isElement(CEL.domToElement("<div>Hello world!</div>"))
 );
@@ -1003,8 +982,8 @@ CUT.isTrue("domToElement(); complex element",
 );
 
 
-// domSetCSS();
-// domgetCSS();
+/* domSetCSS(); */
+/* domgetCSS(); */
 CEL.domSetCSS(domTestElement, "width", "300px");
 CUT.isEqual("domSetCSS(); property and domGetCSS(); - (300px) - "
   + CEL.domGetCSS(domTestElement, "width"), "300px",
@@ -1021,12 +1000,12 @@ CUT.isEqual("domSetCSS(); properties object and domGetCSS() object; (350px)- "
 );
 
 
-// domHide();
+/* domHide(); */
 CEL.domHide(domTestElement);
 CUT.isEqual("domHide();", "none", CEL.domGetCSS(domTestElement, "display"));
 
 
-// domShow();
+/* domShow(); */
 CEL.domShow(domTestElement);
 CUT.isEqual("domShow();", "block", CEL.domGetCSS(domTestElement, "display"));
 CEL.domHide(domTestElement);
@@ -1036,7 +1015,7 @@ CUT.isEqual("domShow(); inline-block", "inline-block",
 );
 
 
-// domToggle();
+/* domToggle(); */
 CEL.domToggle(domTestElement);
 CUT.isEqual("domToggle(); hide","none",CEL.domGetCSS(domTestElement,"display"));
 CEL.domToggle(domTestElement);
@@ -1049,19 +1028,19 @@ CUT.isEqual("domToggle(); hide inline-block", "none",
 );
 
 
-// domHide();
+/* domHide(); */
 CEL.domToggle(domTestElement, "inline-block");
 CUT.isEqual("domHide(); show inline-block", "inline-block",
   CEL.domGetCSS(domTestElement, "display")
 );
 
 
-// domIsHidden();
+/* domIsHidden(); */
 CEL.domShow(domTestElement);
 CUT.isFalse("domIsHidden(); false", CEL.domIsHidden(domTestElement));
 
 
-// domIsHidden();
+/* domIsHidden(); */
 CEL.domHide(domTestElement);
 CUT.isTrue("domIsHidden(); true", CEL.domIsHidden(domTestElement));
 
@@ -1075,7 +1054,7 @@ CUT.addElement(
       + "<p id=\"dsDivP5\">#dsDivP5</p>"
   )
 );
-// domSiblings();
+/* domSiblings(); */
 token1 = CEL.domSiblings(CEL.qs("#dsDivP3"));
 CUT.isTrue("domSiblings();", (
   Array.isArray(token1)
@@ -1086,7 +1065,7 @@ CUT.isTrue("domSiblings();", (
     && token1[3].innerHTML === "#dsDivP5"
   )
 );
-// domSiblingsPrev();
+/* domSiblingsPrev(); */
 token1 = CEL.domSiblingsPrev(CEL.qs("#dsDivP3"));
 CUT.isTrue("domSiblingsPrev();", (
     Array.isArray(token1)
@@ -1095,21 +1074,21 @@ CUT.isTrue("domSiblingsPrev();", (
       && token1[1].innerHTML ==="#dsDivP2"
   )
 );
-// domSiblingsLeft();
+/* domSiblingsLeft(); */
 token1 = CEL.domSiblingsLeft(CEL.qs("#dsDivP3"));
 CUT.isTrue("domSiblingsLeft();", (
   Array.isArray(token1) && token1.length === 2
     && token1[0].innerHTML === "#dsDivP1"
     && token1[1].innerHTML === "#dsDivP2"
 ));
-// domSiblingsNext();
+/* domSiblingsNext(); */
 token1 = CEL.domSiblingsNext(CEL.qs("#dsDivP3"));
 CUT.isTrue("domSiblingsNext();", (
   Array.isArray(token1) && token1.length === 2
     && token1[0].innerHTML === "#dsDivP4"
     && token1[1].innerHTML === "#dsDivP5"
 ));
-// domSiblingsRight();
+/* domSiblingsRight(); */
 token1 = CEL.domSiblingsRight(CEL.qs("#dsDivP3"));
 CUT.isTrue("domSiblingsRight();", (
   Array.isArray(token1)
@@ -1120,18 +1099,18 @@ CUT.isTrue("domSiblingsRight();", (
 CEL.qs("#dsDiv").remove();
 
 
-// domClear();
+/* domClear(); */
 token1 = CEL.domToElement("<div><p>1</p><p>2</p><p>3</p>div>");
 CEL.domClear(token1);
 CUT.isEqual("domClear();", 0, token1.children.length);
 
 
-/* Assertion API */
+/** Assertion API **/
 CUT.addElement("hr");
 CUT.addElement("h3", "Assertion API");
 
 
-// assert();
+/* assert(); */
 CUT.isTrue("assert(); 1 true", CEL.assert(true, "assert true"));
 CUT.isTrue("assert(); 2 true ", CEL.assert(true, "assert true"));
 try {
@@ -1148,7 +1127,7 @@ try {
 } catch (e) { CUT.isTrue("assert(); 6 error", Error.isError(e)); }
 
 
-// assertTrue();
+/* assertTrue(); */
 CUT.isTrue("assertTrue(); 1 true", CEL.assertTrue(true, "assertTrue true"));
 CUT.isTrue("assertTrue(); 2 true", CEL.assertTrue(true, "assertTrue true"));
 try {
@@ -1165,7 +1144,7 @@ try {
 } catch (e) { CUT.isTrue("assertTrue(); 6 error", Error.isError(e)); }
 
 
-// assertFalse();
+/* assertFalse(); */
 CUT.isTrue("assertFalse(); 1 true", CEL.assertFalse(false,"assertFalse false"));
 try {
   CEL.assertFalse(true,"assertFalse true");
@@ -1182,7 +1161,7 @@ try {
 } catch (e) { CUT.isTrue("assertFalse(); 6 error", Error.isError(e)); }
 
 
-// assertEqual();
+/* assertEqual(); */
 CUT.isTrue("assertEqual(); 1 true", CEL.assertEqual(NaN, NaN));
 CUT.isTrue("assertEqual(); 2 true", CEL.assertEqual(42, 42));
 CUT.isTrue("assertEqual(); 3 true", CEL.assertEqual(42, "42", ""));
@@ -1194,7 +1173,7 @@ try {
 } catch (e) { CUT.isTrue("assertEqual(); 5 error", Error.isError(e)); }
 
 
-// assertStrictEqual();
+/* assertStrictEqual(); */
 CUT.isTrue("assertStrictEqual(); 1 true", CEL.assertStrictEqual(NaN, NaN));
 CUT.isTrue("assertStrictEqual(); 2 true", CEL.assertStrictEqual(42, 42));
 try {
@@ -1208,7 +1187,7 @@ try {
 } catch (e) { CUT.isTrue("assertStrictEqual(); 4 error", Error.isError(e)); }
 
 
-// assertNotEqual();
+/* assertNotEqual(); */
 CUT.isTrue("assertNotEqual(); 1 true", CEL.assertNotEqual(null,false, "lorem"));
 try {
   CEL.assertNotEqual(NaN, NaN);
@@ -1221,11 +1200,11 @@ try {
 } catch (e) { CUT.isTrue("assertNotEqual(); 4 error", Error.isError(e)); }
 
 
-// assertNotStrictEqual();
-CUT.isTrue("assertNotStrictEqual(); 1 true", 
+/* assertNotStrictEqual(); */
+CUT.isTrue("assertNotStrictEqual(); 1 true",
   CEL.assertNotStrictEqual(42, "42", "assertNotStrictEqual 42 \"42\"")
 );
-CUT.isTrue("assertNotStrictEqual(); 2 true", 
+CUT.isTrue("assertNotStrictEqual(); 2 true",
   CEL.assertNotStrictEqual(null, false, "assertNotStrictEqual null false")
 );
 try {
@@ -1239,12 +1218,12 @@ try {
 } catch (e) { CUT.isTrue("assertNotStrictEqual(); 4 error", Error.isError(e)); }
 
 
-/* Collections API */
+/** Collections API **/
 CUT.addElement("hr");
 CUT.addElement("h3", "Collections");
 
 
-// count();
+/* count(); */
 CUT.isTrue("count();",
   CEL.count([1,2,3,4,5,6,7], (x) => x > 3) === 4
     && CEL.count([1,2,3], (x) => x > 3) === 0
@@ -1252,7 +1231,7 @@ CUT.isTrue("count();",
 );
 
 
-// arrayDeepClone();
+/* arrayDeepClone(); */
 token1 = [[0, 1, [2]], [4, 5, [6]]];
 token2 = CEL.arrayDeepClone(token1);
 CUT.isTrue("arrayDeepClone();",
@@ -1271,7 +1250,7 @@ CUT.isTrue("arrayDeepClone();",
 );
 
 
-// arrayCreate();
+/* arrayCreate(); begin */
 token1 = CEL.arrayCreate(4);
 CUT.isTrue("arrayCreate(); return array 4",
   Array.isArray(token1) && token1.length === 4
@@ -1308,59 +1287,56 @@ token1 = CEL.arrayCreate();
 CUT.isTrue("arrayCreate(); return array without parameter",
   Array.isArray(token1) && token1.length === 0
 );
+/* arrayCreate(); end */
 
 
-// withOut();
+/* withOut(); */
 CUT.isEqual("withOut();",
   JSON.stringify(CEL.withOut(["a", "b", "c", "d"], ["b", "d"])), "[\"a\",\"c\"]"
 );
 
 
-// partition();
+/* partition(); */
 CUT.isEqual("partition();",
   JSON.stringify(CEL.partition([-5,2,-9,7,34],(e)=>(e>0))), "[[2,7,34],[-5,-9]]"
 );
 
 
-// initial();
+/* initial(); */
 CUT.isTrue("initial();",
   CEL.isSameArray(CEL.initial(["a", "b", "c", "d"]), ["a", "b", "c"])
 );
 
 
-// iterRange();
-token1 = "";
-for (let item of CEL.iterRange(10, 3, 20)) { token1 += item; }
-CUT.isEqual("iterRange(); integer", "10131619", token1);
-token1 = "";
-for (let item of CEL.iterRange(10, 3.5, 20)) { token1 += item; }
-CUT.isEqual("iterRange(); float", "1013.517", token1);
+/* iterRange(); */
+CUT.isEqual("iterRange(); integer", "10 13 16 19",
+  CUT.join(CEL.iterRange(10, 3, 20))
+);
+CUT.isEqual("iterRange(); float", "10 13.5 17",
+  CUT.join(CEL.iterRange(10, 3.5, 20))
+);
 
 
-// iterCycle();
-token1 = "";
-for (let item of CEL.iterCycle(["a", "b", "c"], 4)) { token1 += item; }
-CUT.isEqual("iterCycle(); array", "abcabcabcabc", token1);
-token1 = "";
-for (let item of CEL.iterCycle(CEL.iterRange(10, 3, 20), 3)) { token1 += item; }
-CUT.isEqual("iterCycle(); + iterRange();", "101316191013161910131619", token1);
-token1 = "";
-token2 = CEL.iterCycle(['A', 'B'].values());
-for (let i = 0; i < 7; i++) { token1 += token2.next().value; }
-CUT.isEqual("iterCycle(); infinity", "ABABABA", token1);
+/* iterCycle(); */
+CUT.isEqual("iterCycle(); 1 - array", "a b c a b c a b c a b c a b c",
+  CUT.join(CEL.iterCycle(["a", "b", "c"], 5))
+);
+CUT.isEqual("iterCycle(); 2 + iterRange(); - ","10 13 16 19 10 13 16 19 10 13 16 19",
+  CUT.join(CEL.iterCycle(CEL.iterRange(10, 3, 20), 3))
+);
+CUT.isEqual("iterCycle(); 3 - infinity", "ABABABA",
+  CUT.join(CUT.take(CEL.iterCycle(['A', 'B']), 7), "")
+);
 
 
-// iterRepeat();
-token1 = "";
-for (let item of CEL.iterRepeat("HW", 5)) { token1 += item; }
-CUT.isEqual("iterRepeat();", "HWHWHWHWHW", token1);
-token1 = "";
-token2 = CEL.iterRepeat('HW2');
-for (let i = 0; i < 3; i++) { token1 += token2.next().value; }
-CUT.isEqual("iterRepeat(); infinity", "HW2HW2HW2", token1);
+/* iterRepeat(); */
+CUT.isEqual("iterRepeat();", "AB AB AB", CUT.join(CEL.iterRepeat("AB", 3)));
+CUT.isEqual("iterRepeat(); infinity", "AB AB AB AB AB",
+  CUT.join(CUT.take(CEL.iterRepeat("AB"), 5))
+);
 
 
-// forEach();
+/* forEach(); */
 token1 = "";
 CEL.forEach([1, 2, 3], function (e) { token1 += (e*2); });
 CUT.isEqual("forEach(); 1 ES5 Array", "246", token1);
@@ -1385,13 +1361,13 @@ CEL.forEach((new Set([4,5,6])).values(), function (e) { token1+=(e*3); });
 CUT.isEqual("forEach(); 7 ES6 Set values(); iterator", 45, token1);
 
 
-// forEachRight();
+/* forEachRight(); */
 token1 = "";
 CEL.forEachRight([1, 2, 3], function (e) { token1 += (e*2); });
 CUT.isEqual("forEachRight();", "642", token1);
 
 
-// map();
+/* map(); */
 token1 = "";
 for (let item of CEL.map([1, 2, 3], (e) => e * 2)) { token1+=item; }
 CUT.isEqual("map(); 1 ES5 Array", "246", token1);
@@ -1423,77 +1399,61 @@ for (let item of CEL.map((new Set([1, 2, 3])).values(), (e) => e * 3 )) {
 CUT.isEqual("map(); 7 ES6 Set values(); iterator", "369", token1);
 
 
-// take();
+/* take(); */
 token1 = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
-token2 = "";
-for (let item of CEL.take(token1, 0)) { token2 += item; }
-CUT.isEqual("take(); - step 1 - 0", "", token2);
-token2 = "";
-for (let item of CEL.take(token1, 7)) { token2 += item; }
-CUT.isEqual("take(); - step 2 - 7", "ABCDEFG", token2);
-token2 = "";
-for (let item of CEL.take(token1, 12)) { token2 += item; }
-CUT.isEqual("take(); - step 3 - 12", "ABCDEFGHIJ", token2);
-token2 = "";
-for (let item of CEL.take(token1)) { token2 += item; }
-CUT.isEqual("take(); - step 4 - default 1", "A", token2);
+CUT.isEqual("take(); 1 - 0", "", CUT.join(CEL.take(token1, 0)));
+CUT.isEqual("take(); 2 - 7", "A B C D E F G", CUT.join(CEL.take(token1,7)));
+CUT.isEqual("take(); 3 - 12", "A B C D E F G H I J",
+  CUT.join(CEL.take(token1, 12))
+);
+CUT.isEqual("take(); 4 - default 1", "A", CUT.join(CEL.take(token1)));
 
 
-// drop();
+/* drop(); */
 token1 = ["A", "B" , "C", "D", "E", "F", "G", "H", "I", "J"];
-token2 = "";
-for (let item of CEL.drop(token1, 0)) { token2 += item; }
-CUT.isEqual("drop(); - step 1 - 0", "ABCDEFGHIJ", token2);
-token2 = "";
-for (let item of CEL.drop(token1, 7)) { token2 += item; }
-CUT.isEqual("drop(); - step 2 - 7", "HIJ", token2);
-token2 = "";
-for (let item of CEL.drop(token1, 12)) { token2 += item; }
-CUT.isEqual("drop(); - step 3 - 12", "", token2);
-token2 = "";
-for (let item of CEL.drop(token1)) { token2 += item; }
-CUT.isEqual("drop(); - step 4 - default 1", "BCDEFGHIJ", token2);
+CUT.isEqual("drop(); 1 - 0", "A B C D E F G H I J",
+  CUT.join(CEL.drop(token1, 0))
+);
+CUT.isEqual("drop(); 2 - 7", "H I J", CUT.join(CEL.drop(token1, 7)));
+CUT.isEqual("drop(); 3 - 12", "", CUT.join(CEL.drop(token1, 12)));
+CUT.isEqual("drop(); 4 - default 1", "B C D E F G H I J",
+  CUT.join(CEL.drop(token1))
+);
 
 
-// filter();
-token1 = "";
-for (let item of CEL.filter([1,2,3,4,5,6,7, 8, 9, 10], (v) => v > 3 && v < 9)) {
-  token1 += item;
-}
-CUT.isEqual("filter();", "45678", token1);
+/* filter(); */
+CUT.isEqual("filter();", "4 5 6 7 8",
+  CUT.join(CEL.filter([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], (v) => v > 3 && v<9))
+);
 
 
-// reject();
-token1 = "";
-for (let item of CEL.reject([1,2,3,4,5,6,7, 8, 9, 10], (v) => v > 3 && v < 9)) {
-  token1 += item;
-}
-CUT.isEqual("reject();", "123910", token1);
+/* reject(); */
+CUT.isEqual("reject();", "1 2 3 9 10",
+  CUT.join(CEL.reject([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], (v) => v > 3 && v < 9))
+);
 
 
-// slice();
+/* slice(); */
 token1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-token2 = "";
-for (let item of CEL.slice(token1, 0, 4)) { token2 += item; }
-CUT.isEqual("slice(); - step 1 - 0 to 4", "12345", token2);
-token2 = "";
-for (let item of CEL.slice(token1, 5)) { token2 += item; }
-CUT.isEqual("slice(); - step 2 - 5 to Infinity", "678910", token2);
-token2 = "";
-for (let item of CEL.slice(token1, 4, 8)) { token2 += item; }
-CUT.isEqual("slice(); - step 3 - 4 to 8", "56789", token2);
-token2 = "";
-for (let item of CEL.slice(token1)) { token2 += item; }
-CUT.isEqual("slice(); - step 4 - all", "12345678910", token2);
+CUT.isEqual("slice(); 1 - 0 to 4", "1 2 3 4 5",
+  CUT.join(CEL.slice(token1, 0, 4))
+);
+CUT.isEqual("slice(); 2 - 5 to Infinity", "6 7 8 9 10",
+  CUT.join(CEL.slice(token1, 5))
+);
+CUT.isEqual("slice(); 3 - 4 to 8", "5 6 7 8 9",
+  CUT.join(CEL.slice(token1, 4, 8))
+);
+CUT.isEqual("slice(); 4 - all", "1 2 3 4 5 6 7 8 9 10",
+  CUT.join(CEL.slice(token1))
+);
 
 
-// tail();
-token1 = "";
-for (let item of CEL.tail([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])) { token1 += item; }
-CUT.isEqual("tail();", "2345678910", token1);
+/* tail(); */
+CUT.isEqual("tail();", "2 3 4 5 6", CUT.join(CEL.tail([1, 2, 3, 4, 5, 6])));
 
 
-// takeWhile();
+/* takeWhile(); */
 token1 = [0, 2, 4, 6, 8, 10, 12, 14, 16];
 token2 = 0;
 for (let item of CEL.takeWhile(token1, (e) => e < 10)) { token2 += item; }
@@ -1506,7 +1466,7 @@ for (let item of CEL.takeWhile(token1, (e) => e < 30)) { token2 += item; }
 CUT.isEqual("takeWhile(); full list", token2, 72);
 
 
-// dropWhile();
+/* dropWhile(); */
 token1 = [0, 2, 4, 6, 8, 10, 12, 14, 16];
 token2 = 0;
 for (let item of CEL.dropWhile(token1, (e) => (e<10))) { token2 += item; }
@@ -1519,67 +1479,73 @@ for (let item of CEL.dropWhile(token1, (e) => (e< 0))) { token2 += item; }
 CUT.isEqual("dropWhile(); full list", token2, 72);
 
 
-// item();
+/* item(); */
 CUT.isEqual("item(); string unicode", "\uD834\uDF06" + "r" + "undefined",
   CEL.item("foo \uD834\uDF06 bar", 4)
     + CEL.item("foo \uD834\uDF06 bar", 8)
     + CEL.item("foo \uD834\uDF06 bar", 12),
 );
-CUT.isEqual("item(); array", "7" + "undefined",
-  "" + CEL.item([4, 5, 6, 7, 8], 3) + CEL.item([4, 5, 6, 7, 8], 12),
+CUT.isEqual("item(); array", "7 undefined",
+  CUT.join([CEL.item([4, 5, 6, 7, 8], 3), CEL.item([4, 5, 6, 7, 8], 12)])
 );
 CUT.isEqual("item(); map", "[\"b\",2]" + "undefined",
   JSON.stringify(CEL.item(new Map([["a", 1], ["b", 2], ["c", 3]]), 1))
     + CEL.item(new Map([["a", 1], ["b", 2], ["c", 3]]), 12),
 );
-CUT.isEqual("item(); set", "6" + "undefined", ""
-  + JSON.stringify(CEL.item(new Set([3, 3, 4, 5, 5, 6, 7, 7, 8]), 3))
-  + CEL.item(new Set([3, 3, 4, 5, 5, 6, 7, 7, 8]), 12),
+CUT.isEqual("item(); set", "6 undefined",
+  CUT.join([
+    JSON.stringify(CEL.item(new Set([3, 3, 4, 5, 5, 6, 7, 7, 8]), 3)),
+    CEL.item(new Set([3, 3, 4, 5, 5, 6, 7, 7, 8]), 12)
+  ])
 );
 
 
-// nth();
-CUT.isEqual("nth(); string unicode", "\uD834\uDF06" + "r" + "undefined",
-  CEL.nth("foo \uD834\uDF06 bar", 4)
-    + CEL.nth("foo \uD834\uDF06 bar", 8)
-    + CEL.nth("foo \uD834\uDF06 bar", 12),
+/* nth(); */
+CUT.isEqual("nth(); string unicode", "\uD834\uDF06 r undefined",
+  CUT.join([
+    CEL.nth("foo \uD834\uDF06 bar", 4),
+    CEL.nth("foo \uD834\uDF06 bar", 8),
+    CEL.nth("foo \uD834\uDF06 bar", 12)
+  ])
 );
-CUT.isEqual("nth(); array", "7" + "undefined",
-  "" + CEL.nth([4, 5, 6, 7, 8], 3) + CEL.nth([4, 5, 6, 7, 8], 12),
+CUT.isEqual("nth(); array", "7 undefined",
+  CUT.join([CEL.nth([4, 5, 6, 7, 8], 3), CEL.nth([4, 5, 6, 7, 8], 12)])
 );
 CUT.isEqual("nth(); map", "[\"b\",2]" + "undefined",
   JSON.stringify(CEL.nth(new Map([["a", 1], ["b", 2], ["c", 3]]), 1))
     + CEL.nth(new Map([["a", 1], ["b", 2], ["c", 3]]), 12),
 );
-CUT.isEqual("nth(); set", "6" + "undefined", ""
-  + JSON.stringify(CEL.nth(new Set([3, 3, 4, 5, 5, 6, 7, 7, 8]), 3))
-  + CEL.nth(new Set([3, 3, 4, 5, 5, 6, 7, 7, 8]), 12),
+CUT.isEqual("nth(); set", "6 undefined",
+  CUT.join([
+    JSON.stringify(CEL.nth(new Set([3, 3, 4, 5, 5, 6, 7, 7, 8]), 3)),
+    CEL.nth(new Set([3, 3, 4, 5, 5, 6, 7, 7, 8]), 12)
+  ])
 );
 
 
-// size();
+/* size(); */
 CUT.isEqual("size();", 6, CEL.size([4, 5, 6, 7, 8, 9]));
 
 
-// first();
+/* first(); */
 CUT.isEqual("first();", 4, CEL.first([4, 5, 6, 7, 8, 9]));
 
 
-// head();
+/* head(); */
 CUT.isEqual("head();", 4, CEL.head([4, 5, 6, 7, 8, 9]));
 
 
-// last();
+/* last(); */
 CUT.isEqual("last();", 9, CEL.last([4, 5, 6, 7, 8, 9]));
 
 
-// reverse();
+/* reverse(); */
 CUT.isEqual("reverse();", "[\"last\",9,8,7,6,5,4,\"first\"]",
   JSON.stringify([...CEL.reverse(["first", 4, 5, 6, 7, 8, 9, "last"])])
 );
 
 
-// sort();
+/* sort(); */
 CUT.isEqual("sort(); without numbers", "[4,5,6,7,8,9,\"first\",\"last\"]",
   JSON.stringify([...CEL.sort(["first", 4, 5, 6, 7, 8, 9, "last"])])
 );
@@ -1594,86 +1560,78 @@ CUT.isEqual("sort(); numbers with numbers", "[1,7,9,10]",
 );
 
 
-// shuffle();
+/* shuffle(); */
 token1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 CUT.isFalse("shuffle();", CEL.isSameArray(CEL.shuffle(token1), token1));
 
 
-// includes();
+/* includes(); */
 CUT.isTrue("includes(); true", CEL.includes([4, 5, 6, 7, 8, 9], 9));
 CUT.isFalse("includes(); false", CEL.includes([4, 5, 6, 7, 8, 9], 10));
 
 
-// contains();
+/* contains(); */
 CUT.isTrue("contains(); true", CEL.contains([4, 5, 6, 7, 8, 9], 9));
 CUT.isFalse("contains(); false", CEL.contains([4, 5, 6, 7, 8, 9], 10));
 
 
-// find();
+/* find(); */
 CUT.isEqual("find(); found", 6, CEL.find([4, 5, 6, 7, 8, 9], (v) => (v > 5)));
 CUT.isEqual("find(); not found",undefined,CEL.find([4,5,6,7,8,9,],(v)=>(v>11)));
 
 
-// findLast();
+/* findLast(); */
 CUT.isTrue("findLast();",
   CEL.findLast([4, 1, 7, 2, 9], (v) => v < 5) === 2
     && CEL.findLast([4, 1, 7, 2, 9], (v) => v > 10) === undefined
 );
 
 
-// every();
+/* every(); */
 CUT.isTrue("every(); true", CEL.every([2, 9, 3, 5, 8], (v) => v > 1));
 CUT.isFalse("every(); false 1 - some", CEL.every([2, 9, 3, 5, 8], (v)=> v > 3));
 CUT.isFalse("every(); false 1 - none", CEL.every([2, 9, 3, 5, 8], (v) =>v < 0));
 CUT.isFalse("every(); false 3 - empty", CEL.every([], (v) => v > 3));
 
 
-// some();
+/* some(); */
 CUT.isTrue("some(); true", CEL.some([2, 9, 3, 5, 8], (v) => v > 3));
 CUT.isFalse("some(); false 1 - none", CEL.some([2, 9, 3, 5, 8], (v) => v < 0));
 CUT.isFalse("some(); false 2 - empty", CEL.some([], (v) => v < 0));
 
 
-// none();
+/* none(); */
 CUT.isTrue("none(); true", CEL.none([2, 9, 3, 5, 8], (v) => v < 0));
 CUT.isFalse("none(); false 1 - every",CEL.none([2, 9, 3, 5, 8], (v) => v > 1));
 CUT.isFalse("none(); false 2 - some", CEL.none([2, 9, 3, 5, 8], (v) => v > 3));
 CUT.isFalse("none(); false 3 - empty", CEL.none([], (v) => v > 3));
 
 
-// takeRight();
+/* takeRight(); */
+token1 = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
+CUT.isEqual("takeRight(); 1 - 0", "", CUT.join(CEL.takeRight(token1, 0)));
+CUT.isEqual("takeRight(); 2 - 7", "J I H G F E D",
+  CUT.join(CEL.takeRight(token1, 7))
+);
+CUT.isEqual("takeRight(); 3 - 12", "J I H G F E D C B A",
+  CUT.join(CEL.takeRight(token1, 12))
+);
+CUT.isEqual("takeRight(); 4 - default 1", "J", CUT.join(CEL.takeRight(token1)));
+
+
+/* dropRight(); */
 token1 = ["J", "I", "H", "G", "F", "E", "D", "C", "B", "A"];
-token2 = "";
-for (let item of CEL.takeRight(token1, 0)) { token2 += item; }
-CUT.isEqual("takeRight(); 1 - 0", "", token2);
-token2 = "";
-for (let item of CEL.takeRight(token1, 7)) { token2 += item; }
-CUT.isEqual("takeRight(); 2 - 7", "ABCDEFG", token2);
-token2 = "";
-for (let item of CEL.takeRight(token1, 12)) { token2 += item; }
-CUT.isEqual("takeRight(); 3 - 12", "ABCDEFGHIJ", token2);
-token2 = "";
-for (let item of CEL.takeRight(token1)) { token2 += item; }
-CUT.isEqual("takeRight(); 4 - default 1", "A", token2);
+CUT.isEqual("dropRight(); 1 - 0", "A B C D E F G H I J",
+  CUT.join(CEL.dropRight(token1, 0))
+);
+CUT.isEqual("dropRight(); 2 - 7", "H I J", CUT.join(CEL.dropRight(token1, 7)));
+CUT.isEqual("dropRight(); 3 - 12", "", CUT.join(CEL.dropRight(token1, 12)));
+CUT.isEqual("dropRight(); 4 - default 1", "B C D E F G H I J",
+  CUT.join(CEL.dropRight(token1))
+);
 
 
-// dropRight();
-token1 = ["J", "I", "H", "G", "F", "E", "D", "C", "B", "A"];
-token2 = "";
-for (let item of CEL.dropRight(token1, 0)) { token2 += item; }
-CUT.isEqual("dropRight(); 1 - 0", "ABCDEFGHIJ", token2);
-token2 = "";
-for (let item of CEL.dropRight(token1, 7)) { token2 += item; }
-CUT.isEqual("dropRight(); 2 - 7", "HIJ", token2);
-token2 = "";
-for (let item of CEL.dropRight(token1, 12)) { token2 += item; }
-CUT.isEqual("dropRight(); 3 - 12", "", token2);
-token2 = "";
-for (let item of CEL.dropRight(token1)) { token2 += item; }
-CUT.isEqual("dropRight(); 4 - default 1", "BCDEFGHIJ", token2);
-
-
-// takeRightWhile();
+/* takeRightWhile(); */
 token1 = [16, 14, 12, 10, 8, 6, 4, 2, 0];
 token2 = 0;
 for (let item of CEL.takeRightWhile(token1, (e) => e < 10 )) { token2 += item; }
@@ -1686,7 +1644,7 @@ for (let item of CEL.takeRightWhile(token1, (e) => e < 30 )) { token2 += item; }
 CUT.isEqual("takeRightWhile(); full list", token2, 72);
 
 
-// dropRightWhile();
+/* dropRightWhile(); */
 token1 = [16, 14, 12, 10, 8, 6, 4, 2, 0];
 token2 = 0;
 for (let item of CEL.dropRightWhile(token1, (e) => e < 10)) { token2 += item; }
@@ -1699,14 +1657,14 @@ for (let item of CEL.dropRightWhile(token1, (e) => e < 0)) { token2 += item; }
 CUT.isEqual("dropRightWhile(); full list", token2, 72);
 
 
-// concat();
+/* concat(); */
 CUT.isEqual("concat(); one","[4,5,6]",JSON.stringify([...CEL.concat([4,5,6])]));
 CUT.isEqual("concat(); more", "[\"1\",\"2\",\"3\",4,5,6,7,8,9,10]",
   JSON.stringify([...CEL.concat("123", [4,5,6].values(), new Set([7,8,9]), 10)])
 );
 
 
-// reduce();
+/* reduce(); */
 CUT.isEqual("reduce(); with initialvalue", 39,
   CEL.reduce([4, 5, 6, 7, 8, 9].values(), (acc, v, i) => acc + v, 0)
 );
@@ -1715,7 +1673,7 @@ CUT.isEqual("reduce(); without initialvalue", 39,
 );
 
 
-// enumerate
+/* enumerate(); */
 CUT.isEqual("enumerate();",
   JSON.stringify([...CEL.enumerate(["Picard", "Riker", "Data"])]),
   "[[0,\"Picard\"],[1,\"Riker\"],[2,\"Data\"]]"
@@ -1726,7 +1684,7 @@ CUT.isEqual("enumerate(); with offset",
 );
 
 
-// entries();
+/* entries(); */
 CUT.isEqual("entries();",
   JSON.stringify([...CEL.entries(["Picard", "Riker", "Data"])]),
   "[[0,\"Picard\"],[1,\"Riker\"],[2,\"Data\"]]"
@@ -1737,28 +1695,30 @@ CUT.isEqual("entries(); with offset",
 );
 
 
-// flat();
+/* flat(); */
 CUT.isEqual("flat();", "[1,2,3,4,5,6,7,8,9,10]",
   JSON.stringify([...CEL.flat([[1, 2, 3].values(),
   new Set([4, 5, 6, 6, 7, 7, 4]), [8, 9], 10])])
 );
 
 
-// join();
+/* join(); */
 var token1 = [2, 4, 6, 4, 8, 2];
 CUT.isEqual("join();",
   "2,4,6,4,8,2 2468 2;4;6;8 2x4x6x8 2true4true6true8 2114116118 ",
-  CEL.join(token1)
-    + " " + CEL.join(new Set(token1), "")
-    + " " + CEL.join(new Set(token1), ";")
-    + " " + CEL.join(new Set(token1), "x")
-    + " " + CEL.join(new Set(token1), true)
-    + " " + CEL.join(new Set(token1), 11)
-    + " " + CEL.join([])
+  CUT.join([
+    CEL.join(token1),
+    CEL.join(new Set(token1), ""),
+    CEL.join(new Set(token1), ";"),
+    CEL.join(new Set(token1), "x"),
+    CEL.join(new Set(token1), true),
+    CEL.join(new Set(token1), 11),
+    CEL.join([])
+  ])
 );
 
 
-// arrayCycle();
+/* arrayCycle(); begin */
 CUT.isEqual("arrayCycle(); - ES5 1 - with 2 parameters",
   "[4,true,\"fgh\",3.14,4,true,\"fgh\",3.14,4,true,\"fgh\",3.14,4,true,\"fgh\",3.14,4,true,\"fgh\",3.14]",
   JSON.stringify(CEL.arrayCycle([4, true, "fgh", 3.14], 5))
@@ -1775,9 +1735,10 @@ CUT.isEqual("arrayCycle(); - ES6 2 - with default parameter (n = 100);",
   "[[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5],[2,3],[3,4],[4,5]]",
   JSON.stringify(CEL.arrayCycle(new Map([[2, 3], [3, 4], [4, 5]]).entries()))
 );
+/* arrayCycle(); end */
 
 
-// arrayRepeat();
+/* arrayRepeat(); */
 CUT.isEqual("arrayRepeat(); - 1 - with 2 parameters",
   "[\"abc\",\"abc\",\"abc\",\"abc\",\"abc\",\"abc\",\"abc\",\"abc\"]",
   JSON.stringify(CEL.arrayRepeat("abc", 8))
@@ -1788,7 +1749,7 @@ CUT.isEqual("arrayRepeat(); - 2 - with default parameter (n = 100);",
 );
 
 
-// arrayRange();
+/* arrayRange(); */
 CUT.isEqual("arrayRange(); - 1 - step default 1",
   "[5,6,7,8,9,10,11,12]", JSON.stringify(CEL.arrayRange(5, 12))
 );
@@ -1808,7 +1769,7 @@ CUT.isEqual("arrayRange(); - 4 - with 1 parameter",
 );
 
 
-// zip();
+/* zip(); */
 CUT.isEqual("zip(); ES5 1","[[\"a1\",\"c1\"],[\"a2\",\"c2\"],[\"a3\",\"c3\"]]",
   JSON.stringify(CEL.zip(["a1", "a2", "a3"], ["c1", "c2", "c3", "c4", "c5"]))
 );
@@ -1837,7 +1798,7 @@ CUT.isEqual("zip(); ES6 2",
 );
 
 
-// unzip();
+/* unzip(); */
 CUT.isEqual("unzip(); ES5",
   "[[\"a1\",\"a2\"],[\"b1\",\"b2\"],[\"c1\",\"c2\"],[\"d1\",\"d2\"],[\"e1\",\"e2\"]]",
   JSON.stringify(CEL.unzip(CEL.zip(
@@ -1857,25 +1818,25 @@ CUT.isEqual("unzip(); ES6",
 );
 
 
-// zipObj();
+/* zipObj(); */
 CUT.isEqual("zipObj();", "{\"a\":1,\"b\":2,\"c\":3}",
   JSON.stringify(CEL.zipObj(["a", "b", "c"], [1, 2, 3]))
 );
 
 
-// min();
+/* min(); */
 CUT.isEqual("min(); array", 11, CEL.min(...[21, 11, 41, 51, 31]));
 CUT.isEqual("min(); Set", 11, CEL.min(...new Set([21, 11, 41, 51, 31])));
 CUT.isEqual("min(); number test", CEL.min(5, 10, 3), 3);
 
 
-// max();
+/* max(); */
 CUT.isEqual("max(); array", 51, CEL.max(...[21, 11, 41, 51, 31]));
 CUT.isEqual("max(); Set keys", 51, CEL.max(...new Set([21, 51, 31]).keys()));
 CUT.isEqual("max(); number test", CEL.max(5, 10, 3), 10);
 
 
-// isSuperset();
+/* isSuperset(); */
 CUT.isTrue("isSuperset(); - ES5 - true", CEL.isSuperset([3,58,95,88], [88,95]));
 CUT.isFalse("isSuperset(); - ES5 - false", CEL.isSuperset([84,95], [3,58,95]));
 CUT.isTrue("isSuperset(); - ES6 - true",
@@ -1886,7 +1847,7 @@ CUT.isFalse("isSuperset(); - ES6 - false",
 );
 
 
-// arrayUnion();
+/* arrayUnion(); */
 CUT.isEqual(
   "arrayUnion(); ES5","[1,2,3,4,5,6,7,8]", JSON.stringify(CEL.arrayUnion(
     [1, 2, 3, 4], [3, 4, 5, 6], [5, 6, 7, 8]
@@ -1898,7 +1859,7 @@ CUT.isEqual("arrayUnion(); ES6", "[1,2,3,4,5,6,7,8]",
 );
 
 
-// arrayIntersection();
+/* arrayIntersection(); */
 CUT.isEqual(
   "arrayIntersection(); ES5","[3,4]", JSON.stringify(CEL.arrayIntersection(
     [1, 2, 3, 4], [3, 4, 5, 6]
@@ -1909,7 +1870,7 @@ CUT.isEqual("arrayIntersection(); ES6", "[3,4]",
 );
 
 
-// arrayDifference();
+/* arrayDifference(); */
 CUT.isEqual(
   "arrayDifference(); ES5", "[1,2]", JSON.stringify(CEL.arrayDifference(
     [1, 2, 3, 4], [3, 4, 5, 6]
@@ -1924,7 +1885,7 @@ CUT.isEqual("arrayDifference(); ES6", "[1,2]",
 );
 
 
-// arraySymmetricDifference();
+/* arraySymmetricDifference(); */
 CUT.isEqual("arraySymmetricDifference(); ES5",
   "[1,2,5,6]", JSON.stringify(CEL.arraySymmetricDifference(
     [1, 2, 3, 4], [3, 4, 5, 6]
@@ -1937,7 +1898,7 @@ CUT.isEqual("arraySymmetricDifference(); ES6", "[1,2,5,6]",
 );
 
 
-// Set helper function
+/* Set helper function */
 function __setEquals__(set1, set2) {
   if (!(set1 instanceof Set) || !(set2 instanceof Set)) { return false; }
   if (set1.size !== set2.size) { return false; }
@@ -1948,7 +1909,7 @@ function __setEquals__(set1, set2) {
 }
 
 
-// setUnion();
+/* setUnion(); */
 CUT.isTrue("setUnion(); ES6",
   __setEquals__(
     CEL.setUnion(new Map([[2, 1], [3, 2], [4, 3], [5, 4]]).values(),
@@ -1961,7 +1922,7 @@ CUT.isTrue("setUnion(); ES6",
 );
 
 
-// setIntersection();
+/* setIntersection(); */
 CUT.isTrue("setIntersection(); ES6",
   __setEquals__(new Set([3, 4]), CEL.setIntersection(
     new Set([1, 2, 3, 4]), new Set([3, 4, 5, 6])
@@ -1969,7 +1930,7 @@ CUT.isTrue("setIntersection(); ES6",
 );
 
 
-// setDifference();
+/* setDifference(); */
 CUT.isTrue("setDifference(); ES6",
   __setEquals__(new Set([1, 2]), CEL.setDifference(
     new Set([1, 2, 3, 4]), new Set([3, 4, 5, 6])
@@ -1977,7 +1938,7 @@ CUT.isTrue("setDifference(); ES6",
 );
 
 
-// setSymmetricDifference();
+/* setSymmetricDifference(); */
 CUT.isTrue("setSymmetricDifference(); ES6",
   __setEquals__(new Set([1, 2, 5, 6]), CEL.setSymmetricDifference(
     new Set([1, 2, 3, 4]), new Set([3, 4, 5, 6])
@@ -1985,7 +1946,7 @@ CUT.isTrue("setSymmetricDifference(); ES6",
 );
 
 
-// arrayClear();
+/* arrayClear(); */
 token1 = [4, 5, 6];
 token2 = CEL.arrayClear(token1);
 CUT.isTrue("arrayClear();",
@@ -2101,7 +2062,7 @@ CUT.isEqual("arrayRemoveBy(); - 0 found - value check",
 /* arrayremoveby end */
 
 
-// arrayUnique();
+/* arrayUnique(); */
 CUT.isEqual("arrayUnique(); 1 ES5 - Array and String",
   JSON.stringify(CEL.arrayUnique(
     ["A", "r", "r", "a", "y", "y", "a", "n", "d", "d", "M", "M", "a", "p"]
@@ -2123,14 +2084,14 @@ CUT.isEqual("arrayUnique(); 3 ES6 - Array and Map values(); iterator",
 );
 
 
-// arrayAdd();
+/* arrayAdd(); */
 token1 = [1, 2, 3, 5];
 CUT.isTrue("arrayAdd(); true", CEL.arrayAdd(token1, 4));
 CUT.isFalse("arrayAdd(); false", CEL.arrayAdd(token1, 4));
 CUT.isEqual("arrayAdd(); value check", "[1,2,3,5,4]", JSON.stringify(token1));
 
 
-// arrayMerge();
+/* arrayMerge(); */
 token1 =  [1, 2, 3];
 token2 =  [4, 5, 6];
 token3 =  [7, 8, [10, 11, 12, [13, 14, 15]], 9];
@@ -2148,7 +2109,7 @@ CUT.isEqual("arrayMerge();",
 );
 
 
-/* Cookie API */
+/** Cookie API **/
 CUT.addElement("hr");
 CUT.addElement("h3", "Cookie API");
 
@@ -2173,7 +2134,7 @@ token1 += String(CEL.hasCookie("ctest4")) + String(CEL.hasCookie("ctest5"));
 CUT.isEqual("clearCookies();", "truetruefalsefalse", token1);
 
 
-/* cookie with settings object */
+/** cookie with settings object **/
 CUT.addElement("hr");
 CUT.addElement("h3", "cookie with settings object");
 
@@ -2215,7 +2176,7 @@ CUT.isEqual("clearCookies(); <i>(settings object)</i>", "truetruefalsefalse",
 );
 
 
-/* Polyfills */
+/** Polyfills **/
 CUT.addElement("hr");
 CUT.addElement("h3", "polyfills");
 
@@ -2317,77 +2278,95 @@ try {
 /* Math.sumPrecise(); end */
 
 
-// Error.isError();
+/* Error.isError(); */
 document.body.appendChild(document.createElement("iframe"));
-token1 = ""
- // true
- + +(Error.isError(new window.frames[window.frames.length - 1].Error()))
- + +(Error.isError(new Error()))
- + +(Error.isError(new TypeError()))
- + +(Error.isError(new DOMException()))
- // false
- + +(Error.isError({ __proto__: Error.prototype }))
- + +(Error.isError({}))
- + +(Error.isError(null))
- + +(Error.isError(undefined))
- + +(Error.isError(17))
- + +(Error.isError(3.14))
- + +(Error.isError("Error"))
- + +(Error.isError(true))
- + +(Error.isError(false));
-CUT.isEqual("Error.isError(); <code>\"" + token1 + "\"</code>", token1,
-  "1111000000000"
+CUT.isEqual("Error.isError();", "1111000000000",
+  CUT.concat(
+    /* true */
+    +(Error.isError(new window.frames[window.frames.length - 1].Error())),
+    +(Error.isError(new Error())),
+    +(Error.isError(new TypeError())),
+    +(Error.isError(new DOMException())),
+    /* false */
+    +(Error.isError({ __proto__: Error.prototype })),
+    +(Error.isError({})),
+    +(Error.isError(null)),
+    +(Error.isError(undefined)),
+    +(Error.isError(17)),
+    +(Error.isError(3.14)),
+    +(Error.isError("Error")),
+    +(Error.isError(true)),
+    +(Error.isError(false))
+  )
 );
 CEL.qs("iframe").remove();
 
 
+/* Array.prototype.toReversed(); */
 token1 = [4, 2, 5];
-// Array.prototype.toReversed();
 CUT.isTrue("Array.prototype.toReversed();",
   JSON.stringify(token1.toReversed()) === "[5,2,4]"
   && JSON.stringify(token1) === "[4,2,5]"
 );
-// Array.prototype.toSorted();
+
+
+/* Array.prototype.toSorted(); */
+token1 = [4, 2, 5];
 CUT.isTrue("Array.prototype.toSorted();",
   JSON.stringify(token1.toSorted()) === "[2,4,5]"
   && JSON.stringify(token1) === "[4,2,5]"
 );
-// Array.prototype.toSpliced();
+
+
+/* Array.prototype.toSpliced(); */
+token1 = [4, 2, 5];
 CUT.isTrue("Array.prototype.toSpliced(); remove",
   JSON.stringify(token1.toSpliced(1,1)) === "[4,5]"
   && JSON.stringify(token1) === "[4,2,5]"
 );
-//Array.prototype.toSpliced();
+
+
+/*Array.prototype.toSpliced(); */
+token1 = [4, 2, 5];
 CUT.isTrue("Array.prototype.toSpliced(); remove and add 2 items",
   JSON.stringify(token1.toSpliced(1,1,89,79)) === "[4,89,79,5]"
   && JSON.stringify(token1) === "[4,2,5]"
 );
-// Array.prototype.with();
+
+
+/* Array.prototype.with(); */
+token1 = [4, 2, 5];
 CUT.isTrue("Array.prototype.with();",
   JSON.stringify(token1.with(1,7)) === "[4,7,5]"
   && JSON.stringify(token1) === "[4,2,5]"
 );
 
 
+/* TypedArray.prototype.toReversed(); */
 token1 = new Uint8Array([4, 2, 5]);
-// TypedArray.prototype.toReversed();
 CUT.isTrue("TypedArray.prototype.toReversed();",
   JSON.stringify(token1.toReversed()) === "{\"0\":5,\"1\":2,\"2\":4}"
   && JSON.stringify(token1) === "{\"0\":4,\"1\":2,\"2\":5}"
 );
-// TypedArray.prototype.toSorted();
+
+
+/* TypedArray.prototype.toSorted(); */
+token1 = new Uint8Array([4, 2, 5]);
 CUT.isTrue("TypedArray.prototype.toSorted();",
   JSON.stringify(token1.toSorted()) === "{\"0\":2,\"1\":4,\"2\":5}"
   && JSON.stringify(token1) === "{\"0\":4,\"1\":2,\"2\":5}"
 );
-//TypedArray.prototype.with();
+
+
+/*TypedArray.prototype.with(); */
+token1 = new Uint8Array([4, 2, 5]);
 CUT.isTrue("TypedArray.prototype.with();",
   JSON.stringify(token1.with(1,7)) === "{\"0\":4,\"1\":7,\"2\":5}"
   && JSON.stringify(token1) === "{\"0\":4,\"1\":2,\"2\":5}"
 );
 
 
-// Object.groupBy();
+/* Object.groupBy(); */
 CUT.isEqual("Object.groupBy();",
   JSON.stringify(Object.groupBy([
     { name: 'asparagus', type: 'vegetables', quantity: 9 },
@@ -2400,7 +2379,7 @@ CUT.isEqual("Object.groupBy();",
 );
 
 
-// Map.groupBy();
+/* Map.groupBy(); */
 CUT.isEqual("Map.groupBy();",
   JSON.stringify(Array.from(Map.groupBy([
     { name: 'asparagus', type: 'vegetables', quantity: 9 },
@@ -2413,7 +2392,7 @@ CUT.isEqual("Map.groupBy();",
 );
 
 
-// crypto.randomUUID();
+/* crypto.randomUUID(); */
 token1 = crypto.randomUUID();
 CUT.isTrue("crypto.randomUUID();",
   token1.length === 36
@@ -2422,10 +2401,10 @@ CUT.isTrue("crypto.randomUUID();",
     && token1[14] === "4"
     && "89ab".includes(token1[19])
 );
-CUT.log("<code>\"" + token1 + "\"</code>");
+CUT.logCode(token1);
 
 
-// Object.hasOwn();
+/* Object.hasOwn(); */
 CUT.isTrue("Object.hasOwn();",
       Object.hasOwn({"a": 1, "b": 2}, "a")
   && !Object.hasOwn({"a": 1, "b": 2}, "hasOwnProperty")
@@ -2436,29 +2415,27 @@ CUT.isTrue("Object.hasOwn();",
 );
 
 
-// globalThis;
+/* globalThis; */
 CUT.isEqual("globalThis;", window, globalThis);
 
 
-/* non-standard polyfills */
+/** non-standard polyfills **/
 CUT.addElement("hr");
 CUT.addElement("h3", "non-standard polyfills");
 
 
-// BigInt.prototype.toJSON();
+/* BigInt.prototype.toJSON(); */
 if (!!window.BigInt) {
   CUT.isEqual("BigInt.prototype.toJSON();", '"42"', JSON.stringify(BigInt(42)));
 }
 
 
-// GeneratorFunction();
+/* GeneratorFunction(); */
 token1 = new GeneratorFunction("v", "yield v * 3; yield v * 4;");
-token2 = "";
-for (let item of token1(3)) { token2 += item; }
-CUT.isEqual("GeneratorFunction();", "912", token2);
+CUT.isEqual("GeneratorFunction();", "9 12", CUT.join(token1(3)));
 
 
-// AsyncFunction();
+/* AsyncFunction(); */
 CUT.isEqual("AsyncFunction();", "asyncfunction",
   CEL.classof(new AsyncFunction("a", "b",
     "return await resolveAfter2Seconds(a) + await resolveAfter2Seconds(b);"
@@ -2466,12 +2443,12 @@ CUT.isEqual("AsyncFunction();", "asyncfunction",
 ));
 
 
-/* type checking */
+/** type checking **/
 CUT.addElement("hr");
 CUT.addElement("h3", "type checking");
 
 
-// isTruthy();
+/* isTruthy(); */
 CUT.isTrue("isTruthy();",
   CEL.isTruthy(1)
     && CEL.isTruthy(42)
@@ -2489,7 +2466,7 @@ CUT.isTrue("isTruthy();",
 );
 
 
-// isFalsy();
+/* isFalsy(); */
 CUT.isTrue("isFalsy();",
   !CEL.isFalsy(1)
     && !CEL.isFalsy(42)
@@ -2507,7 +2484,7 @@ CUT.isTrue("isFalsy();",
 );
 
 
-// isAsyncGeneratorFn();
+/* isAsyncGeneratorFn(); */
 CUT.isTrue("isAsyncGeneratorFn();",
   CEL.isAsyncGeneratorFn(async function*(){})
     && !CEL.isAsyncGeneratorFn(function*(){})
@@ -2517,7 +2494,7 @@ CUT.isTrue("isAsyncGeneratorFn();",
 );
 
 
-// isConstructorFn();
+/* isConstructorFn(); */
 CUT.isTrue("isConstructorFn();",
   CEL.isConstructorFn(Array)
     && !CEL.isConstructorFn(Array.from)
@@ -2525,13 +2502,13 @@ CUT.isTrue("isConstructorFn();",
 );
 
 
-// isClass();
+/* isClass(); */
 CUT.isTrue("isClass();",
   CEL.isClass(Array) && !CEL.isClass(Array.from) && !CEL.isClass(0)
 );
 
 
-// isPlainObject();
+/* isPlainObject(); */
 CUT.isTrue("isPlainObject();",
   !CEL.isPlainObject(null)
     && !CEL.isPlainObject("")
@@ -2543,31 +2520,31 @@ CUT.isTrue("isPlainObject();",
 );
 
 
-// isEmptyMap();
+/* isEmptyMap(); */
 CUT.isTrue("isEmptyMap(); true", CEL.isEmptyMap(new Map()));
 CUT.isFalse("isEmptyMap(); false 1", CEL.isEmptyMap(new Map([[4, 5], [6, 7]])));
 CUT.isFalse("isEmptyMap(); false 2 array", CEL.isEmptyMap([]));
 
 
-// isEmptySet();
+/* isEmptySet(); */
 CUT.isTrue("isEmptySet(); true", CEL.isEmptySet(new Set()));
 CUT.isFalse("isEmptySet(); false 1", CEL.isEmptySet(new Set([4, 5, 6])));
 CUT.isFalse("isEmptySet(); false 2 array", CEL.isEmptySet([]));
 
 
-// isEmptyIterator();
+/* isEmptyIterator(); */
 CUT.isTrue("isEmptyIterator(); true", CEL.isEmptyIterator([]));
 CUT.isFalse("isEmptyIterator(); false", CEL.isEmptyIterator([4, 5, 6]));
 
 
-// isDataView();
+/* isDataView(); */
 CUT.isTrue("isDataView(); true",
   CEL.isDataView(new DataView(new ArrayBuffer(2)), "dataview")
 );
 CUT.isFalse("isDataView(); false", CEL.isDataView({}, "dataview"));
 
 
-// isGeneratorFn();
+/* isGeneratorFn(); */
 CUT.isTrue("isGeneratorFn(); true",
   CEL.isGeneratorFn(function* fn42g () { yield 42; })
 );
@@ -2584,7 +2561,7 @@ CUT.isFalse("isGeneratorFn(); false 2 async fn",
 CUT.isFalse("isGeneratorFn(); false 3 number", CEL.isGeneratorFn(42));
 
 
-// isAsyncFn();
+/* isAsyncFn(); */
 CUT.isTrue("isAsyncFn(); true",
   CEL.isAsyncFn(
     new AsyncFunction("a", "b",
@@ -2601,12 +2578,12 @@ CUT.isFalse("isAsyncFn(); false 2 generator fn",
 CUT.isFalse("isAsyncFn(); false 3 number", CEL.isAsyncFn(42));
 
 
-// isString();
+/* isString(); */
 CUT.isTrue("isString(); true", CEL.isString("str"));
 CUT.isFalse("isString(); false", CEL.isString(533));
 
 
-// isChar();
+/* isChar(); */
 CUT.isTrue("isChar(); true 1", CEL.isChar("s"));
 CUT.isTrue("isChar(); true 2 unicode", CEL.isChar("\uD834\uDF06"));
 CUT.isFalse("isChar(); false 1", CEL.isChar("str"));
@@ -2614,24 +2591,24 @@ CUT.isFalse("isChar(); false 2", CEL.isChar(533));
 CUT.isFalse("isChar(); false 3 unicode", CEL.isChar("s \uD834\uDF06 tr"));
 
 
-// isNumber();
+/* isNumber(); */
 CUT.isTrue("isNumber(); true 1", CEL.isNumber(98));
 CUT.isTrue("isNumber(); true 2", CEL.isNumber(3.14));
 CUT.isFalse("isNumber(); false", CEL.isNumber("str"));
 
 
-// isFloat();
+/* isFloat(); */
 CUT.isTrue("isFloat(); true", CEL.isFloat(3.14));
 CUT.isFalse("isFloat(); false 1", CEL.isFloat(98));
 CUT.isFalse("isFloat(); false 2", CEL.isFloat("str"));
 
 
-// isBoolean();
+/* isBoolean(); */
 CUT.isTrue("isBoolean(); true", CEL.isBoolean(false));
 CUT.isFalse("isBoolean(); false", CEL.isBoolean(98));
 
 
-// isObject();
+/* isObject(); */
 CUT.isTrue("isObject(); 1 true object {\"a\":1}", CEL.isObject({"a":1}));
 CUT.isTrue("isObject(); 1 true object Object(42);", CEL.isObject(Object(42)));
 CUT.isTrue("isObject(); 1 true function", CEL.isObject(function(){}));
@@ -2641,7 +2618,7 @@ CUT.isFalse("isObject(); 3 false undefined", CEL.isObject(undefined));
 CUT.isFalse("isObject(); 4 false number", CEL.isObject(42));
 
 
-// isEmptyObject();
+/* isEmptyObject(); */
 CUT.isTrue("isEmptyObject(); 1 true", CEL.isEmptyObject({}));
 CUT.isFalse("isEmptyObject(); 2 false ", CEL.isEmptyObject({a:1}));
 CUT.isFalse("isEmptyObject(); 3 false number", CEL.isEmptyObject(98));
@@ -2649,25 +2626,25 @@ CUT.isFalse("isEmptyObject(); 4 false null", CEL.isEmptyObject(null));
 CUT.isFalse("isEmptyObject(); 5 false undefined", CEL.isEmptyObject(undefined));
 
 
-// isFunction();
+/* isFunction(); */
 CUT.isTrue("isFunction(); true 1", CEL.isFunction(CEL.noop));
 CUT.isTrue("isFunction(); true 2", CEL.isFunction(new Function()));
 CUT.isFalse("isFunction(); false", CEL.isFunction(CEL.qs("p")));
 
 
-// isCallable();
+/* isCallable(); */
 CUT.isTrue("isCallable(); true 1", CEL.isCallable(CEL.noop));
 CUT.isTrue("isCallable(); true 2", CEL.isCallable(new Function()));
 CUT.isFalse("isCallable(); false", CEL.isCallable(CEL.qs("p")));
 
 
-// isEmptyArray();
+/* isEmptyArray(); */
 CUT.isTrue("isEmptyArray(); true", CEL.isEmptyArray([]));
 CUT.isFalse("isEmptyArray(); false 1", CEL.isEmptyArray([1,2,3]));
 CUT.isFalse("isEmptyArray(); false 2", CEL.isEmptyArray(CEL.qs("p")));
 
 
-// isArraylike();
+/* isArraylike(); */
 CUT.isTrue("isArraylike(); true 1 array", CEL.isArraylike([]));
 CUT.isTrue("isArraylike(); true 2 querySelectorAll",
   CEL.isArraylike(document.querySelectorAll("p"))
@@ -2683,19 +2660,19 @@ CUT.isFalse("isArraylike(); false 3 null", CEL.isArraylike(null));
 CUT.isFalse("isArraylike(); false 4 object", CEL.isArraylike({0:4,1:5}));
 
 
-// isNull();
+/* isNull(); */
 CUT.isTrue("isNull(); true", CEL.isNull(null));
 CUT.isFalse("isNull(); false", CEL.isNull(document.querySelectorAll("p")));
 
 
-// isUndefined();
+/* isUndefined(); */
 CUT.isTrue("isUndefined(); true", CEL.isUndefined(undefined));
 CUT.isFalse("isUndefined(); false",
   CEL.isUndefined(document.querySelectorAll("p"))
 );
 
 
-// isNullOrUndefined();
+/* isNullOrUndefined(); */
 CUT.isTrue("isNullOrUndefined(); true 1", CEL.isNullOrUndefined(undefined));
 CUT.isTrue("isNullOrUndefined(); true 2", CEL.isNullOrUndefined(null));
 CUT.isFalse("isNullOrUndefined(); false",
@@ -2703,14 +2680,14 @@ CUT.isFalse("isNullOrUndefined(); false",
 );
 
 
-// isNil();
+/* isNil(); */
 CUT.isTrue("isNil(); true 1", CEL.isNil(undefined));
 CUT.isTrue("isNil(); true 2", CEL.isNil(null));
 CUT.isTrue("isNil(); true 3", CEL.isNil(+"asd"));
 CUT.isFalse("isNil(); false", CEL.isNil(document.querySelectorAll("p")));
 
 
-// isPrimitive();
+/* isPrimitive(); */
 CUT.isTrue("isPrimitive(); true 1", CEL.isPrimitive(98));
 CUT.isTrue("isPrimitive(); true 2", CEL.isPrimitive("str"));
 CUT.isFalse("isPrimitive(); false 1",
@@ -2719,17 +2696,17 @@ CUT.isFalse("isPrimitive(); false 1",
 CUT.isFalse("isPrimitive(); false 2", CEL.isPrimitive(CEL.noop));
 
 
-// isDate();
+/* isDate(); */
 CUT.isTrue("isDate(); true", CEL.isDate(new Date()));
 CUT.isFalse("isDate(); false", CEL.isDate({}));
 
 
-// isRegexp();
+/* isRegexp(); */
 CUT.isTrue("isRegexp(); true", CEL.isRegexp(/^\[object (.+)\]$/g));
 CUT.isFalse("isRegexp(); false", CEL.isRegexp("string"));
 
 
-// isElement();
+/* isElement(); */
 CUT.isTrue("isElement(); true 1", CEL.isElement(document.body));
 CUT.isTrue("isElement(); true 2", CEL.isElement(CEL.qs("div")));
 CUT.isFalse("isElement(); false 1",
@@ -2741,7 +2718,7 @@ CUT.isFalse("isElement(); false 2 ",
 CUT.isFalse("isElement(); false 3 ", CEL.isElement([]));
 
 
-// isNumeric();
+/* isNumeric(); begin */
 CUT.isTrue("isNumeric(); true",
   CEL.isNumeric(-42)
     && CEL.isNumeric(-1.42)
@@ -2772,26 +2749,30 @@ CUT.isFalse("isNumeric(); false",
     || CEL.isNumeric(undefined)
     || CEL.isNumeric(NaN)
     || CEL.isNumeric("NaN")
-    || CEL.isNumeric("1,42") || CEL.isNumeric("#foo")
+    || CEL.isNumeric("1,42")
+    || CEL.isNumeric("#foo")
     || CEL.isNumeric("1.2.3")
-    || CEL.isNumeric("") || CEL.isNumeric("bar")
+    || CEL.isNumeric("")
+    || CEL.isNumeric("bar")
     || CEL.isNumeric(" ")
     || CEL.isNumeric("\r\n")
     || CEL.isNumeric("true")
     || CEL.isNumeric("false")
-    || CEL.isNumeric("1<10") || CEL.isNumeric([])
+    || CEL.isNumeric("1<10")
+    || CEL.isNumeric([])
     || CEL.isNumeric({})
     || CEL.isNumeric("-0x89f")
 );
+/* isNumeric(); end */
 
 
-// isArrayBuffer();
+/* isArrayBuffer(); */
 CUT.isTrue("isArrayBuffer(); true", CEL.isArrayBuffer(new ArrayBuffer(8)));
 CUT.isFalse("isArrayBuffer(); false 1", CEL.isArrayBuffer([4,5,6]));
 CUT.isFalse("isArrayBuffer(); false 2", CEL.isArrayBuffer(new Int8Array(5)));
 
 
-// isTypedArray();
+/* isTypedArray(); begin */
 CUT.isTrue("isTypedArray(); - true 1 - Int8Array",
   CEL.isTypedArray(new Int8Array(5))
 );
@@ -2831,39 +2812,40 @@ CUT.isFalse("isTypedArray - false 1 - Array", CEL.isTypedArray([4, 5, 6]));
 CUT.isFalse("isTypedArray - false 2 - ArrayBuffer",
   CEL.isTypedArray(new ArrayBuffer(8))
 );
+/* isTypedArray(); end */
 
 
-// isPromise();
+/* isPromise(); */
 CUT.isTrue("isPromise(); - true ", CEL.isPromise(CEL.delay(1000)));
 CUT.isFalse("isPromise(); - false ", CEL.isPromise({}));
 
 
-// isSymbol();
+/* isSymbol(); */
 CUT.isTrue("isSymbol(); true", CEL.isSymbol(Symbol("str")));
 CUT.isFalse("isSymbol(); false", CEL.isSymbol(function () {}));
 
 
-// isMap();
+/* isMap(); */
 CUT.isTrue("isMap(); true", CEL.isMap(new Map()));
 CUT.isFalse("isMap(); false", CEL.isMap(function () {}));
 
 
-// isSet();
+/* isSet(); */
 CUT.isTrue("isSet(); true", CEL.isSet(new Set()));
 CUT.isFalse("isSet(); false", CEL.isSet(function () {}));
 
 
-// isWeakMap();
+/* isWeakMap(); */
 CUT.isTrue("isWeakMap(); true", CEL.isWeakMap(new WeakMap()));
 CUT.isFalse("isWeakMap(); false", CEL.isWeakMap(function () {}));
 
 
-// isWeakSet();
+/* isWeakSet(); */
 CUT.isTrue("isWeakSet(); true", CEL.isWeakSet(new WeakSet()));
 CUT.isFalse("isWeakSet(); false", CEL.isWeakSet(function () {}));
 
 
-// isIterator();
+/* isIterator(); */
 CUT.isTrue("isIterator(); true - Array values();",
   CEL.isIterator([4, 5, 6].values())
 );
@@ -2879,22 +2861,21 @@ CUT.isTrue("isIterator(); true - Nodelist values();",
 CUT.isFalse("isIterator(); false - Array", CEL.isIterator([4, 5, 7]));
 
 
-// isIterable();
-CUT.isTrue("isIterable(); true",
-  CEL.isIterable([]) && CEL.isIterable("")
-    && CEL.isIterable(new Map([[1, 2], [3, 4]]))
-    && CEL.isIterable(new Set([1,2]))
-);
-CUT.isFalse("isIterable(); false",
-  CEL.isIterable(42)
-    || CEL.isIterable(3.14)
-    || CEL.isIterable({a:1,b:2})
-    || CEL.isIterable(true)
-    || CEL.isIterable(false)
+/* isIterable(); */
+CUT.isTrue("isIterable();",
+      CEL.isIterable([])
+  &&  CEL.isIterable("")
+  &&  CEL.isIterable(new Map([[1, 2], [3, 4]]))
+  &&  CEL.isIterable(new Set([1,2]))
+  && !CEL.isIterable(42)
+  && !CEL.isIterable(3.14)
+  && !CEL.isIterable({a:1,b:2})
+  && !CEL.isIterable(true)
+  && !CEL.isIterable(false)
 );
 
 
-// isBigInt();
+/* isBigInt(); */
 if (!!window.BigInt) {
   CUT.isTrue("isBigInt(); true", CEL.isBigInt(9007199254740991n + 5n));
   CUT.isFalse("isBigInt(); false 1", CEL.isBigInt(9007199254740990));
@@ -2903,12 +2884,12 @@ if (!!window.BigInt) {
 }
 
 
-/* isSame<type>(); functions */
+/** isSame<type>(); functions **/
 CUT.addElement("hr");
 CUT.addElement("h3", "isSame<type>(); functions");
 
 
-// isSameArray();
+/* isSameArray(); */
 CUT.isTrue("isSameArray(); step 1", CEL.isSameArray([], []));
 CUT.isTrue("isSameArray(); step 2", CEL.isSameArray([5, 4, 5], [5, 4, 5]));
 CUT.isFalse("isSameArray(); step 3", CEL.isSameArray([5, 4, 5], [4, 5, 6]));
@@ -2927,7 +2908,7 @@ CUT.isFalse("isSameArray(); step 13", CEL.isSameArray(4, 4));
 CUT.isFalse("isSameArray(); step 14", CEL.isSameArray(4, 5));
 
 
-// isSameObject();
+/* isSameObject(); */
 CUT.isTrue("isSameObject(); true 1",
   CEL.isSameObject({"p1": 4, "p2": 5, "p3": 6}, {"p1": 4, "p2": 5, "p3": 6})
 );
@@ -2943,7 +2924,7 @@ CUT.isFalse("isSameObject(); false 3",
 );
 
 
-// isSameSet();
+/* isSameSet(); */
 CUT.isTrue("isSameSet(); true",
   CEL.isSameSet(new Set([4, 6, 8, 2]), new Set([2, 4, 6, 8, 4]))
 );
@@ -2958,7 +2939,7 @@ CUT.isFalse("isSameSet(); false 3",
 );
 
 
-// isSameMap();
+/* isSameMap(); */
 CUT.isTrue("isSameMap(); true", CEL.isSameMap(
   new Map([["str", 1], [17, "x"], [true, 42]]),
   new Map([["str", 1], [17, "x"], [true, 42]])
@@ -2976,7 +2957,7 @@ CUT.isFalse("isSameMap(); false 3", CEL.isSameMap(
 );
 
 
-// isSameIterator(),
+/* isSameIterator(); */
 CUT.isTrue("isSameIterator(); true",
   CEL.isSameIterator([4, 8, 6, 2], [4, 8, 6, 2])
 );
@@ -2988,20 +2969,18 @@ CUT.isFalse("isSameIterator(); false 2",
 );
 
 
-/* Abstract API */
+/** Abstract API **/
 CUT.addElement("hr");
 CUT.addElement("h3", "Abstract API");
 
 
-// deletePropertyOrThrow();
+/* deletePropertyOrThrow(); */
 token1 = {"a": 1, "b": 2};
 try { CEL.deletePropertyOrThrow(token1, "b"); } catch (e) { console.log(e); }
-CUT.isEqual("deletePropertyOrThrow();", "{\"a\":1}",
-  JSON.stringify(token1)
-);
+CUT.isEqual("deletePropertyOrThrow();", "{\"a\":1}", JSON.stringify(token1));
 
 
-// isSameType();
+/* isSameType(); */
 CUT.isTrue("isSameType();",
       CEL.isSameType(undefined, undefined)
   &&  CEL.isSameType(null, null)
@@ -3017,7 +2996,7 @@ CUT.isTrue("isSameType();",
 );
 
 
-// isLessThan ();
+/* isLessThan (); */
 CUT.isTrue("isLessThan();",
       CEL.isLessThan(1, 2)
   &&  CEL.isLessThan(1, 2, true)
@@ -3028,7 +3007,7 @@ CUT.isTrue("isLessThan();",
 );
 
 
-// requireObjectCoercible();
+/* requireObjectCoercible(); */
 token1 = function(){};
 CUT.isTrue("requireObjectCoercible(); 1 boolan",
   CEL.requireObjectCoercible(true)
@@ -3056,10 +3035,10 @@ try { CEL.requireObjectCoercible(undefined) } catch (e) {
 }
 
 
-// getIn();
-// getInV();
-// setIn();
-// hasIn();
+/* getIn(); */
+/* getInV(); */
+/* setIn(); */
+/* hasIn(); */
 token1 = {};
 CUT.isTrue("getIn(); + getInV(); + setIn(); + hasIn();",
   !CEL.hasIn(token1, "pr1")
@@ -3072,7 +3051,7 @@ CUT.isTrue("getIn(); + getInV(); + setIn(); + hasIn();",
 );
 
 
-// isPropertyKey();
+/* isPropertyKey(); */
 CUT.isTrue("isPropertyKey();",
   CEL.isPropertyKey("")
     && CEL.isPropertyKey(Symbol(42))
@@ -3080,7 +3059,7 @@ CUT.isTrue("isPropertyKey();",
 );
 
 
-// toPropertyKey();
+/* toPropertyKey(); */
 CUT.isTrue("toPropertyKey();",
   typeof CEL.toPropertyKey("") === "string"
     && typeof CEL.toPropertyKey(Symbol("42")) === "symbol"
@@ -3088,34 +3067,38 @@ CUT.isTrue("toPropertyKey();",
 );
 
 
-// toObject();
+/* toObject(); */
 CUT.isTrue("toObject();", typeof CEL.toObject("str") === "object");
 
 
-// isSameValue();
+/* isSameValue(); */
 token1 = { "a": 1 };
-token2 = ""
-  + +CEL.isSameValue(25, 25)
-  + +CEL.isSameValue("foo", "foo") + +CEL.isSameValue("foo", "bar")
-  + +CEL.isSameValue(null, null) + +CEL.isSameValue(undefined, undefined)
-  + +CEL.isSameValue(window, window)
-  + +CEL.isSameValue([], [])
-  + +CEL.isSameValue(token1, token1)
-  + +CEL.isSameValue(token1, {"a": 1})
-  + +CEL.isSameValue(0, -0) + +CEL.isSameValue(+0, -0) + +CEL.isSameValue(-0,-0)
-  + (!!window.BigInt ? +CEL.isSameValue(BigInt(0), BigInt(-0)) : 1)
-  + +CEL.isSameValue(NaN, 0/0)
-  + +CEL.isSameValue(NaN, Number.NaN)
-  + +CEL.isSameValue(+Infinity, Infinity)
-  + +CEL.isSameValue(Infinity, Infinity)
-  + +CEL.isSameValue(-Infinity, -Infinity)
-  + +CEL.isSameValue(+Infinity, -Infinity);
-CUT.isEqual("isSameValue(); " + "<code>" + token2 + "</code>",
-  token2, "1101110100011111110"
+CUT.isEqual("isSameValue();", "1101110100011111110",
+  CUT.concat(
+    +CEL.isSameValue(25, 25),
+    +CEL.isSameValue("foo", "foo"),
+    +CEL.isSameValue("foo", "bar"),
+    +CEL.isSameValue(null, null),
+    +CEL.isSameValue(undefined, undefined),
+    +CEL.isSameValue(window, window),
+    +CEL.isSameValue([], []),
+    +CEL.isSameValue(token1, token1),
+    +CEL.isSameValue(token1, {"a": 1}),
+    +CEL.isSameValue(0, -0),
+    +CEL.isSameValue(+0, -0),
+    +CEL.isSameValue(-0,-0),
+    (!!window.BigInt ? +CEL.isSameValue(BigInt(0), BigInt(-0)) : 1),
+    +CEL.isSameValue(NaN, 0/0),
+    +CEL.isSameValue(NaN, Number.NaN),
+    +CEL.isSameValue(+Infinity, Infinity),
+    +CEL.isSameValue(Infinity, Infinity),
+    +CEL.isSameValue(-Infinity, -Infinity),
+    +CEL.isSameValue(+Infinity, -Infinity)
+  )
 );
 
 
-// toPrimitiveValue();
+/* toPrimitiveValue(); */
 CUT.isTrue("toPrimitiveValue();",
   typeof CEL.toPrimitiveValue(null) === "object"
     && typeof CEL.toPrimitiveValue(undefined) === "undefined"
@@ -3135,7 +3118,7 @@ CUT.isTrue("toPrimitiveValue();",
 );
 
 
-// toPrimitive();
+/* toPrimitive(); */
 CUT.isTrue("toPrimitive();",
   CEL.toPrimitive(new Object(100)) === 100
     && CEL.toPrimitive(new Object(100)) + "" === "100"
@@ -3145,99 +3128,99 @@ CUT.isTrue("toPrimitive();",
 );
 
 
-// isSameValueZero();
+/* isSameValueZero(); */
 token1 = {"a": 1};
-token2 = ""
-  + +CEL.isSameValueZero(25, 25)
-  + +CEL.isSameValueZero("foo", "foo")
-  + +CEL.isSameValueZero("foo", "bar")
-  + +CEL.isSameValueZero(null, null)
-  + +CEL.isSameValueZero(undefined, undefined)
-  + +CEL.isSameValueZero(window, window)
-  + +CEL.isSameValueZero([], [])
-  + +CEL.isSameValueZero(token1, token1)
-  + +CEL.isSameValueZero(token1, {"a": 1})
-  + +CEL.isSameValueZero(0, -0)
-  + +CEL.isSameValueZero(+0, -0)
-  + +CEL.isSameValueZero(-0, -0)
-  + (!!window.BigInt ? +CEL.isSameValueZero(BigInt(0), BigInt(-0)) : 1)
-  + +CEL.isSameValueZero(NaN, 0/0)
-  + +CEL.isSameValueZero(NaN, Number.NaN)
-  + +CEL.isSameValueZero(+Infinity, Infinity)
-  + +CEL.isSameValueZero(Infinity, Infinity)
-  + +CEL.isSameValueZero(-Infinity, -Infinity)
-  + +CEL.isSameValueZero(+Infinity, -Infinity);
-CUT.isEqual("isSameValueZero(); " + "<code>" + token2 + "</code>",
-  token2, "1101110101111111110"
+CUT.isEqual("isSameValueZero();", "1101110101111111110",
+  CUT.concat(
+    +CEL.isSameValueZero(25, 25),
+    +CEL.isSameValueZero("foo", "foo"),
+    +CEL.isSameValueZero("foo", "bar"),
+    +CEL.isSameValueZero(null, null),
+    +CEL.isSameValueZero(undefined, undefined),
+    +CEL.isSameValueZero(window, window),
+    +CEL.isSameValueZero([], []),
+    +CEL.isSameValueZero(token1, token1),
+    +CEL.isSameValueZero(token1, {"a": 1}),
+    +CEL.isSameValueZero(0, -0),
+    +CEL.isSameValueZero(+0, -0),
+    +CEL.isSameValueZero(-0, -0),
+    (!!window.BigInt ? +CEL.isSameValueZero(BigInt(0), BigInt(-0)) : 1),
+    +CEL.isSameValueZero(NaN, 0/0),
+    +CEL.isSameValueZero(NaN, Number.NaN),
+    +CEL.isSameValueZero(+Infinity, Infinity),
+    +CEL.isSameValueZero(Infinity, Infinity),
+    +CEL.isSameValueZero(-Infinity, -Infinity),
+    +CEL.isSameValueZero(+Infinity, -Infinity)
+  )
 );
 
 
-// isSameValueNonNumber();
+/* isSameValueNonNumber(); */
 token1 = {"a": 1};
-token2 = ""
-  + +CEL.isSameValueNonNumber(25, 25)
-  + +CEL.isSameValueNonNumber("foo", "foo")
-  + +CEL.isSameValueNonNumber("foo", "bar")
-  + +CEL.isSameValueNonNumber(null, null)
-  + +CEL.isSameValueNonNumber(undefined, undefined)
-  + +CEL.isSameValueNonNumber(window, window)
-  + +CEL.isSameValueNonNumber([], [])
-  + +CEL.isSameValueNonNumber(token1, token1)
-  + +CEL.isSameValueNonNumber(token1, {"a": 1})
-  + +CEL.isSameValueNonNumber(0, -0)
-  + +CEL.isSameValueNonNumber(+0, -0)
-  + +CEL.isSameValueNonNumber(-0, -0)
-  + (!!window.BigInt ? +CEL.isSameValueNonNumber(BigInt(0), BigInt(-0)) : 1)
-  + +CEL.isSameValueNonNumber(NaN, 0/0)
-  + +CEL.isSameValueNonNumber(NaN, Number.NaN)
-  + +CEL.isSameValueNonNumber(+Infinity, Infinity)
-  + +CEL.isSameValueNonNumber(Infinity, Infinity)
-  + +CEL.isSameValueNonNumber(-Infinity, -Infinity)
-  + +CEL.isSameValueNonNumber(+Infinity, -Infinity);
-CUT.isEqual("isSameValueNonNumber(); " + "<code>" + token2 + "</code>",
-  token2, "1101110101111001110"
+CUT.isEqual("isSameValueNonNumber();", "1101110101111001110",
+  CUT.concat(
+    +CEL.isSameValueNonNumber(25, 25),
+    +CEL.isSameValueNonNumber("foo", "foo"),
+    +CEL.isSameValueNonNumber("foo", "bar"),
+    +CEL.isSameValueNonNumber(null, null),
+    +CEL.isSameValueNonNumber(undefined, undefined),
+    +CEL.isSameValueNonNumber(window, window),
+    +CEL.isSameValueNonNumber([], []),
+    +CEL.isSameValueNonNumber(token1, token1),
+    +CEL.isSameValueNonNumber(token1, {"a": 1}),
+    +CEL.isSameValueNonNumber(0, -0),
+    +CEL.isSameValueNonNumber(+0, -0),
+    +CEL.isSameValueNonNumber(-0, -0),
+    (!!window.BigInt ? +CEL.isSameValueNonNumber(BigInt(0), BigInt(-0)) : 1),
+    +CEL.isSameValueNonNumber(NaN, 0/0),
+    +CEL.isSameValueNonNumber(NaN, Number.NaN),
+    +CEL.isSameValueNonNumber(+Infinity, Infinity),
+    +CEL.isSameValueNonNumber(Infinity, Infinity),
+    +CEL.isSameValueNonNumber(-Infinity, -Infinity),
+    +CEL.isSameValueNonNumber(+Infinity, -Infinity)
+  )
 );
 
 
-// createMethodProperty();
-function createMethodPropertyFN () {};
-token1 = "" + ("getX" in createMethodPropertyFN.prototype);
-token1 += CEL.createMethodProperty(
-  createMethodPropertyFN.prototype, "getX", function () { return this.x; }
+/* createMethodProperty(); */
+token1 = function () {};
+token2 = String("getX" in token1.prototype);
+token2 += CEL.createMethodProperty(
+  token1.prototype, "getX", function () { return this.x; }
 );
-token1 += ("getX" in createMethodPropertyFN.prototype);
-CUT.isEqual("createMethodProperty();", token1, "false[object Object]true");
+token2 += ("getX" in token1.prototype);
+CUT.isEqual("createMethodProperty();", "false[object Object]true", token2);
 
 
-// createMethodPropertyOrThrow();
-function createMethodPropertyOrThrowFN () {};
-token1 = "" + ("getX" in createMethodPropertyOrThrowFN.prototype);
-token1 += CEL.createMethodPropertyOrThrow(
-  createMethodPropertyOrThrowFN.prototype, "getX", function (){ return this.x; }
+/* createMethodPropertyOrThrow(); */
+token1 = function () {};
+token2 = String("getX" in token1.prototype);
+token2 += CEL.createMethodPropertyOrThrow(
+  token1.prototype, "getX", function () { return this.x; }
 );
-token1 += ("getX" in createMethodPropertyOrThrowFN.prototype);
-CUT.isEqual("createMethodPropertyOrThrow();",token1,"false[object Object]true");
+token2 += ("getX" in token1.prototype);
+CUT.isEqual("createMethodPropertyOrThrow();",token2,"false[object Object]true");
 
 
-// createPolyfillMethod();
+/* createPolyfillMethod(); */
 token1 = {"a": 1, "b": 2};
 CUT.isTrue("createPolyfillMethod();",
   CEL.createPolyfillMethod(token1, "c", 3) &&
   !(Object.keys(token1).includes("c")) && ("c" in token1)
 );
-CUT.log("<code>\"" + JSON.stringify(token1) + "\"</code>");
+CUT.logCode(JSON.stringify(token1));
 
 
-// createPolyfillProperty();
+/* createPolyfillProperty(); */
 token1 = {"a": 1, "b": 2};
 CUT.isTrue("createPolyfillProperty();",
   CEL.createPolyfillProperty(token1, "c", 3) &&
   Object.keys(token1).includes("c") && ("c" in token1)
 );
-CUT.log("<code>\"" + JSON.stringify(token1) + "\"</code>");
+CUT.logCode(JSON.stringify(token1));
 
 
-// deleteOwnProperty();
+/* deleteOwnProperty(); */
 token1 = {"a": 1, "b": 2};
 token2 = "";
 token2 += CEL.deleteOwnProperty(token1, "a");
@@ -3251,10 +3234,10 @@ try {
   token2 += CEL.deleteOwnProperty(token1, "a", true);
 } catch (e) { console.log(e); }
 CUT.isEqual("deleteOwnProperty();", token2, "1-1-11-1");
-CUT.log("<code>\"" + token2 + "\"</code>")
+CUT.logCode(token2);
 
 
-// type();
+/* type(); */
 CUT.isTrue("type();",
   CEL.type(null) === "null"
     && CEL.type(undefined) === "undefined"
@@ -3265,7 +3248,7 @@ CUT.isTrue("type();",
 );
 
 
-// isIndex();
+/* isIndex(); */
 CUT.isTrue("isIndex();",
       CEL.isIndex(3)
   &&  CEL.isIndex(0)
@@ -3292,7 +3275,7 @@ CUT.isTrue("isIndex();",
 );
 
 
-// isLength();
+/* isLength(); */
 CUT.isTrue("isLength();",
       CEL.isLength(3)
   &&  CEL.isLength(0)
@@ -3319,149 +3302,159 @@ CUT.isTrue("isLength();",
 );
 
 
-// toIndex();
-CUT.isEqual("toIndex();", "3031021474836470214748364700300003000000", ""
-  + CEL.toIndex(3)
-  + CEL.toIndex(0)
-  + CEL.toIndex("3")
-  + CEL.toIndex(true)
-  + CEL.toIndex(-0)
-  + CEL.toIndex(Infinity)
-  + CEL.toIndex(-Infinity)
-  + CEL.toIndex("Infinity")
-  + CEL.toIndex("-Infinity")
-  + CEL.toIndex(-3)
-  + CEL.toIndex(3.14)
-  + CEL.toIndex(-3.14)
-  + CEL.toIndex("fasdas")
-  + CEL.toIndex(false)
-  + CEL.toIndex("-3")
-  + CEL.toIndex("3.14")
-  + CEL.toIndex("-3.14")
-  + CEL.toIndex("adsasd")
-  + CEL.toIndex({})
-  + CEL.toIndex([])
-  + CEL.toIndex(undefined)
-  + CEL.toIndex(null)
+/* toIndex(); */
+CUT.isEqual("toIndex();", "3031021474836470214748364700300003000000",
+  CUT.concat(
+    CEL.toIndex(3),
+    CEL.toIndex(0),
+    CEL.toIndex("3"),
+    CEL.toIndex(true),
+    CEL.toIndex(-0),
+    CEL.toIndex(Infinity),
+    CEL.toIndex(-Infinity),
+    CEL.toIndex("Infinity"),
+    CEL.toIndex("-Infinity"),
+    CEL.toIndex(-3),
+    CEL.toIndex(3.14),
+    CEL.toIndex(-3.14),
+    CEL.toIndex("lorem"),
+    CEL.toIndex(false),
+    CEL.toIndex("-3"),
+    CEL.toIndex("3.14"),
+    CEL.toIndex("-3.14"),
+    CEL.toIndex("adsasd"),
+    CEL.toIndex({}),
+    CEL.toIndex([]),
+    CEL.toIndex(undefined),
+    CEL.toIndex(null)
+  )
 );
 
 
-// toLength();
-CUT.isEqual("toLength();", "3031021474836470214748364700300003000000", ""
-  + CEL.toLength(3)
-  + CEL.toLength(0)
-  + CEL.toLength("3")
-  + CEL.toLength(true)
-  + CEL.toLength(-0)
-  + CEL.toLength(Infinity)
-  + CEL.toLength(-Infinity)
-  + CEL.toLength("Infinity")
-  + CEL.toLength("-Infinity")
-  + CEL.toLength(-3)
-  + CEL.toLength(3.14)
-  + CEL.toLength(-3.14)
-  + CEL.toLength("fasdas")
-  + CEL.toLength(false)
-  + CEL.toLength("-3")
-  + CEL.toLength("3.14")
-  + CEL.toLength("-3.14")
-  + CEL.toLength("adsasd")
-  + CEL.toLength({})
-  + CEL.toLength([])
-  + CEL.toLength(undefined)
-  + CEL.toLength(null)
+/* toLength(); */
+CUT.isEqual("toLength();", "3031021474836470214748364700300003000000",
+  CUT.concat(
+    CEL.toLength(3),
+    CEL.toLength(0),
+    CEL.toLength("3"),
+    CEL.toLength(true),
+    CEL.toLength(-0),
+    CEL.toLength(Infinity),
+    CEL.toLength(-Infinity),
+    CEL.toLength("Infinity"),
+    CEL.toLength("-Infinity"),
+    CEL.toLength(-3),
+    CEL.toLength(3.14),
+    CEL.toLength(-3.14),
+    CEL.toLength("fasdas"),
+    CEL.toLength(false),
+    CEL.toLength("-3"),
+    CEL.toLength("3.14"),
+    CEL.toLength("-3.14"),
+    CEL.toLength("adsasd"),
+    CEL.toLength({}),
+    CEL.toLength([]),
+    CEL.toLength(undefined),
+    CEL.toLength(null)
+  )
 );
 
 
-// toInteger();
+/* toInteger(); */
 CUT.isEqual("toInteger();",
-  "3333-3-3-3-31002147483647-21474836482147483647-21474836480000000", ""
-  + CEL.toInteger(3)
-  + CEL.toInteger("3")
-  + CEL.toInteger(3.14)
-  + CEL.toInteger("3.14")
-  + CEL.toInteger(-3)
-  + CEL.toInteger(-3.14)
-  + CEL.toInteger("-3")
-  + CEL.toInteger("-3.14")
-  + CEL.toInteger(true)
-  + CEL.toInteger(0)
-  + CEL.toInteger(-0)
-  + CEL.toInteger(Infinity)
-  + CEL.toInteger(-Infinity)
-  + CEL.toInteger("Infinity")
-  + CEL.toInteger("-Infinity")
-  + CEL.toInteger("fasdas")
-  + CEL.toInteger(false)
-  + CEL.toInteger("adsasd")
-  + CEL.toInteger({})
-  + CEL.toInteger([])
-  + CEL.toIndex(undefined)
-  + CEL.toIndex(null)
+  "3333-3-3-3-31002147483647-21474836482147483647-21474836480000000",
+  CUT.concat(
+    CEL.toInteger(3),
+    CEL.toInteger("3"),
+    CEL.toInteger(3.14),
+    CEL.toInteger("3.14"),
+    CEL.toInteger(-3),
+    CEL.toInteger(-3.14),
+    CEL.toInteger("-3"),
+    CEL.toInteger("-3.14"),
+    CEL.toInteger(true),
+    CEL.toInteger(0),
+    CEL.toInteger(-0),
+    CEL.toInteger(Infinity),
+    CEL.toInteger(-Infinity),
+    CEL.toInteger("Infinity"),
+    CEL.toInteger("-Infinity"),
+    CEL.toInteger("fasdas"),
+    CEL.toInteger(false),
+    CEL.toInteger("adsasd"),
+    CEL.toInteger({}),
+    CEL.toInteger([]),
+    CEL.toIndex(undefined),
+    CEL.toIndex(null)
+  )
 );
 
 
-// toIntegerOrInfinity();
+/* toIntegerOrInfinity(); */
 CUT.isEqual("toIntegerOrInfinity();",
-  "3333-3-3-3-3100Infinity-InfinityInfinity-Infinity0000000", ""
-  + CEL.toIntegerOrInfinity(3)
-  + CEL.toIntegerOrInfinity("3")
-  + CEL.toIntegerOrInfinity(3.14)
-  + CEL.toIntegerOrInfinity("3.14")
-  + CEL.toIntegerOrInfinity(-3)
-  + CEL.toIntegerOrInfinity(-3.14)
-  + CEL.toIntegerOrInfinity("-3")
-  + CEL.toIntegerOrInfinity("-3.14")
-  + CEL.toIntegerOrInfinity(true)
-  + CEL.toIntegerOrInfinity(0)
-  + CEL.toIntegerOrInfinity(-0)
-  + CEL.toIntegerOrInfinity(Infinity)
-  + CEL.toIntegerOrInfinity(-Infinity)
-  + CEL.toIntegerOrInfinity("Infinity")
-  + CEL.toIntegerOrInfinity("-Infinity")
-  + CEL.toIntegerOrInfinity("fasdas")
-  + CEL.toIntegerOrInfinity(false)
-  + CEL.toIntegerOrInfinity("adsasd")
-  + CEL.toIntegerOrInfinity({})
-  + CEL.toIntegerOrInfinity([])
-  + CEL.toIntegerOrInfinity(undefined)
-  + CEL.toIntegerOrInfinity(null)
+  "3333-3-3-3-3100Infinity-InfinityInfinity-Infinity0000000",
+  CUT.concat(
+    CEL.toIntegerOrInfinity(3),
+    CEL.toIntegerOrInfinity("3"),
+    CEL.toIntegerOrInfinity(3.14),
+    CEL.toIntegerOrInfinity("3.14" ),
+    CEL.toIntegerOrInfinity(-3 ),
+    CEL.toIntegerOrInfinity(-3.14 ),
+    CEL.toIntegerOrInfinity("-3" ),
+    CEL.toIntegerOrInfinity("-3.14" ),
+    CEL.toIntegerOrInfinity(true ),
+    CEL.toIntegerOrInfinity(0 ),
+    CEL.toIntegerOrInfinity(-0 ),
+    CEL.toIntegerOrInfinity(Infinity ),
+    CEL.toIntegerOrInfinity(-Infinity ),
+    CEL.toIntegerOrInfinity("Infinity" ),
+    CEL.toIntegerOrInfinity("-Infinity" ),
+    CEL.toIntegerOrInfinity("fasdas" ),
+    CEL.toIntegerOrInfinity(false ),
+    CEL.toIntegerOrInfinity("adsasd" ),
+    CEL.toIntegerOrInfinity({} ),
+    CEL.toIntegerOrInfinity([] ),
+    CEL.toIntegerOrInfinity(undefined ),
+    CEL.toIntegerOrInfinity(null)
+  )
 );
 
 
-// createDataPropertyOrThrow();
+/* createDataPropertyOrThrow(); */
 function createDataPropertyFN () {};
-token1 = ""
-  + Object.hasOwn(createDataPropertyFN.prototype,"x")
-  + CEL.createDataPropertyOrThrow(createDataPropertyFN.prototype, "x", 42);
+token1 = CUT.concat(
+  Object.hasOwn(createDataPropertyFN.prototype,"x"),
+  CEL.createDataPropertyOrThrow(createDataPropertyFN.prototype, "x", 42)
+);
 token2 = new createDataPropertyFN();
 token1 += (token2.x === 42);
 CUT.isEqual("createDataPropertyOrThrow();", token1, "false[object Object]true");
 
 
-// createDataProperty();
+/* createDataProperty(); */
 function createDataPropertyOrThrowFN () {};
-token1 = ""
-  + Object.hasOwn(createDataPropertyOrThrowFN.prototype,"x")
-  + CEL.createDataPropertyOrThrow(createDataPropertyOrThrowFN.prototype,"x",42);
+token1 = CUT.concat(
+  Object.hasOwn(createDataPropertyOrThrowFN.prototype,"x"),
+  CEL.createDataPropertyOrThrow(createDataPropertyOrThrowFN.prototype, "x", 42)
+);
 token2 = new createDataPropertyOrThrowFN();
 token1 += (token2.x === 42);
 CUT.isEqual("createDataProperty();", token1, "false[object Object]true");
 
 
-// toArray();
+/* toArray(); */
 token1 = [4, 5, 6];
 CUT.isTrue("toArray();", token1 === CEL.toArray(token1)
   && JSON.stringify(CEL.toArray({"length":3, 0 :7, 1: 8, 2: 9}))  === "[7,8,9]"
 );
 
 
-/* Math API */
+/** Math API **/
 CUT.addElement("hr");
 CUT.addElement("h3", "Math API");
 
 
-// inRange();
+/* inRange(); */
 CUT.isTrue("inRange();",
   CEL.inRange(4, 3, 6)
     && CEL.inRange(-3.14, -4.5, 9.21)
@@ -3472,43 +3465,45 @@ CUT.isTrue("inRange();",
 );
 
 
-// randomInt();
+/* randomInt(); */
 CUT.isTrue("randomInt();", CEL.randomInt() <= 101);
 CUT.isTrue("randomInt(max);", CEL.randomInt(30) <= 30);
 token1 = CEL.randomInt(51, 55);
 CUT.isTrue("randomInt(min,max);", token1 >= 51 && token1 <= 55);
 
 
-// randomFloat();
+/* randomFloat(); */
 CUT.isTrue("randomFloat();", CEL.randomFloat() <= 101);
 CUT.isTrue("randomFloat(max);", CEL.randomFloat(30) <= 30);
 token1 = CEL.randomFloat(51, 55);
 CUT.isTrue("randomFloat(min,max);", token1 >= 51 && token1 <= 55);
 
 
-// toFloat16();
+/* toFloat16(); */
 CUT.isEqual("toFloat16();",
   "0 0 0 65504 -65504 3.14 -3.14 65504 -65504 65504 -65504 65504 -65504 65504 -65504 0",
-  CEL.toFloat16(0)
-    + " " + CEL.toFloat16(+0)
-    + " " + CEL.toFloat16(-0)
-    + " " + CEL.toFloat16(Number.POSITIVE_INFINITY)
-    + " " + CEL.toFloat16(Number.NEGATIVE_INFINITY)
-    + " " + CEL.toFloat16(3.14)
-    + " " + CEL.toFloat16(-3.14)
-    + " " + CEL.toFloat16(65504)
-    + " " + CEL.toFloat16(-65504)
-    + " " + CEL.toFloat16(65504.0)
-    + " " + CEL.toFloat16(-65504.0)
-    + " " + CEL.toFloat16(65504.1)
-    + " " + CEL.toFloat16(-65504.1)
-    + " " + CEL.toFloat16(65505)
-    + " " + CEL.toFloat16(-65505)
-    + " " + CEL.toFloat16("lorem")
+  CUT.join([
+    CEL.toFloat16(0),
+    CEL.toFloat16(+0),
+    CEL.toFloat16(-0),
+    CEL.toFloat16(Number.POSITIVE_INFINITY),
+    CEL.toFloat16(Number.NEGATIVE_INFINITY),
+    CEL.toFloat16(3.14),
+    CEL.toFloat16(-3.14),
+    CEL.toFloat16(65504),
+    CEL.toFloat16(-65504),
+    CEL.toFloat16(65504.0),
+    CEL.toFloat16(-65504.0),
+    CEL.toFloat16(65504.1),
+    CEL.toFloat16(-65504.1),
+    CEL.toFloat16(65505),
+    CEL.toFloat16(-65505),
+    CEL.toFloat16("lorem")
+  ])
 );
 
 
-// isFloat16();
+/* isFloat16(); */
 CUT.isTrue("isFloat16();",
       CEL.isFloat16(0)
   &&  CEL.isFloat16(+0)
@@ -3527,7 +3522,7 @@ CUT.isTrue("isFloat16();",
 );
 
 
-// signbit();
+/* signbit(); */
 CUT.isTrue("signbit();",
      !CEL.signbit("str")
   && !CEL.signbit("5")
@@ -3547,7 +3542,7 @@ CUT.isTrue("signbit();",
 );
 
 
-// clamp();
+/* clamp(); */
 try { CEL.clamp(15, 10, NaN); } catch (e) {
   CUT.isTrue("clamp(); 01", Error.isError(e));
 }
@@ -3577,7 +3572,7 @@ CUT.isEqual("clamp(); 18",    20,  CEL.clamp(25,   10n, 20));
 CUT.isEqual("clamp(); 19",    15n, CEL.clamp(15n,  10n, 20n));
 
 
-// minmax();
+/* minmax(); */
 try { CEL.minmax(15, 10, NaN); } catch (e) {
   CUT.isTrue("minmax(); 01", Error.isError(e));
 }
@@ -3607,40 +3602,35 @@ CUT.isEqual("minmax(); 18",    20,  CEL.minmax(25,  10n, 20));
 CUT.isEqual("minmax(); 19",    15n, CEL.minmax(15n, 10n, 20n));
 
 
-// product();
+/* product(); */
 CUT.isEqual("product(); - 1", CEL.product(3), 3);
 CUT.isEqual("product(); - 2", CEL.product(3, 5), 15);
 CUT.isEqual("product(); - 3", CEL.product(3.14, -5), -15.700000000000001);
 CUT.isEqual("product(); - with many parameter types", "NaN",
-  "" + CEL.product(true, 3.14, -9, 'Arthur Dent')
+  String(CEL.product(true, 3.14, -9, 'Arthur Dent'))
 );
 CUT.isEqual("product(); - try without parameter", CEL.product(), undefined);
 
 
-// sum();
+/* sum(); */
 CUT.isEqual("sum(); - 1", CEL.sum(3), 3);
-CUT.log("<code>" + CEL.sum(3) + "</code>");
 CUT.isEqual("sum(); - 2", CEL.sum(3, 5), 8);
-CUT.log("<code>" + CEL.sum(3, 5) + "</code>");
 CUT.isEqual("sum(); - 3", CEL.sum(3.14, -5), -1.8599999999999999);
-CUT.log("<code>" + CEL.sum(3.14, -5) + "</code>");
 CUT.isEqual("sum(); - 4 - with many parameter types",
   CEL.sum(true, 3.14, -9, "Arthur Dent"), "-4.859999999999999Arthur Dent"
 );
-CUT.log("<code>" + CEL.sum(true, 3.14, -9, "Arthur Dent") + "</code>");
 CUT.isEqual("sum(); - 5 - without parameter", CEL.sum(), 0);
-CUT.log("<code>" + String(CEL.sum()) + "</code>");
 
 
-// avg();
+/* avg(); */
 CUT.isEqual("avg(); 1", CEL.avg(2, 4, 3), 3);
 CUT.isEqual("avg(); 2", CEL.avg(2, 4, 3.14), 3.046666666666667);
 CUT.isEqual("avg(); 3", CEL.avg(2, -8, 3.14), -0.9533333333333333);
 CUT.isEqual("avg(); 4", CEL.avg(5), 5);
-CUT.isEqual("avg(); 5", "" + CEL.avg(), "NaN");
+CUT.isEqual("avg(); 5", String(CEL.avg()), "NaN");
 
 
-// isEven();
+/* isEven(); */
 CUT.isTrue("isEven(); 1", CEL.isEven(8));
 CUT.isFalse("isEven(); 2", CEL.isEven(9));
 CUT.isFalse("isEven(); 3", CEL.isEven(8.5));
@@ -3648,7 +3638,7 @@ CUT.isFalse("isEven(); 4", CEL.isEven(9.5));
 CUT.isFalse("isEven(); 5", CEL.isEven("Arthur Dent"));
 
 
-// isOdd();
+/* isOdd(); */
 CUT.isTrue("isOdd(); 2", CEL.isOdd(9));
 CUT.isFalse("isOdd(); 1", CEL.isOdd(8));
 CUT.isTrue("isOdd(); 3", CEL.isOdd(8.5));
@@ -3656,7 +3646,7 @@ CUT.isTrue("isOdd(); 4", CEL.isOdd(9.5));
 CUT.isFalse("isOdd(); 5", CEL.isOdd("Arthur Dent"));
 
 
-// toInt8();
+/* toInt8(); */
 CUT.isEqual("toInt8(); 1", CEL.toInt8(9), 9);
 CUT.isEqual("toInt8(); 2", CEL.toInt8(-5), -5);
 CUT.isEqual("toInt8(); 3", CEL.toInt8(8.5), 8);
@@ -3668,7 +3658,7 @@ CUT.isEqual("toInt8(); 8", CEL.toInt8(Infinity), 127);
 CUT.isEqual("toInt8(); 9", CEL.toInt8("-Infinity"), -128);
 
 
-// toUInt8();
+/* toUInt8(); */
 CUT.isEqual("toUInt8(); 1", CEL.toUInt8(9), 9);
 CUT.isEqual("toUInt8(); 2", CEL.toUInt8(-5), 0);
 CUT.isEqual("toUInt8(); 3", CEL.toUInt8(8.5), 8);
@@ -3679,7 +3669,7 @@ CUT.isEqual("toUInt8(); 7", CEL.toUInt8(Infinity), 255);
 CUT.isEqual("toUInt8(); 8", CEL.toUInt8("-Infinity"), 0);
 
 
-// toInt16();
+/* toInt16(); */
 CUT.isEqual("toInt16(); 1", CEL.toInt16(199), 199);
 CUT.isEqual("toInt16(); 2", CEL.toInt16(-1845), -1845);
 CUT.isEqual("toInt16(); 3", CEL.toInt16(8.5), 8);
@@ -3691,7 +3681,7 @@ CUT.isEqual("toInt16(); 8", CEL.toInt16(Infinity), 32767);
 CUT.isEqual("toInt16(); 9", CEL.toInt16("-Infinity"), -32768);
 
 
-// toUInt16();
+/* toUInt16(); */
 CUT.isEqual("toUInt16(); 1", CEL.toUInt16(199), 199);
 CUT.isEqual("toUInt16(); 2", CEL.toUInt16(-1845), 0);
 CUT.isEqual("toUInt16(); 3", CEL.toUInt16(8.5), 8);
@@ -3702,7 +3692,7 @@ CUT.isEqual("toUInt16(); 7", CEL.toUInt16(Infinity), 65535);
 CUT.isEqual("toUInt16(); 8", CEL.toUInt16("-Infinity"), 0);
 
 
-// toInt32();
+/* toInt32(); */
 CUT.isEqual("toInt32(); 1", CEL.toInt32(199), 199);
 CUT.isEqual("toInt32(); 2", CEL.toInt32(-1845), -1845);
 CUT.isEqual("toInt32(); 3", CEL.toInt32(8.5), 8);
@@ -3714,7 +3704,7 @@ CUT.isEqual("toInt32(); 8", CEL.toInt32(Infinity), 2147483647);
 CUT.isEqual("toInt32(); 9", CEL.toInt32("-Infinity"), -2147483648);
 
 
-// toUInt32();
+/* toUInt32(); */
 CUT.isEqual("toUInt32(); 1", CEL.toUInt32(199), 199);
 CUT.isEqual("toUInt32(); 2", CEL.toUInt32(-1845), 0);
 CUT.isEqual("toUInt32(); 3", CEL.toUInt32(8.5), 8);
@@ -3725,22 +3715,22 @@ CUT.isEqual("toUInt32(); 7", CEL.toUInt32(Infinity), 4294967295);
 CUT.isEqual("toUInt32(); 8", CEL.toUInt32("-Infinity"), 0);
 
 
-// toBigInt64();
-CUT.isEqual("toBigInt64(); 1", CEL.toBigInt64(199), 199n);
-CUT.isEqual("toBigInt64(); 2", CEL.toBigInt64(-1845), -1845n);
-CUT.isEqual("toBigInt64(); 3", CEL.toBigInt64(8.5), 8n);
-CUT.isEqual("toBigInt64(); 4", CEL.toBigInt64(-8.5), -8n);
-CUT.isEqual("toBigInt64(); 5", CEL.toBigInt64(9223372036854775809),
+/* toBigInt64(); */
+CUT.isEqual("toBigInt64(); 01", CEL.toBigInt64(199), 199n);
+CUT.isEqual("toBigInt64(); 02", CEL.toBigInt64(-1845), -1845n);
+CUT.isEqual("toBigInt64(); 03", CEL.toBigInt64(8.5), 8n);
+CUT.isEqual("toBigInt64(); 04", CEL.toBigInt64(-8.5), -8n);
+CUT.isEqual("toBigInt64(); 05", CEL.toBigInt64(9223372036854775809),
   9223372036854775808n
 );
-CUT.isEqual("toBigInt64(); 6", CEL.toBigInt64("Arthur Dent"), 0n);
-CUT.isEqual("toBigInt64(); 7", CEL.toBigInt64(Infinity),
+CUT.isEqual("toBigInt64(); 06", CEL.toBigInt64("Arthur Dent"), 0n);
+CUT.isEqual("toBigInt64(); 07", CEL.toBigInt64(Infinity),
   9223372036854775808n
 );
-CUT.isEqual("toBigInt64(); 8", CEL.toBigInt64("-Infinity"),
+CUT.isEqual("toBigInt64(); 08", CEL.toBigInt64("-Infinity"),
   -9223372036854775808n
 );
-CUT.isEqual("toBigInt64(); 9", CEL.toBigInt64(18446744073709551617),
+CUT.isEqual("toBigInt64(); 09", CEL.toBigInt64(18446744073709551617),
   9223372036854775808n
 );
 CUT.isEqual("toBigInt64(); 10", CEL.toBigInt64(-18446744073709551617),
@@ -3748,7 +3738,7 @@ CUT.isEqual("toBigInt64(); 10", CEL.toBigInt64(-18446744073709551617),
 );
 
 
-// toBigUInt64();
+/* toBigUInt64(); */
 CUT.isEqual("toBigUInt64(); 1", CEL.toBigUInt64(199), 199n);
 CUT.isEqual("toBigUInt64(); 2", CEL.toBigUInt64(-1845), 0n);
 CUT.isEqual("toBigUInt64(); 3", CEL.toBigUInt64(8.5), 8n);
@@ -3764,7 +3754,7 @@ CUT.isEqual("toBigUInt64(); 8", CEL.toBigUInt64("-Infinity"), 0n);
 CUT.isEqual("toBigUInt64(); 9", CEL.toBigUInt64(-9223372036854775808n), 0n);
 
 
-// toFloat32();
+/* toFloat32(); */
 CUT.isEqual("toFloat32(); 1", CEL.toFloat32(199), 199);
 CUT.isEqual("toFloat32(); 2", CEL.toFloat32(-1845), -1845);
 CUT.isEqual("toFloat32(); 3", CEL.toFloat32(8.5), 8.5);
@@ -3776,7 +3766,7 @@ CUT.isEqual("toFloat32(); 8", CEL.toFloat32(Infinity), 3.4e+38);
 CUT.isEqual("toFloat32(); 9", CEL.toFloat32("-Infinity"), -3.4e+38);
 
 
-// isInt8();
+/* isInt8(); */
 CUT.isTrue("isInt8(); 01", CEL.isInt8(34));
 CUT.isTrue("isInt8(); 02", CEL.isInt8(-34));
 CUT.isFalse("isInt8(); 03", CEL.isInt8(-129));
@@ -3792,7 +3782,7 @@ CUT.isFalse("isInt8(); 12", CEL.isInt8([]));
 CUT.isFalse("isInt8(); 13", CEL.isInt8({}));
 
 
-// isUInt8();
+/* isUInt8(); */
 CUT.isTrue("isUInt8(); 01", CEL.isUInt8(34));
 CUT.isFalse("isUInt8(); 02", CEL.isUInt8(-34));
 CUT.isFalse("isUInt8(); 03", CEL.isUInt8(-1));
@@ -3808,7 +3798,7 @@ CUT.isFalse("isUInt8(); 12", CEL.isUInt8([]));
 CUT.isFalse("isUInt8(); 13", CEL.isUInt8({}));
 
 
-// isInt16();
+/* isInt16(); */
 CUT.isTrue("isInt16(); 01", CEL.isInt16(34));
 CUT.isTrue("isInt16(); 02", CEL.isInt16(-34));
 CUT.isFalse("isInt16(); 03", CEL.isInt16(-32769));
@@ -3824,7 +3814,7 @@ CUT.isFalse("isInt16(); 12", CEL.isInt16([]));
 CUT.isFalse("isInt16(); 13", CEL.isInt16({}));
 
 
-// isUInt16();
+/* isUInt16(); */
 CUT.isTrue("isUInt16(); 01", CEL.isUInt16(34));
 CUT.isFalse("isUInt16(); 02", CEL.isUInt16(-34));
 CUT.isFalse("isUInt16(); 03", CEL.isUInt16(-1));
@@ -3840,7 +3830,7 @@ CUT.isFalse("isUInt16(); 12", CEL.isUInt16([]));
 CUT.isFalse("isUInt16(); 13", CEL.isUInt16({}));
 
 
-// isInt32();
+/* isInt32(); */
 CUT.isTrue("isInt32(); 01", CEL.isInt32(34));
 CUT.isTrue("isInt32(); 02", CEL.isInt32(-34));
 CUT.isFalse("isInt32(); 03", CEL.isInt32(-2147483649));
@@ -3856,7 +3846,7 @@ CUT.isFalse("isInt32(); 12", CEL.isInt32([]));
 CUT.isFalse("isInt32(); 13", CEL.isInt32({}));
 
 
-// isUInt32();
+/* isUInt32(); */
 CUT.isTrue("isUInt32(); 01", CEL.isUInt32(34));
 CUT.isFalse("isUInt32(); 02", CEL.isUInt32(-34));
 CUT.isFalse("isUInt32(); 03", CEL.isUInt32(-1));
@@ -3872,7 +3862,7 @@ CUT.isFalse("isUInt32(); 12", CEL.isUInt32([]));
 CUT.isFalse("isUInt32(); 13", CEL.isUInt32({}));
 
 
-// isBigInt64();
+/* isBigInt64(); */
 CUT.isTrue("isBigInt64(); 01", CEL.isBigInt64(34n));
 CUT.isTrue("isBigInt64(); 02", CEL.isBigInt64(-34n));
 CUT.isFalse("isBigInt64(); 03", CEL.isBigInt64(-9223372036854775809n));
@@ -3888,7 +3878,7 @@ CUT.isFalse("isBigInt64(); 12", CEL.isBigInt64([]));
 CUT.isFalse("isBigInt64(); 13", CEL.isBigInt64({}));
 
 
-// isBigUInt64();
+/* isBigUInt64(); */
 CUT.isTrue("isBigUInt64(); 01", CEL.isBigUInt64(34n));
 CUT.isFalse("isBigUInt64(); 02", CEL.isBigUInt64(-34n));
 CUT.isFalse("isBigUInt64(); 03", CEL.isBigUInt64(-1n));
@@ -3904,7 +3894,7 @@ CUT.isFalse("isBigUInt64(); 12", CEL.isBigUInt64([]));
 CUT.isFalse("isBigUInt64(); 13", CEL.isBigUInt64({}));
 
 
-/* Async */
+/** Async **/
 CUT.addElement("hr");
 CUT.addElement("h3", "AJAX, domReady(); and other callbacks");
 
@@ -3922,7 +3912,7 @@ CUT.addElement("ul", "<li>1x domReady(); (core api) is working</li>"
 );
 
 
-// domReady();
+/* domReady(); */
 CEL.domReady(function () {
   CUT.isTrue("domReady(); (core api) is working", true);
 });
@@ -3940,7 +3930,7 @@ In the adding of the HTML script tag causes the error.
 */
 
 
-// Array.fromAsync();
+/* Array.fromAsync(); */
 async function* asyncIterable () {
   for (let i = 0; i < 5; i++) {
     await new Promise((resolve)=> setTimeout(resolve,100*i));
@@ -4004,13 +3994,13 @@ var
   resAjaxText = "<p><span class=\"big\">Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</span> Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. <small>In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.</small></p>";
 
 
-// getText();
+/* getText(); */
 CEL.getText("testdata.txt",
   function(r){ CUT.isEqual("getText();", resAjaxText,r); }
 );
 
 
-// getJson();
+/* getJson(); */
 CEL.getJson("testdata.json",
   function(r){ CUT.isEqual("getJson();", resAjaxJson, r.testArray[0].image); }
 );
