@@ -1115,16 +1115,16 @@ CUT.isTrue("assert(); 1 true", CEL.assert(true, "assert true"));
 CUT.isTrue("assert(); 2 true ", CEL.assert(true, "assert true"));
 try {
   CEL.assert(false, "assert false");
-} catch (e) { CUT.isTrue("assert(); 3 error", Error.isError(e)); }
+} catch (e) { CUT.isTrue("assert(); 3 error", true); }
 try {
   CEL.assert(false);
-} catch (e) { CUT.isTrue("assert(); 4 error", Error.isError(e)); }
+} catch (e) { CUT.isTrue("assert(); 4 error", true); }
 try {
   CEL.assert(null, "assert not boolean");
-} catch (e) { CUT.isTrue("assert(); 5 error", Error.isError(e)); }
+} catch (e) { CUT.isTrue("assert(); 5 error", true); }
 try {
   CEL.assert(null);
-} catch (e) { CUT.isTrue("assert(); 6 error", Error.isError(e)); }
+} catch (e) { CUT.isTrue("assert(); 6 error", true); }
 
 
 /* assertTrue(); */
@@ -1132,33 +1132,33 @@ CUT.isTrue("assertTrue(); 1 true", CEL.assertTrue(true, "assertTrue true"));
 CUT.isTrue("assertTrue(); 2 true", CEL.assertTrue(true, "assertTrue true"));
 try {
   CEL.assertTrue(false, "assertTrue false");
-} catch (e) { CUT.isTrue("assertTrue(); 3 error", Error.isError(e)); }
+} catch (e) { CUT.isTrue("assertTrue(); 3 error", true); }
 try {
   CEL.assertTrue(false);
-} catch (e) { CUT.isTrue("assertTrue(); 4 error", Error.isError(e)); }
+} catch (e) { CUT.isTrue("assertTrue(); 4 error", true); }
 try {
   CEL.assertTrue(null, "assertTrue not boolean");
-} catch (e) { CUT.isTrue("assertTrue(); 5 error", Error.isError(e)); }
+} catch (e) { CUT.isTrue("assertTrue(); 5 error", true); }
 try {
   CEL.assertTrue(null);
-} catch (e) { CUT.isTrue("assertTrue(); 6 error", Error.isError(e)); }
+} catch (e) { CUT.isTrue("assertTrue(); 6 error", true); }
 
 
 /* assertFalse(); */
 CUT.isTrue("assertFalse(); 1 true", CEL.assertFalse(false,"assertFalse false"));
 try {
   CEL.assertFalse(true,"assertFalse true");
-} catch (e) { CUT.isTrue("assertFalse(); 2 error", Error.isError(e)); }
+} catch (e) { CUT.isTrue("assertFalse(); 2 error", true); }
 try {
   CEL.assertFalse(true);
-} catch (e) { CUT.isTrue("assertFalse(); 3 error", Error.isError(e)); }
+} catch (e) { CUT.isTrue("assertFalse(); 3 error", true); }
 CUT.isTrue("assertFalse(); 4 true", CEL.assertFalse(false));
 try {
   CEL.assertFalse(null,"assertFalse not boolean");
-} catch (e) { CUT.isTrue("assertFalse(); 5 error", Error.isError(e)); }
+} catch (e) { CUT.isTrue("assertFalse(); 5 error", true); }
 try {
   CEL.assertFalse(null);
-} catch (e) { CUT.isTrue("assertFalse(); 6 error", Error.isError(e)); }
+} catch (e) { CUT.isTrue("assertFalse(); 6 error", true); }
 
 
 /* assertEqual(); */
@@ -1167,10 +1167,10 @@ CUT.isTrue("assertEqual(); 2 true", CEL.assertEqual(42, 42));
 CUT.isTrue("assertEqual(); 3 true", CEL.assertEqual(42, "42", ""));
 try {
   CEL.assertEqual(null,false,"assertEqual null false");
-} catch (e) { CUT.isTrue("assertEqual(); 4 error", Error.isError(e)); }
+} catch (e) { CUT.isTrue("assertEqual(); 4 error", true); }
 try {
   CEL.assertEqual(null,false);
-} catch (e) { CUT.isTrue("assertEqual(); 5 error", Error.isError(e)); }
+} catch (e) { CUT.isTrue("assertEqual(); 5 error", true); }
 
 
 /* assertStrictEqual(); */
@@ -1178,26 +1178,26 @@ CUT.isTrue("assertStrictEqual(); 1 true", CEL.assertStrictEqual(NaN, NaN));
 CUT.isTrue("assertStrictEqual(); 2 true", CEL.assertStrictEqual(42, 42));
 try {
   CEL.assertStrictEqual(42, "42", "assertStrictEqual 42 \"42\"");
-} catch (e) { CUT.isTrue("assertStrictEqual(); 3 error", Error.isError(e)); }
+} catch (e) { CUT.isTrue("assertStrictEqual(); 3 error", true); }
 try {
   CEL.assertStrictEqual(42, "42");
-} catch (e) { CUT.isTrue("assertStrictEqual(); 3 error", Error.isError(e)); }
+} catch (e) { CUT.isTrue("assertStrictEqual(); 3 error", true); }
 try {
   CEL.assertStrictEqual(null, false, "assertStrictEqual null false");
-} catch (e) { CUT.isTrue("assertStrictEqual(); 4 error", Error.isError(e)); }
+} catch (e) { CUT.isTrue("assertStrictEqual(); 4 error", true); }
 
 
 /* assertNotEqual(); */
 CUT.isTrue("assertNotEqual(); 1 true", CEL.assertNotEqual(null,false, "lorem"));
 try {
   CEL.assertNotEqual(NaN, NaN);
-} catch (e) { CUT.isTrue("assertNotEqual(); 2 error", Error.isError(e)); }
+} catch (e) { CUT.isTrue("assertNotEqual(); 2 error", true); }
 try {
   CEL.assertNotEqual(42, 42);
-} catch (e) { CUT.isTrue("assertNotEqual(); 3 error", Error.isError(e)); }
+} catch (e) { CUT.isTrue("assertNotEqual(); 3 error", true); }
 try {
   CEL.assertNotEqual(42, "42", "assertNotEqual 42 \"42\"");
-} catch (e) { CUT.isTrue("assertNotEqual(); 4 error", Error.isError(e)); }
+} catch (e) { CUT.isTrue("assertNotEqual(); 4 error", true); }
 
 
 /* assertNotStrictEqual(); */
@@ -1209,18 +1209,38 @@ CUT.isTrue("assertNotStrictEqual(); 2 true",
 );
 try {
   CEL.assertNotStrictEqual(NaN, NaN);
-} catch (e) { CUT.isTrue("assertNotStrictEqual(); 3 error", Error.isError(e)); }
+} catch (e) { CUT.isTrue("assertNotStrictEqual(); 3 error", true); }
 try {
   CEL.assertNotStrictEqual(42, 42);
-} catch (e) { CUT.isTrue("assertNotStrictEqual(); 4 error", Error.isError(e)); }
+} catch (e) { CUT.isTrue("assertNotStrictEqual(); 4 error", true); }
 try {
   CEL.assertNotStrictEqual(42, "42", "lorem");
-} catch (e) { CUT.isTrue("assertNotStrictEqual(); 4 error", Error.isError(e)); }
+} catch (e) { CUT.isTrue("assertNotStrictEqual(); 4 error", true); }
 
 
 /** Collections API **/
 CUT.addElement("hr");
 CUT.addElement("h3", "Collections");
+
+
+/* unique(); */
+token1 = [
+  { "name": "Picard", "rank": "captain" },
+  { "name": "Riker", "rank": "captain" },
+  { "name": "Data", "rank": "commander" },
+  { "name": "Troi", "rank": "commander" }
+];
+CUT.isEqual("unique(); 1 - without resolver", "[4,7,5,6]",
+  JSON.stringify(CEL.unique([4, 7, 5, 5, 6, 7]))
+);
+CUT.isEqual("unique(); 2 - with key resolver",
+  JSON.stringify([...CEL.unique(token1, "rank")]),
+ "[{\"name\":\"Picard\",\"rank\":\"captain\"},{\"name\":\"Data\",\"rank\":\"commander\"}]"
+);
+CUT.isEqual("unique(); 3 - with function resolver",
+  JSON.stringify([...CEL.unique(token1, (v) => v.rank)]),
+ "[{\"name\":\"Picard\",\"rank\":\"captain\"},{\"name\":\"Data\",\"rank\":\"commander\"}]"
+);
 
 
 /* count(); */
@@ -1252,39 +1272,35 @@ CUT.isTrue("arrayDeepClone();",
 
 /* arrayCreate(); begin */
 token1 = CEL.arrayCreate(4);
-CUT.isTrue("arrayCreate(); return array 4",
+CUT.isTrue("arrayCreate(); 1 - return array 4",
   Array.isArray(token1) && token1.length === 4
 );
 token1 = CEL.arrayCreate(0);
-CUT.isTrue("arrayCreate(); return array 0",
+CUT.isTrue("arrayCreate(); 2 - return array 0",
   Array.isArray(token1) && token1.length === 0
 );
 token1 = CEL.arrayCreate(-0);
-CUT.isTrue("arrayCreate(); return array -0",
+CUT.isTrue("arrayCreate(); 3 - return array -0",
   Array.isArray(token1) && token1.length === 0
 );
 token1 = CEL.arrayCreate("5");
-CUT.isTrue("arrayCreate(); return array \"5\"",
+CUT.isTrue("arrayCreate(); 4 - return array \"5\"",
   Array.isArray(token1) && token1.length === 5
 );
 token1 = CEL.arrayCreate(true);
-CUT.isTrue("arrayCreate(); return array true",
+CUT.isTrue("arrayCreate(); 5 - return array true",
   Array.isArray(token1) && token1.length === 1
 );
 token1 = CEL.arrayCreate(false);
-CUT.isTrue("arrayCreate(); return array false",
+CUT.isTrue("arrayCreate(); 6 - return array false",
   Array.isArray(token1) && token1.length === 0
 );
 try {
   token1 = CEL.arrayCreate(Math.pow(2, 32));
 } catch (e) {
-  CUT.isTrue(
-    "arrayCreate(); return error with Math.pow(2, 32);",
-    Error.isError(e)
-  );
-}
+  CUT.isTrue("arrayCreate(); 7 - return error with Math.pow(2, 32);", true); }
 token1 = CEL.arrayCreate();
-CUT.isTrue("arrayCreate(); return array without parameter",
+CUT.isTrue("arrayCreate(); 8 - return array without parameter",
   Array.isArray(token1) && token1.length === 0
 );
 /* arrayCreate(); end */
@@ -2248,33 +2264,33 @@ CUT.isNotEqual("Math.sumPrecise(); 28",
 );
 try {
   console.log(Math.sumPrecise(5));
-} catch (e) { CUT.isTrue("Math.sumPrecise(); 30 - " + Error.isError(e), true); }
+} catch (e) { CUT.isTrue("Math.sumPrecise(); 30 - error", true); }
 try {
   console.log(Math.sumPrecise("1848"));
-} catch (e) { CUT.isTrue("Math.sumPrecise(); 31 - " + Error.isError(e), true); }
+} catch (e) { CUT.isTrue("Math.sumPrecise(); 31 - error", true); }
 try {
   console.log(Math.sumPrecise("1848a"));
-} catch (e) { CUT.isTrue("Math.sumPrecise(); 32 - " + Error.isError(e), true); }
+} catch (e) { CUT.isTrue("Math.sumPrecise(); 32 - error", true); }
 try {
   console.log(Math.sumPrecise([0.1,0.1,0.1,0.1,0.1,0.1, 0.1, 0.1, 0.1, "0.1"]));
-} catch (e) { CUT.isTrue("Math.sumPrecise(); 33 - " + Error.isError(e), true); }
+} catch (e) { CUT.isTrue("Math.sumPrecise(); 33 - error", true); }
 try {
   console.log(Math.sumPrecise([0.1,0.1,0.1,0.1,0.1, 0.1, 0.1, 0.1, 0.1, true]));
-} catch (e) { CUT.isTrue("Math.sumPrecise(); 34 - " + Error.isError(e), true); }
+} catch (e) { CUT.isTrue("Math.sumPrecise(); 34 - error", true); }
 try {
   console.log(
     Math.sumPrecise([0.1,0.1,0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, BigInt(5)])
   );
-} catch (e) { CUT.isTrue("Math.sumPrecise(); 35 - " + Error.isError(e), true); }
+} catch (e) { CUT.isTrue("Math.sumPrecise(); 35 - error", true); }
 try {
   console.log(Math.sumPrecise([Infinity,"0.1", 0.2]));
-} catch (e) { CUT.isTrue("Math.sumPrecise(); 36 - " + Error.isError(e), true); }
+} catch (e) { CUT.isTrue("Math.sumPrecise(); 36 - error", true); }
 try {
   console.log(Math.sumPrecise([-Infinity, "0.1", 0.2]));
-} catch (e) { CUT.isTrue("Math.sumPrecise(); 37 - " + Error.isError(e), true); }
+} catch (e) { CUT.isTrue("Math.sumPrecise(); 37 - error", true); }
 try {
   console.log(Math.sumPrecise([-Infinity, "1", 0.2]));
-} catch (e) { CUT.isTrue("Math.sumPrecise(); 38 - " + Error.isError(e), true); }
+} catch (e) { CUT.isTrue("Math.sumPrecise(); 38 - error", true); }
 /* Math.sumPrecise(); end */
 
 
@@ -3028,10 +3044,10 @@ CUT.isEqual("requireObjectCoercible(); 6 function", token1,
   CEL.requireObjectCoercible(token1)
 );
 try { CEL.requireObjectCoercible(null) } catch (e) {
-  CUT.isTrue("requireObjectCoercible(); 7 null -> error", Error.isError(e));
+  CUT.isTrue("requireObjectCoercible(); 7 null -> error", true);
 }
 try { CEL.requireObjectCoercible(undefined) } catch (e) {
-  CUT.isTrue("requireObjectCoercible(); 8 undefined -> error",Error.isError(e));
+  CUT.isTrue("requireObjectCoercible(); 8 undefined -> error", true);
 }
 
 
@@ -3543,63 +3559,49 @@ CUT.isTrue("signbit();",
 
 
 /* clamp(); */
-try { CEL.clamp(15, 10, NaN); } catch (e) {
-  CUT.isTrue("clamp(); 01", Error.isError(e));
-}
-try { CEL.clamp(15, 10, NaN); } catch (e) {
-  CUT.isTrue("clamp(); 02", Error.isError(e));
-}
+try { CEL.clamp(15, 10, NaN); } catch (e) { CUT.isTrue("clamp(); 01", true); }
 try { CEL.clamp(15, Infinity, -Infinity) } catch (e) {
-  CUT.isTrue("clamp(); 03", Error.isError(e));
+  CUT.isTrue("clamp(); 02", true);
 }
-try { CEL.clamp(15, 10, 5); } catch (e) {
-  CUT.isTrue("clamp(); 04", Error.isError(e));
-}
-CUT.isNotEqual("clamp(); 05", NaN, CEL.clamp(NaN, 10,   15));
-CUT.isEqual("clamp(); 06",    0,   CEL.clamp(15,  -0,   0));
-CUT.isEqual("clamp(); 07",    -0,  CEL.clamp(0,   -0,   15));
-CUT.isEqual("clamp(); 08",    15,  CEL.clamp(10,  15,   20));
-CUT.isEqual("clamp(); 09",    -0,  CEL.clamp(-0,  -10,  0));
-CUT.isEqual("clamp(); 10",    -0,  CEL.clamp(0,   -10,  -0));
-CUT.isEqual("clamp(); 11",    20,  CEL.clamp(25,   10,  20));
-CUT.isEqual("clamp(); 12",    15,  CEL.clamp(15,   10,  20));
-CUT.isEqual("clamp(); 13",    +0,  CEL.clamp(15,   -0n, 0));
-CUT.isEqual("clamp(); 14",    -0,  CEL.clamp(0n,   -0,  15));
-CUT.isEqual("clamp(); 15",    15,  CEL.clamp(10,   15,  20n));
-CUT.isEqual("clamp(); 16",    0n,  CEL.clamp(-0n,  -10, 0));
-CUT.isEqual("clamp(); 17",    0,   CEL.clamp(0,    -10, -0n));
-CUT.isEqual("clamp(); 18",    20,  CEL.clamp(25,   10n, 20));
-CUT.isEqual("clamp(); 19",    15n, CEL.clamp(15n,  10n, 20n));
+try { CEL.clamp(15, 10, 5); } catch (e) { CUT.isTrue("clamp(); 03", true); }
+CUT.isNotEqual("clamp(); 04", NaN, CEL.clamp(NaN, 10,   15));
+CUT.isEqual("clamp(); 05",    0,   CEL.clamp(15,  -0,   0));
+CUT.isEqual("clamp(); 06",    -0,  CEL.clamp(0,   -0,   15));
+CUT.isEqual("clamp(); 07",    15,  CEL.clamp(10,  15,   20));
+CUT.isEqual("clamp(); 07",    -0,  CEL.clamp(-0,  -10,  0));
+CUT.isEqual("clamp(); 09",    -0,  CEL.clamp(0,   -10,  -0));
+CUT.isEqual("clamp(); 10",    20,  CEL.clamp(25,   10,  20));
+CUT.isEqual("clamp(); 11",    15,  CEL.clamp(15,   10,  20));
+CUT.isEqual("clamp(); 12",    +0,  CEL.clamp(15,   -0n, 0));
+CUT.isEqual("clamp(); 13",    -0,  CEL.clamp(0n,   -0,  15));
+CUT.isEqual("clamp(); 14",    15,  CEL.clamp(10,   15,  20n));
+CUT.isEqual("clamp(); 15",    0n,  CEL.clamp(-0n,  -10, 0));
+CUT.isEqual("clamp(); 16",    0,   CEL.clamp(0,    -10, -0n));
+CUT.isEqual("clamp(); 17",    20,  CEL.clamp(25,   10n, 20));
+CUT.isEqual("clamp(); 17",    15n, CEL.clamp(15n,  10n, 20n));
 
 
 /* minmax(); */
-try { CEL.minmax(15, 10, NaN); } catch (e) {
-  CUT.isTrue("minmax(); 01", Error.isError(e));
-}
-try { CEL.minmax(15, 10, NaN); } catch (e) {
-  CUT.isTrue("minmax(); 02", Error.isError(e));
-}
+try { CEL.minmax(15, 10, NaN); } catch (e) { CUT.isTrue("minmax(); 01", true); }
 try { CEL.minmax(15, Infinity, -Infinity) } catch (e) {
-  CUT.isTrue("minmax(); 03", Error.isError(e));
+  CUT.isTrue("minmax(); 02", true);
 }
-try { CEL.minmax(15, 10, 5); } catch (e) {
-  CUT.isTrue("minmax(); 04", Error.isError(e));
-}
-CUT.isNotEqual("minmax(); 05", NaN, CEL.minmax(NaN, 10,  15));
-CUT.isEqual("minmax(); 06",    0,   CEL.minmax(15,  -0,  0));
-CUT.isEqual("minmax(); 07",    -0,  CEL.minmax(0,   -0,  15));
-CUT.isEqual("minmax(); 08",    15,  CEL.minmax(10,  15,  20));
-CUT.isEqual("minmax(); 09",    -0,  CEL.minmax(-0,  -10, 0));
-CUT.isEqual("minmax(); 10",    -0,  CEL.minmax(0,   -10, -0));
-CUT.isEqual("minmax(); 11",    20,  CEL.minmax(25,  10,  20));
-CUT.isEqual("minmax(); 12",    15,  CEL.minmax(15,  10,  20));
-CUT.isEqual("minmax(); 13",    +0,  CEL.minmax(15,  -0n, 0));
-CUT.isEqual("minmax(); 14",    -0,  CEL.minmax(0n,  -0,  15));
-CUT.isEqual("minmax(); 15",    15,  CEL.minmax(10,  15,  20n));
-CUT.isEqual("minmax(); 16",    0n,  CEL.minmax(-0n, -10, 0));
-CUT.isEqual("minmax(); 17",    0,   CEL.minmax(0,   -10, -0n));
-CUT.isEqual("minmax(); 18",    20,  CEL.minmax(25,  10n, 20));
-CUT.isEqual("minmax(); 19",    15n, CEL.minmax(15n, 10n, 20n));
+try { CEL.minmax(15, 10, 5); } catch (e) { CUT.isTrue("minmax(); 03", true); }
+CUT.isNotEqual("minmax(); 04", NaN, CEL.minmax(NaN, 10,  15));
+CUT.isEqual("minmax(); 05",    0,   CEL.minmax(15,  -0,  0));
+CUT.isEqual("minmax(); 06",    -0,  CEL.minmax(0,   -0,  15));
+CUT.isEqual("minmax(); 07",    15,  CEL.minmax(10,  15,  20));
+CUT.isEqual("minmax(); 08",    -0,  CEL.minmax(-0,  -10, 0));
+CUT.isEqual("minmax(); 09",    -0,  CEL.minmax(0,   -10, -0));
+CUT.isEqual("minmax(); 10",    20,  CEL.minmax(25,  10,  20));
+CUT.isEqual("minmax(); 11",    15,  CEL.minmax(15,  10,  20));
+CUT.isEqual("minmax(); 12",    +0,  CEL.minmax(15,  -0n, 0));
+CUT.isEqual("minmax(); 13",    -0,  CEL.minmax(0n,  -0,  15));
+CUT.isEqual("minmax(); 14",    15,  CEL.minmax(10,  15,  20n));
+CUT.isEqual("minmax(); 15",    0n,  CEL.minmax(-0n, -10, 0));
+CUT.isEqual("minmax(); 16",    0,   CEL.minmax(0,   -10, -0n));
+CUT.isEqual("minmax(); 17",    20,  CEL.minmax(25,  10n, 20));
+CUT.isEqual("minmax(); 18",    15n, CEL.minmax(15n, 10n, 20n));
 
 
 /* product(); */

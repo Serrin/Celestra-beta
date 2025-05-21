@@ -1275,7 +1275,7 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>arrayUnique(&#60;iterator&#62;);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns a new array with unique values. The value parameter is mandatory and can be an iterator. In modern browsers you can use ES6 types too (Map, Set and iterators).</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function returns a new array with unique values. The value parameter is mandatory and can be an iterator. In modern browsers you can use ES6 types too (Map, Set and iterators).</td>
     </tr>
     <tr>
       <td><code>concat(&#60;iterator1&#62;[,iteratorN]);</code></td>
@@ -1533,6 +1533,37 @@ console.log(o2);
     <tr>
       <td><code>takeWhile(&#60;iterator&#62;,&#60;callback&#62;);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>Yield the elements of an iterator while the callback (filter) function returns true. The callback function will be called with the actual element of the iterator. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function.</td>
+    </tr>
+    <tr>
+      <td><code>unique(&#60;iterator&#62;[, resolver]);</code></td>
+      <td>
+        <p><span class="info">Stability: 4 - Stable.</span></p>
+        <p>This function returns a new iterator with unique values. The iterator parameter is mandatory.</p>
+        <p>The resolver parameter can be an object field name or function.</p>
+        <p><b>Examples</b></p>
+        <p>Without resolver:</p>
+        <pre>
+JSON.stringify( [... CEL.unique( [1, 2, 2, 3] ) ] );
+// '[1,2,3]'
+        </pre>
+        <p>With resolver:</p>
+        <pre>
+let array = [
+  { "name": "Picard", "rank": "captain" },
+  { "name": "Riker", "rank": "captain" },
+  { "name": "Data", "rank": "commander" },
+  { "name": "Troi", "rank": "commander" }
+];
+        
+// key resolver
+JSON.stringify( [... CEL.unique(array, "rank") ] );
+// '[{"name":"Picard","rank":"captain"},{"name":"Data","rank":"commander"}]'
+
+// function resolver
+JSON.stringify( [... CEL.unique(array, (v) => v.rank) ] );
+// '[{"name":"Picard","rank":"captain"},{"name":"Data","rank":"commander"}]'
+        </pre>
+      </td>
     </tr>
     <tr>
       <td><code>unzip(&#60;iterator&#62;);</code></td>

@@ -1307,6 +1307,25 @@ function clearCookies (path = "/", domain, secure, SameSite = "Lax", HttpOnly) {
 
 /** Collections API **/
 
+/* unique(<iterator>[,resolver]): iterator */
+function unique (it, resolver) {
+  if (resolver == null) { return [...new Set(it)]; }
+  if (typeof resolver === "string") {
+    return Array.from(it).reduce(function (acc, el) {
+      if (acc.every((e) => e[resolver] !== el[resolver])) { acc.push(el); }
+      return acc;
+    }, []).values();
+  }
+  if (typeof resolver === "function") {
+    let cache = new Map();
+    for (let item of it) {
+      let key = resolver(item);
+      if (!cache.has(key)) { cache.set(key, item); }
+    }
+    return cache.values();
+  }
+}
+
 /* count(<iterator>,<callback: function>): integer */
 function count (it, fn) {
   let i = 0, r = 0;
@@ -2284,6 +2303,7 @@ var celestra = {
   removeCookie: removeCookie,
   clearCookies: clearCookies,
   /** Collections API **/
+  unique: unique,
   count: count,
   arrayDeepClone: arrayDeepClone,
   arrayCreate: arrayCreate,
