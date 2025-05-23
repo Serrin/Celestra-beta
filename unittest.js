@@ -1111,55 +1111,64 @@ CUT.addElement("h3", "Assertion API");
 
 
 /* assert(); */
-CUT.isTrue("assert(); 1 true", CEL.assert(true, "assert true"));
-CUT.isTrue("assert(); 2 true ", CEL.assert(true, "assert true"));
-try {
-  CEL.assert(false, "assert false");
-} catch (e) { CUT.isTrue("assert(); 3 error", true); }
+CUT.isTrue("assert(); 1", CEL.assert(true));
+CUT.isTrue("assert(); 2", CEL.assert(true, "assert true"));
+CUT.isTrue("assert(); 3", CEL.assert(1));
+CUT.isTrue("assert(); 4", CEL.assert(1, "assert false"));
 try {
   CEL.assert(false);
-} catch (e) { CUT.isTrue("assert(); 4 error", true); }
-try {
-  CEL.assert(null, "assert not boolean");
 } catch (e) { CUT.isTrue("assert(); 5 error", true); }
 try {
-  CEL.assert(null);
+  CEL.assert(false, "lorem");
 } catch (e) { CUT.isTrue("assert(); 6 error", true); }
+try {
+  CEL.assert(0);
+} catch (e) { CUT.isTrue("assert(); 7 error", true); }
+try {
+  CEL.assert(0, "lorem");
+} catch (e) { CUT.isTrue("assert(); 8 error", true); }
 
 
 /* assertTrue(); */
-CUT.isTrue("assertTrue(); 1 true", CEL.assertTrue(true, "assertTrue true"));
-CUT.isTrue("assertTrue(); 2 true", CEL.assertTrue(true, "assertTrue true"));
-try {
-  CEL.assertTrue(false, "assertTrue false");
-} catch (e) { CUT.isTrue("assertTrue(); 3 error", true); }
+CUT.isTrue("assertTrue(); 1", CEL.assertTrue(true));
+CUT.isTrue("assertTrue(); 2", CEL.assertTrue(true, "assertTrue true"));
+CUT.isTrue("assertTrue(); 3", CEL.assertTrue(1));
+CUT.isTrue("assertTrue(); 4", CEL.assertTrue(1, "assertTrue false"));
 try {
   CEL.assertTrue(false);
-} catch (e) { CUT.isTrue("assertTrue(); 4 error", true); }
-try {
-  CEL.assertTrue(null, "assertTrue not boolean");
 } catch (e) { CUT.isTrue("assertTrue(); 5 error", true); }
 try {
-  CEL.assertTrue(null);
+  CEL.assertTrue(false, "lorem");
 } catch (e) { CUT.isTrue("assertTrue(); 6 error", true); }
+try {
+  CEL.assertTrue(0);
+} catch (e) { CUT.isTrue("assertTrue(); 7 error", true); }
+try {
+  CEL.assertTrue(0, "lorem");
+} catch (e) { CUT.isTrue("assertTrue(); 8 error", true); }
 
 
 /* assertFalse(); */
-CUT.isTrue("assertFalse(); 1 true", CEL.assertFalse(false,"assertFalse false"));
-try {
-  CEL.assertFalse(true,"assertFalse true");
-} catch (e) { CUT.isTrue("assertFalse(); 2 error", true); }
+CUT.isTrue("assertFalse(); 1", CEL.assertFalse(false));
+CUT.isTrue("assertFalse(); 2", CEL.assertFalse(false, "lorem"));
+CUT.isTrue("assertFalse(); 3", CEL.assertFalse(0));
+CUT.isTrue("assertFalse(); 4", CEL.assertFalse(0, "lorem"));
 try {
   CEL.assertFalse(true);
-} catch (e) { CUT.isTrue("assertFalse(); 3 error", true); }
-CUT.isTrue("assertFalse(); 4 true", CEL.assertFalse(false));
-try {
-  CEL.assertFalse(null,"assertFalse not boolean");
 } catch (e) { CUT.isTrue("assertFalse(); 5 error", true); }
 try {
-  CEL.assertFalse(null);
+  CEL.assertFalse(true, "lorem");
 } catch (e) { CUT.isTrue("assertFalse(); 6 error", true); }
+try {
+  CEL.assertFalse(1);
+} catch (e) { CUT.isTrue("assertFalse(); 7 error", true); }
+try {
+  CEL.assertFalse(1, "assertFalse false");
+} catch (e) { CUT.isTrue("assertFalse(); 8 error", true); }
 
+
+CUT.isTrue("assert(); 1", CEL.assert(true, "assert true"));
+CUT.isTrue("assert(); 2", CEL.assert(1, "assert false"));
 
 /* assertEqual(); */
 CUT.isTrue("assertEqual(); 1 true", CEL.assertEqual(NaN, NaN));

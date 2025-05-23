@@ -263,7 +263,7 @@ function randomUUIDv7 () {
   let ts = Date.now().toString(16).padStart(12,"0")+"7";
   let uuid = Array.from(([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, (c) =>
     (c^crypto.getRandomValues(new Uint8Array(1))[0]&15>>c/4).toString(16)
-  ) );
+  ));
   let i = 0, p = 0;
   while (i<13) {
     if (p === 8 || p === 13) { p++; }
@@ -322,24 +322,24 @@ const obj2string = (o) => Object.keys(o).reduce(
 
 /* classof(<variable: any>): string */
 /* classof(<variable: any>[,type: string[,throw=false]]): boolean or throw */
-function classof (v, t, th = false) {
+function classof (v, type, Throw = false) {
   var ot = Object.prototype.toString.call(v).slice(8, -1).toLowerCase();
   if (arguments.length < 2) { return ot; }
-  if (!th) { return ot === t.toLowerCase(); }
-  if (ot !== t.toLowerCase()) {
-    throw TypeError("Celestra classof(); type error: " + ot + " - "  + t);
+  if (!Throw) { return ot === type.toLowerCase(); }
+  if (ot !== type.toLowerCase()) {
+    throw TypeError("Celestra classof(); type error: " + ot + " - "  + type);
   }
   return true;
 }
 
 /* getType(<variable: any>): string */
 /* getType(<variable: any>[,type: string[,throw=false]]): boolean or throw */
-function getType (v, t, th = false) {
+function getType (v, type, Throw = false) {
   var ot = Object.prototype.toString.call(v).slice(8, -1).toLowerCase();
   if (arguments.length < 2) { return ot; }
-  if (!th) { return ot === t.toLowerCase(); }
-  if (ot !== t.toLowerCase()) {
-    throw TypeError("Celestra getType(); type error: " + ot + " - "  + t);
+  if (!Throw) { return ot === type.toLowerCase(); }
+  if (ot !== type.toLowerCase()) {
+    throw TypeError("Celestra getType(); type error: " + ot + " - "  + type);
   }
   return true;
 }
@@ -433,27 +433,18 @@ function timestampID (size = 21, alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZab
 
 /* assert(<value: boolean>[, message = "value"]): true OR throw error */
 function assert (v, message = "value") {
-  if (typeof v !== "boolean") {
-    throw new TypeError("[assertTrue] [TypeError] " + message + " - " + v);
-  }
   if (!v) { throw new Error("[assert] " + message + " - " + v); }
   return true;
 }
 
 /* assertTrue(<value: boolean>[, message = "value"]): true OR throw error */
 function assertTrue (v, message = "value") {
-  if (typeof v !== "boolean") {
-    throw new TypeError("[assertTrue] [TypeError] " + message + " - " + v);
-  }
   if (!v) { throw new Error("[assertTrue] " + message + " - " + v); }
   return true;
 }
 
 /* assertFalse(<value: boolean>[, message = "value"]): true OR throw error */
 function assertFalse (v, message = "value") {
-  if (typeof v !== "boolean") {
-    throw new TypeError("[assertFalse] [TypeError] " + message + " - " + v);
-  }
   if (v) { throw new Error("[assertFalse] " + message + " - " + v); }
   return true;
 }
@@ -1150,8 +1141,10 @@ const isObject = (v) => (
 );
 
 /* isEmptyObject(<value: any>): boolean */
-const isEmptyObject = (v) =>
-  (v != null && typeof v === "object" && Object.keys(v).length === 0);
+const isEmptyObject = (O) => (O != null && typeof O === "object" 
+  && Object.getOwnPropertyNames(O).length === 0
+  && Object.getOwnPropertySymbols(O).length === 0
+);
 
 /* isFunction(<value: any>): boolean */
 const isFunction = (O) => (typeof v === "function" ||
@@ -1788,7 +1781,7 @@ const withOut = ([...a], [...fl]) => a.filter( (e) => fl.indexOf(e) === -1 );
 
 /** Abstract API **/
 
-/* isSameType(<object>,<property>): undefined */
+/* deletePropertyOrThrow(<object>,<property>): undefined */
 function deletePropertyOrThrow (O, P) {
   delete O[P];
   if (P in O) { throw new Error("Object Property delete error: "+O+"["+P+"]"); }
@@ -2158,13 +2151,6 @@ function randomFloat (i = 100, a) {
 /* inRange(<value: number>,<min: number>,<max: number>): boolean */
 const inRange = (v, min, max) => (v >= min && v <= max);
 
-/** object header **/
-
-const VERSION = "Celestra v5.7.0 dev";
-
-/* celestra.noConflict(): celestra object */
-function noConflict () { window.CEL = celestra.__prevCEL__; return celestra; }
-
 /** undocumented functions **/
 /* Please don't use these in production! */
 
@@ -2178,16 +2164,17 @@ const _map = Function.prototype.call.bind(Array.prototype.map);
 
 const _slice = Function.prototype.call.bind(Array.prototype.slice);
 
+/** object header **/
+
+const VERSION = "Celestra v5.7.0 dev";
+
+/* celestra.noConflict(): celestra object */
+function noConflict () { window.CEL = celestra.__prevCEL__; return celestra; }
+
 var celestra = {
   /** object header **/
   VERSION: VERSION,
   noConflict: noConflict,
-  /** undocumented functions **/
-  _apply: _apply,
-  _call: _call,
-  _forEach: _forEach,
-  _map: _map,
-  _slice: _slice,
   /** Core API **/
   BASE16: BASE16,
   BASE32: BASE32,
@@ -2471,7 +2458,13 @@ var celestra = {
   signbit: signbit,
   randomInt: randomInt,
   randomFloat: randomFloat,
-  inRange: inRange
+  inRange: inRange,
+  /** undocumented functions **/
+  _apply: _apply,
+  _call: _call,
+  _forEach: _forEach,
+  _map: _map,
+  _slice: _slice
 };
 
 if (typeof window !== "undefined") {

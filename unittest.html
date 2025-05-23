@@ -169,7 +169,7 @@ results
     <td><code>CEL.classof(42,'string', true);</code></td>
   </tr>
   <tr>
-    <td><button onclick=" try { CEL.classof(42,'string', true); } catch (e) { alert(e); } ">getType(); throw</button></td>
+    <td><button onclick=" try { CEL.getType(42,'string', true); } catch (e) { alert(e); } ">getType(); throw</button></td>
     <td><code>CEL.getType(42,'string', true);</code></td>
   </tr>
   <tr>
@@ -356,9 +356,9 @@ isBoolean false - ${ CEL.isBoolean("ggg") }
 
 <script>
 const _preCel = {
-  // copied from v4.5.0
-  importScript: function importScript (...args) {
-    for (let item of args) {
+  // copied from v5.7.0
+  importScript: function importScript (...a) {
+    for (let item of a) {
       let scr = document.createElement("script");
       scr.type = "text\/javascript";
       scr.src = item;
@@ -367,7 +367,7 @@ const _preCel = {
           "Loading failed for the script with source " + e.target.src
         );
       };
-      (document.head || document.getElementsByTagName("head")[0]).appendChild(scr);
+      (document.head||document.getElementsByTagName("head")[0]).appendChild(scr);
     }
   },
 

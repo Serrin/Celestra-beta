@@ -9,6 +9,71 @@
 # Celestra version history
 
 
+## Celestra v5.7.0 Nostromo
+
+1. Documentation and pdf fixes.
+ 
+2. __Change the ESM edition:__ The default export will be the celestra object and the all of the functions will be exported.
+ 
+3. Deprecate this function (__Stability 1__):
+````javascript
+arrayUnique();
+````
+
+4. Remove these functions (__Stability 0__):
+````javascript
+inherit()
+isError();
+group();
+````
+
+5. Set __Stability 3__ of these functions: 
+````javascript
+isSuperset();
+arrayDifference();
+arrayIntersection();
+arraySymmetricDifference();
+arrayUnion();
+setDifference();
+setIntersection();
+setSymmetricDifference();
+setUnion();
+````
+
+6. Replace these functions with a new version:
+````javascript
+arrayCreate();
+reverse();
+````
+
+7. Add this function:
+````javascript
+unique();
+````
+
+8. Replace the old assertion functions with the new __Assertion API__:
+
+Old function|New function
+------------|------------
+`assertTrue(<message>[,value]);`|`assert(<value>[,message="value"]);`<BR>`assertTrue(<value>[,message="value"]);`
+`assertFalse(<message>[,value]);`|`assertFalse(<value>[,message="value"]);`
+`assertEq(<message>,<value1>,<value2>[,strict=true]);`|`assertEqual(<value1>,<value2>[,message="values"]);`<BR>(_Loose equality + NaN equality_)<BR>`assertStrictEqual(<value1>,<value2>[,message="values"]);`<BR>(_SameValue equality_)
+`assertNotEq(<message>,<value1>,<value2>[,strict=true]);`|`assertNotEqual(<value1>,<value2>[,message="values"]);`<BR>(_Loose equality + NaN equality_)<BR>`assertNotStrictEqual(<value1>,<value2>[,message="values"]);`<BR>(_SameValue equality_)
+
+9. __Celestra Unit Tester (CUT) v0.8.28:__ 
+
+- Add `token1` - `token10` variables instead of many testvariables of testcases.
+- Add these functions:
+````javascript
+CUT.concat()
+CUT.join();
+CUT.logCode();
+CUT.take();
+````
+
+10. Close the milestone 5.7.0 Nostromo
+
+
 ## Celestra v5.6.6
 
 1. Documentation and pdf fixes.
