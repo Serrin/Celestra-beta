@@ -93,13 +93,16 @@ textarea, #preCelLog { border-radius: 4px; }
       <p><button onclick=" _preCel.importScript('celestra.min.js'); preCelLog('load <b>celestra.min.js</b>'); ">
         load celestra.min.js
       </button></p>
-      <p><button onclick=" _preCel.importESM(); preCelLog('load <b>celestra.esm.js</b>'); ">
-        load celestra.esm.js
+      <p><button onclick=" _preCel.importESM1(); preCelLog('load <b>celestra.esm.js</b> 1'); ">
+        load celestra.esm.js 1
+      </button></p>
+      <p><button onclick=" _preCel.importESM2(); preCelLog('load <b>celestra.esm.js</b> 2'); ">
+        load celestra.esm.js 2
       </button></p>
     </td>
     <td class="noborder">
       <p><button onclick=" CEL.importScript('unittest.js'); preCelLog('load <b>unittest.js</b>'); ">load unittest.js</button></p>
-      <p><button onclick=" window.location.reload(true); ">reset page</button></p>
+      <p><button onclick=" window.location.reload(true); ">reset</button></p>
       <p><button onclick=" saveResults(); ">save result in HTML</button></p>
     </td>
     <td class="noborder">
@@ -128,10 +131,19 @@ textarea, #preCelLog { border-radius: 4px; }
 </div>
 
 <hr/>
-<p><button onclick="CEL.domScrollToBottom();">CEL.domScrollToBottom();</button></p>
-<p><button onclick="CEL.domScrollToElement(CEL.qs('#results'));">CEL.domScrollToElement(CEL.qs('#results'));</button></p>
-<p><button onclick="CEL.domScrollToElement(CEL.qs('#results'),true);">CEL.domScrollToElement(CEL.qs('#results'),true);</button></p>
-<p><button onclick="CEL.domScrollToElement(CEL.qs('#results'),false);">CEL.domScrollToElement(CEL.qs('#results'),false);</button></p>
+
+<p><button onclick="CEL.domScrollToBottom();">
+  CEL.domScrollToBottom();
+</button></p>
+<p><button onclick="CEL.domScrollToElement(CEL.qs('#results'));">
+  CEL.domScrollToElement(CEL.qs('#results'));
+</button></p>
+<p><button onclick="CEL.domScrollToElement(CEL.qs('#results'),true);">
+  CEL.domScrollToElement(CEL.qs('#results'),true);
+ </button></p>
+<p><button onclick="CEL.domScrollToElement(CEL.qs('#results'),false);">
+  CEL.domScrollToElement(CEL.qs('#results'),false);
+</button></p>
 
 results
 
@@ -359,7 +371,7 @@ const _preCel = {
     }
   },
 
-  importESM: function importESM () {
+  importESM1: function importESM1 () {
     let scrTag = document.createElement("script");
     scrTag.type = "module";
     scrTag.innerHTML = `
@@ -374,24 +386,45 @@ const _preCel = {
         });
       */
       var importStr = "";
-      // import the celestra object
-      import { celestra } from "./celestra.esm.js";
-      window.celestra = celestra;
-      window.CEL = celestra;
-      importStr += "\\nimport the celestra object - "
-        + (typeof celestra.qsa === "function");
-      // import with default with name
-      import { default as celestra2 } from "./celestra.esm.js";
-      //window.celestra = celestra;
-      //window.CEL = celestra;
-      importStr += "\\nimport with default with name - "
-        + (typeof celestra2.qsa === "function");
+
       // import with defaultExport
       import defaultExport from "./celestra.esm.js";
       //window.celestra = defaultExport;
       //window.CEL = defaultExport;
       importStr += "\\nimport with defaultExport - "
         + (typeof defaultExport.qsa === "function");
+
+      // import with default with name
+      import { default as celestra } from "./celestra.esm.js";
+      window.celestra = celestra;
+      window.CEL = celestra;
+      importStr += "\\nimport with default with name - "
+        + (typeof celestra.qsa === "function");
+
+      alert(importStr);
+    `;
+    console.log(scrTag);
+    document.body.append(scrTag);
+  },
+
+  importESM2: function importESM1 () {
+    let scrTag = document.createElement("script");
+    scrTag.type = "module";
+    scrTag.innerHTML = `
+      var importStr = "";
+
+      // import 2 functions
+      import { getType, classof } from "./celestra.esm.js";
+      importStr += "\\nimport 2 functions - "
+        + (typeof getType === "function" && typeof classof === "function");
+
+      // import all into a new celestra object
+      import * as celestra from "./celestra.esm.js";
+      window.celestra = celestra;
+      window.CEL = celestra;
+      importStr += "\\nimport all into a new celestra object - "
+        + (typeof celestra.qsa === "function");
+
       alert(importStr);
     `;
     console.log(scrTag);

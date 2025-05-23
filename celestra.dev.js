@@ -908,24 +908,60 @@ const domScrollToElement = (e, top = true) => e.scrollIntoView(top);
 const domClear = (el) => Array.from(el.children).forEach((item)=>item.remove());
 
 /** AJAX API **/
-/* getJson(); and getText(); shorthands to ajax(); */
 
 /* getText(<url: string>,<success: function>): undefined */
-function getText (u, s) { celestra.ajax({url: u, success: s}); }
+function getText (url, success) {
+  if (typeof url !== "string") {
+    throw new TypeError("Celestra ajax error: The url parameter have to be a string.");
+  }
+  if (typeof success !== "function") {
+    throw new TypeError("Celestra ajax error: The success parameter have to be a function.");
+  }
+  var xhr = new XMLHttpRequest();
+  xhr.onerror = (e) => console.log("Celestra ajax GET error: " + JSON.stringify(e));
+  xhr.open("GET", url, true);
+  xhr.onreadystatechange = function () {
+    if (this.readyState === 4 && this.status === 200) {
+      success(this.responseText);
+    }
+  };
+  xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+  xhr.send();
+}
 
 /* getJson(<url: string>,<success: function>): undefined */
-function getJson (u, s) { celestra.ajax({url: u, format: "json", success: s}); }
+function getJson (url, success) {
+  if (typeof url !== "string") {
+    throw new TypeError("Celestra ajax error: The url parameter have to be a string.");
+  }
+  if (typeof success !== "function") {
+    throw new TypeError("Celestra ajax error: The success parameter have to be a function.");
+  }
+  var xhr = new XMLHttpRequest();
+  xhr.onerror = (e) => console.log("Celestra ajax GET error: " + JSON.stringify(e));
+  xhr.open("GET", url, true);
+  xhr.onreadystatechange = function () {
+    if (this.readyState === 4 && this.status === 200) {
+      success(JSON.parse(this.responseText));
+    }
+  };
+  xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+  xhr.send();
+}
 
 /* ajax(<Options object>): undefined */
 function ajax (o) {
   if (typeof o.url !== "string") {
-    throw new TypeError("Celestra ajax error: The url parameter have to be a string.");
+    throw new TypeError("Celestra ajax error: The url property have to be a string.");
   }
   if (typeof o.success !== "function") {
-    throw new TypeError("Celestra ajax error: The success parameter have to be a function.");
+    throw new TypeError("Celestra ajax error: The success property have to be a function.");
   }
-  if (!(["function", "undefined"].includes(typeof o.error))) {
-    throw new TypeError("Celestra ajax error: The error parameter have to be a function or undefined.");
+  if (o.error === undefined) {
+    o.error = (e) => console.log("Celestra ajax GET error: " + JSON.stringify(e));
+  }
+  if (typeof o.error !== "function") {
+    throw new TypeError("Celestra ajax error: The error property have to be a function or undefined.");
   }
   if (!o.queryType) {
     o.queryType = "ajax";
@@ -942,14 +978,14 @@ function ajax (o) {
   } else if (o.type === "post") {
     var typeStr = "POST";
   } else {
-    throw "Celestra ajax error: The type parameter have to be \"get\" or \"post\".";
+    throw "Celestra ajax error: The type property have to be \"get\" or \"post\".";
   }
   if (!o.format) {
     o.format = "text";
   } else {
     o.format = o.format.toLowerCase();
     if (!(["text", "json", "xml"].includes(o.format))) {
-      throw "Celestra ajax error: The format parameter have to be \"text\" or \"json\" or \"xml\".";
+      throw "Celestra ajax error: The format property have to be \"text\" or \"json\" or \"xml\".";
     }
   }
   var xhr;
@@ -959,9 +995,9 @@ function ajax (o) {
     xhr = new XMLHttpRequest();
     if (!("withCredentials" in xhr)) { xhr = new XDomainRequest(); }
   } else {
-    throw "Celestra ajax error: The querytype parameter have to be \"ajax\" or \"cors\".";
+    throw "Celestra ajax error: The querytype property have to be \"ajax\" or \"cors\".";
   }
-  if (typeof user === "string" && typeof password === "string") {
+  if (typeof o.user === "string" && typeof o.password === "string") {
     xhr.open(typeStr, o.url, true, o.user, o.password);
   } else {
     xhr.open(typeStr, o.url, true);
@@ -1307,14 +1343,14 @@ function clearCookies (path = "/", domain, secure, SameSite = "Lax", HttpOnly) {
 
 /** Collections API **/
 
-/* unique(<iterator>[,resolver]): iterator */
+/* unique(<iterator>[,resolver]): array */
 function unique (it, resolver) {
   if (resolver == null) { return [...new Set(it)]; }
   if (typeof resolver === "string") {
     return Array.from(it).reduce(function (acc, el) {
       if (acc.every((e) => e[resolver] !== el[resolver])) { acc.push(el); }
       return acc;
-    }, []).values();
+    }, []);
   }
   if (typeof resolver === "function") {
     let cache = new Map();
@@ -1322,7 +1358,7 @@ function unique (it, resolver) {
       let key = resolver(item);
       if (!cache.has(key)) { cache.set(key, item); }
     }
-    return cache.values();
+    return [...cache.values()];
   }
 }
 

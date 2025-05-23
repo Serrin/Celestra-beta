@@ -87,20 +87,25 @@ Demo plugin minified source|__celestra-demo-plugin.min.js__
 ````javascript
 <script type="module">
 
-// import the celestra object
-import { celestra } from "./celestra.esm.js";
-window.celestra = celestra;
-window.CEL = celestra;
+// import the defaultExport object
+import defaultExport from "./celestra.esm.js";
+window.celestra = defaultExport;
+window.CEL = defaultExport;
 
 // import with default with name
 import { default as celestra } from "./celestra.esm.js";
 window.celestra = celestra;
 window.CEL = celestra;
 
-// import with default export
-import defaultExport from "./celestra.esm.js";
-window.celestra = defaultExport;
-window.CEL = defaultExport;
+// import all into a new celestra object
+import * as celestra from "./celestra.esm.js";
+window.celestra = celestra;
+window.CEL = celestra;
+
+// import some functions
+import { first, classof } from "./celestra.esm.js";
+window.first = first;
+window.classof = classof;
 
 </script>
 ````
@@ -145,6 +150,15 @@ __Another way to import__
 ### Celestra v5.5.0 changes
 
 - The Math functions are available in the main code files (dev, min, esm) instead of the Math plugins.
+
+### Celestra v5.6.0 (Razorback) changes
+
+- Many polyfills have been removed.
+
+### Celestra v5.7.0 (Nostromo) changes
+
+- The module edition (__celestra.esm.js__) import has been changed.
+- The `getText();` and `getJson();` function has been modified to standalone function.
 
 
 -----
@@ -311,8 +325,8 @@ Example: `CEL.getJson();`
 Name | Description
 ---- | -----------
 `ajax(<Options object>);` | __Stability: 3 - Not deprecated, but can get only fixes.__<BR>Get content and send data via AJAX and CORS.
-`getJson(<url>,<success>);` | __Stability: 3 - Not deprecated, but can get only fixes.__<BR>Get JSON content via AJAX. A shorthand function to the ajax() function.
-`getText(<url>,<success>);` | __Stability: 3 - Not deprecated, but can get only fixes.__<BR>Get TEXT content via AJAX. A shorthand function to the ajax() function.
+`getJson(<url>,<success>);` | __Stability: 3 - Not deprecated, but can get only fixes.__<BR>Get JSON content via AJAX.
+`getText(<url>,<success>);` | __Stability: 3 - Not deprecated, but can get only fixes.__<BR>Get TEXT content via AJAX.
 
 __Options object properties:__
 
@@ -479,7 +493,7 @@ Name | Description
 `take(<iterator>[,n=1]);` | __Stability: 3 - Not deprecated, but can get only fixes.__<BR>__Can be replaced with `Iterator.from(iterable/iterator).take();`__<BR>Yield the first N elements of an iterator. The iterator parameter is mandatory. The n parameter is optional and can be an integer. Default parameter value: n = 1
 `takeRight(<iterator>[,n=1]);` | __Stability: 4 - Stable.__<BR>Take the last N elements of an iterator. The iterator parameter is mandatory. The n parameter is optional and can be an integer. Default parameter value: n = 1. The return value is an array.
 `takeRightWhile(<iterator>,<callback>);` | __Stability: 4 - Stable.__<BR>Yield the elements from the end of an iterator while the callback (filter) function returns true. The callback function will be called with the actual element of the iterator. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function.
-`unique(<iterator>[, resolver]);` | __Stability: 4 - Stable.__<BR>This function returns a new iterator with unique values.<BR>The iterator parameter is mandatory.<BR>The resolver parameter can be an object field name or function.<BR>__Examles__<BR>Without resolver:<BR>`JSON.stringify( [... CEL.unique( [1, 2, 2, 3] ) ] );`<BR>-><BR>`'[1,2,3]'`<BR>With resolver:<BR>`let array = [`<BR>`  { "name": "Picard", "rank": "captain" },`<BR>`  { "name": "Riker", "rank": "captain" },`<BR>`  { "name": "Data", "rank": "commander" },`<BR>`  { "name": "Troi", "rank": "commander" }`<BR>`];`<BR>Key resolver<BR>`JSON.stringify( [... CEL.unique(array, "rank") ] );`<BR>-><BR>`'[{"name":"Picard","rank":"captain"},{"name":"Data","rank":"commander"}]'`<BR>Function resolver<BR>`JSON.stringify( [... CEL.unique(array, (v) => v.rank) ] );`<BR>-><BR>`'[{"name":"Picard","rank":"captain"},{"name":"Data","rank":"commander"}]'`
+`unique(<iterator>[, resolver]);` | __Stability: 4 - Stable.__<BR>This function returns a new iterator with unique values.<BR>The iterator parameter is mandatory.<BR>The resolver parameter can be an object field name or function.<BR>__Examles__<BR>Without resolver:<BR>`JSON.stringify( CEL.unique( [1, 2, 2, 3] ) );`<BR>-><BR>`'[1,2,3]'`<BR>With resolver:<BR>`let array = [`<BR>`  { "name": "Picard", "rank": "captain" },`<BR>`  { "name": "Riker", "rank": "captain" },`<BR>`  { "name": "Data", "rank": "commander" },`<BR>`  { "name": "Troi", "rank": "commander" }`<BR>`];`<BR>Key resolver<BR>`JSON.stringify( CEL.unique(array, "rank") );`<BR>-><BR>`'[{"name":"Picard","rank":"captain"},{"name":"Data","rank":"commander"}]'`<BR>Function resolver<BR>`JSON.stringify( CEL.unique(array, (v) => v.rank) );`<BR>-><BR>`'[{"name":"Picard","rank":"captain"},{"name":"Data","rank":"commander"}]'`
 `takeWhile(<iterator>,<callback>);` |__Stability: 4 - Stable.__<BR> Yield the elements of an iterator while the callback (filter) function returns true. The callback function will be called with the actual element of the iterator. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function.
 `unzip(<iterator>);` | __Stability: 4 - Stable.__<BR>Returns the array of arrays of unpaired values. In the modern browsers compatible with finite iterators.<BR>__Example:__<BR>`CEL.unzip([ [ "a", 3 ], [ "b", 4 ], [ "c", 5 ], [ "d", 6 ] ]);`<BR>-><BR>`Array (2) [ ["a","b","c","d"], [3,4,5,6] ]`
 `withOut(<iterator>,<filterIterator>);` | __Stability: 4 - Stable.__<BR>Returns an array with the values of the first iterator, but without the values of the filterIterator. All of the parameters are mandatory.<BR>__Example:__<BR>`CEL.withOut(["a","b","c","d"], ["b","d"]);`<BR>-><BR>`["a","c"]`

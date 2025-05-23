@@ -195,7 +195,7 @@ strFromCodePoints();
 1. Fixed many errors in the documentation and pdf fixes.
 
 
-## Celestra v5.6.0
+## Celestra v5.6.0 Razorback
 
 1. Documentation and pdf fixes.
 ````

@@ -1234,11 +1234,11 @@ CUT.isEqual("unique(); 1 - without resolver", "[4,7,5,6]",
   JSON.stringify(CEL.unique([4, 7, 5, 5, 6, 7]))
 );
 CUT.isEqual("unique(); 2 - with key resolver",
-  JSON.stringify([...CEL.unique(token1, "rank")]),
+  JSON.stringify(CEL.unique(token1, "rank")),
  "[{\"name\":\"Picard\",\"rank\":\"captain\"},{\"name\":\"Data\",\"rank\":\"commander\"}]"
 );
 CUT.isEqual("unique(); 3 - with function resolver",
-  JSON.stringify([...CEL.unique(token1, (v) => v.rank)]),
+  JSON.stringify(CEL.unique(token1, (v) => v.rank)),
  "[{\"name\":\"Picard\",\"rank\":\"captain\"},{\"name\":\"Data\",\"rank\":\"commander\"}]"
 );
 

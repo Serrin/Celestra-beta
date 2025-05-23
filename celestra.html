@@ -238,24 +238,31 @@ nav a, nav a:visited, nav a:active, nav a:hover {
 
 <h3>How to import the ESM edition</h3>
 
-<pre>&#60;script type="module"&#62;
+<pre>
+&#60;script type="module"&#60;
 
-// import the celestra object
-import { celestra } from "./celestra.esm.js";
-window.celestra = celestra;
-window.CEL = celestra;
+// import the defaultExport object
+import defaultExport from "./celestra.esm.js";
+window.celestra = defaultExport;
+window.CEL = defaultExport;
 
 // import with default with name
 import { default as celestra } from "./celestra.esm.js";
 window.celestra = celestra;
 window.CEL = celestra;
 
-// import with default export
-import defaultExport from "./celestra.esm.js";
-window.celestra = defaultExport;
-window.CEL = defaultExport;
+// import all into a new celestra object
+import * as celestra from "./celestra.esm.js";
+window.celestra = celestra;
+window.CEL = celestra;
 
-&#60;/script&#62;</pre>
+// import some functions
+import { first, classof } from "./celestra.esm.js";
+window.first = first;
+window.classof = classof;
+
+&#60;/script&#62;
+</pre>
 
 <p><b>Another way to import</b></p>
 
@@ -294,6 +301,19 @@ window.CEL = defaultExport;
 
 <ul>
   <li>The Math functions are available in the main code files (dev, min, esm) instead of the Math plugins.</li>
+</ul>
+
+<h3>Celestra v5.6.0 (Razorback) changes</h3>
+
+<ul>
+  <li>Many polyfills have been removed.</li>
+</ul>
+
+<h3>Celestra v5.7.0 (Nostromo) changes</h3>
+
+<ul>
+  <li>The module edition (<b>celestra.esm.js</b>) import has been changed.</li>
+  <li>The <code>getText();</code> and <code>getJson();</code>function has been modified to standalone function.</li>
 </ul>
 
 
@@ -857,11 +877,11 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>getJson(&#60;url&#62;,&#60;success&#62;);</code></td>
-      <td><span class="info">Stability: 3 - Not deprecated, but can get only fixes.</span><br/>Get TEXT content via AJAX. A shorthand function to the ajax() function.</td>
+      <td><span class="info">Stability: 3 - Not deprecated, but can get only fixes.</span><br/>Get JSON content via AJAX.</td>
     </tr>
     <tr>
       <td><code>getText(&#60;url&#62;,&#60;success&#62;);</code></td>
-      <td><span class="info">Stability: 3 - Not deprecated, but can get only fixes.</span><br/>Get JSON content via AJAX. A shorthand function to the ajax() function.</td>
+      <td><span class="info">Stability: 3 - Not deprecated, but can get only fixes.</span><br/>Get TEXT content via AJAX.</td>
     </tr>
   </table>
 </div>
@@ -1543,7 +1563,7 @@ console.log(o2);
         <p><b>Examples</b></p>
         <p>Without resolver:</p>
         <pre>
-JSON.stringify( [... CEL.unique( [1, 2, 2, 3] ) ] );
+JSON.stringify( CEL.unique( [1, 2, 2, 3] ) );
 // '[1,2,3]'
         </pre>
         <p>With resolver:</p>
@@ -1556,11 +1576,11 @@ let array = [
 ];
         
 // key resolver
-JSON.stringify( [... CEL.unique(array, "rank") ] );
+JSON.stringify( CEL.unique(array, "rank") );
 // '[{"name":"Picard","rank":"captain"},{"name":"Data","rank":"commander"}]'
 
 // function resolver
-JSON.stringify( [... CEL.unique(array, (v) => v.rank) ] );
+JSON.stringify( CEL.unique(array, (v) => v.rank) );
 // '[{"name":"Picard","rank":"captain"},{"name":"Data","rank":"commander"}]'
         </pre>
       </td>
@@ -2359,16 +2379,6 @@ var txt = "✓ à \r\n\t árvíztűrő tükörfúrógép ÁRVÍZTŰRŐ TÜKÖRF�
           </p>
         </div>
       </td>
-    </tr>
-    <tr>
-      <td><b>AJAX and CORS - getJson</b></td>
-      <td><button onclick='CEL.getJson("testdata.json",function(r) { alert("ajax json test (has value):\n"+r.testArray[0].image); } );'>Try</button></td>
-      <td><code>CEL.getJson("testdata.json",<br/>function(r) { alert("ajax json test (has value):\n"+r.testArray[0].image); } <br/>);</code></td>
-    </tr>
-    <tr>
-      <td><b>AJAX and CORS - getText</b></td>
-      <td><button onclick='CEL.getText("testdata.txt",function(r) {alert("ajax text test:\n"+r); },function(e){ alert(e); } );'>Try</button></td>
-      <td><code>CEL.getText("testdata.txt",<br/>function(r) {alert("ajax text test:\n"+r); },<br/>function(e){ alert(e); } <br/>);</code></td>
     </tr>
     <tr>
       <td><b>Cookie</b></td>
