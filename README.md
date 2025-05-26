@@ -15,7 +15,7 @@ __A helper JavaScript library with useful functions and polyfills and zero depen
 
 This library isn't compatible with the Node.js.
 
-Latest version: 5.7.0
+Latest version: 5.7.1
 
 Date: 2025-05-23T19:13:04.798Z
 
@@ -356,7 +356,7 @@ Name | Description
 `isAsyncGeneratorFn(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an async generator function. The return value is boolean.
 `isBigInt(<value>);` | __Stability: 3 - Legacy and can get only fixes.__<BR>This function determines whether the provided value is a BigInt. The return value is boolean.
 `isBoolean(<value>);` | __Stability: 3 - Legacy and can get only fixes.__<BR>This function determines whether the provided value is a boolean. The return value is boolean.
-`isCallable(<value>);` | __Stability: 4 - Stable.__<BR>Alias of the `isFunction(<value>);`.
+`isCallable(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided object has a call method. The return value is boolean.
 `isChar(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a string with length 1 character. This function is unicode compatible. The return value is boolean.
 `isClass(<value>);` | __Stability: 4 - Stable.__<BR>Alias of the `isConstructorFn(<value>);`.
 `isConstructorFn(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a constructable function. The return value is boolean.
@@ -524,17 +524,18 @@ Name | Description
 `isIndex(<value>);`| __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a valid arraylike index number. The return value is boolean.
 `isLessThan(<value1>,<value2>[,leftFirst = true]);`| __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a valid arraylike index number. The return value is boolean.
 `isPropertyKey(<value>);`| __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a valid propertx key (string or symbol). The return value is boolean.
-`isSameType(<value1>,<value2>);`| __Stability: 4 - Stable.__<BR>This function returns true if the values are same type or both are NaN or both are undefined. The parameters are mandatory. The return value is boolean.
+`isSameClass(<value1>,<value2>);`| __Stability: 4 - Stable.__<BR>This function returns true if the values are same class and uses the `Object.prototype.toString();` method. The parameters are mandatory. The return value is boolean.
+`isSameType(<value1>,<value2>);`| __Stability: 4 - Stable.__<BR>This function returns true if the values are same type or both are null or both are undefined. The parameters are mandatory. The return value is boolean.
 `isSameValue(<value1>,<value2>);`| __Stability: 4 - Stable.__<BR>This function uses the SameValue algorithm and determines whether the provided values are the same values and `-0` and `+0` values will be not equal. The `NaN` values will be equal. The return value is boolean.<BR>__TIP: The `Object.is();` uses the SameValue algorithm.__
 `isSameValueNonNumber(<value1>,<value2>);`| __Stability: 4 - Stable.__<BR>This function uses the SameValueNonNumber algorithm and determines whether the provided values are the same values and `-0` and `+0` values will be equal. The `NaN` values will be not equal. The return value is boolean.
 `isSameValueZero(<value1>,<value2>);`| __Stability: 4 - Stable.__<BR>This function uses the SameValueZero algorithm and determines whether the provided values are the same values and `-0` and `+0` values will be equal. The `NaN` values will be equal. The return value is boolean.
 `requireObjectCoercible(<value>);` | __Stability: 4 - Stable.__<BR>This function throws an error if the given value is a value that cannot be converted to an object (null or undefined), else the return value is given value. The parameter is mandatory.
 `setIn(<object>,<property>,<value>[,Throw=false]);` | __Stability: 4 - Stable.__<BR>This function set the property value of the given object. The object parameter is mandatory and has to be an object. The property parameter is mandatory and has to be a property type. The value is mandatory and can be any type. The return value is the successfully or throws an error, if this was unsuccessful and the Throw is true.
 `toArray(<value>);`| __Stability: 4 - Stable.__<BR>If the value is an array, then this function returns the value else converts the value to array or the return value is an empty array.
-`toIndex(<value>);`| __Stability: 4 - Stable.__<BR>This function converts the provided value to a valid arraylike index number. The return value is an unsigned integer (number).
+`toIndex(<value>);`| __Stability: 4 - Stable.__<BR>This function converts the provided value to a valid arraylike index number. The return value is an unsigned integer (number). If the value is out of integer range, then a RangeError will be thrown.
 `toInteger(<value>);`| __Stability: 4 - Stable.__<BR>This function always converts the provided value to an integer. If the value cannot be converted to an integer, then the return value is 0.
 `toIntegerOrInfinity(<value>);`| __Stability: 4 - Stable.__<BR>This function always converts the provided value to an integer or Infitiy or -Infinity. If the value cannot be converted to an integer, then the return value is 0.
-`toLength(<value>);`| __Stability: 4 - Stable.__<BR>Alias of `toIndex(<value>);`.
+`toLength(<value>);`| __Stability: 4 - Stable.__<BR>This function converts the provided value to a valid arraylike length number. The return value is an unsigned integer (number).
 `toObject(<value>);`| __Stability: 4 - Stable.__<BR>If the given value is not null or undefined, then the return value is an object, which has been converted from the value, else a `TypeError()` will be throwned.<BR>If the given value is an object, function or symbol, then the original value will return.
 `toPrimitive(<value>);`| __Stability: 4 - Stable.__<BR>ECMAScript "ToPrimitive" algorithm.
 `toPrimitiveValue(<value>);`| __Stability: 4 - Stable.__<BR>If the given value is null or undefined, then a `TypeError()` will be throwned.<BR>If the given value is an object, which can be converted to a primitive variable, then the return value is a primitive variable.<BR>If the given value is a not convertable object (array, map, set, etc.), function or symbol, then the original value will return.

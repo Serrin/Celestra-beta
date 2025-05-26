@@ -1,6 +1,6 @@
 /**
  * @name Celestra
- * @version 5.7.0 dev
+ * @version 5.7.1 dev
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
@@ -1136,12 +1136,11 @@ const isNumeric = (v) => ( (typeof v === "number" && v === v)
 const isBoolean = (v) => (typeof v === "boolean");
 
 /* isObject(<value: any>): boolean */
-const isObject = (v) => (
-  v != null && (typeof v === "object" || typeof v === "function")
-);
+const isObject = (v) =>
+  (v != null && (typeof v === "object" || typeof v === "function"));
 
 /* isEmptyObject(<value: any>): boolean */
-const isEmptyObject = (O) => (O != null && typeof O === "object" 
+const isEmptyObject = (O) => (O != null && typeof O === "object"
   && Object.getOwnPropertyNames(O).length === 0
   && Object.getOwnPropertySymbols(O).length === 0
 );
@@ -1149,9 +1148,11 @@ const isEmptyObject = (O) => (O != null && typeof O === "object"
 /* isFunction(<value: any>): boolean */
 const isFunction = (O) => (typeof v === "function" ||
   Object.prototype.toString.call(O) === "[object Function]");
+
 /* isCallable(<value: any>): boolean */
-const isCallable = (O) => (typeof v === "function" ||
-  Object.prototype.toString.call(O) === "[object Function]");
+const isCallable = (O) =>
+  ((O != null && ["object", "function"].includes(typeof O))
+    ? (typeof O.call === "function") : false);
 
 /* isEmptyArray(<value: any>): boolean */
 const isEmptyArray = (v) => (Array.isArray(v) && v.length === 0);
@@ -1175,7 +1176,7 @@ const isNil = (v) => (v == null || v !== v);
 
 /* isPrimitive(<value: any>): boolean */
 const isPrimitive = (v) =>
-  ((typeof v !== "object" && typeof v !== "function") || v === null);
+  (v == null || (typeof v !== "object" && typeof v !== "function"));
 
 /* isSymbol(<value: any>): boolean */
 const isSymbol = (v) => (typeof v === "symbol");
@@ -1194,8 +1195,7 @@ const isWeakSet = (v) => (v instanceof WeakSet);
 
 /* isIterator(<value: any>): boolean */
 const isIterator = (v) => ("Iterator" in window ? (v instanceof Iterator)
-  : (v != null && typeof v === "object" && typeof v.next === "function")
-);
+  : (v != null && typeof v === "object" && typeof v.next === "function"));
 
 /* isDate(<value: any>): boolean */
 const isDate = (v) => (v instanceof Date);
@@ -1787,9 +1787,17 @@ function deletePropertyOrThrow (O, P) {
   if (P in O) { throw new Error("Object Property delete error: "+O+"["+P+"]"); }
 }
 
+/* isSameClass(<value1>,<value2>): boolean */
+function isSameClass (x, y) {
+  if (Object.prototype.toString.call(x) !== Object.prototype.toString.call(y)){
+    throw new TypeError("isSameClass(); error: " + x + " - " + y);
+  }
+  return true;
+}
+
 /* isSameType(<value1>,<value2>): boolean */
-const isSameType = (v1, v2) =>
-  (v1 == null && v1 === v2) ? true : (typeof v1 === typeof v2);
+const isSameType = (x, y) =>
+  ((x == null || y == null) ? (x === y) : (typeof x === typeof y));
 
 /* isLessThan(<v1: any>,<v2: any>[,leftFirst = true]): boolean */
 const isLessThan = (v1, v2, leftFirst = true) => (leftFirst ? (v1<v2) :(v1>v2));
@@ -1841,9 +1849,9 @@ function toObject (O) {
 /* toPrimitiveValue(<value: any>):
   primitive OR object OR symbol OR function OR throw error */
 function toPrimitiveValue (O) {
-  // null, undefined, Function Boolean, BigInt, Number, String, Symbol
+  /* null, undefined, Function, Boolean, BigInt, Number, String, Symbol */
   if (O == null || typeof O !== "object") { return O; }
-  // object
+  /* object */
   var ot = Object.prototype.toString.call(O).slice(8, -1);
   if (["Boolean", "BigInt", "Number", "String"].includes(ot)) {
     return window[ot](O);
@@ -1883,7 +1891,6 @@ const isSameValue = (v1, v2) =>
   ((v1 === v2) ? (v1 !== 0 || 1/v1 === 1/v2) : (v1 !== v1 && v2 !== v2));
 
 /* isSameValueZero(<value1: any>,<value2: any>): boolean */
-// const isSameValueZero = (v1, v2) => (v1 === v2 || (v1 !== v1 && v2 !== v2));
 const isSameValueZero = (v1, v2) => (v1 === v2 || (v1 !== v1 && v2 !== v2));
 
 /* isSameValueNonNumber(<value1: any>,<value2: any>): boolean */
@@ -1945,17 +1952,39 @@ const isIndex = (v) => (Number.isSafeInteger(v) && v >= 0 && 1/v !== 1/-0);
 const isLength = (v) => (Number.isSafeInteger(v) && v >= 0 && 1/v !== 1/-0);
 
 /* toIndex(<value: any>): unsigned integer */
-const toIndex = (v) =>
-  ((v = Math.min(Math.max(0, Math.trunc(Number(v))), 2147483647)) === v) ? v :0;
+function toIndex (argument) {
+  /* ToIntegerOrInfinity begin */
+  let v = Number(argument);
+  if (1/v === Infinity || 1/v === -Infinity || v !== v) { v = 0; }
+  let integer = ((v === Infinity || v === -Infinity) ? v : Math.trunc(v));
+  /* ToIntegerOrInfinity end */
+  if (integer < 0 || integer > (Math.pow(2, 53) - 1)) {
+    throw new RangeError("ToIndex(); RangeError: " + integer);
+  }
+  return integer;
+}
 
 /* toLength(<value: any>): unsigned integer */
-const toLength = (v) =>
-  ((v = Math.min(Math.max(0, Math.trunc(Number(v))), 2147483647)) === v) ? v :0;
+function toLength (argument) {
+  /* ToIntegerOrInfinity begin */
+  let v = Number(argument);
+  if (1/v === Infinity || 1/v === -Infinity || v !== v) { v = 0; }
+  let len = ((v === Infinity || v === -Infinity) ? v : Math.trunc(v));
+  /* ToIntegerOrInfinity end */
+  if (len < 0) { return 0; }
+  return Math.min(len, Math.pow(2, 53) - 1);
+}
 
 /* toInteger(<value: any>): integer */
-const toInteger = (v) =>
-  ((v = Math.min(Math.max(-2147483648, Math.trunc(Number(v))), 2147483647))
-    === v) ? v : 0;
+function toInteger (v) {
+  v = Number(v);
+  if (v !== v) { return 0; }
+  if (1/v === Infinity || 1/v === -Infinity || v === Infinity
+    || v === -Infinity) {
+    return v;
+  }
+  return Math.trunc(v);
+}
 
 /* ToIntegerOrInfinity(<value: any>): integer OR Infinity OR -Infinity */
 function toIntegerOrInfinity (v) {
@@ -1987,13 +2016,11 @@ const toArray = (O) => (Array.isArray(O) ? O : Array.from(O));
 /** Math API **/
 
 /* sum(<value1>[,valueN]): number */
-//const sum = (f, ...a) => a.reduce((acc, v) => acc + v, f);
 const sum = (...a) => (a.every((v) => typeof v === "number") ?
-  Math.sumPrecise(a) : a.slice(1).reduce((acc, v) => acc + v, a[0])
-);
+  Math.sumPrecise(a) : a.slice(1).reduce((acc, v) => acc + v, a[0]));
 
 /* avg(<value1>[,valueN]): number */
-const avg = (f, ...a) => a.reduce((acc, v) => acc + v, f) / (a.length + 1);
+const avg = (...a) => Math.sumPrecise(a) / a.length;
 
 /* product(<value1>[,valueN]): number */
 const product = (f, ...a) => a.reduce((acc, v) => acc * v, f);
@@ -2042,18 +2069,11 @@ function minmax (v, min, max) {
 }
 
 /* isEven(<value>): boolan */
-function isEven (v) {
-  var r = v % 2;
-  if (!Number.isNaN(r)) { return r === 0; }
-  return false;
-}
+function isEven (v) { var r = v % 2; if (r===r) { return r===0; } return false;}
+
 
 /* isOdd(<value>): boolean */
-function isOdd (v) {
-  var r = v % 2;
-  if (!Number.isNaN(r)) { return r !== 0; }
-  return false;
-}
+function isOdd (v) { var r = v % 2; if (r===r) { return r!==0; } return false; }
 
 /* toInt8(<value>): int -127..128 */
 const toInt8 = (v) =>
@@ -2083,18 +2103,17 @@ const toUInt32 = (v) =>
 /* toBigInt64(<value>): bigint */
 const toBigInt64 = (v) => BigInt(typeof v === "bigint"
   ? (v > Math.pow(2,63)-1 ?Math.pow(2,63)-1:v<Math.pow(-2,63)?Math.pow(-2,63):v)
-  : ((v=Math.min(Math.max(Math.pow(-2,63),Math.trunc(Number(v))),Math.pow(2,63)-1))
-    === v ) ? v : 0
-);
+  : ((v = Math.min(Math.max(Math.pow(-2, 63), Math.trunc(Number(v))),
+  Math.pow(2, 63) - 1)) === v ) ? v : 0);
 
 /* toBigUInt64(<value>): unsigned bigint */
 const toBigUInt64 = (v) => BigInt(typeof v === "bigint"
   ? (v > Math.pow(2, 64) - 1 ? Math.pow(2, 64) - 1 : v < 0 ? 0 : v)
-  : ((v=Math.min(Math.max(0, Math.trunc(Number(v))), Math.pow(2,64) -1)) === v) ? v : 0
-);
+  : ((v=Math.min(Math.max(0,Math.trunc(Number(v))),Math.pow(2,64)-1))===v)?v:0);
 
 /* toFloat32(<value>): float */
-const toFloat32 = (v) => ((v = Math.min(Math.max(-3.4e38, Number(v)),3.4e38))===v)?v:0;
+const toFloat32 = (v) =>
+  ((v = Math.min(Math.max(-3.4e38, Number(v)), 3.4e38)) === v) ? v : 0;
 
 /* isInt8(<value>): boolean */
 const isInt8 = (v) => (Number.isInteger(v) ? (v >= -128 && v <= 127) : false);
@@ -2166,7 +2185,7 @@ const _slice = Function.prototype.call.bind(Array.prototype.slice);
 
 /** object header **/
 
-const VERSION = "Celestra v5.7.0 dev";
+const VERSION = "Celestra v5.7.1 dev";
 
 /* celestra.noConflict(): celestra object */
 function noConflict () { window.CEL = celestra.__prevCEL__; return celestra; }
@@ -2398,6 +2417,7 @@ var celestra = {
   withOut: withOut,
   /** Abstract API **/
   deletePropertyOrThrow: deletePropertyOrThrow,
+  isSameClass: isSameClass,
   isSameType: isSameType,
   isLessThan: isLessThan,
   requireObjectCoercible: requireObjectCoercible,

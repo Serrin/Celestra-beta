@@ -244,7 +244,7 @@ CUT.isNotEqual(
 /* ======================================================================== */
 
 
-try {
+//try {
 
 (function(){
 "use strict";
@@ -254,7 +254,7 @@ var token1 = 0, token2 = 0, token3 = 0, token4 = 0, token5 = 0;
 var token6 = 0, token7 = 0, token8 = 0, token9 = 0, token10 = 0;
 
 
-/* Celestra v5.7.0 testcases */
+/* Celestra v5.7.1 testcases */
 
 
 /** Not auto tested functions **/
@@ -3005,6 +3005,12 @@ try { CEL.deletePropertyOrThrow(token1, "b"); } catch (e) { console.log(e); }
 CUT.isEqual("deletePropertyOrThrow();", "{\"a\":1}", JSON.stringify(token1));
 
 
+/* isSameClass(); */
+CUT.isTrue("isSameClass(); 1", CEL.isSameClass(NaN, 42));
+try { CEL.isSameClass(NaN, "42"); } catch (e) {
+  CUT.isTrue("isSameClass(); 2 error", true);
+}
+
 /* isSameType(); */
 CUT.isTrue("isSameType();",
       CEL.isSameType(undefined, undefined)
@@ -3018,6 +3024,8 @@ CUT.isTrue("isSameType();",
   && !CEL.isSameType(null, undefined)
   && !CEL.isSameType(null, 0)
   && !CEL.isSameType(42, "42")
+  && !CEL.isSameType(null, {})
+  && !CEL.isSameType({}, null)
 );
 
 
@@ -3328,37 +3336,52 @@ CUT.isTrue("isLength();",
 
 
 /* toIndex(); */
-CUT.isEqual("toIndex();", "3031021474836470214748364700300003000000",
-  CUT.concat(
+CUT.isEqual("toIndex(); 1 - values", "3 0 3 1 0 3 0 0 3 0 0 0 0 0",
+  CUT.join([
     CEL.toIndex(3),
     CEL.toIndex(0),
     CEL.toIndex("3"),
     CEL.toIndex(true),
     CEL.toIndex(-0),
-    CEL.toIndex(Infinity),
-    CEL.toIndex(-Infinity),
-    CEL.toIndex("Infinity"),
-    CEL.toIndex("-Infinity"),
-    CEL.toIndex(-3),
     CEL.toIndex(3.14),
-    CEL.toIndex(-3.14),
     CEL.toIndex("lorem"),
     CEL.toIndex(false),
-    CEL.toIndex("-3"),
     CEL.toIndex("3.14"),
-    CEL.toIndex("-3.14"),
     CEL.toIndex("adsasd"),
     CEL.toIndex({}),
     CEL.toIndex([]),
     CEL.toIndex(undefined),
     CEL.toIndex(null)
-  )
+  ])
 );
+try { CEL.toIndex(Infinity); } catch (e) {
+  CUT.isTrue("toIndex(); 2 - error", true);
+}
+try { CEL.toIndex(-Infinity); } catch (e) {
+  CUT.isTrue("toIndex(); 3 - error", true);
+}
+try { CEL.toIndex("Infinity"); } catch (e) {
+  CUT.isTrue("toIndex(); 4 - error", true);
+}
+try { CEL.toIndex("-Infinity"); } catch (e) { 
+  CUT.isTrue("toIndex(); 5 - error", true);
+}
+try { CEL.toIndex(-3); } catch (e) { CUT.isTrue("toIndex(); 6 - error", true); }
+try { CEL.toIndex(-3.14); } catch (e) {
+  CUT.isTrue("toIndex(); 7 - error", true);
+}
+try { CEL.toIndex("-3"); } catch (e) { 
+  CUT.isTrue("toIndex(); 8 - error", true);
+}
+try { CEL.toIndex("-3.14"); } catch (e) {
+  CUT.isTrue("toIndex(); 9 - error", true);
+}
 
 
 /* toLength(); */
-CUT.isEqual("toLength();", "3031021474836470214748364700300003000000",
-  CUT.concat(
+CUT.isEqual("toLength();",
+  "3 0 3 1 0 9007199254740991 0 9007199254740991 0 0 3 0 0 0 0 3 0 0 0 0 0 0",
+  CUT.join([
     CEL.toLength(3),
     CEL.toLength(0),
     CEL.toLength("3"),
@@ -3381,14 +3404,14 @@ CUT.isEqual("toLength();", "3031021474836470214748364700300003000000",
     CEL.toLength([]),
     CEL.toLength(undefined),
     CEL.toLength(null)
-  )
+  ])
 );
 
 
 /* toInteger(); */
 CUT.isEqual("toInteger();",
-  "3333-3-3-3-31002147483647-21474836482147483647-21474836480000000",
-  CUT.concat(
+  "3 3 3 3 -3 -3 -3 -3 1 0 0 Infinity -Infinity Infinity -Infinity 0 0 0 0 0 0 0",
+  CUT.join([
     CEL.toInteger(3),
     CEL.toInteger("3"),
     CEL.toInteger(3.14),
@@ -3411,7 +3434,7 @@ CUT.isEqual("toInteger();",
     CEL.toInteger([]),
     CEL.toIndex(undefined),
     CEL.toIndex(null)
-  )
+  ])
 );
 
 
@@ -4143,6 +4166,6 @@ CEL.ajax({
 }());
 
 
-} catch (e) {
-  CUT.isTrue("<span class=\"failed\">[CUT global try-catch]</span> " + e,false);
-}
+//} catch (e) {
+  //CUT.isTrue("<span class=\"failed\">[CUT global try-catch]</span> " + e,false);
+//}
