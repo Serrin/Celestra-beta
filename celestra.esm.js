@@ -135,7 +135,7 @@ const isSameIterator=([...a1],[...a2])=>(a1.length===a2.length&&a1.every((v,i)=>
 const isString=(v)=>(typeof v==="string");
 const isChar=(v)=>(typeof v==="string"&&(v.length===1||Array.from(v).length===1));
 const isNumber=(v)=>(typeof v==="number");
-const isFloat=(v)=>(typeof v==="number"&&!!(v%1));
+const isFloat=(v)=>(typeof v==="number"&&v===v&&!!(v%1));
 const isNumeric=(v)=>((typeof v==="number"&&v===v)?true:(!isNaN(parseFloat(v))&&isFinite(v)));
 const isBoolean=(v)=>(typeof v==="boolean");
 const isObject=(v)=>(v!=null&&(typeof v==="object"||typeof v==="function"));
@@ -243,7 +243,7 @@ function join(it,sep=","){sep=String(sep);let r="";for(let item of it){r+=sep+it
 const withOut=([...a],[...fl])=>a.filter((e)=>fl.indexOf(e)===-1);
 /** Abstract API **/
 function deletePropertyOrThrow(O,P){delete O[P];if(P in O){throw new Error("Object Property delete error: "+O+"["+P+"]");}}
-function isSameClass(x,y){if(Object.prototype.toString.call(x)!==Object.prototype.toString.call(y)){throw new TypeError("isSameClass(); error: "+x+" - "+y);}return true;}
+function isSameClass(x,y){const toStr=Object.prototype.toString;if(toStr.call(x)!==toStr.call(y)){throw new TypeError("isSameClass(); error: "+x+" - "+y);}return true;}
 const isSameType=(x,y)=>((x==null||y==null)?(x===y):(typeof x===typeof y));
 const isLessThan=(v1,v2,leftFirst=true)=>(leftFirst?(v1<v2):(v1>v2));
 function requireObjectCoercible(O){if(O==null){throw new TypeError(Object.prototype.toString.call(O)+" is not coercible to Object.");}return O;}
@@ -267,10 +267,10 @@ function deleteOwnProperty(O,P,Throw=false){if(Object.hasOwn(O,P)){delete O[P];v
 const type=(v)=>((v===null)?"null":(typeof v));
 const isIndex=(v)=>(Number.isSafeInteger(v)&&v>=0&&1/v!==1/-0);
 const isLength=(v)=>(Number.isSafeInteger(v)&&v>=0&&1/v!==1/-0);
-function toIndex(argument){let v=Number(argument);if(1/v===Infinity||1/v===-Infinity||v!==v){v=0;}let integer=((v===Infinity||v===-Infinity)?v:Math.trunc(v));if(integer<0||integer>(Math.pow(2,53)-1)){throw new RangeError("ToIndex(); RangeError: "+integer);}return integer;}
-function toLength(argument){let v=Number(argument);if(1/v===Infinity||1/v===-Infinity||v!==v){v=0;}let len=((v===Infinity||v===-Infinity)?v:Math.trunc(v));if(len<0){return 0;}return Math.min(len,Math.pow(2,53)-1);}
-function toInteger(v){v=Number(v);if(v!==v){return 0;}if(1/v===Infinity||1/v===-Infinity||v===Infinity||v===-Infinity){return v;}return Math.trunc(v);}
-function toIntegerOrInfinity(v){v=Number(v);if(1/v===Infinity||1/v===-Infinity||v!==v){return 0;}if(v===Infinity||v===-Infinity){return v;}return Math.trunc(v);}
+function toIndex(argument){let v=Number(argument);if(v!==v||1/v===Infinity||1/v===-Infinity){v=0;}let integer=((v===Infinity||v===-Infinity)?v:Math.trunc(v));if(integer<0||integer>(Math.pow(2,53)-1)){throw new RangeError("celestra.toIndex(); RangeError: "+integer);}return integer;}
+function toLength(argument){let v=Number(argument);if(v!==v||1/v===Infinity||1/v===-Infinity){v=0;}let len=((v===Infinity||v===-Infinity)?v:Math.trunc(v));if(len<0){return 0;}return Math.min(len,Math.pow(2,53)-1);}
+function toInteger(v){v=Number(v);if(v!==v||1/v===Infinity||1/v===-Infinity){return 0;}if(v===Infinity){return Math.pow(2,53)-1;}if(v===-Infinity){return -(Math.pow(2,53)-1);}return Math.trunc(v);}
+function toIntegerOrInfinity(v){v=Number(v);if(v!==v||1/v===Infinity||1/v===-Infinity){return 0;}if(v===Infinity||v===-Infinity){return v;}return Math.trunc(v);}
 const createDataProperty=(O,P,V)=>Object.defineProperty(O,P,{value:V,writable:true,enumerable:true,configurable:true});
 function createDataPropertyOrThrow(O,P,V){Object.defineProperty(O,P,{writable:true,enumerable:true,configurable:true,value:V});if(O[P]!==V){throw new Error("celestra.createDataPropertyOrThrow(); error: "+O+"["+P+"]");}return O;}
 const toArray=(O)=>(Array.isArray(O)?O:Array.from(O));

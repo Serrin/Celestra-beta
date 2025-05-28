@@ -102,6 +102,25 @@ CUT.take = function* take (it, n = 1) {
   }
 }
 
+/* getHumanReadableJSON(<value>[, space]): string */
+CUT.getHumanReadableJSON = function getReadableJSON (value, space) {
+  function JSONreplacer(_key, value) {
+    if (value == null) { return String(value); }
+    if (value !== value) { return String(value); }
+    if (typeof value === "bigint") { return value.toString()+"n"; }
+    if (typeof value === "function") { return String(value); }
+    if (typeof value === "symbol") { return String(value); }
+    if (value instanceof Set) { return "new Set("+[...value].toString()+");"; }
+    if (value instanceof Map) { return "new Map("+[...value].toString()+");"; }
+    if (Error.isError(value)) {
+      return Object.getOwnPropertyNames(value)
+        .reduce((acc, prop) => { acc[prop] = value[prop]; return acc; }, {});
+    }
+    return value;
+  }
+  return JSON.stringify(value, JSONreplacer, space);
+}
+
 
 /* ======================================================================== */
 
@@ -3334,7 +3353,7 @@ CUT.isEqual("toLength();",
 
 /* toInteger(); */
 CUT.isEqual("toInteger();",
-  "3 3 3 3 -3 -3 -3 -3 1 0 0 Infinity -Infinity Infinity -Infinity 0 0 0 0 0 0 0",
+  "3 3 3 3 -3 -3 -3 -3 1 0 0 9007199254740991 -9007199254740991 9007199254740991 -9007199254740991 0 0 0 0 0 0 0",
   CUT.join([
     CEL.toInteger(3),
     CEL.toInteger("3"),
@@ -4093,6 +4112,17 @@ CEL.ajax({
 }());
 
 
+//CEL.toIndex(Infinity);
+// this causes an error
+
+
 } catch (e) {
-  CUT.isTrue("<span class=\"failed\">[CUT global try-catch]</span> " + e,false);
+  CUT.isTrue("<span class=\"failed\">[CUT global try-catch]</span>"
+    + "<pre>" + CUT.getHumanReadableJSON(e, " ") + "</pre>"
+    + "<pre>" + CUT.getHumanReadableJSON(e) + "</pre>",
+    false
+  );
+  console.log(CUT.getHumanReadableJSON(e, " "));
+  console.log(CUT.getHumanReadableJSON(e));
+  /* console.log(JSON.stringify(e, Object.getOwnPropertyNames(e))); */
 }
