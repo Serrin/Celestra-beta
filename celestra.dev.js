@@ -379,7 +379,7 @@ function getType (v, type, Throw = false) {
 
 /* extend([deep: boolean,]<target: object>,<source1: object>[,sourceN]):object*/
 function extend (...a) {
-  function EXT (...as) {
+  function _EXT (...as) {
     if (typeof as[0] === "boolean") {
       var t = as[1], d = as[0], s = 2;
     } else {
@@ -391,7 +391,7 @@ function extend (...a) {
         for (var p in so) {
           if (Object.hasOwn(so, p)) {
             if (typeof so[p] === "object" && d) {
-              t[p] = EXT(true, {}, so[p]);
+              t[p] = _EXT(true, {}, so[p]);
             } else {
               t[p] = so[p];
             }
@@ -401,7 +401,7 @@ function extend (...a) {
     }
     return t;
   }
-  return EXT(...a);
+  return _EXT(...a);
 }
 
 
@@ -479,66 +479,77 @@ function timestampID (size = 21, alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZab
 /** Assertion API **/
 
 
-/* assert(<value: boolean>[, message = "value"]): true OR throw error */
-function assert (v, message = "value") {
-  if (!v) { throw new Error("[assert] " + message + " - " + v); }
+/* assert(<value: boolean>[, message]): true OR throw error */
+function assert (v, message) {
+  if (!v) {
+    throw new Error("[assert] Assertion failed"
+      + (message ? ": " + message : ""));
+  }
   return true;
 }
 
 
-/* assertTrue(<value: boolean>[, message = "value"]): true OR throw error */
-function assertTrue (v, message = "value") {
-  if (!v) { throw new Error("[assertTrue] " + message + " - " + v); }
+/* assertTrue(<value: boolean>[, message]): true OR throw error */
+function assertTrue (v, message) {
+  if (!v) {
+    throw new Error("[assertTrue] Assertion failed"
+      + (message ? ": " + message : ""));
+  }
   return true;
 }
 
 
-/* assertFalse(<value: boolean>[, message = "value"]): true OR throw error */
-function assertFalse (v, message = "value") {
-  if (v) { throw new Error("[assertFalse] " + message + " - " + v); }
+/* assertFalse(<value: boolean>[, message]): true OR throw error */
+function assertFalse (v, message) {
+  if (v) {
+    throw new Error("[assertFalse] Assertion failed"
+      + (message ? ": " + message : ""));
+  }
   return true;
 }
 
 
-/* assertEqual(<value1: any>,<value2: any>[, message = "values"]):
-  true OR throw error */
+/* assertEqual(<x: any>,<y: any>[, message]): true OR throw error */
 /* loose equality + NaN equality */
-function assertEqual (v1, v2, message = "values") {
-  if (!(v1 == v2 || (v1 !== v1 && v2 !== v2))) {
-    throw new Error("[assertEqual] - " + message + " - " +  v1 + " - " + v2);
+function assertEqual (x, y, message) {
+  if (!(x == y || (x !== x && y !== y))) {
+    throw new Error("[assertEqual] Assertion failed"
+      + (message ? ": " + message : ""));
   }
   return true;
 }
 
 
-/* assertStrictEqual(<value1: any>,<value2: any>[, message = "values"]):
-  true OR throw error */
+/* assertStrictEqual(<x: any>,<y: any>[, message]): true OR throw error */
 /* SameValue equality */
-function assertStrictEqual (v1, v2, message = "values") {
-  if (!((v1 === v2) ? (v1 !== 0 || 1/v1 === 1/v2) : (v1 !== v1 && v2 !== v2))) {
-    throw new Error("[assertStrictEqual] " + message + " - " + v1 + " - " + v2);
+function assertStrictEqual (x, y, message) {
+  if (!((x === y) ? (x !== 0 || 1/x === 1/y) : (x !== x && y !== y))) {
+    throw new Error("[assertStrictEqual] Assertion failed"
+      + (message ? ": " + message : "")
+    );
   }
   return true;
 }
 
 
-/* assertNotEqual(<value1: any>,<value2: any>[, message = "values"]):
-  true OR throw error */
+/* assertNotEqual(<x: any>,<y: any>[, message]): true OR throw error */
 /* loose equality + NaN equality */
-function assertNotEqual (v1, v2, message = "values") {
-  if (v1 == v2 || (v1 !== v1 && v2 !== v2)) {
-    throw new Error("[assertNotEqual] " + message + " - " +  v1 + " - " + v2);
+function assertNotEqual (x, y, message) {
+  if (x == y || (x !== x && y !== y)) {
+    throw new Error("[assertNotEqual] Assertion failed"
+      + (message ? ": " + message : ""));
   }
   return true;
 }
 
 
-/* assertNotStrictEqual(<value1: any>,<value2: any>[, message = "values"]):
-  true OR throw error */
+/* assertNotStrictEqual(<x: any>,<y: any>[, message]): true OR throw error */
 /* SameValue equality */
-function assertNotStrictEqual (v1, v2, message = "values") {
-  if ((v1 === v2) ? (v1 !== 0 || 1/v1 === 1/v2) : (v1 !== v1 && v2 !== v2)) {
-    throw new Error("[assertNotStrictEqual] " + message + " - " +v1 +" - " +v2);
+function assertNotStrictEqual (x, y, message) {
+  if ((x === y) ? (x !== 0 || 1/x === 1/y) : (x !== x && y !== y)) {
+    throw new Error("[assertNotStrictEqual] Assertion failed"
+      + (message ? ": " + message : "")
+    );
   }
   return true;
 }
@@ -1530,8 +1541,8 @@ function count (it, fn) {
 
 /* arrayDeepClone(<array>): array */
 function arrayDeepClone ([...a]) {
-  const ADC = (v) => (Array.isArray(v) ? Array.from(v, ADC) : v);
-  return ADC(a);
+  const _ADC = (v) => (Array.isArray(v) ? Array.from(v, _ADC) : v);
+  return _ADC(a);
 }
 
 
@@ -2211,7 +2222,7 @@ const isLength = (v) => (Number.isSafeInteger(v) && v >= 0 && 1/v !== 1/-0);
 /* toIndex(<value: any>): unsigned integer */
 function toIndex (argument) {
   /* ToIntegerOrInfinity begin */
-  let v = Number(argument);
+  let v = +argument;
   if (v !== v || 1/v === Infinity || 1/v === -Infinity) { v = 0; }
   let integer = ((v === Infinity || v === -Infinity) ? v : Math.trunc(v));
   /* ToIntegerOrInfinity end */
@@ -2225,7 +2236,7 @@ function toIndex (argument) {
 /* toLength(<value: any>): unsigned integer */
 function toLength (argument) {
   /* ToIntegerOrInfinity begin */
-  let v = Number(argument);
+  let v = +argument;
   if (v !== v || 1/v === Infinity || 1/v === -Infinity) { v = 0; }
   let len = ((v === Infinity || v === -Infinity) ? v : Math.trunc(v));
   /* ToIntegerOrInfinity end */
@@ -2246,7 +2257,7 @@ function toInteger (v) {
 
 /* toIntegerOrInfinity(<value: any>): integer OR Infinity OR -Infinity */
 function toIntegerOrInfinity (v) {
-  v = Number(v);
+  v = +v;
   if (v !== v || 1/v === Infinity || 1/v === -Infinity) { return 0; }
   if (v === Infinity || v === -Infinity) { return v; }
   return Math.trunc(v);
