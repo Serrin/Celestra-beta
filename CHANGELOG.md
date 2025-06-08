@@ -9,6 +9,26 @@
 # Celestra version history
 
 
+## Celestra v5.7.1
+
+1. Documentation and pdf fixes.
+
+2. Add this functions:
+````javascript
+isProxy();
+isSameClass();
+````
+
+3. Replace these functions:
+````javascript
+toIndex();
+toLength();
+````
+ 
+4. __Celestra Unit Tester (CUT) v0.8.29:__ 
+- Add this function: `getHumanReadableJSON();` and display the global error fields on the page.
+
+
 ## Celestra v5.7.0 Nostromo
 
 1. Documentation and pdf fixes.
