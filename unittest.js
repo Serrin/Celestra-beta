@@ -2410,6 +2410,15 @@ CUT.addElement("hr");
 CUT.addElement("h3", "type checking API");
 
 
+/* isProxy(); */
+token1 = { message1: "hello", message2: "everyone"};
+token2 = { get(target, prop, receiver) { return "world"; } };
+CUT.isTrue("isProxy();",
+      CEL.isProxy(new Proxy(token1, token2))
+  && !CEL.isProxy([])
+);
+
+
 /* isTruthy(); */
 CUT.isTrue("isTruthy();",
       CEL.isTruthy(1)

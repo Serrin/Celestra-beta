@@ -385,7 +385,8 @@ Name | Description
 `isPlainObject(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an object, which own prototype is the Object.prototype or null. The return value is boolean.
 `isPrimitive(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is not null, not object and not function. The return value is boolean.
 `isPromise(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a promise object. The return value is boolean.
-`isRegexp(<value>);` | __Stability: 3 - Legacy and can get only fixes.__<BR>This function determines whether the provided value is a regexp. The return value is boolean.
+`isProxy(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a proxy object. The return value is boolean.
+`isRegexp(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a regexp. The return value is boolean.
 `isSameArray(<array1>,<array2>);` | __Stability: 4 - Stable.__<BR>This function checks the value equality of the given arrays. The return value is boolean and both of the parameters are mandatory and have to be an array.
 `isSameIterator(<iterable1>,<iterable2>);` | __Stability: 4 - Stable.__<BR>This function checks the value equality of the given iterator. The return value is boolean and both of the parameters are mandatory and have to be an iterator or iterable object.
 `isSameMap(<map1>,<map2>);` | __Stability: 4 - Stable.__<BR>This function checks the property and value equality of the given maps. The return value is boolean and both of the parameters are mandatory and have to be a map.

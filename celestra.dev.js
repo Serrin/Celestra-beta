@@ -1151,8 +1151,12 @@ function ajax (o) {
 /** Type checking API **/
 
 
+/* isProxy(<value: any>): boolean */
+const isProxy = (O) => Boolean(O.__isProxy);
+
+
 /* isTruthy(<value: any>): boolean */
-const isTruthy = (v) => !!v;
+const isTruthy = (v) => Boolean(v);
 
 
 /* isFalsy(<value: any>): boolean */
@@ -2602,6 +2606,7 @@ var celestra = {
   getJson: getJson,
   ajax: ajax,
   /** Type checking API **/
+  isProxy: isProxy,
   isTruthy: isTruthy,
   isFalsy: isFalsy,
   isAsyncGeneratorFn: isAsyncGeneratorFn,
