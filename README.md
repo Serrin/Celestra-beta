@@ -15,7 +15,7 @@ __A helper JavaScript library with useful functions and polyfills and zero depen
 
 This library isn't compatible with the Node.js.
 
-Latest version: 5.7.1
+Latest version: 5.7.2
 
 Date: 2025-06-07T19:57:27.326Z
 
@@ -259,13 +259,17 @@ Example: `CEL.assert();`
 
 Name | Description
 ---- | -----------
-`assert(<value: boolean>[,message="value"]);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value is falsy. The message parameter is optional. The return value is `true`, when the test was success.
-`assertEqual(<value1>,<value2>[,message="values"]);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value1 and value2 aren't equals. (_Loose equality + NaN equality_) The message parameter is optional. The return value is `true`, when the test was success.
-`assertFalse(<value: boolean>[,message = "value"]);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value is truthy. The message parameter is optional. The return value is `true`, when the test was success.
-`assertNotEqual(<value1>,<value2>[,message="values"]);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value1 and value2 are equals. (_Loose equality + NaN equality_) The message parameter is optional. The return value is `true`, when the test was success.
-`assertNotStrictEqual(<value1>,<value2>[,message="values"]);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value1 and value2 are equals. (_SameValue equality_) The message parameter is optional. The return value is `true`, when the test was success.
-`assertStrictEqual(<value1>,<value2>[,message="values"]);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value1 and value2 aren't equals. (_SameValue equality_) The message parameter is optional. The return value is `true`, when the test was success.
-`assertTrue(<value: boolean>[,message = "value"]);` | __Stability: 4 - Stable.__<BR> This is an alias of the `assert(<msg>,<value>);`.
+`assert(<value>[,message]);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value is falsy. The message parameter is optional. The return value is `true`, when the test was success.
+`assertDeepEqual(<value1>,<value2>[,message]);`| __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value1 and value2 aren't deep equals. (_Deep loose equality + NaN equality: primitives (loose equality + NaN equality), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date_) The message parameter is optional. The return value is `true`, when the test was success.<BR>__This function may give unexpected results. It is safer to use the `assertDeepStrictEqual();` function.__
+`assertDeepStrictEqual(<value1>,<value2>[,message]);`| __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value1 and value2 aren't deep equals. (_Deep strict equality + NaN equality: primitives (SameValue - Object.is()), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date_) The message parameter is optional. The return value is `true`, when the test was success.
+`assertEqual(<value1>,<value2>[,message]);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value1 and value2 aren't equals. (_Loose equality + NaN equality_) The message parameter is optional. The return value is `true`, when the test was success.
+`assertFalse(<value>[,message]);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value is truthy. The message parameter is optional. The return value is `true`, when the test was success.
+`assertNotDeepEqual(<value1>,<value2>[,message]);`| __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value1 and value2 are deep equals. (_Deep loose equality + NaN equality: primitives (loose equality + NaN equality), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date_) The message parameter is optional. The return value is `true`, when the test was success.<BR>__This function may give unexpected results. It is safer to use the `assertNotDeepStrictEqual();` function.__
+`assertNotDeepStrictEqual(<value1>,<value2>[,message]);`| __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value1 and value2 are deep equals. (_Deep strict equality + NaN equality: primitives (SameValue - Object.is()), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date_) The message parameter is optional. The return value is `true`, when the test was success.
+`assertNotEqual(<value1>,<value2>[,message]);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value1 and value2 are equals. (_Loose equality + NaN equality_) The message parameter is optional. The return value is `true`, when the test was success.
+`assertNotStrictEqual(<value1>,<value2>[,message]);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value1 and value2 are equals. (_SameValue equality_) The message parameter is optional. The return value is `true`, when the test was success.
+`assertStrictEqual(<value1>,<value2>[,message]);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value1 and value2 aren't equals. (_SameValue equality_) The message parameter is optional. The return value is `true`, when the test was success.
+`assertTrue(<value>[,message]);` | __Stability: 4 - Stable.__<BR> This is an alias of the `assert(<msg>,<value>);`.
 
 
 ### DOM API
@@ -346,22 +350,22 @@ __Options object properties:__
 
 These functions are available in the `celestra` and/or `CEL` objects.
 
-Example: `CEL.isString();`
+Example: `CEL.isUndefined();`
 
 Name | Description
 ---- | -----------
-`isArrayBuffer(<value>);` | __Stability: 3 - Legacy and can get only fixes.__<BR>This function determines whether the provided value is an arraybuffer. The return value is boolean.
+`isArrayBuffer(<value>);` |__Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value is an arraybuffer. The return value is boolean.
 `isArraylike(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an iterable object. The return value is boolean.
 `isAsyncFn(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an async function. The return value is boolean.
 `isAsyncGeneratorFn(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an async generator function. The return value is boolean.
-`isBigInt(<value>);` | __Stability: 3 - Legacy and can get only fixes.__<BR>This function determines whether the provided value is a BigInt. The return value is boolean.
-`isBoolean(<value>);` | __Stability: 3 - Legacy and can get only fixes.__<BR>This function determines whether the provided value is a boolean. The return value is boolean.
+`isBigInt(<value>);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value is a BigInt. The return value is boolean.
+`isBoolean(<value>);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value is a boolean. The return value is boolean.
 `isCallable(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided object has a call method. The return value is boolean.
 `isChar(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a string with length 1 character. This function is unicode compatible. The return value is boolean.
 `isClass(<value>);` | __Stability: 4 - Stable.__<BR>Alias of the `isConstructorFn(<value>);`.
 `isConstructorFn(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a constructable function. The return value is boolean.
-`isDataView(<value>);` | __Stability: 3 - Legacy and can get only fixes.__<BR>This function determines whether the provided value is an DataView object. The return value is boolean.
-`isDate(<value>);` | __Stability: 3 - Legacy and can get only fixes.__<BR>This function determines whether the provided value is a date. The return value is boolean.
+`isDataView(<value>);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value is an DataView object. The return value is boolean.
+`isDate(<value>);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value is a date. The return value is boolean.
 `isElement(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a HTML element. The return value is boolean.
 `isEmptyArray(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an empty array (without values). The return value is boolean.
 `isEmptyIterator(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an iterator array (without values). The return value is boolean.
@@ -369,37 +373,37 @@ Name | Description
 `isEmptyObject(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an empty object (without properties). The return value is boolean.
 `isEmptySet(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an empty set (without values). The return value is boolean.
 `isError(<value>);` | __Stability: 0 - Removed in v5.7.0.__<BR>Please use `Error.isError();` instead of this!
-`isFalsy(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is falsy. The return value is boolean. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Glossary/Falsy)!
+`isFalsy(<value>);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value is falsy. The return value is boolean. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Glossary/Falsy)!
 `isFloat(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a float number. The return value is boolean.
 `isFunction(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a function. The return value is boolean.
 `isGeneratorFn(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a generator function. The return value is boolean.
 `isIterable(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an iterable object. The return value is boolean.
 `isIterator(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an iterator. The return value is boolean.
-`isMap(<value>);` | __Stability: 3 - Legacy and can get only fixes.__<BR>This function determines whether the provided value is a map. The return value is boolean.
+`isMap(<value>);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value is a map. The return value is boolean.
 `isNil(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is null or undefined or NaN. The return value is boolean.
 `isNull(<value>);` |__Stability: 4 - Stable.__<BR> This function determines whether the provided value is null. The return value is boolean.
 `isNullOrUndefined(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is null or undefined. The return value is boolean.
-`isNumber(<value>);` | __Stability: 3 - Legacy and can get only fixes.__<BR>This function determines whether the provided value is a number. The return value is boolean.
+`isNumber(<value>);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value is a number. The return value is boolean.
 `isNumeric(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a number or can be converted to number. The return value is boolean.
 `isObject(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an object or function and not null. The return value is boolean.
 `isPlainObject(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an object, which own prototype is the Object.prototype or null. The return value is boolean.
 `isPrimitive(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is not null, not object and not function. The return value is boolean.
-`isPromise(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a promise object. The return value is boolean.
+`isPromise(<value>);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value is a promise object. The return value is boolean.
 `isProxy(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a proxy object. The return value is boolean.
 `isRegexp(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a regexp. The return value is boolean.
-`isSameArray(<array1>,<array2>);` | __Stability: 4 - Stable.__<BR>This function checks the value equality of the given arrays. The return value is boolean and both of the parameters are mandatory and have to be an array.
-`isSameIterator(<iterable1>,<iterable2>);` | __Stability: 4 - Stable.__<BR>This function checks the value equality of the given iterator. The return value is boolean and both of the parameters are mandatory and have to be an iterator or iterable object.
-`isSameMap(<map1>,<map2>);` | __Stability: 4 - Stable.__<BR>This function checks the property and value equality of the given maps. The return value is boolean and both of the parameters are mandatory and have to be a map.
-`isSameObject(<object1>,<object2>);` | __Stability: 4 - Stable.__<BR>This function checks the property and value equality of the given objects. The return value is boolean and both of the parameters are mandatory and have to be an object.
-`isSameSet(<set1>,<set2>);` | __Stability: 4 - Stable.__<BR>This function checks the value equality of the given sets. The return value is boolean and both of the parameters are mandatory and have to be a set.
-`isSet(<value>);` | __Stability: 3 - Legacy and can get only fixes.__<BR>This function determines whether the provided value is a set. The return value is boolean.
-`isString(<value>);` | __Stability: 3 - Legacy and can get only fixes.__<BR>This function determines whether the provided value is a string. This function is unicode compatible. The return value is boolean.
-`isSymbol(<value>);` | __Stability: 3 - Legacy and can get only fixes.__<BR>This function determines whether the provided value is a symbol. The return value is boolean.
-`isTruthy(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is truthy. The return value is boolean. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Glossary/Truthy)!
+`isSameArray(<array1>,<array2>);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function checks the value equality of the given arrays. The return value is boolean and both of the parameters are mandatory and have to be an array.
+`isSameIterator(<iterable1>,<iterable2>);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function checks the value equality of the given iterator. The return value is boolean and both of the parameters are mandatory and have to be an iterator or iterable object.
+`isSameMap(<map1>,<map2>);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function checks the property and value equality of the given maps. The return value is boolean and both of the parameters are mandatory and have to be a map.
+`isSameObject(<object1>,<object2>);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function checks the property and value equality of the given objects. The return value is boolean and both of the parameters are mandatory and have to be an object.
+`isSameSet(<set1>,<set2>);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function checks the value equality of the given sets. The return value is boolean and both of the parameters are mandatory and have to be a set.
+`isSet(<value>);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value is a set. The return value is boolean.
+`isString(<value>);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value is a string. This function is unicode compatible. The return value is boolean.
+`isSymbol(<value>);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value is a symbol. The return value is boolean.
+`isTruthy(<value>);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value is truthy. The return value is boolean. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Glossary/Truthy)!
 `isTypedArray(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an typedarray. The return value is boolean.
 `isUndefined(<value>);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is undefined. The return value is boolean.
-`isWeakMap(<value>);` | __Stability: 3 - Legacy and can get only fixes.__<BR>This function determines whether the provided value is a weakmap. The return value is boolean.
-`isWeakSet(<value>);` | __Stability: 3 - Legacy and can get only fixes.__<BR>This function determines whether the provided value is a weakset. The return value is boolean.
+`isWeakMap(<value>);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value is a weakmap. The return value is boolean.
+`isWeakSet(<value>);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value is a weakset. The return value is boolean.
 
 
 ### Cookie API

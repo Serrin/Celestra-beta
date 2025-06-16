@@ -103,7 +103,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
 
 <p>This library isn't compatible with the Node.js.</p>
 
-<p>Latest version: 5.7.1</p>
+<p>Latest version: 5.7.2</p>
 <p>Date: Date: 2025-06-07T19:57:27.326Z</p>
 
 <p><b>Tested on these browsers:</b></p>
@@ -239,7 +239,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
 <h3>How to import the ESM edition</h3>
 
 <pre>
-&#60;script type="module"&#60;
+&#60;script type="module"&#62;
 
 // import the defaultExport object
 import defaultExport from "./celestra.esm.js";
@@ -592,6 +592,14 @@ console.log(o2);
 </div>
 
 
+<pre>
+(<value1>,<value2>[,message]);
+(<value1>,<value2>[,message]);
+(<value1>,<value2>[,message]);
+(<value1>,<value2>[,message]);
+</pre>
+
+
 <h3 id="FNassertionAPI">Assertion API</h3>
 
 <p>There are information about the equalities in the <a href="js-cheatsheet.pdf" target="_blank">js-cheatsheet.pdf</a>.</p>
@@ -606,42 +614,58 @@ console.log(o2);
       <td><b>Description</b></td>
     </tr>
     <tr>
-      <td><code>assert(&#60;value: boolean&#62;[,message="value"]);</code></td>
+      <td><code>assert(&#60;value&#62;[,message]);</code></td>
       <td>
         <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value is falsy. The message parameter is optional. The return value is <code>true</code>, when the test was success.
       </td>
     </tr>
     <tr>
-      <td><code>assertEqual(&#60;value1&#62;,&#60;value2&#62;,[,message="values"]);</code></td>
+      <td><code>assertDeepEqual(&#60;value1&#62;,&#60;value2&#62;,[,message]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 aren't deep equals. (<i>Deep loose equality + NaN equality: primitives (loose equality + NaN equality), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date</i>) The message parameter is optional. The return value is <code>true</code>, when the test was success.<br/><span class="info">This function may give unexpected results. It is safer to use the <code>assertDeepStrictEqual();</code> function.</span></td>
+    </tr>
+    <tr>
+      <td><code>assertDeepStrictEqual(&#60;value1&#62;,&#60;value2&#62;,[,message]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 aren't deep equals. (<i>Deep strict equality + NaN equality: primitives (SameValue - Object.is()), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date</i>) The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
+    </tr>
+    <tr>
+      <td><code>assertEqual(&#60;value1&#62;,&#60;value2&#62;,[,message]);</code></td>
       <td>
         <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 aren't equals. (<i>Loose equality + NaN equality</i>) The message parameter is optional. The return value is <code>true</code>, when the test was success.
       </td>
     <tr>
-      <td><code>assertFalse(&#60;value: boolean&#62;[,message="value"]);</code></td>
+      <td><code>assertFalse(&#60;value&#62;[,message]);</code></td>
       <td>
         <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value is truthy. The message parameter is optional. The return value is <code>true</code>, when the test was success.
       </td>
     </tr>
     <tr>
-      <td><code>assertNotEqual(&#60;value1&#62;,&#60;value2&#62;,[,message="values"]);</code></td>
+      <td><code>assertNotDeepEqual(&#60;value1&#62;,&#60;value2&#62;,[,message]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 are deep equals. (<i>Deep loose equality + NaN equality: primitives (loose equality + NaN equality), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date</i>) The message parameter is optional. The return value is <code>true</code>, when the test was success.<br/><span class="info">This function may give unexpected results. It is safer to use the <code>assertNotDeepStrictEqual();</code> function.</span></td>
+    </tr>
+    <tr>
+      <td><code>assertNotDeepStrictEqual(&#60;value1&#62;,&#60;value2&#62;,[,message]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 are deep equals. (<i>Deep strict equality + NaN equality: primitives (SameValue - Object.is()), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date</i>) The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
+    </tr>
+    <tr>
+      <td><code>assertNotEqual(&#60;value1&#62;,&#60;value2&#62;[,message=]);</code></td>
       <td>
         <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 are equals. (<i>Loose equality + NaN equality</i>) The message parameter is optional. The return value is <code>true</code>, when the test was success.
       </td>
     <tr>
     <tr>
-      <td><code>assertNotStrictEqual(&#60;value1&#62;,&#60;value2&#62;,[,message="values"]);</code></td>
+      <td><code>assertNotStrictEqual(&#60;value1&#62;,&#60;value2&#62;[,message]);</code></td>
       <td>
         <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 are equals. (<i>SameValue equality</i>) The message parameter is optional. The return value is <code>true</code>, when the test was success.
       </td>
     <tr>
     <tr>
-      <td><code>assertStrictEqual(&#60;value1&#62;,&#60;value2&#62;,[,message="values"]);</code></td>
+      <td><code>assertStrictEqual(&#60;value1&#62;,&#60;value2&#62;[,message]);</code></td>
       <td>
         <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 aren't equals. (<i>SameValue equality</i>) The message parameter is optional. The return value is <code>true</code>, when the test was success.
       </td>
     <tr>
     <tr>
-      <td><code>assertTrue(&#60;value: boolean&#62;[,message="value"]);</code></td>
+      <td><code>assertTrue(&#60;value&#62;[,message]);</code></td>
       <td>
         <span class="info">Stability: 4 - Stable.</span><br/>This is an alias of the <code>assert(&#60;value: boolean&#62;[,message="value"]);</code>.
       </td>
@@ -888,7 +912,7 @@ console.log(o2);
 <h3 id="FNtypecheckingAPI">Type checking API</h3>
 
 <p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
-<br/>Example: <code>CEL.isString();</code></p>
+<br/>Example: <code>CEL.isUndefined();</code></p>
 
 <div>
   <table class="table-responsive table-striped">
@@ -898,7 +922,7 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>isArrayBuffer(&#60;value&#62;);</td>
-      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function determines whether the provided value is an arraybuffer. The return value is boolean.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided value is an arraybuffer. The return value is boolean.</td>
     </tr>
     <tr>
       <td><code>isArraylike(&#60;value&#62;);</code></td>
@@ -914,11 +938,11 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>isBigInt(&#60;value&#62;);</td>
-      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function determines whether the provided value is a BigInt. The return value is boolean.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided value is a BigInt. The return value is boolean.</td>
     </tr>
     <tr>
       <td><code>isBoolean(&#60;value&#62;);</code></td>
-      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function determines whether the provided value is a boolean. The return value is boolean.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided value is a boolean. The return value is boolean.</td>
     </tr>
     <tr>
       <td><code>isCallable(&#60;value&#62;);</code></td>
@@ -938,11 +962,11 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>isDataView(&#60;value&#62;);</td>
-      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function determines whether the provided value is an DataView object. The return value is boolean.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided value is an DataView object. The return value is boolean.</td>
     </tr>
     <tr>
       <td><code>isDate(&#60;value&#62;);</code></td>
-      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function determines whether the provided value is a date. The return value is boolean.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided value is a date. The return value is boolean.</td>
     </tr>
     <tr>
       <td><code>isElement(&#60;value&#62;);</code></td>
@@ -981,7 +1005,7 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>isFalsy(&#60;value&#62;);</td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is falsy. The return value is boolean. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Glossary/Falsy" target="_blank">MDN Article</a>!</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided value is falsy. The return value is boolean. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Glossary/Falsy" target="_blank">MDN Article</a>!</td>
     </tr>
     <tr>
       <td><code>isFloat(&#60;value&#62;);</code></td>
@@ -1005,7 +1029,7 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>isMap(&#60;value&#62;);</code></td>
-      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function determines whether the provided value is a map. The return value is boolean.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided value is a map. The return value is boolean.</td>
     </tr>
     <tr>
       <td><code>isNil(&#60;value&#62;);</code></td>
@@ -1021,7 +1045,7 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>isNumber(&#60;value&#62;);</code></td>
-      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function determines whether the provided value is a number. The return value is boolean.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided value is a number. The return value is boolean.</td>
     </tr>
     <tr>
       <td><code>isNumeric(&#60;value&#62;);</code></td>
@@ -1041,7 +1065,7 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>isPromise(&#60;value&#62;);</td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a promise object. The return value is boolean.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided value is a promise object. The return value is boolean.</td>
     </tr>
     <tr>
       <td><code>isProxy(&#60;value&#62;);</code></td>
@@ -1053,39 +1077,39 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>isSameArray(&#60;array1&#62;,&#60;array2&#62;);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function checks the value equality of the given arrays. The return value is boolean and both of the parameters are mandatory and have to be an array.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function checks the value equality of the given arrays. The return value is boolean and both of the parameters are mandatory and have to be an array.</td>
     </tr>
     <tr>
       <td><code>isSameIterator(&#60;iter1&#62;,&#60;iter2&#62;);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function checks the value equality of the given iterator. The return value is boolean and both of the parameters are mandatory and have to be an iterator or iterable object.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function checks the value equality of the given iterator. The return value is boolean and both of the parameters are mandatory and have to be an iterator or iterable object.</td>
     </tr>
     <tr>
       <td><code>isSameMap(&#60;map1&#62;,&#60;map2&#62;);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function checks the property and value equality of the given maps. The return value is boolean and both of the parameters are mandatory and have to be a map.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function checks the property and value equality of the given maps. The return value is boolean and both of the parameters are mandatory and have to be a map.</td>
     </tr>
     <tr>
       <td><code>isSameObject(&#60;object1&#62;,&#60;object2&#62;);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function checks the property and value equality of the given objects. The return value is boolean and both of the parameters are mandatory and have to be an object.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function checks the property and value equality of the given objects. The return value is boolean and both of the parameters are mandatory and have to be an object.</td>
     </tr>
     <tr>
       <td><code>isSameSet(&#60;set1&#62;,&#60;set2&#62;);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function checks the value equality of the given sets. The return value is boolean and both of the parameters are mandatory and have to be a set.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function checks the value equality of the given sets. The return value is boolean and both of the parameters are mandatory and have to be a set.</td>
     </tr>
     <tr>
       <td><code>isSet(&#60;value&#62;);</code></td>
-      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function determines whether the provided value is a set. The return value is boolean.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided value is a set. The return value is boolean.</td>
     </tr>
     <tr>
       <td><code>isString(&#60;value&#62;);</code></td>
-      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function determines whether the provided value is a string. This function is unicode compatible. The return value is boolean.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided value is a string. This function is unicode compatible. The return value is boolean.</td>
     </tr>
     <tr>
       <td><code>isSymbol(&#60;value&#62;);</code></td>
-      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function determines whether the provided value is a symbol. The return value is boolean.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided value is a symbol. The return value is boolean.</td>
     </tr>
     <tr>
       <td><code>isTruthy(&#60;value&#62;);</td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is truthy. The return value is boolean. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Glossary/Truthy" target="_blank">MDN Article</a>!</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided value is truthy. The return value is boolean. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Glossary/Truthy" target="_blank">MDN Article</a>!</td>
     </tr>
     <tr>
       <td><code>isTypedArray(&#60;value&#62;);</td>
@@ -1097,11 +1121,11 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>isWeakMap(&#60;value&#62;);</code></td>
-      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function determines whether the provided value is a weakmap. The return value is boolean.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided value is a weakmap. The return value is boolean.</td>
     </tr>
     <tr>
       <td><code>isWeakSet(&#60;value&#62;);</code></td>
-      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function determines whether the provided value is a weakset. The return value is boolean.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided value is a weakset. The return value is boolean.</td>
     </tr>
   </table>
 </div>
