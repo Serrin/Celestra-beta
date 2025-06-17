@@ -392,8 +392,8 @@ window.classof = classof;
       <td><span class="info">Stability: 4 - Stable.</span><br/>Returns a function that is bound to a context. Both of the parameters are mandatory.</td>
     </tr>
     <tr>
-      <td><code>classof(&#60;variable&#62;[,type[,throw=false]]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Get the real type of a variable. If this is an object, then the return value is the detailed object type (e.g.: array). If the type (string) parameter is given, then the return value (boolean) is the equality of the type of the variable and the second parameter. If the third parameter (boolean) is true and the type of the variable and the second parameter aren't equals, then the function is throwing a <code>TypeError();</code>, else the return value is true.</td>
+      <td><code>classof(&#60;variable&#62;[,class[,throw=false]]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Get the real type of a variable. If this is an object, then the return value is the detailed object type (e.g.: array). If the class (string) parameter is given, then the return value (boolean) is the equality of the type of the variable and the second parameter. If the third parameter (boolean) is true and the type of the variable and the second parameter aren't equals, then the function is throwing a <code>TypeError();</code>, else the return value is true.</td>
     </tr>
     <tr>
       <td><code>constant(&#60;value&#62;);</code></td>
@@ -439,8 +439,8 @@ console.log(o2);
       <td><span class="info">Stability: 4 - Stable.</span><br/>The forIn() function executes a provided function once for each object property. The object parameter is mandatory and has to be an object. The callback parameter is mandatory and has to be a function. The parameter function will be called with these arguments: key value, key, object.</td>
     </tr>
     <tr>
-      <td><code>getType(&#60;variable&#62;[,type[,throw=false]]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This is an alias of the <code>classof(&#60;variable&#62;[,type[,throw=false]]);</code>.</td>
+      <td><code>getType(&#60;variable&#62;[,class[,throw=false]]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This is an alias of the <code>classof(&#60;variable&#62;[,class[,throw=false]]);</code>.</td>
     </tr>
     <tr>
       <td><code>getUrlVars([str=location.search]);</code></td>
@@ -590,14 +590,6 @@ console.log(o2);
     </tr>
   </table>
 </div>
-
-
-<pre>
-(<value1>,<value2>[,message]);
-(<value1>,<value2>[,message]);
-(<value1>,<value2>[,message]);
-(<value1>,<value2>[,message]);
-</pre>
 
 
 <h3 id="FNassertionAPI">Assertion API</h3>
@@ -856,11 +848,11 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>qs(&#60;selector&#62;[,context]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Get the first matched HTML element. The context is optional and can be an element or a selector string.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Get the first matched HTML element. The context is optional and can be an element.</td>
     </tr>
     <tr>
       <td><code>qsa(&#60;selector&#62;[,context]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Get matched HTML elements in an array. The context is optional and can be an element or a selector string.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Get matched HTML elements in an array. The context is optional and can be an element.</td>
     </tr>
   </table>
 </div>

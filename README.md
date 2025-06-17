@@ -200,14 +200,14 @@ Name | Description
 `b64Encode(<string>);` | __Stability: 4 - Stable.__<BR>Unicode compatible string to base64 converter. Return the encoded string.
 `b64Decode(<string>);` | __Stability: 4 - Stable.__<BR>Unicode compatible base64 to string converter. Return the original string.
 `bind(<function>,<context>);` | __Stability: 4 - Stable.__<BR>Returns a function that is bound to a context. Both of the parameters are mandatory.
-`classof(<variable>[,type[,throw=false]]);` | __Stability: 4 - Stable.__<BR>Get the real type of a variable. If this is an object, then the return value is the detailed object type (e.g.: array). If the type (string) parameter is given, then the return value (boolean) is the equality of the type of the variable and the second parameter. If the third parameter (boolean) is true and the type of the variable and the second parameter aren't equals, then the function is throwing a `TypeError();`, else the return value is true.
+`classof(<variable>[,class[,throw=false]]);` | __Stability: 4 - Stable.__<BR>Get the real type of a variable. If this is an object, then the return value is the detailed object type (e.g.: array). If the class (string) parameter is given, then the return value (boolean) is the equality of the type of the variable and the second parameter. If the third parameter (boolean) is true and the type of the variable and the second parameter aren't equals, then the function is throwing a `TypeError();`, else the return value is true.
 `constant(<value>);` | __Stability: 4 - Stable.__<BR>A one time assignment function to create a constant value in ES5. This returns a function, which returns the given value. (In math: `f(x)=x`)
 `delay(<ms>).then(<callback>);` | __Stability: 4 - Stable.__<BR>A promise based delay function. The ms (milliseconds) parameter is mandatory and have to be an integer.<BR>__Sample:__<BR>`CEL.sleep(5000).then(() => alert("5 seconds")).catch(console.log.bind(console)).finally(() => alert("done"));`
 `extend([deep,]<target>,<source1>[,sourceN]);` | __Stability: 4 - Stable.__<BR>This is an enhanced version of the `Object.assign` method. The deep parameter (boolean) is optional and sets the deep copy (recursive) of the sources.
 `F();` | __Stability: 4 - Stable.__<BR>This function returns false.
 `filterIn(<object>,<callback>);` | __Stability: 4 - Stable.__<BR>The filterIn() function executes a provided function once for each object property and returns a new object with the properties which were be filtered. The object parameter is mandatory and has to be an object. The callback parameter is mandatory and has to be a function. The parameter function will be called with these arguments: key value, key, object.<BR>__Example:__<BR>`var o1 = {"a": 1, "b": 2, "c": 3};`<BR>`console.log(o1);`<BR>`// Object { a: 1, b: 2, c: 3 }`<BR>`var o2 = CEL.filterIn(o1, (v, p, o) => (v > 1));`<BR>`console.log(o2);`<BR>`// Object { b: 2, c: 3 }`
 `forIn(<object>,<callback>);` | __Stability: 4 - Stable.__<BR>The forIn() function executes a provided function once for each object property. The object parameter is mandatory and has to be an object. The callback parameter is mandatory and has to be a function. The parameter function will be called with these arguments: key value, key, object.
-`getType(<variable>[,type[,throw=false]]);` | __Stability: 4 - Stable.__<BR>This is an alias of the `classof(<variable>[,type[,throw=false]]);`.
+`getType(<variable>[,class[,throw=false]]);` | __Stability: 4 - Stable.__<BR>This is an alias of the `classof(<variable>[,class[,throw=false]]);`.
 `getUrlVars([str=location.search]);` | __Stability: 4 - Stable.__<BR>Get the values of the url variables in an object from the `location.search` _(default value)_ or another given url. The str parameter name is optional and can be a string. Example: `"?showall=true&order_by=updated&o=asc"` -> `Object { showall: "true", order_by: "updated", o: "asc" }`
 `identity(<value>);` | __Stability: 4 - Stable.__<BR>Return the given value. (In math: `f(x)=x`)
 `inherit(<subclass>,<superclass>);` | __Stability: 0 - Removed in v5.7.0.__<BR>__Please use ES6 classes instead of this!__<BR>Prototype inheritance.
@@ -315,8 +315,8 @@ Name | Description
 `getLocation(<success>[,error]);` | __Stability: 4 - Stable.__<BR>Get the current location as an object with the coordinates. The success is mandatory and has to be a function. The error is optional and can be a function.
 `setFullscreenOff();` | __Stability: 4 - Stable.__<BR>Set off the fullscreen.
 `setFullscreenOn(<selector>);` | __Stability: 4 - Stable.__<BR>Set the fullscreen element. The selector can be a css selector string or an element.
-`qs(<selector>[,context]);` | __Stability: 4 - Stable.__<BR>Get the first matched HTML element. The context is optional and can be an element or a selector string.
-`qsa(<selector>[,context]);` | __Stability: 4 - Stable.__<BR>Get matched HTML elements in an array. The context is optional and can be an element or a selector string.
+`qs(<selector>[,context]);` | __Stability: 4 - Stable.__<BR>Get the first matched HTML element. The context is optional and can be an element.
+`qsa(<selector>[,context]);` | __Stability: 4 - Stable.__<BR>Get matched HTML elements in an array. The context is optional and can be an element.
 
 
 ### AJAX and CORS API
