@@ -604,6 +604,7 @@ function assertDeepEqual (x, y, message) {
         || _isSameInstance(x, y, Uint16Array)
         || _isSameInstance(x, y, Int32Array)
         || _isSameInstance(x, y, Uint32Array)
+        || ("Float16Array" in window ? _isSameInstance(x,y,Float16Array) : false)
         || _isSameInstance(x, y, Float32Array)
         || _isSameInstance(x, y, Float64Array)
         || _isSameInstance(x, y, BigInt64Array)
@@ -741,6 +742,7 @@ function assertNotDeepStrictEqual (x, y, message) {
         || _isSameInstance(x, y, Uint16Array)
         || _isSameInstance(x, y, Int32Array)
         || _isSameInstance(x, y, Uint32Array)
+        || ("Float16Array" in window ? _isSameInstance(x,y,Float16Array) : false)
         || _isSameInstance(x, y, Float32Array)
         || _isSameInstance(x, y, Float64Array)
         || _isSameInstance(x, y, BigInt64Array)
@@ -867,6 +869,7 @@ function assertNotDeepEqual (x, y, message) {
         || _isSameInstance(x, y, Uint16Array)
         || _isSameInstance(x, y, Int32Array)
         || _isSameInstance(x, y, Uint32Array)
+        || ("Float16Array" in window ? _isSameInstance(x,y,Float16Array) : false)
         || _isSameInstance(x, y, Float32Array)
         || _isSameInstance(x, y, Float64Array)
         || _isSameInstance(x, y, BigInt64Array)
@@ -1004,6 +1007,9 @@ function assertDeepStrictEqual (x, y, message) {
         || _isSameInstance(x, y, Uint16Array)
         || _isSameInstance(x, y, Int32Array)
         || _isSameInstance(x, y, Uint32Array)
+        || ("Float16Array" in window
+            ? _isSameInstance(x, y, Float16Array) : false
+           )
         || _isSameInstance(x, y, Float32Array)
         || _isSameInstance(x, y, Float64Array)
         || _isSameInstance(x, y, BigInt64Array)
@@ -1675,6 +1681,180 @@ function ajax (o) {
 
 
 /** Type checking API **/
+
+
+/* isDeepStrictEqual(<x: any>,<y: any>): true OR throw error */
+function isDeepStrictEqual (x, y) {
+  function _isDeepStrictEqual (x, y) {
+    const _isPrimitive = (v) =>
+      (v == null || (typeof v !== "object" && typeof v !== "function"));
+    function _isSameInstance (x, y, Class) {
+      return (x instanceof Class) && (y instanceof Class);
+    }
+    const _classof = (x) => Object.prototype.toString.call(x).slice(8, -1);
+    const _typeV2 = (x) =>
+      ((x === null) ? "null" : (x !== x) ? "NaN" : (typeof x));
+    const _isObject = (x) => (x != null && typeof x === "object");
+    /* Object Wrappers (Boolean, Number, BigInt, String) */
+    if (_isObject(x) && _isPrimitive(y) && _classof(x).toLowerCase() === typeof y) {
+      return (Object.is(x.valueOf(), y));
+    }
+    if (_isPrimitive(x) && _isObject(y) && typeof x === _classof(y).toLowerCase()) {
+      return (Object.is(x, y.valueOf()));
+    }
+    /* type (primitives, object, null, NaN) */
+    if (_typeV2(x) !== _typeV2(y)) { return false; }
+    /* primitives / symbol -> only reference testing */
+    if (_typeV2(x) === "symbol" && _typeV2(y) === "symbol") {
+      return x === y;
+    }
+    /* Function */
+    if (_typeV2(x) === "function" && _typeV2(y) === "function") {
+      return (Object.is(x, y));
+    }
+    /* primitives / other */
+    if (_isPrimitive(x) && _isPrimitive(y)) {
+      return Object.is(x, y);
+    }
+    /* objects */
+    if (_isObject(x) && _isObject(y)) {
+      /*  objects / not same prototype */
+      if (Object.getPrototypeOf(x) !== Object.getPrototypeOf(y)) {
+        return false;
+      }
+      /*  objects / same memory adress */
+      if (x === y) { return true; }
+      /* objects / WeakMap, WeakSet, Number, Boolean, String */
+      if (_isSameInstance(x, y, WeakMap) || _isSameInstance(x, y, WeakSet)) {
+        return x === y;
+      }
+      /* objects / Wrapper: Number, Boolean, String, BigInt */
+      if (_isSameInstance(x, y, Number)
+        || _isSameInstance(x, y, Boolean)
+        || _isSameInstance(x, y, String)
+        || _isSameInstance(x, y, BigInt)
+      ) {
+        return Object.is(x.valueOf(), y.valueOf());
+      }
+      /* objects / Array and TypedArrays */
+      if ((Array.isArray(x) && Array.isArray(y))
+        || _isSameInstance(x, y, Int8Array)
+        || _isSameInstance(x, y, Uint8Array)
+        || _isSameInstance(x, y, Uint8ClampedArray)
+        || _isSameInstance(x, y, Int16Array)
+        || _isSameInstance(x, y, Uint16Array)
+        || _isSameInstance(x, y, Int32Array)
+        || _isSameInstance(x, y, Uint32Array)
+        || ("Float16Array" in window ? _isSameInstance(x,y,Float16Array) : false)
+        || _isSameInstance(x, y, Float32Array)
+        || _isSameInstance(x, y, Float64Array)
+        || _isSameInstance(x, y, BigInt64Array)
+        || _isSameInstance(x, y, BigUint64Array)
+      ) {
+        if (x.length === 0 && y.length === 0) { return true; }
+        return (x.length === y.length
+          && x.every((v, i) => _isDeepStrictEqual(v, y[i]))
+        );
+      }
+      /* objects / Map */
+      if (_isSameInstance(x, y, Map)) {
+        if (x.size === 0 && y.size === 0) { return true; }
+        if (x.size !== y.size) { return false; }
+        for (let key of x.keys()) {
+          if (!y.has(key)) { return false; }
+          if (!_isDeepStrictEqual(x.get(key), y.get(key))) {
+            return false;
+          }
+        }
+        return true;
+      }
+      /* objects / Set */
+      if (_isSameInstance(x, y, Set)) {
+        if (x.size === 0 && y.size === 0) { return true; }
+        if (x.size !== y.size) { return false; }
+        for (let item of x) {
+          if (!y.has(item)) { return false; }
+        }
+        return true;
+      }
+      /* objects / RegExp */
+      if (_isSameInstance(x, y, RegExp)) {
+        return Object.is(x.lastIndex, y.lastIndex)
+          && Object.is(x.flags, y.flags)
+          && Object.is(x.source, y.source);
+      }
+      /* objects / Error */
+      if (_isSameInstance(x, y, Error)) {
+        return _isDeepStrictEqual(
+          Object.getOwnPropertyNames(x)
+            .reduce((acc, prop) => { acc[prop] = x[prop]; return acc; }, {}),
+          Object.getOwnPropertyNames(y)
+            .reduce((acc, prop) => { acc[prop] = y[prop]; return acc; }, {}),
+        );
+      }
+      /* objects / Date */
+      if (_isSameInstance(x, y, Date)) { return _isDeepStrictEqual(+x, +y); }
+      /* objects / Proxy -> not detectable */
+      /* objects / Object (other objects) */
+      if (_isObject(x) && _isObject(y)) {
+        let xKeys = [
+          ...Object.getOwnPropertyNames(x),
+          ...Object.getOwnPropertySymbols(x)
+        ];
+        let yKeys = [
+          ...Object.getOwnPropertyNames(y),
+          ...Object.getOwnPropertySymbols(y)
+        ];
+        if (xKeys.length !== yKeys.length) { return false; }
+        if (xKeys.length === 0) { return true; }
+        return xKeys.every((key) => _isDeepStrictEqual(x[key], y[key]));
+      }
+    }
+    /* default return false */
+    return false;
+  }
+  return _isDeepStrictEqual(x, y);
+}
+
+
+/* isEmptyValue(<value: any>): boolean */
+function isEmptyValue (v) {
+  if (v == null || v !== v) { return true; }
+  if (Array.isArray(v)
+    || v instanceof Int8Array
+    || v instanceof Uint8Array
+    || v instanceof Uint8ClampedArray
+    || v instanceof Int16Array
+    || v instanceof Uint16Array
+    || v instanceof Int32Array
+    || v instanceof Uint32Array
+    || ("Float16Array" in window ? v instanceof Float16Array : false)
+    || v instanceof Float32Array
+    || v instanceof Float64Array
+    || v instanceof BigInt64Array
+    || v instanceof BigUint64Array
+    || typeof v === "string"
+    || v instanceof String
+  ) {
+    return v.length === 0;
+  }
+  if ( v instanceof Map || v instanceof Set) { return v.size === 0; }
+  if (v instanceof ArrayBuffer || v instanceof DataView) {
+    return v.byteLength === 0;
+  }
+  try { for (let _item of v) { return false; } } catch (_e) { }
+  if (typeof v === "object") {
+    let vKeys = [
+      ...Object.getOwnPropertyNames(v),
+      ...Object.getOwnPropertySymbols(v)
+    ];
+    if (vKeys.length === 0) { return true; }
+    if (vKeys.length === 1 && vKeys[0] === "length" && v.length === 0) {
+      return true;
+    }
+  }
+  return false;
+}
 
 
 /* isProxy(<value: any>): boolean */
@@ -3138,6 +3318,8 @@ var celestra = {
   getJson: getJson,
   ajax: ajax,
   /** Type checking API **/
+  isDeepStrictEqual: isDeepStrictEqual,
+  isEmptyValue: isEmptyValue,
   isProxy: isProxy,
   isTruthy: isTruthy,
   isFalsy: isFalsy,

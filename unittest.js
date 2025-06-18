@@ -1179,7 +1179,7 @@ CUT.isTrue("assertDeepEqual(); 02d - ok",
 try {
   CEL.assertDeepEqual(42n, Object(43n));
 } catch (e) { CUT.isTrue("assertDeepEqual(); 02e - error", true); }
-try { 
+try {
   CEL.assertDeepEqual(Object(42n), 43n, "assertDeepEqual(); 02f - error");
 } catch (e) { CUT.isTrue(e, true); }
 CUT.isTrue("assertDeepEqual(); 02g - ok",
@@ -1390,7 +1390,7 @@ try {
 } catch (e) { CUT.isTrue(e, true); }
 /* types: null, undefined */
 CUT.isTrue("assertDeepEqual(); 15a - ok", CEL.assertDeepEqual(null, null));
-CUT.isTrue("assertDeepEqual(); 15b - ok", 
+CUT.isTrue("assertDeepEqual(); 15b - ok",
   CEL.assertDeepEqual(undefined, undefined)
 );
 CUT.isTrue("assertDeepEqual(); 15c - ok", CEL.assertDeepEqual(null, undefined));
@@ -1663,7 +1663,7 @@ try {
 try {
   CEL.assertDeepEqual(42n, "42n", "assertDeepEqual(); 27b - error");
 } catch (e) { CUT.isTrue(e, true); }
-CUT.isTrue("assertDeepEqual(); 27c - ok", 
+CUT.isTrue("assertDeepEqual(); 27c - ok",
   CEL.assertDeepEqual(Object(42), "42")
 );
 try {
@@ -5316,6 +5316,60 @@ CUT.isEqual("AsyncFunction();", "asyncfunction",
 /** type checking **/
 CUT.addElement("hr");
 CUT.addElement("h3", "type checking API");
+
+
+/* isDeepStrictEqual(); */
+/* only structures 1 copied */
+token1 = new Error("Agradzsag");
+token2 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1]]])}];
+token3 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1]]])}];
+token4 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, 42]]])}];
+token5 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1, 42]]])}];
+CUT.isTrue("isDeepStrictEqual(); 16a - ok",
+  CEL.isDeepStrictEqual(token2, token2)
+);
+CUT.isTrue("isDeepStrictEqual(); 16b - ok",
+  CEL.isDeepStrictEqual(token2, token3)
+);
+CUT.isFalse("isDeepStrictEqual(); 16c - error",
+  CEL.isDeepStrictEqual(token2, token4)
+);
+CUT.isFalse("isDeepStrictEqual(); 16d - error",
+  CEL.isDeepStrictEqual(token2, token5)
+);
+
+
+CUT.isTrue("isEmptyValue(); 01",
+  CEL.isEmptyValue(null)
+  && CEL.isEmptyValue(NaN)
+  && CEL.isEmptyValue(undefined)
+  && CEL.isEmptyValue("")
+  && CEL.isEmptyValue([])
+  && CEL.isEmptyValue(new Int32Array())
+  && CEL.isEmptyValue(new Map())
+  && CEL.isEmptyValue(new Set())
+  && CEL.isEmptyValue(new ArrayBuffer(0))
+  && CEL.isEmptyValue(new DataView(new ArrayBuffer(0)))
+  && CEL.isEmptyValue([].values())
+  && CEL.isEmptyValue({length: 0})
+  && CEL.isEmptyValue({})
+);
+CUT.isFalse("isEmptyValue(); 02",
+  CEL.isEmptyValue(3)
+  || CEL.isEmptyValue(true)
+  || CEL.isEmptyValue("Arthur Dent")
+  || CEL.isEmptyValue(Symbol(42))
+  || CEL.isEmptyValue(Array.from)
+  || CEL.isEmptyValue([42])
+  || CEL.isEmptyValue(new Int32Array([42]))
+  || CEL.isEmptyValue(new ArrayBuffer(1))
+  || CEL.isEmptyValue(new DataView(new ArrayBuffer(1)))
+  || CEL.isEmptyValue(new Map([[42, 2]]))
+  || CEL.isEmptyValue(new Set([42, 2]))
+  || CEL.isEmptyValue([4, 5, 6].values())
+  || CEL.isEmptyValue({length: 1, 0: 3.14})
+  || CEL.isEmptyValue({a: 1})
+);
 
 
 /* isProxy(); */
