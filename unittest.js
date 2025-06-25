@@ -151,7 +151,7 @@ var token1 = 0, token2 = 0, token3 = 0, token4 = 0, token5 = 0;
 var token6 = 0, token7 = 0, token8 = 0, token9 = 0, token10 = 0;
 
 
-/* Celestra v5.7.2 testcases */
+/* Celestra v5.7.3 testcases */
 
 
 /** Not auto tested functions **/
@@ -5318,6 +5318,56 @@ CUT.addElement("hr");
 CUT.addElement("h3", "type checking API");
 
 
+/* isSameClass(); */
+CUT.isTrue("isSameClass(); 01", CEL.isSameClass(NaN, 42));
+CUT.isFalse("isSameClass(); 02", CEL.isSameClass(NaN, "lorem"));
+
+
+/* isSameType(); */
+CUT.isTrue("isSameType();",
+      CEL.isSameType(undefined, undefined)
+  &&  CEL.isSameType(null, null)
+  &&  CEL.isSameType(true, false)
+  &&  CEL.isSameType(1n, 2n)
+  &&  CEL.isSameType(Symbol(1), Symbol(2))
+  &&  CEL.isSameType("Arthur", "Dent")
+  &&  CEL.isSameType({"a": 1}, {"b": 2})
+  &&  CEL.isSameType(function x(){}, function y(){})
+  && !CEL.isSameType(null, undefined)
+  && !CEL.isSameType(null, 0)
+  && !CEL.isSameType(42, "42")
+  && !CEL.isSameType(null, {})
+  && !CEL.isSameType({}, null)
+);
+
+
+/* isSameInstance(); */
+CUT.isTrue("isSameInstance(); 01",
+  CEL.isSameInstance([], [], Array)
+    && CEL.isSameInstance(new Map(), new Map(), Map)
+    && CEL.isSameInstance(Object(42n), Object(3n), BigInt)
+);
+CUT.isFalse("isSameInstance(); 02",
+  CEL.isSameInstance([], {"length": 0}, Array)
+    || CEL.isSameInstance(new Map(), new Set(), Map)
+    || CEL.isSameInstance(Object(42n), 3n, BigInt)
+);
+
+
+/* isCoercedObject(); */
+CUT.isEqual("isCoercedObject(); 01", Number, CEL.isCoercedObject(Object(42)));
+CUT.isEqual("isCoercedObject(); 02", BigInt, CEL.isCoercedObject(Object(42n)));
+CUT.isEqual("isCoercedObject(); 03", String, CEL.isCoercedObject(Object("x")));
+CUT.isEqual("isCoercedObject(); 04", Boolean, CEL.isCoercedObject(Object(!0)));
+CUT.isFalse("isCoercedObject(); 05",
+  CEL.isCoercedObject(42)
+    || CEL.isCoercedObject(42n)
+    || CEL.isCoercedObject("lorem")
+    || CEL.isCoercedObject(true)
+    || CEL.isCoercedObject({})
+);
+
+
 /* isDeepStrictEqual(); */
 /* only structures 1 copied */
 token1 = new Error("Agradzsag");
@@ -5864,31 +5914,6 @@ CUT.addElement("h3", "Abstract API");
 token1 = {"a": 1, "b": 2};
 try { CEL.deletePropertyOrThrow(token1, "b"); } catch (e) { console.log(e); }
 CUT.isEqual("deletePropertyOrThrow();", "{\"a\":1}", JSON.stringify(token1));
-
-
-/* isSameClass(); */
-CUT.isTrue("isSameClass(); 01", CEL.isSameClass(NaN, 42));
-try { CEL.isSameClass(NaN, "42"); } catch (e) {
-  CUT.isTrue("isSameClass(); 02", true);
-}
-
-
-/* isSameType(); */
-CUT.isTrue("isSameType();",
-      CEL.isSameType(undefined, undefined)
-  &&  CEL.isSameType(null, null)
-  &&  CEL.isSameType(true, false)
-  &&  CEL.isSameType(1n, 2n)
-  &&  CEL.isSameType(Symbol(1), Symbol(2))
-  &&  CEL.isSameType("Arthur", "Dent")
-  &&  CEL.isSameType({"a": 1}, {"b": 2})
-  &&  CEL.isSameType(function x(){}, function y(){})
-  && !CEL.isSameType(null, undefined)
-  && !CEL.isSameType(null, 0)
-  && !CEL.isSameType(42, "42")
-  && !CEL.isSameType(null, {})
-  && !CEL.isSameType({}, null)
-);
 
 
 /* isLessThan (); */

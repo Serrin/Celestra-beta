@@ -15,7 +15,7 @@ __A helper JavaScript library with useful functions and polyfills and zero depen
 
 This library isn't compatible with the Node.js.
 
-Latest version: 5.7.2
+Latest version: 5.7.3
 
 Date: 2025-06-18T22:28:03.287Z
 
@@ -363,6 +363,7 @@ Name | Description
 `isCallable(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided object has a call method. The return value is boolean.
 `isChar(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a string with length 1 character. This function is unicode compatible. The return value is boolean.
 `isClass(value);` | __Stability: 4 - Stable.__<BR>Alias of the `isConstructorFn(value);`.
+`isCoercedObject(object);` | __Stability: 4 - Stable.__<BR>If the given object is a coerced object (Number, BigInt, String, Boolean), then the return value is the constructor function. In any other cases retuns false. The object parameter is mandatory.
 `isConstructorFn(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a constructable function. The return value is boolean.
 `isDataView(value);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value is an DataView object. The return value is boolean.
 `isDate(value);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value is a date. The return value is boolean.
@@ -394,10 +395,13 @@ Name | Description
 `isProxy(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a proxy object. The return value is boolean.
 `isRegexp(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a regexp. The return value is boolean.
 `isSameArray(array1,array2);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function checks the value equality of the given arrays. The return value is boolean and both of the parameters are mandatory and have to be an array.
+`isSameClass(value1,value2);`| __Stability: 4 - Stable.__<BR>This function returns true if the values are same class and uses the 
+`isSameInstance(value1,value2,Contructor);` | __Stability: 4 - Stable.__<BR>This function returns true if the values are same class and uses the `instanceof` operator. The parameters are mandatory. The return value is boolean.
 `isSameIterator(iterable1,iterable2);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function checks the value equality of the given iterator. The return value is boolean and both of the parameters are mandatory and have to be an iterator or iterable object.
 `isSameMap(map1,map2);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function checks the property and value equality of the given maps. The return value is boolean and both of the parameters are mandatory and have to be a map.
 `isSameObject(object1,object2);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function checks the property and value equality of the given objects. The return value is boolean and both of the parameters are mandatory and have to be an object.
 `isSameSet(set1,set2);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function checks the value equality of the given sets. The return value is boolean and both of the parameters are mandatory and have to be a set.
+`isSameType(value1,value2);`| __Stability: 4 - Stable.__<BR>This function returns true if the values are same type or both are null or both are undefined. The parameters are mandatory. The return value is boolean.
 `isSet(value);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value is a set. The return value is boolean.
 `isString(value);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value is a string. This function is unicode compatible. The return value is boolean.
 `isSymbol(value);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value is a symbol. The return value is boolean.
@@ -531,8 +535,7 @@ Name | Description
 `isIndex(value);`| __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a valid arraylike index number. The return value is boolean.
 `isLessThan(value1,value2[,leftFirst = true]);`| __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a valid arraylike index number. The return value is boolean.
 `isPropertyKey(value);`| __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a valid propertx key (string or symbol). The return value is boolean.
-`isSameClass(value1,value2);`| __Stability: 4 - Stable.__<BR>This function returns true if the values are same class and uses the `Object.prototype.toString();` method. The parameters are mandatory. The return value is boolean.
-`isSameType(value1,value2);`| __Stability: 4 - Stable.__<BR>This function returns true if the values are same type or both are null or both are undefined. The parameters are mandatory. The return value is boolean.
+`Object.prototype.toString();` method. The parameters are mandatory. The return value is boolean.
 `isSameValue(value1,value2);`| __Stability: 4 - Stable.__<BR>This function uses the SameValue algorithm and determines whether the provided values are the same values and `-0` and `+0` values will be not equal. The `NaN` values will be equal. The return value is boolean.<BR>__TIP: The `Object.is();` uses the SameValue algorithm.__
 `isSameValueNonNumber(value1,value2);`| __Stability: 4 - Stable.__<BR>This function uses the SameValueNonNumber algorithm and determines whether the provided values are the same values and `-0` and `+0` values will be equal. The `NaN` values will be not equal. The return value is boolean.
 `isSameValueZero(value1,value2);`| __Stability: 4 - Stable.__<BR>This function uses the SameValueZero algorithm and determines whether the provided values are the same values and `-0` and `+0` values will be equal. The `NaN` values will be equal. The return value is boolean.

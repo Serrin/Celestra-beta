@@ -103,7 +103,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
 
 <p>This library isn't compatible with the Node.js.</p>
 
-<p>Latest version: 5.7.2</p>
+<p>Latest version: 5.7.3</p>
 <p>Date: 2025-06-18T22:28:03.287Z</p>
 
 <p><b>Tested on these browsers:</b></p>
@@ -949,6 +949,10 @@ console.log(o2);
       <td><span class="info">Stability: 4 - Stable.</span><br/>Alias of the <code>isConstructorFn(value);</code>.</td>
     </tr>
     <tr>
+      <td><code>isCoercedObject(object);</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>If the given object is a coerced object (Number, BigInt, String, Boolean), then the return value is the constructor function. In any other cases retuns false. The object parameter is mandatory.</td>
+    </tr>
+    <tr>
       <td><code>isConstructorFn(value);</td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a constructable function. The return value is boolean.</td>
     </tr>
@@ -1080,6 +1084,14 @@ console.log(o2);
       <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function checks the value equality of the given arrays. The return value is boolean and both of the parameters are mandatory and have to be an array.</td>
     </tr>
     <tr>
+      <td><code>isSameClass(value1,value2);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns true if the values are same class and uses the <code>Object.prototype.toString();</code> method. The parameters are mandatory. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isSameInstance(value1,value2,Contructor);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns true if the values are same class and uses the <code>instanceof</code> operator. The parameters are mandatory. The return value is boolean.</td>
+    </tr>
+    <tr>
       <td><code>isSameIterator(iter1,iter2);</code></td>
       <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function checks the value equality of the given iterator. The return value is boolean and both of the parameters are mandatory and have to be an iterator or iterable object.</td>
     </tr>
@@ -1094,6 +1106,10 @@ console.log(o2);
     <tr>
       <td><code>isSameSet(set1,set2);</code></td>
       <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function checks the value equality of the given sets. The return value is boolean and both of the parameters are mandatory and have to be a set.</td>
+    </tr>
+    <tr>
+      <td><code>isSameType(value1,value2);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns true if the values are same type or both are null or both are undefined. The parameters are mandatory. The return value is boolean.</td>
     </tr>
     <tr>
       <td><code>isSet(value);</code></td>
@@ -1676,15 +1692,6 @@ JSON.stringify( CEL.unique(array, (v) => v.rank) );
       <td><code>isPropertyKey(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a valid propertx key (string or symbol). The return value is boolean.</td>
     </tr>
-    <tr>
-      <td><code>isSameClass(value1,value2);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns true if the values are same class and uses the <code>Object.prototype.toString();</code> method. The parameters are mandatory. The return value is boolean.</td>
-    </tr>
-    <tr>
-      <td><code>isSameType(value1,value2);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns true if the values are same type or both are null or both are undefined. The parameters are mandatory. The return value is boolean.</td>
-    </tr>
-    <tr>
     <tr>
       <td><code>isSameValue(value1,value2);</code></td>
       <td>

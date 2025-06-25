@@ -9,6 +9,78 @@
 # Celestra version history
 
 
+## Celestra v5.7.2
+
+1. Documentation and pdf fixes.
+
+2. Add new functions:
+````javascript
+assertDeepEqual();
+assertDeepStrictEqual();
+assertNotDeepEqual();
+assertNotDeepStrictEqual();
+isDeepStrictEqual();
+isEmptyValue();
+````
+
+3. Set __Stability 1__ (will be removed in the next milestone) for this type checking functions:
+````javascript
+isTruthy();
+isFalsy();
+isSameObject();
+isSameArray();
+isSameMap();
+isSameSet();
+isSameIterator();
+isDataView();
+isEmptyObject();
+isEmptyArray();
+isEmptyMap();
+isEmptySet();
+isEmptyIterator();
+isString();
+isNumber();
+isBoolean();
+isPromise();
+isSymbol();
+isMap();
+isSet();
+isWeakMap();
+isWeakSet();
+isDate();
+isBigInt();
+isArrayBuffer();
+````
+
+4. Set __Stability 4__ (stable) for this type checking functions:
+````javascript
+isObject();
+isRegexp();
+isFunction();
+isCallable();
+isProxy();
+isAsyncGeneratorFn();
+isConstructorFn();
+isClass();
+isPlainObject();
+isChar();
+isFloat();
+isNumeric();
+isArraylike();
+isNull();
+isUndefined();
+isNullOrUndefined();
+isNil();
+isPrimitive();
+isElement();
+isIterable();
+isTypedArray();
+isGeneratorFn();
+isAsyncFn();
+isIterator();
+````
+
+
 ## Celestra v5.7.1
 
 1. Documentation and pdf fixes.
