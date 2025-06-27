@@ -1005,6 +1005,62 @@ CUT.addElement("h3", "Assertion API");
 
 
 /* assert(); */
+
+
+/* assertType(); */
+token1 = 42;
+token2 = Object(42);
+token3 = [];
+CUT.isEqual("assertType(); 01", token1, CEL.assertType(token1, "number"));
+CUT.isEqual("assertType(); 02", token2, CEL.assertType(token2, Number));
+CUT.isEqual("assertType(); 03", token3, CEL.assertType(token3, Array));
+CUT.isEqual("assertType(); 04", token3, CEL.assertType(token3, Object));
+try {
+  CEL.assertType(token1, 42);
+  CUT.isTrue("assertType(); 05 error", false);
+} catch (e) { CUT.isTrue("assertType(); 05 error", true); }
+try {
+  CEL.assertType(token1, Number);
+  CUT.isTrue("assertType(); 06 error", false, );
+} catch (e) { CUT.isTrue("assertType(); 06 error", true); }
+try {
+  CEL.assertType(token3, Map);
+  CUT.isTrue("assertType(); 07 error", false);
+} catch (e) { CUT.isTrue("assertType(); 07 error", true); }
+
+
+/* assertNotType(); */
+token1 = 42;
+token2 = Object(42);
+token3 = [];
+try {
+  CEL.assertNotType(token1, "number");
+  CUT.isTrue("assertNotType(); 01 error", false);
+} catch (e) { CUT.isTrue("assertNotType(); 01 error", true); }
+try {
+  CEL.assertNotType(token2, Number);
+  CUT.isTrue("assertNotType(); 02 error", false);
+} catch (e) { CUT.isTrue("assertNotType(); 02 error", true); }
+
+try {
+  CEL.assertNotType(token3, Array);
+  CUT.isTrue("assertNotType(); 03 error", false);
+} catch (e) { CUT.isTrue("assertNotType(); 03 error", true); }
+
+try {
+  CEL.assertNotType(token3, Object);
+  CUT.isTrue("assertNotType(); 04 error", false);
+} catch (e) { CUT.isTrue("assertNotType(); 04 error", true); }
+try {
+  CEL.assertNotType(token1, 42);
+  CUT.isTrue("assertNotType(); 05 error", false);
+} catch (e) { CUT.isTrue("assertNotType(); 05 error", true); }
+CUT.isEqual("assertNotType(); 06", token1, CEL.assertNotType(token1, Number));
+CUT.isEqual("assertNotType(); 07", token2, CEL.assertNotType(token2, "number"));
+CUT.isEqual("assertNotType(); 08", token3, CEL.assertNotType(token3, Map));
+
+
+/* assert(); */
 CUT.isTrue("assert(); 01", CEL.assert(true));
 CUT.isTrue("assert(); 02", CEL.assert(true, "assert true"));
 CUT.isTrue("assert(); 03", CEL.assert(1));

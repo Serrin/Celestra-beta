@@ -574,7 +574,7 @@ console.log(o2);
       <td><span class="info">Stability: 4 - Stable.</span><br/>Alias of the <code>strPropercase(string);</code>.</td>
     </tr>
     <tr>
-      <td><code>strTruncate(string,newLength[,omission = ""]);</code></td>
+      <td><code>strTruncate(string, newLength[,omission = ""]);</code></td>
       <td>
         <span class="info">Stability: 4 - Stable.</span>
         <br/>This function truncats the given string to the new length. If the new length is bigger than the original length, then the return value is the original string. The omission parameter is optional.
@@ -606,63 +606,73 @@ console.log(o2);
       <td><b>Description</b></td>
     </tr>
     <tr>
-      <td><code>assert(value[,message]);</code></td>
+      <td><code>assert(condition [,message]);</code></td>
       <td>
-        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value is falsy. The message parameter is optional. The return value is <code>true</code>, when the test was success.
+        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the condition is falsy. The message parameter is optional. The return value is <code>true</code>, when the test was success.
       </td>
     </tr>
     <tr>
-      <td><code>assertDeepEqual(value1,value2,[,message]);</code></td>
+      <td><code>assertDeepEqual(value1, value2 [,message]);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 aren't deep equals. (<i>Deep loose equality + NaN equality: primitives (loose equality + NaN equality), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date</i>) The message parameter is optional. The return value is <code>true</code>, when the test was success.<br/><span class="info">This function may give unexpected results. It is safer to use the <code>assertDeepStrictEqual();</code> function.</span></td>
     </tr>
     <tr>
-      <td><code>assertDeepStrictEqual(value1,value2,[,message]);</code></td>
+      <td><code>assertDeepStrictEqual(value1, value2 [,message]);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 aren't deep equals. (<i>Deep strict equality + NaN equality: primitives (SameValue - Object.is()), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date</i>) The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
     </tr>
     <tr>
-      <td><code>assertEqual(value1,value2,[,message]);</code></td>
+      <td><code>assertEqual(value1, value2 [,message]);</code></td>
       <td>
         <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 aren't equals. (<i>Loose equality + NaN equality</i>) The message parameter is optional. The return value is <code>true</code>, when the test was success.
       </td>
     <tr>
-      <td><code>assertFalse(value[,message]);</code></td>
+      <td><code>assertFalse(condition [,message]);</code></td>
       <td>
-        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value is truthy. The message parameter is optional. The return value is <code>true</code>, when the test was success.
+        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the condition is truthy. The message parameter is optional. The return value is <code>true</code>, when the test was success.
       </td>
     </tr>
     <tr>
-      <td><code>assertNotDeepEqual(value1,value2,[,message]);</code></td>
+      <td><code>assertNotDeepEqual(value1, value2, [,message]);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 are deep equals. (<i>Deep loose equality + NaN equality: primitives (loose equality + NaN equality), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date</i>) The message parameter is optional. The return value is <code>true</code>, when the test was success.<br/><span class="info">This function may give unexpected results. It is safer to use the <code>assertNotDeepStrictEqual();</code> function.</span></td>
     </tr>
     <tr>
-      <td><code>assertNotDeepStrictEqual(value1,value2,[,message]);</code></td>
+      <td><code>assertNotDeepStrictEqual(value1, value2, [,message]);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 are deep equals. (<i>Deep strict equality + NaN equality: primitives (SameValue - Object.is()), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date</i>) The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
     </tr>
     <tr>
-      <td><code>assertNotEqual(value1,value2[,message=]);</code></td>
+      <td><code>assertNotEqual(value1, value2 [,message]);</code></td>
       <td>
         <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 are equals. (<i>Loose equality + NaN equality</i>) The message parameter is optional. The return value is <code>true</code>, when the test was success.
       </td>
     <tr>
     <tr>
-      <td><code>assertNotStrictEqual(value1,value2[,message]);</code></td>
+      <td><code>assertNotStrictEqual(value1, value2 [,message]);</code></td>
       <td>
         <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 are equals. (<i>SameValue equality</i>) The message parameter is optional. The return value is <code>true</code>, when the test was success.
       </td>
+    </tr>
     <tr>
+      <td><code>assertNotType(value,typeString OR constructor [,message]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error if the type/constructor of the value in the same as the second parameter. If the second parameter is not a string or function, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
+      </td>
+    </tr>
     <tr>
-      <td><code>assertStrictEqual(value1,value2[,message]);</code></td>
+      <td><code>assertStrictEqual(value1, value2 [,message]);</code></td>
       <td>
         <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 aren't equals. (<i>SameValue equality</i>) The message parameter is optional. The return value is <code>true</code>, when the test was success.
       </td>
     <tr>
     <tr>
-      <td><code>assertTrue(value[,message]);</code></td>
+      <td><code>assertTrue(condition [,message]);</code></td>
       <td>
-        <span class="info">Stability: 4 - Stable.</span><br/>This is an alias of the <code>assert(value[,message]);</code>.
+        <span class="info">Stability: 4 - Stable.</span><br/>This is an alias of the <code>assert(condition [,message]);</code>.
       </td>
     </tr>
-
+    <tr>
+      <td><code>assertType(value,typeString OR constructor [,message]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error if the type/constructor of the value in not the same as the second parameter. If the second parameter is not a string or function, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
+      </td>
     </tr>
   </table>
 </div>
@@ -715,19 +725,19 @@ console.log(o2);
       </td>
     </tr>
     <tr>
-      <td><code>domFadeIn(element[, duration[,display]]);</code></td>
+      <td><code>domFadeIn(element [,duration [,display]]);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>Fade in and show animation for an element. The element is mandatory and has to be a HTML element. The duration parameter is optional and sets the animation time in milisec (the default is 500ms). The display is optional and can be a string (CSS display property values).</td>
     </tr>
     <tr>
-      <td><code>domFadeOut(element[,duration]);</code></td>
+      <td><code>domFadeOut(element [,duration]);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>Fade out and hide animation for an element. The element is mandatory and has to be a HTML element. The duration parameter is optional and sets the animation time in milisec (the default is 500ms).</td>
     </tr>
     <tr>
-      <td><code>domFadeToggle(element[,duration[,display]]);</code></td>
+      <td><code>domFadeToggle(element [,duration [,display]]);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>Fade in or fade out animation which depends on the state of the element. The element is mandatory and has to be a HTML element. The duration parameter is optional and sets the animation time in millisecond (the default is 500ms). The display is optional and can be a string (CSS display property values).</td>
     </tr>
     <tr>
-      <td><code>domGetCSS(element[,property]);</code></td>
+      <td><code>domGetCSS(element [,property]);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>Get a CSS property value of an element or all of the css properties in an object. The element is mandatory and has to be a HTML element. The property is optional and can be a string.</td>
     </tr>
     <tr>
@@ -747,11 +757,11 @@ console.log(o2);
       <td><span class="info">Stability: 4 - Stable.</span><br/>Set the document ready (content fully loaded) event.</td>
     </tr>
     <tr>
-      <td><code>domSetCSS(element,property,value);</code></td>
+      <td><code>domSetCSS(element, property,value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>Set a CSS property value of an element. The element is mandatory and has to be a HTML element. The property is mandatory and has to be a string. The value is mandatory and has to be a string.</td>
     </tr>
     <tr>
-      <td><code>domSetCSS(element,properties);</code></td>
+      <td><code>domSetCSS(element, properties);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>Set CSS property values of an element. The element is mandatory and has to be a HTML element. The properties object is mandatory. The object properties can be the CSS properties and the property values will be applied to the element.</td>
     </tr>
     <tr>
@@ -759,7 +769,7 @@ console.log(o2);
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function set a value of a CSS variable. Both of the parameters are mandatory and have to be a string. If the "--" characters are missing at the begin of the variable name, then the function will add these.</td>
     </tr>
     <tr>
-      <td><code>domShow(element[,display]);</code></td>
+      <td><code>domShow(element [,display]);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>Show an element. The element is mandatory and has to be a HTML element. The display is optional and can be a string (CSS display values).</td>
     </tr>
     <tr>
@@ -767,7 +777,7 @@ console.log(o2);
       <td><span class="info">Old name before v5.5.4: <code>domToBottom</code>.</span><br/>This function is scrolling to the bottom of the page.</td>
     </tr>
     <tr>
-      <td><code>domScrollToElement(element[,top=true]);</code></td>
+      <td><code>domScrollToElement(element [,top=true]);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function is scrolling to top or the bottom of element. The element parameter is mandatory and the top parameter is optional and can be boolean.</td>
     </tr>
     <tr>
@@ -799,7 +809,7 @@ console.log(o2);
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns a HTML element which is created from the htmlString parameter. The htmlString parameter is mandatory and has to be a string.</td>
     </tr>
     <tr>
-      <td><code>domToggle(element[,display]);</code></td>
+      <td><code>domToggle(element [,display]);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>Show or hide an element. The element is mandatory and has to be a HTML element. The display is optional and can be a string (CSS display values).</td>
     </tr>
     <tr>
@@ -965,7 +975,7 @@ console.log(o2);
       <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided value is a date. The return value is boolean.</td>
     </tr>
     <tr>
-      <td><code>isDeepStrictEqual(value1,value2);</code></td>
+      <td><code>isDeepStrictEqual(value1, value2);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided values are deep equals. (<i>Deep strict equality + NaN equality: primitives (SameValue - Object.is()), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date</i>) The return value is boolean.</td>
     </tr>
     <tr>
@@ -1084,11 +1094,11 @@ console.log(o2);
       <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function checks the value equality of the given arrays. The return value is boolean and both of the parameters are mandatory and have to be an array.</td>
     </tr>
     <tr>
-      <td><code>isSameClass(value1,value2);</code></td>
+      <td><code>isSameClass(value1, value2);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns true if the values are same class and uses the <code>Object.prototype.toString();</code> method. The parameters are mandatory. The return value is boolean.</td>
     </tr>
     <tr>
-      <td><code>isSameInstance(value1,value2,Contructor);</code></td>
+      <td><code>isSameInstance(value1, value2,Contructor);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns true if the values are same class and uses the <code>instanceof</code> operator. The parameters are mandatory. The return value is boolean.</td>
     </tr>
     <tr>
@@ -1108,7 +1118,7 @@ console.log(o2);
       <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function checks the value equality of the given sets. The return value is boolean and both of the parameters are mandatory and have to be a set.</td>
     </tr>
     <tr>
-      <td><code>isSameType(value1,value2);</code></td>
+      <td><code>isSameType(value1, value2);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns true if the values are same type or both are null or both are undefined. The parameters are mandatory. The return value is boolean.</td>
     </tr>
     <tr>
@@ -1272,11 +1282,11 @@ console.log(o2);
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function deeply (recursively) clones an array. The return value is the cloned array.</td>
     </tr>
     <tr>
-      <td><code>arrayDifference(iterator1,iterator2);</code></td>
+      <td><code>arrayDifference(iterator1, iterator2);</code></td>
       <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Set.prototype.difference();</code>.</span><br/>Returns the array of unique values that are in the iterator1, excluding the values that are also in the iterator2. All of the parameters are mandatory. The return value is an Array.</td>
     </tr>
     <tr>
-      <td><code>arrayIntersection(iterator1,iterator2);</code></td>
+      <td><code>arrayIntersection(iterator1, iterator2);</code></td>
       <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Set.prototype.intersection();</code>.</span><br/>Returns the array of unique values that are in both of the given iterators. All of the parameters are mandatory. The return value is an Array.</td>
     </tr>
     <tr>
@@ -1303,7 +1313,7 @@ console.log(o2);
       <td><span class="info">Stability: 4 - Stable.</span><br/>Returns an array with same repeatedly elements. The value parameter is mandatory and the n parameter is optional and can be an integer. Default parameter value: n = 100.</td>
     </tr>
     <tr>
-      <td><code>arraySymmetricDifference(iterator1,iterator2);</code></td>
+      <td><code>arraySymmetricDifference(iterator1, iterator2);</code></td>
       <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Set.prototype.symmetricDifference();</code>.</span><br/>Returns the array of unique values that are only in one of given iterators. All of the parameters are mandatory. The return value is an Array.</td>
     </tr>
     <tr>
@@ -1609,7 +1619,7 @@ JSON.stringify( CEL.unique(array, (v) => v.rank) );
       <td><span class="info">Stability: 4 - Stable.</span><br/>Returns the array of paired values of the given iterators. In the modern browsers compatible with finite iterators. <br/><b>Example:</b><br/><code>CEL.zip(["a","b","c","d"], [3,4,5,6,7,8,9]);</code><br/>-><br/><code>Array (4) [ [ "a", 3 ], [ "b", 4 ], [ "c", 5 ], [ "d", 6 ] ]</code></td>
     </tr>
     <tr>
-      <td><code>zipObj(iterator1,iterator2);</code></td>
+      <td><code>zipObj(iterator1, iterator2);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>Returns an object, whose properties are from the first iterator and its values are from the second iterator. The two iterators must be the same size. In the modern browsers compatible with finite iterators.<br/><b>Example:</b><br/><code>zipObj(["a","b","c"],[1,2,3])</code><br/>-><br/><code>{"a":1,"b":2,"c":3}</code></td>
     </tr>
   </table>
@@ -1685,7 +1695,7 @@ JSON.stringify( CEL.unique(array, (v) => v.rank) );
       <td><span class="info">Stability: 4 - Stable.</span><br/>Alias of <code>isIndex(value);</code>.</td>
     </tr>
     <tr>
-      <td><code>isLessThan(value1,value2[,leftFirst = true]);</code></td>
+      <td><code>isLessThan(value1, value2[,leftFirst = true]);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function checks whether the first value is less then the second value. The v1 and v2 parameters are mandatory. If leftFirst is false, then the direction of the check is reversed.</td>
     </tr>
     <tr>
@@ -1693,7 +1703,7 @@ JSON.stringify( CEL.unique(array, (v) => v.rank) );
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a valid propertx key (string or symbol). The return value is boolean.</td>
     </tr>
     <tr>
-      <td><code>isSameValue(value1,value2);</code></td>
+      <td><code>isSameValue(value1, value2);</code></td>
       <td>
         <span class="info">Stability: 4 - Stable.</span><br/>
         <p>This function uses the SameValue algorithm and determines whether the provided values are the same values and <code>-0</code> and <code>+0</code> values will be not equal. The <code>NaN</code> values will be equal. The return value is boolean.</p>
@@ -1701,11 +1711,11 @@ JSON.stringify( CEL.unique(array, (v) => v.rank) );
       </td>
     </tr>
     <tr>
-      <td><code>isSameValueNonNumber(value1,value2);</code></td>
+      <td><code>isSameValueNonNumber(value1, value2);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function uses the SameValueNonNumber algorithm and determines whether the provided values are the same values and <code>-0</code> and <code>+0</code> values will be equal. The <code>NaN</code> values will be not equal. The return value is boolean.</td>
     </tr>
     <tr>
-      <td><code>isSameValueZero(value1,value2);</code></td>
+      <td><code>isSameValueZero(value1, value2);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function uses the SameValueZero algorithm and determines whether the provided values are the same values and <code>-0</code> and <code>+0</code> values will be equal. The <code>NaN</code> values will be equal. The return value is boolean.</td>
     </tr>
     <tr>

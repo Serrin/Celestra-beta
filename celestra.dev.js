@@ -172,7 +172,9 @@ if (!Object.hasOwn) {
       Object.defineProperty(global, "globalThis", {
         configurable: true, enumerable: false, value: global, writable: true
       });
-    } else { global.globalThis = global; }
+    } else {
+      global.globalThis = global;
+    }
   }
 })(typeof this === "object" ? this : Function("return this")());
 
@@ -283,7 +285,7 @@ const WORDSAFEALPHABET= "23456789CFGHJMPQRVWXcfghjmpqvwx";
 
 /* randomUUIDv7(): string */
 function randomUUIDv7 () {
-  let ts = Date.now().toString(16).padStart(12,"0")+"7";
+  let ts = Date.now().toString(16).padStart(12,"0") + "7";
   let uuid = Array.from(([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, (c) =>
     (c^crypto.getRandomValues(new Uint8Array(1))[0]&15>>c/4).toString(16)
   ));
@@ -351,8 +353,8 @@ const getUrlVars = (str = location.search) =>
 
 /* obj2string(object): string */
 const obj2string = (o) => Object.keys(o).reduce(
-  (s,p) => s += encodeURIComponent(p) + "=" + encodeURIComponent(o[p]) + "&","")
-  .slice(0, -1);
+  (s,p) => s += encodeURIComponent(p) + "=" + encodeURIComponent(o[p]) + "&",
+  "").slice(0, -1);
 
 
 /* classof(variable: any): string */
@@ -415,7 +417,9 @@ const sizeIn = (O) => Object.getOwnPropertyNames(O).length
 
 
 /* forIn(object, callback: function): object */
-function forIn (o,fn) { Object.keys(o).forEach((v) => fn(o[v],v,o)); return o; }
+function forIn (o,fn) {
+  Object.keys(o).forEach((v) => fn(o[v], v, o)); return o;
+}
 
 
 /* filterIn(object, callback: function): object */
@@ -425,7 +429,11 @@ const filterIn = (o, fn) => Object.keys(o)
 
 /* popIn(object, property: string): any OR undefined*/
 function popIn (o,p) {
-  if (Object.hasOwn(o, p)) { var v = o[p]; delete o[p]; return v; }
+  if (Object.hasOwn(o, p)) {
+    var v = o[p];
+    delete o[p];
+    return v;
+  }
 }
 
 
@@ -491,9 +499,69 @@ function timestampID (size = 21,
 /** Assertion API **/
 
 
+/* assertType(value: any, type: string): value or thrown error */
+/* assertType(value: any, constructor: function): value or thrown error */
+function assertType (v, rType, message) {
+  if (typeof rType !== "string" && typeof rType !== "function") {
+    throw new TypeError(
+      "[assertType] TypeError: " + rType + " is not a string of function"
+    );
+  }
+  if (typeof rType === "string") {
+    if (rType === "object" ? (v !== null && typeof v !== "object")
+        : typeof v !== rType) {
+      throw new TypeError(
+        "[assertType] Assertion failed: " + v + " is not a " + rType
+          + (message ? " - " + message : "")
+      );
+    }
+  }
+  if (typeof rType === "function") {
+    if (!(v instanceof rType)) {
+      throw new TypeError(
+        "[assertType] Assertion failed: " + v + " is not a "
+          + ((rType.name !== "") ? rType.name : rType)
+          + (message ? " - " + message : "")
+      );
+    }
+  }
+  return v;
+}
+
+
+/* assertNotType(value: any, type: string): value or thrown error */
+/* assertNotType(value: any, constructor: function): value or thrown error */
+function assertNotType (v, rType, message) {
+  if (typeof rType !== "string" && typeof rType !== "function") {
+    throw new TypeError(
+      "[assertNotType] TypeError: " + rType + " is not a string of function"
+    );
+  }
+  if (typeof rType === "string") {
+    if (rType === "object" ? (v !== null && typeof v === "object")
+        : typeof v === rType) {
+      throw new TypeError(
+        "[assertNotType] Assertion failed: " + v + " is a " + rType
+          + (message ? " - " + message : "")
+      );
+    }
+  }
+  if (typeof rType === "function") {
+    if (v instanceof rType) {
+      throw new TypeError(
+        "[assertNotType] Assertion failed: " + v + " is a "
+          + ((rType.name !== "") ? rType.name : rType)
+          + (message ? " - " + message : "")
+      );
+    }
+  }
+  return v;
+}
+
+
 /* assert(value: any [, message]): true OR throw error */
-function assert (v, message) {
-  if (!v) {
+function assert (c, message) {
+  if (!c) {
     throw new Error("[assert] Assertion failed"
       + (message ? ": " + message : "")
     );
@@ -503,8 +571,8 @@ function assert (v, message) {
 
 
 /* assertTrue(value: any [, message]): true OR throw error */
-function assertTrue (v, message) {
-  if (!v) {
+function assertTrue (c, message) {
+  if (!c) {
     throw new Error("[assertTrue] Assertion failed"
       + (message ? ": " + message : "")
     );
@@ -514,8 +582,8 @@ function assertTrue (v, message) {
 
 
 /* assertFalse(value: any [, message]): true OR throw error */
-function assertFalse (v, message) {
-  if (v) {
+function assertFalse (c, message) {
+  if (c) {
     throw new Error("[assertFalse] Assertion failed"
       + (message ? ": " + message : "")
     );
@@ -896,7 +964,7 @@ function assertNotDeepEqual (x, y, message) {
         || _isSameInstance(x, y, Uint32Array)
         || ("Float16Array" in window
             ? _isSameInstance(x, y, Float16Array) : false
-          )
+           )
         || _isSameInstance(x, y, Float32Array)
         || _isSameInstance(x, y, Float64Array)
         || _isSameInstance(x, y, BigInt64Array)
@@ -1134,7 +1202,7 @@ function strTruncate (str, newLen, omission = "") {
 /* strPropercase(string): string */
 const strPropercase = (s) => String(s).split(" ").map(function (v) {
   var a = Array.from(v).map( (c) => c.toLowerCase() );
-  if (a.length > 0) { a[0] = a[0].toUpperCase(); }
+  if (a.length) { a[0] = a[0].toUpperCase(); }
   return a.join("");
 }).join(" ");
 
@@ -1142,7 +1210,7 @@ const strPropercase = (s) => String(s).split(" ").map(function (v) {
 /* strTitlecase(string): string */
 const strTitlecase = (s) => String(s).split(" ").map(function (v) {
   var a = Array.from(v).map( (c) => c.toLowerCase() );
-  if (a.length > 0) { a[0] = a[0].toUpperCase(); }
+  if (a.length) { a[0] = a[0].toUpperCase(); }
   return a.join("");
 }).join(" ");
 
@@ -1150,7 +1218,7 @@ const strTitlecase = (s) => String(s).split(" ").map(function (v) {
 /* strCapitalize(string): string */
 function strCapitalize (s) {
   var a = [...String(s).toLowerCase()];
-  if (a.length > 0) { a[0] = a[0].toUpperCase(); }
+  if (a.length) { a[0] = a[0].toUpperCase(); }
   return a.join("");
 }
 
@@ -1158,7 +1226,7 @@ function strCapitalize (s) {
 /* strUpFirst(string): string */
 function strUpFirst (s) {
   var a = [...String(s)];
-  if (a.length > 0) { a[0] = a[0].toUpperCase(); }
+  if (a.length) { a[0] = a[0].toUpperCase(); }
   return a.join("");
 }
 
@@ -1166,7 +1234,7 @@ function strUpFirst (s) {
 /* strDownFirst(string): string */
 function strDownFirst (s) {
   var a = [...String(s)];
-  if (a.length > 0) { a[0] = a[0].toLowerCase(); }
+  if (a.length) { a[0] = a[0].toLowerCase(); }
   return a.join("");
 }
 
@@ -1475,7 +1543,8 @@ function form2string (f) {
           }
         } else if ((fld.type!=="checkbox" && fld.type!=="radio")||fld.checked) {
           a.push(encodeURIComponent(fld.name)
-            + "=" + encodeURIComponent(fld.value));
+            + "=" + encodeURIComponent(fld.value)
+          );
         }
       }
     }
@@ -1502,7 +1571,7 @@ function getLocation (s, e) {
 }
 
 
-/* createFile(filename: string,content: string [, dataType:string]): undefined*/
+/* createFile(filename: string, content: string [,dataType:string]): undefined*/
 function createFile (fln, c, dt) {
   var l = arguments.length;
   if (l > 1) {
@@ -1985,7 +2054,10 @@ const isEmptySet = (v) => (v instanceof Set && v.size === 0);
 
 
 /* isEmptyIterator(value: any): boolean */
-function isEmptyIterator (it) {for (let _item of it){return false;}return true;}
+function isEmptyIterator (it) {
+  for (let _item of it) { return false; }
+  return true;
+}
 
 
 /* isDataView(value: any): boolean */
@@ -2163,11 +2235,15 @@ const isRegexp = (v) => (v instanceof RegExp);
 
 
 /* isElement(value: any): boolean */
-const isElement = (v) => (v!=null && typeof v === "object" && v.nodeType === 1);
+const isElement = (v) => (
+  v != null && typeof v === "object" && v.nodeType === 1
+);
 
 
 /* isIterable(value: any): boolean */
-const isIterable = (v) => (v!=null && typeof v[Symbol.iterator] === "function");
+const isIterable = (v) => (
+  v != null && typeof v[Symbol.iterator] === "function"
+);
 
 
 /* isBigInt(value: any): boolean */
@@ -2227,7 +2303,7 @@ function setCookie (name, value, hours = 8760, path = "/", domain, secure,
     + "; path=" + path
     + (domain ? "; domain=" + domain : "")
     + (secure ? "; secure" : "")
-    + (typeof SameSite==="string"&&SameSite.length>0 ?"; SameSite="+SameSite:"")
+    + (typeof SameSite==="string" && SameSite.length ?"; SameSite="+SameSite:"")
     + (HttpOnly ? "; HttpOnly" : "")
     + ";";
 }
@@ -2249,7 +2325,9 @@ function getCookie (name) {
 
 
 /* hasCookie(name: string): boolean */
-const hasCookie = (n) => (document.cookie.includes(encodeURIComponent(n) +"="));
+const hasCookie = (n) => (
+  document.cookie.includes(encodeURIComponent(n) + "=")
+);
 
 
 /* removeCookie(Options object);: boolean */
@@ -2271,7 +2349,7 @@ function removeCookie (name, path="/", domain, secure, SameSite="Lax",HttpOnly){
     + "; path=" + path
     + (domain ? "; domain=" + domain : "")
     + (secure ? "; secure" : "")
-    + (typeof SameSite==="string"&&SameSite.length>0 ?"; SameSite="+SameSite:"")
+    + (typeof SameSite==="string" && SameSite.length ?"; SameSite="+SameSite:"")
     + (HttpOnly ? "; HttpOnly" : "")
     + ";";
   return r;
@@ -2299,7 +2377,7 @@ function clearCookies (path = "/", domain, secure, SameSite = "Lax", HttpOnly) {
         + (domain ? "; domain=" + domain : "")
         + (secure ? "; secure" : "")
         + (typeof SameSite === "string"
-          && SameSite.length > 0 ? "; SameSite=" + SameSite : "")
+          && SameSite.length ? "; SameSite=" + SameSite : "")
         + (HttpOnly ? "; HttpOnly" : "")
         + ";";
     }
@@ -2421,7 +2499,8 @@ const setSymmetricDifference = (a, b) => new Set(
 
 
 /* isSuperset(superCollection, subCollection): boolean */
-const isSuperset = ([...sup], [...sub]) => sub.every( (v) => sup.indexOf(v)>-1);
+const isSuperset = ([...sup], [...sub]) =>
+  sub.every((v) => sup.indexOf(v) > -1);
 
 
 /* min(value1: any [, valueN]): any */
@@ -2536,7 +2615,7 @@ function* iterRange (s = 0, st = 1, e = Infinity) {
 
 
 /* iterCycle(iterator [, n = Infinity]): iterator */
-function* iterCycle ([...a], n=Infinity) {
+function* iterCycle ([...a], n = Infinity) {
   let i=0;
   while (i < n) {
     yield* a;
@@ -2546,7 +2625,13 @@ function* iterCycle ([...a], n=Infinity) {
 
 
 /* iterRepeat(value: any [, n = Infinity]): iterator */
-function* iterRepeat (v, n=Infinity) { let i= 0; while (i<n) { yield v; i++; } }
+function* iterRepeat (v, n = Infinity) {
+  let i= 0;
+  while (i<n) {
+    yield v;
+    i++;
+  }
+}
 
 
 /* takeWhile(iterator, callback: function): iterator */
@@ -2583,7 +2668,11 @@ function* take (it, n = 1) {
 function* drop (it, n = 1) {
   let i = n;
   for (let item of it) {
-    if (i < 1) { yield item; } else { i--; }
+    if (i < 1) {
+      yield item;
+    } else {
+      i--;
+    }
   }
 }
 
@@ -2594,14 +2683,14 @@ function forEach (it, fn) { let i = 0; for (let item of it) { fn(item, i++); } }
 
 /* forEachRight(iterator, callback: function): undefined */
 function forEachRight ([...a], fn) {
-  let i=a.length;
+  let i = a.length;
   while (i--) { fn(a[i] ,i); }
 }
 
 
 /* map(iterator, callback: function): iterator */
 function* map (it, fn) {
-  let i=0;
+  let i = 0;
   for (let item of it) { yield fn(item, i++); }
 }
 
@@ -2647,7 +2736,7 @@ function* tail (it) {
 function item (it, p) {
   let i=0;
   for (let item of it) {
-    if(i++ === p) {return item;}
+    if (i++ === p) { return item; }
   }
 }
 
@@ -2656,7 +2745,7 @@ function item (it, p) {
 function nth (it, p) {
   let i=0;
   for (let item of it) {
-    if(i++ === p) { return item; }
+    if (i++ === p) { return item; }
   }
 }
 
@@ -2682,13 +2771,7 @@ function* reverse ([...a]) { var i = a.length; while (i--) { yield a[i]; } }
 
 
 /* sort(iterator [, numbers = false]): array */
-const sort = ([...a], ns) => a.sort(ns ?
-  (a, b) => {
-    if (a < b){ return -1;}
-    if (a > b) { return 1;}
-    return 0; }
-  : undefined
-);
+const sort = ([...a], ns) => a.sort(ns ? (x, y) => x - y : undefined);
 
 
 /* includes(iterator, value: any): boolean */
@@ -2768,7 +2851,11 @@ const takeRight = ([...a], n = 1) => a.reverse().slice(0, n);
 function* takeRightWhile ([...a], fn) {
   let i = 0;
   for (let item of a.reverse()) {
-    if (fn(item, i++)) { yield item; } else { break; }
+    if (fn(item, i++)) {
+      yield item;
+    } else {
+      break;
+    }
   }
 }
 
@@ -2857,7 +2944,7 @@ function join (it, sep = ",") {
 
 
 /* withOut(iterator, filterIterator): array */
-const withOut = ([...a], [...fl]) => a.filter( (e) => fl.indexOf(e) === -1 );
+const withOut = ([...a], [...fl]) => a.filter((e) => fl.indexOf(e) === -1);
 
 
 /** Abstract API **/
@@ -3044,11 +3131,11 @@ const type = (v) => ((v === null) ? "null" : (typeof v));
 
 
 /* isIndex(value: any): boolean */
-const isIndex = (v) => (Number.isSafeInteger(v) && v >= 0 && 1/v !== 1/-0);
+const isIndex = (v) => (Number.isSafeInteger(v) && v >= 0 && 1/v !== 1 / -0);
 
 
 /* isLength(value: any): boolean */
-const isLength = (v) => (Number.isSafeInteger(v) && v >= 0 && 1/v !== 1/-0);
+const isLength = (v) => (Number.isSafeInteger(v) && v >= 0 && 1/v !== 1 / -0);
 
 
 /* toIndex(value: any): unsigned integer */
@@ -3182,18 +3269,18 @@ function minmax(val, min = -9007199254740991, max = 9007199254740991) {
 }
 
 
-/* isEven(value: any): boolan */
+/* isEven(value: number): boolan */
 function isEven (v) {
   var r = v % 2;
-  if (r === r) { return r===0; }
+  if (r === r) { return r === 0; }
   return false;
 }
 
 
-/* isOdd(value: any): boolean */
+/* isOdd(value: number): boolean */
 function isOdd (v) {
   var r = v % 2;
-  if (r === r) { return r!==0; }
+  if (r === r) { return r !== 0; }
   return false;
 }
 
@@ -3269,7 +3356,8 @@ const isInt32 = (v) =>
 
 
 /* isUInt32(value: any): boolean */
-const isUInt32 = (v) => (Number.isInteger(v) ? (v>=0 && v<=4294967295) : false);
+const isUInt32 = (v) =>
+  (Number.isInteger(v) ? (v >= 0 && v <= 4294967295) : false);
 
 
 /* isBigInt64(value: any): boolean */
@@ -3283,8 +3371,8 @@ const isBigUInt64 = (v) =>
 
 
 /* toFloat16(value: any): float16 */
-const toFloat16 = (v) => ((v = Math.min(Math.max(-65504, Number(v)),65504))
-  === v ) ? v : 0;
+const toFloat16 = (v) =>
+  ((v = Math.min(Math.max(-65504, Number(v)),65504)) === v ) ? v : 0;
 
 
 /* isFloat16(value: any): boolean */
@@ -3293,13 +3381,17 @@ const isFloat16 = (v) =>
 
 
 /* signbit(value: any): boolean */
-const signbit = (v) => (((v = Number(v))!==v) ? !1 :((v<0) || Object.is(v,-0)));
+const signbit = (v) =>
+  (((v = Number(v)) !== v) ? false : ((v < 0) || Object.is(v, -0)));
 
 
 /* randomInt([max: int]): int */
 /* randomInt(min: int, max: int): int */
 function randomInt (i = 100, a) {
-  if (a == null) { a = i; i = 0; }
+  if (a == null) {
+    a = i;
+    i = 0;
+  }
   i = Math.ceil(Number(i));
   return Math.floor(Math.random() * (Math.floor(Number(a)) - i + 1) + i);
 }
@@ -3308,7 +3400,10 @@ function randomInt (i = 100, a) {
 /* randomFloat([max: float]): float */
 /* randomFloat(min: float, max: float): float */
 function randomFloat (i = 100, a) {
-  if (a == null) { a = i; i = 0; }
+  if (a == null) {
+    a = i;
+    i = 0;
+  }
   var r = (Math.random() * (a - i + 1)) + i;
   return r > a ? a : r;
 }
@@ -3384,6 +3479,8 @@ var celestra = {
   nanoid: nanoid,
   timestampID: timestampID,
   /** Assertion API **/
+  assertType: assertType,
+  assertNotType: assertNotType,
   assert: assert,
   assertTrue: assertTrue,
   assertFalse: assertFalse,
