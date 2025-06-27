@@ -6468,19 +6468,21 @@ try { CEL.clamp(15, Infinity, -Infinity) } catch (e) {
 try { CEL.clamp(15, 10, 5); } catch (e) { CUT.isTrue("clamp(); 03", true); }
 CUT.isNotEqual("clamp(); 04", NaN, CEL.clamp(NaN, 10,   15));
 CUT.isEqual("clamp(); 05",    0,   CEL.clamp(15,  -0,   0));
-CUT.isEqual("clamp(); 06",    -0,  CEL.clamp(0,   -0,   15));
+CUT.isEqual("clamp(); 06",    0,   CEL.clamp(0,   -0,   15));
 CUT.isEqual("clamp(); 07",    15,  CEL.clamp(10,  15,   20));
-CUT.isEqual("clamp(); 07",    -0,  CEL.clamp(-0,  -10,  0));
-CUT.isEqual("clamp(); 09",    -0,  CEL.clamp(0,   -10,  -0));
+CUT.isEqual("clamp(); 08",    0,   CEL.clamp(-0,  -10,  0));
+CUT.isEqual("clamp(); 09",    0,   CEL.clamp(0,   -10,  -0));
 CUT.isEqual("clamp(); 10",    20,  CEL.clamp(25,   10,  20));
 CUT.isEqual("clamp(); 11",    15,  CEL.clamp(15,   10,  20));
-CUT.isEqual("clamp(); 12",    +0,  CEL.clamp(15,   -0n, 0));
-CUT.isEqual("clamp(); 13",    -0,  CEL.clamp(0n,   -0,  15));
+CUT.isEqual("clamp(); 12",    0,   CEL.clamp(15,   -0n, 0));
+CUT.isEqual("clamp(); 13",    0n,  CEL.clamp(0n,   -0,  15));
 CUT.isEqual("clamp(); 14",    15,  CEL.clamp(10,   15,  20n));
 CUT.isEqual("clamp(); 15",    0n,  CEL.clamp(-0n,  -10, 0));
 CUT.isEqual("clamp(); 16",    0,   CEL.clamp(0,    -10, -0n));
 CUT.isEqual("clamp(); 17",    20,  CEL.clamp(25,   10n, 20));
-CUT.isEqual("clamp(); 17",    15n, CEL.clamp(15n,  10n, 20n));
+CUT.isEqual("clamp(); 18",    15n, CEL.clamp(15n,  10n, 20n));
+CUT.isEqual("clamp(); 19",    10n, CEL.clamp(5,  10n, 20n));
+CUT.isEqual("clamp(); 20",    10,  CEL.clamp(5,  10, 20));
 
 
 /* minmax(); */
@@ -6489,21 +6491,23 @@ try { CEL.minmax(15, Infinity, -Infinity) } catch (e) {
   CUT.isTrue("minmax(); 02", true);
 }
 try { CEL.minmax(15, 10, 5); } catch (e) { CUT.isTrue("minmax(); 03", true); }
-CUT.isNotEqual("minmax(); 04", NaN, CEL.minmax(NaN, 10,  15));
-CUT.isEqual("minmax(); 05",    0,   CEL.minmax(15,  -0,  0));
-CUT.isEqual("minmax(); 06",    -0,  CEL.minmax(0,   -0,  15));
-CUT.isEqual("minmax(); 07",    15,  CEL.minmax(10,  15,  20));
-CUT.isEqual("minmax(); 08",    -0,  CEL.minmax(-0,  -10, 0));
-CUT.isEqual("minmax(); 09",    -0,  CEL.minmax(0,   -10, -0));
-CUT.isEqual("minmax(); 10",    20,  CEL.minmax(25,  10,  20));
-CUT.isEqual("minmax(); 11",    15,  CEL.minmax(15,  10,  20));
-CUT.isEqual("minmax(); 12",    +0,  CEL.minmax(15,  -0n, 0));
-CUT.isEqual("minmax(); 13",    -0,  CEL.minmax(0n,  -0,  15));
-CUT.isEqual("minmax(); 14",    15,  CEL.minmax(10,  15,  20n));
-CUT.isEqual("minmax(); 15",    0n,  CEL.minmax(-0n, -10, 0));
-CUT.isEqual("minmax(); 16",    0,   CEL.minmax(0,   -10, -0n));
-CUT.isEqual("minmax(); 17",    20,  CEL.minmax(25,  10n, 20));
-CUT.isEqual("minmax(); 18",    15n, CEL.minmax(15n, 10n, 20n));
+CUT.isNotEqual("minmax(); 04", NaN, CEL.minmax(NaN, 10,   15));
+CUT.isEqual("minmax(); 05",    0,   CEL.minmax(15,  -0,   0));
+CUT.isEqual("minmax(); 06",    0,   CEL.minmax(0,   -0,   15));
+CUT.isEqual("minmax(); 07",    15,  CEL.minmax(10,  15,   20));
+CUT.isEqual("minmax(); 08",    0,   CEL.minmax(-0,  -10,  0));
+CUT.isEqual("minmax(); 09",    0,   CEL.minmax(0,   -10,  -0));
+CUT.isEqual("minmax(); 10",    20,  CEL.minmax(25,   10,  20));
+CUT.isEqual("minmax(); 11",    15,  CEL.minmax(15,   10,  20));
+CUT.isEqual("minmax(); 12",    0,   CEL.minmax(15,   -0n, 0));
+CUT.isEqual("minmax(); 13",    0n,  CEL.minmax(0n,   -0,  15));
+CUT.isEqual("minmax(); 14",    15,  CEL.minmax(10,   15,  20n));
+CUT.isEqual("minmax(); 15",    0n,  CEL.minmax(-0n,  -10, 0));
+CUT.isEqual("minmax(); 16",    0,   CEL.minmax(0,    -10, -0n));
+CUT.isEqual("minmax(); 17",    20,  CEL.minmax(25,   10n, 20));
+CUT.isEqual("minmax(); 18",    15n, CEL.minmax(15n,  10n, 20n));
+CUT.isEqual("minmax(); 19",    10n, CEL.minmax(5,  10n, 20n));
+CUT.isEqual("minmax(); 20",    10,  CEL.minmax(5,  10, 20));
 
 
 /* product(); */

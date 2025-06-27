@@ -262,7 +262,7 @@ function setIn(O,P,V,Throw=false){O[P]=V;if(O[P]!==V&&Throw){throw new TypeError
 const hasIn=(O,P)=>(P in O);
 const isPropertyKey=(v)=>(typeof v==="string"||typeof v==="symbol");
 const toPropertyKey=(v)=>(typeof v==="symbol"?v:String(v));
-function toObject(O){if(O==null){throw new TypeError("celestra.toObject(); error: "+O);}if(["object","function"].includes(typeof O)){return O;}return Object(O);}
+function toObject(O){if(O==null){throw new TypeError("celestra.toObject(); error: "+O);}return (["object","function"].includes(typeof O))?O:Object(O);}
 function toPrimitiveValue(O){if(O==null||typeof O!=="object"){ return O;}var ot=Object.prototype.toString.call(O).slice(8,-1);if(["Boolean","BigInt","Number","String"].includes(ot)){return window[ot](O);}return O;}
 function toPrimitive(O,hint="default"){const _apply=Function.prototype.call.bind(Function.prototype.apply);const _isPrimitive=(v)=>((typeof v!=="object"&&typeof v!=="function")||v===null);if(_isPrimitive(O)){return O;}let method=O[Symbol.toPrimitive];if(method!=null){let r=_apply(method,O,[]);if(_isPrimitive(r)){return r;}}else{for(let item of(hint==="string"?["toString","valueOf"]:["valueOf","toString"])){method=O[item];if(typeof method==="function"){let r=_apply(method,O,[]);if(_isPrimitive(r)){return r;}}}}throw new TypeError("celestra.toPrimitive(): Cannot convert object to primitive value");}
 const isSameValue=(v1,v2)=>((v1===v2)?(v1!==0||1/v1===1/v2):(v1!==v1&&v2!==v2));
@@ -276,10 +276,10 @@ function deleteOwnProperty(O,P,Throw=false){if(Object.hasOwn(O,P)){delete O[P];v
 const type=(v)=>((v===null)?"null":(typeof v));
 const isIndex=(v)=>(Number.isSafeInteger(v)&&v>=0&&1/v!==1/-0);
 const isLength=(v)=>(Number.isSafeInteger(v)&&v>=0&&1/v!==1/-0);
-function toIndex(argument){let v=+argument;if(v!==v||1/v===Infinity||1/v===-Infinity){v=0;}let integer=((v===Infinity||v===-Infinity)?v:Math.trunc(v));if(integer<0||integer>(Math.pow(2,53)-1)){throw new RangeError("celestra.toIndex(); RangeError: "+integer);}return integer;}
-function toLength(argument){let v=+argument;if(v!==v||1/v===Infinity||1/v===-Infinity){v=0;}let len=((v===Infinity||v===-Infinity)?v:Math.trunc(v));if(len<0){return 0;}return Math.min(len,Math.pow(2,53)-1);}
-function toInteger(v){v=Number(v);if(v!==v||1/v===Infinity||1/v===-Infinity){return 0;}if(v===Infinity){return Math.pow(2,53)-1;}if(v===-Infinity){return -(Math.pow(2,53)-1);}return Math.trunc(v);}
-function toIntegerOrInfinity(v){v=+v;if(v!==v||1/v===Infinity||1/v===-Infinity){return 0;}if(v===Infinity||v===-Infinity){return v;}return Math.trunc(v);}
+function toIndex(v){v=((v=Math.trunc(+v))!==v||v===0)?0:v;if(v<0||v>(Math.pow(2,53)-1)){throw new RangeError("toIndex(); RangeError: "+v);}return v;}
+function toLength(v){v=((v=Math.trunc(+v))!==v||v===0)?0:v;return Math.min(Math.max(v,0),Math.pow(2,53)-1);}
+function toInteger(v){v=((v=Math.trunc(+v))!==v||v===0)?0:v;return Math.min(Math.max(v,-(Math.pow(2,53)-1)),Math.pow(2,53)-1);}
+const toIntegerOrInfinity=(v)=>((v=Math.trunc(+v))!==v||v===0)?0:v;
 const createDataProperty=(O,P,V)=>Object.defineProperty(O,P,{value:V,writable:true,enumerable:true,configurable:true});
 function createDataPropertyOrThrow(O,P,V){Object.defineProperty(O,P,{writable:true,enumerable:true,configurable:true,value:V});if(O[P]!==V){throw new Error("celestra.createDataPropertyOrThrow(); error: "+O+"["+P+"]");}return O;}
 const toArray=(O)=>(Array.isArray(O)?O:Array.from(O));
@@ -287,8 +287,8 @@ const toArray=(O)=>(Array.isArray(O)?O:Array.from(O));
 const sum=(...a)=>(a.every((v)=>typeof v==="number")?Math.sumPrecise(a):a.slice(1).reduce((acc,v)=>acc+v,a[0]));
 const avg=(...a)=>Math.sumPrecise(a)/a.length;
 const product=(f,...a)=>a.reduce((acc,v)=>acc*v,f);
-function clamp(v,min,max){if(typeof v!=="number"&&typeof v!=="bigint"){v=Number(v);}if(typeof min!=="number"&&typeof min!=="bigint"){min=Number(min);}if(typeof max!=="number"&&typeof max!=="bigint"){max=Number(max);}var nV=Number(v);var nMin=Number(min);var nMax=Number(max);if(min!==min){throw new RangeError();}if(max!==max){throw new RangeError();}if(1/nMin===Infinity&&1/nMax===-Infinity){throw new RangeError();}if(min>max){throw new RangeError();}if(v!==v){return NaN;}if(1/nMin===-Infinity&&1/nMax===Infinity){return +0;}if(1/nV===Infinity&&1/nMin===-Infinity){return -0;}if(v<min){return min;}if(1/nV===-Infinity&&1/nMax===Infinity){return -0;}if(1/nV===Infinity&&1/nMax===-Infinity){return -0;}if(v>max){return max;}return v;}
-function minmax(v,min,max){if(typeof v!=="number"&&typeof v!=="bigint"){v=Number(v);}if(typeof min!=="number"&&typeof min!=="bigint"){min=Number(min);}if(typeof max!=="number"&&typeof max!=="bigint"){max=Number(max);}var nV=Number(v);var nMin=Number(min);var nMax=Number(max);if(min!==min){throw new RangeError();}if(max!==max){throw new RangeError();}if(1/nMin===Infinity&&1/nMax===-Infinity){throw new RangeError();}if(min>max){throw new RangeError();}if(v!==v){return NaN;}if(1/nMin===-Infinity&&1/nMax===Infinity){return +0;}if(1/nV===Infinity&&1/nMin===-Infinity){return -0;}if(v<min){return min;}if(1/nV===-Infinity&&1/nMax===Infinity){return -0;}if(1/nV===Infinity&&1/nMax===-Infinity){return -0;}if(v>max){return max;}return v;}
+function clamp(val,min=-9007199254740991,max=9007199254740991){function _normalize(v){if(typeof v!=="bigint"&&typeof v!=="number"){v=Number(v);}if(v===-Infinity){return -9007199254740991;}if(v===Infinity){return 9007199254740991;}if(v===0){return 0;}return v;}val=_normalize(val);min=_normalize(min);max=_normalize(max);if(val!==val){return val;}if(min!==min||max!==max){throw new RangeError( "clamp();RangeError: minimum and maximum should not to be NaN");}if(min>max){throw new RangeError("clamp();RangeError: minimum should be lower than maximum");}return (val<min)?min:((val>max)?max:val);}
+function minmax(val,min=-9007199254740991,max=9007199254740991){function _normalize(v){if(typeof v!=="bigint"&&typeof v!=="number"){v=Number(v);}if(v===-Infinity){return -9007199254740991;}if(v===Infinity){return 9007199254740991;}if(v===0){return 0;}return v;}val=_normalize(val);min=_normalize(min);max=_normalize(max);if(val!==val){return val;}if(min!==min||max!==max){throw new RangeError( "clamp();RangeError: minimum and maximum should not to be NaN");}if(min>max){throw new RangeError("clamp();RangeError: minimum should be lower than maximum");}return (val<min)?min:((val>max)?max:val);}
 function isEven(v){var r=v%2;if(r===r){return r===0;}return false;}
 function isOdd(v){var r=v%2;if(r===r){return r!==0;}return false;}
 const toInt8=(v)=>((v=Math.min(Math.max(-128,Math.trunc(Number(v))),127))===v)?v:0;
