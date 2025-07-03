@@ -5205,26 +5205,29 @@ try {
 
 /* Error.isError(); */
 document.body.appendChild(document.createElement("iframe"));
-CUT.isEqual("Error.isError();", "1 1 1 1 0 0 0 0 0 0 0 0 0",
-  CUT.join([
-    /* true */
-    +(Error.isError(new window.frames[window.frames.length - 1].Error())),
-    +(Error.isError(new Error())),
-    +(Error.isError(new TypeError())),
-    +(Error.isError(new DOMException())),
-    /* false */
-    +(Error.isError({ __proto__: Error.prototype })),
-    +(Error.isError({})),
-    +(Error.isError(null)),
-    +(Error.isError(undefined)),
-    +(Error.isError(17)),
-    +(Error.isError(3.14)),
-    +(Error.isError("Error")),
-    +(Error.isError(true)),
-    +(Error.isError(false))
-  ])
-);
+token1 = CUT.join([
+  /* true */
+  +(Error.isError(new window.frames[window.frames.length - 1].Error())),
+  +(Error.isError(new Error())),
+  +(Error.isError(new TypeError())),
+  +(Error.isError(new DOMException())),
+  /* false */
+  +(Error.isError({ __proto__: Error.prototype })),
+  +(Error.isError({})),
+  +(Error.isError(null)),
+  +(Error.isError(undefined)),
+  +(Error.isError(17)),
+  +(Error.isError(3.14)),
+  +(Error.isError("Error")),
+  +(Error.isError(true)),
+  +(Error.isError(false))
+]);
 CEL.qs("iframe").remove();
+CUT.isEqual("Error.isError();", "1 1 1 1 0 0 0 0 0 0 0 0 0", token1);
+CUT.logCode(token1);
+CUT.log(
+  "In Safari 18.3-18.x and 26 with the DOMException returns false. (4th value)"
+);
 
 
 /* Array.prototype.toReversed(); */
@@ -6129,9 +6132,8 @@ CUT.isEqual("isSameValueZero();", "1 1 0 1 1 1 0 1 0 1 1 1 1 1 1 1 1 1 0",
 
 /* isSameValueNonNumber(); */
 token1 = {"a": 1};
-CUT.isEqual("isSameValueNonNumber();", "1 1 0 1 1 1 0 1 0 1 1 1 1 0 0 1 1 1 0",
+CUT.isEqual("isSameValueNonNumber(); 01", "1 0 1 1 1 0 1 0 1",
   CUT.join([
-    +CEL.isSameValueNonNumber(25, 25),
     +CEL.isSameValueNonNumber("foo", "foo"),
     +CEL.isSameValueNonNumber("foo", "bar"),
     +CEL.isSameValueNonNumber(null, null),
@@ -6140,18 +6142,27 @@ CUT.isEqual("isSameValueNonNumber();", "1 1 0 1 1 1 0 1 0 1 1 1 1 0 0 1 1 1 0",
     +CEL.isSameValueNonNumber([], []),
     +CEL.isSameValueNonNumber(token1, token1),
     +CEL.isSameValueNonNumber(token1, {"a": 1}),
-    +CEL.isSameValueNonNumber(0, -0),
-    +CEL.isSameValueNonNumber(+0, -0),
-    +CEL.isSameValueNonNumber(-0, -0),
-    (!!window.BigInt ? +CEL.isSameValueNonNumber(BigInt(0), BigInt(-0)) : 1),
-    +CEL.isSameValueNonNumber(NaN, 0/0),
-    +CEL.isSameValueNonNumber(NaN, Number.NaN),
-    +CEL.isSameValueNonNumber(+Infinity, Infinity),
-    +CEL.isSameValueNonNumber(Infinity, Infinity),
-    +CEL.isSameValueNonNumber(-Infinity, -Infinity),
-    +CEL.isSameValueNonNumber(+Infinity, -Infinity)
+    (!!window.BigInt ? +CEL.isSameValueNonNumber(BigInt(0), BigInt(-0)) : 1)
   ])
 );
+try {
+  CEL.isSameValueNonNumber(42, 42);
+  CUT.isTrue("isSameValueNonNumber(); 02 error", false);
+} catch (e) {
+  CUT.isTrue("isSameValueNonNumber(); 02 error", true);
+}
+try {
+  CEL.isSameValueNonNumber(42, true);
+  CUT.isTrue("isSameValueNonNumber(); 03 error", false);
+} catch (e) {
+  CUT.isTrue("isSameValueNonNumber(); 03 error", true);
+}
+try {
+  CEL.isSameValueNonNumber(true, 42);
+  CUT.isTrue("isSameValueNonNumber(); 04 error", false);
+} catch (e) {
+  CUT.isTrue("isSameValueNonNumber(); 04 error", true);
+}
 
 
 /* createMethodProperty(); */

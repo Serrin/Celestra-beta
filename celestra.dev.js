@@ -424,7 +424,7 @@ function forIn (o,fn) {
 
 /* filterIn(object, callback: function): object */
 const filterIn = (o, fn) => Object.keys(o)
-  .reduce( (r, p) => { if (fn(o[p], p, o)) { r[p] = o[p]; } return r; }, {} );
+  .reduce((r, p) => { if (fn(o[p], p, o)) { r[p] = o[p]; } return r; }, {});
 
 
 /* popIn(object, property: string): any OR undefined*/
@@ -2331,7 +2331,7 @@ const hasCookie = (n) => (
 
 
 /* removeCookie(Options object);: boolean */
-/* removeCookie(name: string [,path = "/"
+/* removeCookie(name: string [, path = "/"
   [, domain [, secure [, SameSite = "Lax" [, HttpOnly]]]]]): boolean */
 function removeCookie (name, path="/", domain, secure, SameSite="Lax",HttpOnly){
   if (typeof name === "object") {
@@ -2616,7 +2616,7 @@ function* iterRange (s = 0, st = 1, e = Infinity) {
 
 /* iterCycle(iterator [, n = Infinity]): iterator */
 function* iterCycle ([...a], n = Infinity) {
-  let i=0;
+  let i = 0;
   while (i < n) {
     yield* a;
     i++;
@@ -2626,7 +2626,7 @@ function* iterCycle ([...a], n = Infinity) {
 
 /* iterRepeat(value: any [, n = Infinity]): iterator */
 function* iterRepeat (v, n = Infinity) {
-  let i= 0;
+  let i = 0;
   while (i<n) {
     yield v;
     i++;
@@ -2678,7 +2678,10 @@ function* drop (it, n = 1) {
 
 
 /* forEach(iterator, callback: function): undefined */
-function forEach (it, fn) { let i = 0; for (let item of it) { fn(item, i++); } }
+function forEach (it, fn) {
+  let i = 0;
+  for (let item of it) { fn(item, i++); }
+}
 
 
 /* forEachRight(iterator, callback: function): undefined */
@@ -2717,7 +2720,11 @@ function* reject (it, fn) {
 function* slice (it, begin = 0, end = Infinity) {
   let i = 0;
   for (let item of it) {
-    if (i >= begin && i <= end) { yield item; } else if (i > end) { return; }
+    if (i >= begin && i <= end) {
+      yield item;
+    } else if (i > end) {
+      return;
+    }
     i++;
   }
 }
@@ -2727,7 +2734,11 @@ function* slice (it, begin = 0, end = Infinity) {
 function* tail (it) {
   let first = true;
   for (let item of it) {
-    if (!first) { yield item; } else { first = false; }
+    if (!first) {
+      yield item;
+    } else {
+      first = false;
+    }
   }
 }
 
@@ -2751,7 +2762,11 @@ function nth (it, p) {
 
 
 /* size(iterator): integer */
-function size (it) { let i = 0; for (let _item of it) { i++; } return i; }
+function size (it) {
+  let i = 0;
+  for (let _item of it) { i++; }
+  return i;
+}
 
 
 /* first(iterator): any */
@@ -2763,11 +2778,18 @@ function head (it) { for (let item of it) { return item; } }
 
 
 /* last(iterator): any */
-function last (it) { let item; for (item of it) { } return item; }
+function last (it) {
+  let item;
+  for (item of it) { }
+  return item;
+}
 
 
 /* reverse(iterator): iterator */
-function* reverse ([...a]) { var i = a.length; while (i--) { yield a[i]; } }
+function* reverse ([...a]) {
+  var i = a.length;
+  while (i--) { yield a[i]; }
+}
 
 
 /* sort(iterator [, numbers = false]): array */
@@ -3068,8 +3090,15 @@ const isSameValue = (v1, v2) =>
 const isSameValueZero = (v1, v2) => (v1 === v2 || (v1 !== v1 && v2 !== v2));
 
 
-/* isSameValueNonNumber(value1: any, value2: any): boolean */
-const isSameValueNonNumber = (v1, v2) => (v1 === v2);
+/* isSameValueNonNumber(value1: any, value2: any): boolean OR thrown error */
+function isSameValueNonNumber (x, y) {
+  if (typeof x === "number" || typeof y === "number") {
+    throw new TypeError(
+      "isSameValueNonNumber(); TypeError: x and y both have to be non number"
+    );
+  }
+  return (x === y);
+}
 
 
 /* createMethodProperty(object, property, value: any): object */
@@ -3207,7 +3236,7 @@ const avg = (...a) => Math.sumPrecise(a) / a.length;
 const product = (f, ...a) => a.reduce((acc, v) => acc * v, f);
 
 
-/* clamp(value: any, min,max): number */
+/* clamp(value: any, min: any, max: any): number */
 function clamp(val, min = -9007199254740991, max = 9007199254740991) {
   /* normalize */
   function _normalize (v) {
@@ -3442,312 +3471,312 @@ const VERSION = "Celestra v5.7.3 dev";
 function noConflict () { window.CEL = celestra.__prevCEL__; return celestra; }
 
 
-var celestra = {
+const celestra = {
   /** object header **/
-  VERSION: VERSION,
-  noConflict: noConflict,
+  VERSION,
+  noConflict,
   /** Core API **/
-  BASE16: BASE16,
-  BASE32: BASE32,
-  BASE36: BASE36,
-  BASE58: BASE58,
-  BASE62: BASE62,
-  WORDSAFEALPHABET: WORDSAFEALPHABET,
-  randomUUIDv7: randomUUIDv7,
-  delay: delay,
-  sleep: sleep,
-  randomBoolean: randomBoolean,
-  b64Encode: b64Encode,
-  b64Decode: b64Decode,
-  javaHash: javaHash,
-  getUrlVars: getUrlVars,
-  obj2string: obj2string,
-  classof: classof,
-  getType: getType,
-  extend: extend,
-  sizeIn: sizeIn,
-  forIn: forIn,
-  filterIn: filterIn,
-  popIn: popIn,
-  unBind: unBind,
-  bind: bind,
-  constant: constant,
-  identity: identity,
-  noop: noop,
-  T: T,
-  F: F,
-  nanoid: nanoid,
-  timestampID: timestampID,
+  BASE16,
+  BASE32,
+  BASE36,
+  BASE58,
+  BASE62,
+  WORDSAFEALPHABET,
+  randomUUIDv7,
+  delay,
+  sleep,
+  randomBoolean,
+  b64Encode,
+  b64Decode,
+  javaHash,
+  getUrlVars,
+  obj2string,
+  classof,
+  getType,
+  extend,
+  sizeIn,
+  forIn,
+  filterIn,
+  popIn,
+  unBind,
+  bind,
+  constant,
+  identity,
+  noop,
+  T,
+  F,
+  nanoid,
+  timestampID,
   /** Assertion API **/
-  assertType: assertType,
-  assertNotType: assertNotType,
-  assert: assert,
-  assertTrue: assertTrue,
-  assertFalse: assertFalse,
-  assertEqual: assertEqual,
-  assertStrictEqual: assertStrictEqual,
-  assertNotEqual: assertNotEqual,
-  assertNotStrictEqual: assertNotStrictEqual,
-  assertDeepEqual: assertDeepEqual,
-  assertNotDeepStrictEqual: assertNotDeepStrictEqual,
-  assertNotDeepEqual: assertNotDeepEqual,
-  assertDeepStrictEqual: assertDeepStrictEqual,
+  assertType,
+  assertNotType,
+  assert,
+  assertTrue,
+  assertFalse,
+  assertEqual,
+  assertStrictEqual,
+  assertNotEqual,
+  assertNotStrictEqual,
+  assertDeepEqual,
+  assertNotDeepStrictEqual,
+  assertNotDeepEqual,
+  assertDeepStrictEqual,
   /** String API **/
-  strTruncate: strTruncate,
-  strPropercase: strPropercase,
-  strTitlecase: strTitlecase,
-  strCapitalize: strCapitalize,
-  strUpFirst: strUpFirst,
-  strDownFirst: strDownFirst,
-  strReverse: strReverse,
-  strCodePoints: strCodePoints,
-  strFromCodePoints: strFromCodePoints,
-  strAt: strAt,
-  strSplice: strSplice,
-  strHTMLRemoveTags: strHTMLRemoveTags,
-  strHTMLEscape: strHTMLEscape,
-  strHTMLUnEscape: strHTMLUnEscape,
+  strTruncate,
+  strPropercase,
+  strTitlecase,
+  strCapitalize,
+  strUpFirst,
+  strDownFirst,
+  strReverse,
+  strCodePoints,
+  strFromCodePoints,
+  strAt,
+  strSplice,
+  strHTMLRemoveTags,
+  strHTMLEscape,
+  strHTMLUnEscape,
   /** DOM API **/
-  qsa: qsa,
-  qs: qs,
-  domReady: domReady,
-  domCreate: domCreate,
-  domToElement: domToElement,
-  domGetCSS: domGetCSS,
-  domSetCSS: domSetCSS,
-  domFadeIn: domFadeIn,
-  domFadeOut: domFadeOut,
-  domFadeToggle: domFadeToggle,
-  domHide: domHide,
-  domShow: domShow,
-  domToggle: domToggle,
-  domIsHidden: domIsHidden,
-  domSiblings: domSiblings,
-  domSiblingsPrev: domSiblingsPrev,
-  domSiblingsLeft: domSiblingsLeft,
-  domSiblingsNext: domSiblingsNext,
-  domSiblingsRight: domSiblingsRight,
-  importScript: importScript,
-  importStyle: importStyle,
-  form2array: form2array,
-  form2string: form2string,
-  getDoNotTrack: getDoNotTrack,
-  getLocation: getLocation,
-  createFile: createFile,
-  getFullscreen: getFullscreen,
-  setFullscreenOn: setFullscreenOn,
-  setFullscreenOff: setFullscreenOff,
-  domGetCSSVar: domGetCSSVar,
-  domSetCSSVar: domSetCSSVar,
-  domScrollToTop: domScrollToTop,
-  domScrollToBottom: domScrollToBottom,
-  domScrollToElement: domScrollToElement,
-  domClear: domClear,
+  qsa,
+  qs,
+  domReady,
+  domCreate,
+  domToElement,
+  domGetCSS,
+  domSetCSS,
+  domFadeIn,
+  domFadeOut,
+  domFadeToggle,
+  domHide,
+  domShow,
+  domToggle,
+  domIsHidden,
+  domSiblings,
+  domSiblingsPrev,
+  domSiblingsLeft,
+  domSiblingsNext,
+  domSiblingsRight,
+  importScript,
+  importStyle,
+  form2array,
+  form2string,
+  getDoNotTrack,
+  getLocation,
+  createFile,
+  getFullscreen,
+  setFullscreenOn,
+  setFullscreenOff,
+  domGetCSSVar,
+  domSetCSSVar,
+  domScrollToTop,
+  domScrollToBottom,
+  domScrollToElement,
+  domClear,
   /** AJAX API **/
-  getText: getText,
-  getJson: getJson,
-  ajax: ajax,
+  getText,
+  getJson,
+  ajax,
   /** Type checking API **/
-  isSameClass: isSameClass,
-  isSameType: isSameType,
-  isSameInstance: isSameInstance,
-  isCoercedObject: isCoercedObject,
-  isDeepStrictEqual: isDeepStrictEqual,
-  isEmptyValue: isEmptyValue,
-  isProxy: isProxy,
-  isTruthy: isTruthy,
-  isFalsy: isFalsy,
-  isAsyncGeneratorFn: isAsyncGeneratorFn,
-  isConstructorFn: isConstructorFn,
-  isClass: isClass,
-  isPlainObject: isPlainObject,
-  isEmptyMap: isEmptyMap,
-  isEmptySet: isEmptySet,
-  isEmptyIterator: isEmptyIterator,
-  isDataView: isDataView,
-  isPromise: isPromise,
-  isSameObject: isSameObject,
-  isSameArray: isSameArray,
-  isSameMap: isSameMap,
-  isSameSet: isSameSet,
-  isSameIterator: isSameIterator,
-  isString: isString,
-  isChar: isChar,
-  isNumber: isNumber,
-  isFloat: isFloat,
-  isNumeric: isNumeric,
-  isBoolean: isBoolean,
-  isObject: isObject,
-  isEmptyObject: isEmptyObject,
-  isFunction: isFunction,
-  isCallable: isCallable,
-  isEmptyArray: isEmptyArray,
-  isArraylike: isArraylike,
-  isNull: isNull,
-  isUndefined: isUndefined,
-  isNullOrUndefined: isNullOrUndefined,
-  isNil: isNil,
-  isPrimitive: isPrimitive,
-  isSymbol: isSymbol,
-  isMap: isMap,
-  isSet: isSet,
-  isWeakMap: isWeakMap,
-  isWeakSet: isWeakSet,
-  isIterator: isIterator,
-  isDate: isDate,
-  isRegexp: isRegexp,
-  isElement: isElement,
-  isIterable: isIterable,
-  isBigInt: isBigInt,
-  isArrayBuffer: isArrayBuffer,
-  isTypedArray: isTypedArray,
-  isGeneratorFn: isGeneratorFn,
-  isAsyncFn: isAsyncFn,
+  isSameClass,
+  isSameType,
+  isSameInstance,
+  isCoercedObject,  
+  isDeepStrictEqual,
+  isEmptyValue,
+  isProxy,
+  isTruthy,
+  isFalsy,
+  isAsyncGeneratorFn,
+  isConstructorFn,
+  isClass,
+  isPlainObject,
+  isEmptyMap,
+  isEmptySet,
+  isEmptyIterator,
+  isDataView,
+  isPromise,
+  isSameObject,
+  isSameArray,
+  isSameMap,
+  isSameSet,
+  isSameIterator,
+  isString,
+  isChar,
+  isNumber,
+  isFloat,
+  isNumeric,
+  isBoolean,
+  isObject,
+  isEmptyObject,
+  isFunction,
+  isCallable,
+  isEmptyArray,
+  isArraylike,
+  isNull,
+  isUndefined,
+  isNullOrUndefined,
+  isNil,
+  isPrimitive,
+  isSymbol,
+  isMap,
+  isSet,
+  isWeakMap,
+  isWeakSet,
+  isIterator,
+  isDate,
+  isRegexp,
+  isElement,
+  isIterable,
+  isBigInt,
+  isArrayBuffer,
+  isTypedArray,
+  isGeneratorFn,
+  isAsyncFn,
   /** Cookie API **/
-  setCookie: setCookie,
-  getCookie: getCookie,
-  hasCookie: hasCookie,
-  removeCookie: removeCookie,
-  clearCookies: clearCookies,
+  setCookie,
+  getCookie,
+  hasCookie,
+  removeCookie,
+  clearCookies,
   /** Collections API **/
-  unique: unique,
-  count: count,
-  arrayDeepClone: arrayDeepClone,
-  arrayCreate: arrayCreate,
-  initial: initial,
-  shuffle: shuffle,
-  partition: partition,
-  arrayUnion: arrayUnion,
-  arrayIntersection: arrayIntersection,
-  arrayDifference: arrayDifference,
-  arraySymmetricDifference: arraySymmetricDifference,
-  setUnion: setUnion,
-  setIntersection: setIntersection,
-  setDifference: setDifference,
-  setSymmetricDifference: setSymmetricDifference,
-  isSuperset: isSuperset,
-  min: min,
-  max: max,
-  arrayRepeat: arrayRepeat,
-  arrayCycle: arrayCycle,
-  arrayRange: arrayRange,
-  zip: zip,
-  unzip: unzip,
-  zipObj: zipObj,
-  arrayUnique: arrayUnique,
-  arrayAdd: arrayAdd,
-  arrayClear: arrayClear,
-  arrayRemove: arrayRemove,
-  arrayRemoveBy: arrayRemoveBy,
-  arrayMerge: arrayMerge,
-  iterRange: iterRange,
-  iterCycle: iterCycle,
-  iterRepeat: iterRepeat,
-  takeWhile: takeWhile,
-  dropWhile: dropWhile,
-  take: take,
-  drop: drop,
-  forEach: forEach,
-  forEachRight: forEachRight,
-  map: map,
-  filter: filter,
-  reject: reject,
-  slice: slice,
-  tail: tail,
-  item: item,
-  nth: nth,
-  size: size,
-  first: first,
-  head: head,
-  last: last,
-  reverse: reverse,
-  sort: sort,
-  includes: includes,
-  contains: contains,
-  find: find,
-  findLast: findLast,
-  every: every,
-  some: some,
-  none: none,
-  takeRight: takeRight,
-  takeRightWhile: takeRightWhile,
-  dropRight: dropRight,
-  dropRightWhile: dropRightWhile,
-  concat: concat,
-  reduce: reduce,
-  enumerate: enumerate,
-  entries: entries,
-  flat: flat,
-  join: join,
-  withOut: withOut,
+  unique,
+  count,
+  arrayDeepClone,
+  arrayCreate,
+  initial,
+  shuffle,
+  partition,
+  arrayUnion,
+  arrayIntersection,
+  arrayDifference,
+  arraySymmetricDifference,
+  setUnion,
+  setIntersection,
+  setDifference,
+  setSymmetricDifference,
+  isSuperset,
+  min,
+  max,
+  arrayRepeat,
+  arrayCycle,
+  arrayRange,
+  zip,
+  unzip,
+  zipObj,
+  arrayUnique,
+  arrayAdd,
+  arrayClear,
+  arrayRemove,
+  arrayRemoveBy,
+  arrayMerge,
+  iterRange,
+  iterCycle,
+  iterRepeat,
+  takeWhile,
+  dropWhile,
+  take,
+  drop,
+  forEach,
+  forEachRight,
+  map,
+  filter,
+  reject,
+  slice,
+  tail,
+  item,
+  nth,
+  size,
+  first,
+  head,
+  last,
+  reverse,
+  sort,
+  includes,
+  contains,
+  find,
+  findLast,
+  every,
+  some,
+  none,
+  takeRight,
+  takeRightWhile,
+  dropRight,
+  dropRightWhile,
+  concat,
+  reduce,
+  enumerate,
+  entries,
+  flat,
+  join,
+  withOut,
   /** Abstract API **/
-  deletePropertyOrThrow: deletePropertyOrThrow,
-  isLessThan: isLessThan,
-  requireObjectCoercible: requireObjectCoercible,
-  getInV: getInV,
-  getIn: getIn,
-  setIn: setIn,
-  hasIn: hasIn,
-  isPropertyKey: isPropertyKey,
-  toPropertyKey: toPropertyKey,
-  toObject: toObject,
-  toPrimitiveValue: toPrimitiveValue,
-  toPrimitive: toPrimitive,
-  isSameValue: isSameValue,
-  isSameValueZero: isSameValueZero,
-  isSameValueNonNumber: isSameValueNonNumber,
-  createMethodProperty: createMethodProperty,
-  createMethodPropertyOrThrow: createMethodPropertyOrThrow,
-  createPolyfillMethod: createPolyfillMethod,
-  createPolyfillProperty: createPolyfillProperty,
-  deleteOwnProperty: deleteOwnProperty,
-  type: type,
-  isIndex: isIndex,
-  isLength: isLength,
-  toIndex: toIndex,
-  toLength: toLength,
-  toInteger: toInteger,
-  toIntegerOrInfinity:toIntegerOrInfinity,
-  createDataProperty: createDataProperty,
-  createDataPropertyOrThrow: createDataPropertyOrThrow,
-  toArray: toArray,
+  deletePropertyOrThrow,
+  isLessThan,
+  requireObjectCoercible,
+  getInV,
+  getIn,
+  setIn,
+  hasIn,
+  isPropertyKey,
+  toPropertyKey,
+  toObject,
+  toPrimitiveValue,
+  toPrimitive,
+  isSameValue,
+  isSameValueZero,
+  isSameValueNonNumber,
+  createMethodProperty,
+  createMethodPropertyOrThrow,
+  createPolyfillMethod,
+  createPolyfillProperty,
+  deleteOwnProperty,
+  type,
+  isIndex,
+  isLength,
+  toIndex,
+  toLength,
+  toInteger,
+  toIntegerOrInfinity,
+  createDataProperty,
+  createDataPropertyOrThrow,
+  toArray,
   /** Math API **/
-  sum: sum,
-  avg: avg,
-  product: product,
-  clamp: clamp,
-  minmax: minmax,
-  isEven: isEven,
-  isOdd: isOdd,
-  toInt8: toInt8,
-  toUInt8: toUInt8,
-  toInt16: toInt16,
-  toUInt16: toUInt16,
-  toInt32: toInt32,
-  toUInt32: toUInt32,
-  toBigInt64: toBigInt64,
-  toBigUInt64: toBigUInt64,
-  toFloat32: toFloat32,
-  isInt8: isInt8,
-  isUInt8: isUInt8,
-  isInt16: isInt16,
-  isUInt16: isUInt16,
-  isInt32: isInt32,
-  isUInt32: isUInt32,
-  isBigInt64: isBigInt64,
-  isBigUInt64: isBigUInt64,
-  toFloat16: toFloat16,
-  isFloat16: isFloat16,
-  signbit: signbit,
-  randomInt: randomInt,
-  randomFloat: randomFloat,
-  inRange: inRange,
+  sum,
+  avg,
+  product,
+  clamp,
+  minmax,
+  isEven,
+  isOdd,
+  toInt8,
+  toUInt8,
+  toInt16,
+  toUInt16,
+  toInt32,
+  toUInt32,
+  toBigInt64,
+  toBigUInt64,
+  toFloat32,
+  isInt8,
+  isUInt8,
+  isInt16,
+  isUInt16,
+  isInt32,
+  isUInt32,
+  isBigInt64,
+  isBigUInt64,
+  toFloat16,
+  isFloat16,
+  signbit,
+  randomInt,
+  randomFloat,
+  inRange,
   /** undocumented functions **/
-  _apply: _apply,
-  _call: _call,
-  _forEach: _forEach,
-  _map: _map,
-  _slice: _slice
+  _apply,
+  _call,
+  _forEach,
+  _map,
+  _slice
 };
 
 

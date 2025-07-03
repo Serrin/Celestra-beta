@@ -1712,7 +1712,7 @@ JSON.stringify( CEL.unique(array, (v) => v.rank) );
     </tr>
     <tr>
       <td><code>isSameValueNonNumber(value1, value2);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function uses the SameValueNonNumber algorithm and determines whether the provided values are the same values and <code>-0</code> and <code>+0</code> values will be equal. The <code>NaN</code> values will be not equal. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>TThis function uses the SameValueNonNumber algorithm and determines whether the provided values are the same values. The return value is boolean or throws an error if the values or one of the values are an error.</td>
     </tr>
     <tr>
       <td><code>isSameValueZero(value1, value2);</code></td>
