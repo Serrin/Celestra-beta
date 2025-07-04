@@ -202,7 +202,10 @@ Name | Description
 `bind(function,context);` | __Stability: 4 - Stable.__<BR>Returns a function that is bound to a context. Both of the parameters are mandatory.
 `classof(value[,class[,throw=false]]);` | __Stability: 4 - Stable.__<BR>Get the real type of a value. If this is an object, then the return value is the detailed object type (e.g.: array). If the class (string) parameter is given, then the return value (boolean) is the equality of the type of the value and the second parameter. If the third parameter (boolean) is true and the type of the value and the second parameter aren't equals, then the function is throwing a `TypeError();`, else the return value is true.
 `constant(value);` | __Stability: 4 - Stable.__<BR>A one time assignment function to create a constant value in ES5. This returns a function, which returns the given value. (In math: `f(x)=x`)
+`createPolyfillMethod(object,property,value);`| __Stability: 4 - Stable.__<BR>This function creates a writable, configurable and non-enumerable property with the given value in the object if the property doesn't exist in the object. The return value boolean and checks that the creating of the method was successful.<BR>__Example:__<BR> `CEL.createPolyfillMethod(Array.prototype, "at", function(...){...});`
+`createPolyfillProperty(object,property, value);`| __Stability: 4 - Stable.__<BR>This function creates a writable, configurable and enumerable property with the given value in the object if the property doesn't exist in the object. The return value boolean and checks that the creating of the property was successful.
 `delay(ms).then(callback);` | __Stability: 4 - Stable.__<BR>A promise based delay function. The ms (milliseconds) parameter is mandatory and have to be an integer.<BR>__Sample:__<BR>`CEL.sleep(5000).then(() => alert("5 seconds")).catch(console.log.bind(console)).finally(() => alert("done"));`
+`deleteOwnProperty(object,property[,Throw = false]);`| __Stability: 4 - Stable.__<BR>This function deletes an own property in the given object. If Throw is true and the deleting was unsuccessful, then an error will be thrown.<BR>__Return values:__<BR>1 - The property was own and the delete was successful.<BR>0 - The property is own and the delete was unsuccessful.<BR>-1 - The property is not own or not exists.
 `extend([deep,]target,source1[,sourceN]);` | __Stability: 4 - Stable.__<BR>This is an enhanced version of the `Object.assign` method. The deep parameter (boolean) is optional and sets the deep copy (recursive) of the sources.
 `F();` | __Stability: 4 - Stable.__<BR>This function returns false.
 `filterIn(object,callback);` | __Stability: 4 - Stable.__<BR>The filterIn() function executes a provided function once for each object property and returns a new object with the properties which were be filtered. The object parameter is mandatory and has to be an object. The callback parameter is mandatory and has to be a function. The parameter function will be called with these arguments: key value, key, object.<BR>__Example:__<BR>`var o1 = {"a": 1, "b": 2, "c": 3};`<BR>`console.log(o1);`<BR>`// Object { a: 1, b: 2, c: 3 }`<BR>`var o2 = CEL.filterIn(o1, (v, p, o) => (v > 1));`<BR>`console.log(o2);`<BR>`// Object { b: 2, c: 3 }`
@@ -222,6 +225,7 @@ Name | Description
 `sleep(ms).then(callback);` | __Stability: 4 - Stable.__<BR>his is an alias of the `delay(ms).then(callback);`.
 `T();` | __Stability: 4 - Stable.__<BR>This function returns true.
 `timestampID([size=21[,alphabet= "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"]]);` | __Stability: 4 - Stable.__<BR>Generate a timestamp based sortable ID. The size parameter is optional and the default value is 21, but if the given value smaller than 12, then the value will be 12. The alphabet parameter is optional and the default value is `"123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"`, same as BASE58. The return value is the generated id (string).<BR>Example ID:`"00lirtqi4e-wgGn8vGPyY"`
+`toObject(value);`| __Stability: 4 - Stable.__<BR>If the given value is not null or undefined, then the return value is an object, which has been converted from the value, else a `TypeError()` will be throwned.<BR>If the given value is an object, function or symbol, then the original value will return.
 `unBind(function);` | __Stability: 4 - Stable.__<BR> __Old name before v5.4.1:__ `toFunction`.<BR>Returns an unbinded function from an object method. The function parameter is mandatory.
 
 
@@ -348,7 +352,7 @@ __Options object properties:__
  - The __password__ is optional, but mandatory if the user is set. This parameter can be a __string__.
 
 
-### Type checking API
+### Type API
 
 These functions are available in the `celestra` and/or `CEL` objects.
 
@@ -382,8 +386,10 @@ Name | Description
 `isFloat(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a float number. The return value is boolean.
 `isFunction(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a function. The return value is boolean.
 `isGeneratorFn(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a generator function. The return value is boolean.
+`isIndex(value);`| __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a valid arraylike index number. The return value is boolean.
 `isIterable(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an iterable object. The return value is boolean.
 `isIterator(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an iterator. The return value is boolean.
+`isLength(value);`| __Stability: 4 - Stable.__<BR>Alias of `isIndex(value);`.
 `isMap(value);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value is a map. The return value is boolean.
 `isNil(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is null or undefined or NaN. The return value is boolean.
 `isNull(value);` |__Stability: 4 - Stable.__<BR> This function determines whether the provided value is null. The return value is boolean.
@@ -394,6 +400,7 @@ Name | Description
 `isPlainObject(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an object, which own prototype is the Object.prototype or null. The return value is boolean.
 `isPrimitive(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is not null, not object and not function. The return value is boolean.
 `isPromise(value);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value is a promise object. The return value is boolean.
+`isPropertyKey(value);`| __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a valid propertx key (string or symbol). The return value is boolean.
 `isProxy(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a proxy object. The return value is boolean.
 `isRegexp(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a regexp. The return value is boolean.
 `isSameArray(array1,array2);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function checks the value equality of the given arrays. The return value is boolean and both of the parameters are mandatory and have to be an array.
@@ -412,6 +419,10 @@ Name | Description
 `isUndefined(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is undefined. The return value is boolean.
 `isWeakMap(value);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value is a weakmap. The return value is boolean.
 `isWeakSet(value);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value is a weakset. The return value is boolean.
+`toIndex(value);`| __Stability: 4 - Stable.__<BR>This function converts the provided value to a valid arraylike index number. The return value is an unsigned integer (number). If the value is out of integer range, then a RangeError will be thrown.
+`toLength(value);`| __Stability: 4 - Stable.__<BR>This function converts the provided value to a valid arraylike length number. The return value is an unsigned integer (number).
+`toPropertyKey(value);`|__Stability: 4 - Stable.__<BR>This function convert the given value to a valid property key. If the value is not symbol, then will be converted to string, else the symbol will be returned.
+`type(value);`| __Stability: 4 - Stable.__<BR>This function returns the typeof operator result of the given value, except the null object (`"null"` instead of `"object"`).
 
 
 ### Cookie API
@@ -527,32 +538,20 @@ Name | Description
 `createDataPropertyOrThrow(object,property,value);`| __Stability: 4 - Stable.__<BR>This function creates a writable, configurable and enumerable property with the given value in the object. The return value is the modified object or throw an error, if this was unsuccessful.
 `createMethodProperty(object,property, value);`| __Stability: 4 - Stable.__<BR>This function is useful for create a polyfill, because creates a writable, configurable, non-enumerable property with the given value in the object. The return value is the modified object.<BR>__Example:__<BR> `if (!("at" in Array.prototype)) { CEL.createMethodProperty(Array.prototype, "at", function(...){...}); }`
 `createMethodPropertyOrThrow(object,property, value);`| __Stability: 4 - Stable.__<BR>This function is useful for create a polyfill, because creates a writable, configurable, non-enumerable property with the given value in the object or throw an error, if this was unsuccessful.. The return value is the modified object.<BR>__Example:__<BR> `if (!("at" in Array.prototype)) { CEL.createMethodPropertyOrThrow(Array.prototype, "at", function(...){...}); }`
-`createPolyfillMethod(object,property,value);`| __Stability: 4 - Stable.__<BR>This function creates a writable, configurable and non-enumerable property with the given value in the object if the property doesn't exist in the object. The return value boolean and checks that the creating of the method was successful.<BR>__Example:__<BR> `CEL.createPolyfillMethod(Array.prototype, "at", function(...){...});`
-`createPolyfillProperty(object,property, value);`| __Stability: 4 - Stable.__<BR>This function creates a writable, configurable and enumerable property with the given value in the object if the property doesn't exist in the object. The return value boolean and checks that the creating of the property was successful.
-`deleteOwnProperty(object,property[,Throw = false]);`| __Stability: 4 - Stable.__<BR>This function deletes an own property in the given object. If Throw is true and the deleting was unsuccessful, then an error will be thrown.<BR>__Return values:__<BR>1 - The property was own and the delete was successful.<BR>0 - The property is own and the delete was unsuccessful.<BR>-1 - The property is not own or not exists.
 `deletePropertyOrThrow(object,property);`| __Stability: 4 - Stable.__<BR>This function deletes a property in the given object. If the deleting was unsuccessful, then an error will be thrown.
 `getIn(object,property);` | __Stability: 4 - Stable.__<BR>This function return the property value of the given object. If the property doesn't exist, then the return value is undefined. The object parameter is mandatory and has to be an object. The property parameter is mandatory and has to be a property type.
 `getInV(value,property);` | __Stability: 4 - Stable.__<BR>This function return the property value of the given value and the given value will be converted to object. If the property doesn't exist, then the return value is undefined. The object parameter is mandatory and has to be any value. The property parameter is mandatory and has to be a property type.
 `hasIn(object,property);` | __Stability: 4 - Stable.__<BR>This function determines whether the property is in the given object, but this can be inherited property too, not only the owned. The object parameter is mandatory and has to be an object. The property parameter is mandatory and has to be a property type. The return value is boolean.
-`isIndex(value);`| __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a valid arraylike index number. The return value is boolean.
 `isLessThan(value1, value2[,leftFirst = true]);`| __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a valid arraylike index number. The return value is boolean.
-`isPropertyKey(value);`| __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a valid propertx key (string or symbol). The return value is boolean.
 `Object.prototype.toString();` method. The parameters are mandatory. The return value is boolean.
 `isSameValue(value1, value2);`| __Stability: 4 - Stable.__<BR>This function uses the SameValue algorithm and determines whether the provided values are the same values and `-0` and `+0` values will be not equal. The `NaN` values will be equal. The return value is boolean.<BR>__TIP: The `Object.is();` uses the SameValue algorithm.__
 `isSameValueNonNumber(value1, value2);`| __Stability: 4 - Stable.__<BR>This function uses the SameValueNonNumber algorithm and determines whether the provided values are the same values. The return value is boolean or throws an error if the values or one of the values are an error.
 `isSameValueZero(value1, value2);`| __Stability: 4 - Stable.__<BR>This function uses the SameValueZero algorithm and determines whether the provided values are the same values and `-0` and `+0` values will be equal. The `NaN` values will be equal. The return value is boolean.
 `requireObjectCoercible(value);` | __Stability: 4 - Stable.__<BR>This function throws an error if the given value is a value that cannot be converted to an object (null or undefined), else the return value is given value. The parameter is mandatory.
 `setIn(object,property,value[,Throw=false]);` | __Stability: 4 - Stable.__<BR>This function set the property value of the given object. The object parameter is mandatory and has to be an object. The property parameter is mandatory and has to be a property type. The value is mandatory and can be any type. The return value is the successfully or throws an error, if this was unsuccessful and the Throw is true.
-`toArray(value);`| __Stability: 4 - Stable.__<BR>If the value is an array, then this function returns the value else converts the value to array or the return value is an empty array.
-`toIndex(value);`| __Stability: 4 - Stable.__<BR>This function converts the provided value to a valid arraylike index number. The return value is an unsigned integer (number). If the value is out of integer range, then a RangeError will be thrown.
-`toInteger(value);`| __Stability: 4 - Stable.__<BR>This function always converts the provided value to an integer. If the value cannot be converted to an integer, then the return value is 0.
-`toIntegerOrInfinity(value);`| __Stability: 4 - Stable.__<BR>This function always converts the provided value to an integer or Infitiy or -Infinity. If the value cannot be converted to an integer, then the return value is 0.
-`toLength(value);`| __Stability: 4 - Stable.__<BR>This function converts the provided value to a valid arraylike length number. The return value is an unsigned integer (number).
-`toObject(value);`| __Stability: 4 - Stable.__<BR>If the given value is not null or undefined, then the return value is an object, which has been converted from the value, else a `TypeError()` will be throwned.<BR>If the given value is an object, function or symbol, then the original value will return.
+`toArray(value);`| __Stability: 1 - Deprecated and will be removed.__<BR>If the value is an array, then this function returns the value else converts the value to array or the return value is an empty array.
 `toPrimitive(value);`| __Stability: 4 - Stable.__<BR>ECMAScript "ToPrimitive" algorithm.
 `toPrimitiveValue(value);`| __Stability: 4 - Stable.__<BR>If the given value is null or undefined, then a `TypeError()` will be throwned.<BR>If the given value is an object, which can be converted to a primitive variable, then the return value is a primitive variable.<BR>If the given value is a not convertable object (array, map, set, etc.), function or symbol, then the original value will return.
-`toPropertyKey(value);`|__Stability: 4 - Stable.__<BR>This function convert the given value to a valid property key. If the value is not symbol, then will be converted to string, else the symbol will be returned.
-`type(value);`| __Stability: 4 - Stable.__<BR>This function returns the typeof operator result of the given value, except the null object (`"null"` instead of `"object"`).
 
 
 ### Math API
@@ -592,6 +591,8 @@ Name | Description
 `toInt8(value);` | __Stability: 4 - Stable.__<BR>This function clamps ("minmax") the given value to integer 8 value (-127 to 128).
 `toInt16(value);` | __Stability: 4 - Stable.__<BR>This function clamps ("minmax") the given value to integer 16 value (-32768 to 32767).
 `toInt32(value);` | __Stability: 4 - Stable.__<BR>This function clamps ("minmax") the given value to integer 32 value (-2147483648 to 2147483647).
+`toInteger(value);`| __Stability: 4 - Stable.__<BR>This function always converts the provided value to an integer. If the value cannot be converted to an integer, then the return value is 0.
+`toIntegerOrInfinity(value);`| __Stability: 4 - Stable.__<BR>This function always converts the provided value to an integer or Infitiy or -Infinity. If the value cannot be converted to an integer, then the return value is 0.
 `toUInt8(value);` | __Stability: 4 - Stable.__<BR>This function clamps ("minmax") the given value to unsigned integer 8 value (0 to 255).
 `toUInt16(value);` | __Stability: 4 - Stable.__<BR>This function clamps ("minmax") the given value to unsigned integer 16 value (0 to 65535).
 `toUInt32(value);` | __Stability: 4 - Stable.__<BR>This function clamps ("minmax") the given value to unsigned integer 32 value (0 to 4294967295).

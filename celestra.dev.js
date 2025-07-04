@@ -283,6 +283,47 @@ const BASE62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 const WORDSAFEALPHABET= "23456789CFGHJMPQRVWXcfghjmpqvwx";
 
 
+/* deleteOwnProperty(object, property [,Throw = false]): number OR throw error*/
+function deleteOwnProperty (O, P, Throw = false) {
+  if (Object.hasOwn(O, P)) {
+    delete O[P];
+    var r = Object.hasOwn(O, P);
+    if (r && Throw) { throw new Error("Celestra.deleteOwnProperty(); error"); }
+    return +!r;
+  }
+  return -1;
+}
+
+
+/* toObject(value: any): object OR symbol OR function OR throw error */
+function toObject (O) {
+  if (O == null) { throw new TypeError("celestra.toObject(); error: " + O); }
+  return (["object", "function"].includes(typeof O)) ? O : Object(O);
+}
+
+
+/* createPolyfillMethod(object, property, value: any): boolean */
+function createPolyfillMethod (O, P, V) {
+  if (!(Object.hasOwn(O, P))) {
+    Object.defineProperty(O, P, {
+      writable: true, enumerable: false, configurable: true, value: V
+    });
+  }
+  return (O[P] === V);
+}
+
+
+/* createPolyfillProperty(object, property, value: any): boolean */
+function createPolyfillProperty (O, P, V) {
+  if (!(Object.hasOwn(O, P))) {
+    Object.defineProperty(O, P, {
+      writable: true, enumerable: true, configurable: true, value: V
+    });
+  }
+  return (O[P] === V);
+}
+
+
 /* randomUUIDv7(): string */
 function randomUUIDv7 () {
   let ts = Date.now().toString(16).padStart(12,"0") + "7";
@@ -1806,7 +1847,44 @@ function ajax (o) {
 }
 
 
-/** Type checking API **/
+/** Type API **/
+
+
+/* isPropertyKey(value: any): boolean */
+const isPropertyKey = (v) => (typeof v === "string" || typeof v === "symbol");
+
+
+/* toPropertyKey(value: any): string OR symbol */
+const toPropertyKey = (v) => (typeof v === "symbol" ? v : String(v));
+
+
+/* isIndex(value: any): boolean */
+const isIndex = (v) => (Number.isSafeInteger(v) && v >= 0 && 1/v !== 1 / -0);
+
+
+/* isLength(value: any): boolean */
+const isLength = (v) => (Number.isSafeInteger(v) && v >= 0 && 1/v !== 1 / -0);
+
+
+/* toIndex(value: any): unsigned integer */
+function toIndex (v) {
+  v = ((v = Math.trunc(+v)) !== v || v === 0) ? 0 : v;
+  if (v < 0 || v > (Math.pow(2, 53) - 1)) {
+    throw new RangeError("toIndex(); RangeError: " + v);
+  }
+  return v;
+}
+
+
+/* toLength(value: any): unsigned integer */
+function toLength (v) {
+  v = ((v = Math.trunc(+v)) !== v || v === 0) ? 0 : v;
+  return Math.min(Math.max(v, 0), Math.pow(2, 53) - 1);
+}
+
+
+/* type(value: any): string */
+const type = (v) => ((v === null) ? "null" : (typeof v));
 
 
 /* isSameClass(value1: any, value2: any): boolean */
@@ -3022,21 +3100,6 @@ function setIn (O, P, V, Throw = false) {
 const hasIn = (O, P) => (P in O);
 
 
-/* isPropertyKey(value: any): boolean */
-const isPropertyKey = (v) => (typeof v === "string" || typeof v === "symbol");
-
-
-/* toPropertyKey(value: any): string OR symbol */
-const toPropertyKey = (v) => (typeof v === "symbol" ? v : String(v));
-
-
-/* toObject(value: any): object OR symbol OR function OR throw error */
-function toObject (O) {
-  if (O == null) { throw new TypeError("celestra.toObject(); error: " + O); }
-  return (["object", "function"].includes(typeof O)) ? O : Object(O);
-}
-
-
 /* toPrimitiveValue(value: any):
   primitive OR object OR symbol OR function OR throw error */
 function toPrimitiveValue (O) {
@@ -3121,81 +3184,6 @@ function createMethodPropertyOrThrow (O, P, V) {
 }
 
 
-/* createPolyfillMethod(object, property, value: any): boolean */
-function createPolyfillMethod (O, P, V) {
-  if (!(Object.hasOwn(O, P))) {
-    Object.defineProperty(O, P, {
-      writable: true, enumerable: false, configurable: true, value: V
-    });
-  }
-  return (O[P] === V);
-}
-
-
-/* createPolyfillProperty(object, property, value: any): boolean */
-function createPolyfillProperty (O, P, V) {
-  if (!(Object.hasOwn(O, P))) {
-    Object.defineProperty(O, P, {
-      writable: true, enumerable: true, configurable: true, value: V
-    });
-  }
-  return (O[P] === V);
-}
-
-
-/* deleteOwnProperty(object, property [,Throw = false]): number OR throw error*/
-function deleteOwnProperty (O, P, Throw = false) {
-  if (Object.hasOwn(O, P)) {
-    delete O[P];
-    var r = Object.hasOwn(O, P);
-    if (r && Throw) { throw new Error("Celestra.deleteOwnProperty(); error"); }
-    return +!r;
-  }
-  return -1;
-}
-
-
-/* type(value: any): string */
-const type = (v) => ((v === null) ? "null" : (typeof v));
-
-
-/* isIndex(value: any): boolean */
-const isIndex = (v) => (Number.isSafeInteger(v) && v >= 0 && 1/v !== 1 / -0);
-
-
-/* isLength(value: any): boolean */
-const isLength = (v) => (Number.isSafeInteger(v) && v >= 0 && 1/v !== 1 / -0);
-
-
-/* toIndex(value: any): unsigned integer */
-function toIndex (v) {
-  v = ((v = Math.trunc(+v)) !== v || v === 0) ? 0 : v;
-  if (v < 0 || v > (Math.pow(2, 53) - 1)) {
-    throw new RangeError("toIndex(); RangeError: " + v);
-  }
-  return v;
-}
-
-
-/* toLength(value: any): unsigned integer */
-function toLength (v) {
-  v = ((v = Math.trunc(+v)) !== v || v === 0) ? 0 : v;
-  return Math.min(Math.max(v, 0), Math.pow(2, 53) - 1);
-}
-
-
-/* toInteger(value: any): integer */
-function toInteger (v) {
-  v = ((v = Math.trunc(+v)) !== v || v === 0) ? 0 : v;
-  return Math.min(Math.max(v, -(Math.pow(2, 53) - 1)), Math.pow(2, 53) - 1);
-}
-
-
-/* toIntegerOrInfinity(value: any): integer OR Infinity OR -Infinity */
-const toIntegerOrInfinity = (v) =>
-  ((v = Math.trunc(+v)) !== v || v === 0) ? 0 : v;
-
-
 /* createDataProperty(object, property, value: any): object */
 const createDataProperty = (O, P, V) => Object.defineProperty(
   O, P, {value: V, writable: true, enumerable: true, configurable: true}
@@ -3221,6 +3209,18 @@ const toArray = (O) => (Array.isArray(O) ? O : Array.from(O));
 
 
 /** Math API **/
+
+
+/* toInteger(value: any): integer */
+function toInteger (v) {
+  v = ((v = Math.trunc(+v)) !== v || v === 0) ? 0 : v;
+  return Math.min(Math.max(v, -(Math.pow(2, 53) - 1)), Math.pow(2, 53) - 1);
+}
+
+
+/* toIntegerOrInfinity(value: any): integer OR Infinity OR -Infinity */
+const toIntegerOrInfinity = (v) =>
+  ((v = Math.trunc(+v)) !== v || v === 0) ? 0 : v;
 
 
 /* sum(value1 [, valueN]): number */
@@ -3482,6 +3482,10 @@ const celestra = {
   BASE58,
   BASE62,
   WORDSAFEALPHABET,
+  deleteOwnProperty,
+  toObject,
+  createPolyfillMethod,
+  createPolyfillProperty,
   randomUUIDv7,
   delay,
   sleep,
@@ -3576,7 +3580,14 @@ const celestra = {
   getText,
   getJson,
   ajax,
-  /** Type checking API **/
+  /** Type API **/
+  isPropertyKey,
+  toPropertyKey,
+  isIndex,
+  isLength,
+  toIndex,
+  toLength,
+  type,
   isSameClass,
   isSameType,
   isSameInstance,
@@ -3717,9 +3728,6 @@ const celestra = {
   getIn,
   setIn,
   hasIn,
-  isPropertyKey,
-  toPropertyKey,
-  toObject,
   toPrimitiveValue,
   toPrimitive,
   isSameValue,
@@ -3727,20 +3735,12 @@ const celestra = {
   isSameValueNonNumber,
   createMethodProperty,
   createMethodPropertyOrThrow,
-  createPolyfillMethod,
-  createPolyfillProperty,
-  deleteOwnProperty,
-  type,
-  isIndex,
-  isLength,
-  toIndex,
-  toLength,
-  toInteger,
-  toIntegerOrInfinity,
   createDataProperty,
   createDataPropertyOrThrow,
   toArray,
   /** Math API **/
+  toInteger,
+  toIntegerOrInfinity,
   sum,
   avg,
   product,

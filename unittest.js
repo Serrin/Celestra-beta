@@ -5372,9 +5372,9 @@ CUT.isEqual("AsyncFunction();", "asyncfunction",
 ));
 
 
-/** type checking **/
+/** Type API **/
 CUT.addElement("hr");
-CUT.addElement("h3", "type checking API");
+CUT.addElement("h3", "Type API");
 
 
 /* isSameClass(); */

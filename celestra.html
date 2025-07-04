@@ -83,7 +83,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
     &nbsp;//&nbsp;
     <a href="#FNcollectionsAPI" style="color: white !important">Collections API</a>
     &nbsp;//&nbsp;
-    <a href="#FNtypecheckingAPI" style="color: white !important">Type checking API</a>
+    <a href="#FNtypecheckingAPI" style="color: white !important">Type API</a>
     <br/>
     <a href="#FNabstractAPI" style="color: white !important">Abstract API</a>
     &nbsp;//&nbsp;
@@ -400,6 +400,15 @@ window.classof = classof;
       <td><span class="info">Stability: 4 - Stable.</span><br/>A one time assignment function to create a constant value in ES5. This returns a function, which returns the given value. (In math: <code>f(x)=x</code>)</td>
     </tr>
     <tr>
+      <td><code>createPolyfillMethod(object,property, value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function creates a writable, configurable and non-enumerable property with the given value in the object if the property doesn't exist in the object. The return value boolean and checks that the creating of the method was successful.<br/><b>Example:</b><br/><pre>CEL.createPolyfillMethod(Array.prototype, "at", function(...){...});</pre>
+    </td>
+    </tr>
+    <tr>
+      <td><code>createPolyfillProperty(object,property,value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function creates a writable, configurable and enumerable property with the given value in the object if the property doesn't exist in the object. The return value boolean and checks that the creating of the property was successful.</td>
+    </tr>    
+    <tr>
       <td><code>delay(ms).then(callback);</code></td>
       <td>
         <span class="info">Stability: 4 - Stable.</span><br/>
@@ -412,6 +421,10 @@ CEL.delay(5000)
   .catch(console.log.bind(console))
   .finally(() => alert("done"));</pre>
 	    </td>
+    <tr>
+      <td><code>deleteOwnProperty(object,property[,Throw = false]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function deletes an own property in the given object. If Throw is true and the deleting was unsuccessful, then an error will be thrown.<br/><b>Return values:</b><br/>1 - The property was own and the delete was successful.<BR>0 - The property is own and the delete was unsuccessful.<br/>-1 - The property is not own or not exists.</td>
+    </tr>      
     </tr>
     <tr>
       <td><code>extend([deep,]target,source1[,sourceN]);</code></td>
@@ -501,6 +514,10 @@ console.log(o2);
       <td><code>timestampID([size=21[,alphabet="123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"]]);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>Generate a timestamp based sortable ID. The size parameter is optional and the default value is 21, but if the given value smaller than 12, then the value will be 12. The alphabet parameter is optional and the default value is <code>"123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"</code>, same as BASE58. The return value is the generated id (string).<br/>Example ID: <code>"00lirtqi4e-wgGn8vGPyY"</code></td>
     </tr>
+    <tr>
+      <td><code>toObject(value);</code></td>
+      <td>If the given value is not null or undefined, then the return value is an object, which has been converted from the value, else a <code>TypeError()</code> will be throwned.<br/>If the given value is an object, function or symbol, then the original value will return.</td>
+    </tr>    
     <tr>
       <td><code>unBind(function);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v5.4.1: <code>toFunction</code>.</span><br/>Returns an unbinded function from an object method. The function parameter is mandatory.</td>
@@ -911,7 +928,7 @@ console.log(o2);
 </ul>
 
 
-<h3 id="FNtypecheckingAPI">Type checking API</h3>
+<h3 id="FNtypecheckingAPI">Type API</h3>
 
 <p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
 <br/>Example: <code>CEL.isUndefined();</code></p>
@@ -1034,12 +1051,20 @@ console.log(o2);
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a generator function. The return value is boolean.</td>
     </tr>
     <tr>
+      <td><code>isIndex(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a valid arraylike index number. The return value is boolean.</td>
+    </tr>
+    <tr>
       <td><code>isIterable(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an iterable object. The return value is boolean.</td>
     </tr>
     <tr>
       <td><code>isIterator(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an iterator. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isLength(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Alias of <code>isIndex(value);</code>.</td>
     </tr>
     <tr>
       <td><code>isMap(value);</code></td>
@@ -1082,9 +1107,13 @@ console.log(o2);
       <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided value is a promise object. The return value is boolean.</td>
     </tr>
     <tr>
+      <td><code>isPropertyKey(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a valid propertx key (string or symbol). The return value is boolean.</td>
+    </tr>
+    <tr>
       <td><code>isProxy(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a proxy. The return value is boolean.</td>
-    </tr>    
+    </tr>
     <tr>
       <td><code>isRegexp(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a regexp. The return value is boolean.</td>
@@ -1152,6 +1181,22 @@ console.log(o2);
     <tr>
       <td><code>isWeakSet(value);</code></td>
       <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided value is a weakset. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>toIndex(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function converts the provided value to a valid arraylike index number. The return value is an unsigned integer (number). If the value is out of integer range, then a RangeError will be thrown.</td>
+    </tr>
+    <tr>
+      <td><code>toLength(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function converts the provided value to a valid arraylike length number. The return value is an unsigned integer (number).</td>
+    </tr>
+    <tr>
+      <td><code>toPropertyKey(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function convert the given value to a valid property key. If the value is not symbol, then will be converted to string, else the symbol will be returned.</td>
+    </tr>
+    <tr>
+      <td><code>type(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns the typeof operator result of the given value, except the null object (<code>"null"</code> instead of <code>"object"</code>).</td>
     </tr>
   </table>
 </div>
@@ -1658,19 +1703,6 @@ JSON.stringify( CEL.unique(array, (v) => v.rank) );
 }</pre></td>
     </tr>
     <tr>
-      <td><code>createPolyfillMethod(object,property, value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function creates a writable, configurable and non-enumerable property with the given value in the object if the property doesn't exist in the object. The return value boolean and checks that the creating of the method was successful.<br/><b>Example:</b><br/><pre>CEL.createPolyfillMethod(Array.prototype, "at", function(...){...});</pre>
-    </td>
-    </tr>
-    <tr>
-      <td><code>createPolyfillProperty(object,property,value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function creates a writable, configurable and enumerable property with the given value in the object if the property doesn't exist in the object. The return value boolean and checks that the creating of the property was successful.</td>
-    </tr>
-    <tr>
-      <td><code>deleteOwnProperty(object,property[,Throw = false]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function deletes an own property in the given object. If Throw is true and the deleting was unsuccessful, then an error will be thrown.<br/><b>Return values:</b><br/>1 - The property was own and the delete was successful.<BR>0 - The property is own and the delete was unsuccessful.<br/>-1 - The property is not own or not exists.</td>
-    </tr>
-    <tr>
       <td><code>deletePropertyOrThrow(object,property[,Throw = false]);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function deletes a property in the given object. If the deleting was unsuccessful, then an error will be thrown.</td>
     </tr>
@@ -1687,20 +1719,8 @@ JSON.stringify( CEL.unique(array, (v) => v.rank) );
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the property is in the given object, but this can be inherited property too, not only the owned. The object parameter is mandatory and has to be an object. The property parameter is mandatory and has to be a property type. The return value is boolean.</td>
     </tr>
     <tr>
-      <td><code>isIndex(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a valid arraylike index number. The return value is boolean.</td>
-    </tr>
-    <tr>
-      <td><code>isLength(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Alias of <code>isIndex(value);</code>.</td>
-    </tr>
-    <tr>
       <td><code>isLessThan(value1, value2[,leftFirst = true]);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function checks whether the first value is less then the second value. The v1 and v2 parameters are mandatory. If leftFirst is false, then the direction of the check is reversed.</td>
-    </tr>
-    <tr>
-      <td><code>isPropertyKey(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a valid propertx key (string or symbol). The return value is boolean.</td>
     </tr>
     <tr>
       <td><code>isSameValue(value1, value2);</code></td>
@@ -1728,27 +1748,7 @@ JSON.stringify( CEL.unique(array, (v) => v.rank) );
     </tr>
     <tr>
       <td><code>toArray(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>If the value is an array, then this function returns the value else converts the value to array or the return value is an empty array.</td>
-    </tr>
-    <tr>
-      <td><code>toIndex(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function converts the provided value to a valid arraylike index number. The return value is an unsigned integer (number). If the value is out of integer range, then a RangeError will be thrown.</td>
-    </tr>
-    <tr>
-      <td><code>toInteger(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function always converts the provided value to an integer. If the value cannot be converted to an integer, then the return value is 0.</td>
-    </tr>
-    <tr>
-      <td><code>toIntegerOrInfinity(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function always converts the provided value to an integer or Infitiy or -Infinity. If the value cannot be converted to an integer, then the return value is 0.</td>
-    </tr>
-    <tr>
-      <td><code>toLength(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function converts the provided value to a valid arraylike length number. The return value is an unsigned integer (number).</td>
-    </tr>
-    <tr>
-      <td><code>toObject(value);</code></td>
-      <td>If the given value is not null or undefined, then the return value is an object, which has been converted from the value, else a <code>TypeError()</code> will be throwned.<br/>If the given value is an object, function or symbol, then the original value will return.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>If the value is an array, then this function returns the value else converts the value to array or the return value is an empty array.</td>
     </tr>
     <tr>
       <td><code>toPrimitive(value);</code></td>
@@ -1761,14 +1761,6 @@ JSON.stringify( CEL.unique(array, (v) => v.rank) );
         If the given value is an object, which can be converted to a primitive variable, then the return value is a primitive variable.<br/>
         If the given value is a not convertable object (array, map, set, etc.), function or symbol, then the original value will return.
       </td>
-    </tr>
-    <tr>
-      <td><code>toPropertyKey(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function convert the given value to a valid property key. If the value is not symbol, then will be converted to string, else the symbol will be returned.</td>
-    </tr>
-    <tr>
-      <td><code>type(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns the typeof operator result of the given value, except the null object (<code>"null"</code> instead of <code>"object"</code>).</td>
     </tr>
   </table>
 </div>
@@ -1907,6 +1899,14 @@ Otherwise, the result is false.</pre>
     <tr>
       <td><code>toInt32(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function clamps ("minmax") the given value to integer 32 value (-2147483648 to 2147483647).</td>
+    </tr>
+    <tr>
+      <td><code>toInteger(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function always converts the provided value to an integer. If the value cannot be converted to an integer, then the return value is 0.</td>
+    </tr>
+    <tr>
+      <td><code>toIntegerOrInfinity(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function always converts the provided value to an integer or Infitiy or -Infinity. If the value cannot be converted to an integer, then the return value is 0.</td>
     </tr>
     <tr>
       <td><code>toUInt8(value);</code></td>
