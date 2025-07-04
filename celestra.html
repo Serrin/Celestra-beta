@@ -400,12 +400,12 @@ window.classof = classof;
       <td><span class="info">Stability: 4 - Stable.</span><br/>A one time assignment function to create a constant value in ES5. This returns a function, which returns the given value. (In math: <code>f(x)=x</code>)</td>
     </tr>
     <tr>
-      <td><code>createPolyfillMethod(object,property, value);</code></td>
+      <td><code>createPolyfillMethod(object, property, value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function creates a writable, configurable and non-enumerable property with the given value in the object if the property doesn't exist in the object. The return value boolean and checks that the creating of the method was successful.<br/><b>Example:</b><br/><pre>CEL.createPolyfillMethod(Array.prototype, "at", function(...){...});</pre>
     </td>
     </tr>
     <tr>
-      <td><code>createPolyfillProperty(object,property,value);</code></td>
+      <td><code>createPolyfillProperty(object, property,value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function creates a writable, configurable and enumerable property with the given value in the object if the property doesn't exist in the object. The return value boolean and checks that the creating of the property was successful.</td>
     </tr>    
     <tr>
@@ -422,7 +422,7 @@ CEL.delay(5000)
   .finally(() => alert("done"));</pre>
 	    </td>
     <tr>
-      <td><code>deleteOwnProperty(object,property[,Throw = false]);</code></td>
+      <td><code>deleteOwnProperty(object, property[,Throw = false]);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function deletes an own property in the given object. If Throw is true and the deleting was unsuccessful, then an error will be thrown.<br/><b>Return values:</b><br/>1 - The property was own and the delete was successful.<BR>0 - The property is own and the delete was unsuccessful.<br/>-1 - The property is not own or not exists.</td>
     </tr>      
     </tr>
@@ -499,7 +499,7 @@ console.log(o2);
       <td><span class="info">Stability: 4 - Stable.</span><br/>Returns the count of the owned properties and symbols of the given object. The object parameter is mandatory. The return value is an integer.</td>
     </tr>
     <tr>
-      <td><code>popIn(object,property);</code></td>
+      <td><code>popIn(object, property);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>The popIn() function deletes the property in the object and returns the value of the deleted property. If the property doesn't exist in the object, then the return value is undefined. The object parameter is mandatory and has to be an object. The property parameter is mandatory.</td>
     </tr>
     <tr>
@@ -1039,10 +1039,6 @@ console.log(o2);
       <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided value is falsy. The return value is boolean. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Glossary/Falsy" target="_blank">MDN Article</a>!</td>
     </tr>
     <tr>
-      <td><code>isFloat(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a float number. The return value is boolean.</td>
-    </tr>
-    <tr>
       <td><code>isFunction(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a function. The return value is boolean.</td>
     </tr>
@@ -1190,6 +1186,14 @@ console.log(o2);
       <td><code>toLength(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function converts the provided value to a valid arraylike length number. The return value is an unsigned integer (number).</td>
     </tr>
+    <tr>
+      <td><code>toPrimitiveValue(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>
+        If the given value is null or undefined, then a <code>TypeError()</code> will be throwned.<br/>
+        If the given value is an object, which can be converted to a primitive variable, then the return value is a primitive variable.<br/>
+        If the given value is a not convertable object (array, map, set, etc.), function or symbol, then the original value will return.
+      </td>
+    </tr>    
     <tr>
       <td><code>toPropertyKey(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function convert the given value to a valid property key. If the value is not symbol, then will be converted to string, else the symbol will be returned.</td>
@@ -1683,68 +1687,68 @@ JSON.stringify( CEL.unique(array, (v) => v.rank) );
       <td><b>Description</b></td>
     </tr>
     <tr>
-      <td><code>createDataProperty(object,property, value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function creates a writable, configurable and enumerable property with the given value in the object. The return value is the modified object.</td>
+      <td><code>createDataProperty(object, property, value);</code></td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/><span class="info">This function is available in the <a href="https://github.com/Serrin/Zephyr" target="_blank">Zephyr library</a>.</span><br/>This function creates a writable, configurable and enumerable property with the given value in the object. The return value is the modified object.</td>
     </tr>
     <tr>
-      <td><code>createDataPropertyOrThrow(object,property, value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function creates a writable, configurable and enumerable property with the given value in the object. The return value is the modified object or throw an error, if this was unsuccessful.</td>
+      <td><code>createDataPropertyOrThrow(object, property, value);</code></td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/><span class="info">This function is available in the <a href="https://github.com/Serrin/Zephyr" target="_blank">Zephyr library</a>.</span><br/>This function creates a writable, configurable and enumerable property with the given value in the object. The return value is the modified object or throw an error, if this was unsuccessful.</td>
     </tr>
     <tr>
-      <td><code>createMethodProperty(object,property, value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function creates a writable, configurable and non-enumerable property with the given value in the object. The return value is the modified object.<br/><b>Example:</b><br/><pre>if (!("at" in Array.prototype)) {
+      <td><code>createMethodProperty(object, property, value);</code></td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/><span class="info">This function is available in the <a href="https://github.com/Serrin/Zephyr" target="_blank">Zephyr library</a>.</span><br/>This function creates a writable, configurable and non-enumerable property with the given value in the object. The return value is the modified object.<br/><b>Example:</b><br/><pre>if (!("at" in Array.prototype)) {
   CEL.createMethodProperty(Array.prototype, "at", function(...){...});
 }</pre></td>
     </tr>
     <tr>
-      <td><code>createMethodPropertyOrThrow(object,property, value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function creates a writable, configurable and non-enumerable property with the given value in the object. The return value is the modified object or throw an error, if this was unsuccessful.<br/><b>Example:</b><br/><pre>if (!("at" in Array.prototype)) {
+      <td><code>createMethodPropertyOrThrow(object, property, value);</code></td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/><span class="info">This function is available in the <a href="https://github.com/Serrin/Zephyr" target="_blank">Zephyr library</a>.</span><br/>This function creates a writable, configurable and non-enumerable property with the given value in the object. The return value is the modified object or throw an error, if this was unsuccessful.<br/><b>Example:</b><br/><pre>if (!("at" in Array.prototype)) {
   CEL.createMethodPropertyOrThrow(Array.prototype, "at", function(...){...});
 }</pre></td>
     </tr>
     <tr>
-      <td><code>deletePropertyOrThrow(object,property[,Throw = false]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function deletes a property in the given object. If the deleting was unsuccessful, then an error will be thrown.</td>
+      <td><code>deletePropertyOrThrow(object, property[,Throw = false]);</code></td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/><span class="info">This function is available in the <a href="https://github.com/Serrin/Zephyr" target="_blank">Zephyr library</a>.</span><br/>This function deletes a property in the given object. If the deleting was unsuccessful, then an error will be thrown.</td>
     </tr>
     <tr>
-      <td><code>getIn(object,property);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function return the property value of the given object. If the property doesn't exist, then the return value is undefined. The object parameter is mandatory and has to be an object. The property parameter is mandatory and has to be a property type.</td>
+      <td><code>getIn(object, property);</code></td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/><span class="info">This function is available in the <a href="https://github.com/Serrin/Zephyr" target="_blank">Zephyr library</a>.</span><br/>This function return the property value of the given object. If the property doesn't exist, then the return value is undefined. The object parameter is mandatory and has to be an object. The property parameter is mandatory and has to be a property type.</td>
     </tr>
     <tr>
       <td><code>getInV(value,property);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function return the property value of the given value and the given value will be converted to object. If the property doesn't exist, then the return value is undefined. The object parameter is mandatory and has to be any value. The property parameter is mandatory and has to be a property type.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/><span class="info">This function is available in the <a href="https://github.com/Serrin/Zephyr" target="_blank">Zephyr library</a>.</span><br/>This function return the property value of the given value and the given value will be converted to object. If the property doesn't exist, then the return value is undefined. The object parameter is mandatory and has to be any value. The property parameter is mandatory and has to be a property type.</td>
     </tr>
     <tr>
-      <td><code>hasIn(object,property);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the property is in the given object, but this can be inherited property too, not only the owned. The object parameter is mandatory and has to be an object. The property parameter is mandatory and has to be a property type. The return value is boolean.</td>
+      <td><code>hasIn(object, property);</code></td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/><span class="info">This function is available in the <a href="https://github.com/Serrin/Zephyr" target="_blank">Zephyr library</a>.</span><br/>This function determines whether the property is in the given object, but this can be inherited property too, not only the owned. The object parameter is mandatory and has to be an object. The property parameter is mandatory and has to be a property type. The return value is boolean.</td>
     </tr>
     <tr>
       <td><code>isLessThan(value1, value2[,leftFirst = true]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function checks whether the first value is less then the second value. The v1 and v2 parameters are mandatory. If leftFirst is false, then the direction of the check is reversed.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/><span class="info">This function is available in the <a href="https://github.com/Serrin/Zephyr" target="_blank">Zephyr library</a>.</span><br/>This function checks whether the first value is less then the second value. The v1 and v2 parameters are mandatory. If leftFirst is false, then the direction of the check is reversed.</td>
     </tr>
     <tr>
       <td><code>isSameValue(value1, value2);</code></td>
       <td>
-        <span class="info">Stability: 4 - Stable.</span><br/>
+        <span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/><span class="info">This function is available in the <a href="https://github.com/Serrin/Zephyr" target="_blank">Zephyr library</a>.</span><br/>
         <p>This function uses the SameValue algorithm and determines whether the provided values are the same values and <code>-0</code> and <code>+0</code> values will be not equal. The <code>NaN</code> values will be equal. The return value is boolean.</p>
         <p><span class="info">TIP: The <code>Object.is();</code> uses the SameValue algorithm.</span></p>
       </td>
     </tr>
     <tr>
       <td><code>isSameValueNonNumber(value1, value2);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>TThis function uses the SameValueNonNumber algorithm and determines whether the provided values are the same values. The return value is boolean or throws an error if the values or one of the values are an error.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/><span class="info">This function is available in the <a href="https://github.com/Serrin/Zephyr" target="_blank">Zephyr library</a>.</span><br/>TThis function uses the SameValueNonNumber algorithm and determines whether the provided values are the same values. The return value is boolean or throws an error if the values or one of the values are an error.</td>
     </tr>
     <tr>
       <td><code>isSameValueZero(value1, value2);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function uses the SameValueZero algorithm and determines whether the provided values are the same values and <code>-0</code> and <code>+0</code> values will be equal. The <code>NaN</code> values will be equal. The return value is boolean.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/><span class="info">This function is available in the <a href="https://github.com/Serrin/Zephyr" target="_blank">Zephyr library</a>.</span><br/>This function uses the SameValueZero algorithm and determines whether the provided values are the same values and <code>-0</code> and <code>+0</code> values will be equal. The <code>NaN</code> values will be equal. The return value is boolean.<br/><span class="info">TIP: Can be replaced with <code>[x].includes(y)</code>.</td>
     </tr>
     <tr>
       <td><code>requireObjectCoercible(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function throws an error if the given value is a value that cannot be converted to an object (null or undefined), else the return value is given value. The parameter is mandatory.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/><span class="info">This function is available in the <a href="https://github.com/Serrin/Zephyr" target="_blank">Zephyr library</a>.</span><br/>This function throws an error if the given value is a value that cannot be converted to an object (null or undefined), else the return value is given value. The parameter is mandatory.</td>
     </tr>
     <tr>
-      <td><code>setIn(object,property,value[,Throw=false]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function set the property value of the given object. The object parameter is mandatory and has to be an object. The property parameter is mandatory and has to be a property type. The value is mandatory and can be any type. The return value is the successfully or throws an error, if this was unsuccessful and the Throw is true.</td>
+      <td><code>setIn(object, property,value[,Throw=false]);</code></td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/><span class="info">This function is available in the <a href="https://github.com/Serrin/Zephyr" target="_blank">Zephyr library</a>.</span><br/>This function set the property value of the given object. The object parameter is mandatory and has to be an object. The property parameter is mandatory and has to be a property type. The value is mandatory and can be any type. The return value is the successfully or throws an error, if this was unsuccessful and the Throw is true.</td>
     </tr>
     <tr>
       <td><code>toArray(value);</code></td>
@@ -1752,15 +1756,7 @@ JSON.stringify( CEL.unique(array, (v) => v.rank) );
     </tr>
     <tr>
       <td><code>toPrimitive(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>ECMAScript "ToPrimitive" algorithm.</td>
-    </tr>
-    <tr>
-      <td><code>toPrimitiveValue(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>
-        If the given value is null or undefined, then a <code>TypeError()</code> will be throwned.<br/>
-        If the given value is an object, which can be converted to a primitive variable, then the return value is a primitive variable.<br/>
-        If the given value is a not convertable object (array, map, set, etc.), function or symbol, then the original value will return.
-      </td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/><span class="info">This function is available in the <a href="https://github.com/Serrin/Zephyr" target="_blank">Zephyr library</a>.</span><br/>ECMAScript "ToPrimitive" algorithm.</td>
     </tr>
   </table>
 </div>
@@ -1801,6 +1797,10 @@ JSON.stringify( CEL.unique(array, (v) => v.rank) );
       <td><code>isBigUInt64(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a BigInt (Int64) value between 0 and 2^64 - 1. The return value is boolean.</td>
     </tr>
+    <tr>
+      <td><code>isFloat(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a float number. The return value is boolean.</td>
+    </tr>    
     <tr>
       <td><code>isInt8(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an integer between -128 and 127. The return value is boolean.</td>

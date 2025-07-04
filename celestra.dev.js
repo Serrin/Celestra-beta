@@ -183,7 +183,10 @@ if (!Object.hasOwn) {
 if (!("toReversed" in Array.prototype)) {
   Object.defineProperty(Array.prototype, "toReversed", {
     "configurable": true, "writable": true, "enumerable": false,
-    "value": function () { "use strict"; return this.slice().reverse(); }
+    "value": function () {
+      "use strict";
+      return this.slice().reverse();
+    }
   });
 }
 
@@ -192,7 +195,10 @@ if (!("toReversed" in Array.prototype)) {
 if (!("toSorted" in Array.prototype)) {
   Object.defineProperty(Array.prototype, "toSorted", {
     "configurable": true, "writable": true, "enumerable": false,
-    "value": function (cFn) { "use strict"; return this.slice().sort(cFn); }
+    "value": function (cFn) {
+      "use strict";
+      return this.slice().sort(cFn);
+    }
   });
 }
 
@@ -202,7 +208,9 @@ if (!("toSpliced" in Array.prototype)) {
   Object.defineProperty(Array.prototype, "toSpliced", {
     "configurable": true, "writable": true, "enumerable": false,
     "value": function (start, deleteCount, ...items) {
-      var r = this.slice(); r.splice(start, deleteCount, ...items); return r;
+      var r = this.slice();
+      r.splice(start, deleteCount, ...items);
+      return r;
     }
   });
 }
@@ -213,7 +221,10 @@ if (!("with" in Array.prototype)) {
   Object.defineProperty(Array.prototype, "with", {
     "configurable": true, "writable": true, "enumerable": false,
     "value": function (i, v) {
-      "use strict"; var r = this.slice(); r[i] = v; return r;
+      "use strict";
+      var r = this.slice();
+      r[i] = v;
+      return r;
     }
   });
 }
@@ -232,7 +243,10 @@ if (!("toReversed" in Uint8Array.prototype)) {
 if (!("toSorted" in Uint8Array.prototype)) {
   Object.defineProperty(Uint8Array.prototype, "toSorted", {
     "configurable": true, "writable": true, "enumerable": false,
-    "value": function (cFn) { "use strict"; return this.slice().sort(cFn); }
+    "value": function (cFn) {
+      "use strict";
+      return this.slice().sort(cFn);
+    }
   });
 }
 
@@ -242,7 +256,10 @@ if (!("with" in Uint8Array.prototype)) {
   Object.defineProperty(Uint8Array.prototype, "with", {
     "configurable": true, "writable": true, "enumerable": false,
     "value": function (i, v) {
-      "use strict"; var r = this.slice(); r[i] = v; return r;
+      "use strict";
+      var r = this.slice();
+      r[i] = v;
+      return r;
     }
   });
 }
@@ -283,7 +300,7 @@ const BASE62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 const WORDSAFEALPHABET= "23456789CFGHJMPQRVWXcfghjmpqvwx";
 
 
-/* deleteOwnProperty(object, property [,Throw = false]): number OR throw error*/
+/* deleteOwnProperty(object, property [,Throw = false]): number OR thrown error*/
 function deleteOwnProperty (O, P, Throw = false) {
   if (Object.hasOwn(O, P)) {
     delete O[P];
@@ -295,7 +312,7 @@ function deleteOwnProperty (O, P, Throw = false) {
 }
 
 
-/* toObject(value: any): object OR symbol OR function OR throw error */
+/* toObject(value: any): object OR symbol OR function OR thrown error */
 function toObject (O) {
   if (O == null) { throw new TypeError("celestra.toObject(); error: " + O); }
   return (["object", "function"].includes(typeof O)) ? O : Object(O);
@@ -600,7 +617,7 @@ function assertNotType (v, rType, message) {
 }
 
 
-/* assert(value: any [, message]): true OR throw error */
+/* assert(value: any [, message]): true OR thrown error */
 function assert (c, message) {
   if (!c) {
     throw new Error("[assert] Assertion failed"
@@ -611,7 +628,7 @@ function assert (c, message) {
 }
 
 
-/* assertTrue(value: any [, message]): true OR throw error */
+/* assertTrue(value: any [, message]): true OR thrown error */
 function assertTrue (c, message) {
   if (!c) {
     throw new Error("[assertTrue] Assertion failed"
@@ -622,7 +639,7 @@ function assertTrue (c, message) {
 }
 
 
-/* assertFalse(value: any [, message]): true OR throw error */
+/* assertFalse(value: any [, message]): true OR thrown error */
 function assertFalse (c, message) {
   if (c) {
     throw new Error("[assertFalse] Assertion failed"
@@ -633,7 +650,7 @@ function assertFalse (c, message) {
 }
 
 
-/* assertEqual(x: any, y: any [, message]): true OR throw error */
+/* assertEqual(x: any, y: any [, message]): true OR thrown error */
 /* loose equality + NaN equality */
 function assertEqual (x, y, message) {
   if (!(x == y || (x !== x && y !== y))) {
@@ -645,7 +662,7 @@ function assertEqual (x, y, message) {
 }
 
 
-/* assertStrictEqual(x: any, y: any [, message]): true OR throw error */
+/* assertStrictEqual(x: any, y: any [, message]): true OR thrown error */
 /* SameValue equality */
 function assertStrictEqual (x, y, message) {
   if (!((x === y) ? (x !== 0 || 1/x === 1/y) : (x !== x && y !== y))) {
@@ -657,7 +674,7 @@ function assertStrictEqual (x, y, message) {
 }
 
 
-/* assertNotEqual(x: any, y: any [, message]): true OR throw error */
+/* assertNotEqual(x: any, y: any [, message]): true OR thrown error */
 /* loose equality + NaN equality */
 function assertNotEqual (x, y, message) {
   if (x == y || (x !== x && y !== y)) {
@@ -669,7 +686,7 @@ function assertNotEqual (x, y, message) {
 }
 
 
-/* assertNotStrictEqual(x: any, y: any [, message]): true OR throw error */
+/* assertNotStrictEqual(x: any, y: any [, message]): true OR thrown error */
 /* SameValue equality */
 function assertNotStrictEqual (x, y, message) {
   if ((x === y) ? (x !== 0 || 1/x === 1/y) : (x !== x && y !== y)) {
@@ -681,7 +698,7 @@ function assertNotStrictEqual (x, y, message) {
 }
 
 
-/* assertDeepEqual(x: any, y: any [, message]): true OR throw error */
+/* assertDeepEqual(x: any, y: any [, message]): true OR thrown error */
 function assertDeepEqual (x, y, message) {
   function _isDeepEqual (x, y) {
     const _isPrimitive = (v) =>
@@ -954,7 +971,7 @@ function assertNotDeepStrictEqual (x, y, message) {
 }
 
 
-/* assertNotDeepEqual(x: any, y: any [, message]): true OR throw error */
+/* assertNotDeepEqual(x: any, y: any [, message]): true OR thrown error */
 function assertNotDeepEqual (x, y, message) {
   function _isDeepEqual (x, y) {
     const _isPrimitive = (v) =>
@@ -1081,7 +1098,7 @@ function assertNotDeepEqual (x, y, message) {
 }
 
 
-/* assertDeepStrictEqual(x: any, y: any [, message]): true OR throw error */
+/* assertDeepStrictEqual(x: any, y: any [, message]): true OR thrown error */
 function assertDeepStrictEqual (x, y, message) {
   function _isDeepStrictEqual (x, y) {
     const _isPrimitive = (v) =>
@@ -1850,6 +1867,20 @@ function ajax (o) {
 /** Type API **/
 
 
+/* toPrimitiveValue(value: any):
+  primitive OR object OR symbol OR function OR thrown error */
+function toPrimitiveValue (O) {
+  /* null, undefined, Function, Boolean, BigInt, Number, String, Symbol */
+  if (O == null || typeof O !== "object") { return O; }
+  /* object */
+  var ot = Object.prototype.toString.call(O).slice(8, -1);
+  if (["Boolean", "BigInt", "Number", "String"].includes(ot)) {
+    return window[ot](O);
+  }
+  return O;
+}
+
+
 /* isPropertyKey(value: any): boolean */
 const isPropertyKey = (v) => (typeof v === "string" || typeof v === "symbol");
 
@@ -1914,7 +1945,7 @@ function isCoercedObject (O) {
 }
 
 
-/* isDeepStrictEqual(x: any, y: any): true OR throw error */
+/* isDeepStrictEqual(x: any, y: any): true OR thrown error */
 function isDeepStrictEqual (x, y) {
   function _isDeepStrictEqual (x, y) {
     const _isPrimitive = (v) =>
@@ -2210,10 +2241,6 @@ const isChar = (v) =>
 const isNumber = (v) => (typeof v === "number");
 
 
-/* isFloat(value: any): boolean */
-const isFloat = (v) => (typeof v === "number" && v === v && !!(v % 1));
-
-
 /* isNumeric(value: any): boolean */
 const isNumeric = (v) => (
   ((typeof v === "number" || typeof v === "bigint") && v === v)
@@ -2503,7 +2530,7 @@ function arrayDeepClone ([...a]) {
 }
 
 
-/* arrayCreate(length: any): array OR throw error */
+/* arrayCreate(length: any): array OR thrown error */
 function arrayCreate (l = 0) {
   l = Number(l);
 	if (1 / l === -Infinity) { l = 0; }
@@ -3064,7 +3091,7 @@ const isLessThan =
   (v1, v2, leftFirst = true) => (leftFirst ? (v1 < v2) : (v1 > v2));
 
 
-/* requireObjectCoercible(value: any): value OR throw error */
+/* requireObjectCoercible(value: any): value OR thrown error */
 function requireObjectCoercible (O) {
   if (O == null) { throw new TypeError(
     Object.prototype.toString.call(O) + " is not coercible to Object.");
@@ -3073,7 +3100,7 @@ function requireObjectCoercible (O) {
 }
 
 
-/* getInV(value: any, property: string): any OR throw error */
+/* getInV(value: any, property: string): any OR thrown error */
 function getInV (O, P) {
   if (O == null ) {
     throw TypeError("celestra.getInV(); error: " + O +"[" + P + "]");
@@ -3100,21 +3127,7 @@ function setIn (O, P, V, Throw = false) {
 const hasIn = (O, P) => (P in O);
 
 
-/* toPrimitiveValue(value: any):
-  primitive OR object OR symbol OR function OR throw error */
-function toPrimitiveValue (O) {
-  /* null, undefined, Function, Boolean, BigInt, Number, String, Symbol */
-  if (O == null || typeof O !== "object") { return O; }
-  /* object */
-  var ot = Object.prototype.toString.call(O).slice(8, -1);
-  if (["Boolean", "BigInt", "Number", "String"].includes(ot)) {
-    return window[ot](O);
-  }
-  return O;
-}
-
-
-/* toPrimitive(value: any): primitive OR throw error */
+/* toPrimitive(value: any): primitive OR thrown error */
 function toPrimitive (O, hint = "default") {
   const _apply = Function.prototype.call.bind(Function.prototype.apply);
   const _isPrimitive = (v) =>
@@ -3209,6 +3222,10 @@ const toArray = (O) => (Array.isArray(O) ? O : Array.from(O));
 
 
 /** Math API **/
+
+
+/* isFloat(value: any): boolean */
+const isFloat = (v) => (typeof v === "number" && v === v && !!(v % 1));
 
 
 /* toInteger(value: any): integer */
@@ -3581,6 +3598,7 @@ const celestra = {
   getJson,
   ajax,
   /** Type API **/
+  toPrimitiveValue,
   isPropertyKey,
   toPropertyKey,
   isIndex,
@@ -3591,7 +3609,7 @@ const celestra = {
   isSameClass,
   isSameType,
   isSameInstance,
-  isCoercedObject,  
+  isCoercedObject,
   isDeepStrictEqual,
   isEmptyValue,
   isProxy,
@@ -3614,7 +3632,6 @@ const celestra = {
   isString,
   isChar,
   isNumber,
-  isFloat,
   isNumeric,
   isBoolean,
   isObject,
@@ -3728,7 +3745,6 @@ const celestra = {
   getIn,
   setIn,
   hasIn,
-  toPrimitiveValue,
   toPrimitive,
   isSameValue,
   isSameValueZero,
@@ -3739,6 +3755,7 @@ const celestra = {
   createDataPropertyOrThrow,
   toArray,
   /** Math API **/
+  isFloat,
   toInteger,
   toIntegerOrInfinity,
   sum,
