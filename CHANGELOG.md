@@ -9,6 +9,44 @@
 # Celestra version history
 
 
+## Celestra v5.7.3
+
+1. Documentation and pdf fixes
+
+2. Rename the **Type checking API** to **Type API**
+
+3. Replace the Celestra object with the ES6 simple object
+
+4. Add these functions:
+````javascript
+assertType();
+assertNotType();
+isCoercedObject();
+isSameInstance();
+````
+
+5. Deprecate (**Stability 1 - will be removed**) this function: `toArray();`
+
+6. Deprecate (**Stability 1 - will be removed**) these abstract functions, because these are available in the new Zephyr (EcmaScript abstract) library:
+````javascript
+createDataProperty(object,property,value);
+createDataPropertyOrThrow(object,property,value);
+createMethodProperty(object,property,value);
+createMethodPropertyOrThrow(object,property,value);
+deletePropertyOrThrow();
+getIn(object,property);
+getInV(object,property);
+hasIn(object,property);
+setIn(object,property,value[,Throw = false]);
+isLessThan(value1,value2[,leftFirst = true]);
+isSameValue(value1,value2);
+isSameValueNonNumber(value1,value2);
+isSameValueZero(value1,value2);
+requireObjectCoercible(object);
+toPrimitive(value);
+````
+
+
 ## Celestra v5.7.2
 
 1. Documentation and pdf fixes.

@@ -17,7 +17,7 @@ This library isn't compatible with the Node.js.
 
 Latest version: 5.7.3
 
-Date: 2025-06-18T22:28:03.287Z
+Date: 2025-07-07T19:41:55.394Z
 
 __Tested on these browsers:__
 
