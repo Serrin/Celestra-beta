@@ -1,6 +1,6 @@
 /**
  * @name Celestra
- * @version 5.7.3 dev
+ * @version 5.7.4 dev
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
@@ -701,81 +701,97 @@ function assertNotStrictEqual (x, y, message) {
 /* assertDeepEqual(x: any, y: any [, message]): true OR thrown error */
 function assertDeepEqual (x, y, message) {
   function _isDeepEqual (x, y) {
+    /* helper functions */
+    const _deepType = (x) =>
+      ((x === null) ? "null" : (x !== x) ? "NaN" : (typeof x));
     const _isPrimitive = (v) =>
       (v == null || (typeof v !== "object" && typeof v !== "function"));
-    function _isSameInstance (x, y, Class) {
-      return (x instanceof Class) && (y instanceof Class);
-    }
-    const _classof = (x) => Object.prototype.toString.call(x).slice(8, -1);
-    const _typeV2 = (x) =>
-      ((x === null) ? "null" : (x !== x) ? "NaN" : (typeof x));
     const _isObject = (x) => (x != null && typeof x === "object");
-    const _isEqual = (x, y) => (x == y || (x !== x && y !== y ));
-    /* primitives / symbol -> only reference testing */
-    if (_typeV2(x) === "symbol" && _typeV2(y) === "symbol") {
-      return x === y;
-    }
-    /* Function */
-    if (_typeV2(x) === "function" && _typeV2(y) === "function") {
-      return (x === y);
-    }
-    /* primitives and Object + primitive (Boolean, Number, BigInt, String) */
-    if ( (_isPrimitive(x) && _isPrimitive(y))
-      || (_isObject(x) && _isPrimitive(y))
-      || (_isPrimitive(x) && _isObject(y))
-    ) {
-      return (_isEqual(x, y));
-    }
+    const _isSameInstance = (x, y, Class) =>
+      (x instanceof Class) && (y instanceof Class);
+    const _classof = (x) =>
+      Object.prototype.toString.call(x).slice(8, -1).toLowerCase();
+    const _ownKeys = (x) =>
+      Object.getOwnPropertyNames(x).concat(Object.getOwnPropertySymbols(x));
+    /* strict equality helper function */
+    /* const _isEqual = (x, y) => Object.is(x, y); */
+    /* not strict equality helper function */
+    const _isEqual = (x, y) => (x == y || (x !== x && y !== y));
+    /* primitives: Boolean, Number, BigInt, String + Function + Symbol */
+    if (_isEqual(x, y)) { return true; }
     /* objects */
     if (_isObject(x) && _isObject(y)) {
-      /* objects / Date */
-      if (_isSameInstance(x, y, Date)) {
-        return Object.is(+x, +y);
-      }
       /* objects / same memory adress */
       if (_isEqual(x, y)) { return true; }
-      /* objects / WeakMap, WeakSet, Number, Boolean, String */
+      /* objects / WeakMap + WeakSet */
       if (_isSameInstance(x, y, WeakMap) || _isSameInstance(x, y, WeakSet)) {
-        return x === y;
+        return _isEqual(x, y);
       }
-      /* objects / Array and TypedArrays */
-      if ((Array.isArray(x) && Array.isArray(y))
-        || _isSameInstance(x, y, Int8Array)
+      /* objects / Wrapper objects: Number, Boolean, String, BigInt */
+      if (_isSameInstance(x, y, Number)
+        || _isSameInstance(x, y, Boolean)
+        || _isSameInstance(x, y, String)
+        || _isSameInstance(x, y, BigInt)
+      ) {
+        return _isEqual(x.valueOf(), y.valueOf());
+      }
+      /* objects / Array */
+      if (Array.isArray(x) && Array.isArray(y)) {
+        if (x.length !== y.length) { return false; }
+        if (x.length === 0) { return true; }
+        return x.every((v, i) => _isDeepEqual(v, y[i]));
+      }
+      /* objects / TypedArrays */
+      if ( _isSameInstance(x, y, Int8Array)
         || _isSameInstance(x, y, Uint8Array)
         || _isSameInstance(x, y, Uint8ClampedArray)
         || _isSameInstance(x, y, Int16Array)
         || _isSameInstance(x, y, Uint16Array)
         || _isSameInstance(x, y, Int32Array)
         || _isSameInstance(x, y, Uint32Array)
-        || ("Float16Array" in window
-            ? _isSameInstance(x, y, Float16Array) : false
+        || ("Float16Array" in window ?
+            _isSameInstance(x, y, Float16Array) : false
            )
         || _isSameInstance(x, y, Float32Array)
         || _isSameInstance(x, y, Float64Array)
         || _isSameInstance(x, y, BigInt64Array)
         || _isSameInstance(x, y, BigUint64Array)
       ) {
-        if (x.length === 0 && y.length === 0) { return true; }
-        return (x.length === y.length
-          && x.every((v, i) => _isDeepEqual(v, y[i]))
-        );
+        if (x.length !== y.length) { return false; }
+        if (x.length === 0) { return true; }
+        return x.every((v, i) => _isEqual(v, y[i]));
+      }
+      /* objects / ArrayBuffer */
+      if (_isSameInstance(x, y, ArrayBuffer)) {
+        if (x.byteLength !== y.byteLength) { return false; }
+        if (x.byteLength === 0) { return true; }
+        let xTA = new Int8Array(x);
+        let yTA = new Int8Array(y);
+        return xTA.every((v, i) => _isEqual(v, yTA[i]));
+      }
+      /* objects / DataView */
+      if (_isSameInstance(x, y, DataView)) {
+        if (x.byteLength !== y.byteLength) { return false; }
+        if (x.byteLength === 0) { return true; }
+        for (let i = 0; i < x.byteLength; i++) {
+          if (!_isEqual(x.getUint8(i), y.getUint8(i))) { return false; }
+        }
+        return true;
       }
       /* objects / Map */
       if (_isSameInstance(x, y, Map)) {
-        if (x.size === 0 && y.size === 0) { return true; }
         if (x.size !== y.size) { return false; }
+        if (x.size === 0) { return true; }
         for (let key of x.keys()) {
           if (!y.has(key)) { return false; }
-          if (!_isDeepEqual(x.get(key), y.get(key))) {
-            return false;
-          }
+          if (!_isDeepEqual(x.get(key), y.get(key))) { return false; }
         }
         return true;
       }
       /* objects / Set */
       if (_isSameInstance(x, y, Set)) {
-        if (x.size === 0 && y.size === 0) { return true; }
         if (x.size !== y.size) { return false; }
+        if (x.size === 0) { return true; }
         for (let item of x) {
           if (!y.has(item)) { return false; }
         }
@@ -783,9 +799,9 @@ function assertDeepEqual (x, y, message) {
       }
       /* objects / RegExp */
       if (_isSameInstance(x, y, RegExp)) {
-        return Object.is(x.lastIndex, y.lastIndex)
-          && Object.is(x.flags, y.flags)
-          && Object.is(x.source, y.source);
+        return _isEqual(x.lastIndex, y.lastIndex)
+          && _isEqual(x.flags, y.flags)
+          && _isEqual(x.source, y.source);
       }
       /* objects / Error */
       if (_isSameInstance(x, y, Error)) {
@@ -796,21 +812,15 @@ function assertDeepEqual (x, y, message) {
             .reduce((acc, prop) => { acc[prop] = y[prop]; return acc; }, {}),
         );
       }
+      /* objects / Date */
+      if (_isSameInstance(x, y, Date)) { return _isEqual(+x, +y); }
       /* objects / Proxy -> not detectable */
-      /* objects / Object (other objects) */
-      if (_isObject(x) && _isObject(y)) {
-        let xKeys = [
-          ...Object.getOwnPropertyNames(x),
-          ...Object.getOwnPropertySymbols(x)
-        ];
-        let yKeys = [
-          ...Object.getOwnPropertyNames(y),
-          ...Object.getOwnPropertySymbols(y)
-        ];
-        if (xKeys.length !== yKeys.length) { return false; }
-        if (xKeys.length === 0) { return true; }
-        return xKeys.every((key) => _isDeepEqual(x[key], y[key]));
-      }
+      /* objects / other objects */
+      let xKeys = _ownKeys(x);
+      let yKeys = _ownKeys(y);
+      if (xKeys.length !== yKeys.length) { return false; }
+      if (xKeys.length === 0) { return true; }
+      return xKeys.every((key) => _isDeepEqual(x[key], y[key]));
     }
     /* default return false */
     return false;
@@ -821,105 +831,119 @@ function assertDeepEqual (x, y, message) {
       + (message ? ": " + message : "")
     );
   }
- return true;
+  return true;
 }
 
 
 /* assertNotDeepStrictEqual(x: any, y: any [, message]): boolean */
 function assertNotDeepStrictEqual (x, y, message) {
   function _isDeepStrictEqual (x, y) {
+    /* helper functions */
+    const _deepType = (x) =>
+      ((x === null) ? "null" : (x !== x) ? "NaN" : (typeof x));
     const _isPrimitive = (v) =>
       (v == null || (typeof v !== "object" && typeof v !== "function"));
-    function _isSameInstance (x, y, Class) {
-      return (x instanceof Class) && (y instanceof Class);
-    }
-    const _classof = (x) => Object.prototype.toString.call(x).slice(8, -1);
-    const _typeV2 = (x) =>
-      ((x === null) ? "null" : (x !== x) ? "NaN" : (typeof x));
     const _isObject = (x) => (x != null && typeof x === "object");
+    const _isSameInstance = (x, y, Class) =>
+      (x instanceof Class) && (y instanceof Class);
+    const _classof = (x) =>
+      Object.prototype.toString.call(x).slice(8, -1).toLowerCase();
+    const _ownKeys = (x) =>
+      Object.getOwnPropertyNames(x).concat(Object.getOwnPropertySymbols(x));
+    /* strict equality helper function */
+    const _isEqual = (x, y) => Object.is(x, y);
+    /* not strict equality helper function */
+    /* const _isEqual = (x, y) => (x == y || (x !== x && y !== y)); */
+    /* primitives: Boolean, Number, BigInt, String + Function + Symbol */
+    if (_isEqual(x, y)) { return true; }
     /* Object Wrappers (Boolean, Number, BigInt, String) */
-    if (_isObject(x) && _isPrimitive(y)
-        && _classof(x).toLowerCase() === typeof y
-      ) {
-      return (Object.is(x.valueOf(), y));
+    if (_isObject(x) && _isPrimitive(y) && _classof(x) === typeof y) {
+      return _isEqual(x.valueOf(), y);
     }
-    if (_isPrimitive(x) && _isObject(y)
-        && typeof x === _classof(y).toLowerCase()
-      ) {
-      return (Object.is(x, y.valueOf()));
+    if (_isPrimitive(x) && _isObject(y) && typeof x === _classof(y)) {
+      return _isEqual(x, y.valueOf());
     }
     /* type (primitives, object, null, NaN) */
-    if (_typeV2(x) !== _typeV2(y)) { return false; }
-    /* primitives / symbol -> only reference testing */
-    if (_typeV2(x) === "symbol" && _typeV2(y) === "symbol") {
-      return x === y;
-    }
-    /* Function */
-    if (_typeV2(x) === "function" && _typeV2(y) === "function") {
-      return (Object.is(x, y));
-    }
-    /* primitives / other */
-    if (_isPrimitive(x) && _isPrimitive(y)) {
-      return Object.is(x, y);
-    }
+    if (_deepType(x) !== _deepType(y)) { return false; }
     /* objects */
     if (_isObject(x) && _isObject(y)) {
-      /* objects / not same prototype */
-      if (Object.getPrototypeOf(x) !== Object.getPrototypeOf(y)) {
+      /* objects / same memory adress */
+      if (_isEqual(x, y)) { return true; }
+      /* objects / not same constructor */
+      if (Object.getPrototypeOf(x).constructor !==
+        Object.getPrototypeOf(y).constructor
+      ) {
         return false;
       }
-      /* objects / same memory adress */
-      if (x === y) { return true; }
-      /* objects / WeakMap, WeakSet, Number, Boolean, String */
+      /* objects / WeakMap + WeakSet */
       if (_isSameInstance(x, y, WeakMap) || _isSameInstance(x, y, WeakSet)) {
-        return x === y;
+        return _isEqual(x, y);
       }
-      /* objects / Wrapper: Number, Boolean, String, BigInt */
+      /* objects / Wrapper objects: Number, Boolean, String, BigInt */
       if (_isSameInstance(x, y, Number)
         || _isSameInstance(x, y, Boolean)
         || _isSameInstance(x, y, String)
         || _isSameInstance(x, y, BigInt)
       ) {
-        return Object.is(x.valueOf(), y.valueOf());
+        return _isEqual(x.valueOf(), y.valueOf());
       }
-      /* objects / Array and TypedArrays */
-      if ((Array.isArray(x) && Array.isArray(y))
-        || _isSameInstance(x, y, Int8Array)
+      /* objects / Array */
+      if (Array.isArray(x) && Array.isArray(y)) {
+        if (x.length !== y.length) { return false; }
+        if (x.length === 0) { return true; }
+        return x.every((v, i) => _isDeepStrictEqual(v, y[i]));
+      }
+      /* objects / TypedArrays */
+      if ( _isSameInstance(x, y, Int8Array)
         || _isSameInstance(x, y, Uint8Array)
         || _isSameInstance(x, y, Uint8ClampedArray)
         || _isSameInstance(x, y, Int16Array)
         || _isSameInstance(x, y, Uint16Array)
         || _isSameInstance(x, y, Int32Array)
         || _isSameInstance(x, y, Uint32Array)
-        || ("Float16Array" in window
-            ? _isSameInstance(x, y, Float16Array) : false
+        || ("Float16Array" in window ?
+            _isSameInstance(x, y, Float16Array) : false
            )
         || _isSameInstance(x, y, Float32Array)
         || _isSameInstance(x, y, Float64Array)
         || _isSameInstance(x, y, BigInt64Array)
         || _isSameInstance(x, y, BigUint64Array)
       ) {
-        if (x.length === 0 && y.length === 0) { return true; }
-        return (x.length === y.length
-          && x.every((v, i) => _isDeepStrictEqual(v, y[i]))
-        );
+        if (x.length !== y.length) { return false; }
+        if (x.length === 0) { return true; }
+        return x.every((v, i) => _isEqual(v, y[i]));
+      }
+      /* objects / ArrayBuffer */
+      if (_isSameInstance(x, y, ArrayBuffer)) {
+        if (x.byteLength !== y.byteLength) { return false; }
+        if (x.byteLength === 0) { return true; }
+        let xTA = new Int8Array(x);
+        let yTA = new Int8Array(y);
+        return xTA.every((v, i) => _isEqual(v, yTA[i]));
+      }
+      /* objects / DataView */
+      if (_isSameInstance(x, y, DataView)) {
+        if (x.byteLength !== y.byteLength) { return false; }
+        if (x.byteLength === 0) { return true; }
+        for (let i = 0; i < x.byteLength; i++) {
+          if (!_isEqual(x.getUint8(i), y.getUint8(i))) { return false; }
+        }
+        return true;
       }
       /* objects / Map */
       if (_isSameInstance(x, y, Map)) {
-        if (x.size === 0 && y.size === 0) { return true; }
         if (x.size !== y.size) { return false; }
+        if (x.size === 0) { return true; }
         for (let key of x.keys()) {
           if (!y.has(key)) { return false; }
-          if (!_isDeepStrictEqual(x.get(key), y.get(key))) {
-            return false;
-          }
+          if (!_isDeepStrictEqual(x.get(key), y.get(key))) { return false; }
         }
         return true;
       }
       /* objects / Set */
       if (_isSameInstance(x, y, Set)) {
-        if (x.size === 0 && y.size === 0) { return true; }
         if (x.size !== y.size) { return false; }
+        if (x.size === 0) { return true; }
         for (let item of x) {
           if (!y.has(item)) { return false; }
         }
@@ -927,9 +951,9 @@ function assertNotDeepStrictEqual (x, y, message) {
       }
       /* objects / RegExp */
       if (_isSameInstance(x, y, RegExp)) {
-        return Object.is(x.lastIndex, y.lastIndex)
-          && Object.is(x.flags, y.flags)
-          && Object.is(x.source, y.source);
+        return _isEqual(x.lastIndex, y.lastIndex)
+          && _isEqual(x.flags, y.flags)
+          && _isEqual(x.source, y.source);
       }
       /* objects / Error */
       if (_isSameInstance(x, y, Error)) {
@@ -941,22 +965,14 @@ function assertNotDeepStrictEqual (x, y, message) {
         );
       }
       /* objects / Date */
-      if (_isSameInstance(x, y, Date)) { return _isDeepStrictEqual(+x, +y); }
+      if (_isSameInstance(x, y, Date)) { return _isEqual(+x, +y); }
       /* objects / Proxy -> not detectable */
-      /* objects / Object (other objects) */
-      if (_isObject(x) && _isObject(y)) {
-        let xKeys = [
-          ...Object.getOwnPropertyNames(x),
-          ...Object.getOwnPropertySymbols(x)
-        ];
-        let yKeys = [
-          ...Object.getOwnPropertyNames(y),
-          ...Object.getOwnPropertySymbols(y)
-        ];
-        if (xKeys.length !== yKeys.length) { return false; }
-        if (xKeys.length === 0) { return true; }
-        return xKeys.every((key) => _isDeepStrictEqual(x[key], y[key]));
-      }
+      /* objects / other objects */
+      let xKeys = _ownKeys(x);
+      let yKeys = _ownKeys(y);
+      if (xKeys.length !== yKeys.length) { return false; }
+      if (xKeys.length === 0) { return true; }
+      return xKeys.every((key) => _isDeepStrictEqual(x[key], y[key]));
     }
     /* default return false */
     return false;
@@ -967,88 +983,104 @@ function assertNotDeepStrictEqual (x, y, message) {
       + (message ? ": " + message : "")
     );
   }
- return true;
+  return true;
 }
 
 
 /* assertNotDeepEqual(x: any, y: any [, message]): true OR thrown error */
 function assertNotDeepEqual (x, y, message) {
   function _isDeepEqual (x, y) {
+    /* helper functions */
+    const _deepType = (x) =>
+      ((x === null) ? "null" : (x !== x) ? "NaN" : (typeof x));
     const _isPrimitive = (v) =>
       (v == null || (typeof v !== "object" && typeof v !== "function"));
-    function _isSameInstance (x, y, Class) {
-      return (x instanceof Class) && (y instanceof Class);
-    }
-    const _classof = (x) => Object.prototype.toString.call(x).slice(8, -1);
-    const _typeV2 = (x) =>
-      ((x === null) ? "null" : (x !== x) ? "NaN" : (typeof x));
     const _isObject = (x) => (x != null && typeof x === "object");
-    const _isEqual = (x, y) => (x == y || (x !== x && y !== y ));
-    /* primitives / symbol -> only reference testing */
-    if (_typeV2(x) === "symbol" && _typeV2(y) === "symbol") {
-      return x === y;
-    }
-    /* Function */
-    if (_typeV2(x) === "function" && _typeV2(y) === "function") {
-      return (x === y);
-    }
-    /* primitives and Object + primitive (Boolean, Number, BigInt, String) */
-    if ( (_isPrimitive(x) && _isPrimitive(y))
-      || (_isObject(x) && _isPrimitive(y))
-      || (_isPrimitive(x) && _isObject(y))
-    ) {
-      return (_isEqual(x, y));
-    }
+    const _isSameInstance = (x, y, Class) =>
+      (x instanceof Class) && (y instanceof Class);
+    const _classof = (x) =>
+      Object.prototype.toString.call(x).slice(8, -1).toLowerCase();
+    const _ownKeys = (x) =>
+      Object.getOwnPropertyNames(x).concat(Object.getOwnPropertySymbols(x));
+    /* strict equality helper function */
+    /* const _isEqual = (x, y) => Object.is(x, y); */
+    /* not strict equality helper function */
+    const _isEqual = (x, y) => (x == y || (x !== x && y !== y));
+    /* primitives: Boolean, Number, BigInt, String + Function + Symbol */
+    if (_isEqual(x, y)) { return true; }
     /* objects */
     if (_isObject(x) && _isObject(y)) {
-      /* objects / Date */
-      if (_isSameInstance(x, y, Date)) {
-        return Object.is(+x, +y);
-      }
       /* objects / same memory adress */
       if (_isEqual(x, y)) { return true; }
-      /* objects / WeakMap, WeakSet, Number, Boolean, String */
+      /* objects / WeakMap + WeakSet */
       if (_isSameInstance(x, y, WeakMap) || _isSameInstance(x, y, WeakSet)) {
-        return x === y;
+        return _isEqual(x, y);
       }
-      /* objects / Array and TypedArrays */
-      if ((Array.isArray(x) && Array.isArray(y))
-        || _isSameInstance(x, y, Int8Array)
+      /* objects / Wrapper objects: Number, Boolean, String, BigInt */
+      if (_isSameInstance(x, y, Number)
+        || _isSameInstance(x, y, Boolean)
+        || _isSameInstance(x, y, String)
+        || _isSameInstance(x, y, BigInt)
+      ) {
+        return _isEqual(x.valueOf(), y.valueOf());
+      }
+      /* objects / Array */
+      if (Array.isArray(x) && Array.isArray(y)) {
+        if (x.length !== y.length) { return false; }
+        if (x.length === 0) { return true; }
+        return x.every((v, i) => _isDeepEqual(v, y[i]));
+      }
+      /* objects / TypedArrays */
+      if ( _isSameInstance(x, y, Int8Array)
         || _isSameInstance(x, y, Uint8Array)
         || _isSameInstance(x, y, Uint8ClampedArray)
         || _isSameInstance(x, y, Int16Array)
         || _isSameInstance(x, y, Uint16Array)
         || _isSameInstance(x, y, Int32Array)
         || _isSameInstance(x, y, Uint32Array)
-        || ("Float16Array" in window
-            ? _isSameInstance(x, y, Float16Array) : false
+        || ("Float16Array" in window ?
+            _isSameInstance(x, y, Float16Array) : false
            )
         || _isSameInstance(x, y, Float32Array)
         || _isSameInstance(x, y, Float64Array)
         || _isSameInstance(x, y, BigInt64Array)
         || _isSameInstance(x, y, BigUint64Array)
       ) {
-        if (x.length === 0 && y.length === 0) { return true; }
-        return (x.length === y.length
-          && x.every((v, i) => _isDeepEqual(v, y[i]))
-        );
+        if (x.length !== y.length) { return false; }
+        if (x.length === 0) { return true; }
+        return x.every((v, i) => _isEqual(v, y[i]));
+      }
+      /* objects / ArrayBuffer */
+      if (_isSameInstance(x, y, ArrayBuffer)) {
+        if (x.byteLength !== y.byteLength) { return false; }
+        if (x.byteLength === 0) { return true; }
+        let xTA = new Int8Array(x);
+        let yTA = new Int8Array(y);
+        return xTA.every((v, i) => _isEqual(v, yTA[i]));
+      }
+      /* objects / DataView */
+      if (_isSameInstance(x, y, DataView)) {
+        if (x.byteLength !== y.byteLength) { return false; }
+        if (x.byteLength === 0) { return true; }
+        for (let i = 0; i < x.byteLength; i++) {
+          if (!_isEqual(x.getUint8(i), y.getUint8(i))) { return false; }
+        }
+        return true;
       }
       /* objects / Map */
       if (_isSameInstance(x, y, Map)) {
-        if (x.size === 0 && y.size === 0) { return true; }
         if (x.size !== y.size) { return false; }
+        if (x.size === 0) { return true; }
         for (let key of x.keys()) {
           if (!y.has(key)) { return false; }
-          if (!_isDeepEqual(x.get(key), y.get(key))) {
-            return false;
-          }
+          if (!_isDeepEqual(x.get(key), y.get(key))) { return false; }
         }
         return true;
       }
       /* objects / Set */
       if (_isSameInstance(x, y, Set)) {
-        if (x.size === 0 && y.size === 0) { return true; }
         if (x.size !== y.size) { return false; }
+        if (x.size === 0) { return true; }
         for (let item of x) {
           if (!y.has(item)) { return false; }
         }
@@ -1056,9 +1088,9 @@ function assertNotDeepEqual (x, y, message) {
       }
       /* objects / RegExp */
       if (_isSameInstance(x, y, RegExp)) {
-        return Object.is(x.lastIndex, y.lastIndex)
-          && Object.is(x.flags, y.flags)
-          && Object.is(x.source, y.source);
+        return _isEqual(x.lastIndex, y.lastIndex)
+          && _isEqual(x.flags, y.flags)
+          && _isEqual(x.source, y.source);
       }
       /* objects / Error */
       if (_isSameInstance(x, y, Error)) {
@@ -1069,21 +1101,15 @@ function assertNotDeepEqual (x, y, message) {
             .reduce((acc, prop) => { acc[prop] = y[prop]; return acc; }, {}),
         );
       }
+      /* objects / Date */
+      if (_isSameInstance(x, y, Date)) { return _isEqual(+x, +y); }
       /* objects / Proxy -> not detectable */
-      /* objects / Object (other objects) */
-      if (_isObject(x) && _isObject(y)) {
-        let xKeys = [
-          ...Object.getOwnPropertyNames(x),
-          ...Object.getOwnPropertySymbols(x)
-        ];
-        let yKeys = [
-          ...Object.getOwnPropertyNames(y),
-          ...Object.getOwnPropertySymbols(y)
-        ];
-        if (xKeys.length !== yKeys.length) { return false; }
-        if (xKeys.length === 0) { return true; }
-        return xKeys.every((key) => _isDeepEqual(x[key], y[key]));
-      }
+      /* objects / other objects */
+      let xKeys = _ownKeys(x);
+      let yKeys = _ownKeys(y);
+      if (xKeys.length !== yKeys.length) { return false; }
+      if (xKeys.length === 0) { return true; }
+      return xKeys.every((key) => _isDeepEqual(x[key], y[key]));
     }
     /* default return false */
     return false;
@@ -1094,105 +1120,119 @@ function assertNotDeepEqual (x, y, message) {
       + (message ? ": " + message : "")
     );
   }
- return true;
+  return true;
 }
 
 
 /* assertDeepStrictEqual(x: any, y: any [, message]): true OR thrown error */
 function assertDeepStrictEqual (x, y, message) {
   function _isDeepStrictEqual (x, y) {
+    /* helper functions */
+    const _deepType = (x) =>
+      ((x === null) ? "null" : (x !== x) ? "NaN" : (typeof x));
     const _isPrimitive = (v) =>
       (v == null || (typeof v !== "object" && typeof v !== "function"));
-    function _isSameInstance (x, y, Class) {
-      return (x instanceof Class) && (y instanceof Class);
-    }
-    const _classof = (x) => Object.prototype.toString.call(x).slice(8, -1);
-    const _typeV2 = (x) =>
-      ((x === null) ? "null" : (x !== x) ? "NaN" : (typeof x));
     const _isObject = (x) => (x != null && typeof x === "object");
+    const _isSameInstance = (x, y, Class) =>
+      (x instanceof Class) && (y instanceof Class);
+    const _classof = (x) =>
+      Object.prototype.toString.call(x).slice(8, -1).toLowerCase();
+    const _ownKeys = (x) =>
+      Object.getOwnPropertyNames(x).concat(Object.getOwnPropertySymbols(x));
+    /* strict equality helper function */
+    const _isEqual = (x, y) => Object.is(x, y);
+    /* not strict equality helper function */
+    /* const _isEqual = (x, y) => (x == y || (x !== x && y !== y)); */
+    /* primitives: Boolean, Number, BigInt, String + Function + Symbol */
+    if (_isEqual(x, y)) { return true; }
     /* Object Wrappers (Boolean, Number, BigInt, String) */
-    if (_isObject(x) && _isPrimitive(y)
-        && _classof(x).toLowerCase() === typeof y
-      ) {
-      return (Object.is(x.valueOf(), y));
+    if (_isObject(x) && _isPrimitive(y) && _classof(x) === typeof y) {
+      return _isEqual(x.valueOf(), y);
     }
-    if (_isPrimitive(x) && _isObject(y)
-        && typeof x === _classof(y).toLowerCase()
-      ) {
-      return (Object.is(x, y.valueOf()));
+    if (_isPrimitive(x) && _isObject(y) && typeof x === _classof(y)) {
+      return _isEqual(x, y.valueOf());
     }
     /* type (primitives, object, null, NaN) */
-    if (_typeV2(x) !== _typeV2(y)) { return false; }
-    /* primitives / symbol -> only reference testing */
-    if (_typeV2(x) === "symbol" && _typeV2(y) === "symbol") {
-      return x === y;
-    }
-    /* Function */
-    if (_typeV2(x) === "function" && _typeV2(y) === "function") {
-      return (Object.is(x, y));
-    }
-    /* primitives / other */
-    if (_isPrimitive(x) && _isPrimitive(y)) {
-      return Object.is(x, y);
-    }
+    if (_deepType(x) !== _deepType(y)) { return false; }
     /* objects */
     if (_isObject(x) && _isObject(y)) {
-      /* objects / not same prototype */
-      if (Object.getPrototypeOf(x) !== Object.getPrototypeOf(y)) {
+      /* objects / same memory adress */
+      if (_isEqual(x, y)) { return true; }
+      /* objects / not same constructor */
+      if (Object.getPrototypeOf(x).constructor !==
+        Object.getPrototypeOf(y).constructor
+      ) {
         return false;
       }
-      /* objects / same memory adress */
-      if (x === y) { return true; }
-      /* objects / WeakMap, WeakSet, Number, Boolean, String */
+      /* objects / WeakMap + WeakSet */
       if (_isSameInstance(x, y, WeakMap) || _isSameInstance(x, y, WeakSet)) {
-        return x === y;
+        return _isEqual(x, y);
       }
-      /* objects / Wrapper: Number, Boolean, String, BigInt */
+      /* objects / Wrapper objects: Number, Boolean, String, BigInt */
       if (_isSameInstance(x, y, Number)
         || _isSameInstance(x, y, Boolean)
         || _isSameInstance(x, y, String)
         || _isSameInstance(x, y, BigInt)
       ) {
-        return Object.is(x.valueOf(), y.valueOf());
+        return _isEqual(x.valueOf(), y.valueOf());
       }
-      /* objects / Array and TypedArrays */
-      if ((Array.isArray(x) && Array.isArray(y))
-        || _isSameInstance(x, y, Int8Array)
+      /* objects / Array */
+      if (Array.isArray(x) && Array.isArray(y)) {
+        if (x.length !== y.length) { return false; }
+        if (x.length === 0) { return true; }
+        return x.every((v, i) => _isDeepStrictEqual(v, y[i]));
+      }
+      /* objects / TypedArrays */
+      if ( _isSameInstance(x, y, Int8Array)
         || _isSameInstance(x, y, Uint8Array)
         || _isSameInstance(x, y, Uint8ClampedArray)
         || _isSameInstance(x, y, Int16Array)
         || _isSameInstance(x, y, Uint16Array)
         || _isSameInstance(x, y, Int32Array)
         || _isSameInstance(x, y, Uint32Array)
-        || ("Float16Array" in window
-            ? _isSameInstance(x, y, Float16Array) : false
+        || ("Float16Array" in window ?
+            _isSameInstance(x, y, Float16Array) : false
            )
         || _isSameInstance(x, y, Float32Array)
         || _isSameInstance(x, y, Float64Array)
         || _isSameInstance(x, y, BigInt64Array)
         || _isSameInstance(x, y, BigUint64Array)
       ) {
-        if (x.length === 0 && y.length === 0) { return true; }
-        return (x.length === y.length
-          && x.every((v, i) => _isDeepStrictEqual(v, y[i]))
-        );
+        if (x.length !== y.length) { return false; }
+        if (x.length === 0) { return true; }
+        return x.every((v, i) => _isEqual(v, y[i]));
+      }
+      /* objects / ArrayBuffer */
+      if (_isSameInstance(x, y, ArrayBuffer)) {
+        if (x.byteLength !== y.byteLength) { return false; }
+        if (x.byteLength === 0) { return true; }
+        let xTA = new Int8Array(x);
+        let yTA = new Int8Array(y);
+        return xTA.every((v, i) => _isEqual(v, yTA[i]));
+      }
+      /* objects / DataView */
+      if (_isSameInstance(x, y, DataView)) {
+        if (x.byteLength !== y.byteLength) { return false; }
+        if (x.byteLength === 0) { return true; }
+        for (let i = 0; i < x.byteLength; i++) {
+          if (!_isEqual(x.getUint8(i), y.getUint8(i))) { return false; }
+        }
+        return true;
       }
       /* objects / Map */
       if (_isSameInstance(x, y, Map)) {
-        if (x.size === 0 && y.size === 0) { return true; }
         if (x.size !== y.size) { return false; }
+        if (x.size === 0) { return true; }
         for (let key of x.keys()) {
           if (!y.has(key)) { return false; }
-          if (!_isDeepStrictEqual(x.get(key), y.get(key))) {
-            return false;
-          }
+          if (!_isDeepStrictEqual(x.get(key), y.get(key))) { return false; }
         }
         return true;
       }
       /* objects / Set */
       if (_isSameInstance(x, y, Set)) {
-        if (x.size === 0 && y.size === 0) { return true; }
         if (x.size !== y.size) { return false; }
+        if (x.size === 0) { return true; }
         for (let item of x) {
           if (!y.has(item)) { return false; }
         }
@@ -1200,9 +1240,9 @@ function assertDeepStrictEqual (x, y, message) {
       }
       /* objects / RegExp */
       if (_isSameInstance(x, y, RegExp)) {
-        return Object.is(x.lastIndex, y.lastIndex)
-          && Object.is(x.flags, y.flags)
-          && Object.is(x.source, y.source);
+        return _isEqual(x.lastIndex, y.lastIndex)
+          && _isEqual(x.flags, y.flags)
+          && _isEqual(x.source, y.source);
       }
       /* objects / Error */
       if (_isSameInstance(x, y, Error)) {
@@ -1214,22 +1254,14 @@ function assertDeepStrictEqual (x, y, message) {
         );
       }
       /* objects / Date */
-      if (_isSameInstance(x, y, Date)) { return _isDeepStrictEqual(+x, +y); }
+      if (_isSameInstance(x, y, Date)) { return _isEqual(+x, +y); }
       /* objects / Proxy -> not detectable */
-      /* objects / Object (other objects) */
-      if (_isObject(x) && _isObject(y)) {
-        let xKeys = [
-          ...Object.getOwnPropertyNames(x),
-          ...Object.getOwnPropertySymbols(x)
-        ];
-        let yKeys = [
-          ...Object.getOwnPropertyNames(y),
-          ...Object.getOwnPropertySymbols(y)
-        ];
-        if (xKeys.length !== yKeys.length) { return false; }
-        if (xKeys.length === 0) { return true; }
-        return xKeys.every((key) => _isDeepStrictEqual(x[key], y[key]));
-      }
+      /* objects / other objects */
+      let xKeys = _ownKeys(x);
+      let yKeys = _ownKeys(y);
+      if (xKeys.length !== yKeys.length) { return false; }
+      if (xKeys.length === 0) { return true; }
+      return xKeys.every((key) => _isDeepStrictEqual(x[key], y[key]));
     }
     /* default return false */
     return false;
@@ -1240,7 +1272,7 @@ function assertDeepStrictEqual (x, y, message) {
       + (message ? ": " + message : "")
     );
   }
- return true;
+  return true;
 }
 
 
@@ -1945,139 +1977,145 @@ function isCoercedObject (O) {
 }
 
 
-/* isDeepStrictEqual(x: any, y: any): true OR thrown error */
 function isDeepStrictEqual (x, y) {
-  function _isDeepStrictEqual (x, y) {
-    const _isPrimitive = (v) =>
-      (v == null || (typeof v !== "object" && typeof v !== "function"));
-    function _isSameInstance (x, y, Class) {
-      return (x instanceof Class) && (y instanceof Class);
-    }
-    const _classof = (x) => Object.prototype.toString.call(x).slice(8, -1);
-    const _typeV2 = (x) =>
-      ((x === null) ? "null" : (x !== x) ? "NaN" : (typeof x));
-    const _isObject = (x) => (x != null && typeof x === "object");
-    /* Object Wrappers (Boolean, Number, BigInt, String) */
-    if (_isObject(x) && _isPrimitive(y)
-        && _classof(x).toLowerCase() === typeof y
-      ) {
-      return (Object.is(x.valueOf(), y));
-    }
-    if (_isPrimitive(x) && _isObject(y)
-        && typeof x === _classof(y).toLowerCase()
-      ) {
-      return (Object.is(x, y.valueOf()));
-    }
-    /* type (primitives, object, null, NaN) */
-    if (_typeV2(x) !== _typeV2(y)) { return false; }
-    /* primitives / symbol -> only reference testing */
-    if (_typeV2(x) === "symbol" && _typeV2(y) === "symbol") {
-      return x === y;
-    }
-    /* Function */
-    if (_typeV2(x) === "function" && _typeV2(y) === "function") {
-      return (Object.is(x, y));
-    }
-    /* primitives / other */
-    if (_isPrimitive(x) && _isPrimitive(y)) { return Object.is(x, y); }
-    /* objects */
-    if (_isObject(x) && _isObject(y)) {
-      /* objects / not same prototype */
-      if (Object.getPrototypeOf(x) !== Object.getPrototypeOf(y)) {
-        return false;
-      }
-      /* objects / same memory adress */
-      if (x === y) { return true; }
-      /* objects / WeakMap, WeakSet, Number, Boolean, String */
-      if (_isSameInstance(x, y, WeakMap) || _isSameInstance(x, y, WeakSet)) {
-        return x === y;
-      }
-      /* objects / Wrapper: Number, Boolean, String, BigInt */
-      if (_isSameInstance(x, y, Number)
-        || _isSameInstance(x, y, Boolean)
-        || _isSameInstance(x, y, String)
-        || _isSameInstance(x, y, BigInt)
-      ) {
-        return Object.is(x.valueOf(), y.valueOf());
-      }
-      /* objects / Array and TypedArrays */
-      if ((Array.isArray(x) && Array.isArray(y))
-        || _isSameInstance(x, y, Int8Array)
-        || _isSameInstance(x, y, Uint8Array)
-        || _isSameInstance(x, y, Uint8ClampedArray)
-        || _isSameInstance(x, y, Int16Array)
-        || _isSameInstance(x, y, Uint16Array)
-        || _isSameInstance(x, y, Int32Array)
-        || _isSameInstance(x, y, Uint32Array)
-        || ("Float16Array" in window
-            ? _isSameInstance(x, y, Float16Array) : false
-           )
-        || _isSameInstance(x, y, Float32Array)
-        || _isSameInstance(x, y, Float64Array)
-        || _isSameInstance(x, y, BigInt64Array)
-        || _isSameInstance(x, y, BigUint64Array)
-      ) {
-        if (x.length === 0 && y.length === 0) { return true; }
-        return (x.length === y.length
-          && x.every((v, i) => _isDeepStrictEqual(v, y[i]))
-        );
-      }
-      /* objects / Map */
-      if (_isSameInstance(x, y, Map)) {
-        if (x.size === 0 && y.size === 0) { return true; }
-        if (x.size !== y.size) { return false; }
-        for (let key of x.keys()) {
-          if (!y.has(key)) { return false; }
-          if (!_isDeepStrictEqual(x.get(key), y.get(key))) { return false; }
-        }
-        return true;
-      }
-      /* objects / Set */
-      if (_isSameInstance(x, y, Set)) {
-        if (x.size === 0 && y.size === 0) { return true; }
-        if (x.size !== y.size) { return false; }
-        for (let item of x) {
-          if (!y.has(item)) { return false; }
-        }
-        return true;
-      }
-      /* objects / RegExp */
-      if (_isSameInstance(x, y, RegExp)) {
-        return Object.is(x.lastIndex, y.lastIndex)
-          && Object.is(x.flags, y.flags)
-          && Object.is(x.source, y.source);
-      }
-      /* objects / Error */
-      if (_isSameInstance(x, y, Error)) {
-        return _isDeepStrictEqual(
-          Object.getOwnPropertyNames(x)
-            .reduce((acc, prop) => { acc[prop] = x[prop]; return acc; }, {}),
-          Object.getOwnPropertyNames(y)
-            .reduce((acc, prop) => { acc[prop] = y[prop]; return acc; }, {}),
-        );
-      }
-      /* objects / Date */
-      if (_isSameInstance(x, y, Date)) { return _isDeepStrictEqual(+x, +y); }
-      /* objects / Proxy -> not detectable */
-      /* objects / Object (other objects) */
-      if (_isObject(x) && _isObject(y)) {
-        let xKeys = [
-          ...Object.getOwnPropertyNames(x),
-          ...Object.getOwnPropertySymbols(x)
-        ];
-        let yKeys = [
-          ...Object.getOwnPropertyNames(y),
-          ...Object.getOwnPropertySymbols(y)
-        ];
-        if (xKeys.length !== yKeys.length) { return false; }
-        if (xKeys.length === 0) { return true; }
-        return xKeys.every((key) => _isDeepStrictEqual(x[key], y[key]));
-      }
-    }
-    /* default return false */
-    return false;
+  /* helper functions */
+  const _deepType = (x) =>
+    ((x === null) ? "null" : (x !== x) ? "NaN" : (typeof x));
+  const _isPrimitive = (v) =>
+    (v == null || (typeof v !== "object" && typeof v !== "function"));
+  const _isObject = (x) => (x != null && typeof x === "object");
+  const _isSameInstance = (x, y, Class) =>
+    (x instanceof Class) && (y instanceof Class);
+  const _classof = (x) =>
+    Object.prototype.toString.call(x).slice(8, -1).toLowerCase();
+  const _ownKeys = (x) =>
+    Object.getOwnPropertyNames(x).concat(Object.getOwnPropertySymbols(x));
+  /* strict equality helper function */
+  const _isEqual = (x, y) => Object.is(x, y);
+  /* not strict equality helper function */
+  /* const _isEqual = (x, y) => (x == y || (x !== x && y !== y)); */
+  /* primitives: Boolean, Number, BigInt, String + Function + Symbol */
+  if (_isEqual(x, y)) { return true; }
+  /* Object Wrappers (Boolean, Number, BigInt, String) */
+  if (_isObject(x) && _isPrimitive(y) && _classof(x) === typeof y) {
+    return _isEqual(x.valueOf(), y);
   }
-  return _isDeepStrictEqual(x, y);
+  if (_isPrimitive(x) && _isObject(y) && typeof x === _classof(y)) {
+    return _isEqual(x, y.valueOf());
+  }
+  /* type (primitives, object, null, NaN) */
+  if (_deepType(x) !== _deepType(y)) { return false; }
+  /* objects */
+  if (_isObject(x) && _isObject(y)) {
+    /* objects / same memory adress */
+    if (_isEqual(x, y)) { return true; }
+    /* objects / not same constructor */
+    if (Object.getPrototypeOf(x).constructor !==
+      Object.getPrototypeOf(y).constructor
+    ) {
+      return false;
+    }
+    /* objects / WeakMap + WeakSet */
+    if (_isSameInstance(x, y, WeakMap) || _isSameInstance(x, y, WeakSet)) {
+      return _isEqual(x, y);
+    }
+    /* objects / Wrapper objects: Number, Boolean, String, BigInt */
+    if (_isSameInstance(x, y, Number)
+      || _isSameInstance(x, y, Boolean)
+      || _isSameInstance(x, y, String)
+      || _isSameInstance(x, y, BigInt)
+    ) {
+      return _isEqual(x.valueOf(), y.valueOf());
+    }
+    /* objects / Array */
+    if (Array.isArray(x) && Array.isArray(y)) {
+      if (x.length !== y.length) { return false; }
+      if (x.length === 0) { return true; }
+      return x.every((v, i) => isDeepStrictEqual(v, y[i]));
+    }
+    /* objects / TypedArrays */
+    if ( _isSameInstance(x, y, Int8Array)
+      || _isSameInstance(x, y, Uint8Array)
+      || _isSameInstance(x, y, Uint8ClampedArray)
+      || _isSameInstance(x, y, Int16Array)
+      || _isSameInstance(x, y, Uint16Array)
+      || _isSameInstance(x, y, Int32Array)
+      || _isSameInstance(x, y, Uint32Array)
+      || ("Float16Array" in window ?
+          _isSameInstance(x, y, Float16Array) : false
+         )
+      || _isSameInstance(x, y, Float32Array)
+      || _isSameInstance(x, y, Float64Array)
+      || _isSameInstance(x, y, BigInt64Array)
+      || _isSameInstance(x, y, BigUint64Array)
+    ) {
+      if (x.length !== y.length) { return false; }
+      if (x.length === 0) { return true; }
+      return x.every((v, i) => _isEqual(v, y[i]));
+    }
+    /* objects / ArrayBuffer */
+    if (_isSameInstance(x, y, ArrayBuffer)) {
+      if (x.byteLength !== y.byteLength) { return false; }
+      if (x.byteLength === 0) { return true; }
+      let xTA = new Int8Array(x);
+      let yTA = new Int8Array(y);
+      return xTA.every((v, i) => _isEqual(v, yTA[i]));
+    }
+    /* objects / DataView */
+    if (_isSameInstance(x, y, DataView)) {
+      if (x.byteLength !== y.byteLength) { return false; }
+      if (x.byteLength === 0) { return true; }
+      for (let i = 0; i < x.byteLength; i++) {
+        if (!_isEqual(x.getUint8(i), y.getUint8(i))) { return false; }
+      }
+      return true;
+    }
+    /* objects / Map */
+    if (_isSameInstance(x, y, Map)) {
+      if (x.size !== y.size) { return false; }
+      if (x.size === 0) { return true; }
+      for (let key of x.keys()) {
+        if (!y.has(key)) { return false; }
+        if (!isDeepStrictEqual(x.get(key), y.get(key))) { return false; }
+      }
+      return true;
+    }
+    /* objects / Set */
+    if (_isSameInstance(x, y, Set)) {
+      if (x.size !== y.size) { return false; }
+      if (x.size === 0) { return true; }
+      for (let item of x) {
+        if (!y.has(item)) { return false; }
+      }
+      return true;
+    }
+    /* objects / RegExp */
+    if (_isSameInstance(x, y, RegExp)) {
+      return _isEqual(x.lastIndex, y.lastIndex)
+        && _isEqual(x.flags, y.flags)
+        && _isEqual(x.source, y.source);
+    }
+    /* objects / Error */
+    if (_isSameInstance(x, y, Error)) {
+      return isDeepStrictEqual(
+        Object.getOwnPropertyNames(x)
+          .reduce((acc, prop) => { acc[prop] = x[prop]; return acc; }, {}),
+        Object.getOwnPropertyNames(y)
+          .reduce((acc, prop) => { acc[prop] = y[prop]; return acc; }, {}),
+      );
+    }
+    /* objects / Date */
+    if (_isSameInstance(x, y, Date)) { return _isEqual(+x, +y); }
+    /* objects / Proxy -> not detectable */
+    /* objects / other objects */
+    let xKeys = _ownKeys(x);
+    let yKeys = _ownKeys(y);
+    if (xKeys.length !== yKeys.length) { return false; }
+    if (xKeys.length === 0) { return true; }
+    return xKeys.every((key) => isDeepStrictEqual(x[key], y[key]));
+  }
+  /* default return false */
+  return false;
 }
 
 
@@ -3481,7 +3519,7 @@ const _slice = Function.prototype.call.bind(Array.prototype.slice);
 /** object header **/
 
 
-const VERSION = "Celestra v5.7.3 dev";
+const VERSION = "Celestra v5.7.4 dev";
 
 
 /* celestra.noConflict(): celestra object */

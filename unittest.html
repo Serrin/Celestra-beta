@@ -469,7 +469,7 @@ try {
 
 var CUT = {};
 
-CUT.VERSION = "Celestra Unit Tester (CUT) v0.8.29";
+CUT.VERSION = "Celestra Unit Tester (CUT) v1.30.0";
 
 CUT.__results__ = document.querySelector("#results");
 CUT.__resultsFailed__ = document.querySelector("#resultsFailed");
@@ -515,6 +515,16 @@ CUT.isNotEqual = function (step, notExpected, expression, strict = true) {
   CUT.__addTest__(step, true,
     (strict ? notExpected !== expression : notExpected != expression), true
   );
+};
+
+/* isError((<step: string>, <callback: function>); */
+CUT.isError = function (step, callback) {
+  try { 
+    callback(); 
+    CUT.isTrue(step, false); 
+  } catch (e) { 
+    CUT.isTrue(step + " - <br/><code>\"" + e + "\"</code>", true); 
+  }
 };
 
 /* addElement(<element>); */
