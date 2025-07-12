@@ -2,68 +2,73 @@
 
 try {
 
-const today = new Date();
+const now = new Date();
 
 CUT.addElement("table",
-  "<tr><td>CUT: </td><td><code>" + CUT.VERSION + "</code></td></tr>"
-    + "<tr><td>Celestra: </td><td><code>" + celestra.VERSION
+  "<tr><td>CUT.VERSION</td><td><code>" + CUT.VERSION + "</code></td></tr>"
+    + "<tr><td>celestra.VERSION</td><td><code>" + celestra.VERSION
      + "</code></td></tr>"
-    + "<tr><td>UTC date: </td><td><code>" + today.toISOString()
+    + "<tr><td>UTC date</td><td><code>" + now.toISOString()
      + "</code></td></tr>"
-    + "<tr><td>Local date: </td><td><code>" + today.toString()
+    + "<tr><td>Local date</td><td><code>" + now.toString()
       + "</code></td></tr>"
-    + "<tr><td>EPOCH time: </td><td><code>" + Number(today) + " (10) / "
-      + Number(today).toString(16) + " (16) / "
-      + Number(today).toString(36) + " (36)" + "</code></td></tr>"
-    + "<tr><td>navigator.appName: </td><td><code>" + navigator.appName
+    + "<tr><td>EPOCH time</td><td><code>" + Number(now) + " (10) / "
+      + Number(now).toString(16)
+      + " (16) / "
+      + Number(now).toString(36)
+      + " (36)</code></td></tr>"
+    + "<tr><td>navigator.appName</td><td><code>" + navigator.appName
       + "</code></td></tr>"
-    + "<tr><td>navigator.appCodeName: </td><td><code>" + navigator.appCodeName
+    + "<tr><td>navigator.appCodeName</td><td><code>" + navigator.appCodeName
       + "</code></td></tr>"
-    + "<tr><td>navigator.product: </td><td><code>" + navigator.product
+    + "<tr><td>navigator.product</td><td><code>" + navigator.product
       + "</code></td></tr>"
-    + "<tr><td>navigator.appVersion: </td><td><code>" + navigator.appVersion
+    + "<tr><td>navigator.appVersion</td><td><code>" + navigator.appVersion
       + "</code></td></tr>"
-    + "<tr><td>navigator.buildID: </td><td><code>" + navigator.buildID
+    + "<tr><td>navigator.buildID</td><td><code>" + navigator.buildID
       + "</code></td></tr>"
-    + "<tr><td>navigator.product: </td><td><code>" + navigator.product
+    + "<tr><td>navigator.product</td><td><code>" + navigator.product
       + "</code></td></tr>"
-    + "<tr><td>navigator.productSub: </td><td><code>" + navigator.productSub
+    + "<tr><td>navigator.productSub</td><td><code>" + navigator.productSub
       + "</code></td></tr>"
-    + "<tr><td>navigator.userAgent: </td><td><code>" + navigator.userAgent
+    + "<tr><td>navigator.userAgent</td><td><code>" + navigator.userAgent
       + "</code></td></tr>"
-    + "<tr><td>navigator.userAgentData: </td><td><code>"
-      + JSON.stringify(navigator.userAgentData) + "</code></td></tr>"
-    + "<tr><td>navigator.doNotTrack: </td><td><code>" + navigator.doNotTrack
+    + "<tr><td>navigator.userAgentData</td><td><code>"
+      + JSON.stringify(navigator.userAgentData)
       + "</code></td></tr>"
-    + "<tr><td>navigator.vendor: </td><td><code>" + navigator.vendor
+    + "<tr><td>navigator.doNotTrack</td><td><code>" + navigator.doNotTrack
       + "</code></td></tr>"
-    + "<tr><td>navigator.platform: </td><td><code>" + navigator.platform
+    + "<tr><td>navigator.vendor</td><td><code>" + navigator.vendor
       + "</code></td></tr>"
-    + "<tr><td>navigator.language: </td><td><code>" + navigator.language
+    + "<tr><td>navigator.platform</td><td><code>" + navigator.platform
       + "</code></td></tr>"
-    + "<tr><td>navigator.oscpu: </td><td><code>" + navigator.oscpu
+    + "<tr><td>navigator.language</td><td><code>" + navigator.language
       + "</code></td></tr>"
-    + "<tr><td>navigator.cookieEnabled: </td><td><code>"
-      + navigator.cookieEnabled + "</code></td></tr>"
-    + "<tr><td>navigator.javaEnabled(): </td><td><code>"
-      + navigator.javaEnabled() + "</code></td></tr>"
-    + "<tr><td>navigator.pdfViewerEnabled: </td><td><code>"
-      + navigator.pdfViewerEnabled + "</code></td></tr>"
-    + "<tr><td>window.innerWidth: </td><td><code>" + window.innerWidth
+    + "<tr><td>navigator.oscpu</td><td><code>" + navigator.oscpu
       + "</code></td></tr>"
-    + "<tr><td>window.innerHeight: </td><td><code>" + window.innerHeight
+    + "<tr><td>navigator.cookieEnabled</td><td><code>"
+      + navigator.cookieEnabled
       + "</code></td></tr>"
-    + "<tr><td>screen.width: </td><td><code>" + screen.width
+    + "<tr><td>navigator.javaEnabled()</td><td><code>"
+      + navigator.javaEnabled()
       + "</code></td></tr>"
+    + "<tr><td>navigator.pdfViewerEnabled</td><td><code>"
+      + navigator.pdfViewerEnabled
+      + "</code></td></tr>"
+    + "<tr><td>window.innerWidth</td><td><code>" + window.innerWidth
+      + "</code></td></tr>"
+    + "<tr><td>window.innerHeight</td><td><code>" + window.innerHeight
+      + "</code></td></tr>"
+    + "<tr><td>screen.width</td><td><code>" + screen.width + "</code></td></tr>"
     + "<tr><td>screen.height: </td><td><code>" + screen.height
       + "</code></td></tr>"
-    + "<tr><td>screen.availWidth: </td><td><code>" + screen.availWidth
+    + "<tr><td>screen.availWidth</td><td><code>" + screen.availWidth
       + "</code></td></tr>"
-    + "<tr><td>screen.availHeight: </td><td><code>" + screen.availHeight
+    + "<tr><td>screen.availHeight</td><td><code>" + screen.availHeight
       + "</code></td></tr>"
-    + "<tr><td>screen.colorDepth: </td><td><code>" + screen.colorDepth
+    + "<tr><td>screen.colorDepth</td><td><code>" + screen.colorDepth
       + "</code></td></tr>"
-    + "<tr><td>screen.pixelDepth: </td><td><code>" + screen.pixelDepth
+    + "<tr><td>screen.pixelDepth</td><td><code>" + screen.pixelDepth
       + "</code></td></tr>"
 );
 
@@ -173,7 +178,7 @@ CUT.addElement("ul",
 
 /** Celestra object **/
 CUT.addElement("hr");
-CUT.addElement("h3", "Celestra object");
+CUT.addElement("h3", "Sync testcases");
 
 
 /* Celestra object */
@@ -182,11 +187,6 @@ CUT.isEqual("Object name: \"celestra\"", true, celestra.randomInt(100, 200)>99);
 
 /* CEL object */
 CUT.isEqual("Object name: \"CEL\"", true, CEL.randomInt(100, 200) > 99);
-
-
-/** Core API and String API and DOM API **/
-CUT.addElement("hr");
-CUT.addElement("h3", "Core API and String API and DOM API");
 
 
 /* VERSION; */
@@ -232,11 +232,11 @@ CUT.isTrue("nanoid(); 01 - <code>\"" + token1 + "\"</code>",
 );
 token1 = CEL.nanoid(15);
 CUT.isTrue("nanoid(); 02 - <code>\"" + token1 + "\"</code>",
-  typeof token1==="string" &&token1.length===15
+  typeof token1==="string" && token1.length === 15
 );
 token1 = CEL.nanoid(36);
 CUT.isTrue("nanoid(); 03 - <code>\"" + token1 + "\"</code>",
-  typeof token1==="string" &&token1.length===36
+  typeof token1==="string" && token1.length === 36
 );
 token1 = CEL.nanoid(5, "abcdeFGHIJK42");
 CUT.isTrue("nanoid(); 04 - size 5 & <code>\"abcdeFGHIJK42\"</code> - <code>\""
@@ -247,8 +247,8 @@ CUT.isTrue("nanoid(); 04 - size 5 & <code>\"abcdeFGHIJK42\"</code> - <code>\""
 
 /* timestampID(); */
 token1 = CEL.timestampID();
-CUT.isTrue("timestampID(); 01 - default size 21 - <code>\""
-    + token1 + "\"</code>",
+CUT.isTrue("timestampID(); 01 - default size 21 - <code>\"" + token1
+    + "\"</code>",
   typeof token1 === "string" && token1.length === 21
 );
 token1 = CEL.timestampID(15);
@@ -733,7 +733,7 @@ CUT.isEqual("strFromCodePoints(); + strCodePoints();", token1,
 /* strAt(); */
 CUT.isTrue("strAt();",
   /* get */
-     CEL.strAt("\uD834\uDF06 ab cd",0) === "\uD834\uDF06"
+     CEL.strAt("\uD834\uDF06 ab cd",0)   === "\uD834\uDF06"
   && CEL.strAt("ab \uD834\uDF06 cd", 3)  === "\uD834\uDF06"
   && CEL.strAt("ab cd \uD834\uDF06", -1) === "\uD834\uDF06"
   && CEL.strAt("ab \uD834\uDF06 cd", 0)  === "a"
@@ -759,10 +759,10 @@ CUT.isTrue("strAt();",
 CUT.isTrue("strSplice();",
      CEL.strSplice("\uD834\uDF06 ab cde",0, 10) === ""
   && CEL.strSplice("ab \uD834\uDF06 cde", 4, 1) === "ab \uD834\uDF06cde"
-  && CEL.strSplice("ab \uD834\uDF06 cde", 4, 1, "X") === "ab \uD834\uDF06Xcde"
+  && CEL.strSplice("ab \uD834\uDF06 cde", 4, 1, "X")  === "ab \uD834\uDF06Xcde"
   && CEL.strSplice("ab \uD834\uDF06 cde",4,1,"X","Y") ==="ab \uD834\uDF06XYcde"
   && CEL.strSplice("ab \uD834\uDF06 cde",4,2,"X","Y") ==="ab \uD834\uDF06XYde"
-  && CEL.strSplice("ab \uD834\uDF06 cde", 5, 2, "") === "ab \uD834\uDF06 e"
+  && CEL.strSplice("ab \uD834\uDF06 cde", 5, 2, "")   === "ab \uD834\uDF06 e"
 );
 
 
@@ -999,14 +999,6 @@ CEL.domClear(token1);
 CUT.isEqual("domClear();", 0, token1.children.length);
 
 
-/** Assertion API **/
-CUT.addElement("hr");
-CUT.addElement("h3", "Assertion API");
-
-
-/* assert(); */
-
-
 /* assertType(); */
 token1 = 42;
 token2 = Object(42);
@@ -1051,56 +1043,64 @@ CUT.isEqual("assertNotType(); 08", token3, CEL.assertNotType(token3, Map));
 
 
 /* assert(); */
-CUT.isTrue("assert(); 01", CEL.assert(true));
-CUT.isTrue("assert(); 02", CEL.assert(true, "assert true"));
-CUT.isTrue("assert(); 03", CEL.assert(1));
-CUT.isTrue("assert(); 04", CEL.assert(1, "assert false"));
-CUT.isError("assert(); 05 error",
-  () => CEL.assert(false, "assert(); 05 error")
+CUT.isTrue("assert(); 01",
+     CEL.assert(true)
+  && CEL.assert(true, "assert true")
+  && CEL.assert(1)
+  && CEL.assert(1, "assert true")
 );
-CUT.isError("assert(); 07 error",
-  () => CEL.assert(0, "assert(); 07 error")
+CUT.isError("assert(); 02 error",
+  () => CEL.assert(false, "assert(); 02 error")
+);
+CUT.isError("assert(); 03 error",
+  () => CEL.assert(0, "assert(); 03 error")
 );
 
 
 /* assertTrue(); */
-CUT.isTrue("assertTrue(); 01", CEL.assertTrue(true));
-CUT.isTrue("assertTrue(); 02", CEL.assertTrue(true, "assertTrue true"));
-CUT.isTrue("assertTrue(); 03", CEL.assertTrue(1));
-CUT.isTrue("assertTrue(); 04", CEL.assertTrue(1, "assertTrue false"));
-CUT.isError("assertTrue(); 05 error",
-  () => CEL.assertTrue(false, "assertTrue(); 05 error")
+CUT.isTrue("assertTrue(); 01",
+     CEL.assertTrue(true)
+  && CEL.assertTrue(true, "assert true")
+  && CEL.assertTrue(1)
+  && CEL.assertTrue(1, "assert true")
 );
-CUT.isError("assertTrue(); 07 error",
-  () => CEL.assertTrue(0, "assertTrue(); 05 error")
+CUT.isError("assertTrue(); 02 error",
+  () => CEL.assert(false, "assertTrue(); 02 error")
+);
+CUT.isError("assertTrue(); 03 error",
+  () => CEL.assert(0, "assertTrue(); 03 error")
 );
 
 
 /* assertFalse(); */
-CUT.isTrue("assertFalse(); 01", CEL.assertFalse(false));
-CUT.isTrue("assertFalse(); 02", CEL.assertFalse(false, "lorem"));
-CUT.isTrue("assertFalse(); 03", CEL.assertFalse(0));
-CUT.isTrue("assertFalse(); 04", CEL.assertFalse(0, "lorem"));
-CUT.isError("assertFalse(); 05 error",
-  () => CEL.assertFalse(true, "assertFalse(); 05 error")
+CUT.isTrue("assertFalse(); 01",
+     CEL.assertFalse(false)
+  && CEL.assertFalse(false, "lorem")
+  && CEL.assertFalse(0)
+  && CEL.assertFalse(0, "lorem")
 );
-CUT.isError("assertFalse(); 06 error",
-  () => CEL.assertFalse(1, "assertFalse(); 06 error")
+CUT.isError("assertFalse(); 02 error",
+  () => CEL.assertFalse(true, "assertFalse(); 02 error")
+);
+CUT.isError("assertFalse(); 03 error",
+  () => CEL.assertFalse(1, "assertFalse(); 03 error")
 );
 
 
 /* assertEqual(); */
-CUT.isTrue("assertEqual(); 01", CEL.assertEqual(NaN, NaN));
-CUT.isTrue("assertEqual(); 02", CEL.assertEqual(42, 42));
-CUT.isTrue("assertEqual(); 03", CEL.assertEqual(42, "42", ""));
-CUT.isError("assertEqual(); 04  error",
-  () => CEL.assertEqual(null, false, "assertEqual(); 04 error")
+CUT.isTrue("assertEqual(); 01",
+     CEL.assertEqual(NaN, NaN)
+  && CEL.assertEqual(42, 42)
+  && CEL.assertEqual(42, "42")
+);
+CUT.isError("assertEqual(); 02 error",
+  () => CEL.assertEqual(null, false, "assertEqual(); 02 error")
 );
 
 
 /* assertStrictEqual(); */
 CUT.isTrue("assertStrictEqual(); 01", CEL.assertStrictEqual(NaN, NaN));
-CUT.isTrue("assertStrictEqual(); 09", CEL.assertStrictEqual(42, 42));
+CUT.isTrue("assertStrictEqual(); 02", CEL.assertStrictEqual(42, 42));
 CUT.isError("assertStrictEqual(); 03 error",
   () => CEL.assertStrictEqual(42, "42", "assertStrictEqual(); 03 error")
 );
@@ -1172,7 +1172,7 @@ CUT.isTrue("assertDeepEqual(); 01o - ok",
   CEL.assertDeepEqual(-Infinity, -Infinity)
 );
 CUT.isError("assertDeepEqual(); 01p - error",
-  () => 
+  () =>
     CEL.assertDeepEqual(Infinity, -Infinity, "assertDeepEqual(); 01p - error")
 );
 /* primitives / not same type */
@@ -1232,7 +1232,7 @@ CUT.isError("assertDeepEqual(); 03f - error",
   )
 );
 CUT.isTrue("assertDeepEqual(); 03g - ok",
-  CEL.assertDeepEqual(Object("lorem"), Object("lorem"),)
+  CEL.assertDeepEqual(Object("lorem"), Object("lorem"))
 );
 CUT.isError("assertDeepEqual(); 03h - error",
   () => CEL.assertDeepEqual(Object("lorem"), Object("ipsum"),
@@ -1371,11 +1371,13 @@ CUT.isError("assertDeepEqual(); 11d - error",
   () => CEL.assertDeepEqual(token1, token2, "assertDeepEqual(); 11d - error")
 );
 /* objects / Function */
-token1 = Array.from;
-token2 = Array.of;
-CUT.isTrue("assertDeepEqual(); 12a - ok", CEL.assertDeepEqual(token1, token1));
+CUT.isTrue("assertDeepEqual(); 12a - ok",
+  CEL.assertDeepEqual(Array.from, Array.from)
+);
 CUT.isError("assertDeepEqual(); 12b - error",
-  () => CEL.assertDeepEqual(token1, token2, "assertDeepEqual(); 12b - error")
+  () => CEL.assertDeepEqual(
+    Array.from, Array.of, "assertDeepEqual(); 12b - error"
+  )
 );
 /* objects / Date */
 token1 = new Date();
@@ -1500,7 +1502,7 @@ CUT.isError("assertDeepEqual(); 20i - error",
   () => CEL.assertDeepEqual(true, [true], "assertDeepEqual(); 20i - error")
 );
 CUT.isError("assertDeepEqual(); 20j - error",
-  () => 
+  () =>
     CEL.assertDeepEqual(Object(true), [true], "assertDeepEqual(); 20j - error")
 );
 CUT.isTrue("assertDeepEqual(); 20k - ok",
@@ -1525,7 +1527,7 @@ CUT.isTrue("assertDeepEqual(); 21b - ok",
   CEL.assertDeepEqual(new Map(), new WeakSet())
 );
 CUT.isTrue( "assertDeepEqual(); 21c - ok",
-  CEL.assertDeepEqual(new Map(), new WeakMap(),)
+  CEL.assertDeepEqual(new Map(), new WeakMap())
 );
 CUT.isError("assertDeepEqual(); 21d - error",
   () => CEL.assertDeepEqual(
@@ -1806,27 +1808,27 @@ CUT.isTrue("assertDeepEqual(); 31a",
   && CEL.assertDeepEqual([1, 2, token2, 3], [1, 2, token4, 3])
 );
 CUT.isError(
-  "assertDeepEqual(); 31b",
+  "assertDeepEqual(); 31b error",
   () => CEL.assertDeepEqual(
-    [1, 2, token1, 3], [1, 2, token5, 3], "assertDeepEqual(); 31b"
+    [1, 2, token1, 3], [1, 2, token5, 3], "assertDeepEqual(); 31b error"
   )
 );
 CUT.isError(
-  "assertDeepEqual(); 31c",
+  "assertDeepEqual(); 31c error",
   () => CEL.assertDeepEqual(
-    [1, 2, token1, 3], [1, 2, token7, 3], "assertDeepEqual(); 31c"
+    [1, 2, token1, 3], [1, 2, token7, 3], "assertDeepEqual(); 31c error"
   )
 );
 CUT.isError(
-  "assertDeepEqual(); 31d",
+  "assertDeepEqual(); 31d error",
   () => CEL.assertDeepEqual(
-    [1, 2, token2, 3], [1, 2, token6, 3], "assertDeepEqual(); 31d"
+    [1, 2, token2, 3], [1, 2, token6, 3], "assertDeepEqual(); 31d error"
   )
 );
 CUT.isError(
-  "assertDeepEqual(); 31e",
+  "assertDeepEqual(); 31e error",
   () => CEL.assertDeepEqual(
-    [1, 2, token2, 3], [1, 2, token8, 3], "assertDeepEqual(); 31e"
+    [1, 2, token2, 3], [1, 2, token8, 3], "assertDeepEqual(); 31e error"
   )
 );
 /* assertDeepEqual(); end */
@@ -2160,15 +2162,13 @@ CUT.isTrue("assertNotDeepStrictEqual(); 11d - ok",
   CEL.assertNotDeepStrictEqual(token1, token2)
 );
 /* objects / Function */
-token1 = Array.from;
-token2 = Array.of;
 CUT.isError("assertNotDeepStrictEqual(); 12a - error",
   () => CEL.assertNotDeepStrictEqual(
-    token1, token1, "assertNotDeepStrictEqual(); 12a - error"
+    Array.from, Array.from, "assertNotDeepStrictEqual(); 12a - error"
   )
 );
 CUT.isTrue("assertNotDeepStrictEqual(); 12b - ok",
-  CEL.assertNotDeepStrictEqual(token1, token2)
+  CEL.assertNotDeepStrictEqual(Array.from, Array.of)
 );
 /* objects / Date */
 token1 = new Date();
@@ -2938,14 +2938,13 @@ CUT.isTrue("assertNotDeepEqual(); 11d - ok",
   CEL.assertNotDeepEqual(token1, token2)
 );
 /* objects / Function */
-token1 = Array.from;
-token2 = Array.of;
 CUT.isError("assertNotDeepEqual(); 12a - error",
-  () =>
-    CEL.assertNotDeepEqual(token1, token1, "assertNotDeepEqual(); 12a - error")
+  () => CEL.assertNotDeepEqual(
+    Array.from, Array.from, "assertNotDeepEqual(); 12a - error"
+  )
 );
 CUT.isTrue("assertNotDeepEqual(); 12b - ok",
-  CEL.assertNotDeepEqual(token1, token2)
+  CEL.assertNotDeepEqual(Array.from, Array.of)
 );
 /* objects / Date */
 token1 = new Date();
@@ -3096,9 +3095,7 @@ CUT.isTrue("assertNotDeepEqual(); 19d - ok",
   CEL.assertNotDeepEqual(token2, token5)
 );
 /* objects / not same prototype - array */
-CUT.isTrue("assertNotDeepEqual(); 20a - ok",
-  CEL.assertNotDeepEqual({}, [])
-);
+CUT.isTrue("assertNotDeepEqual(); 20a - ok", CEL.assertNotDeepEqual({}, []));
 CUT.isTrue("assertNotDeepEqual(); 20b - ok",
   CEL.assertNotDeepEqual(new Map(), [])
 );
@@ -3331,21 +3328,21 @@ CUT.isError("assertNotDeepEqual(); 26a - error",
   () => CEL.assertNotDeepEqual(true, 1, "assertNotDeepEqual(); 26a - error")
 );
 CUT.isError("assertNotDeepEqual(); 26b - error",
-  () => 
+  () =>
     CEL.assertNotDeepEqual(Object(true), 1, "assertNotDeepEqual(); 26b - error")
 );
 CUT.isError("assertNotDeepEqual(); 26c - error",
   () => CEL.assertNotDeepEqual("1", 1, "assertNotDeepEqual(); 26c - error")
 );
 CUT.isError("assertNotDeepEqual(); 26d - error",
-  () => 
+  () =>
     CEL.assertNotDeepEqual(Object("1"), 1, "assertNotDeepEqual(); 26d - error")
 );
 CUT.isError("assertNotDeepEqual(); 26e - error",
   () => CEL.assertNotDeepEqual(42n, 42, "assertNotDeepEqual(); 26e - error")
 );
 CUT.isError("assertNotDeepEqual(); 26f - error",
-  () => 
+  () =>
     CEL.assertNotDeepEqual(Object(42n), 42, "assertNotDeepEqual(); 26f - error")
 );
 /* objects / not same prototype - string */
@@ -3371,11 +3368,11 @@ CUT.isError("assertNotDeepEqual(); 28a - error",
   () => CEL.assertNotDeepEqual(1n, true, "assertNotDeepEqual(); 28a - error")
 );
 CUT.isError("assertNotDeepEqual(); 28b - error",
-  () => 
+  () =>
     CEL.assertNotDeepEqual(Object(1n), true, "assertNotDeepEqual(); 28b - error")
 );
 CUT.isError("assertNotDeepEqual(); 28c - error",
-  () => 
+  () =>
     CEL.assertNotDeepEqual(Object(1), true, "assertNotDeepEqual(); 28c - error")
 );
 CUT.isTrue("assertNotDeepEqual(); 28d - ok",
@@ -3383,7 +3380,7 @@ CUT.isTrue("assertNotDeepEqual(); 28d - ok",
 );
 /* objects / not same prototype - bigint */
 CUT.isError("assertNotDeepEqual(); 29a - error",
-  () => 
+  () =>
     CEL.assertNotDeepEqual(Object(42), 42n, "assertNotDeepEqual(); 29a - error")
 );
 CUT.isError("assertNotDeepEqual(); 29b - error",
@@ -3477,7 +3474,7 @@ CUT.isTrue("assertDeepStrictEqual(); 01a - ok",
   CEL.assertDeepStrictEqual(42, 42)
 );
 CUT.isError("assertDeepStrictEqual(); 01b - error",
-  () => 
+  () =>
     CEL.assertDeepStrictEqual(42, 43, "assertDeepStrictEqual(); 01b - error")
 );
 CUT.isTrue("assertDeepStrictEqual(); 01c - ok",
@@ -3515,7 +3512,7 @@ CUT.isError("assertDeepStrictEqual(); 01k - error",
   () => CEL.assertDeepStrictEqual(-0, 0, "assertDeepStrictEqual(); 01k - error")
 );
 CUT.isError("assertDeepStrictEqual(); 01l - error",
-  () => 
+  () =>
     CEL.assertDeepStrictEqual(-0, +0, "assertDeepStrictEqual(); 01l - error")
 );
 CUT.isTrue("assertDeepStrictEqual(); 01m - ok",
@@ -3534,23 +3531,23 @@ CUT.isError("assertDeepStrictEqual(); 01p - error",
 );
 /* primitives / not same type */
 CUT.isError("assertDeepStrictEqual(); 01q - error",
-  () => 
+  () =>
     CEL.assertDeepStrictEqual(42, "42", "assertDeepStrictEqual(); 01q - error")
 );
 CUT.isError("assertDeepStrictEqual(); 01r - error",
-  () => 
+  () =>
     CEL.assertDeepStrictEqual(1, true, "assertDeepStrictEqual(); 01r - error")
 );
 CUT.isError("assertDeepStrictEqual(); 01s - error",
-  () => 
+  () =>
     CEL.assertDeepStrictEqual(1n, true, "assertDeepStrictEqual(); 01s - error")
 );
 CUT.isError("assertDeepStrictEqual(); 01t - error",
-  () => 
+  () =>
     CEL.assertDeepStrictEqual(1n, "1n", "assertDeepStrictEqual(); 01t - error")
 );
 CUT.isError("assertDeepStrictEqual(); 01u - error",
-  () => 
+  () =>
     CEL.assertDeepStrictEqual(false, "", "assertDeepStrictEqual(); 01u - error")
 );
 /* primitives / bigint + Object wrappers */
@@ -3558,7 +3555,7 @@ CUT.isTrue("assertDeepStrictEqual(); 02a - ok",
   CEL.assertDeepStrictEqual(42n, 42n)
 );
 CUT.isError("assertDeepStrictEqual(); 02b - error",
-  () => 
+  () =>
     CEL.assertDeepStrictEqual(42n, 43n, "assertDeepStrictEqual(); 02b - error")
 );
 CUT.isTrue("assertDeepStrictEqual(); 02c - ok",
@@ -3818,14 +3815,12 @@ CUT.isError("assertDeepStrictEqual(); 11d - error",
   )
 );
 /* objects / Function */
-token1 = Array.from;
-token2 = Array.of;
 CUT.isTrue("assertDeepStrictEqual(); 12a - ok",
-  CEL.assertDeepStrictEqual(token1, token1)
+  CEL.assertDeepStrictEqual(Array.from, Array.from)
 );
 CUT.isError("assertDeepStrictEqual(); 12b - error",
   () => CEL.assertDeepStrictEqual(
-    token1, token2, "assertDeepStrictEqual(); 12b - error"
+    Array.from, Array.of, "assertDeepStrictEqual(); 12b - error"
   )
 );
 /* objects / Date */
@@ -4295,7 +4290,7 @@ CUT.isError("assertDeepStrictEqual(); 25h - error",
 );
 /* objects / not same prototype - number */
 CUT.isError("assertDeepStrictEqual(); 26a - error",
-  () => 
+  () =>
     CEL.assertDeepStrictEqual(true, 1, "assertDeepStrictEqual(); 26a - error")
 );
 CUT.isError("assertDeepStrictEqual(); 26b - error",
@@ -4304,7 +4299,7 @@ CUT.isError("assertDeepStrictEqual(); 26b - error",
   )
 );
 CUT.isError("assertDeepStrictEqual(); 26c - error",
-  () => 
+  () =>
     CEL.assertDeepStrictEqual("1", 1, "assertDeepStrictEqual(); 26c - error")
 );
 CUT.isError("assertDeepStrictEqual(); 26d - error",
@@ -4464,11 +4459,6 @@ CUT.isError(
   )
 );
 /* assertDeepStrictEqual end */
-
-
-/** Collections API **/
-CUT.addElement("hr");
-CUT.addElement("h3", "Collections API");
 
 
 /* unique(); */
@@ -5071,10 +5061,8 @@ CUT.isTrue("isSuperset();",
 
 
 /* arrayUnion(); */
-CUT.isEqual(
-  "arrayUnion(); ES5","[1,2,3,4,5,6,7,8]", JSON.stringify(CEL.arrayUnion(
-    [1, 2, 3, 4], [3, 4, 5, 6], [5, 6, 7, 8]
-  ))
+CUT.isEqual("arrayUnion(); ES5","[1,2,3,4,5,6,7,8]", 
+  JSON.stringify(CEL.arrayUnion([1, 2, 3, 4], [3, 4, 5, 6], [5, 6, 7, 8]))
 );
 CUT.isEqual("arrayUnion(); ES6", "[1,2,3,4,5,6,7,8]",
   JSON.stringify(CEL.arrayUnion(
@@ -5177,7 +5165,7 @@ CUT.isTrue("arrayClear();",
 );
 
 
-/* arrayremove begin */
+/* arrayremove(); begin */
 token1 = [1, 2, 3, 4, 5, 6, 5, 7, 8, 5, 9, 0];
 CUT.isTrue("arrayRemove(); 01", CEL.arrayRemove(token1, 6));
 CUT.isFalse("arrayRemove(); 02", CEL.arrayRemove(token1, 6));
@@ -5206,10 +5194,10 @@ CUT.isFalse("arrayRemove(); 14", CEL.arrayRemove(token1, 11, true));
 CUT.isEqual("arrayRemove(); 15",
   "[1,2,3,4,5,6,5,7,8,5,9,0]", JSON.stringify(token1)
 );
-/* arrayremove end */
+/* arrayremove(); end */
 
 
-/* arrayremoveby begin */
+/* arrayremoveby(); begin */
 token1 = [1, 3, 2, 4, 5, 9, 3, 2];
 CUT.isTrue("arrayRemoveBy(); 01", CEL.arrayRemoveBy(token1, (v) => (v > 6)));
 CUT.isFalse("arrayRemoveBy(); 02", CEL.arrayRemoveBy(token1, (v) => (v > 6)));
@@ -5242,7 +5230,7 @@ CUT.isFalse("arrayRemoveBy(); 14",
   CEL.arrayRemoveBy(token1, (v) => (v > 13), true)
 );
 CUT.isEqual("arrayRemoveBy(); 15", "[1,3,2,4,5,9,3,2]", JSON.stringify(token1));
-/* arrayremoveby end */
+/* arrayremoveby(); end */
 
 
 /* arrayUnique(); */
@@ -5291,11 +5279,6 @@ CUT.isEqual("arrayMerge();", token4,
 );
 
 
-/** Cookie API **/
-CUT.addElement("hr");
-CUT.addElement("h3", "Cookie API");
-
-
 /* getCookie(); */
 /* hasCookie(); */
 /* setcookie(); */
@@ -5319,11 +5302,6 @@ CEL.clearCookies();
 token1 += " " + +CEL.hasCookie("ctest4");
 token1 += " " + +CEL.hasCookie("ctest5");
 CUT.isEqual("clearCookies();", "1 1 0 0", token1);
-
-
-/** cookie with settings object begin **/
-CUT.addElement("hr");
-CUT.addElement("h3", "cookie with settings object");
 
 
 CEL.setCookie({"name": "ctest3", "value":"cookieUnitTestStr","SameSite":"Lax"});
@@ -5361,11 +5339,6 @@ token1 += " " + +CEL.hasCookie("ctest4");
 token1 += " " + +CEL.hasCookie("ctest5");
 CUT.isEqual("clearCookies(); <i>(settings object)</i>", "1 1 0 0", token1);
 /** cookie with settings object end **/
-
-
-/** Polyfills **/
-CUT.addElement("hr");
-CUT.addElement("h3", "polyfills");
 
 
 /* Math.sumPrecise(); begin */
@@ -5599,11 +5572,6 @@ CUT.isTrue("Object.hasOwn();",
 CUT.isEqual("globalThis;", window, globalThis);
 
 
-/** non-standard polyfills **/
-CUT.addElement("hr");
-CUT.addElement("h3", "non-standard polyfills");
-
-
 /* BigInt.prototype.toJSON(); */
 if (!!window.BigInt) {
   CUT.isEqual("BigInt.prototype.toJSON();", '"42"', JSON.stringify(BigInt(42)));
@@ -5621,11 +5589,6 @@ CUT.isEqual("AsyncFunction();", "asyncfunction",
     "return await resolveAfter2Seconds(a) + await resolveAfter2Seconds(b);"
   )
 ));
-
-
-/** Type API **/
-CUT.addElement("hr");
-CUT.addElement("h3", "Type API");
 
 
 /* isSameClass(); */
@@ -5765,8 +5728,7 @@ CUT.isFalse("isEmptyValue(); 02",
 token1 = { message1: "hello", message2: "everyone"};
 token2 = { get(target, prop, receiver) { return "world"; } };
 CUT.isTrue("isProxy();",
-      CEL.isProxy(new Proxy(token1, token2))
-  && !CEL.isProxy([])
+  CEL.isProxy(new Proxy(token1, token2)) && !CEL.isProxy([])
 );
 
 
@@ -5877,9 +5839,9 @@ CUT.isTrue("isGeneratorFn();",
   && !CEL.isGeneratorFn(function fn42 () { return 42; })
   && !CEL.isGeneratorFn(42)
   && !CEL.isGeneratorFn(
-      new AsyncFunction("a", "b",
-        "return await resolveAfter2Seconds(a) + await resolveAfter2Seconds(b);"
-      ))
+       new AsyncFunction("a", "b",
+         "return await resolveAfter2Seconds(a) + await resolveAfter2Seconds(b);"
+       ))
 );
 
 
@@ -6024,7 +5986,7 @@ CUT.isTrue("isDate();", CEL.isDate(new Date()) && !CEL.isDate({"a": 1}));
 
 
 /* isRegexp(); */
-CUT.isTrue("isRegexp();",
+CUT.isTrue("isRegexp();", 
   CEL.isRegexp(/^\[object (.+)\]$/g) && !CEL.isRegexp("42")
 );
 
@@ -6174,11 +6136,6 @@ if (window.BigInt) {
 }
 
 
-/** isSame<type>(); functions **/
-CUT.addElement("hr");
-CUT.addElement("h3", "isSame<type>(); functions");
-
-
 /* isSameArray(); */
 CUT.isTrue("isSameArray();",
       CEL.isSameArray([], [])
@@ -6242,11 +6199,6 @@ CUT.isTrue("isSameIterator();",
   && !CEL.isSameIterator([1, 2, 3], [1, 2, 3, 4])
   && !CEL.isSameIterator(new Set([1, 2, 3, 4]), [1, 2, 3, 5])
 );
-
-
-/** Abstract API **/
-CUT.addElement("hr");
-CUT.addElement("h3", "Abstract API");
 
 
 /* deletePropertyOrThrow(); */
@@ -6471,8 +6423,8 @@ CUT.isTrue("createPolyfillMethod(); - <code>"
 token1 = {"a": 1, "b": 2};
 CUT.isTrue(
   "createPolyfillProperty(); - <code>" + JSON.stringify(token1) + "</code>",
-  CEL.createPolyfillProperty(token1, "c", 3) &&
-  Object.keys(token1).includes("c") && ("c" in token1)
+  CEL.createPolyfillProperty(token1, "c", 3) 
+    && Object.keys(token1).includes("c") && ("c" in token1)
 );
 
 
@@ -6701,11 +6653,6 @@ token1 = [4, 5, 6];
 CUT.isTrue("toArray();", token1 === CEL.toArray(token1)
   && JSON.stringify(CEL.toArray({"length":3, 0 :7, 1: 8, 2: 9})) === "[7,8,9]"
 );
-
-
-/** Math API **/
-CUT.addElement("hr");
-CUT.addElement("h3", "Math API");
 
 
 /* inRange(); */
@@ -7148,7 +7095,7 @@ CUT.isTrue("isBigUInt64();",
 
 /** Async **/
 CUT.addElement("hr");
-CUT.addElement("h3", "AJAX, domReady(); and other async functions");
+CUT.addElement("h3", "Async testcases");
 
 
 CUT.addElement("p", "Here have to be these results:");
@@ -7364,10 +7311,6 @@ CEL.ajax({
 
 
 }());
-
-
-//CEL.toIndex(Infinity);
-// this causes an error
 
 
 } catch (e) {

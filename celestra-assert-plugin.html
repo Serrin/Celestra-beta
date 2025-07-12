@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Celestra Assert plugin</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+<meta name="Author" content="Czigler Ferenc"/>
+<meta name="Copyright" content="(C) Copyright Czigler Ferenc"/>
+<link rel="stylesheet" href="u87.css" type="text/css"/>
+<script src="celestra.min.js"></script>
+<!--<script src="celestra-assert-plugin.min.js"></script>-->
+<style>
+@media (max-width: 575px) { td { display: block; width: 100% !important; } }
+</style>
+
+<script>
+
+function testIsOK (message, callback) {
+  try {
+    let result = callback();
+    if (result) { return true; } else { return false; }
+  } catch (e) { return false; }
+}
+
+function testIsError (message, callback) {
+  try {
+    let result = callback();
+    if (result) { return false; }
+  } catch (e) { return true; }
+  return false;
+}
+
+function autoTest () {
+
+  /* default strict */
+  
+  if (!testIsOK("strict assert(); 01 ok",
+    () => assert(true, "strict assert(); 01 ok")
+  )) { alert("strict assert(); 01 ok"); }
+  if (!testIsError("strict assert(); 02 error",
+    () => assert(false, "strict assert(); 02 error")
+  )) { alert("strict assert(); 02 error"); }
+  
+  if (!testIsOK("strict assert.ok(); 01 ok",
+    () => assert.ok(true, "strict assert.ok(); 02 ok")
+  )) { alert("strict assert.ok(); 01 ok"); }
+  if (!testIsError("strict assert.ok(); 02 error",
+    () => assert.ok(false, "strict assert.ok(); 02 error")
+  )) { alert("strict assert.ok(); 02 error"); }
+  
+  if (!testIsOK("strict assert.isTrue(); 01 ok",
+    () => assert.isTrue(true, "strict assert.isTrue(); 01 ok")
+  )) { alert("strict assert.isTrue(); 01 ok"); }
+  if (!testIsError("strict assert.isTrue(); 02 error",
+    () => assert.isTrue(false, "strict assert.isTrue(); 02 error")
+  )) { alert("strict assert.isTrue(); 02 error"); }
+  
+  if (!testIsOK("strict assert.isFalse(); 01 ok",
+    () => assert.isFalse(false, "strict assert.isFalse(); 01 ok")
+  )) { alert("strict assert.isFalse(); 01 ok"); }
+  if (!testIsError("strict assert.isFalse(); 02 error",
+    () => assert.isFalse(true, "strict assert.isFalse(); 02 error")
+  )) { alert("strict assert.isFalse(); 02 error"); }
+  
+  if (!testIsOK("strict assert.equal(); 01 ok",
+    () => assert.equal(false, false, "strict assert.equal(); 01 ok")
+  )) { alert("strict assert.equal(); 01 ok"); }
+  if (!testIsError("strict assert.equal(); 02 error",
+    () => assert.equal(42, "42", "strict assert.equal(); 02 error")
+  )) { alert("strict assert.equal(); 02 error"); }
+  if (!testIsError("strict assert.equal(); 03 error",
+    () => assert.equal(true, false, "strict assert.equal(); 03 error")
+  )) { alert("strict assert.equal(); 03 error"); }
+  
+  if (!testIsError("strict assert.notEqual(); 01 error",
+    () => assert.notEqual(false, false, "strict assert.notEqual(); 01 error")
+  )) { alert("strict assert.notEqual(); 01 ok"); }
+  if (!testIsOK("strict assert.notEqual(); 02 ok",
+    () => assert.notEqual(42, "42", "strict assert.notEqual(); 02 ok")
+  )) { alert("strict assert.notEqual(); 02 ok"); }
+  if (!testIsOK("strict assert.notEqual(); 03 ok",
+    () => assert.notEqual(true, false, "strict assert.notEqual(); 03 ok")
+  )) { alert("strict assert.notEqual(); 03 ok"); }
+  
+  if (!testIsOK("strict assert.strictEqual(); 01 ok",
+    () => assert.strictEqual(false, false, "equal.strictEqual(); 01 ok")
+  )) { alert("strict assert.strictEqual(); 01 ok"); }
+  if (!testIsError("strict assert.strictEqual(); 02 error",
+    () => assert.strictEqual(42, "42", "strict assert.strictEqual(); 02 error")
+  )) { alert("strict assert.strictEqual(); 02 error"); }
+  if (!testIsError("strict assert.strictEqual(); 03 error",
+    () => assert.strictEqual(true, false, "strict assert.strictEqual(); 03 error")
+  )) { alert("strict assert.strictEqual(); 03 error"); }
+  
+  if (!testIsError("strict assert.notStrictEqual(); 01 error",
+    () => assert.notStrictEqual(false, false, "strict assert.notStrictEqual(); 01 error")
+  )) { alert("strict assert.notStrictEqual(); 01 ok"); }
+  if (!testIsOK("strict assert.notStrictEqual(); 02 ok",
+    () => assert.notStrictEqual(42, "42", "strict assert.notStrictEqual(); 02 ok")
+  )) { alert("strict assert.notStrictEqual(); 02 ok"); }
+  if (!testIsOK("strict assert.notStrictEqual(); 03 ok",
+    () => assert.notStrictEqual(true, false, "strict assert.notStrictEqual(); 03 ok")
+  )) { alert("strict assert.notStrictEqual(); 03 ok"); }
+  
+  if (!testIsOK("strict assert.deepEqual(); 01 ok",
+    () => assert.deepEqual([1, false], [1, false], "equal.deepEqual(); 01 ok")
+  )) { alert("strict assert.deepEqual(); 01 ok"); }
+  if (!testIsError("strict assert.deepEqual(); 02 error",
+    () => assert.deepEqual([1, 42], [1, "42"], "strict assert.deepEqual(); 02 error")
+  )) { alert("strict assert.deepEqual(); 02 error"); }
+  if (!testIsError("strict assert.deepEqual(); 03 error",
+    () => assert.deepEqual([1, true], [1, false], "strict assert.deepEqual(); 03 error")
+  )) { alert("strict assert.deepEqual(); 03 error"); }
+  
+  if (!testIsError("strict assert.notDeepEqual(); 01 error",
+    () => assert.notDeepEqual([1, false], [1, false], "strict assert.notDeepEqual(); 01 error")
+  )) { alert("strict assert.notDeepEqual(); 01 ok"); }
+  if (!testIsOK("strict assert.notDeepEqual(); 02 ok",
+    () => assert.notDeepEqual([1, 42], [1, "42"], "strict assert.notDeepEqual(); 02 ok")
+  )) { alert("strict assert.notDeepEqual(); 02 ok"); }
+  if (!testIsOK("strict assert.notDeepEqual(); 03 ok",
+    () => assert.notDeepEqual([1, true], [1, false], "strict assert.notDeepEqual(); 03 ok")
+  )) { alert("strict assert.notDeepEqual(); 03 ok"); }
+  
+  if (!testIsOK("strict assert.deepStrictEqual(); 01 ok",
+    () => assert.deepStrictEqual([1, false], [1, false], "equal.deepStrictEqual(); 01 ok")
+  )) { alert("strict assert.deepStrictEqual(); 01 ok"); }
+  if (!testIsError("strict assert.deepStrictEqual(); 02 error",
+    () => assert.deepStrictEqual([1, 42], [1, "42"], "strict assert.deepStrictEqual(); 02 error")
+  )) { alert("strict assert.deepStrictEqual(); 02 error"); }
+  if (!testIsError("strict assert.deepStrictEqual(); 03 error",
+    () => assert.deepStrictEqual([1, true], [1, false], "strict assert.deepStrictEqual(); 03 error")
+  )) { alert("strict assert.deepStrictEqual(); 03 error"); }
+  
+  if (!testIsError("strict assert.notDeepStrictEqual(); 01 error",
+    () => assert.notDeepStrictEqual([1, false], [1, false], "strict assert.notDeepStrictEqual(); 01 error")
+  )) { alert("strict assert.notDeepStrictEqual(); 01 ok"); }
+  if (!testIsOK("strict assert.notDeepStrictEqual(); 02 ok",
+    () => assert.notDeepStrictEqual([1, 42], [1, "42"], "strict assert.notDeepStrictEqual(); 02 ok")
+  )) { alert("strict assert.notDeepStrictEqual(); 02 ok"); }
+  if (!testIsOK("strict assert.notDeepStrictEqual(); 03 ok",
+    () => assert.notDeepStrictEqual([1, true], [1, false], "strict assert.notDeepStrictEqual(); 03 ok")
+  )) { alert("strict assert.notDeepStrictEqual(); 03 ok"); }
+
+  if (!testIsOK("strict assert.type(); 01 ok",
+    () => assert.type(42, "number", "strict assert.type(); 01 ok")
+  )) { alert("strict assert.type(); 01 ok"); }
+  if (!testIsOK("strict assert.type(); 02 ok",
+    () => assert.type(Object(42), Number, "type(); 02 ok")
+  )) { alert("strict assert.type(); 02 ok"); }
+  
+  if (!testIsError("strict assert.type(); 03 error",
+    () => assert.type(42, Number, "strict assert.type(); 03 error")
+  )) { alert("strict assert.type(); 03 error"); }
+  if (!testIsError("strict assert.type(); 04 error",
+    () => assert.type(Object(42), "number", "type(); 04 error")
+  )) { alert("strict assert.type(); 04 error"); }
+
+  if (!testIsOK("strict assert.notType(); 01 ok",
+    () => assert.notType(42, Number, "strict assert.notType(); 01 ok")
+  )) { alert("strict assert.notType(); 01 ok"); }
+  if (!testIsOK("strict assert.notType(); 02 ok",
+    () => assert.notType(Object(42), "number", "notType(); 02 ok")
+  )) { alert("strict assert.notType(); 02 ok"); }
+  
+  if (!testIsError("strict assert.notType(); 03 error",
+    () => assert.notType(42, "number", "strict assert.notType(); 03 error")
+  )) { alert("strict assert.notType(); 03 error"); }
+  if (!testIsError("strict assert.notType(); 04 error",
+    () => assert.notType(Object(42), Number, "notType(); 04 error")
+  )) { alert("strict assert.notType(); 04 error"); }
+
+  /* not strict */
+  
+  assert.strict = false;
+  
+  if (!testIsOK("not strict assert(); 01 ok",
+    () => assert(true, "not strict assert(); 01 ok")
+  )) { alert("not strict assert(); 01 ok"); }
+  if (!testIsError("not strict assert(); 02 error",
+    () => assert(false, "not strict assert(); 02 error")
+  )) { alert("not strict assert(); 02 error"); }
+  
+  if (!testIsOK("not strict assert.ok(); 01 ok",
+    () => assert.ok(true, "not strict assert.ok(); 02 ok")
+  )) { alert("not strict assert.ok(); 01 ok"); }
+  if (!testIsError("not strict assert.ok(); 02 error",
+    () => assert.ok(false, "not strict assert.ok(); 02 error")
+  )) { alert("not strict assert.ok(); 02 error"); }
+  
+  if (!testIsOK("not strict assert.isTrue(); 01 ok",
+    () => assert.isTrue(true, "not strict assert.isTrue(); 01 ok")
+  )) { alert("not strict assert.isTrue(); 01 ok"); }
+  if (!testIsError("not strict assert.isTrue(); 02 error",
+    () => assert.isTrue(false, "not strict assert.isTrue(); 02 error")
+  )) { alert("not strict assert.isTrue(); 02 error"); }
+  
+  if (!testIsOK("not strict assert.isFalse(); 01 ok",
+    () => assert.isFalse(false, "not strict assert.isFalse(); 01 ok")
+  )) { alert("not strict assert.isFalse(); 01 ok"); }
+  if (!testIsError("not strict assert.isFalse(); 02 error",
+    () => assert.isFalse(true, "not strict assert.isFalse(); 02 error")
+  )) { alert("not strict assert.isFalse(); 02 error"); }
+  
+  if (!testIsOK("not strict assert.equal(); 01 ok",
+    () => assert.equal(false, false, "not strict assert.equal(); 01 ok")
+  )) { alert("not strict assert.equal(); 01 ok"); }
+  if (!testIsOK("not strict assert.equal(); 02 ok",
+    () => assert.equal(42, "42", "not strict assert.equal(); 02 ok")
+  )) { alert("not strict assert.equal(); 02 error"); }
+  if (!testIsError("not strict assert.equal(); 03 error",
+    () => assert.equal(true, false, "not strict assert.equal(); 03 error")
+  )) { alert("not strict assert.equal(); 03 error"); }
+  
+  if (!testIsError("not strict assert.notEqual(); 01 error",
+    () => assert.notEqual(false, false, "not strict assert.notEqual(); 01 error")
+  )) { alert("not strict assert.notEqual(); 01 ok"); }
+  if (!testIsError("not strict assert.notEqual(); 02 error",
+    () => assert.notEqual(42, "42", "not strict assert.notEqual(); 02 error")
+  )) { alert("not strict assert.notEqual(); 02 error"); }
+  if (!testIsOK("not strict assert.notEqual(); 03 ok",
+    () => assert.notEqual(true, false, "not strict assert.notEqual(); 03 ok")
+  )) { alert("not strict assert.notEqual(); 03 ok"); }
+  
+  if (!testIsOK("not strict assert.strictEqual(); 01 ok",
+    () => assert.strictEqual(false, false, "equal.strictEqual(); 01 ok")
+  )) { alert("not strict assert.strictEqual(); 01 ok"); }
+  if (!testIsError("not strict assert.strictEqual(); 02 error",
+    () => assert.strictEqual(42, "42", "not strict assert.strictEqual(); 02 error")
+  )) { alert("not strict assert.strictEqual(); 02 error"); }
+  if (!testIsError("not strict assert.strictEqual(); 03 error",
+    () => assert.strictEqual(true, false, "not strict assert.strictEqual(); 03 error")
+  )) { alert("not strict assert.strictEqual(); 03 error"); }
+  
+  if (!testIsError("not strict assert.notStrictEqual(); 01 error",
+    () => assert.notStrictEqual(false, false, "not strict assert.notStrictEqual(); 01 error")
+  )) { alert("not strict assert.notStrictEqual(); 01 ok"); }
+  if (!testIsOK("not strict assert.notStrictEqual(); 02 ok",
+    () => assert.notStrictEqual(42, "42", "not strict assert.notStrictEqual(); 02 ok")
+  )) { alert("not strict assert.notStrictEqual(); 02 ok"); }
+  if (!testIsOK("not strict assert.notStrictEqual(); 03 ok",
+    () => assert.notStrictEqual(true, false, "not strict assert.notStrictEqual(); 03 ok")
+  )) { alert("not strict assert.notStrictEqual(); 03 ok"); }
+  
+  if (!testIsOK("not strict assert.deepEqual(); 01 ok",
+    () => assert.deepEqual([1, false], [1, false], "equal.deepEqual(); 01 ok")
+  )) { alert("not strict assert.deepEqual(); 01 ok"); }
+  if (!testIsOK("not strict assert.deepEqual(); 02 ok",
+    () => assert.deepEqual([1, 42], [1, "42"], "not strict assert.deepEqual(); 02 ok")
+  )) { alert("not strict assert.deepEqual(); 02 ok"); }
+  if (!testIsError("not strict assert.deepEqual(); 03 error",
+    () => assert.deepEqual([1, true], [1, false], "not strict assert.deepEqual(); 03 error")
+  )) { alert("not strict assert.deepEqual(); 03 error"); }
+  
+  if (!testIsError("not strict assert.notDeepEqual(); 01 error",
+    () => assert.notDeepEqual([1, false], [1, false], "not strict assert.notDeepEqual(); 01 error")
+  )) { alert("not strict assert.notDeepEqual(); 01 ok"); }
+  if (!testIsError("not strict assert.notDeepEqual(); 02 error",
+    () => assert.notDeepEqual([1, 42], [1, "42"], "not strict assert.notDeepEqual(); 02 error")
+  )) { alert("not strict assert.notDeepEqual(); 02 error"); }
+  if (!testIsOK("not strict assert.notDeepEqual(); 03 ok",
+    () => assert.notDeepEqual([1, true], [1, false], "not strict assert.notDeepEqual(); 03 ok")
+  )) { alert("not strict assert.notDeepEqual(); 03 ok"); }
+  
+  if (!testIsOK("not strict assert.deepStrictEqual(); 01 ok",
+    () => assert.deepStrictEqual([1, false], [1, false], "equal.deepStrictEqual(); 01 ok")
+  )) { alert("not strict assert.deepStrictEqual(); 01 ok"); }
+  if (!testIsError("not strict assert.deepStrictEqual(); 02 error",
+    () => assert.deepStrictEqual([1, 42], [1, "42"], "not strict assert.deepStrictEqual(); 02 error")
+  )) { alert("not strict assert.deepStrictEqual(); 02 error"); }
+  if (!testIsError("not strict assert.deepStrictEqual(); 03 error",
+    () => assert.deepStrictEqual([1, true], [1, false], "not strict assert.deepStrictEqual(); 03 error")
+  )) { alert("not strict assert.deepStrictEqual(); 03 error"); }
+  
+  if (!testIsError("not strict assert.notDeepStrictEqual(); 01 error",
+    () => assert.notDeepStrictEqual([1, false], [1, false], "not strict assert.notDeepStrictEqual(); 01 error")
+  )) { alert("not strict assert.notDeepStrictEqual(); 01 ok"); }
+  if (!testIsOK("not strict assert.notDeepStrictEqual(); 02 ok",
+    () => assert.notDeepStrictEqual([1, 42], [1, "42"], "not strict assert.notDeepStrictEqual(); 02 ok")
+  )) { alert("not strict assert.notDeepStrictEqual(); 02 ok"); }
+  if (!testIsOK("not strict assert.notDeepStrictEqual(); 03 ok",
+    () => assert.notDeepStrictEqual([1, true], [1, false], "not strict assert.notDeepStrictEqual(); 03 ok")
+  )) { alert("not strict assert.notDeepStrictEqual(); 03 ok"); }
+
+  if (!testIsOK("not strict assert.type(); 01 ok",
+    () => assert.type(42, "number", "not strict assert.type(); 01 ok")
+  )) { alert("not strict assert.type(); 01 ok"); }
+  if (!testIsOK("not strict assert.type(); 02 ok",
+    () => assert.type(Object(42), Number, "type(); 02 ok")
+  )) { alert("not strict assert.type(); 02 ok"); }
+  
+  if (!testIsError("not strict assert.type(); 03 error",
+    () => assert.type(42, Number, "not strict assert.type(); 03 error")
+  )) { alert("not strict assert.type(); 03 error"); }
+  if (!testIsError("not strict assert.type(); 04 error",
+    () => assert.type(Object(42), "number", "type(); 04 error")
+  )) { alert("not strict assert.type(); 04 error"); }
+
+  if (!testIsOK("not strict assert.notType(); 01 ok",
+    () => assert.notType(42, Number, "not strict assert.notType(); 01 ok")
+  )) { alert("not strict assert.notType(); 01 ok"); }
+  if (!testIsOK("not strict assert.notType(); 02 ok",
+    () => assert.notType(Object(42), "number", "notType(); 02 ok")
+  )) { alert("not strict assert.notType(); 02 ok"); }
+  
+  if (!testIsError("not strict assert.notType(); 03 error",
+    () => assert.notType(42, "number", "not strict assert.notType(); 03 error")
+  )) { alert("not strict assert.notType(); 03 error"); }
+  if (!testIsError("not strict assert.notType(); 04 error",
+    () => assert.notType(Object(42), Number, "notType(); 04 error")
+  )) { alert("not strict assert.notType(); 04 error"); }
+
+
+  //if (!testIsOK("xxx", () => xxx() ))
+  //if (!testIsError("xxx", () => xxx() ))
+  alert("End of the test.")
+}
+
+</script>
+
+
+</head>
+<body class="container">
+
+<header class="center">
+  <h1>Celestra Assert plugin</h1>
+  <nav><b>
+    <a href="#license">License</a>
+    &nbsp;//&nbsp;
+    <a href="#footer">Contact</a>
+  </b></nav>
+</header>
+
+
+<h2>Download and informations</h2>
+
+<p>Tested on desktop browsers (latest Chrome, latest Firefox, latest Edge) and mobile devices (iOS Safari, Chrome, Firefox and Android Chrome, Samsung Internet, Firefox, Edge).</p>
+
+<p>Latest version: 5.7.3</p>
+
+<p>Developer edition: <a href="celestra-assert-plugin.dev.js" target="_blank">celestra-assert-plugin.dev.js</a></p>
+<p>Minified edition: <a href="celestra-assert-plugin.min.js" target="_blank">celestra-assert-plugin.min.js</a></p>
+
+
+<h2>Autotests</h2>
+
+<p><button onclick="CEL.importScript('celestra-assert-plugin.dev.js');">load celestra-assert-plugin.dev.js</button></p>
+<p><button onclick="CEL.importScript('celestra-assert-plugin.min.js');">load celestra-assert-plugin.min.js</button></p>
+<p><button onclick="autoTest();">run autotests</button></p>
+<p><button onclick="window.location.reload(true);">reset page</button></p>
+
+
+<h2>Functions</h2>
+
+<div>
+  <table>
+    <tr>
+      <td><b>Name</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>collect(&#60;iterator&#62;[,mapFn]);</code></td>
+      <td>The <code>CEL.collect();</code> static method creates a new, shallow-copied Array instance from an iterable object.</td>
+    </tr>
+  </table>
+</div>
+
+<h2 id="license">License</h2>
+
+<div>
+  <p><a href="https://opensource.org/licenses/MIT" target="_blank">https://opensource.org/licenses/MIT</a></p>
+
+  <h3>MIT License</h3>
+
+  <p><b>SPDX short identifier: MIT</b></p>
+
+  <p>Copyright (c) 2025 Ferenc Czigler</p>
+
+  <p>Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:</p>
+
+  <p>The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.</p>
+
+  <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.</p>
+</div>
+
+<hr/>
+
+<footer id="footer" class="center"><small>
+  <p>
+    <a href="#license">License</a>
+    &nbsp;//&nbsp;
+    <a href="http://github.com/Serrin" target="_blank">Github</a>
+  </p>
+  <p>&copy; Copyright 2025 Ferenc Czigler</p>
+</small></footer>
+
+
+
+
+</body>
+</html>
