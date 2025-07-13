@@ -14,7 +14,9 @@ const assert = function (c, m) { return celestra.assert(c, m); };
 assert.strict = true;
 
 assert.ok = (c, m) => celestra.assert(c, m);
+
 assert.isTrue = (c, m) => celestra.assertTrue(c, m);
+
 assert.isFalse = (c, m) => celestra.assertFalse(c, m);
 
 assert.equal = (x, y, m) => (
