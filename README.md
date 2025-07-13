@@ -77,9 +77,9 @@ JavaScript cheatsheet|__js-cheatsheet.pdf__
 app|filename
 -------|--------
 RPG dice roller|__testgame.html__
-Demo plugin documentation|__celestra-demo-plugin.html__
-Demo plugin developer source|__celestra-demo-plugin.dev.js__
-Demo plugin minified source|__celestra-demo-plugin.min.js__
+Assert plugin documentation|__celestra-assert-plugin.html__
+Assert plugin developer source|__celestra-assert-plugin.dev.js__
+Assert plugin minified source|__celestra-assert-plugin.min.js__
 
 
 ### How to import the ESM edition
