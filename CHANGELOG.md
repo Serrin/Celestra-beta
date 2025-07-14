@@ -9,6 +9,25 @@
 # Celestra version history
 
 
+## Celestra v5.7.4
+
+1. Documentation and pdf fixes.
+
+2. Replace the __Demo plugin__ with the __Assert plugin__.
+
+3. Add support of `DataView` and `ArrayBuffer` in these functions:
+````javascript
+assertDeepEqual();
+assertDeepStrictEqual();
+assertNotDeepEqual();
+assertNotDeepStrictEqual();
+isDeepStrictEqual();
+````
+
+4. __Celestra Unit Tester (CUT) v1.30.0:__ 
+- Add this function: `isError();`
+
+
 ## Celestra v5.7.3
 
 1. Documentation and pdf fixes
