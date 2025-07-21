@@ -1,9 +1,9 @@
 /**
  * @name Celestra Assert plugin
- * @version 5.7.4 dev
+ * @version 5.7.5 dev
  * @see https://github.com/Serrin/Celestra
  * @license MIT https://opensource.org/licenses/MIT
- * Required Celestra version: 5.7.4
+ * Required Celestra version: 5.7.5
  */
 
 (function(window, celestra){
@@ -51,6 +51,12 @@ assert.notDeepStrictEqual = (x, y, m) =>
 assert.type = (v, t, m) => celestra.assertType(v, t, m);
 
 assert.notType = (v, t, m) => celestra.assertNotType(v, t, m);
+
+assert.isNil = (v, m) => celestra.assertIsNil(v, m);
+
+assert.isNotNil = (v, m) => celestra.assertIsNotNil(v, m);
+
+assert.throwsError = (cb, m) => celestra.assertThrowsError(cb, m);
 
 window.assert = assert;
 

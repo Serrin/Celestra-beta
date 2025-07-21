@@ -103,7 +103,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
 
 <p>This library isn't compatible with the Node.js.</p>
 
-<p>Latest version: 5.7.4</p>
+<p>Latest version: 5.7.5</p>
 <p>Date: 2025-07-14T19:25:25.904Z</p>
 
 <p><b>Tested on these browsers:</b></p>
@@ -232,6 +232,14 @@ nav a, nav a:visited, nav a:active, nav a:hover {
   <tr>
     <td>Assert plugin minified source</td>
     <td><a href="celestra-assert-plugin.min.js" target="_blank">celestra-assert-plugin.min.js</a></td>
+  </tr>
+  <tr>
+    <td>Assert plugin cheatsheet</td>
+    <td>
+      <a href="celestra-assert-plugin.odt" target="_blank">celestra-assert-plugin.odt</a>
+      <br/>
+      <a href="celestra-assert-plugin.pdf" target="_blank">celestra-assert-plugin.pdf</a>
+    </td>
   </tr>
 </table>
 
@@ -623,70 +631,89 @@ console.log(o2);
       <td><b>Description</b></td>
     </tr>
     <tr>
-      <td><code>assert(condition [,message]);</code></td>
+      <td><code>assert(condition [, message]);</code></td>
       <td>
         <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the condition is falsy. The message parameter is optional. The return value is <code>true</code>, when the test was success.
       </td>
     </tr>
     <tr>
-      <td><code>assertDeepEqual(value1, value2 [,message]);</code></td>
+      <td><code>assertDeepEqual(value1, value2 [, message]);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 aren't deep equals. (<i>Deep loose equality + NaN equality: primitives (loose equality + NaN equality), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer</i>) The message parameter is optional. The return value is <code>true</code>, when the test was success.<br/><span class="info">This function may give unexpected results. It is safer to use the <code>assertDeepStrictEqual();</code> function.</span></td>
     </tr>
     <tr>
-      <td><code>assertDeepStrictEqual(value1, value2 [,message]);</code></td>
+      <td><code>assertDeepStrictEqual(value1, value2 [, message]);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 aren't deep equals. (<i>Deep strict equality + NaN equality: primitives (SameValue - Object.is()), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer</i>) The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
     </tr>
     <tr>
-      <td><code>assertEqual(value1, value2 [,message]);</code></td>
+      <td><code>assertEqual(value1, value2 [, message]);</code></td>
       <td>
         <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 aren't equals. (<i>Loose equality + NaN equality</i>) The message parameter is optional. The return value is <code>true</code>, when the test was success.
       </td>
+    </tr>
     <tr>
-      <td><code>assertFalse(condition [,message]);</code></td>
+      <td><code>assertFalse(condition [, message]);</code></td>
       <td>
         <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the condition is truthy. The message parameter is optional. The return value is <code>true</code>, when the test was success.
       </td>
+    </tr>    
+    <tr>
+      <td><code>assertIsNil(value [, message]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value is not null or undefined, else the given value is the return value. The message parameter is optional.
+      </td>
+    </tr>    
+    <tr>
+      <td><code>assertIsNotNil(value [, message]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value is null or undefined, else the given value is the return value. The message parameter is optional.
+      </td>
     </tr>
     <tr>
-      <td><code>assertNotDeepEqual(value1, value2, [,message]);</code></td>
+      <td><code>assertNotDeepEqual(value1, value2, [, message]);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 are deep equals. (<i>Deep loose equality + NaN equality: primitives (loose equality + NaN equality), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer</i>) The message parameter is optional. The return value is <code>true</code>, when the test was success.<br/><span class="info">This function may give unexpected results. It is safer to use the <code>assertNotDeepStrictEqual();</code> function.</span></td>
     </tr>
     <tr>
-      <td><code>assertNotDeepStrictEqual(value1, value2, [,message]);</code></td>
+      <td><code>assertNotDeepStrictEqual(value1, value2, [, message]);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 are deep equals. (<i>Deep strict equality + NaN equality: primitives (SameValue - Object.is()), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer</i>) The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
     </tr>
     <tr>
-      <td><code>assertNotEqual(value1, value2 [,message]);</code></td>
+      <td><code>assertNotEqual(value1, value2 [, message]);</code></td>
       <td>
         <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 are equals. (<i>Loose equality + NaN equality</i>) The message parameter is optional. The return value is <code>true</code>, when the test was success.
       </td>
     <tr>
     <tr>
-      <td><code>assertNotStrictEqual(value1, value2 [,message]);</code></td>
+      <td><code>assertNotStrictEqual(value1, value2 [, message]);</code></td>
       <td>
         <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 are equals. (<i>SameValue equality</i>) The message parameter is optional. The return value is <code>true</code>, when the test was success.
       </td>
     </tr>
     <tr>
-      <td><code>assertNotType(value,typeString OR constructor [,message]);</code></td>
+      <td><code>assertNotType(value,typeString OR constructor [, message]);</code></td>
       <td>
         <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error if the type/constructor of the value in the same as the second parameter. If the second parameter is not a string or function, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
       </td>
     </tr>
     <tr>
-      <td><code>assertStrictEqual(value1, value2 [,message]);</code></td>
+      <td><code>assertStrictEqual(value1, value2 [, message]);</code></td>
       <td>
         <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 aren't equals. (<i>SameValue equality</i>) The message parameter is optional. The return value is <code>true</code>, when the test was success.
       </td>
     <tr>
     <tr>
-      <td><code>assertTrue(condition [,message]);</code></td>
+      <td><code>assertTrue(condition [, message]);</code></td>
       <td>
-        <span class="info">Stability: 4 - Stable.</span><br/>This is an alias of the <code>assert(condition [,message]);</code>.
+        <span class="info">Stability: 4 - Stable.</span><br/>This is an alias of the <code>assert(condition [, message]);</code>.
       </td>
     </tr>
     <tr>
-      <td><code>assertType(value,typeString OR constructor [,message]);</code></td>
+      <td><code>assertThrowsError(callback: any [, message]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>This function catches and returns the error, if the callback throws an error. In other cases throws an error with the message. The message parameter is optional.
+      </td>
+    </tr>
+    <tr>
+      <td><code>assertType(value,typeString OR constructor [, message]);</code></td>
       <td>
         <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error if the type/constructor of the value in not the same as the second parameter. If the second parameter is not a string or function, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
       </td>
@@ -1068,7 +1095,7 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>isNil(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is null or undefined or NaN. The return value is boolean.</code>.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is null or undefined. The return value is boolean.</code>.</td>
     </tr>
     <tr>
       <td><code>isNull(value);</code></td>

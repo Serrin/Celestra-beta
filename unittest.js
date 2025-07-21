@@ -156,7 +156,7 @@ var token1 = 0, token2 = 0, token3 = 0, token4 = 0, token5 = 0;
 var token6 = 0, token7 = 0, token8 = 0, token9 = 0, token10 = 0;
 
 
-/* Celestra v5.7.4 testcases */
+/* Celestra v5.7.5 testcases */
 
 
 /** Not auto tested functions **/
@@ -997,6 +997,51 @@ CEL.qs("#dsDiv").remove();
 token1 = CEL.domToElement("<div><p>1</p><p>2</p><p>3</p>div>");
 CEL.domClear(token1);
 CUT.isEqual("domClear();", 0, token1.children.length);
+
+
+/* assertThrowsError(); */
+CUT.isTrue("assertThrowsError(); 01 ok",
+  Error.isError(CEL.assertThrowsError(() => { throw new Error() }))
+);
+CUT.isError("not strict assert.throwsError(); 02 error",
+  () => CEL.assertThrowsError(42)
+);
+CUT.isError("not strict assert.throwsError(); 03 error",
+  () => CEL.assertThrowsError(
+    () => {}, "not strict assert.throwsError(); 03 error"
+  )
+);
+
+
+/* assertIsNil(); */
+CUT.isEqual("assertIsNil(); 01 ok", null,
+  CEL.assertIsNil(null, "assert.isNullable(); 01 ok")
+);
+CUT.isEqual("assertIsNil(); 01 ok", undefined,
+  CEL.assertIsNil(undefined, "assert.isNullable(); 01 ok")
+);
+CUT.isError("assertIsNil(); 03 error",
+  () => CEL.assertIsNil({}, "assertIsNil(); 03 error")
+);
+CUT.isError("assertIsNil(); 04 error",
+  () => CEL.assertIsNil(42, "assertIsNil(); 04 error")
+);
+
+
+/* assertIsNotNil(); */
+CUT.isEqual("assertIsNotNil(); 01 ok", 42,
+  CEL.assertIsNotNil(42, "assertIsNotNil(); 01 ok")
+);
+token1 = {};
+CUT.isEqual("assertIsNotNil(); 02 ok", token1,
+  CEL.assertIsNotNil(token1, "assertIsNotNil(); 02 ok")
+);
+CUT.isError("assertIsNotNil(); 03 error",
+  () => CEL.assertIsNotNil(null, "assertIsNotNil(); 03 error")
+);
+CUT.isError("assertIsNotNil(); 04 error",
+  () => CEL.assertIsNotNil(undefined, "assertIsNotNil(); 04 error")
+);
 
 
 /* assertType(); */
@@ -5070,7 +5115,7 @@ CUT.isTrue("isSuperset();",
 
 
 /* arrayUnion(); */
-CUT.isEqual("arrayUnion(); ES5","[1,2,3,4,5,6,7,8]", 
+CUT.isEqual("arrayUnion(); ES5","[1,2,3,4,5,6,7,8]",
   JSON.stringify(CEL.arrayUnion([1, 2, 3, 4], [3, 4, 5, 6], [5, 6, 7, 8]))
 );
 CUT.isEqual("arrayUnion(); ES6", "[1,2,3,4,5,6,7,8]",
@@ -5977,7 +6022,7 @@ CUT.isTrue("isNullOrUndefined();",
 
 /* isNil(); */
 CUT.isTrue("isNil();",
-  CEL.isNil(undefined) &&  CEL.isNil(null) && CEL.isNil(NaN) && !CEL.isNil(42)
+  CEL.isNil(undefined) &&  CEL.isNil(null) && !CEL.isNil(NaN) && !CEL.isNil(42)
 );
 
 
@@ -5995,7 +6040,7 @@ CUT.isTrue("isDate();", CEL.isDate(new Date()) && !CEL.isDate({"a": 1}));
 
 
 /* isRegexp(); */
-CUT.isTrue("isRegexp();", 
+CUT.isTrue("isRegexp();",
   CEL.isRegexp(/^\[object (.+)\]$/g) && !CEL.isRegexp("42")
 );
 
@@ -6432,7 +6477,7 @@ CUT.isTrue("createPolyfillMethod(); - <code>"
 token1 = {"a": 1, "b": 2};
 CUT.isTrue(
   "createPolyfillProperty(); - <code>" + JSON.stringify(token1) + "</code>",
-  CEL.createPolyfillProperty(token1, "c", 3) 
+  CEL.createPolyfillProperty(token1, "c", 3)
     && Object.keys(token1).includes("c") && ("c" in token1)
 );
 

@@ -45,6 +45,18 @@ function autoTest () {
 
   /* default strict */
 
+  test("strict assert.throwsError(); 01 ok", false,
+    () => Error.isError(assert.throwsError(
+      () => { throw new Error() })
+    ) === true
+  );
+  test("strict assert.throwsError(); 02 error", true,
+    () => assert.throwsError(42)
+  );
+  test("strict assert.throwsError(); 03 error", true,
+    () => assert.throwsError(() => {}, "strict assert.throwsError(); 03 error")
+  );
+
   test("strict assert(); 01 ok", false,
     () => assert(true, "strict assert(); 01 ok")
   );
@@ -149,9 +161,9 @@ function autoTest () {
     )
   );
 
-  test("equal.deepStrictEqual(); 01 ok", false,
+  test("strict equal.deepStrictEqual(); 01 ok", false,
     () => assert.deepStrictEqual(
-      [1, false], [1, false], "equal.deepStrictEqual(); 01 ok"
+      [1, false], [1, false], "strict equal.deepStrictEqual(); 01 ok"
     )
   );
   test("strict assert.deepStrictEqual(); 02 error", true,
@@ -210,9 +222,53 @@ function autoTest () {
       assert.notType(Object(42), Number, "strict assert.notType(); 04 error")
   );
 
+  test("strict assert.isNil(); 01 ok", false,
+    () => null === assert.isNil(null, "strict assert.isNil(); 01 ok")
+  );
+  test("strict assert.isNil(); 02 ok", false,
+    () => undefined === assert.isNil(
+      undefined , "strict assert.isNil(); 02 ok"
+    )
+  );
+  test("strict assert.isNil(); 03 error", true,
+    () => assert.isNil({} , "strict assert.isNil(); 03 error")
+  );
+  test("strict assert.isNil(); 04 error", true,
+    () => assert.isNil(42 , "strict assert.isNil(); 04 error")
+  );
+
+  test("strict assert.isNotNil(); 01 error", true,
+    () => assert.isNotNil(null , "strict assert.isNotNil(); 01 error")
+  );
+  test("strict assert.isNotNil(); 02 error", true,
+    () => assert.isNotNil(
+      undefined , "strict assert.isNotNil(); 02 error"
+    )
+  );
+  test("strict assert.isNotNil(); 03 ok", false,
+    () => assert.isNotNil({} , "strict assert.isNotNil(); 03 ok")
+  );
+  test("strict assert.isNil(); 04 ok", false,
+    () => assert.isNotNil(42 , "strict assert.isNotNil(); 04 ok")
+  );
+
   /* not strict */
 
   assert.strict = false;
+
+  test("not strict assert.throwsError(); 01 ok", false,
+    () => Error.isError(assert.throwsError(
+      () => { throw new Error() })
+    ) === true
+  );
+  test("not strict assert.throwsError(); 02 error", true,
+    () => assert.throwsError(42)
+  );
+  test("not strict assert.throwsError(); 03 error", true,
+    () => assert.throwsError(
+      () => {}, "not strict assert.throwsError(); 03 error"
+    )
+  );
 
   test("not strict assert(); 01 ok", false,
     () => assert(true, "not strict assert(); 01 ok")
@@ -388,6 +444,34 @@ function autoTest () {
     )
   );
 
+  test("not strict assert.isNil(); 01 ok", false,
+    () => null === assert.isNil(null, "not strict assert.isNil(); 01 ok")
+  );
+  test("not strict assert.isNil(); 02 ok", false,
+    () => undefined === assert.isNil(
+      undefined , "not strict assert.isNil(); 02 ok"
+    )
+  );
+  test("not strict assert.isNil(); 03 error", true,
+    () => assert.isNil({} , "not strict assert.isNil(); 03 error")
+  );
+  test("not strict assert.isNil(); 04 error", true,
+    () => assert.isNil(42 , "not strict assert.isNil(); 04 error")
+  );
+
+  test("not strict assert.isNotNil(); 01 error", true,
+    () => assert.isNotNil(null , "not strict assert.isNotNil(); 01 error")
+  );
+  test("not strict assert.isNotNil(); 02 error", true,
+    () => assert.isNotNil(undefined , "not strict assert.isNotNil(); 02 error")
+  );
+  test("not strict assert.isNotNil(); 03 ok", false,
+    () => assert.isNotNil({} , "not strict assert.isNotNil(); 03 ok")
+  );
+  test("not strict assert.isNil(); 04 ok", false,
+    () => assert.isNotNil(42 , "not strict assert.isNotNil(); 04 ok")
+  );
+
   alert("End of the test.")
 }
 
@@ -411,10 +495,12 @@ function autoTest () {
 
 <p>Tested on desktop browsers (latest Chrome, latest Firefox, latest Edge) and mobile devices (iOS Safari, Chrome, Firefox and Android Chrome, Samsung Internet, Firefox, Edge).</p>
 
-<p>Latest version: 5.7.4</p>
+<p>Latest version: 5.7.5</p>
 
 <p>Developer edition: <a href="celestra-assert-plugin.dev.js" target="_blank">celestra-assert-plugin.dev.js</a></p>
 <p>Minified edition: <a href="celestra-assert-plugin.min.js" target="_blank">celestra-assert-plugin.min.js</a></p>
+<p>Cheatsheet ODT: <a href="celestra-assert-plugin.odt" target="_blank">celestra-assert-plugin.odt</a></p>
+<p>Cheatsheet PDF: <a href="celestra-assert-plugin.pdf" target="_blank">celestra-assert-plugin.pdf</a></p>
 
 
 <h2>Autotests</h2>
@@ -454,6 +540,18 @@ function autoTest () {
       <td>Same as <code>celestra.assertFalse(condition [, message]);</code>.</td>
     </tr>
     <tr>
+      <td><code>assert.isNil(value [, message]);</code></td>
+      <td>Same as <code>celestra.assertIsNil(value [, message]);</code>.</td>
+    </tr>
+    <tr>
+      <td><code>assert.isNotNil(value [, message]);</code></td>
+      <td>Same as <code>celestra.assertIsNotNil(value [, message]);</code>.</td>
+    </tr>
+    <tr>
+      <td><code>assert.isTrue(condition [, message]);</code></td>
+      <td>Same as <code>celestra.assertTrue(condition [, message]);</code>.</td>
+    </tr>
+    <tr>
       <td><code>assert.notDeepEqual(value1, value2 [, message]);</code></td>
       <td>Same as <code>celestra.assertNotDeepStrictEqual(value1, value2 [, message]);</code> or <code>celestra.assertNotDeepEqual(value1, value2 [, message]);</code>.</td>
     </tr>
@@ -478,8 +576,8 @@ function autoTest () {
       <td>Same as <code>celestra.assertStrictEqual(value1, value2 [, message]);</code>.</td>
     </tr>
     <tr>
-      <td><code>assert.isTrue(condition [, message]);</code></td>
-      <td>Same as <code>celestra.assertTrue(condition [, message]);</code>.</td>
+      <td><code>assert.throwsError(callback [, message]);</code></td>
+      <td>Same as <code>celestra.assertThrowsError(callback [, message]);</code>.</td>
     </tr>
     <tr>
       <td><code>assert.type(value, typeString OR constructor [, message]);</code></td>

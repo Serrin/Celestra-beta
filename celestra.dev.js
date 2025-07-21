@@ -1,6 +1,6 @@
 /**
  * @name Celestra
- * @version 5.7.4 dev
+ * @version 5.7.5 dev
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
@@ -557,12 +557,53 @@ function timestampID (size = 21,
 /** Assertion API **/
 
 
-/* assertType(value: any, type: string): value or thrown error */
-/* assertType(value: any, constructor: function): value or thrown error */
-function assertType (v, rType, message) {
+/* assertThrowsError(callback: any [, message]): error or thrown error */
+function assertThrowsError (callback, msg) {
+    if (typeof callback !== "function") {
+    throw new TypeError(
+      "[assertIsError] TypeError: " + callback + " is not a function"
+        + (msg ? " - " + msg : "")
+    );
+  }
+  try { callback(); } catch (e) { return e; }
+  throw new Error(
+    "[assertThrowsError] Assertion failed" + (msg ? ": " + msg : "")
+  );
+}
+
+
+/* assertIsNotNil(value: any [, message]): value or thrown error */
+function assertIsNotNil (v, msg) {
+  if (v == null) {
+    throw new TypeError(
+      "[assertIsNotNil] Assertion failed: " + v + " is null or undefined"
+        + (msg ? " - " + msg : "")
+    );
+  }
+  return v;
+}
+
+
+/* assertIsNil(value: any [, message]): value or thrown error */
+function assertIsNil (v, msg) {
+  if (v != null) {
+    throw new TypeError(
+      "[assertIsNil] Assertion failed: " + v + " is not null or undefined"
+        + (msg ? " - " + msg : "")
+    );
+  }
+  return v;
+}
+
+
+/* assertType(value: any, type: string [, message]): value or thrown error */
+/* assertType(value: any, constructor: function [, message]):
+  value or thrown error */
+function assertType (v, rType, msg) {
   if (typeof rType !== "string" && typeof rType !== "function") {
     throw new TypeError(
-      "[assertType] TypeError: " + rType + " is not a string of function"
+      "[assertType] TypeError: " + rType + " is not a string or function"
+        + (msg ? " - " + msg : "")
     );
   }
   if (typeof rType === "string") {
@@ -570,7 +611,7 @@ function assertType (v, rType, message) {
         : typeof v !== rType) {
       throw new TypeError(
         "[assertType] Assertion failed: " + v + " is not a " + rType
-          + (message ? " - " + message : "")
+          + (msg ? " - " + msg : "")
       );
     }
   }
@@ -579,7 +620,7 @@ function assertType (v, rType, message) {
       throw new TypeError(
         "[assertType] Assertion failed: " + v + " is not a "
           + ((rType.name !== "") ? rType.name : rType)
-          + (message ? " - " + message : "")
+          + (msg ? " - " + msg : "")
       );
     }
   }
@@ -587,12 +628,14 @@ function assertType (v, rType, message) {
 }
 
 
-/* assertNotType(value: any, type: string): value or thrown error */
-/* assertNotType(value: any, constructor: function): value or thrown error */
-function assertNotType (v, rType, message) {
+/* assertNotType(value: any, type: string [, message]): value or thrown error */
+/* assertNotType(value: any, constructor: function [, message]):
+  value or thrown error */
+function assertNotType (v, rType, msg) {
   if (typeof rType !== "string" && typeof rType !== "function") {
     throw new TypeError(
-      "[assertNotType] TypeError: " + rType + " is not a string of function"
+      "[assertNotType] TypeError: " + rType + " is not a string or function"
+        + (msg ? " - " + msg : "")
     );
   }
   if (typeof rType === "string") {
@@ -600,7 +643,7 @@ function assertNotType (v, rType, message) {
         : typeof v === rType) {
       throw new TypeError(
         "[assertNotType] Assertion failed: " + v + " is a " + rType
-          + (message ? " - " + message : "")
+          + (msg ? " - " + msg : "")
       );
     }
   }
@@ -609,7 +652,7 @@ function assertNotType (v, rType, message) {
       throw new TypeError(
         "[assertNotType] Assertion failed: " + v + " is a "
           + ((rType.name !== "") ? rType.name : rType)
-          + (message ? " - " + message : "")
+          + (msg ? " - " + msg : "")
       );
     }
   }
@@ -618,33 +661,27 @@ function assertNotType (v, rType, message) {
 
 
 /* assert(value: any [, message]): true OR thrown error */
-function assert (c, message) {
+function assert (c, msg) {
   if (!c) {
-    throw new Error("[assert] Assertion failed"
-      + (message ? ": " + message : "")
-    );
+    throw new Error("[assert] Assertion failed" + (msg ? ": " + msg : ""));
   }
   return true;
 }
 
 
 /* assertTrue(value: any [, message]): true OR thrown error */
-function assertTrue (c, message) {
+function assertTrue (c, msg) {
   if (!c) {
-    throw new Error("[assertTrue] Assertion failed"
-      + (message ? ": " + message : "")
-    );
+    throw new Error("[assertTrue] Assertion failed" + (msg ? ": " + msg : ""));
   }
   return true;
 }
 
 
 /* assertFalse(value: any [, message]): true OR thrown error */
-function assertFalse (c, message) {
+function assertFalse (c, msg) {
   if (c) {
-    throw new Error("[assertFalse] Assertion failed"
-      + (message ? ": " + message : "")
-    );
+    throw new Error("[assertFalse] Assertion failed" + (msg ? ": " + msg : ""));
   }
   return true;
 }
@@ -652,11 +689,9 @@ function assertFalse (c, message) {
 
 /* assertEqual(x: any, y: any [, message]): true OR thrown error */
 /* loose equality + NaN equality */
-function assertEqual (x, y, message) {
+function assertEqual (x, y, msg) {
   if (!(x == y || (x !== x && y !== y))) {
-    throw new Error("[assertEqual] Assertion failed"
-      + (message ? ": " + message : "")
-    );
+    throw new Error("[assertEqual] Assertion failed" + (msg ? ": " + msg : ""));
   }
   return true;
 }
@@ -664,10 +699,10 @@ function assertEqual (x, y, message) {
 
 /* assertStrictEqual(x: any, y: any [, message]): true OR thrown error */
 /* SameValue equality */
-function assertStrictEqual (x, y, message) {
+function assertStrictEqual (x, y, msg) {
   if (!((x === y) ? (x !== 0 || 1/x === 1/y) : (x !== x && y !== y))) {
     throw new Error("[assertStrictEqual] Assertion failed"
-      + (message ? ": " + message : "")
+      + (msg ? ": " + msg : "")
     );
   }
   return true;
@@ -676,10 +711,10 @@ function assertStrictEqual (x, y, message) {
 
 /* assertNotEqual(x: any, y: any [, message]): true OR thrown error */
 /* loose equality + NaN equality */
-function assertNotEqual (x, y, message) {
+function assertNotEqual (x, y, msg) {
   if (x == y || (x !== x && y !== y)) {
     throw new Error("[assertNotEqual] Assertion failed"
-      + (message ? ": " + message : "")
+      + (msg ? ": " + msg : "")
     );
   }
   return true;
@@ -688,10 +723,10 @@ function assertNotEqual (x, y, message) {
 
 /* assertNotStrictEqual(x: any, y: any [, message]): true OR thrown error */
 /* SameValue equality */
-function assertNotStrictEqual (x, y, message) {
+function assertNotStrictEqual (x, y, msg) {
   if ((x === y) ? (x !== 0 || 1/x === 1/y) : (x !== x && y !== y)) {
     throw new Error("[assertNotStrictEqual] Assertion failed"
-      + (message ? ": " + message : "")
+      + (msg ? ": " + msg : "")
     );
   }
   return true;
@@ -699,7 +734,7 @@ function assertNotStrictEqual (x, y, message) {
 
 
 /* assertDeepEqual(x: any, y: any [, message]): true OR thrown error */
-function assertDeepEqual (x, y, message) {
+function assertDeepEqual (x, y, msg) {
   function _isDeepEqual (x, y) {
     /* helper functions */
     const _deepType = (x) =>
@@ -828,7 +863,7 @@ function assertDeepEqual (x, y, message) {
   /* throw error OR return true */
   if (!_isDeepEqual(x, y)) {
     throw new Error("[assertDeepEqual] Assertion failed"
-      + (message ? ": " + message : "")
+      + (msg ? ": " + msg : "")
     );
   }
   return true;
@@ -836,7 +871,7 @@ function assertDeepEqual (x, y, message) {
 
 
 /* assertNotDeepStrictEqual(x: any, y: any [, message]): boolean */
-function assertNotDeepStrictEqual (x, y, message) {
+function assertNotDeepStrictEqual (x, y, msg) {
   function _isDeepStrictEqual (x, y) {
     /* helper functions */
     const _deepType = (x) =>
@@ -980,7 +1015,7 @@ function assertNotDeepStrictEqual (x, y, message) {
   /* throw error OR return true */
   if (_isDeepStrictEqual(x, y)) {
     throw new Error("[assertNotDeepStrictEqual] Assertion failed"
-      + (message ? ": " + message : "")
+      + (msg ? ": " + msg : "")
     );
   }
   return true;
@@ -988,7 +1023,7 @@ function assertNotDeepStrictEqual (x, y, message) {
 
 
 /* assertNotDeepEqual(x: any, y: any [, message]): true OR thrown error */
-function assertNotDeepEqual (x, y, message) {
+function assertNotDeepEqual (x, y, msg) {
   function _isDeepEqual (x, y) {
     /* helper functions */
     const _deepType = (x) =>
@@ -1117,7 +1152,7 @@ function assertNotDeepEqual (x, y, message) {
   /* throw error OR return true */
   if (_isDeepEqual(x, y)) {
     throw new Error("[assertNotDeepEqual] Assertion failed"
-      + (message ? ": " + message : "")
+      + (msg ? ": " + msg : "")
     );
   }
   return true;
@@ -1125,7 +1160,7 @@ function assertNotDeepEqual (x, y, message) {
 
 
 /* assertDeepStrictEqual(x: any, y: any [, message]): true OR thrown error */
-function assertDeepStrictEqual (x, y, message) {
+function assertDeepStrictEqual (x, y, msg) {
   function _isDeepStrictEqual (x, y) {
     /* helper functions */
     const _deepType = (x) =>
@@ -1269,7 +1304,7 @@ function assertDeepStrictEqual (x, y, message) {
   /* throw error OR return true */
   if (!_isDeepStrictEqual(x, y)) {
     throw new Error("[assertDeepStrictEqual] Assertion failed"
-      + (message ? ": " + message : "")
+      + (msg ? ": " + msg : "")
     );
   }
   return true;
@@ -2336,7 +2371,7 @@ const isNullOrUndefined = (v) => (v == null);
 
 
 /* isNil(value: any): boolean */
-const isNil = (v) => (v == null || v !== v);
+const isNil = (v) => (v == null);
 
 
 /* isPrimitive(value: any): boolean */
@@ -3519,7 +3554,7 @@ const _slice = Function.prototype.call.bind(Array.prototype.slice);
 /** object header **/
 
 
-const VERSION = "Celestra v5.7.4 dev";
+const VERSION = "Celestra v5.7.5 dev";
 
 
 /* celestra.noConflict(): celestra object */
@@ -3567,6 +3602,9 @@ const celestra = {
   nanoid,
   timestampID,
   /** Assertion API **/
+  assertThrowsError,
+  assertIsNotNil,
+  assertIsNil,
   assertType,
   assertNotType,
   assert,
