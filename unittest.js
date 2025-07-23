@@ -999,16 +999,51 @@ CEL.domClear(token1);
 CUT.isEqual("domClear();", 0, token1.children.length);
 
 
-/* assertThrowsError(); */
-CUT.isTrue("assertThrowsError(); 01 ok",
-  Error.isError(CEL.assertThrowsError(() => { throw new Error() }))
+/* assertFail(); */
+CUT.isError("assertFail(); 01 error", () => CEL.assertFail(42));
+CUT.isError("assertFail(); 02 error", () => CEL.assertFail(new Error("ipsum")));
+
+
+/* assertMatch(); */
+CUT.isTrue("assertMatch(); 01 ok",
+  CEL.assertMatch("table football", /fo+/, "lorem")
 );
-CUT.isError("not strict assert.throwsError(); 02 error",
-  () => CEL.assertThrowsError(42)
+CUT.isError("assertMatch(); 02 error",
+  () => CEL.assertMatch("table football", /go+/, "lorem")
 );
-CUT.isError("not strict assert.throwsError(); 03 error",
-  () => CEL.assertThrowsError(
-    () => {}, "not strict assert.throwsError(); 03 error"
+CUT.isError("assertMatch(); 03 error",
+  () => CEL.assertMatch(42, /go+/, "lorem")
+);
+CUT.isError("assertMatch(); 04 error",
+  () => CEL.assertMatch("table football", 42, "lorem")
+);
+
+
+/* assertDoesNotMatch(); */
+CUT.isTrue("assertDoesNotMatch(); 01 ok",
+  CEL.assertDoesNotMatch("table football", /go+/, "lorem")
+);
+CUT.isError("assertDoesNotMatch(); 02 error",
+  () => CEL.assertDoesNotMatch("table football", /fo+/, "lorem")
+);
+CUT.isError("assertDoesNotMatch(); 03 error",
+  () => CEL.assertDoesNotMatch(42, /go+/, "lorem")
+);
+CUT.isError("assertDoesNotMatch(); 04 error",
+  () => CEL.assertDoesNotMatch("table football", 42, "lorem")
+);
+
+
+/* assertThrows(); */
+CUT.isTrue("assertThrows(); 01 ok",
+  Error.isError(CEL.assertThrows(() => { throw new Error() }))
+);
+CUT.isError("not strict assert.assertThrows(); 02 error",
+  () => CEL.assertThrows(42)
+);
+CUT.isError("not strict assert.assertThrows(); 03 error",
+  () => CEL.assertThrows(
+    () => {}, "not strict assert.assertThrows(); 03 error"
   )
 );
 

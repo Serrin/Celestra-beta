@@ -44,17 +44,48 @@ function test (message, error = false, callback) {
 function autoTest () {
 
   /* default strict */
+  
+  test("strict assert.fail(); 01 error", true, () => assert.fail("lorem"));
+  test("strict assert.fail(); 02 error", true, 
+    () => assert.fail(new Error("ipsum"))
+  );
+  
+  test("strict assert.match(); 01 ok", false, 
+    () => assert.match("table football", /fo+/, "lorem")
+  );
+  test("strict assert.match(); 02 error", true, 
+    () => assert.match("table football", /go+/, "lorem")
+  );
+  test("strict assert.match(); 03 error", true, 
+    () => assert.match(42, /go+/, "lorem")
+  );
+  test("strict assert.match(); 04 error", true, 
+    () => assert.match("table football", 42, "lorem")
+  );
+  
+  test("strict assert.doesNotMatch(); 01 error", true, 
+    () => assert.doesNotMatch("table football", /fo+/, "lorem")
+  );
+  test("strict assert.doesNotMatch(); 02 ok", false, 
+    () => assert.doesNotMatch("table football", /go+/, "lorem")
+  );
+  test("strict assert.doesNotMatch(); 03 error", true, 
+    () => assert.doesNotMatch(42, /go+/, "lorem")
+  );
+  test("strict assert.doesNotMatch(); 04 error", true, 
+    () => assert.doesNotMatch("table football", 42, "lorem")
+  );
 
-  test("strict assert.throwsError(); 01 ok", false,
-    () => Error.isError(assert.throwsError(
+  test("strict assert.Throws(); 01 ok", false,
+    () => Error.isError(assert.Throws(
       () => { throw new Error() })
     ) === true
   );
-  test("strict assert.throwsError(); 02 error", true,
-    () => assert.throwsError(42)
+  test("strict assert.Throws(); 02 error", true,
+    () => assert.Throws(42)
   );
-  test("strict assert.throwsError(); 03 error", true,
-    () => assert.throwsError(() => {}, "strict assert.throwsError(); 03 error")
+  test("strict assert.Throws(); 03 error", true,
+    () => assert.Throws(() => {}, "strict assert.Throws(); 03 error")
   );
 
   test("strict assert(); 01 ok", false,
@@ -253,20 +284,51 @@ function autoTest () {
   );
 
   /* not strict */
+  
+  test("not strict assert.fail(); 01 error", true, () => assert.fail("lorem"));
+  test("not strict assert.fail(); 02 error", true, 
+    () => assert.fail(new Error("ipsum"))
+  );
+  
+  test("not strict assert.match(); 01 ok", false, 
+    () => assert.match("table football", /fo+/, "lorem")
+  );
+  test("not strict assert.match(); 02 error", true, 
+    () => assert.match("table football", /go+/, "lorem")
+  );
+  test("not strict assert.match(); 03 error", true, 
+    () => assert.match(42, /go+/, "lorem")
+  );
+  test("not strict assert.match(); 04 error", true, 
+    () => assert.match("table football", 42, "lorem")
+  );
+  
+  test("not strict assert.doesNotMatch(); 01 error", true, 
+    () => assert.doesNotMatch("table football", /fo+/, "lorem")
+  );
+  test("not strict assert.doesNotMatch(); 02 ok", false, 
+    () => assert.doesNotMatch("table football", /go+/, "lorem")
+  );
+  test("not strict assert.doesNotMatch(); 03 error", true, 
+    () => assert.doesNotMatch(42, /go+/, "lorem")
+  );
+  test("not strict assert.doesNotMatch(); 04 error", true, 
+    () => assert.doesNotMatch("table football", 42, "lorem")
+  );  
 
   assert.strict = false;
 
-  test("not strict assert.throwsError(); 01 ok", false,
-    () => Error.isError(assert.throwsError(
+  test("not strict assert.Throws(); 01 ok", false,
+    () => Error.isError(assert.Throws(
       () => { throw new Error() })
     ) === true
   );
-  test("not strict assert.throwsError(); 02 error", true,
-    () => assert.throwsError(42)
+  test("not strict assert.Throws(); 02 error", true,
+    () => assert.Throws(42)
   );
-  test("not strict assert.throwsError(); 03 error", true,
-    () => assert.throwsError(
-      () => {}, "not strict assert.throwsError(); 03 error"
+  test("not strict assert.Throws(); 03 error", true,
+    () => assert.Throws(
+      () => {}, "not strict assert.Throws(); 03 error"
     )
   );
 
@@ -531,9 +593,16 @@ function autoTest () {
       <td><code>assert.deepEqual(value1, value2 [, message]);</code></td>
       <td>Same as <code>celestra.deepStrictEqual(value1, value2 [, message]);</code> or <code>celestra.assertDeepEqual(value1, value2 [, message]);</code>.</td>
     </tr>
+      <td><code>assert.doesNotMatch(string, regexp, message); </code></td>
+      <td>Same as <code>celestra.assertDoesNotMatch(string, regexp, message);</code>.</td>
+    </tr>
     <tr>
       <td><code>assert.equal(value1, value2 [, message]);</code></td>
       <td>Same as <code>celestra.assertStrictEqual(value1, value2 [, message]);</code> or <code>celestra.assertEqual(value1, value2 [, message]);</code>.</td>
+    </tr>
+    <tr>
+      <td><code>assert.fail(message OR error);</code></td>
+      <td>Same as <code>celestra.assertFail(message OR error);</code>.</td>
     </tr>
     <tr>
       <td><code>assert.isFalse(condition [, message]);</code></td>
@@ -550,6 +619,10 @@ function autoTest () {
     <tr>
       <td><code>assert.isTrue(condition [, message]);</code></td>
       <td>Same as <code>celestra.assertTrue(condition [, message]);</code>.</td>
+    </tr>
+    <tr>
+      <td><code>assert.match(string, regexp, message); </code></td>
+      <td>Same as <code>celestra.assertMatch(string,regexp, message);</code>.</td>
     </tr>
     <tr>
       <td><code>assert.notDeepEqual(value1, value2 [, message]);</code></td>
@@ -576,8 +649,8 @@ function autoTest () {
       <td>Same as <code>celestra.assertStrictEqual(value1, value2 [, message]);</code>.</td>
     </tr>
     <tr>
-      <td><code>assert.throwsError(callback [, message]);</code></td>
-      <td>Same as <code>celestra.assertThrowsError(callback [, message]);</code>.</td>
+      <td><code>assert.Throws(callback [, message]);</code></td>
+      <td>Same as <code>celestra.assertThrows(callback [, message]);</code>.</td>
     </tr>
     <tr>
       <td><code>assert.type(value, typeString OR constructor [, message]);</code></td>

@@ -645,17 +645,27 @@ console.log(o2);
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 aren't deep equals. (<i>Deep strict equality + NaN equality: primitives (SameValue - Object.is()), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer</i>) The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
     </tr>
     <tr>
+      <td><code>assertDoesNotMatch(string, regexp, message);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the string matches with the regexp. The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
+    </tr>
+    <tr>
       <td><code>assertEqual(value1, value2 [, message]);</code></td>
       <td>
         <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 aren't equals. (<i>Loose equality + NaN equality</i>) The message parameter is optional. The return value is <code>true</code>, when the test was success.
       </td>
     </tr>
     <tr>
+      <td><code>assertFail(message OR error);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>This function always throws an error. If the argument is an error, then this error will be thrown, else a new error with the message.
+      </td>
+    </tr>       
+    <tr>
       <td><code>assertFalse(condition [, message]);</code></td>
       <td>
         <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the condition is truthy. The message parameter is optional. The return value is <code>true</code>, when the test was success.
       </td>
-    </tr>    
+    </tr>     
     <tr>
       <td><code>assertIsNil(value [, message]);</code></td>
       <td>
@@ -667,6 +677,10 @@ console.log(o2);
       <td>
         <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value is null or undefined, else the given value is the return value. The message parameter is optional.
       </td>
+    </tr>
+    <tr>
+      <td><code>assertMatch(string, regexp, message);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the string doesn't match with the regexp. The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
     </tr>
     <tr>
       <td><code>assertNotDeepEqual(value1, value2, [, message]);</code></td>
@@ -707,7 +721,7 @@ console.log(o2);
       </td>
     </tr>
     <tr>
-      <td><code>assertThrowsError(callback: any [, message]);</code></td>
+      <td><code>assertThrows(callback: any [, message]);</code></td>
       <td>
         <span class="info">Stability: 4 - Stable.</span><br/>This function catches and returns the error, if the callback throws an error. In other cases throws an error with the message. The message parameter is optional.
       </td>

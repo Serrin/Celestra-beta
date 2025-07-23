@@ -300,7 +300,7 @@ const BASE62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 const WORDSAFEALPHABET= "23456789CFGHJMPQRVWXcfghjmpqvwx";
 
 
-/* deleteOwnProperty(object, property [,Throw = false]): number OR thrown error*/
+/* deleteOwnProperty(object, property [,Throw = false]): number | thrown error*/
 function deleteOwnProperty (O, P, Throw = false) {
   if (Object.hasOwn(O, P)) {
     delete O[P];
@@ -312,7 +312,7 @@ function deleteOwnProperty (O, P, Throw = false) {
 }
 
 
-/* toObject(value: any): object OR symbol OR function OR thrown error */
+/* toObject(value: any): object | symbol | function | thrown error */
 function toObject (O) {
   if (O == null) { throw new TypeError("celestra.toObject(); error: " + O); }
   return (["object", "function"].includes(typeof O)) ? O : Object(O);
@@ -416,7 +416,7 @@ const obj2string = (o) => Object.keys(o).reduce(
 
 
 /* classof(variable: any): string */
-/* classof(variable: any [, type: string [, throw =false]]): boolean OR throw */
+/* classof(variable: any [, type: string [, throw =false]]): boolean | throw */
 function classof (v, type, Throw = false) {
   var ot = Object.prototype.toString.call(v).slice(8, -1).toLowerCase();
   if (arguments.length < 2) { return ot; }
@@ -429,7 +429,7 @@ function classof (v, type, Throw = false) {
 
 
 /* getType(variable: any): string */
-/* getType(variable: any [, type: string [, throw =false]]): boolean OR throw */
+/* getType(variable: any [, type: string [, throw =false]]): boolean | throw */
 function getType (v, type, Throw = false) {
   var ot = Object.prototype.toString.call(v).slice(8, -1).toLowerCase();
   if (arguments.length < 2) { return ot; }
@@ -485,7 +485,7 @@ const filterIn = (o, fn) => Object.keys(o)
   .reduce((r, p) => { if (fn(o[p], p, o)) { r[p] = o[p]; } return r; }, {});
 
 
-/* popIn(object, property: string): any OR undefined*/
+/* popIn(object, property: string): any | undefined*/
 function popIn (o,p) {
   if (Object.hasOwn(o, p)) {
     var v = o[p];
@@ -556,23 +556,80 @@ function timestampID (size = 21,
 
 /** Assertion API **/
 
+/* assertThrows(message | error [, message]): thrown error */
+function assertFail(msg) {
+  if (Error.isError(msg)) {
+    throw msg;
+  } else {
+    throw new Error(
+      "[assertFail] Assertion failed" + (msg ? ": " + msg : "")
+    );
+  }
+}
 
-/* assertThrowsError(callback: any [, message]): error or thrown error */
-function assertThrowsError (callback, msg) {
-    if (typeof callback !== "function") {
+
+/* assertMatch(string, regexp [, message]): true | thrown error */
+function assertMatch(string, regexp, msg) {
+  if (typeof string !== "string") {
     throw new TypeError(
-      "[assertIsError] TypeError: " + callback + " is not a function"
+      "[assertMatch] TypeError: " + string + " is not a string"
+        + (msg ? " - " + msg : "")
+    );
+  }
+  if (!(regexp instanceof RegExp)) {
+    throw new TypeError(
+      "[assertMatch] TypeError: " + regexp + " is not a RegExp"
+        + (msg ? " - " + msg : "")
+    );
+  }
+  if (!(regexp.test(string))) {
+        throw new Error(
+      "[assertMatch] Assertion failed" + (msg ? ": " + msg : "")
+    );
+  }
+  return true;
+}
+
+
+/* assertDoesNotMatch(string, regexp [, message]): true | thrown error */
+function assertDoesNotMatch(string, regexp, msg) {
+  if (typeof string !== "string") {
+    throw new TypeError(
+      "[assertDoesNotMatch] TypeError: " + string + " is not a string"
+        + (msg ? " - " + msg : "")
+    );
+  }
+  if (!(regexp instanceof RegExp)) {
+    throw new TypeError(
+      "[assertDoesNotMatch] TypeError: " + regexp + " is not a RegExp"
+        + (msg ? " - " + msg : "")
+    );
+  }
+  if (regexp.test(string)) {
+        throw new Error(
+      "[assertDoesNotMatch] Assertion failed" + (msg ? ": " + msg : "")
+    );
+  }
+  return true;
+}
+
+
+/* assertThrows(callback: any [, message]): error | thrown error */
+function assertThrows (callback, msg) {
+  if (typeof callback !== "function") {
+    throw new TypeError(
+      "[assertThrows] TypeError: " + callback + " is not a function"
         + (msg ? " - " + msg : "")
     );
   }
   try { callback(); } catch (e) { return e; }
   throw new Error(
-    "[assertThrowsError] Assertion failed" + (msg ? ": " + msg : "")
+    "[assertThrow] Assertion failed" + (msg ? ": " + msg : "")
   );
 }
 
 
-/* assertIsNotNil(value: any [, message]): value or thrown error */
+/* assertIsNotNil(value: any [, message]): value | thrown error */
 function assertIsNotNil (v, msg) {
   if (v == null) {
     throw new TypeError(
@@ -584,7 +641,7 @@ function assertIsNotNil (v, msg) {
 }
 
 
-/* assertIsNil(value: any [, message]): value or thrown error */
+/* assertIsNil(value: any [, message]): value | thrown error */
 function assertIsNil (v, msg) {
   if (v != null) {
     throw new TypeError(
@@ -596,9 +653,9 @@ function assertIsNil (v, msg) {
 }
 
 
-/* assertType(value: any, type: string [, message]): value or thrown error */
+/* assertType(value: any, type: string [, message]): value | thrown error */
 /* assertType(value: any, constructor: function [, message]):
-  value or thrown error */
+  value | thrown error */
 function assertType (v, rType, msg) {
   if (typeof rType !== "string" && typeof rType !== "function") {
     throw new TypeError(
@@ -628,9 +685,9 @@ function assertType (v, rType, msg) {
 }
 
 
-/* assertNotType(value: any, type: string [, message]): value or thrown error */
+/* assertNotType(value: any, type: string [, message]): value | thrown error */
 /* assertNotType(value: any, constructor: function [, message]):
-  value or thrown error */
+  value | thrown error */
 function assertNotType (v, rType, msg) {
   if (typeof rType !== "string" && typeof rType !== "function") {
     throw new TypeError(
@@ -660,7 +717,7 @@ function assertNotType (v, rType, msg) {
 }
 
 
-/* assert(value: any [, message]): true OR thrown error */
+/* assert(value: any [, message]): true | thrown error */
 function assert (c, msg) {
   if (!c) {
     throw new Error("[assert] Assertion failed" + (msg ? ": " + msg : ""));
@@ -669,7 +726,7 @@ function assert (c, msg) {
 }
 
 
-/* assertTrue(value: any [, message]): true OR thrown error */
+/* assertTrue(value: any [, message]): true | thrown error */
 function assertTrue (c, msg) {
   if (!c) {
     throw new Error("[assertTrue] Assertion failed" + (msg ? ": " + msg : ""));
@@ -678,7 +735,7 @@ function assertTrue (c, msg) {
 }
 
 
-/* assertFalse(value: any [, message]): true OR thrown error */
+/* assertFalse(value: any [, message]): true | thrown error */
 function assertFalse (c, msg) {
   if (c) {
     throw new Error("[assertFalse] Assertion failed" + (msg ? ": " + msg : ""));
@@ -687,7 +744,7 @@ function assertFalse (c, msg) {
 }
 
 
-/* assertEqual(x: any, y: any [, message]): true OR thrown error */
+/* assertEqual(x: any, y: any [, message]): true | thrown error */
 /* loose equality + NaN equality */
 function assertEqual (x, y, msg) {
   if (!(x == y || (x !== x && y !== y))) {
@@ -697,7 +754,7 @@ function assertEqual (x, y, msg) {
 }
 
 
-/* assertStrictEqual(x: any, y: any [, message]): true OR thrown error */
+/* assertStrictEqual(x: any, y: any [, message]): true | thrown error */
 /* SameValue equality */
 function assertStrictEqual (x, y, msg) {
   if (!((x === y) ? (x !== 0 || 1/x === 1/y) : (x !== x && y !== y))) {
@@ -709,7 +766,7 @@ function assertStrictEqual (x, y, msg) {
 }
 
 
-/* assertNotEqual(x: any, y: any [, message]): true OR thrown error */
+/* assertNotEqual(x: any, y: any [, message]): true | thrown error */
 /* loose equality + NaN equality */
 function assertNotEqual (x, y, msg) {
   if (x == y || (x !== x && y !== y)) {
@@ -721,7 +778,7 @@ function assertNotEqual (x, y, msg) {
 }
 
 
-/* assertNotStrictEqual(x: any, y: any [, message]): true OR thrown error */
+/* assertNotStrictEqual(x: any, y: any [, message]): true | thrown error */
 /* SameValue equality */
 function assertNotStrictEqual (x, y, msg) {
   if ((x === y) ? (x !== 0 || 1/x === 1/y) : (x !== x && y !== y)) {
@@ -733,7 +790,7 @@ function assertNotStrictEqual (x, y, msg) {
 }
 
 
-/* assertDeepEqual(x: any, y: any [, message]): true OR thrown error */
+/* assertDeepEqual(x: any, y: any [, message]): true | thrown error */
 function assertDeepEqual (x, y, msg) {
   function _isDeepEqual (x, y) {
     /* helper functions */
@@ -860,7 +917,7 @@ function assertDeepEqual (x, y, msg) {
     /* default return false */
     return false;
   }
-  /* throw error OR return true */
+  /* throw error | return true */
   if (!_isDeepEqual(x, y)) {
     throw new Error("[assertDeepEqual] Assertion failed"
       + (msg ? ": " + msg : "")
@@ -1012,7 +1069,7 @@ function assertNotDeepStrictEqual (x, y, msg) {
     /* default return false */
     return false;
   }
-  /* throw error OR return true */
+  /* throw error | return true */
   if (_isDeepStrictEqual(x, y)) {
     throw new Error("[assertNotDeepStrictEqual] Assertion failed"
       + (msg ? ": " + msg : "")
@@ -1022,7 +1079,7 @@ function assertNotDeepStrictEqual (x, y, msg) {
 }
 
 
-/* assertNotDeepEqual(x: any, y: any [, message]): true OR thrown error */
+/* assertNotDeepEqual(x: any, y: any [, message]): true | thrown error */
 function assertNotDeepEqual (x, y, msg) {
   function _isDeepEqual (x, y) {
     /* helper functions */
@@ -1149,7 +1206,7 @@ function assertNotDeepEqual (x, y, msg) {
     /* default return false */
     return false;
   }
-  /* throw error OR return true */
+  /* throw error | return true */
   if (_isDeepEqual(x, y)) {
     throw new Error("[assertNotDeepEqual] Assertion failed"
       + (msg ? ": " + msg : "")
@@ -1159,7 +1216,7 @@ function assertNotDeepEqual (x, y, msg) {
 }
 
 
-/* assertDeepStrictEqual(x: any, y: any [, message]): true OR thrown error */
+/* assertDeepStrictEqual(x: any, y: any [, message]): true | thrown error */
 function assertDeepStrictEqual (x, y, msg) {
   function _isDeepStrictEqual (x, y) {
     /* helper functions */
@@ -1301,7 +1358,7 @@ function assertDeepStrictEqual (x, y, msg) {
     /* default return false */
     return false;
   }
-  /* throw error OR return true */
+  /* throw error | return true */
   if (!_isDeepStrictEqual(x, y)) {
     throw new Error("[assertDeepStrictEqual] Assertion failed"
       + (msg ? ": " + msg : "")
@@ -1419,7 +1476,7 @@ const strHTMLUnEscape = (s) => String(s)
 const qsa = (s, c = document) => Array.from(c.querySelectorAll(s));
 
 
-/* qs(selector: string [, context: element object]): element object OR null */
+/* qs(selector: string [, context: element object]): element object | null */
 const qs = (s, c = document) => c.querySelector(s);
 
 
@@ -1719,7 +1776,7 @@ function createFile (fln, c, dt) {
 }
 
 
-/* getFullscreen(): element object OR undefined */
+/* getFullscreen(): element object | undefined */
 const getFullscreen = () => ( document.fullscreenElement
   || document.mozFullScreenElement
   || document.webkitFullscreenElement
@@ -1935,7 +1992,7 @@ function ajax (o) {
 
 
 /* toPrimitiveValue(value: any):
-  primitive OR object OR symbol OR function OR thrown error */
+  primitive | object | symbol | function | thrown error */
 function toPrimitiveValue (O) {
   /* null, undefined, Function, Boolean, BigInt, Number, String, Symbol */
   if (O == null || typeof O !== "object") { return O; }
@@ -1952,7 +2009,7 @@ function toPrimitiveValue (O) {
 const isPropertyKey = (v) => (typeof v === "string" || typeof v === "symbol");
 
 
-/* toPropertyKey(value: any): string OR symbol */
+/* toPropertyKey(value: any): string | symbol */
 const toPropertyKey = (v) => (typeof v === "symbol" ? v : String(v));
 
 
@@ -2000,7 +2057,7 @@ const isSameInstance = (x, y, Contructor) =>
   (x instanceof Contructor && y instanceof Contructor);
 
 
-/* isCoercedObject(object: any): constructor function OR false */
+/* isCoercedObject(object: any): constructor function | false */
 function isCoercedObject (O) {
   if (O != null && typeof O === "object") {
     if (O instanceof Number) { return Number; }
@@ -2566,7 +2623,7 @@ function clearCookies (path = "/", domain, secure, SameSite = "Lax", HttpOnly) {
 /** Collections API **/
 
 
-/* unique(iterator [, resolver: string OR function]): array */
+/* unique(iterator [, resolver: string | function]): array */
 function unique (it, resolver) {
   if (resolver == null) { return [...new Set(it)]; }
   if (typeof resolver === "string") {
@@ -2603,7 +2660,7 @@ function arrayDeepClone ([...a]) {
 }
 
 
-/* arrayCreate(length: any): array OR thrown error */
+/* arrayCreate(length: any): array | thrown error */
 function arrayCreate (l = 0) {
   l = Number(l);
 	if (1 / l === -Infinity) { l = 0; }
@@ -3164,7 +3221,7 @@ const isLessThan =
   (v1, v2, leftFirst = true) => (leftFirst ? (v1 < v2) : (v1 > v2));
 
 
-/* requireObjectCoercible(value: any): value OR thrown error */
+/* requireObjectCoercible(value: any): value | thrown error */
 function requireObjectCoercible (O) {
   if (O == null) { throw new TypeError(
     Object.prototype.toString.call(O) + " is not coercible to Object.");
@@ -3173,7 +3230,7 @@ function requireObjectCoercible (O) {
 }
 
 
-/* getInV(value: any, property: string): any OR thrown error */
+/* getInV(value: any, property: string): any | thrown error */
 function getInV (O, P) {
   if (O == null ) {
     throw TypeError("celestra.getInV(); error: " + O +"[" + P + "]");
@@ -3200,7 +3257,7 @@ function setIn (O, P, V, Throw = false) {
 const hasIn = (O, P) => (P in O);
 
 
-/* toPrimitive(value: any): primitive OR thrown error */
+/* toPrimitive(value: any): primitive | thrown error */
 function toPrimitive (O, hint = "default") {
   const _apply = Function.prototype.call.bind(Function.prototype.apply);
   const _isPrimitive = (v) =>
@@ -3239,7 +3296,7 @@ const isSameValue = (v1, v2) =>
 const isSameValueZero = (v1, v2) => (v1 === v2 || (v1 !== v1 && v2 !== v2));
 
 
-/* isSameValueNonNumber(value1: any, value2: any): boolean OR thrown error */
+/* isSameValueNonNumber(value1: any, value2: any): boolean | thrown error */
 function isSameValueNonNumber (x, y) {
   if (typeof x === "number" || typeof y === "number") {
     throw new TypeError(
@@ -3256,7 +3313,7 @@ const createMethodProperty = (O, P, V) => Object.defineProperty(
 );
 
 
-/*createMethodPropertyOrThrow(object, property, value :any): object OR throw*/
+/*createMethodPropertyOrThrow(object, property, value :any): object | throw*/
 function createMethodPropertyOrThrow (O, P, V) {
   Object.defineProperty(O, P, {
     writable: true, enumerable: false, configurable: true, value: V
@@ -3276,7 +3333,7 @@ const createDataProperty = (O, P, V) => Object.defineProperty(
 );
 
 
-/* createDataPropertyOrThrow(object, property, value: any): object OR throw */
+/* createDataPropertyOrThrow(object, property, value: any): object | throw */
 function createDataPropertyOrThrow (O, P, V) {
   Object.defineProperty(O, P, {
     writable: true, enumerable: true, configurable: true, value: V
@@ -3290,7 +3347,7 @@ function createDataPropertyOrThrow (O, P, V) {
 }
 
 
-/* toArray(value: array OR iterable OR arraylike): array */
+/* toArray(value: array | iterable | arraylike): array */
 const toArray = (O) => (Array.isArray(O) ? O : Array.from(O));
 
 
@@ -3308,7 +3365,7 @@ function toInteger (v) {
 }
 
 
-/* toIntegerOrInfinity(value: any): integer OR Infinity OR -Infinity */
+/* toIntegerOrInfinity(value: any): integer | Infinity | -Infinity */
 const toIntegerOrInfinity = (v) =>
   ((v = Math.trunc(+v)) !== v || v === 0) ? 0 : v;
 
@@ -3602,7 +3659,10 @@ const celestra = {
   nanoid,
   timestampID,
   /** Assertion API **/
-  assertThrowsError,
+  assertFail,
+  assertMatch,
+  assertDoesNotMatch,
+  assertThrows,
   assertIsNotNil,
   assertIsNil,
   assertType,

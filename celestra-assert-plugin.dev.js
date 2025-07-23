@@ -56,7 +56,13 @@ assert.isNil = (v, m) => celestra.assertIsNil(v, m);
 
 assert.isNotNil = (v, m) => celestra.assertIsNotNil(v, m);
 
-assert.throwsError = (cb, m) => celestra.assertThrowsError(cb, m);
+assert.Throws = (cb, m) => celestra.assertThrows(cb, m);
+
+assert.fail = (m) => celestra.assertFail(m);
+
+assert.match = (s, r, m) => celestra.assertMatch(s, r, m);
+
+assert.doesNotMatch = (s, r, m) => celestra.assertDoesNotMatch(s, r, m);
 
 window.assert = assert;
 
