@@ -556,14 +556,13 @@ function timestampID (size = 21,
 
 /** Assertion API **/
 
-/* assertThrows(message | error [, message]): thrown error */
+
+/* assertFail(message | error): thrown error */
 function assertFail(msg) {
   if (Error.isError(msg)) {
     throw msg;
   } else {
-    throw new Error(
-      "[assertFail] Assertion failed" + (msg ? ": " + msg : "")
-    );
+    throw new Error("[assertFail] Assertion failed" + (msg ? ": " + msg : ""));
   }
 }
 
@@ -583,7 +582,7 @@ function assertMatch(string, regexp, msg) {
     );
   }
   if (!(regexp.test(string))) {
-        throw new Error(
+    throw new Error(
       "[assertMatch] Assertion failed" + (msg ? ": " + msg : "")
     );
   }
@@ -606,7 +605,7 @@ function assertDoesNotMatch(string, regexp, msg) {
     );
   }
   if (regexp.test(string)) {
-        throw new Error(
+    throw new Error(
       "[assertDoesNotMatch] Assertion failed" + (msg ? ": " + msg : "")
     );
   }
@@ -614,7 +613,7 @@ function assertDoesNotMatch(string, regexp, msg) {
 }
 
 
-/* assertThrows(callback: any [, message]): error | thrown error */
+/* assertThrows(callback: function [, message]): error | thrown error */
 function assertThrows (callback, msg) {
   if (typeof callback !== "function") {
     throw new TypeError(
@@ -623,9 +622,7 @@ function assertThrows (callback, msg) {
     );
   }
   try { callback(); } catch (e) { return e; }
-  throw new Error(
-    "[assertThrow] Assertion failed" + (msg ? ": " + msg : "")
-  );
+  throw new Error("[assertThrow] Assertion failed" + (msg ? ": " + msg : ""));
 }
 
 
@@ -653,10 +650,10 @@ function assertIsNil (v, msg) {
 }
 
 
-/* assertType(value: any, type: string [, message]): value | thrown error */
-/* assertType(value: any, constructor: function [, message]):
+/* assertType(value: any, type: string | constructor [, message]):
   value | thrown error */
 function assertType (v, rType, msg) {
+  const _type = (v) => ((v === null) ? "null" : (typeof v));
   if (typeof rType !== "string" && typeof rType !== "function") {
     throw new TypeError(
       "[assertType] TypeError: " + rType + " is not a string or function"
@@ -664,8 +661,7 @@ function assertType (v, rType, msg) {
     );
   }
   if (typeof rType === "string") {
-    if (rType === "object" ? (v !== null && typeof v !== "object")
-        : typeof v !== rType) {
+    if (_type(v) !== rType) {
       throw new TypeError(
         "[assertType] Assertion failed: " + v + " is not a " + rType
           + (msg ? " - " + msg : "")
@@ -685,10 +681,10 @@ function assertType (v, rType, msg) {
 }
 
 
-/* assertNotType(value: any, type: string [, message]): value | thrown error */
-/* assertNotType(value: any, constructor: function [, message]):
+/* assertNotType(value: any, type: string | constructor [, message]):
   value | thrown error */
 function assertNotType (v, rType, msg) {
+  const _type = (v) => ((v === null) ? "null" : (typeof v));
   if (typeof rType !== "string" && typeof rType !== "function") {
     throw new TypeError(
       "[assertNotType] TypeError: " + rType + " is not a string or function"
@@ -696,8 +692,7 @@ function assertNotType (v, rType, msg) {
     );
   }
   if (typeof rType === "string") {
-    if (rType === "object" ? (v !== null && typeof v === "object")
-        : typeof v === rType) {
+    if (_type(v) === rType) {
       throw new TypeError(
         "[assertNotType] Assertion failed: " + v + " is a " + rType
           + (msg ? " - " + msg : "")
