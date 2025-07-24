@@ -1079,47 +1079,111 @@ CUT.isError("assertIsNotNil(); 04 error",
 );
 
 
-/* assertType(); */
+
+/* assertTypeOf(); */
 token1 = 42;
 token2 = Object(42);
 token3 = [];
-CUT.isEqual("assertType(); 01", token1, CEL.assertType(token1, "number"));
-CUT.isEqual("assertType(); 02", token2, CEL.assertType(token2, Number));
-CUT.isEqual("assertType(); 03", token3, CEL.assertType(token3, Array));
-CUT.isEqual("assertType(); 04", token3, CEL.assertType(token3, Object));
-CUT.isError("assertType(); 05 error",
-  () => CEL.assertType(token1, 42n, "assertType(); 05 error")
+CUT.isEqual("assertTypeOf(); 01", token1, CEL.assertTypeOf(token1, "number"));
+CUT.isError("assertTypeOf(); 02", () => CEL.assertTypeOf(token2, Number));
+CUT.isError("assertTypeOf(); 03", () => CEL.assertTypeOf(token3, Array));
+CUT.isError("assertTypeOf(); 04", () => CEL.assertTypeOf(token3, Object));
+CUT.isError("assertTypeOf(); 05 error",
+  () => CEL.assertTypeOf(token1, 42n, "assertTypeOf(); 05 error")
 );
-CUT.isError("assertType(); 06 error",
-  () => CEL.assertType(token1, Number, "assertType(); 06 error")
+CUT.isError("assertTypeOf(); 06 error",
+  () => CEL.assertTypeOf(token1, Number, "assertTypeOf(); 06 error")
 );
-CUT.isError("assertType(); 07 error",
-  () => CEL.assertType(token3, Map, "assertType(); 07 error")
+CUT.isError("assertTypeOf(); 07 error",
+  () => CEL.assertTypeOf(token3, Map, "assertTypeOf(); 07 error")
 );
 
 
-/* assertNotType(); */
+/* assertInstanceOf(); */
 token1 = 42;
 token2 = Object(42);
 token3 = [];
-CUT.isError("assertNotType(); 01 error",
-  () => CEL.assertNotType(token1, "number", "assertNotType(); 01 error")
+CUT.isError("assertInstanceOf(); 01",
+  () => CEL.assertInstanceOf(token1, "number")
 );
-CUT.isError("assertNotType(); 02 error",
-  () => CEL.assertNotType(token2, Number, "assertNotType(); 02 error")
+CUT.isEqual("assertInstanceOf(); 02", token2, CEL.assertInstanceOf(token2, Number));
+CUT.isEqual("assertInstanceOf(); 03", token3, CEL.assertInstanceOf(token3, Array));
+CUT.isEqual("assertInstanceOf(); 04", token3, CEL.assertInstanceOf(token3, Object));
+CUT.isError("assertInstanceOf(); 05 error",
+  () => CEL.assertInstanceOf(token1, 42n, "assertInstanceOf(); 05 error")
 );
-CUT.isError("assertNotType(); 03 error",
-  () => CEL.assertNotType(token3, Array, "assertNotType(); 03 error")
+CUT.isError("assertInstanceOf(); 06 error",
+  () => CEL.assertInstanceOf(token1, Number, "assertInstanceOf(); 06 error")
 );
-CUT.isError("assertNotType(); 04 error",
-  () => CEL.assertNotType(token3, Object, "assertNotType(); 04 error")
+CUT.isError("assertInstanceOf(); 07 error",
+  () => CEL.assertInstanceOf(token3, Map, "assertInstanceOf(); 07 error")
 );
-CUT.isError("assertNotType(); 05 error",
-  () => CEL.assertNotType(token1, 42, "assertNotType(); 05 error")
+
+
+/* assertNotTypeOf(); */
+token1 = 42;
+token2 = Object(42);
+token3 = [];
+CUT.isError("assertNotTypeOf(); 01 error",
+  () => CEL.assertNotTypeOf(token1, "number", "assertNotTypeOf(); 01 error")
 );
-CUT.isEqual("assertNotType(); 06", token1, CEL.assertNotType(token1, Number));
-CUT.isEqual("assertNotType(); 07", token2, CEL.assertNotType(token2, "number"));
-CUT.isEqual("assertNotType(); 08", token3, CEL.assertNotType(token3, Map));
+CUT.isError("assertNotTypeOf(); 02 error",
+  () => CEL.assertNotTypeOf(token2, Number, "assertNotTypeOf(); 02 error")
+);
+CUT.isError("assertNotTypeOf(); 03 error",
+  () => CEL.assertNotTypeOf(token3, Array, "assertNotTypeOf(); 03 error")
+);
+CUT.isError("assertNotTypeOf(); 04 error",
+  () => CEL.assertNotTypeOf(token3, Object, "assertNotTypeOf(); 04 error")
+);
+CUT.isError("assertNotTypeOf(); 05 error",
+  () => CEL.assertNotTypeOf(token1, 42, "assertNotTypeOf(); 05 error")
+);
+CUT.isError("assertNotTypeOf(); 06 error",
+  () => CEL.assertNotTypeOf(token1, Number)
+);
+CUT.isEqual("assertNotTypeOf(); 07", token2,
+  CEL.assertNotTypeOf(token2, "number")
+);
+CUT.isError("assertNotTypeOf(); 08", () => CEL.assertNotTypeOf(token3, Map));
+
+
+/* assertNotInstanceOf(); */
+token1 = 42;
+token2 = Object(42);
+token3 = [];
+CUT.isError("assertNotInstanceOf(); 01 error",
+  () => CEL.assertNotInstanceOf(token1, "number",
+    "assertNotInstanceOf(); 01 error"
+  )
+);
+CUT.isError("assertNotInstanceOf(); 02 error",
+  () => CEL.assertNotInstanceOf(token2, Number,
+    "assertNotInstanceOf(); 02 error"
+  )
+);
+CUT.isError("assertNotInstanceOf(); 03 error",
+  () => CEL.assertNotInstanceOf(token3, Array,
+    "assertNotInstanceOf(); 03 error"
+  )
+);
+CUT.isError("assertNotInstanceOf(); 04 error",
+  () => CEL.assertNotInstanceOf(
+    token3, Object, "assertNotInstanceOf(); 04 error"
+  )
+);
+CUT.isError("assertNotInstanceOf(); 05 error",
+  () => CEL.assertNotInstanceOf(token1, 42, "assertNotInstanceOf(); 05 error")
+);
+CUT.isEqual("assertNotInstanceOf(); 06", token1,
+  CEL.assertNotInstanceOf(token1, Number)
+);
+CUT.isError("assertNotInstanceOf(); 07",
+  () => CEL.assertNotInstanceOf(token2, "number")
+);
+CUT.isEqual("assertNotInstanceOf(); 08", token3,
+  CEL.assertNotInstanceOf(token3, Map)
+);
 
 
 /* assert(); */

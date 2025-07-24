@@ -48,9 +48,13 @@ assert.deepStrictEqual = (x, y, m) => celestra.assertDeepStrictEqual(x, y, m);
 assert.notDeepStrictEqual = (x, y, m) =>
   celestra.assertNotDeepStrictEqual(x, y, m);
 
-assert.type = (v, t, m) => celestra.assertType(v, t, m);
+assert.typeOf = (v, t, m) => celestra.assertTypeOf(v, t, m);
 
-assert.notType = (v, t, m) => celestra.assertNotType(v, t, m);
+assert.notTypeOf = (v, t, m) => celestra.assertNotTypeOf(v, t, m);
+
+assert.instanceOf = (v, t, m) => celestra.assertInstanceOf(v, t, m);
+
+assert.notInstanceOf = (v, t, m) => celestra.assertNotInstanceOf(v, t, m);
 
 assert.isNil = (v, m) => celestra.assertIsNil(v, m);
 

@@ -650,63 +650,80 @@ function assertIsNil (v, msg) {
 }
 
 
-/* assertType(value: any, type: string | constructor [, message]):
-  value | thrown error */
-function assertType (v, rType, msg) {
+/* assertTypeOf(value: any, type: string [, message]): value | thrown error */
+function assertTypeOf (v, type, msg) {
   const _type = (v) => ((v === null) ? "null" : (typeof v));
-  if (typeof rType !== "string" && typeof rType !== "function") {
+  if (typeof type !== "string") {
     throw new TypeError(
-      "[assertType] TypeError: " + rType + " is not a string or function"
+      "[assertTypeOf] TypeError: " + type + " is not a string"
         + (msg ? " - " + msg : "")
     );
   }
-  if (typeof rType === "string") {
-    if (_type(v) !== rType) {
-      throw new TypeError(
-        "[assertType] Assertion failed: " + v + " is not a " + rType
-          + (msg ? " - " + msg : "")
-      );
-    }
-  }
-  if (typeof rType === "function") {
-    if (!(v instanceof rType)) {
-      throw new TypeError(
-        "[assertType] Assertion failed: " + v + " is not a "
-          + ((rType.name !== "") ? rType.name : rType)
-          + (msg ? " - " + msg : "")
-      );
-    }
+  if (_type(v) !== type) {
+    throw new TypeError(
+      "[assertTypeOf] Assertion failed: " + v + " is not a " + type
+        + (msg ? " - " + msg : "")
+    );
   }
   return v;
 }
 
 
-/* assertNotType(value: any, type: string | constructor [, message]):
+/* assertNotTypeOf(value: any, type: string [, message]):
   value | thrown error */
-function assertNotType (v, rType, msg) {
+function assertNotTypeOf (v, type, msg) {
   const _type = (v) => ((v === null) ? "null" : (typeof v));
-  if (typeof rType !== "string" && typeof rType !== "function") {
+  if (typeof type !== "string") {
     throw new TypeError(
-      "[assertNotType] TypeError: " + rType + " is not a string or function"
+      "[assertNotTypeOf] TypeError: " + type + " is not a string"
         + (msg ? " - " + msg : "")
     );
   }
-  if (typeof rType === "string") {
-    if (_type(v) === rType) {
-      throw new TypeError(
-        "[assertNotType] Assertion failed: " + v + " is a " + rType
-          + (msg ? " - " + msg : "")
-      );
-    }
+  if (_type(v) === type) {
+    throw new TypeError(
+      "[assertNotTypeOf] Assertion failed: " + v + " is not a " + type
+        + (msg ? " - " + msg : "")
+    );
   }
-  if (typeof rType === "function") {
-    if (v instanceof rType) {
-      throw new TypeError(
-        "[assertNotType] Assertion failed: " + v + " is a "
-          + ((rType.name !== "") ? rType.name : rType)
-          + (msg ? " - " + msg : "")
-      );
-    }
+  return v;
+}
+
+
+/* assertInstanceOf(value: any, Class: constructor [, message]):
+  value | thrown error */
+function assertInstanceOf (v, Class, msg) {
+  if (typeof Class !== "function") {
+    throw new TypeError(
+      "[assertInstanceOf] TypeError: " + Class + " is not a function"
+        + (msg ? " - " + msg : "")
+    );
+  }
+  if (!(v instanceof Class)) {
+    throw new TypeError(
+      "[assertInstanceOf] Assertion failed: " + v + " is not a "
+        + ((Class.name !== "") ? Class.name : Class)
+        + (msg ? " - " + msg : "")
+    );
+  }
+  return v;
+}
+
+
+/* assertNotInstanceOf(value: any, Class: constructor [, message]):
+  value | thrown error */
+function assertNotInstanceOf (v, Class, msg) {
+  if (typeof Class !== "function") {
+    throw new TypeError(
+      "[assertNotInstanceOf] TypeError: " + Class + " is not a function"
+        + (msg ? " - " + msg : "")
+    );
+  }
+  if (v instanceof Class) {
+    throw new TypeError(
+      "[assertNotInstanceOf] Assertion failed: " + v + " is not a "
+        + ((Class.name !== "") ? Class.name : Class)
+        + (msg ? " - " + msg : "")
+    );
   }
   return v;
 }
@@ -3660,8 +3677,10 @@ const celestra = {
   assertThrows,
   assertIsNotNil,
   assertIsNil,
-  assertType,
-  assertNotType,
+  assertTypeOf,
+  assertNotTypeOf,
+  assertInstanceOf,
+  assertNotInstanceOf,
   assert,
   assertTrue,
   assertFalse,

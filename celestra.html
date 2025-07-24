@@ -415,7 +415,7 @@ window.classof = classof;
     <tr>
       <td><code>createPolyfillProperty(object, property,value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function creates a writable, configurable and enumerable property with the given value in the object if the property doesn't exist in the object. The return value boolean and checks that the creating of the property was successful.</td>
-    </tr>    
+    </tr>
     <tr>
       <td><code>delay(ms).then(callback);</code></td>
       <td>
@@ -432,7 +432,7 @@ CEL.delay(5000)
     <tr>
       <td><code>deleteOwnProperty(object, property[,Throw = false]);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function deletes an own property in the given object. If Throw is true and the deleting was unsuccessful, then an error will be thrown.<br/><b>Return values:</b><br/>1 - The property was own and the delete was successful.<BR>0 - The property is own and the delete was unsuccessful.<br/>-1 - The property is not own or not exists.</td>
-    </tr>      
+    </tr>
     </tr>
     <tr>
       <td><code>extend([deep,]target,source1[,sourceN]);</code></td>
@@ -525,7 +525,7 @@ console.log(o2);
     <tr>
       <td><code>toObject(value);</code></td>
       <td>If the given value is not null or undefined, then the return value is an object, which has been converted from the value, else a <code>TypeError()</code> will be throwned.<br/>If the given value is an object, function or symbol, then the original value will return.</td>
-    </tr>    
+    </tr>
     <tr>
       <td><code>unBind(function);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v5.4.1: <code>toFunction</code>.</span><br/>Returns an unbinded function from an object method. The function parameter is mandatory.</td>
@@ -659,19 +659,25 @@ console.log(o2);
       <td>
         <span class="info">Stability: 4 - Stable.</span><br/>This function always throws an error. If the argument is an error, then this error will be thrown, else a new error with the message.
       </td>
-    </tr>       
+    </tr>
     <tr>
       <td><code>assertFalse(condition [, message]);</code></td>
       <td>
         <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the condition is truthy. The message parameter is optional. The return value is <code>true</code>, when the test was success.
       </td>
-    </tr>     
+    </tr>
+    <tr>
+      <td><code>assertInstanceOf(value,constructor[, message]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error if the constructor of the value in not the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
+      </td>
+    </tr>
     <tr>
       <td><code>assertIsNil(value [, message]);</code></td>
       <td>
         <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value is not null or undefined, else the given value is the return value. The message parameter is optional.
       </td>
-    </tr>    
+    </tr>
     <tr>
       <td><code>assertIsNotNil(value [, message]);</code></td>
       <td>
@@ -691,11 +697,11 @@ console.log(o2);
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 are deep equals. (<i>Deep strict equality + NaN equality: primitives (SameValue - Object.is()), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer</i>) The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
     </tr>
     <tr>
-      <td><code>assertNotEqual(value1, value2 [, message]);</code></td>
+      <td><code>assertNotInstanceOf(value,constructor[, message]);</code></td>
       <td>
-        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 are equals. (<i>Loose equality + NaN equality</i>) The message parameter is optional. The return value is <code>true</code>, when the test was success.
+        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error if the constructor of the value is the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
       </td>
-    <tr>
+    </tr>
     <tr>
       <td><code>assertNotStrictEqual(value1, value2 [, message]);</code></td>
       <td>
@@ -703,9 +709,9 @@ console.log(o2);
       </td>
     </tr>
     <tr>
-      <td><code>assertNotType(value,typeString OR constructor [, message]);</code></td>
+      <td><code>assertNotTypeOf(value,typeString[, message]);</code></td>
       <td>
-        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error if the type/constructor of the value in the same as the second parameter. If the second parameter is not a string or function, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
+        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error if the type of the value is the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
       </td>
     </tr>
     <tr>
@@ -727,9 +733,9 @@ console.log(o2);
       </td>
     </tr>
     <tr>
-      <td><code>assertType(value,typeString OR constructor [, message]);</code></td>
+      <td><code>assertTypeOf(value,type[, message]);</code></td>
       <td>
-        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error if the type/constructor of the value in not the same as the second parameter. If the second parameter is not a string or function, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
+        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error if the type of the value in not the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
       </td>
     </tr>
   </table>
@@ -1234,7 +1240,7 @@ console.log(o2);
         If the given value is an object, which can be converted to a primitive variable, then the return value is a primitive variable.<br/>
         If the given value is a not convertable object (array, map, set, etc.), function or symbol, then the original value will return.
       </td>
-    </tr>    
+    </tr>
     <tr>
       <td><code>toPropertyKey(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function convert the given value to a valid property key. If the value is not symbol, then will be converted to string, else the symbol will be returned.</td>
@@ -1841,7 +1847,7 @@ JSON.stringify( CEL.unique(array, (v) => v.rank) );
     <tr>
       <td><code>isFloat(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a float number. The return value is boolean.</td>
-    </tr>    
+    </tr>
     <tr>
       <td><code>isInt8(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an integer between -128 and 127. The return value is boolean.</td>
