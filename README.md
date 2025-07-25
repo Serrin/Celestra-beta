@@ -401,7 +401,7 @@ Name | Description
 `isMap(value);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value is a map. The return value is boolean.
 `isNil(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is null or undefined. The return value is boolean.
 `isNull(value);` |__Stability: 4 - Stable.__<BR> This function determines whether the provided value is null. The return value is boolean.
-`isNullOrUndefined(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is null or undefined. The return value is boolean.
+`isNullOrUndefined(value);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value is null or undefined. The return value is boolean.
 `isNumber(value);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value is a number. The return value is boolean.
 `isNumeric(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a number or can be converted to number. The return value is boolean.
 `isObject(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an object or function and not null. The return value is boolean.
