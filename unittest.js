@@ -156,7 +156,7 @@ var token1 = 0, token2 = 0, token3 = 0, token4 = 0, token5 = 0;
 var token6 = 0, token7 = 0, token8 = 0, token9 = 0, token10 = 0;
 
 
-/* Celestra v5.7.5 testcases */
+/* Celestra v5.8.0 testcases */
 
 
 /** Not auto tested functions **/
@@ -4693,7 +4693,7 @@ CUT.isEqual("partition();", "[[2,7,34],[-5,-9]]",
 
 /* initial(); */
 CUT.isTrue("initial();",
-  CEL.isSameArray(CEL.initial(["a", "b", "c", "d"]), ["a", "b", "c"])
+  CEL.isDeepStrictEqual(CEL.initial(["a", "b", "c", "d"]), ["a", "b", "c"])
 );
 
 
@@ -4920,7 +4920,7 @@ CUT.isEqual("sort(); 04", "[1,7,9,10]",
 
 /* shuffle(); */
 token1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-CUT.isFalse("shuffle();", CEL.isSameArray(CEL.shuffle(token1), token1));
+CUT.isFalse("shuffle();", CEL.isDeepStrictEqual(CEL.shuffle(token1), token1));
 
 
 /* includes(); */
@@ -5384,28 +5384,6 @@ CUT.isFalse("arrayRemoveBy(); 14",
 );
 CUT.isEqual("arrayRemoveBy(); 15", "[1,3,2,4,5,9,3,2]", JSON.stringify(token1));
 /* arrayremoveby(); end */
-
-
-/* arrayUnique(); */
-CUT.isEqual("arrayUnique(); 01",
-  JSON.stringify(CEL.arrayUnique(
-    ["A", "r", "r", "a", "y", "y", "a", "n", "d", "d", "M", "M", "a", "p"]
-  )),
-  JSON.stringify(CEL.arrayUnique("ArrayyanddMMap"))
-);
-CUT.isEqual("arrayUnique(); 02",
-  JSON.stringify(CEL.arrayUnique([1, 2, 2, 3, 4, 4, 5, 6, 6, 7])),
-  JSON.stringify(CEL.arrayUnique(new Set([1, 2, 2, 3, 4, 4, 5, 6, 6, 7])))
-);
-CUT.isEqual("arrayUnique(); 03",
-  JSON.stringify(CEL.arrayUnique([1, 2, 2, 3, 4, 4, 5, 6, 6, 7])),
-  JSON.stringify(
-    CEL.arrayUnique((new Map([
-      ["extendObj1", 1], ["extendObj2", 2], ["baz1", 2], ["foo2",3], ["bar2",4],
-      ["baz2", 4], ["foo3", 5], ["bar3", 6], ["baz3", 6], ["foo4", 7]
-    ])).values())
-  )
-);
 
 
 /* arrayAdd(); */
@@ -5885,42 +5863,6 @@ CUT.isTrue("isProxy();",
 );
 
 
-/* isTruthy(); */
-CUT.isTrue("isTruthy();",
-      CEL.isTruthy(1)
-  &&  CEL.isTruthy(42)
-  &&  CEL.isTruthy(3.14)
-  &&  CEL.isTruthy([])
-  &&  CEL.isTruthy({})
-  && !CEL.isTruthy(false)
-  && !CEL.isTruthy(0)
-  && !CEL.isTruthy(-0)
-  &&  (!!window.BigInt ? !CEL.isTruthy(BigInt(0)) : true)
-  && !CEL.isTruthy("")
-  && !CEL.isTruthy(null)
-  && !CEL.isTruthy(undefined)
-  && !CEL.isTruthy(NaN)
-);
-
-
-/* isFalsy(); */
-CUT.isTrue("isFalsy();",
-     !CEL.isFalsy(1)
-  && !CEL.isFalsy(42)
-  && !CEL.isFalsy(3.14)
-  && !CEL.isFalsy([])
-  && !CEL.isFalsy({})
-  &&  CEL.isFalsy(false)
-  &&  CEL.isFalsy(0)
-  &&  CEL.isFalsy(-0)
-  &&  (!!window.BigInt ? CEL.isFalsy(BigInt(0)) : true)
-  &&  CEL.isFalsy("")
-  &&  CEL.isFalsy(null)
-  &&  CEL.isFalsy(undefined)
-  &&  CEL.isFalsy(NaN)
-);
-
-
 /* isAsyncGeneratorFn(); */
 CUT.isTrue("isAsyncGeneratorFn();",
   CEL.isAsyncGeneratorFn(async function*(){})
@@ -5957,35 +5899,6 @@ CUT.isTrue("isPlainObject();",
 );
 
 
-/* isEmptyMap(); */
-CUT.isTrue("isEmptyMap();",
-  CEL.isEmptyMap(new Map())
-    && !CEL.isEmptyMap(new Map([[4, 5], [6, 7]]))
-    && !CEL.isEmptyMap([])
-);
-
-
-/* isEmptySet(); */
-CUT.isTrue("isEmptySet();",
-  CEL.isEmptySet(new Set())
-    && !CEL.isEmptySet(new Set([4, 5, 6]))
-    && !CEL.isEmptySet([])
-);
-
-
-/* isEmptyIterator(); */
-CUT.isTrue("isEmptyIterator();",
-  CEL.isEmptyIterator([]) && !CEL.isEmptyIterator([4, 5, 6])
-);
-
-
-/* isDataView(); */
-CUT.isTrue("isDataView();",
-  CEL.isDataView(new DataView(new ArrayBuffer(2)), "dataview")
-    && !CEL.isDataView({}, "dataview")
-);
-
-
 /* isGeneratorFn(); */
 CUT.isTrue("isGeneratorFn();",
       CEL.isGeneratorFn(function* fn42g () { yield 42; })
@@ -6011,10 +5924,6 @@ CUT.isTrue("isAsyncFn();",
 );
 
 
-/* isString(); */
-CUT.isTrue("isString();", CEL.isString("str") && !CEL.isString(533));
-
-
 /* isChar(); */
 CUT.isTrue("isChar();",
       CEL.isChar("s")
@@ -6025,20 +5934,10 @@ CUT.isTrue("isChar();",
 );
 
 
-/* isNumber(); */
-CUT.isTrue("isNumber();",
-  CEL.isNumber(98) && CEL.isNumber(3.14) && !CEL.isNumber("str")
-);
-
-
 /* isFloat(); */
 CUT.isTrue("isFloat();",
   CEL.isFloat(3.14) && !CEL.isFloat(98) && !CEL.isFloat("str")
 );
-
-
-/* isBoolean(); */
-CUT.isTrue("isBoolean();", CEL.isBoolean(true) && !CEL.isBoolean(98));
 
 
 /* isObject(); */
@@ -6050,16 +5949,6 @@ CUT.isTrue("isObject();",
   && !CEL.isObject(null)
   && !CEL.isObject(undefined)
   && !CEL.isObject(42)
-);
-
-
-/* isEmptyObject(); */
-CUT.isTrue("isEmptyObject();",
-      CEL.isEmptyObject({})
-  && !CEL.isEmptyObject({"a": 1})
-  && !CEL.isEmptyObject(98)
-  && !CEL.isEmptyObject(null)
-  && !CEL.isEmptyObject(undefined)
 );
 
 
@@ -6076,14 +5965,6 @@ CUT.isTrue("isCallable();",
       CEL.isCallable(function () {})
   &&  CEL.isCallable(new Function())
   && !CEL.isCallable({"a": 1})
-);
-
-
-/* isEmptyArray(); */
-CUT.isTrue("isEmptyArray();",
-      CEL.isEmptyArray([])
-  && !CEL.isEmptyArray([1, 2])
-  && !CEL.isEmptyArray({"a": 1})
 );
 
 
@@ -6111,14 +5992,6 @@ CUT.isTrue("isUndefined();",
 );
 
 
-/* isNullOrUndefined(); */
-CUT.isTrue("isNullOrUndefined();",
-      CEL.isNullOrUndefined(undefined)
-  &&  CEL.isNullOrUndefined(null)
-  && !CEL.isNullOrUndefined({"a": 1})
-);
-
-
 /* isNil(); */
 CUT.isTrue("isNil();",
   CEL.isNil(undefined) &&  CEL.isNil(null) && !CEL.isNil(NaN) && !CEL.isNil(42)
@@ -6132,10 +6005,6 @@ CUT.isTrue("isPrimitive();",
   && !CEL.isPrimitive({"a": 1})
   && !CEL.isPrimitive(function () {})
 );
-
-
-/* isDate(); */
-CUT.isTrue("isDate();", CEL.isDate(new Date()) && !CEL.isDate({"a": 1}));
 
 
 /* isRegexp(); */
@@ -6204,14 +6073,6 @@ CUT.isFalse("isNumeric(); false",
 /* isNumeric(); end */
 
 
-/* isArrayBuffer(); */
-CUT.isTrue("isArrayBuffer();",
-      CEL.isArrayBuffer(new ArrayBuffer(8))
-  && !CEL.isArrayBuffer([4, 5, 6])
-  && !CEL.isArrayBuffer(new Int8Array(5))
-);
-
-
 /* isTypedArray(); begin */
 CUT.isTrue("isTypedArray();",
       CEL.isTypedArray(new Int8Array(5))
@@ -6228,30 +6089,6 @@ CUT.isTrue("isTypedArray();",
   && !CEL.isTypedArray([4, 5, 6])
   && !CEL.isTypedArray(new ArrayBuffer(8))
 );
-
-
-/* isPromise(); */
-CUT.isTrue("isPromise();", CEL.isPromise(CEL.delay(100)) && !CEL.isPromise({}));
-
-
-/* isSymbol(); */
-CUT.isTrue("isSymbol();", CEL.isSymbol(Symbol("str")) && !CEL.isSymbol(42));
-
-
-/* isMap(); */
-CUT.isTrue("isMap();", CEL.isMap(new Map()) && !CEL.isMap(function () {}));
-
-
-/* isSet(); */
-CUT.isTrue("isSet();", CEL.isSet(new Set()) && !CEL.isSet(function () {}));
-
-
-/* isWeakMap(); */
-CUT.isTrue("isWeakMap();", CEL.isWeakMap(new WeakMap()) && !CEL.isWeakMap([]));
-
-
-/* isWeakSet(); */
-CUT.isTrue("isWeakSet();", CEL.isWeakSet(new WeakSet()) && !CEL.isWeakSet([]));
 
 
 /* isIterator(); */
@@ -6278,141 +6115,6 @@ CUT.isTrue("isIterable();",
 );
 
 
-/* isBigInt(); */
-if (window.BigInt) {
-  CUT.isTrue("isBigInt();",
-        CEL.isBigInt(9007199254740991n + 5n)
-    && !CEL.isBigInt(9007199254740990)
-    && !CEL.isBigInt(3.14)
-    && !CEL.isBigInt("Arthur Dent")
-  );
-}
-
-
-/* isSameArray(); */
-CUT.isTrue("isSameArray();",
-      CEL.isSameArray([], [])
-  &&  CEL.isSameArray([5, 4, 5], [5, 4, 5])
-  && !CEL.isSameArray([5, 4, 5], [4, 5, 6])
-  && !CEL.isSameArray([5, 4, 6], [4, 5, 5])
-  && !CEL.isSameArray([5, 4, 5], [4, 4, 5])
-  && !CEL.isSameArray([5, 5], [5, 5, 4])
-  && !CEL.isSameArray([5, 5, 4], [5, 5])
-  && !CEL.isSameArray([5 ,5], new Map([[5, 5], [5, 5]]))
-  && !CEL.isSameArray([5, 5], new Set([5, 5]))
-  && !CEL.isSameArray([], {})
-  && !CEL.isSameArray({}, {})
-  && !CEL.isSameArray("4", "4")
-  && !CEL.isSameArray(4, 4)
-  && !CEL.isSameArray(4, 5)
-);
-
-
-/* isSameObject(); */
-CUT.isTrue("isSameObject();",
-      CEL.isSameObject({"p1": 4, "p2": 5, "p3": 6}, {"p1": 4, "p2": 5, "p3": 6})
-  &&  CEL.isSameObject({}, {})
-  && !CEL.isSameObject({"p1": 4, "p2": 5, "p3": 6}, {"p1": 4, "p2": 5, "p3": 7})
-  && !CEL.isSameObject({"p1": 4,"p2":5, "p3":6}, {"p1":4, "p2":5,"p3":6,"p4":7})
-  && !CEL.isSameObject([4,5], {"0": 4, "1": 5, "length": 2})
-);
-
-
-/* isSameSet(); */
-CUT.isTrue("isSameSet();",
-      CEL.isSameSet(new Set([4, 6, 8, 2]), new Set([2, 4, 6, 8, 4]))
-  && !CEL.isSameSet(new Set([4, 6, 8, 2]), new Set([2, 4, 6, 9]))
-  && !CEL.isSameSet(new Set([4, 6, 8, 2]), new Set([2, 4, 6, 8, 9]))
-  && !CEL.isSameSet(new Set([4, 6, 8, 2]), [4,6,8,2])
-);
-
-
-/* isSameMap(); */
-CUT.isTrue("isSameMap();",
-  CEL.isSameMap(
-    new Map([["str", 1], [17, "x"]]), new Map([["str", 1], [17, "x"]])
-  )
-  && !CEL.isSameMap(
-    new Map([["str", 1], [true, "x"]]), new Map([["str", 1], [false, "x"]])
-  )
-  && !CEL.isSameMap(
-    new Map([["str", 1], [17, "x"]]),
-    new Map([["str", 1], [17, "x"], [false, 42]])
-  )
-  && !CEL.isSameMap(
-    new Map([["str", 1], [17, "x"], [true, 42]]),
-    [["str", 1], [17, "x"], [true, 42]]
-  )
-);
-
-
-/* isSameIterator(); */
-CUT.isTrue("isSameIterator();",
-      CEL.isSameIterator([1, 2, 3], [1, 2, 3])
-  && !CEL.isSameIterator([1, 2, 3], [1, 2, 3, 4])
-  && !CEL.isSameIterator(new Set([1, 2, 3, 4]), [1, 2, 3, 5])
-);
-
-
-/* deletePropertyOrThrow(); */
-token1 = {"a": 1, "b": 2};
-CUT.isEqual("deletePropertyOrThrow(); 01", undefined,
-  CEL.deletePropertyOrThrow(token1, "b")
-);
-CUT.isEqual("deletePropertyOrThrow(); 02", "{\"a\":1}", JSON.stringify(token1));
-
-
-/* isLessThan (); */
-CUT.isTrue("isLessThan();",
-      CEL.isLessThan(1, 2)
-  &&  CEL.isLessThan(1, 2, true)
-  &&  CEL.isLessThan(2, 1, false)
-  && !CEL.isLessThan(1, 2, false)
-  && !CEL.isLessThan(2, 1)
-  && !CEL.isLessThan(2, 1, true)
-);
-
-
-/* requireObjectCoercible(); */
-token1 = function(){};
-CUT.isTrue("requireObjectCoercible(); 01", CEL.requireObjectCoercible(true));
-CUT.isEqual("requireObjectCoercible(); 02", 42, CEL.requireObjectCoercible(42));
-CUT.isEqual("requireObjectCoercible(); 03", "Arthur Dent",
-  CEL.requireObjectCoercible("Arthur Dent")
-);
-CUT.isEqual("requireObjectCoercible(); 04", "Symbol(42)",
-  CEL.requireObjectCoercible(Symbol(42)).toString()
-);
-CUT.isEqual("requireObjectCoercible(); 05", "{\"a\":1}",
-  JSON.stringify(CEL.requireObjectCoercible({"a":1}))
-);
-CUT.isEqual("requireObjectCoercible(); 06", token1,
-  CEL.requireObjectCoercible(token1)
-);
-CUT.isError("requireObjectCoercible(); 07 error",
-  () => CEL.requireObjectCoercible(null)
-);
-CUT.isError("requireObjectCoercible(); 08 error",
-  () => CEL.requireObjectCoercible(undefined)
-);
-
-
-/* getIn(); */
-/* getInV(); */
-/* setIn(); */
-/* hasIn(); */
-token1 = {};
-CUT.isTrue("getIn(); + getInV(); + setIn(); + hasIn();",
-     !CEL.hasIn(token1, "pr1")
-  &&  CEL.getIn(token1, "pr1") === undefined
-  &&  CEL.getInV(token1, "pr1") === undefined
-  &&  CEL.setIn(token1, "pr1", 42) === true
-  &&  CEL.hasIn(token1, "pr1")
-  &&  CEL.getIn(token1, "pr1") === 42
-  &&  CEL.getInV(token1, "pr1") === 42
-);
-
-
 /* isPropertyKey(); */
 CUT.isTrue("isPropertyKey();",
       CEL.isPropertyKey("")
@@ -6433,33 +6135,6 @@ CUT.isTrue("toPropertyKey();",
 CUT.isTrue("toObject();", typeof CEL.toObject("str") === "object");
 
 
-/* isSameValue(); */
-token1 = { "a": 1 };
-CUT.isEqual("isSameValue();", "1 1 0 1 1 1 0 1 0 0 0 1 1 1 1 1 1 1 0",
-  CUT.join([
-    +CEL.isSameValue(25, 25),
-    +CEL.isSameValue("foo", "foo"),
-    +CEL.isSameValue("foo", "bar"),
-    +CEL.isSameValue(null, null),
-    +CEL.isSameValue(undefined, undefined),
-    +CEL.isSameValue(window, window),
-    +CEL.isSameValue([], []),
-    +CEL.isSameValue(token1, token1),
-    +CEL.isSameValue(token1, {"a": 1}),
-    +CEL.isSameValue(0, -0),
-    +CEL.isSameValue(+0, -0),
-    +CEL.isSameValue(-0,-0),
-    (!!window.BigInt ? +CEL.isSameValue(BigInt(0), BigInt(-0)) : 1),
-    +CEL.isSameValue(NaN, 0/0),
-    +CEL.isSameValue(NaN, Number.NaN),
-    +CEL.isSameValue(+Infinity, Infinity),
-    +CEL.isSameValue(Infinity, Infinity),
-    +CEL.isSameValue(-Infinity, -Infinity),
-    +CEL.isSameValue(+Infinity, -Infinity)
-  ])
-);
-
-
 /* toPrimitiveValue(); */
 CUT.isTrue("toPrimitiveValue();",
   typeof CEL.toPrimitiveValue(null) === "object"
@@ -6478,89 +6153,6 @@ CUT.isTrue("toPrimitiveValue();",
     && CEL.toPrimitiveValue(new Map()) instanceof Map
     && CEL.toPrimitiveValue(new Set()) instanceof Set
 );
-
-
-/* toPrimitive(); */
-CUT.isTrue("toPrimitive();",
-  CEL.toPrimitive(new Object(100)) === 100
-    && CEL.toPrimitive(new Object(100)) + "" === "100"
-    && CEL.toPrimitive({"a":1, toString: ()=>42}, "number") === 42
-    && CEL.toPrimitive([1,2]) === "1,2"
-    && CEL.toPrimitive(()=>56) === "()=>56"
-);
-
-
-/* isSameValueZero(); */
-token1 = {"a": 1};
-CUT.isEqual("isSameValueZero();", "1 1 0 1 1 1 0 1 0 1 1 1 1 1 1 1 1 1 0",
-  CUT.join([
-    +CEL.isSameValueZero(25, 25),
-    +CEL.isSameValueZero("foo", "foo"),
-    +CEL.isSameValueZero("foo", "bar"),
-    +CEL.isSameValueZero(null, null),
-    +CEL.isSameValueZero(undefined, undefined),
-    +CEL.isSameValueZero(window, window),
-    +CEL.isSameValueZero([], []),
-    +CEL.isSameValueZero(token1, token1),
-    +CEL.isSameValueZero(token1, {"a": 1}),
-    +CEL.isSameValueZero(0, -0),
-    +CEL.isSameValueZero(+0, -0),
-    +CEL.isSameValueZero(-0, -0),
-    (!!window.BigInt ? +CEL.isSameValueZero(BigInt(0), BigInt(-0)) : 1),
-    +CEL.isSameValueZero(NaN, 0/0),
-    +CEL.isSameValueZero(NaN, Number.NaN),
-    +CEL.isSameValueZero(+Infinity, Infinity),
-    +CEL.isSameValueZero(Infinity, Infinity),
-    +CEL.isSameValueZero(-Infinity, -Infinity),
-    +CEL.isSameValueZero(+Infinity, -Infinity)
-  ])
-);
-
-
-/* isSameValueNonNumber(); */
-token1 = {"a": 1};
-CUT.isEqual("isSameValueNonNumber(); 01", "1 0 1 1 1 0 1 0 1",
-  CUT.join([
-    +CEL.isSameValueNonNumber("foo", "foo"),
-    +CEL.isSameValueNonNumber("foo", "bar"),
-    +CEL.isSameValueNonNumber(null, null),
-    +CEL.isSameValueNonNumber(undefined, undefined),
-    +CEL.isSameValueNonNumber(window, window),
-    +CEL.isSameValueNonNumber([], []),
-    +CEL.isSameValueNonNumber(token1, token1),
-    +CEL.isSameValueNonNumber(token1, {"a": 1}),
-    (!!window.BigInt ? +CEL.isSameValueNonNumber(BigInt(0), BigInt(-0)) : 1)
-  ])
-);
-CUT.isError("isSameValueNonNumber(); 02 error",
-  () => CEL.isSameValueNonNumber(42, 42)
-);
-CUT.isError("isSameValueNonNumber(); 03 error",
-  () => CEL.isSameValueNonNumber(42, true)
-);
-CUT.isError("isSameValueNonNumber(); 04 error",
-  () => CEL.isSameValueNonNumber(true, 42)
-);
-
-
-/* createMethodProperty(); */
-token1 = function () {};
-token2 = String("getX" in token1.prototype);
-token2 += CEL.createMethodProperty(
-  token1.prototype, "getX", function () { return this.x; }
-);
-token2 += ("getX" in token1.prototype);
-CUT.isEqual("createMethodProperty();", "false[object Object]true", token2);
-
-
-/* createMethodPropertyOrThrow(); */
-token1 = function () {};
-token2 = String("getX" in token1.prototype);
-token2 += CEL.createMethodPropertyOrThrow(
-  token1.prototype, "getX", function () { return this.x; }
-);
-token2 += ("getX" in token1.prototype);
-CUT.isEqual("createMethodPropertyOrThrow();",token2,"false[object Object]true");
 
 
 /* createPolyfillMethod(); */
@@ -6776,35 +6368,6 @@ CUT.isEqual("toIntegerOrInfinity();",
     CEL.toIntegerOrInfinity(undefined),
     CEL.toIntegerOrInfinity(null)
   ])
-);
-
-
-/* createDataPropertyOrThrow(); */
-function createDataPropertyFN () {};
-token1 = Object.hasOwn(createDataPropertyFN.prototype,"x")
-  + " "
-  + CEL.createDataPropertyOrThrow(createDataPropertyFN.prototype, "x", 42);
-token2 = new createDataPropertyFN();
-token1 += " " + (token2.x === 42);
-CUT.isEqual("createDataPropertyOrThrow();", token1,
-"false [object Object] true");
-
-
-/* createDataProperty(); */
-function createDataPropertyOrThrowFN () {};
-token1 = CUT.join([
-  Object.hasOwn(createDataPropertyOrThrowFN.prototype,"x"),
-  CEL.createDataPropertyOrThrow(createDataPropertyOrThrowFN.prototype, "x", 42)
-]);
-token2 = new createDataPropertyOrThrowFN();
-token1 += " " + (token2.x === 42);
-CUT.isEqual("createDataProperty();", token1, "false [object Object] true");
-
-
-/* toArray(); */
-token1 = [4, 5, 6];
-CUT.isTrue("toArray();", token1 === CEL.toArray(token1)
-  && JSON.stringify(CEL.toArray({"length":3, 0 :7, 1: 8, 2: 9})) === "[7,8,9]"
 );
 
 
