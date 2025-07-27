@@ -17,7 +17,7 @@ This library isn't compatible with the Node.js.
 
 Latest version: 5.8.0
 
-Date: 2025-07-14T19:25:25.904Z
+Date: 2025-07-27T13:42:19.142Z
 
 __Tested on these browsers:__
 
@@ -143,24 +143,26 @@ __Another way to import__
 - The underscore `_` short object name has been changed to `CEL` to avoid the compatibility issues.<BR>If need to use the old short name, then with this code will be available again: `window._ = window.celestra;`.
 
 
-### Celestra v5.3.0 (Voyager) changes
-
-- Added a new code section: __Abstract functions__ and new functions.
-
-
 ### Celestra v5.5.0 changes
 
 - The Math functions are available in the main code files (dev, min, esm) instead of the Math plugins.
+
 
 ### Celestra v5.6.0 (Razorback) changes
 
 - Many polyfills have been removed.
 
+
 ### Celestra v5.7.0 (Nostromo) changes
 
 - The module edition (__celestra.esm.js__) import has been changed.
 - Added __Assert API v3__ and the old assert functions have been removed.
-- The `getText();` and `getJson();` function has been modified to standalone function.
+- The `getText();` and `getJson();` functions have been modified to standalone function.
+
+
+### Celestra v5.8.0 (Uhura) changes
+
+- 50 functions have been removed.
 
 
 -----

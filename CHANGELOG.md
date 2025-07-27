@@ -9,6 +9,85 @@
 # Celestra version history
 
 
+## Celestra v5.8.0 Uhura
+
+1. Documentation and pdf fixes.
+
+2. Add these new files:
+- __celestra-assert-plugin.odt__
+- __celestra-assert-plugin.pdf__
+
+3. Add these assert functions and update Assert plugin:
+````javascript
+assertDoesNotMatch();
+assertFail();
+assertInstanceOf();
+assertIsNil();
+assertIsNotNil();
+assertMatch();
+assertNotInstanceOf();
+assertNotTypeOf();
+assertThrows();
+assertTypeOf();
+````
+
+4. Remove these functions:
+````javascript
+isArrayBuffer();
+isBigInt();
+isBoolean();
+isDataView();
+isDate();
+isEmptyArray();
+isEmptyIterator();
+isEmptyMap();
+isEmptyObject();
+isEmptySet();
+isFalsy();
+isMap();
+isNullOrUndefined();
+isNumber();
+isPromise();
+isSameArray();
+isSameIterator();
+isSameMap();
+isSameObject();
+isSameSet();
+isSet();
+isString();
+isSymbol();
+isTruthy();
+isWeakMap();
+isWeakSet();
+arrayUnique();
+assertType();
+
+createDataProperty();
+createDataPropertyOrThrow();
+createMethodProperty();
+createMethodPropertyOrThrow();
+deletePropertyOrThrow();
+getIn();
+getInV();
+hasIn();
+setIn();
+isLessThan();
+isSameValue();
+isSameValueNonNumber();
+isSameValueZero();
+requireObjectCoercible();
+toArray();
+toPrimitive();
+
+_apply();
+_apply();
+_call();
+_forEach();
+_map();
+_slice();
+````
+
+
 ## Celestra v5.7.4
 
 1. Documentation and pdf fixes.
