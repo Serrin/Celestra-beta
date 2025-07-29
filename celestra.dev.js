@@ -1,6 +1,6 @@
 /**
  * @name Celestra
- * @version 5.8.0 dev
+ * @version 5.8.1 dev
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
@@ -413,32 +413,6 @@ const getUrlVars = (str = location.search) =>
 const obj2string = (o) => Object.keys(o).reduce(
   (s,p) => s += encodeURIComponent(p) + "=" + encodeURIComponent(o[p]) + "&",
   "").slice(0, -1);
-
-
-/* classof(variable: any): string */
-/* classof(variable: any [, type: string [, throw =false]]): boolean | throw */
-function classof (v, type, Throw = false) {
-  var ot = Object.prototype.toString.call(v).slice(8, -1).toLowerCase();
-  if (arguments.length < 2) { return ot; }
-  if (!Throw) { return ot === type.toLowerCase(); }
-  if (ot !== type.toLowerCase()) {
-    throw TypeError("Celestra classof(); type error: " + ot + " - "  + type);
-  }
-  return true;
-}
-
-
-/* getType(variable: any): string */
-/* getType(variable: any [, type: string [, throw =false]]): boolean | throw */
-function getType (v, type, Throw = false) {
-  var ot = Object.prototype.toString.call(v).slice(8, -1).toLowerCase();
-  if (arguments.length < 2) { return ot; }
-  if (!Throw) { return ot === type.toLowerCase(); }
-  if (ot !== type.toLowerCase()) {
-    throw TypeError("Celestra getType(); type error: " + ot + " - "  + type);
-  }
-  return true;
-}
 
 
 /* extend([deep: boolean,] target: object, source1: object[, sourceN]): object*/
@@ -2003,6 +1977,32 @@ function ajax (o) {
 /** Type API **/
 
 
+/* classof(variable: any): string */
+/* classof(variable: any [, type: string [, throw =false]]): boolean | throw */
+function classof (v, type, Throw = false) {
+  var ot = Object.prototype.toString.call(v).slice(8, -1).toLowerCase();
+  if (arguments.length < 2) { return ot; }
+  if (!Throw) { return ot === type.toLowerCase(); }
+  if (ot !== type.toLowerCase()) {
+    throw TypeError("Celestra classof(); type error: " + ot + " - "  + type);
+  }
+  return true;
+}
+
+
+/* getType(variable: any): string */
+/* getType(variable: any [, type: string [, throw =false]]): boolean | throw */
+function getType (v, type, Throw = false) {
+  var ot = Object.prototype.toString.call(v).slice(8, -1).toLowerCase();
+  if (arguments.length < 2) { return ot; }
+  if (!Throw) { return ot === type.toLowerCase(); }
+  if (ot !== type.toLowerCase()) {
+    throw TypeError("Celestra getType(); type error: " + ot + " - "  + type);
+  }
+  return true;
+}
+
+
 /* toPrimitiveValue(value: any):
   primitive | object | symbol | function | thrown error */
 function toPrimitiveValue (O) {
@@ -2908,7 +2908,7 @@ const sort = ([...a], ns) => a.sort(ns ? (x, y) => x - y : undefined);
 /* includes(iterator, value: any): boolean */
 function includes (it, v) {
   for (let item of it) {
-    if (item === v) { return true; }
+    if (item === v || (item !== item && v !== v)) { return true; }
   }
   return false;
 }
@@ -3076,39 +3076,6 @@ function join (it, sep = ",") {
 
 /* withOut(iterator, filterIterator): array */
 const withOut = ([...a], [...fl]) => a.filter((e) => fl.indexOf(e) === -1);
-
-
-/** Abstract API **/
-
-
-/* toPrimitive(value: any): primitive | thrown error */
-function toPrimitive (O, hint = "default") {
-  const _apply = Function.prototype.call.bind(Function.prototype.apply);
-  const _isPrimitive = (v) =>
-    ((typeof v !== "object" && typeof v !== "function") || v === null);
-  if (_isPrimitive(O)) { return O; }
-  /* try Call obj[Symbol.toPrimitive](hint) */
-  let method = O[Symbol.toPrimitive];
-  if (method != null) {
-    let r = _apply(method, O, []);
-    if (_isPrimitive(r)) { return r; }
-  } else {
-    /* "string"              -> ["toString", "valueOf"] */
-    /* "number" OR "default" -> ["valueOf", "toString"] */
-    for (let item of
-      (hint === "string" ? ["toString", "valueOf"] : ["valueOf", "toString"])
-    ) {
-      method = O[item];
-      if (typeof method === "function") {
-        let r = _apply(method, O, []);
-        if (_isPrimitive(r)) { return r; }
-      }
-    }
-  }
-  throw new TypeError(
-    "celestra.toPrimitive(): Cannot convert object to primitive value"
-  );
-}
 
 
 /** Math API **/
@@ -3352,7 +3319,7 @@ const inRange = (v, min, max) => (v >= min && v <= max);
 /** object header **/
 
 
-const VERSION = "Celestra v5.8.0 dev";
+const VERSION = "Celestra v5.8.1 dev";
 
 
 /* celestra.noConflict(): celestra object */
@@ -3383,8 +3350,6 @@ const celestra = {
   javaHash,
   getUrlVars,
   obj2string,
-  classof,
-  getType,
   extend,
   sizeIn,
   forIn,
@@ -3477,6 +3442,8 @@ const celestra = {
   getJson,
   ajax,
   /** Type API **/
+  classof,
+  getType,
   toPrimitiveValue,
   isPropertyKey,
   toPropertyKey,

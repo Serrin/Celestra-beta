@@ -1,9 +1,9 @@
 /**
  * @name Celestra Assert plugin
- * @version 5.8.0 dev
+ * @version 5.8.1 dev
  * @see https://github.com/Serrin/Celestra
  * @license MIT https://opensource.org/licenses/MIT
- * Required Celestra version: 5.8.0
+ * Required Celestra version: 5.8.1
  */
 
 (function(window, celestra){

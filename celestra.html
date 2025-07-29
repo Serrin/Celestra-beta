@@ -103,7 +103,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
 
 <p>This library isn't compatible with the Node.js.</p>
 
-<p>Latest version: 5.8.0</p>
+<p>Latest version: 5.8.1</p>
 <p>Date: 2025-07-27T13:42:19.142Z</p>
 
 <p><b>Tested on these browsers:</b></p>
@@ -400,10 +400,6 @@ window.classof = classof;
       <td><span class="info">Stability: 4 - Stable.</span><br/>Returns a function that is bound to a context. Both of the parameters are mandatory.</td>
     </tr>
     <tr>
-      <td><code>classof(value[,class[,throw=false]]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Get the real type of a value. If this is an object, then the return value is the detailed object type (e.g.: array). If the class (string) parameter is given, then the return value (boolean) is the equality of the type of the value and the second parameter. If the third parameter (boolean) is true and the type of the value and the second parameter aren't equals, then the function is throwing a <code>TypeError();</code>, else the return value is true.</td>
-    </tr>
-    <tr>
       <td><code>constant(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>A one time assignment function to create a constant value in ES5. This returns a function, which returns the given value. (In math: <code>f(x)=x</code>)</td>
     </tr>
@@ -445,7 +441,7 @@ CEL.delay(5000)
     <tr>
       <td><code>filterIn(object,callback);</code></td>
       <td>
-        <span class="info">Stability: 4 - Stable.</span><br/>
+        <span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>
         <p>The filterIn() function executes a provided function once for each object property and returns a new object with the properties which were be filtered. The object parameter is mandatory and has to be an object. The callback parameter is mandatory and has to be a function. The parameter function will be called with these arguments: key value, key, object.</p>
         <p><b>Example:</b><pre>var o1 = {"a": 1, "b": 2, "c": 3};
 console.log(o1);
@@ -457,11 +453,7 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>forIn(object,callback);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>The forIn() function executes a provided function once for each object property. The object parameter is mandatory and has to be an object. The callback parameter is mandatory and has to be a function. The parameter function will be called with these arguments: key value, key, object.</td>
-    </tr>
-    <tr>
-      <td><code>getType(value[,class[,throw=false]]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This is an alias of the <code>classof(value[,class[,throw=false]]);</code>.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>The forIn() function executes a provided function once for each object property. The object parameter is mandatory and has to be an object. The callback parameter is mandatory and has to be a function. The parameter function will be called with these arguments: key value, key, object.</td>
     </tr>
     <tr>
       <td><code>getUrlVars([str=location.search]);</code></td>
@@ -480,7 +472,7 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>javaHash(data[,hexa=false]);</code></td>
-      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>Java <code>String.hashCode()</code> implementation in Javascript - this is a non-cryptographic hash function. The data parameter is mandatory and can be any type. The hexa parameter is optional and can be a boolean and sets the hexadecimal conversion of the return value and the default value is false. Return the generated integer hash.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>Java <code>String.hashCode()</code> implementation in Javascript - this is a non-cryptographic hash function. The data parameter is mandatory and can be any type. The hexa parameter is optional and can be a boolean and sets the hexadecimal conversion of the return value and the default value is false. Return the generated integer hash.</td>
     </tr>
     <tr>
       <td><code>nanoid([size=21[, alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"]]);</code></td>
@@ -508,7 +500,7 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>popIn(object, property);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>The popIn() function deletes the property in the object and returns the value of the deleted property. If the property doesn't exist in the object, then the return value is undefined. The object parameter is mandatory and has to be an object. The property parameter is mandatory.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>The popIn() function deletes the property in the object and returns the value of the deleted property. If the property doesn't exist in the object, then the return value is undefined. The object parameter is mandatory and has to be an object. The property parameter is mandatory.</td>
     </tr>
     <tr>
       <td><code>sleep(ms).then(callback);</code></td>
@@ -987,6 +979,14 @@ console.log(o2);
       <td><b>Description</b></td>
     </tr>
     <tr>
+      <td><code>classof(value[,class[,throw=false]]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Get the real type of a value. If this is an object, then the return value is the detailed object type (e.g.: array). If the class (string) parameter is given, then the return value (boolean) is the equality of the type of the value and the second parameter. If the third parameter (boolean) is true and the type of the value and the second parameter aren't equals, then the function is throwing a <code>TypeError();</code>, else the return value is true.</td>
+    </tr>
+    <tr>
+      <td><code>getType(value[,class[,throw=false]]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This is an alias of the <code>classof(value[,class[,throw=false]]);</code>.</td>
+    </tr>    
+    <tr>
       <td><code>isArrayBuffer(value);</td>
       <td><span class="removed">Stability: 0 - Removed in v5.8.0</span><br/>This function determines whether the provided value is an arraybuffer. The return value is boolean.</td>
     </tr>
@@ -1020,7 +1020,7 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>isClass(value);</td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Alias of the <code>isConstructorFn(value);</code>.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided object has a call method. The return value is boolean.</td>
     </tr>
     <tr>
       <td><code>isCoercedObject(object);</td>
@@ -1028,7 +1028,7 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>isConstructorFn(value);</td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a constructable function. The return value is boolean.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided value is a constructable function. The return value is boolean.</td>
     </tr>
     <tr>
       <td><code>isDataView(value);</td>
@@ -1367,7 +1367,7 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>arrayCreate([length=0]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns an array with the given length. If the length is -0, then the length will be 0. If The length parameter out of the array size range, then a rangeerror will be thrown.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function returns an array with the given length. If the length is -0, then the length will be 0. If The length parameter out of the array size range, then a rangeerror will be thrown.</td>
     </tr>
     <tr>
       <td><code>arrayCycle(iterator[,n=100]);</code></td>
@@ -1379,11 +1379,11 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>arrayDifference(iterator1, iterator2);</code></td>
-      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Set.prototype.difference();</code>.</span><br/>Returns the array of unique values that are in the iterator1, excluding the values that are also in the iterator2. All of the parameters are mandatory. The return value is an Array.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/><span class="info">Can be replaced with <code>Set.prototype.difference();</code>.</span><br/>Returns the array of unique values that are in the iterator1, excluding the values that are also in the iterator2. All of the parameters are mandatory. The return value is an Array.</td>
     </tr>
     <tr>
       <td><code>arrayIntersection(iterator1, iterator2);</code></td>
-      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Set.prototype.intersection();</code>.</span><br/>Returns the array of unique values that are in both of the given iterators. All of the parameters are mandatory. The return value is an Array.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/><span class="info">Can be replaced with <code>Set.prototype.intersection();</code>.</span><br/>Returns the array of unique values that are in both of the given iterators. All of the parameters are mandatory. The return value is an Array.</td>
     </tr>
     <tr>
       <td><code>arrayMerge(target,source1[,sourceN]);</code></td>
@@ -1410,11 +1410,11 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>arraySymmetricDifference(iterator1, iterator2);</code></td>
-      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Set.prototype.symmetricDifference();</code>.</span><br/>Returns the array of unique values that are only in one of given iterators. All of the parameters are mandatory. The return value is an Array.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/><span class="info">Can be replaced with <code>Set.prototype.symmetricDifference();</code>.</span><br/>Returns the array of unique values that are only in one of given iterators. All of the parameters are mandatory. The return value is an Array.</td>
     </tr>
     <tr>
       <td><code>arrayUnion(iterator1[,iteratorN]);</code></td>
-      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Set.prototype.union();</code>.</span><br/>Returns the array of unique values including all values from the given iterators. The first parameter is mandatory. The return value is an Array.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/><span class="info">Can be replaced with <code>Set.prototype.union();</code>.</span><br/>Returns the array of unique values including all values from the given iterators. The first parameter is mandatory. The return value is an Array.</td>
     </tr>
     <tr>
       <td><code>arrayUnique(iterator);</code></td>
@@ -1450,7 +1450,7 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>entries(iterator[,offset=0]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>An alias of the <code>enumerate(iterator);</code>.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>An alias of the <code>enumerate(iterator);</code>.</td>
     </tr>
     <tr>
       <td><code>enumerate(iterator[,offset=0]);</code></td>
