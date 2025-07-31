@@ -300,6 +300,10 @@ const BASE62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 const WORDSAFEALPHABET= "23456789CFGHJMPQRVWXcfghjmpqvwx";
 
 
+/* asyncNoop (): Promise */
+function asyncNoop () { return new Promise(function (resolve) { resolve(); }); }
+
+
 /* deleteOwnProperty(object, property [,Throw = false]): number | thrown error*/
 function deleteOwnProperty (O, P, Throw = false) {
   if (Object.hasOwn(O, P)) {
@@ -368,24 +372,6 @@ const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 /* randomBoolean(): boolean */
 const randomBoolean = () => (Math.random() >= 0.5);
-
-
-/* b64Encode(string): string */
-function b64Encode (s) {
-  return btoa(encodeURIComponent(String(s)).replace(/%([0-9A-F]{2})/g,
-    function toSolidBytes (_match, p1) {
-      return String.fromCharCode("0x" + p1);
-    }
-  ));
-}
-
-
-/* b64Decode(string): string */
-function b64Decode (s) {
-  return decodeURIComponent(atob(String(s)).split("").map(function (c) {
-    return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
-  }).join(""));
-}
 
 
 /* javaHash(data: any [, hexa = false]): integer */
@@ -541,21 +527,24 @@ function assertFail(msg) {
 }
 
 
-/* assertMatch(string, regexp [, message]): true | thrown error */
+/* assertMatch(string, regexp [, message | error]): true | thrown error */
 function assertMatch(string, regexp, msg) {
   if (typeof string !== "string") {
+    if (Error.isError(msg)) { throw msg; }
     throw new TypeError(
       "[assertMatch] TypeError: " + string + " is not a string"
         + (msg ? " - " + msg : "")
     );
   }
   if (!(regexp instanceof RegExp)) {
+    if (Error.isError(msg)) { throw msg; }
     throw new TypeError(
       "[assertMatch] TypeError: " + regexp + " is not a RegExp"
         + (msg ? " - " + msg : "")
     );
   }
   if (!(regexp.test(string))) {
+    if (Error.isError(msg)) { throw msg; }
     throw new Error(
       "[assertMatch] Assertion failed" + (msg ? ": " + msg : "")
     );
@@ -564,21 +553,24 @@ function assertMatch(string, regexp, msg) {
 }
 
 
-/* assertDoesNotMatch(string, regexp [, message]): true | thrown error */
+/* assertDoesNotMatch(string, regexp [, message | error]): true | thrown error */
 function assertDoesNotMatch(string, regexp, msg) {
   if (typeof string !== "string") {
+    if (Error.isError(msg)) { throw msg; }
     throw new TypeError(
       "[assertDoesNotMatch] TypeError: " + string + " is not a string"
         + (msg ? " - " + msg : "")
     );
   }
   if (!(regexp instanceof RegExp)) {
+    if (Error.isError(msg)) { throw msg; }
     throw new TypeError(
       "[assertDoesNotMatch] TypeError: " + regexp + " is not a RegExp"
         + (msg ? " - " + msg : "")
     );
   }
   if (regexp.test(string)) {
+    if (Error.isError(msg)) { throw msg; }
     throw new Error(
       "[assertDoesNotMatch] Assertion failed" + (msg ? ": " + msg : "")
     );
@@ -587,7 +579,7 @@ function assertDoesNotMatch(string, regexp, msg) {
 }
 
 
-/* assertThrows(callback: function [, message]): error | thrown error */
+/* assertThrows(callback: function [, message | error]): error | thrown error */
 function assertThrows (callback, msg) {
   if (typeof callback !== "function") {
     throw new TypeError(
@@ -596,13 +588,15 @@ function assertThrows (callback, msg) {
     );
   }
   try { callback(); } catch (e) { return e; }
+  if (Error.isError(msg)) { throw msg; }
   throw new Error("[assertThrow] Assertion failed" + (msg ? ": " + msg : ""));
 }
 
 
-/* assertIsNotNil(value: any [, message]): value | thrown error */
+/* assertIsNotNil(value: any [, message | error]): value | thrown error */
 function assertIsNotNil (v, msg) {
   if (v == null) {
+    if (Error.isError(msg)) { throw msg; }
     throw new TypeError(
       "[assertIsNotNil] Assertion failed: " + v + " is null or undefined"
         + (msg ? " - " + msg : "")
@@ -612,9 +606,10 @@ function assertIsNotNil (v, msg) {
 }
 
 
-/* assertIsNil(value: any [, message]): value | thrown error */
+/* assertIsNil(value: any [, message | error]): value | thrown error */
 function assertIsNil (v, msg) {
   if (v != null) {
+    if (Error.isError(msg)) { throw msg; }
     throw new TypeError(
       "[assertIsNil] Assertion failed: " + v + " is not null or undefined"
         + (msg ? " - " + msg : "")
@@ -624,16 +619,19 @@ function assertIsNil (v, msg) {
 }
 
 
-/* assertTypeOf(value: any, type: string [, message]): value | thrown error */
+/* assertTypeOf(value: any, type: string [, message | error]):
+  value | thrown error */
 function assertTypeOf (v, type, msg) {
   const _type = (v) => ((v === null) ? "null" : (typeof v));
   if (typeof type !== "string") {
+    if (Error.isError(msg)) { throw msg; }
     throw new TypeError(
       "[assertTypeOf] TypeError: " + type + " is not a string"
         + (msg ? " - " + msg : "")
     );
   }
   if (_type(v) !== type) {
+    if (Error.isError(msg)) { throw msg; }
     throw new TypeError(
       "[assertTypeOf] Assertion failed: " + v + " is not a " + type
         + (msg ? " - " + msg : "")
@@ -643,17 +641,19 @@ function assertTypeOf (v, type, msg) {
 }
 
 
-/* assertNotTypeOf(value: any, type: string [, message]):
+/* assertNotTypeOf(value: any, type: string [, message | error]):
   value | thrown error */
 function assertNotTypeOf (v, type, msg) {
   const _type = (v) => ((v === null) ? "null" : (typeof v));
   if (typeof type !== "string") {
+    if (Error.isError(msg)) { throw msg; }
     throw new TypeError(
       "[assertNotTypeOf] TypeError: " + type + " is not a string"
         + (msg ? " - " + msg : "")
     );
   }
   if (_type(v) === type) {
+    if (Error.isError(msg)) { throw msg; }
     throw new TypeError(
       "[assertNotTypeOf] Assertion failed: " + v + " is not a " + type
         + (msg ? " - " + msg : "")
@@ -663,16 +663,18 @@ function assertNotTypeOf (v, type, msg) {
 }
 
 
-/* assertInstanceOf(value: any, Class: constructor [, message]):
+/* assertInstanceOf(value: any, Class: constructor [, message | error]):
   value | thrown error */
 function assertInstanceOf (v, Class, msg) {
   if (typeof Class !== "function") {
+    if (Error.isError(msg)) { throw msg; }
     throw new TypeError(
       "[assertInstanceOf] TypeError: " + Class + " is not a function"
         + (msg ? " - " + msg : "")
     );
   }
   if (!(v instanceof Class)) {
+    if (Error.isError(msg)) { throw msg; }
     throw new TypeError(
       "[assertInstanceOf] Assertion failed: " + v + " is not a "
         + ((Class.name !== "") ? Class.name : Class)
@@ -683,16 +685,18 @@ function assertInstanceOf (v, Class, msg) {
 }
 
 
-/* assertNotInstanceOf(value: any, Class: constructor [, message]):
+/* assertNotInstanceOf(value: any, Class: constructor [, message | error]):
   value | thrown error */
 function assertNotInstanceOf (v, Class, msg) {
   if (typeof Class !== "function") {
+    if (Error.isError(msg)) { throw msg; }
     throw new TypeError(
       "[assertNotInstanceOf] TypeError: " + Class + " is not a function"
         + (msg ? " - " + msg : "")
     );
   }
   if (v instanceof Class) {
+    if (Error.isError(msg)) { throw msg; }
     throw new TypeError(
       "[assertNotInstanceOf] Assertion failed: " + v + " is not a "
         + ((Class.name !== "") ? Class.name : Class)
@@ -703,9 +707,10 @@ function assertNotInstanceOf (v, Class, msg) {
 }
 
 
-/* assert(value: any [, message]): true | thrown error */
+/* assert(value: any [, message | error]): true | thrown error */
 function assert (c, msg) {
   if (!c) {
+    if (Error.isError(msg)) { throw msg; }
     throw new Error("[assert] Assertion failed" + (msg ? ": " + msg : ""));
   }
   return true;
@@ -715,35 +720,39 @@ function assert (c, msg) {
 /* assertTrue(value: any [, message]): true | thrown error */
 function assertTrue (c, msg) {
   if (!c) {
+    if (Error.isError(msg)) { throw msg; }
     throw new Error("[assertTrue] Assertion failed" + (msg ? ": " + msg : ""));
   }
   return true;
 }
 
 
-/* assertFalse(value: any [, message]): true | thrown error */
+/* assertFalse(value: any [, message] | error): true | thrown error */
 function assertFalse (c, msg) {
   if (c) {
+    if (Error.isError(msg)) { throw msg; }
     throw new Error("[assertFalse] Assertion failed" + (msg ? ": " + msg : ""));
   }
   return true;
 }
 
 
-/* assertEqual(x: any, y: any [, message]): true | thrown error */
+/* assertEqual(x: any, y: any [, message | error]): true | thrown error */
 /* loose equality + NaN equality */
 function assertEqual (x, y, msg) {
   if (!(x == y || (x !== x && y !== y))) {
+    if (Error.isError(msg)) { throw msg; }
     throw new Error("[assertEqual] Assertion failed" + (msg ? ": " + msg : ""));
   }
   return true;
 }
 
 
-/* assertStrictEqual(x: any, y: any [, message]): true | thrown error */
+/* assertStrictEqual(x: any, y: any [, message | error]): true | thrown error */
 /* SameValue equality */
 function assertStrictEqual (x, y, msg) {
   if (!((x === y) ? (x !== 0 || 1/x === 1/y) : (x !== x && y !== y))) {
+    if (Error.isError(msg)) { throw msg; }
     throw new Error("[assertStrictEqual] Assertion failed"
       + (msg ? ": " + msg : "")
     );
@@ -752,10 +761,11 @@ function assertStrictEqual (x, y, msg) {
 }
 
 
-/* assertNotEqual(x: any, y: any [, message]): true | thrown error */
+/* assertNotEqual(x: any, y: any [, message | error]): true | thrown error */
 /* loose equality + NaN equality */
 function assertNotEqual (x, y, msg) {
   if (x == y || (x !== x && y !== y)) {
+    if (Error.isError(msg)) { throw msg; }
     throw new Error("[assertNotEqual] Assertion failed"
       + (msg ? ": " + msg : "")
     );
@@ -764,10 +774,12 @@ function assertNotEqual (x, y, msg) {
 }
 
 
-/* assertNotStrictEqual(x: any, y: any [, message]): true | thrown error */
+/* assertNotStrictEqual(x: any, y: any [, message | error]):
+  true | thrown error */
 /* SameValue equality */
 function assertNotStrictEqual (x, y, msg) {
   if ((x === y) ? (x !== 0 || 1/x === 1/y) : (x !== x && y !== y)) {
+    if (Error.isError(msg)) { throw msg; }
     throw new Error("[assertNotStrictEqual] Assertion failed"
       + (msg ? ": " + msg : "")
     );
@@ -776,7 +788,7 @@ function assertNotStrictEqual (x, y, msg) {
 }
 
 
-/* assertDeepEqual(x: any, y: any [, message]): true | thrown error */
+/* assertDeepEqual(x: any, y: any [, message | error]): true | thrown error */
 function assertDeepEqual (x, y, msg) {
   function _isDeepEqual (x, y) {
     /* helper functions */
@@ -905,6 +917,7 @@ function assertDeepEqual (x, y, msg) {
   }
   /* throw error | return true */
   if (!_isDeepEqual(x, y)) {
+    if (Error.isError(msg)) { throw msg; }
     throw new Error("[assertDeepEqual] Assertion failed"
       + (msg ? ": " + msg : "")
     );
@@ -913,7 +926,7 @@ function assertDeepEqual (x, y, msg) {
 }
 
 
-/* assertNotDeepStrictEqual(x: any, y: any [, message]): boolean */
+/* assertNotDeepStrictEqual(x: any, y: any [, message | error]): boolean */
 function assertNotDeepStrictEqual (x, y, msg) {
   function _isDeepStrictEqual (x, y) {
     /* helper functions */
@@ -1057,6 +1070,7 @@ function assertNotDeepStrictEqual (x, y, msg) {
   }
   /* throw error | return true */
   if (_isDeepStrictEqual(x, y)) {
+    if (Error.isError(msg)) { throw msg; }
     throw new Error("[assertNotDeepStrictEqual] Assertion failed"
       + (msg ? ": " + msg : "")
     );
@@ -1065,7 +1079,8 @@ function assertNotDeepStrictEqual (x, y, msg) {
 }
 
 
-/* assertNotDeepEqual(x: any, y: any [, message]): true | thrown error */
+/* assertNotDeepEqual(x: any, y: any [, message | error]):
+  true | thrown error */
 function assertNotDeepEqual (x, y, msg) {
   function _isDeepEqual (x, y) {
     /* helper functions */
@@ -1194,6 +1209,7 @@ function assertNotDeepEqual (x, y, msg) {
   }
   /* throw error | return true */
   if (_isDeepEqual(x, y)) {
+    if (Error.isError(msg)) { throw msg; }
     throw new Error("[assertNotDeepEqual] Assertion failed"
       + (msg ? ": " + msg : "")
     );
@@ -1202,7 +1218,8 @@ function assertNotDeepEqual (x, y, msg) {
 }
 
 
-/* assertDeepStrictEqual(x: any, y: any [, message]): true | thrown error */
+/* assertDeepStrictEqual(x: any, y: any [, message | error]):
+  true | thrown error */
 function assertDeepStrictEqual (x, y, msg) {
   function _isDeepStrictEqual (x, y) {
     /* helper functions */
@@ -1346,6 +1363,7 @@ function assertDeepStrictEqual (x, y, msg) {
   }
   /* throw error | return true */
   if (!_isDeepStrictEqual(x, y)) {
+    if (Error.isError(msg)) { throw msg; }
     throw new Error("[assertDeepStrictEqual] Assertion failed"
       + (msg ? ": " + msg : "")
     );
@@ -1355,6 +1373,24 @@ function assertDeepStrictEqual (x, y, msg) {
 
 
 /** String API **/
+
+
+/* b64Encode(string): string */
+function b64Encode (s) {
+  return btoa(encodeURIComponent(String(s)).replace(/%([0-9A-F]{2})/g,
+    function toSolidBytes (_match, p1) {
+      return String.fromCharCode("0x" + p1);
+    }
+  ));
+}
+
+
+/* b64Decode(string): string */
+function b64Decode (s) {
+  return decodeURIComponent(atob(String(s)).split("").map(function (c) {
+    return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+  }).join(""));
+}
 
 
 /* strTruncate(string, newLength [, omission = ""]): string */
@@ -3337,6 +3373,7 @@ const celestra = {
   BASE58,
   BASE62,
   WORDSAFEALPHABET,
+  asyncNoop,
   deleteOwnProperty,
   toObject,
   createPolyfillMethod,
@@ -3345,8 +3382,6 @@ const celestra = {
   delay,
   sleep,
   randomBoolean,
-  b64Encode,
-  b64Decode,
   javaHash,
   getUrlVars,
   obj2string,
@@ -3387,6 +3422,8 @@ const celestra = {
   assertNotDeepEqual,
   assertDeepStrictEqual,
   /** String API **/
+  b64Encode,
+  b64Decode,
   strTruncate,
   strPropercase,
   strTitlecase,

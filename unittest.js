@@ -1017,6 +1017,9 @@ CUT.isError("assertMatch(); 03 error",
 CUT.isError("assertMatch(); 04 error",
   () => CEL.assertMatch("table football", 42, "lorem")
 );
+CUT.isError("assertMatch(); 05 error",
+  () => CEL.assertMatch("table football", 42, new Error("ipsum"))
+);
 
 
 /* assertDoesNotMatch(); */
@@ -1032,6 +1035,9 @@ CUT.isError("assertDoesNotMatch(); 03 error",
 CUT.isError("assertDoesNotMatch(); 04 error",
   () => CEL.assertDoesNotMatch("table football", 42, "lorem")
 );
+CUT.isError("assertDoesNotMatch(); 05 error",
+  () => CEL.assertDoesNotMatch("table football", 42, new Error("ipsum"))
+);
 
 
 /* assertThrows(); */
@@ -1045,6 +1051,9 @@ CUT.isError("not strict assert.assertThrows(); 03 error",
   () => CEL.assertThrows(
     () => {}, "not strict assert.assertThrows(); 03 error"
   )
+);
+CUT.isError("not strict assert.assertThrows(); 04 error",
+  () => CEL.assertThrows(() => {}, new Error("ipsum"))
 );
 
 
@@ -1061,6 +1070,9 @@ CUT.isError("assertIsNil(); 03 error",
 CUT.isError("assertIsNil(); 04 error",
   () => CEL.assertIsNil(42, "assertIsNil(); 04 error")
 );
+CUT.isError("assertIsNil(); 05 error",
+  () => CEL.assertIsNil(42, new Error("ipsum"))
+);
 
 
 /* assertIsNotNil(); */
@@ -1076,6 +1088,9 @@ CUT.isError("assertIsNotNil(); 03 error",
 );
 CUT.isError("assertIsNotNil(); 04 error",
   () => CEL.assertIsNotNil(undefined, "assertIsNotNil(); 04 error")
+);
+CUT.isError("assertIsNotNil(); 05 error",
+  () => CEL.assertIsNotNil(undefined, new Error("ipsum"))
 );
 
 
@@ -1097,6 +1112,9 @@ CUT.isError("assertTypeOf(); 06 error",
 CUT.isError("assertTypeOf(); 07 error",
   () => CEL.assertTypeOf(token3, Map, "assertTypeOf(); 07 error")
 );
+CUT.isError("assertTypeOf(); 08 error",
+  () => CEL.assertTypeOf(token3, Map, new Error("ipsum"))
+);
 
 
 /* assertInstanceOf(); */
@@ -1117,6 +1135,9 @@ CUT.isError("assertInstanceOf(); 06 error",
 );
 CUT.isError("assertInstanceOf(); 07 error",
   () => CEL.assertInstanceOf(token3, Map, "assertInstanceOf(); 07 error")
+);
+CUT.isError("assertInstanceOf(); 08 error",
+  () => CEL.assertInstanceOf(token3, Map, new Error("ipsum"))
 );
 
 
@@ -1146,6 +1167,9 @@ CUT.isEqual("assertNotTypeOf(); 07", token2,
   CEL.assertNotTypeOf(token2, "number")
 );
 CUT.isError("assertNotTypeOf(); 08", () => CEL.assertNotTypeOf(token3, Map));
+CUT.isError("assertNotTypeOf(); 09", 
+  () => CEL.assertNotTypeOf(token3, Map, new Error("ipsum"))
+);
 
 
 /* assertNotInstanceOf(); */
@@ -1184,6 +1208,9 @@ CUT.isError("assertNotInstanceOf(); 07",
 CUT.isEqual("assertNotInstanceOf(); 08", token3,
   CEL.assertNotInstanceOf(token3, Map)
 );
+CUT.isEqual("assertNotInstanceOf(); 09", token3,
+  CEL.assertNotInstanceOf(token3, Map, new Error("ipsum"))
+);
 
 
 /* assert(); */
@@ -1198,6 +1225,9 @@ CUT.isError("assert(); 02 error",
 );
 CUT.isError("assert(); 03 error",
   () => CEL.assert(0, "assert(); 03 error")
+);
+CUT.isError("assert(); 04 error",
+  () => CEL.assert(0, new Error("ipsum"))
 );
 
 
@@ -1214,6 +1244,7 @@ CUT.isError("assertTrue(); 02 error",
 CUT.isError("assertTrue(); 03 error",
   () => CEL.assert(0, "assertTrue(); 03 error")
 );
+CUT.isError("assertTrue(); 04 error", () => CEL.assert(0, new Error("ipsum")));
 
 
 /* assertFalse(); */
@@ -1229,6 +1260,9 @@ CUT.isError("assertFalse(); 02 error",
 CUT.isError("assertFalse(); 03 error",
   () => CEL.assertFalse(1, "assertFalse(); 03 error")
 );
+CUT.isError("assertFalse(); 04 error",
+  () => CEL.assertFalse(1, new Error("ipsum"))
+);
 
 
 /* assertEqual(); */
@@ -1240,6 +1274,9 @@ CUT.isTrue("assertEqual(); 01",
 CUT.isError("assertEqual(); 02 error",
   () => CEL.assertEqual(null, false, "assertEqual(); 02 error")
 );
+CUT.isError("assertEqual(); 03 error",
+  () => CEL.assertEqual(null, false, new Error("ipsum"))
+);
 
 
 /* assertStrictEqual(); */
@@ -1250,6 +1287,9 @@ CUT.isError("assertStrictEqual(); 03 error",
 );
 CUT.isError("assertStrictEqual(); 04 error",
   () => CEL.assertStrictEqual(null, false, "assertStrictEqual(); 04 error")
+);
+CUT.isError("assertStrictEqual(); 05 error",
+  () => CEL.assertStrictEqual(null, false, new Error("ipsum"))
 );
 
 
@@ -1263,6 +1303,9 @@ CUT.isError("assertNotEqual(); 03 error",
 );
 CUT.isError("42", "assertNotEqual(); 04 error",
   () => CEL.assertNotEqual(42, "42", "assertNotEqual(); 04 error")
+);
+CUT.isError("42", "assertNotEqual(); 05 error",
+  () => CEL.assertNotEqual(42, "42", new Error("ipsum"))
 );
 
 
@@ -1280,9 +1323,15 @@ CUT.isError("assertNotStrictEqual(); 04 error",
   () => CEL.assertNotStrictEqual(42, 42, "assertNotStrictEqual(); 04 error")
 );
 CUT.isTrue("assertNotStrictEqual(); 05", CEL.assertNotStrictEqual(42, "42"));
+CUT.isTrue("assertNotStrictEqual(); 05", 
+  CEL.assertNotStrictEqual(42, "42", new Error("ipsum"))
+);
 
 
 /* assertDeepEqual(); begin */
+CUT.isError("assertDeepEqual(); 00 - error parameter",
+  () => CEL.assertDeepEqual(42, 43, new Error("ipsum"))
+);
 /* primitives / number + Object wrappers */
 CUT.isTrue("assertDeepEqual(); 01a - ok", CEL.assertDeepEqual(42, 42));
 CUT.isError("assertDeepEqual(); 01b - error",
@@ -1982,6 +2031,9 @@ CUT.isError(
 
 
 /* assertNotDeepStrictEqual begin */
+CUT.isError("assertNotDeepStrictEqual(); 00 - error parameter",
+  () => CEL.assertNotDeepStrictEqual(42, 42, new Error("lorem"))
+);
 /* primitives / number + Object wrappers */
 CUT.isError("assertNotDeepStrictEqual(); 01a - error",
   () => CEL.assertNotDeepStrictEqual(
@@ -2786,6 +2838,9 @@ CUT.isError(
 
 
 /* assertNotDeepEqual begin */
+CUT.isError("assertNotDeepEqual(); 00 - error parameter",
+  () => CEL.assertNotDeepEqual(42, 42, new Error("lorem"))
+);
 /* primitives / number + Object wrappers */
 CUT.isError("assertNotDeepEqual(); 01a - error",
   () => CEL.assertNotDeepEqual(42, 42, "assertNotDeepEqual(); 01a - error")
@@ -3620,6 +3675,9 @@ CUT.isError(
 
 
 /* assertDeepStrictEqual begin */
+CUT.isError("assertDeepStrictEqual(); 01b - error",
+  () => CEL.assertDeepStrictEqual(42, 43, new Error("lorem"))
+);
 /* primitives / number + Object wrappers */
 CUT.isTrue("assertDeepStrictEqual(); 01a - ok",
   CEL.assertDeepStrictEqual(42, 42)
@@ -6815,7 +6873,7 @@ CUT.addElement("h3", "Async testcases");
 
 
 CUT.addElement("p", "Here have to be these results:");
-CUT.addElement("ul", "<li>1x domReady(); (core api) is working</li>"
+CUT.addElement("ul", "<li>1x domReady(); is working</li>"
   + "<li>2x importScript(); (core api) - first script loaded</li>"
   + "<li>2x importScript(); (core api) - second script loaded</li>"
   + "<li>1x importScript(); (core api) - with more scripts"
@@ -6824,12 +6882,19 @@ CUT.addElement("ul", "<li>1x domReady(); (core api) is working</li>"
   + "<li>1x getText()</li>"
   + "<li>12x ajax()</li>"
   + "<li>8x Array.fromAsync()</li>"
+  + "<li>1x asyncNoop(); is working</li>"
 );
 
 
 /* domReady(); */
 CEL.domReady(function () {
-  CUT.isTrue("domReady(); (core api) is working", true);
+  CUT.isTrue("domReady(); is working", true);
+});
+
+
+/* asyncNoop(); */
+CEL.asyncNoop().then(function(result) {
+  CUT.isTrue("asyncNoop(); is working", true);
 });
 
 
