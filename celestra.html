@@ -384,8 +384,24 @@ window.classof = classof;
       <td><span class="info">Stability: 4 - Stable.</span><br/><code>"23456789CFGHJMPQRVWXcfghjmpqvwx"</code><br/>Can be used with the ID generator functions.</td>
     </tr>
     <tr>
+      <td><code>asyncConstant(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns an async function, which returns a promise with the given value.</td>
+    </tr>
+    <tr>
+      <td><code>asyncIdentity(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This async function returns a promise with the given value.</td>
+    </tr>
+    <tr>
+      <td><code>asyncF();</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This async function returns a promise with false value.</td>
+    </tr>
+    <tr>
       <td><code>asyncNoop();</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function does nothing and returns a resolved promise.</td>
+    </tr>
+    <tr>
+      <td><code>asyncT();</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This async function returns a promise with true value.</td>
     </tr>
     <tr>
       <td><code>bind(function,context);</code></td>
@@ -1953,7 +1969,7 @@ Otherwise, the result is false.</pre>
     <tr>
       <td><code>window.GeneratorFunction();</code></td>
       <td>The GeneratorFunction constructor creates a new generator function object. In JavaScript every generator function is actually a GeneratorFunction object. Note that GeneratorFunction is not a global object, but in the Celestra this is available in the <code>window</code> object. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction" target="_blank">MDN Article</a>!</td>
-    </tr>    
+    </tr>
     <tr>
       <td>REMOVED polyfills in v3.1.0</td>
       <td><code>Array.from();</code><br/><code>Array.of();</code><br/><code>Array.prototype.fill();</code><br/><code>Array.prototype.find();</code><br/><code>Array.prototype.findIndex();</code><br/><code>Object.create();</code><br/><code>String.prototype.startsWith();</code><br/><code>String.prototype.endsWith();</code><br/><code>Array.prototype.copyWithin();</code><br/><code>String.fromCodePoint();</code><br/><code>String.prototype.codePointAt();</code><br/><code>Number.EPSILON;</code><br/><code>Number.isNaN();</code><br/><code>isNaN();</code><br/><code>Number.isInteger();</code><br/><code>Number.isFinite();</code><br/><code>Number.isSafeInteger();</code><br/><code>Number.parseInt();</code><br/><code>Number.parseFloat();</code><br/><code>Math.acosh();</code><br/><code>Math.asinh();</code><br/><code>Math.atanh();</code><br/><code>Math.cbrt();</code><br/><code>Math.clz32();</code><br/><code>Math.cosh();</code><br/><code>Math.expm1();</code><br/><code>Math.fround();</code><br/><code>Math.hypot();</code><br/><code>Math.imul();</code><br/><code>Math.log1p();</code><br/><code>Math.log10();</code><br/><code>Math.log2();</code><br/><code>Math.sign();</code><br/><code>Math.sinh();</code><br/><code>Math.tanh();</code><br/><code>Math.trunc();</code></td>

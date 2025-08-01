@@ -300,8 +300,24 @@ const BASE62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 const WORDSAFEALPHABET= "23456789CFGHJMPQRVWXcfghjmpqvwx";
 
 
-/* asyncNoop (): Promise */
+/* asyncNoop (): Promise - do nothing */
 function asyncNoop () { return new Promise(function (resolve) { resolve(); }); }
+
+
+/* asyncT (): Promise - return true */
+async function asyncT () { return true; }
+
+
+/* asyncF (): Promise - return false */
+async function asyncF () { return false; }
+
+
+/* asyncConstant (value): async function */
+function asyncConstant (v) { return async function() { return v; }; }
+
+
+/* asyncIdentity (value): Promise - return value */
+async function asyncIdentity (v) { return v; }
 
 
 /* deleteOwnProperty(object, property [,Throw = false]): number | thrown error*/
@@ -2405,13 +2421,18 @@ const isIterable = (v) => (
 
 /* isTypedArray(value: any): boolean */
 const isTypedArray = (v) => (
-  v instanceof Int8Array || v instanceof Uint8Array
+  v instanceof Int8Array
+  || v instanceof Uint8Array
   || v instanceof Uint8ClampedArray
-  || v instanceof Int16Array || v instanceof Uint16Array
-  || v instanceof Int32Array || v instanceof Uint32Array
+  || v instanceof Int16Array
+  || v instanceof Uint16Array
+  || v instanceof Int32Array
+  || v instanceof Uint32Array
   || ("Float16Array" in window ? v instanceof Float16Array : false)
-  || v instanceof Float32Array || v instanceof Float64Array
-  || v instanceof BigInt64Array || v instanceof BigUint64Array
+  || v instanceof Float32Array
+  || v instanceof Float64Array
+  || v instanceof BigInt64Array
+  || v instanceof BigUint64Array
 );
 
 
@@ -3374,6 +3395,10 @@ const celestra = {
   BASE62,
   WORDSAFEALPHABET,
   asyncNoop,
+  asyncT,
+  asyncF,
+  asyncConstant,
+  asyncIdentity,
   deleteOwnProperty,
   toObject,
   createPolyfillMethod,

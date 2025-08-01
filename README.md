@@ -200,7 +200,11 @@ Name | Description
 `BASE58;`|__Stability: 4 - Stable.__<BR>`"123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"`<BR>Can be used with the ID generator functions.|
 `BASE62;`|__Stability: 4 - Stable.__<BR>`"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"`<BR>Can be used with the ID generator functions.
 `WORDSAFEALPHABET;`|__Stability: 4 - Stable.__<BR>`"23456789CFGHJMPQRVWXcfghjmpqvwx"`<BR>Can be used with the ID generator functions.
+`asyncConstant(value);` | __Stability: 4 - Stable.__<BR>This function returns an async function, which returns a promise with the given value.
+`asyncIdentity(value);` | __Stability: 4 - Stable.__<BR>This async function returns a promise with the given value.
+`asyncF();` | __Stability: 4 - Stable.__<BR>This async function returns a promise with false value.
 `asyncNoop();` | __Stability: 4 - Stable.__<BR>This function does nothing and returns a resolved promise.
+`asyncT();` | __Stability: 4 - Stable.__<BR>This async function returns a promise with true value.
 `bind(function,context);` | __Stability: 4 - Stable.__<BR>Returns a function that is bound to a context. Both of the parameters are mandatory.
 `constant(value);` | __Stability: 4 - Stable.__<BR>A one time assignment function to create a constant value in ES5. This returns a function, which returns the given value. (In math: `f(x)=x`)
 `createPolyfillMethod(object,property,value);`| __Stability: 4 - Stable.__<BR>This function creates a writable, configurable and non-enumerable property with the given value in the object if the property doesn't exist in the object. The return value boolean and checks that the creating of the method was successful.<BR>__Example:__<BR> `CEL.createPolyfillMethod(Array.prototype, "at", function(...){...});`

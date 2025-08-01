@@ -6883,6 +6883,10 @@ CUT.addElement("ul", "<li>1x domReady(); is working</li>"
   + "<li>12x ajax()</li>"
   + "<li>8x Array.fromAsync()</li>"
   + "<li>1x asyncNoop(); is working</li>"
+  + "<li>1x asyncT(); is working</li>"
+  + "<li>1x asyncF(); is working</li>"
+  + "<li>1x asyncConstant(); is working</li>"
+  + "<li>1x asyncIdentity(); is working</li>"
 );
 
 
@@ -6895,6 +6899,30 @@ CEL.domReady(function () {
 /* asyncNoop(); */
 CEL.asyncNoop().then(function(result) {
   CUT.isTrue("asyncNoop(); is working", true);
+});
+
+
+/* asyncT(); */
+CEL.asyncT().then(function(result) {
+  CUT.isTrue("asyncT(); is working", result);
+});
+
+
+/* asyncF(); */
+CEL.asyncF().then(function(result) {
+  CUT.isFalse("asyncF(); is working", result);
+});
+
+
+/* asyncConstant(); */
+(CEL.asyncConstant(true))().then(function(result) {
+  CUT.isTrue("asyncConstant(); is working", result);
+});
+
+
+/* asyncIdentity(); */
+CEL.asyncIdentity(true).then(function(result) {
+  CUT.isTrue("asyncIdentity(); is working", true);
 });
 
 
