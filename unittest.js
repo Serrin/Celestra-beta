@@ -5207,7 +5207,7 @@ CUT.isEqual("zip(); ES5 2",
     ["c1", "c2", "c3", "c4", "c5"],
     ["d1", "d2"],
     ["e1", "e2", "e3", "e4"]
-   ))
+  ))
 );
 CUT.isEqual("zip(); ES6 1", "[[\"a\",3],[\"b\",4],[\"c\",5],[\"d\",6]]",
   JSON.stringify(CEL.zip(

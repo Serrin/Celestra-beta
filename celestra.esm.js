@@ -196,16 +196,16 @@ const setUnion=(...a)=>new Set(a.map(([...e])=>e).flat());
 const setIntersection=([...a],b)=>new Set(a.filter((v)=>b.has(v)));
 const setDifference=([...a],b)=>new Set(a.filter((v)=>!(b.has(v))));
 const setSymmetricDifference=(a,b)=>new Set([...a].filter((v)=>!(b.has(v))).concat([...b].filter((v)=>!(a.has(v)))));
-const isSuperset=([...sup],[...sub])=>sub.every((v)=>sup.indexOf(v)>-1);
+const isSuperset=([...sup],[...sub])=>sub.every((v)=>sup.includes(v));
 const min=(...a)=>a.reduce((acc,v)=>(v<acc?v:acc),a[0]);
 const max=(...a)=>a.reduce((acc,v)=>(v>acc?v:acc),a[0]);
 const arrayRepeat=(v,n=100)=>Array(n).fill(v);
 const arrayCycle=([...a],n=100)=>Array(n).fill(a).flat();
 const arrayRange=(s=0,e=99,st=1)=>Array.from({length:(e-s)/st+1},(_v,i)=>s+(i*st));
-function zip(...a){a=a.map((v)=>Array.from(v));let r=[],i,j,l=a.length,min=a[0].length,item;for(item of a){if(item.length<min){min=item.length;}}for(i=0;i<min;i++){item=[];for(j=0;j<l;j++){item.push(a[j][i]);}r.push(item);}return r;}
-function unzip([...a]){a=a.map(([...v])=>v);let r=[],i,j,l1=a[0].length,l2=a.length;for(i=0;i<l1;i++){r.push([]);}for(i=0;i<l1;i++){for(j=0;j<l2;j++){r[i].push(a[j][i]);}}return r;}
-function zipObj([...a1],[...a2]){var r=[],i,l=(a1.length<a2.length?a1.length:a2.length);for(i=0;i<l;i++){r.push([a1[i],a2[i]]);}return Object.fromEntries(r);}
-const arrayAdd=(a,v)=>(a.indexOf(v)===-1)?!!a.push(v):false;
+function zip(...a){a=a.map((v)=>Array.from(v));return Array.from({length: Math.min(...a.map(v=>v.length))}).map((_,i)=>a.map(v=>v[i]));}
+const unzip=([...a])=>a.map((v)=>Array.from(v)).reduce((acc,v)=>{v.forEach((item,i)=>{if(!Array.isArray(acc[i])){acc[i]=[];} acc[i].push(item);});return acc;},[]);
+function zipObj([...a1],[...a2]){let r={},l=Math.min(a1.length,a2.length);for(let i=0;i<l;i++){r[a1[i]]=a2[i];}return r;}
+const arrayAdd=(a,v)=>(!a.includes(v))?!!a.push(v):false;
 function arrayClear(a){a.length=0;return a;}
 function arrayRemove(a,v,all=false){var found=a.indexOf(v)>-1;if(!all){var pos=a.indexOf(v);if(pos>-1){a.splice(pos,1);}}else{var pos=-1;while((pos=a.indexOf(v))>-1){a.splice(pos,1);}}return found;}
 function arrayRemoveBy(a,fn,all=false){var found=a.findIndex(fn)>-1;if(!all){var pos=a.findIndex(fn);if(pos>-1){a.splice(pos,1);}}else{var pos=-1;while((pos=a.findIndex(fn))>-1){a.splice(pos,1);}}return found;}
@@ -229,7 +229,7 @@ function nth(it,p){let i=0;for(let item of it){if(i++===p){return item;}}}
 function size(it){let i=0;for(let _item of it){i++;}return i;}
 function first(it){for(let item of it){return item;}}
 function head(it){for(let item of it){return item;}}
-function last(it){let item;for(item of it){}return item;}
+const last=([...a])=>a[a.length-1];
 function*reverse([...a]){var i=a.length;while(i--){yield a[i];}}
 const sort=([...a],ns)=>a.sort(ns?(x,y)=>x-y:undefined);
 function includes(it,v){for(let item of it){if(item===v||(item!==item&&v!==v)){return true;}}return false;}

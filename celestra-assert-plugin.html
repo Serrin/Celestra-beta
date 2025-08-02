@@ -679,83 +679,83 @@ function autoTest () {
       <td>Default value is true. If this property is true, then always the strict equality is used in the <code>assert.equal();</code>, <code> assert.notEqual();</code>, <code> assert.deepEqual();</code>, <code>assert.notDeepEqual();</code></td>
     </tr>
     <tr>
-      <td><code>assert(condition [, message]);</code></td>
-      <td>Same as <code>celestra.assert(condition [, message]);</code>.</td>
+      <td><code>assert(condition [, message | error]);</code></td>
+      <td>Same as <code>celestra.assert(condition [, message | error]);</code>.</td>
     </tr>
     <tr>
-      <td><code>assert.deepEqual(value1, value2 [, message]);</code></td>
-      <td>Same as <code>celestra.deepStrictEqual(value1, value2 [, message]);</code> or <code>celestra.assertDeepEqual(value1, value2 [, message]);</code>.</td>
+      <td><code>assert.deepEqual(value1, value2 [, message | error]);</code></td>
+      <td>Same as <code>celestra.deepStrictEqual(value1, value2 [, message | error]);</code> or <code>celestra.assertDeepEqual(value1, value2 [, message | error]);</code>.</td>
     </tr>
       <td><code>assert.doesNotMatch(string, regexp, message); </code></td>
       <td>Same as <code>celestra.assertDoesNotMatch(string, regexp, message);</code>.</td>
     </tr>
     <tr>
-      <td><code>assert.equal(value1, value2 [, message]);</code></td>
-      <td>Same as <code>celestra.assertStrictEqual(value1, value2 [, message]);</code> or <code>celestra.assertEqual(value1, value2 [, message]);</code>.</td>
+      <td><code>assert.equal(value1, value2 [, message | error]);</code></td>
+      <td>Same as <code>celestra.assertStrictEqual(value1, value2 [, message | error]);</code> or <code>celestra.assertEqual(value1, value2 [, message | error]);</code>.</td>
     </tr>
     <tr>
       <td><code>assert.fail(message OR error);</code></td>
       <td>Same as <code>celestra.assertFail(message OR error);</code>.</td>
     </tr>
     <tr>
-      <td><code>assert.isFalse(condition [, message]);</code></td>
-      <td>Same as <code>celestra.assertFalse(condition [, message]);</code>.</td>
+      <td><code>assert.isFalse(condition [, message | error]);</code></td>
+      <td>Same as <code>celestra.assertFalse(condition [, message | error]);</code>.</td>
     </tr>
     <tr>
-      <td><code>assert.instanceOf(value, constructor [, message]);</code></td>
-      <td>Same as <code>celestra.assertInstanceOf(value, constructor [, message]);</code>.</td>
+      <td><code>assert.instanceOf(value, constructor [, message | error]);</code></td>
+      <td>Same as <code>celestra.assertInstanceOf(value, constructor [, message | error]);</code>.</td>
     </tr>    
     <tr>
-      <td><code>assert.isNil(value [, message]);</code></td>
-      <td>Same as <code>celestra.assertIsNil(value [, message]);</code>.</td>
+      <td><code>assert.isNil(value [, message | error]);</code></td>
+      <td>Same as <code>celestra.assertIsNil(value [, message | error]);</code>.</td>
     </tr>
     <tr>
-      <td><code>assert.isNotNil(value [, message]);</code></td>
-      <td>Same as <code>celestra.assertIsNotNil(value [, message]);</code>.</td>
+      <td><code>assert.isNotNil(value [, message | error]);</code></td>
+      <td>Same as <code>celestra.assertIsNotNil(value [, message | error]);</code>.</td>
     </tr>
     <tr>
-      <td><code>assert.isTrue(condition [, message]);</code></td>
-      <td>Same as <code>celestra.assertTrue(condition [, message]);</code>.</td>
+      <td><code>assert.isTrue(condition [, message | error]);</code></td>
+      <td>Same as <code>celestra.assertTrue(condition [, message | error]);</code>.</td>
     </tr>
     <tr>
       <td><code>assert.match(string, regexp, message); </code></td>
       <td>Same as <code>celestra.assertMatch(string,regexp, message);</code>.</td>
     </tr>
     <tr>
-      <td><code>assert.notDeepEqual(value1, value2 [, message]);</code></td>
-      <td>Same as <code>celestra.assertNotDeepStrictEqual(value1, value2 [, message]);</code> or <code>celestra.assertNotDeepEqual(value1, value2 [, message]);</code>.</td>
+      <td><code>assert.notDeepEqual(value1, value2 [, message | error]);</code></td>
+      <td>Same as <code>celestra.assertNotDeepStrictEqual(value1, value2 [, message | error]);</code> or <code>celestra.assertNotDeepEqual(value1, value2 [, message | error]);</code>.</td>
     </tr>
     <tr>
-      <td><code>assert.notEqual(value1, value2 [, message]);</code></td>
-      <td>Same as <code>celestra.assertNotStrictEqual(value1, value2 [, message]);</code> or <code>celestra.assertNotEqual(value1, value2 [, message]);</code>.</td>
+      <td><code>assert.notEqual(value1, value2 [, message | error]);</code></td>
+      <td>Same as <code>celestra.assertNotStrictEqual(value1, value2 [, message | error]);</code> or <code>celestra.assertNotEqual(value1, value2 [, message | error]);</code>.</td>
     </tr>
     <tr>
-      <td><code>assert.notInstanceOf(value, constructor [, message]);</code></td>
-      <td>Same as <code>celestra.assertNotInstanceOf(value, constructor [, message]);</code>.</td>
+      <td><code>assert.notInstanceOf(value, constructor [, message | error]);</code></td>
+      <td>Same as <code>celestra.assertNotInstanceOf(value, constructor [, message | error]);</code>.</td>
     </tr>
     <tr>
-      <td><code>assert.notStrictEqual(value1, value2 [, message]);</code></td>
-      <td>Same as <code>celestra.assertNotStrictEqual(value1, value2 [, message]);</code>.</td>
+      <td><code>assert.notStrictEqual(value1, value2 [, message | error]);</code></td>
+      <td>Same as <code>celestra.assertNotStrictEqual(value1, value2 [, message | error]);</code>.</td>
     </tr>
     <tr>
-      <td><code>assert.notTypeOf(value, type [, message]);</code></td>
-      <td>Same as <code>celestra.assertNotTypeOf(value, type [, message]);</code>.</td>
+      <td><code>assert.notTypeOf(value, type [, message | error]);</code></td>
+      <td>Same as <code>celestra.assertNotTypeOf(value, type [, message | error]);</code>.</td>
     </tr>
     <tr>
-      <td><code>assert.ok(condition [, message]);</code></td>
-      <td>Same as <code>celestra.assert(condition [, message]);</code>.</td>
+      <td><code>assert.ok(condition [, message | error]);</code></td>
+      <td>Same as <code>celestra.assert(condition [, message | error]);</code>.</td>
     </tr>
     <tr>
-      <td><code>assert.strictEqual(value1, value2 [, message]);</code></td>
-      <td>Same as <code>celestra.assertStrictEqual(value1, value2 [, message]);</code>.</td>
+      <td><code>assert.strictEqual(value1, value2 [, message | error]);</code></td>
+      <td>Same as <code>celestra.assertStrictEqual(value1, value2 [, message | error]);</code>.</td>
     </tr>
     <tr>
-      <td><code>assert.Throws(callback [, message]);</code></td>
-      <td>Same as <code>celestra.assertThrows(callback [, message]);</code>.</td>
+      <td><code>assert.Throws(callback [, message | error]);</code></td>
+      <td>Same as <code>celestra.assertThrows(callback [, message | error]);</code>.</td>
     </tr>
     <tr>
-      <td><code>assert.typeOf(value, type [, message]);</code></td>
-      <td>Same as <code>celestra.assertTypeOf(value, [, message]);</code>.</td>
+      <td><code>assert.typeOf(value, type [, message | error]);</code></td>
+      <td>Same as <code>celestra.assertTypeOf(value, [, message | error]);</code>.</td>
     </tr>
   </table>
 </div>

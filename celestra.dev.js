@@ -1827,20 +1827,20 @@ const getFullscreen = () => ( document.fullscreenElement
 /* setFullscreenOn(selector string): undefined */
 function setFullscreenOn (s) {
   if (typeof s === "string") { var e = document.querySelector(s); }
-  else if (typeof s === "object") { var e = s; }
+    else if (typeof s === "object") { var e = s; }
   if (e.requestFullscreen) { e.requestFullscreen(); }
-  else if (e.mozRequestFullScreen) { e.mozRequestFullScreen(); }
-  else if (e.webkitRequestFullscreen) { e.webkitRequestFullscreen(); }
-  else if (e.msRequestFullscreen) { e.msRequestFullscreen(); }
+    else if (e.mozRequestFullScreen) { e.mozRequestFullScreen(); }
+    else if (e.webkitRequestFullscreen) { e.webkitRequestFullscreen(); }
+    else if (e.msRequestFullscreen) { e.msRequestFullscreen(); }
 }
 
 
 /* setFullscreenOff(): undefined */
 function setFullscreenOff () {
   if (document.exitFullscreen) { document.exitFullscreen(); }
-  else if (document.mozCancelFullScreen) { document.mozCancelFullScreen(); }
-  else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); }
-  else if (document.msExitFullscreen) { document.msExitFullscreen(); }
+    else if (document.mozCancelFullScreen) { document.mozCancelFullScreen(); }
+    else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); }
+    else if (document.msExitFullscreen) { document.msExitFullscreen(); }
 }
 
 
@@ -2340,13 +2340,6 @@ const isPlainObject = (v) => (v != null && typeof v === "object" &&
     || Object.getPrototypeOf(v) === null));
 
 
-/* isEmptyIterator(value: any): boolean */
-function isEmptyIterator (it) {
-  for (let _item of it) { return false; }
-  return true;
-}
-
-
 /* isChar(value: any): boolean */
 const isChar = (v) =>
   (typeof v === "string" && (v.length === 1 || Array.from(v).length === 1));
@@ -2669,8 +2662,7 @@ const setSymmetricDifference = (a, b) => new Set(
 
 
 /* isSuperset(superCollection, subCollection): boolean */
-const isSuperset = ([...sup], [...sub]) =>
-  sub.every((v) => sup.indexOf(v) > -1);
+const isSuperset = ([...sup], [...sub]) => sub.every((v) => sup.includes(v));
 
 
 /* min(value1: any [, valueN]): any */
@@ -2697,41 +2689,31 @@ const arrayRange = (s = 0, e = 99, st = 1) =>
 /* zip(iterator1 [, iteratorN]): array */
 function zip (...a) {
   a = a.map((v) => Array.from(v));
-  let r = [], i, j, l = a.length, min = a[0].length, item;
-  for (item of a) {
-    if (item.length < min) { min = item.length; }
-  }
-  for (i = 0; i < min; i++) {
-    item = [];
-    for (j = 0; j < l; j++) { item.push(a[j][i]); }
-    r.push(item);
-  }
-  return r;
+  return Array.from({length: Math.min(...a.map(v => v.length))})
+    .map((_, i) => a.map(v => v[i]));
 }
 
 
 /* unzip(iterator): array */
-function unzip ([...a]) {
-  a = a.map(([...v]) => v);
-  let r = [], i, j, l1 = a[0].length, l2 = a.length;
-  for (i = 0; i < l1; i++) { r.push([]); }
-  for (i = 0; i < l1; i++) {
-    for (j = 0; j < l2; j++) { r[i].push(a[j][i]); }
-  }
-  return r;
-}
+const unzip = ([...a]) =>
+  a.map((v) => Array.from(v)).reduce((acc, v) => {
+    v.forEach((item, i) => {
+      if (!Array.isArray(acc[i])) { acc[i] = []; }
+      acc[i].push(item);
+    });
+    return acc;
+  }, []);
 
 
 /* zipObj(iterator1, iterator2): object */
 function zipObj ([...a1], [...a2]) {
-  var r = [], i, l = (a1.length < a2.length ? a1.length : a2.length);
-  for (i = 0; i < l; i++) { r.push([a1[i], a2[i]]); }
-  return Object.fromEntries(r);
+  let r = {}, l = Math.min(a1.length, a2.length);
+  for (let i = 0; i < l; i++) { r[a1[i]] = a2[i]; }
+  return r;
 }
 
-
 /* arrayAdd(array, value: any): boolean */
-const arrayAdd = (a, v) => (a.indexOf(v) === -1) ? !!a.push(v) : false;
+const arrayAdd = (a, v) => (!a.includes(v)) ? !!a.push(v) : false;
 
 
 /* arrayClear(array): array */
@@ -2944,11 +2926,7 @@ function head (it) { for (let item of it) { return item; } }
 
 
 /* last(iterator): any */
-function last (it) {
-  let item;
-  for (item of it) { }
-  return item;
-}
+const last = ([...a]) => a[a.length - 1];
 
 
 /* reverse(iterator): iterator */
