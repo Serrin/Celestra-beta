@@ -9,6 +9,41 @@
 # Celestra version history
 
 
+## Celestra v5.8.1
+
+1. Documentation and pdf fixes.
+
+2. Fix the assert functions with the error parameter.
+
+3. Add these functions:
+````javascript
+asyncConstant();
+asyncF();
+asyncIdentity();
+asyncNoop();
+asyncT();
+````
+
+4. Deprecate (_stability: 1_) this polyfill: `BigInt.prototype.toJSON();`
+
+5. Deprecate (_stability: 1_) these functions:
+
+````javascript
+arrayCreate();
+arrayDifference();
+arrayIntersection();
+arraySymmetricDifference();
+arrayUnion();
+entries(iterator); // only an alias
+filterIn();
+forIn();
+isConstructorFN(); // only an alias
+javaHash();
+popIn();
+sleep(); // only an alias
+````
+
+
 ## Celestra v5.8.0 Uhura
 
 1. Documentation and pdf fixes.
@@ -103,7 +138,7 @@ assertNotDeepStrictEqual();
 isDeepStrictEqual();
 ````
 
-4. __Celestra Unit Tester (CUT) v1.30.0:__ 
+4. __Celestra Unit Tester (CUT) v1.30.0:__
 - Add this function: `isError();`
 
 
@@ -232,17 +267,17 @@ isSameClass();
 toIndex();
 toLength();
 ````
- 
-4. __Celestra Unit Tester (CUT) v0.8.29:__ 
+
+4. __Celestra Unit Tester (CUT) v0.8.29:__
 - Add this function: `getHumanReadableJSON();` and display the global error fields on the page.
 
 
 ## Celestra v5.7.0 Nostromo
 
 1. Documentation and pdf fixes.
- 
+
 2. __Change the ESM edition:__ The default export will be the celestra object and the all of the functions will be exported.
- 
+
 3. Deprecate this function (__Stability 1__):
 ````javascript
 arrayUnique();
@@ -255,7 +290,7 @@ isError();
 group();
 ````
 
-5. Set __Stability 3__ of these functions: 
+5. Set __Stability 3__ of these functions:
 ````javascript
 isSuperset();
 arrayDifference();
@@ -288,7 +323,7 @@ Old function|New function
 `assertEq(<message>,<value1>,<value2>[,strict=true]);`|`assertEqual(<value1>,<value2>[,message="values"]);`<BR>(_Loose equality + NaN equality_)<BR>`assertStrictEqual(<value1>,<value2>[,message="values"]);`<BR>(_SameValue equality_)
 `assertNotEq(<message>,<value1>,<value2>[,strict=true]);`|`assertNotEqual(<value1>,<value2>[,message="values"]);`<BR>(_Loose equality + NaN equality_)<BR>`assertNotStrictEqual(<value1>,<value2>[,message="values"]);`<BR>(_SameValue equality_)
 
-9. __Celestra Unit Tester (CUT) v0.8.28:__ 
+9. __Celestra Unit Tester (CUT) v0.8.28:__
 
 - Add `token1` - `token10` variables instead of many testvariables of testcases.
 - Add these functions:
@@ -340,9 +375,9 @@ sizeIn();
 setIn();
 sum();      // use Math.sumPrecise(); if all items are number
 toObject();
-```` 
+````
 
-6. __Celestra Unit Tester (CUT) v0.8.27:__ 
+6. __Celestra Unit Tester (CUT) v0.8.27:__
 - CSS and text changes
 - Small fixes
 
@@ -399,9 +434,9 @@ minmax();
 toArray();
 toInteger();
 toObject();
-```` 
+````
 
-9. __Celestra Unit Tester (CUT) v0.8.26:__ 
+9. __Celestra Unit Tester (CUT) v0.8.26:__
 - CSS and text changes
 - The global try-catch will add a failed line instead of an alert.
 
@@ -440,7 +475,7 @@ isWeakMap();
 isWeakSet();
 noop();
 strFromCodePoints();
-```` 
+````
 
 
 ## Celestra v5.6.3
@@ -457,7 +492,7 @@ strFromCodePoints();
 1. Documentation and pdf fixes.
 
 2. Add Github page link in the **celestra.html** and **readme.md**
- 
+
 3. Add function categories links in the **celestra.html**
 
 4. Add new contents in the **js-cheatsheet.odt** and **js-cheatsheet.pdf**:
@@ -465,13 +500,13 @@ strFromCodePoints();
 - Float16Array
 - new Iterator methods
 
-5. Add new functions: 
+5. Add new functions:
 - `isFloat16(<value>);`
 - `toFloat16(<value>);`
 - `count();`
 - `randomUUIDv7();`
 
-6. Deprecate these functions: 
+6. Deprecate these functions:
 - `arrayUnion();`
 - `arrayIntersection();`
 - `arrayDifference();`
@@ -493,7 +528,7 @@ strFromCodePoints();
 1. Documentation and pdf fixes.
 ````
 HTML - clamp(<value>,<min>,<max>); - This is an alias of the minmax(<value>,<min>,<max>);.
-HTML - REMOVED polyfills in v3.1.0 - String.prototype.codePointAt();7 
+HTML - REMOVED polyfills in v3.1.0 - String.prototype.codePointAt();7
 ````
 
 2. Remove these aliases: `domToTop();`, `domToBottom();`
@@ -544,7 +579,7 @@ TypedArray.prototype.findLastIndex();
 ````
 
 9. Close the milestone __5.6.0 Razorback__.
- 
+
 
 ## Celestra v5.5.5
 
@@ -675,7 +710,7 @@ TypedArray.prototype.with();
 
 5. Add a new function: `nanoid([size=21[,alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"]]);`
 
-6. __Celestra Unit Tester (CUT) v0.8.25:__ 
+6. __Celestra Unit Tester (CUT) v0.8.25:__
 - CSS and text changes
 - UP & DOWN buttons have been removed, because these caused errors on the test server.
 - Added UTC, local and Epoch time in the log.
