@@ -1,12 +1,12 @@
 /**
  * @name Celestra Assert plugin
- * @version 5.8.1 dev
+ * @version 5.9.0 dev
  * @see https://github.com/Serrin/Celestra
  * @license MIT https://opensource.org/licenses/MIT
- * Required Celestra version: 5.8.1
+ * Required Celestra version: 5.9.0
  */
 
-(function(window, celestra){
+(function(globalThis, celestra){
 "use strict";
 
 const assert = function (c, m) { return celestra.assert(c, m); };
@@ -68,6 +68,6 @@ assert.match = (s, r, m) => celestra.assertMatch(s, r, m);
 
 assert.doesNotMatch = (s, r, m) => celestra.assertDoesNotMatch(s, r, m);
 
-window.assert = assert;
+globalThis.assert = assert;
 
-}(window, celestra));
+}(globalThis, celestra));

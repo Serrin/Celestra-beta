@@ -1,10 +1,26 @@
 /**
  * @name Celestra
- * @version 5.8.1 dev
+ * @version 5.9.0 dev
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
-(function(window, document){
+
+ 
+ /* globalThis; */
+(function (global) {
+  if (!global.globalThis) {
+    if (Object.defineProperty) {
+      Object.defineProperty(global, "globalThis", {
+        configurable: true, enumerable: false, value: global, writable: true
+      });
+    } else {
+      global.globalThis = global;
+    }
+  }
+})(typeof this === "object" ? this : Function("return this")());
+
+ 
+(function(globalThis){
 "use strict";
 
 
@@ -142,8 +158,8 @@ if (!Array.fromAsync) {
 
 
 /* crypto.randomUUID(); */
-if (("crypto" in window) && !("randomUUID" in window.crypto)) {
-  window.crypto.randomUUID = function randomUUID () {
+if (("crypto" in globalThis) && !("randomUUID" in globalThis.crypto)) {
+  globalThis.crypto.randomUUID = function randomUUID () {
     return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,
       (c)=>(c^crypto.getRandomValues(new Uint8Array(1))[0]&15>>c/4).toString(16)
     );
@@ -163,20 +179,6 @@ if (!Object.hasOwn) {
     configurable: true, enumerable: false, writable: true
   });
 }
-
-
-/* globalThis; */
-(function (global) {
-  if (!global.globalThis) {
-    if (Object.defineProperty) {
-      Object.defineProperty(global, "globalThis", {
-        configurable: true, enumerable: false, value: global, writable: true
-      });
-    } else {
-      global.globalThis = global;
-    }
-  }
-})(typeof this === "object" ? this : Function("return this")());
 
 
 /* Array.prototype.toReversed(); */
@@ -265,27 +267,24 @@ if (!("with" in Uint8Array.prototype)) {
 }
 
 
-/** non-standard polyfills **/
-
-
-/* window.GeneratorFunction; */
-if (!window.GeneratorFunction) {
-  window.GeneratorFunction = Object.getPrototypeOf(function*(){}).constructor;
+/* globalThis.GeneratorFunction; */
+if (!globalThis.GeneratorFunction) {
+  globalThis.GeneratorFunction = 
+    Object.getPrototypeOf(function*(){}).constructor;
 }
 
 
-/* window.AsyncFunction; */
-if (!window.AsyncFunction) {
-  window.AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
+/* globalThis.AsyncFunction; */
+if (!globalThis.AsyncFunction) {
+  globalThis.AsyncFunction = 
+    Object.getPrototypeOf(async function(){}).constructor;
 }
 
 
-/* BigInt.prototype.toJSON(); */
-if (!!window.BigInt && !("toJSON" in BigInt.prototype)) {
-  Object.defineProperty(BigInt.prototype, "toJSON", {
-    writable: true, enumerable: false, configurable: true,
-    value: function toJSON () { return this.toString(); }
-  });
+/* globalThis.AsyncGeneratorFunction; */
+if (!globalThis.AsyncGeneratorFunction) {
+  globalThis.AsyncGeneratorFunction =
+    Object.getPrototypeOf(async function* () {}).constructor;
 }
 
 
@@ -382,27 +381,8 @@ function randomUUIDv7 () {
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 
-/* sleep(ms: integer).then(callback: function): promise */
-const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
-
 /* randomBoolean(): boolean */
 const randomBoolean = () => (Math.random() >= 0.5);
-
-
-/* javaHash(data: any [, hexa = false]): integer */
-function javaHash (s, hx = false) {
-  if (s !== undefined) { s = "" + s; } else { return 0; }
-  var h = 0, l = s.length, c = "";
-  if (l == 0) { return h; }
-  for (var i = 0; i < l; i++) {
-    c = s.charCodeAt(i);
-    h = ((h << 5) - h) + c;
-    h = h & h;
-  }
-  if (hx) { return h.toString(16); }
-  return h;
-}
 
 
 /* getUrlVars([str = location.search]): string */
@@ -448,27 +428,6 @@ function extend (...a) {
 /* sizeIn(object): integer */
 const sizeIn = (O) => Object.getOwnPropertyNames(O).length
   + Object.getOwnPropertySymbols(O).length;
-
-
-/* forIn(object, callback: function): object */
-function forIn (o,fn) {
-  Object.keys(o).forEach((v) => fn(o[v], v, o)); return o;
-}
-
-
-/* filterIn(object, callback: function): object */
-const filterIn = (o, fn) => Object.keys(o)
-  .reduce((r, p) => { if (fn(o[p], p, o)) { r[p] = o[p]; } return r; }, {});
-
-
-/* popIn(object, property: string): any | undefined*/
-function popIn (o,p) {
-  if (Object.hasOwn(o, p)) {
-    var v = o[p];
-    delete o[p];
-    return v;
-  }
-}
 
 
 /* unBind(function): function */
@@ -855,7 +814,7 @@ function assertDeepEqual (x, y, msg) {
         || _isSameInstance(x, y, Uint16Array)
         || _isSameInstance(x, y, Int32Array)
         || _isSameInstance(x, y, Uint32Array)
-        || ("Float16Array" in window ?
+        || ("Float16Array" in globalThis ?
             _isSameInstance(x, y, Float16Array) : false
            )
         || _isSameInstance(x, y, Float32Array)
@@ -1008,7 +967,7 @@ function assertNotDeepStrictEqual (x, y, msg) {
         || _isSameInstance(x, y, Uint16Array)
         || _isSameInstance(x, y, Int32Array)
         || _isSameInstance(x, y, Uint32Array)
-        || ("Float16Array" in window ?
+        || ("Float16Array" in globalThis ?
             _isSameInstance(x, y, Float16Array) : false
            )
         || _isSameInstance(x, y, Float32Array)
@@ -1147,7 +1106,7 @@ function assertNotDeepEqual (x, y, msg) {
         || _isSameInstance(x, y, Uint16Array)
         || _isSameInstance(x, y, Int32Array)
         || _isSameInstance(x, y, Uint32Array)
-        || ("Float16Array" in window ?
+        || ("Float16Array" in globalThis ?
             _isSameInstance(x, y, Float16Array) : false
            )
         || _isSameInstance(x, y, Float32Array)
@@ -1301,7 +1260,7 @@ function assertDeepStrictEqual (x, y, msg) {
         || _isSameInstance(x, y, Uint16Array)
         || _isSameInstance(x, y, Int32Array)
         || _isSameInstance(x, y, Uint32Array)
-        || ("Float16Array" in window ?
+        || ("Float16Array" in globalThis ?
             _isSameInstance(x, y, Float16Array) : false
            )
         || _isSameInstance(x, y, Float32Array)
@@ -1564,7 +1523,7 @@ function domToElement (s) {
 
 /* domGetCSS(element [, property: string]): string */
 const domGetCSS = (e, p) =>
-  (p ? window.getComputedStyle(e, null)[p] : window.getComputedStyle(e, null));
+  (p ? globalThis.getComputedStyle(e, null)[p] : globalThis.getComputedStyle(e, null));
 
 
 /* domSetCSS(element, property: string, value: string): undefined */
@@ -1601,7 +1560,7 @@ function domFadeOut (e, dur) {
 
 /* domFadeToggle(element [, duration = 500 [, display = ""]]): undefined */
 function domFadeToggle (e, dur, d = "") {
-  if (window.getComputedStyle(e, null).display === "none") {
+  if (globalThis.getComputedStyle(e, null).display === "none") {
     /* same as domFadeIn(); */
     var s = e.style, step = 25/(dur || 500);
     s.opacity = (s.opacity || 0);
@@ -1630,7 +1589,7 @@ const domShow = (e, d = "") => e.style.display = d;
 
 /* domToggle(element [, display: string]): undefined */
 function domToggle (e, d = "") {
-  if (window.getComputedStyle(e, null).display === "none") {
+  if (globalThis.getComputedStyle(e, null).display === "none") {
     e.style.display = d;
   } else {
     e.style.display = "none";
@@ -1639,7 +1598,7 @@ function domToggle (e, d = "") {
 
 
 /* domIsHidden(element): boolean */
-const domIsHidden = (e) => (window.getComputedStyle(e,null).display === "none");
+const domIsHidden = (e) => (globalThis.getComputedStyle(e,null).display === "none");
 
 
 /* domSiblings(element): array */
@@ -1775,7 +1734,7 @@ function form2string (f) {
 
 /* getDoNotTrack(): boolean */
 const getDoNotTrack = () =>
-  [navigator.doNotTrack, window.doNotTrack, navigator.msDoNotTrack]
+  [navigator.doNotTrack, globalThis.doNotTrack, navigator.msDoNotTrack]
     .some((e) => (e === true || e === 1 || e === "1"));
 
 
@@ -1797,16 +1756,16 @@ function createFile (fln, c, dt) {
   if (l > 1) {
     if (l === 2) { dt = "text/plain"; }
     var b = new Blob([c], {type: dt});
-    if (window.navigator.msSaveOrOpenBlob) {
-      window.navigator.msSaveBlob(b, fln);
+    if (globalThis.navigator.msSaveOrOpenBlob) {
+      globalThis.navigator.msSaveBlob(b, fln);
     } else {
-      var e = window.document.createElement("a");
-      e.href = window.URL.createObjectURL(b);
+      var e = globalThis.document.createElement("a");
+      e.href = globalThis.URL.createObjectURL(b);
       e.download = fln;
       document.body.appendChild(e);
       e.click();
       document.body.removeChild(e);
-      window.URL.revokeObjectURL(e.href);
+      globalThis.URL.revokeObjectURL(e.href);
     }
   } else {
     throw "Celestra createFile error: too few parameters.";
@@ -1855,11 +1814,11 @@ const domSetCSSVar = (n, v) =>
 
 
 /* domScrollToTop(): undefined */
-const domScrollToTop = () => window.scrollTo(0,0);
+const domScrollToTop = () => globalThis.scrollTo(0,0);
 
 
 /* domScrollToBottom(): undefined */
-const domScrollToBottom = () => window.scrollTo(0, document.body.scrollHeight);
+const domScrollToBottom = () => globalThis.scrollTo(0, document.body.scrollHeight);
 
 
 /* domScrollToElement(element [, top=true]): undefined */
@@ -2063,7 +2022,7 @@ function toPrimitiveValue (O) {
   /* object */
   var ot = Object.prototype.toString.call(O).slice(8, -1);
   if (["Boolean", "BigInt", "Number", "String"].includes(ot)) {
-    return window[ot](O);
+    return globalThis[ot](O);
   }
   return O;
 }
@@ -2197,7 +2156,7 @@ function isDeepStrictEqual (x, y) {
       || _isSameInstance(x, y, Uint16Array)
       || _isSameInstance(x, y, Int32Array)
       || _isSameInstance(x, y, Uint32Array)
-      || ("Float16Array" in window ?
+      || ("Float16Array" in globalThis ?
           _isSameInstance(x, y, Float16Array) : false
          )
       || _isSameInstance(x, y, Float32Array)
@@ -2286,7 +2245,7 @@ function isEmptyValue (v) {
     || v instanceof Uint16Array
     || v instanceof Int32Array
     || v instanceof Uint32Array
-    || ("Float16Array" in window ? v instanceof Float16Array : false)
+    || ("Float16Array" in globalThis ? v instanceof Float16Array : false)
     || v instanceof Float32Array
     || v instanceof Float64Array
     || v instanceof BigInt64Array
@@ -2322,11 +2281,6 @@ const isProxy = (O) => Boolean(O.__isProxy);
 /* isAsyncGeneratorFn(value: any): boolean */
 const isAsyncGeneratorFn = (v) => (Object.getPrototypeOf(v).constructor ===
   Object.getPrototypeOf(async function*() {}).constructor);
-
-
-/* isConstructorFn(value: any): boolean */
-const isConstructorFn = (v) =>
-  (typeof v === "function" && typeof v.prototype === "object");
 
 
 /* isClass(value: any): boolean */
@@ -2392,7 +2346,7 @@ const isPrimitive = (v) =>
 
 
 /* isIterator(value: any): boolean */
-const isIterator = (v) => ("Iterator" in window ? (v instanceof Iterator)
+const isIterator = (v) => ("Iterator" in globalThis ? (v instanceof Iterator)
   : (v != null && typeof v === "object" && typeof v.next === "function"));
 
 
@@ -2421,7 +2375,7 @@ const isTypedArray = (v) => (
   || v instanceof Uint16Array
   || v instanceof Int32Array
   || v instanceof Uint32Array
-  || ("Float16Array" in window ? v instanceof Float16Array : false)
+  || ("Float16Array" in globalThis ? v instanceof Float16Array : false)
   || v instanceof Float32Array
   || v instanceof Float64Array
   || v instanceof BigInt64Array
@@ -2588,19 +2542,6 @@ function arrayDeepClone ([...a]) {
 }
 
 
-/* arrayCreate(length: any): array | thrown error */
-function arrayCreate (l = 0) {
-  l = Number(l);
-	if (1 / l === -Infinity) { l = 0; }
-	if (l > (Math.pow(2, 32) - 1)) {
-    throw new RangeError(
-      "celestra.arrayCreate(); error: Invalid array length " + l
-    );
-	}
-	return Array(l);
-}
-
-
 /* initial(iterator): array */
 const initial = ([...a]) => a.slice(0, -1);
 
@@ -2618,29 +2559,6 @@ function shuffle([...a]) {
 /* partition(iterator, callback: function): array */
 const partition = ([...a],fn) =>
   [a.filter(fn), a.filter((e, i, a) => !(fn(e, i, a)))];
-
-
-/* arrayUnion(iterator1 [, iteratorN]): array */
-const arrayUnion = (...a) => [...new Set(a.map(([...e]) => e).flat())];
-
-
-/* arrayIntersection(iterator1, iterator2): array */
-const arrayIntersection = ([...a], [...b]) => a.filter(
-  (v) => b.indexOf(v) > -1).filter((e, i, arr) => arr.indexOf(e) === i
-);
-
-
-/* arrayDifference(iterator1, iterator2): array */
-const arrayDifference = ([...a], [...b]) => a.filter(
-  (v) => b.indexOf(v) === -1).filter((e, i, arr) => arr.indexOf(e) === i
-);
-
-
-/* arraySymmetricDifference(iterator1, iterator2): array */
-const arraySymmetricDifference = ([...a], [...b]) =>
-  a.filter((v) => b.indexOf(v) === -1)
-    .concat(b.filter((v) => a.indexOf(v) === -1))
-    .filter((e, i, arr) => arr.indexOf(e) === i);
 
 
 /* setUnion(iterator1 [, iteratorN]): set */
@@ -3044,7 +2962,7 @@ function* dropRightWhile ([...a], fn) {
 function* concat () {
   for (let item of arguments) {
     if (typeof item[Symbol.iterator] === "function" ||
-      ("Iterator" in window ? (item instanceof Iterator)
+      ("Iterator" in globalThis ? (item instanceof Iterator)
         : (typeof item === "object" && typeof item.next === "function")
       )
     ) {
@@ -3077,18 +2995,11 @@ function* enumerate (it, offset = 0) {
 }
 
 
-/* entries(iterator [, offset = 0]): iterator */
-function* entries (it, offset = 0) {
-  let i = offset;
-  for (let item of it) { yield [i++, item]; }
-}
-
-
 /* flat(iterator): iterator */
 function* flat (it) {
   for (let item of it) {
     if (typeof item[Symbol.iterator] === "function" ||
-      ("Iterator" in window ? (item instanceof Iterator)
+      ("Iterator" in globalThis ? (item instanceof Iterator)
         : (typeof item === "object" && typeof item.next === "function")
       )
     ) {
@@ -3354,11 +3265,11 @@ const inRange = (v, min, max) => (v >= min && v <= max);
 /** object header **/
 
 
-const VERSION = "Celestra v5.8.1 dev";
+const VERSION = "Celestra v5.9.0 dev";
 
 
 /* celestra.noConflict(): celestra object */
-function noConflict () { window.CEL = celestra.__prevCEL__; return celestra; }
+function noConflict () { globalThis.CEL = celestra.__prevCEL__; return celestra; }
 
 
 const celestra = {
@@ -3383,16 +3294,11 @@ const celestra = {
   createPolyfillProperty,
   randomUUIDv7,
   delay,
-  sleep,
   randomBoolean,
-  javaHash,
   getUrlVars,
   obj2string,
   extend,
   sizeIn,
-  forIn,
-  filterIn,
-  popIn,
   unBind,
   bind,
   constant,
@@ -3500,7 +3406,6 @@ const celestra = {
   isEmptyValue,
   isProxy,
   isAsyncGeneratorFn,
-  isConstructorFn,
   isClass,
   isPlainObject,
   isChar,
@@ -3530,14 +3435,9 @@ const celestra = {
   unique,
   count,
   arrayDeepClone,
-  arrayCreate,
   initial,
   shuffle,
   partition,
-  arrayUnion,
-  arrayIntersection,
-  arrayDifference,
-  arraySymmetricDifference,
   setUnion,
   setIntersection,
   setDifference,
@@ -3592,7 +3492,6 @@ const celestra = {
   concat,
   reduce,
   enumerate,
-  entries,
   flat,
   join,
   withOut,
@@ -3633,11 +3532,11 @@ const celestra = {
 };
 
 
-if (typeof window !== "undefined") {
-  window.celestra = celestra;
-  celestra.__prevCEL__ = window.CEL;
-  window.CEL = celestra;
+if (typeof globalThis !== "undefined") {
+  globalThis.celestra = celestra;
+  celestra.__prevCEL__ = globalThis.CEL;
+  globalThis.CEL = celestra;
 }
 
 
-}(window, document));
+}(globalThis));

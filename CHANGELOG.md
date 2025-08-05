@@ -9,7 +9,7 @@
 # Celestra version history
 
 
-## Celestra v5.8.1
+## Celestra v5.9.0
 
 1. Documentation and pdf fixes.
 

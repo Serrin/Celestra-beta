@@ -99,7 +99,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
 
 <p>This library isn't compatible with the Node.js.</p>
 
-<p>Latest version: 5.8.1</p>
+<p>Latest version: 5.9.0</p>
 <p>Date: 2025-08-03T12:27:16.251Z</p>
 
 <p><b>Tested on these browsers:</b></p>
@@ -247,23 +247,23 @@ nav a, nav a:visited, nav a:active, nav a:hover {
 
 // import the defaultExport object
 import defaultExport from "./celestra.esm.js";
-window.celestra = defaultExport;
-window.CEL = defaultExport;
+globalThis.celestra = defaultExport;
+globalThis.CEL = defaultExport;
 
 // import with default with name
 import { default as celestra } from "./celestra.esm.js";
-window.celestra = celestra;
-window.CEL = celestra;
+globalThis.celestra = celestra;
+globalThis.CEL = celestra;
 
 // import all into a new celestra object
 import * as celestra from "./celestra.esm.js";
-window.celestra = celestra;
-window.CEL = celestra;
+globalThis.celestra = celestra;
+globalThis.CEL = celestra;
 
 // import some functions
 import { first, classof } from "./celestra.esm.js";
-window.first = first;
-window.classof = classof;
+globalThis.first = first;
+globalThis.classof = classof;
 
 &#60;/script&#62;
 </pre>
@@ -292,7 +292,7 @@ window.classof = classof;
 <h3>Celestra v5.0.0 (Defiant) changes</h3>
 
 <ul>
-  <li>The underscore <code>_</code> short object name has been changed to <code>CEL</code> to avoid the compatibility issues.<br/>If need to use the old short name, then with this code will be available again: <code>window._ = window.celestra;</code>.</li>
+  <li>The underscore <code>_</code> short object name has been changed to <code>CEL</code> to avoid the compatibility issues.<br/>If need to use the old short name, then with this code will be available again: <code>globalThis._ = globalThis.celestra;</code>.</li>
 </ul>
 
 <h3>Celestra v5.5.0 changes</h3>
@@ -351,7 +351,7 @@ window.classof = classof;
       <td>
         <span class="info">Stability: 4 - Stable.</span><br/>
         <p>Restore the previous <code>CEL</code> object value and return the <code>celestra</code> object to create a new alias.</p>
-        <p><span class="info">Tip: You can make a new alias without this function too. Example: <code>window._cel = window.celestra;</code></span></p>
+        <p><span class="info">Tip: You can make a new alias without this function too. Example: <code>globalThis._cel = globalThis.celestra;</code></span></p>
         <p><span class="info">In the ESM edition only returns the celestra object.</code></span></p>
       </td>
     </tr>
@@ -449,7 +449,7 @@ CEL.delay(5000)
     <tr>
       <td><code>filterIn(object,callback);</code></td>
       <td>
-        <span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>
+        <span class="removed">Stability: 0 - Removed in v5.9.0</span><br/>
         <p>The filterIn() function executes a provided function once for each object property and returns a new object with the properties which were be filtered. The object parameter is mandatory and has to be an object. The callback parameter is mandatory and has to be a function. The parameter function will be called with these arguments: key value, key, object.</p>
         <p><b>Example:</b><pre>var o1 = {"a": 1, "b": 2, "c": 3};
 console.log(o1);
@@ -461,7 +461,7 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>forIn(object,callback);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>The forIn() function executes a provided function once for each object property. The object parameter is mandatory and has to be an object. The callback parameter is mandatory and has to be a function. The parameter function will be called with these arguments: key value, key, object.</td>
+      <td><span class="removed">Stability: 0 - Removed in v5.9.0</span><br/>The forIn() function executes a provided function once for each object property. The object parameter is mandatory and has to be an object. The callback parameter is mandatory and has to be a function. The parameter function will be called with these arguments: key value, key, object.</td>
     </tr>
     <tr>
       <td><code>getUrlVars([str=location.search]);</code></td>
@@ -474,7 +474,7 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>javaHash(data[,hexa=false]);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>Java <code>String.hashCode()</code> implementation in Javascript - this is a non-cryptographic hash function. The data parameter is mandatory and can be any type. The hexa parameter is optional and can be a boolean and sets the hexadecimal conversion of the return value and the default value is false. Return the generated integer hash.</td>
+      <td><span class="removed">Stability: 0 - Removed in v5.9.0</span><br/>Java <code>String.hashCode()</code> implementation in Javascript - this is a non-cryptographic hash function. The data parameter is mandatory and can be any type. The hexa parameter is optional and can be a boolean and sets the hexadecimal conversion of the return value and the default value is false. Return the generated integer hash.</td>
     </tr>
     <tr>
       <td><code>nanoid([size=21[, alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"]]);</code></td>
@@ -502,11 +502,11 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>popIn(object, property);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>The popIn() function deletes the property in the object and returns the value of the deleted property. If the property doesn't exist in the object, then the return value is undefined. The object parameter is mandatory and has to be an object. The property parameter is mandatory.</td>
+      <td><span class="removed">Stability: 0 - Removed in v5.9.0</span><br/>The popIn() function deletes the property in the object and returns the value of the deleted property. If the property doesn't exist in the object, then the return value is undefined. The object parameter is mandatory and has to be an object. The property parameter is mandatory.</td>
     </tr>
     <tr>
       <td><code>sleep(ms).then(callback);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This is an alias of the <code>delay(ms).then(callback);</code>.</td>
+      <td><span class="removed">Stability: 0 - Removed in v5.9.0</span><br/>This is an alias of the <code>delay(ms).then(callback);</code>.</td>
     </tr>
     <tr>
       <td><code>T();</code></td>
@@ -1038,7 +1038,7 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>isConstructorFn(value);</td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided value is a constructable function. The return value is boolean.</td>
+      <td><span class="removed">Stability: 0 - Removed in v5.9.0</span><br/>This function determines whether the provided value is a constructable function. The return value is boolean.</td>
     </tr>
     <tr>
       <td><code>isDataView(value);</td>
@@ -1373,7 +1373,7 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>arrayCreate([length=0]);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function returns an array with the given length. If the length is -0, then the length will be 0. If The length parameter out of the array size range, then a rangeerror will be thrown.</td>
+      <td><span class="removed">Stability: 0 - Removed in v5.9.0</span><br/>This function returns an array with the given length. If the length is -0, then the length will be 0. If The length parameter out of the array size range, then a rangeerror will be thrown.</td>
     </tr>
     <tr>
       <td><code>arrayCycle(iterator[,n=100]);</code></td>
@@ -1385,11 +1385,11 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>arrayDifference(iterator1, iterator2);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/><span class="info">Can be replaced with <code>Set.prototype.difference();</code>.</span><br/>Returns the array of unique values that are in the iterator1, excluding the values that are also in the iterator2. All of the parameters are mandatory. The return value is an Array.</td>
+      <td><span class="removed">Stability: 0 - Removed in v5.9.0</span><br/><span class="info">Can be replaced with <code>Set.prototype.difference();</code>.</span><br/>Returns the array of unique values that are in the iterator1, excluding the values that are also in the iterator2. All of the parameters are mandatory. The return value is an Array.</td>
     </tr>
     <tr>
       <td><code>arrayIntersection(iterator1, iterator2);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/><span class="info">Can be replaced with <code>Set.prototype.intersection();</code>.</span><br/>Returns the array of unique values that are in both of the given iterators. All of the parameters are mandatory. The return value is an Array.</td>
+      <td><span class="removed">Stability: 0 - Removed in v5.9.0</span><br/><span class="info">Can be replaced with <code>Set.prototype.intersection();</code>.</span><br/>Returns the array of unique values that are in both of the given iterators. All of the parameters are mandatory. The return value is an Array.</td>
     </tr>
     <tr>
       <td><code>arrayMerge(target,source1[,sourceN]);</code></td>
@@ -1416,11 +1416,11 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>arraySymmetricDifference(iterator1, iterator2);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/><span class="info">Can be replaced with <code>Set.prototype.symmetricDifference();</code>.</span><br/>Returns the array of unique values that are only in one of given iterators. All of the parameters are mandatory. The return value is an Array.</td>
+      <td><span class="removed">Stability: 0 - Removed in v5.9.0</span><br/><span class="info">Can be replaced with <code>Set.prototype.symmetricDifference();</code>.</span><br/>Returns the array of unique values that are only in one of given iterators. All of the parameters are mandatory. The return value is an Array.</td>
     </tr>
     <tr>
       <td><code>arrayUnion(iterator1[,iteratorN]);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/><span class="info">Can be replaced with <code>Set.prototype.union();</code>.</span><br/>Returns the array of unique values including all values from the given iterators. The first parameter is mandatory. The return value is an Array.</td>
+      <td><span class="removed">Stability: 0 - Removed in v5.9.0</span><br/><span class="info">Can be replaced with <code>Set.prototype.union();</code>.</span><br/>Returns the array of unique values including all values from the given iterators. The first parameter is mandatory. The return value is an Array.</td>
     </tr>
     <tr>
       <td><code>arrayUnique(iterator);</code></td>
@@ -1456,7 +1456,7 @@ console.log(o2);
     </tr>
     <tr>
       <td><code>entries(iterator[,offset=0]);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>An alias of the <code>enumerate(iterator);</code>.</td>
+      <td><span class="removed">Stability: 0 - Removed in v5.9.0</span><br/>An alias of the <code>enumerate(iterator);</code>.</td>
     </tr>
     <tr>
       <td><code>enumerate(iterator[,offset=0]);</code></td>
@@ -1963,12 +1963,16 @@ Otherwise, the result is false.</pre>
       <td>The with() method is the copying version of using the bracket notation to change the value of a given index. It returns a new array with the element at the given index replaced with the given value. This method has the same algorithm as Array.prototype.with(). For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/with" target="_blank">MDN Article</a>!</td>
     </tr>
     <tr>
-      <td><code>window.AsyncFunction();</code></td>
-      <td>The AsyncFunction constructor creates a new async function object. In JavaScript, every asynchronous function is actually an AsyncFunction object. Note that AsyncFunction is not a global object, but in the Celestra this is available in the <code>window</code> object. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncFunction" target="_blank">MDN Article</a>!</td>
+      <td><code>globalThis.AsyncFunction();</code></td>
+      <td>The AsyncFunction constructor creates a new async function object. In JavaScript, every asynchronous function is actually an AsyncFunction object. Note that AsyncFunction is not a global object, but in the Celestra this is available in the <code>globalThis</code> object. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncFunction" target="_blank">MDN Article</a>!</td>
     </tr>
     <tr>
-      <td><code>window.GeneratorFunction();</code></td>
-      <td>The GeneratorFunction constructor creates a new generator function object. In JavaScript every generator function is actually a GeneratorFunction object. Note that GeneratorFunction is not a global object, but in the Celestra this is available in the <code>window</code> object. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction" target="_blank">MDN Article</a>!</td>
+      <td><code>globalthis.AsyncGeneratorFunction();</code></td>
+      <td>The AsyncGeneratorFunction() constructor creates AsyncGeneratorFunction objects. Note that AsyncGeneratorFunction is not a global object, but in the Celestra this is available in the <code>globalThis</code> object. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncGeneratorFunction/AsyncGeneratorFunction" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr>
+      <td><code>globalThis.GeneratorFunction();</code></td>
+      <td>The GeneratorFunction constructor creates a new generator function object. In JavaScript every generator function is actually a GeneratorFunction object. Note that GeneratorFunction is not a global object, but in the Celestra this is available in the <code>globalThis</code> object. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction" target="_blank">MDN Article</a>!</td>
     </tr>
     <tr>
       <td>REMOVED polyfills in v3.1.0</td>
@@ -1982,23 +1986,11 @@ Otherwise, the result is false.</pre>
       <td>REMOVED polyfills in v5.6.0</td>
       <td><code>Array.prototype.at();</code><br/><code>Array.prototype.findLast();</code><br/><code>Array.prototype.findLastIndex();</code><br/><code>Array.prototype.flat();</code><br/><code>Array.prototype.flatMap();</code><br/><code>Number.MIN_SAFE_INTEGER;</code><br/><code>Number.MAX_SAFE_INTEGER;</code><br/><code>Object.fromEntries();</code><br/><code>Object.is();</code><br/><code>String.prototype.at();</code><br/><code>String.prototype.matchAll();</code><br/><code>String.prototype.padStart();</code><br/><code>String.prototype.padEnd();</code><br/><code>String.prototype.replaceAll();</code><br/><code>String.prototype.trimStart();</code><br/><code>String.prototype.trimLeft();</code><br/><code>String.prototype.trimEnd();</code><br/><code>String.prototype.trimRight();</code><br/><code>Typedarray.prototype.at();</code><br/><code>TypedArray.prototype.findLast();</code><br/><code>TypedArray.prototype.findLastIndex();</code></td>
     </tr>
-  </table>
-</div>
-
-
-<h3 id="FNnonstandardpolyfillsAPI">Non-standard polyfills</h3>
-
-<div>
-  <table class="table-responsive table-striped">
     <tr>
-      <td style="width: auto; min-width: 33%;"><b>Name</b></td>
-      <td><b>Description</b></td>
-    </tr>
-    <tr>
+      <td>REMOVED polyfills in v5.9.0</td>
       <td><code>BigInt.prototype.toJSON();</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>Using <code>JSON.stringify();</code> with any BigInt value will raise a TypeError as BigInt values aren't serialized in JSON by default. This added method can fix this. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt#use_within_json" target="_blank">MDN Article</a>!</td>
     </tr>
-	</table>
+  </table>
 </div>
 
 

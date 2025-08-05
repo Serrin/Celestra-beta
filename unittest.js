@@ -55,9 +55,9 @@ CUT.addElement("table",
     + "<tr><td>navigator.pdfViewerEnabled</td><td><code>"
       + navigator.pdfViewerEnabled
       + "</code></td></tr>"
-    + "<tr><td>window.innerWidth</td><td><code>" + window.innerWidth
+    + "<tr><td>globalThis.innerWidth</td><td><code>" + globalThis.innerWidth
       + "</code></td></tr>"
-    + "<tr><td>window.innerHeight</td><td><code>" + window.innerHeight
+    + "<tr><td>globalThis.innerHeight</td><td><code>" + globalThis.innerHeight
       + "</code></td></tr>"
     + "<tr><td>screen.width</td><td><code>" + screen.width + "</code></td></tr>"
     + "<tr><td>screen.height: </td><td><code>" + screen.height
@@ -72,7 +72,7 @@ CUT.addElement("table",
       + "</code></td></tr>"
 );
 
-window.saveResults = function saveResults () {
+globalThis.saveResults = function saveResults () {
   var dn = Date.now().toString(36);
   CEL.createFile("results-" + dn + ".html",
     "<!DOCTYPE html><meta charset=\"utf-8\"><title>Results " + dn + "</title>"
@@ -154,9 +154,10 @@ try {
 
 var token1 = 0, token2 = 0, token3 = 0, token4 = 0, token5 = 0;
 var token6 = 0, token7 = 0, token8 = 0, token9 = 0, token10 = 0;
+var token11 = 0, token12 = 0, token13 = 0, token14 = 0, token15 = 0;
 
 
-/* Celestra v5.8.1 testcases */
+/* Celestra v5.9.0 testcases */
 
 
 /** Not auto tested functions **/
@@ -389,7 +390,7 @@ CUT.isFalse("classof(); ES6 false",
     || CEL.classof(new WeakMap(), "object")
     || CEL.classof(new WeakSet(), "object")
 );
-if (!!window.BigInt) {
+if (!!globalThis.BigInt) {
   CUT.isEqual("classof(); ES6 bigint", "bigint true false",
     CUT.join([
       CEL.classof(BigInt(456)),
@@ -470,7 +471,7 @@ CUT.isFalse("getType(); ES6 false",
     || CEL.getType(new WeakMap(), "object")
     || CEL.getType(new WeakSet(), "object")
 );
-if (!!window.BigInt) {
+if (!!globalThis.BigInt) {
   CUT.isEqual("getType(); ES6 bigint", "bigint true false",
     CUT.join([
       CEL.getType(BigInt(456)),
@@ -552,106 +553,10 @@ CUT.isEqual("b64Decode(); + b64Encode();",
 );
 
 
-/* javaHash(); begin */
-token1 = "✓ à \r\n\t árvíztűrő tükörfúrógép ÁRVÍZTŰRŐ TÜKÖRFÚRÓGÉP ,?;.:-_* ¤÷×¨¸´˙`˛°˘^ˇ~'+!%/=()|\\<> \" \/ #&@{}[]€ ÍÄíŁß 0123456789 asdfghjklqwertzuiopyxcvbnm ASDFGHJKLQWERTZUIOPYXCVBNM";
-CUT.isEqual("javaHash();",
-  "1334063883 4f84330b 1334063883 48 30 48 1565118 17e1be 1565118 1662 67e 1662 3569038 36758e 3569038 3569038 36758e 3569038 97196323 5cb1923 97196323 97196323 5cb1923 97196323 3392903 33c587 3392903 33c587 3392903 0 0 0 -1038130864 -3de09eb0 -1038130864 0 0 0 0 0 0 48503 bd77 48503 50427 c4fb 50427 -1074417128 -400a4de8 -1074417128 -1074417128 -400a4de8 -1074417128 -1074417128 -400a4de8 -1074417128 -313568218 -12b0abda -313568218 LTMxMzU2ODIxOA== LTEyYjBhYmRh LTMxMzU2ODIxOA== -313568218 -12b0abda -313568218",
-  CUT.join([
-    CEL.javaHash(-0.578),
-    CEL.javaHash(-0.578, true),
-    CEL.javaHash(-0.578, false),
-    CEL.javaHash(0),
-    CEL.javaHash(0, true),
-    CEL.javaHash(0, false),
-    CEL.javaHash(3.14),
-    CEL.javaHash(3.14, true),
-    CEL.javaHash(3.14, false),
-    CEL.javaHash(42),
-    CEL.javaHash(42, true),
-    CEL.javaHash(42, false),
-    CEL.javaHash(true),
-    CEL.javaHash(true, true),
-    CEL.javaHash(true, false),
-    CEL.javaHash("true"),
-    CEL.javaHash("true", true),
-    CEL.javaHash("true", false),
-    CEL.javaHash(false),
-    CEL.javaHash(false, true),
-    CEL.javaHash(false, false),
-    CEL.javaHash("false"),
-    CEL.javaHash("false",true),
-    CEL.javaHash("false", false),
-    CEL.javaHash(null),
-    CEL.javaHash(null, true, false),
-    CEL.javaHash("null"),
-    CEL.javaHash("null", true),
-    CEL.javaHash("null", false),
-    CEL.javaHash(undefined),
-    CEL.javaHash(undefined, true),
-    CEL.javaHash(undefined, false),
-    CEL.javaHash("undefined"),
-    CEL.javaHash("undefined", true),
-    CEL.javaHash("undefined", false),
-    CEL.javaHash(""),
-    CEL.javaHash("", true),
-    CEL.javaHash("", false),
-    CEL.javaHash([]),
-    CEL.javaHash([],true),
-    CEL.javaHash([],false),
-    CEL.javaHash([1,2]),
-    CEL.javaHash([1,2], true),
-    CEL.javaHash([1,2], false),
-    CEL.javaHash([3,4]),
-    CEL.javaHash([3,4], true),
-    CEL.javaHash([3,4], false),
-    CEL.javaHash({}),
-    CEL.javaHash({}, true),
-    CEL.javaHash({}, false),
-    CEL.javaHash({a:1}),
-    CEL.javaHash({a:1}, true),
-    CEL.javaHash({a:1}, false),
-    CEL.javaHash({b:2}),
-    CEL.javaHash({b:2}, true),
-    CEL.javaHash({b:2}, false),
-    CEL.javaHash(token1),
-    CEL.javaHash(token1, true),
-    CEL.javaHash(token1, false),
-    CEL.b64Encode(CEL.javaHash(token1)),
-    CEL.b64Encode(CEL.javaHash(token1, true)),
-    CEL.b64Encode(CEL.javaHash(token1, false)),
-    CEL.b64Decode(CEL.b64Encode(CEL.javaHash(token1))),
-    CEL.b64Decode(CEL.b64Encode(CEL.javaHash(token1, true))),
-    CEL.b64Decode(CEL.b64Encode(CEL.javaHash(token1, false)))
-  ])
-);
-/* javaHash(); end */
-
-
 /* sizeIn(); */
 CUT.isEqual("sizeIn();", 5, CEL.sizeIn({"a": 1, "b": 2, "c": 3,
   [Symbol.iterator]: function () {}, [Symbol.toPrimitive]: function () {}
 }));
-
-
-/* forIn(); */
-token1 = {"a": 2, "b": 3, "c": 4};
-token2 = "";
-CEL.forIn(token1, (e) => { token2 += (e * 2); });
-CUT.isEqual("forIn(); 01", "468", token2);
-CUT.isEqual("forIn(); 02", token1, CEL.forIn(token1, function () {}));
-
-
-/* filterIn(); */
-CUT.isEqual("filterIn();", "{\"b\":2,\"c\":3}",
-  JSON.stringify(CEL.filterIn({"a": 1, "b": 2, "c": 3}, (v, p, o) => (v > 1)))
-);
-
-
-/* popIn(); */
-token1 = {"a": 1};
-CUT.isEqual("popIn();", "1 undefined",
-  CUT.join([CEL.popIn(token1, "a"), CEL.popIn(token1, "a")])
-);
 
 
 /* getDoNotTrack(); */
@@ -4719,24 +4624,6 @@ CUT.isTrue("arrayDeepClone();",
 );
 
 
-/* arrayCreate(); */
-token1 = CEL.arrayCreate(4);
-CUT.isTrue("arrayCreate(); 01", Array.isArray(token1) && token1.length === 4);
-token1 = CEL.arrayCreate(0);
-CUT.isTrue("arrayCreate(); 02", Array.isArray(token1) && token1.length === 0);
-token1 = CEL.arrayCreate(-0);
-CUT.isTrue("arrayCreate(); 03", Array.isArray(token1) && token1.length === 0);
-token1 = CEL.arrayCreate("5");
-CUT.isTrue("arrayCreate(); 04", Array.isArray(token1) && token1.length === 5);
-token1 = CEL.arrayCreate(true);
-CUT.isTrue("arrayCreate(); 05", Array.isArray(token1) && token1.length === 1);
-token1 = CEL.arrayCreate(false);
-CUT.isTrue("arrayCreate(); 06", Array.isArray(token1) && token1.length === 0);
-token1 = CEL.arrayCreate();
-CUT.isTrue("arrayCreate(); 07", Array.isArray(token1) && token1.length === 0);
-CUT.isError("arrayCreate(); 08 error", () => CEL.arrayCreate(Math.pow(2, 32)));
-
-
 /* withOut(); */
 CUT.isEqual("withOut();", "[\"a\",\"c\"]",
   JSON.stringify(CEL.withOut(["a", "b", "c", "d"], ["b", "d"]))
@@ -5110,17 +4997,6 @@ CUT.isEqual("enumerate(); 02",
 );
 
 
-/* entries(); */
-CUT.isEqual("entries(); 01",
-  JSON.stringify([...CEL.entries(["Picard", "Riker", "Data"])]),
-  "[[0,\"Picard\"],[1,\"Riker\"],[2,\"Data\"]]"
-);
-CUT.isEqual("entries(); 02",
-  JSON.stringify([...CEL.entries(["Picard", "Riker", "Data"], 2)]),
-  "[[2,\"Picard\"],[3,\"Riker\"],[4,\"Data\"]]"
-);
-
-
 /* flat(); */
 CUT.isEqual("flat();", "[1,2,3,4,5,6,7,8,9,10]",
   JSON.stringify([...CEL.flat([[1, 2, 3].values(),
@@ -5268,56 +5144,6 @@ CUT.isTrue("isSuperset();",
   &&  CEL.isSuperset(new Set([3, 11, 58, 95, 88]), [88, 95, 11].values())
   && !CEL.isSuperset([84,95], [3,58,95])
   && !CEL.isSuperset(new Set([88, 95, 11, 84]).keys(), [3, 11, 58,95,88].keys())
-);
-
-
-/* arrayUnion(); */
-CUT.isEqual("arrayUnion(); ES5","[1,2,3,4,5,6,7,8]",
-  JSON.stringify(CEL.arrayUnion([1, 2, 3, 4], [3, 4, 5, 6], [5, 6, 7, 8]))
-);
-CUT.isEqual("arrayUnion(); ES6", "[1,2,3,4,5,6,7,8]",
-  JSON.stringify(CEL.arrayUnion(
-    new Set([1, 2, 3, 4]), [3, 4, 5, 6].values(),
-    new Set([5, 6, 7, 8]).values()
-  )
-));
-
-
-/* arrayIntersection(); */
-CUT.isEqual(
-  "arrayIntersection(); ES5","[3,4]",
-  JSON.stringify(CEL.arrayIntersection([1, 2, 3, 4], [3, 4, 5, 6]))
-);
-CUT.isEqual("arrayIntersection(); ES6", "[3,4]",
-  JSON.stringify(CEL.arrayIntersection([1,2,3,4].values(), new Set([3,4,5, 6])))
-);
-
-
-/* arrayDifference(); */
-CUT.isEqual("arrayDifference(); ES5", "[1,2]",
-  JSON.stringify(CEL.arrayDifference([1, 2, 3, 4], [3, 4, 5, 6]))
-);
-CUT.isEqual("arrayDifference(); ES6", "[1,2]",
-  JSON.stringify(
-    CEL.arrayDifference(
-      new Map([[1, 2], [2, 3], [3, 4], [4, 5]]).keys(),
-      [3, 4, 5, 6].values()
-    )
-  )
-);
-
-
-/* arraySymmetricDifference(); */
-CUT.isEqual("arraySymmetricDifference(); ES5", "[1,2,5,6]",
-  JSON.stringify(CEL.arraySymmetricDifference([1, 2, 3, 4], [3, 4, 5, 6]))
-);
-CUT.isEqual("arraySymmetricDifference(); ES6", "[1,2,5,6]",
-  JSON.stringify(
-    CEL.arraySymmetricDifference(
-      new Set([1, 2, 3, 4]).keys(),
-      new Map([[1, 3], [2, 4], [3, 5], [4, 6]]).values()
-    )
-  )
 );
 
 
@@ -5620,7 +5446,7 @@ CUT.isError("Math.sumPrecise(); 36",
 document.body.appendChild(document.createElement("iframe"));
 token1 = CUT.join([
   /* true */
-  +(Error.isError(new window.frames[window.frames.length - 1].Error())),
+  +(Error.isError(new globalThis.frames[globalThis.frames.length - 1].Error())),
   +(Error.isError(new Error())),
   +(Error.isError(new TypeError())),
   +(Error.isError(new DOMException())),
@@ -5758,13 +5584,7 @@ CUT.isTrue("Object.hasOwn();",
 
 
 /* globalThis; */
-CUT.isEqual("globalThis;", window, globalThis);
-
-
-/* BigInt.prototype.toJSON(); */
-if (!!window.BigInt) {
-  CUT.isEqual("BigInt.prototype.toJSON();", '"42"', JSON.stringify(BigInt(42)));
-}
+CUT.isEqual("globalThis;", globalThis, globalThis);
 
 
 /* GeneratorFunction(); */
@@ -5778,6 +5598,12 @@ CUT.isEqual("AsyncFunction();", "asyncfunction",
     "return await resolveAfter2Seconds(a) + await resolveAfter2Seconds(b);"
   )
 ));
+
+
+/* AsyncGeneratorFunction(); */
+CUT.isEqual("AsyncGeneratorFunction();", "asyncgeneratorfunction",
+  CEL.classof(async function* () {})
+);
 
 
 /* isSameClass(); */
@@ -5928,14 +5754,6 @@ CUT.isTrue("isAsyncGeneratorFn();",
     && !CEL.isAsyncGeneratorFn(Array)
     && !CEL.isAsyncGeneratorFn(Array.from)
     && !CEL.isAsyncGeneratorFn(0)
-);
-
-
-/* isConstructorFn(); */
-CUT.isTrue("isConstructorFn();",
-  CEL.isConstructorFn(Array)
-    && !CEL.isConstructorFn(Array.from)
-    && !CEL.isConstructorFn(0)
 );
 
 
@@ -6142,7 +5960,7 @@ CUT.isTrue("isTypedArray();",
   &&  CEL.isTypedArray(new Float32Array(5))
   &&  CEL.isTypedArray(new Float64Array(5))
   &&  CEL.isTypedArray(new Uint8ClampedArray(5))
-  &&  (window.BigInt64Array ? CEL.isTypedArray(new BigInt64Array(5)) : true)
+  &&  (globalThis.BigInt64Array ? CEL.isTypedArray(new BigInt64Array(5)) : true)
   &&  CEL.isTypedArray(new BigUint64Array(5))
   && !CEL.isTypedArray([4, 5, 6])
   && !CEL.isTypedArray(new ArrayBuffer(8))

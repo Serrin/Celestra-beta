@@ -15,7 +15,7 @@ __A helper JavaScript library with useful functions and polyfills and zero depen
 
 This library isn't compatible with the Node.js.
 
-Latest version: 5.8.1
+Latest version: 5.9.0
 
 Date: 2025-08-03T12:27:16.251Z
 
@@ -90,23 +90,23 @@ Assert plugin cheatsheet|__celestra-assert-plugin.odt__<BR>__celestra-assert-plu
 
 // import the defaultExport object
 import defaultExport from "./celestra.esm.js";
-window.celestra = defaultExport;
-window.CEL = defaultExport;
+globalThis.celestra = defaultExport;
+globalThis.CEL = defaultExport;
 
 // import with default with name
 import { default as celestra } from "./celestra.esm.js";
-window.celestra = celestra;
-window.CEL = celestra;
+globalThis.celestra = celestra;
+globalThis.CEL = celestra;
 
 // import all into a new celestra object
 import * as celestra from "./celestra.esm.js";
-window.celestra = celestra;
-window.CEL = celestra;
+globalThis.celestra = celestra;
+globalThis.CEL = celestra;
 
 // import some functions
 import { first, classof } from "./celestra.esm.js";
-window.first = first;
-window.classof = classof;
+globalThis.first = first;
+globalThis.classof = classof;
 
 </script>
 ````
@@ -140,7 +140,7 @@ __Another way to import__
 
 ### Celestra v5.0.0 (Defiant) changes
 
-- The underscore `_` short object name has been changed to `CEL` to avoid the compatibility issues.<BR>If need to use the old short name, then with this code will be available again: `window._ = window.celestra;`.
+- The underscore `_` short object name has been changed to `CEL` to avoid the compatibility issues.<BR>If need to use the old short name, then with this code will be available again: `globalThis._ = globalThis.celestra;`.
 
 
 ### Celestra v5.5.0 changes
@@ -192,7 +192,7 @@ Example: `CEL.delay();`
 
 Name | Description
 ---- | -----------
-`celestra.noConflict();` | __Stability: 4 - Stable.__<BR>Restore the previous `CEL` object value and return the `celestra` object to create a new alias.<BR>__Tip: You can make a new alias without this function too. Example: `window._cel = window.celestra;`__<BR>__In the ESM edition only returns the celestra object.__
+`celestra.noConflict();` | __Stability: 4 - Stable.__<BR>Restore the previous `CEL` object value and return the `celestra` object to create a new alias.<BR>__Tip: You can make a new alias without this function too. Example: `globalThis._cel = globalThis.celestra;`__<BR>__In the ESM edition only returns the celestra object.__
 `celestra.VERSION;` | __Stability: 4 - Stable.__<BR>The library version.
 `BASE16;`|__Stability: 4 - Stable.__<BR>`"0123456789ABCDEF"`<BR>Can be used with the ID generator functions.
 `BASE32;`|__Stability: 4 - Stable.__<BR>`"234567ABCDEFGHIJKLMNOPQRSTUVWXYZ"`<BR>Can be used with the ID generator functions.
@@ -213,19 +213,19 @@ Name | Description
 `deleteOwnProperty(object,property[,Throw = false]);`| __Stability: 4 - Stable.__<BR>This function deletes an own property in the given object. If Throw is true and the deleting was unsuccessful, then an error will be thrown.<BR>__Return values:__<BR>1 - The property was own and the delete was successful.<BR>0 - The property is own and the delete was unsuccessful.<BR>-1 - The property is not own or not exists.
 `extend([deep,]target,source1[,sourceN]);` | __Stability: 4 - Stable.__<BR>This is an enhanced version of the `Object.assign` method. The deep parameter (boolean) is optional and sets the deep copy (recursive) of the sources.
 `F();` | __Stability: 4 - Stable.__<BR>This function returns false.
-`filterIn(object,callback);` | __Stability: 1 - Deprecated and will be removed.__<BR>The filterIn() function executes a provided function once for each object property and returns a new object with the properties which were be filtered. The object parameter is mandatory and has to be an object. The callback parameter is mandatory and has to be a function. The parameter function will be called with these arguments: key value, key, object.<BR>__Example:__<BR>`var o1 = {"a": 1, "b": 2, "c": 3};`<BR>`console.log(o1);`<BR>`// Object { a: 1, b: 2, c: 3 }`<BR>`var o2 = CEL.filterIn(o1, (v, p, o) => (v > 1));`<BR>`console.log(o2);`<BR>`// Object { b: 2, c: 3 }`
-`forIn(object,callback);` | __Stability: 1 - Deprecated and will be removed.__<BR>The forIn() function executes a provided function once for each object property. The object parameter is mandatory and has to be an object. The callback parameter is mandatory and has to be a function. The parameter function will be called with these arguments: key value, key, object.
+`filterIn(object,callback);` | __Stability: 0 - Removed in v5.9.0.__<BR>The filterIn() function executes a provided function once for each object property and returns a new object with the properties which were be filtered. The object parameter is mandatory and has to be an object. The callback parameter is mandatory and has to be a function. The parameter function will be called with these arguments: key value, key, object.<BR>__Example:__<BR>`var o1 = {"a": 1, "b": 2, "c": 3};`<BR>`console.log(o1);`<BR>`// Object { a: 1, b: 2, c: 3 }`<BR>`var o2 = CEL.filterIn(o1, (v, p, o) => (v > 1));`<BR>`console.log(o2);`<BR>`// Object { b: 2, c: 3 }`
+`forIn(object,callback);` | __Stability: 0 - Removed in v5.9.0.__<BR>The forIn() function executes a provided function once for each object property. The object parameter is mandatory and has to be an object. The callback parameter is mandatory and has to be a function. The parameter function will be called with these arguments: key value, key, object.
 `getUrlVars([str=location.search]);` | __Stability: 4 - Stable.__<BR>Get the values of the url variables in an object from the `location.search` _(default value)_ or another given url. The str parameter name is optional and can be a string. Example: `"?showall=true&order_by=updated&o=asc"` -> `Object { showall: "true", order_by: "updated", o: "asc" }`
 `identity(value);` | __Stability: 4 - Stable.__<BR>Return the given value. (In math: `f(x)=x`)
-`javaHash(data[,hexa=false]);` | __Stability: 1 - Deprecated and will be removed.__<BR>Java `String.hashCode()` implementation in Javascript - this is a non-cryptographic hash function. The data parameter is mandatory and can be any type. The hexa parameter is optional and can be a boolean and sets the hexadecimal conversion of the return value and the default value is false. Return the generated integer hash.
+`javaHash(data[,hexa=false]);` | __Stability: 0 - Removed in v5.9.0.__<BR>Java `String.hashCode()` implementation in Javascript - this is a non-cryptographic hash function. The data parameter is mandatory and can be any type. The hexa parameter is optional and can be a boolean and sets the hexadecimal conversion of the return value and the default value is false. Return the generated integer hash.
 `nanoid([size=21[,alphabet= "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"]]);` | __Stability: 4 - Stable.__<BR>Generate a nanoid. The size parameter is optional and the default value is 21. The alphabet parameter is optional and the default value is "A-Za-z0-9_-". The return value is the generated nanoid (string).
 `noop();` | __Stability: 4 - Stable.__<BR>It's an empty function (no operation) that returns undefined and usable for optional callback arguments.
 `obj2string(object);` | __Stability: 4 - Stable.__<BR>Convert object to a querystring. The return value is the string. The object parameter is mandatory.
 `randomBoolean();` | __Stability: 4 - Stable.__<BR>Get a random boolean value. The return value is `true` or `false`.
 `randomUUIDv7();` | __Stability: 4 - Stable.__<BR>This function returns a UUID v7, which cointains a timestamp too. For more information please read the [this page](https://www.rfc-editor.org/rfc/rfc9562.html#name-uuid-version-7)!<BR>Example result: `"0195d74b-b8c8-7302-a7d3-919df45087f3"`
 `sizeIn(object);` | __Stability: 4 - Stable.__<BR>Returns the count of the owned properties and symbols of the given object. The object parameter is mandatory. The return value is an integer.
-`popIn(object,property);` | __Stability: 1 - Deprecated and will be removed.__<BR>The popIn() function deletes the property in the object and returns the value of the deleted property. If the property doesn't exist in the object, then the return value is undefined. The object parameter is mandatory and has to be an object. The property parameter is mandatory.
-`sleep(ms).then(callback);` | __Stability: 4 - Stable.__<BR>his is an alias of the `delay(ms).then(callback);`.
+`popIn(object,property);` | __Stability: 0 - Removed in v5.9.0.__<BR>The popIn() function deletes the property in the object and returns the value of the deleted property. If the property doesn't exist in the object, then the return value is undefined. The object parameter is mandatory and has to be an object. The property parameter is mandatory.
+`sleep(ms).then(callback);` | __Stability: 0 - Removed in v5.9.0.__<BR>his is an alias of the `delay(ms).then(callback);`.
 `T();` | __Stability: 4 - Stable.__<BR>This function returns true.
 `timestampID([size=21[,alphabet= "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"]]);` | __Stability: 4 - Stable.__<BR>Generate a timestamp based sortable ID. The size parameter is optional and the default value is 21, but if the given value smaller than 12, then the value will be 12. The alphabet parameter is optional and the default value is `"123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"`, same as BASE58. The return value is the generated id (string).<BR>Example ID:`"00lirtqi4e-wgGn8vGPyY"`
 `toObject(value);`| __Stability: 4 - Stable.__<BR>If the given value is not null or undefined, then the return value is an object, which has been converted from the value, else a `TypeError()` will be throwned.<BR>If the given value is an object, function or symbol, then the original value will return.
@@ -385,7 +385,7 @@ Name | Description
 `isChar(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a string with length 1 character. This function is unicode compatible. The return value is boolean.
 `isClass(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a constructable function. The return value is boolean.
 `isCoercedObject(object);` | __Stability: 4 - Stable.__<BR>If the given object is a coerced object (Number, BigInt, String, Boolean), then the return value is the constructor function. In any other cases retuns false. The object parameter is mandatory.
-`isConstructorFn(value);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value is a constructable function. The return value is boolean.
+`isConstructorFn(value);` | __Stability: 0 - Removed in v5.9.0.__<BR>This function determines whether the provided value is a constructable function. The return value is boolean.
 `isDataView(value);` | __Stability: 0 - Removed in v5.8.0.__<BR>This function determines whether the provided value is an DataView object. The return value is boolean.
 `isDate(value);` | __Stability: 0 - Removed in v5.8.0.__<BR>This function determines whether the provided value is a date. The return value is boolean.
 `isDeepStrictEqual(value1, value2);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided values are deep equals. (_Deep strict equality + NaN equality: primitives (SameValue - Object.is()), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date_) The return value is boolean.
@@ -470,18 +470,18 @@ Name | Description
 ---- | -----------
 `arrayAdd(array,value);` | __Stability: 4 - Stable.__<BR>Push the value to the array if the array doesn't contain the value. The return value is true, when the value is added and false, when not added.
 `arrayClear(array);` | __Stability: 4 - Stable.__<BR>Clear the array and returns the empty array. The array parameter is mandatory.
-`arrayCreate([length=0]);`| __Stability: 1 - Deprecated and will be removed.__<BR>This function returns an array with the given length. If the length is -0, then the length will be 0. If The length parameter out of the array size range, then a rangeerror will be thrown.
+`arrayCreate([length=0]);`| __Stability: 0 - Removed in v5.9.0.__<BR>This function returns an array with the given length. If the length is -0, then the length will be 0. If The length parameter out of the array size range, then a rangeerror will be thrown.
 `arrayCycle(iterator[,n=100]);` | __Stability: 4 - Stable.__<BR>Cycle the given iterator and returns an array with these elements. The iterator parameter is mandatory. The n parameter is optional and can be an integer. Default parameter value: n = 100.
 `arrayDeepClone(array);`| __Stability: 4 - Stable.__<BR>This function deeply (recursively) clones an array. The return value is the cloned array.
-`arrayDifference(iterator1, iterator2);` | __Stability: 1 - Deprecated and will be removed.__<BR>__Can be replaced with `Set.prototype.difference();`.__<BR>Returns the array of unique values that are in the iterator1, excluding the values that are also in the iterator2. All of the parameters are mandatory. The return value is an Array.
-`arrayIntersection(iterator1, iterator2);` | __Stability: 1 - Deprecated and will be removed.__<BR>__Can be replaced with `Set.prototype.intersection();`.__<BR>Returns the array of unique values that are in both of the given iterators. All of the parameters are mandatory. The return value is an Array.
+`arrayDifference(iterator1, iterator2);` | __Stability: 0 - Removed in v5.9.0.__<BR>__Can be replaced with `Set.prototype.difference();`.__<BR>Returns the array of unique values that are in the iterator1, excluding the values that are also in the iterator2. All of the parameters are mandatory. The return value is an Array.
+`arrayIntersection(iterator1, iterator2);` | __Stability: 0 - Removed in v5.9.0.__<BR>__Can be replaced with `Set.prototype.intersection();`.__<BR>Returns the array of unique values that are in both of the given iterators. All of the parameters are mandatory. The return value is an Array.
 `arrayMerge(target,source1[,sourceN]);` | __Stability: 4 - Stable.__<BR>Merge two or more arrays or push any values in the target array. The return value is the target array.
 `arrayRange([start=0[,end=99[,step=1]]]);` | __Stability: 4 - Stable.__<BR>Returns the array of values between the start and end parameters. All of the parameters are mandatory and have to be a number. Default parameter values: start = 0, end = 99, step = 1.<BR>__Example:__<BR>`CEL.arrayRange("A".codePointAt(0),"Z".codePointAt(0)).map((v)=>String.fromCodePoint(v));`<BR>-><BR>`Array(26) [ "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" ]`
 `arrayRemove(array,value[,all=false]);` | __Stability: 4 - Stable.__<BR>Remove the first or all equivalent values from the array. Returns true, when the value was found and false when not found. The array and value parameters are mandatory. The all parameter is optional and has to be a boolean.
 `arrayRemoveBy(array,callback[,all=false]);` | __Stability: 4 - Stable.__<BR>Remove the first or all values from the array with which the given function returns true. Returns true, when the value was found and false when not found. The array and value parameters are mandatory. The all parameter is optional and has to be a boolean.
 `arrayRepeat(value[,n=100]);` | __Stability: 4 - Stable.__<BR>Returns an array with same repeatedly elements. The value parameter is mandatory and the n parameter is optional and can be an integer. Default parameter value: n = 100.
-`arraySymmetricDifference(iterator1, iterator2);` | __Stability: 1 - Deprecated and will be removed.__<BR>__Can be replaced with `Set.prototype.symmetricDifference();`.__<BR>Returns the array of unique values that are only in one of given iterators. All of the parameters are mandatory. The return value is an Array.
-`arrayUnion(iterator1[,iteratorN]);` | __Stability: 1 - Deprecated and will be removed.__<BR>__Can be replaced with `Set.prototype.union();`.__<BR>Returns the array of unique values including all values from the given iterators. The first parameter is mandatory. The return value is an Array.
+`arraySymmetricDifference(iterator1, iterator2);` | __Stability: 0 - Removed in v5.9.0.__<BR>__Can be replaced with `Set.prototype.symmetricDifference();`.__<BR>Returns the array of unique values that are only in one of given iterators. All of the parameters are mandatory. The return value is an Array.
+`arrayUnion(iterator1[,iteratorN]);` | __Stability: 0 - Removed in v5.9.0.__<BR>__Can be replaced with `Set.prototype.union();`.__<BR>Returns the array of unique values including all values from the given iterators. The first parameter is mandatory. The return value is an Array.
 `arrayUnique(iterator);` | __Stability: 0 - Removed in v5.8.0.__<BR>__Can be replaced with `unique(iterator[, resolver]);`.__<BR>This function returns a new array with unique values. The value parameter is mandatory and can be an iterator. In modern browsers you can use ES6 types too (Map, Set and iterators).
 `concat(iterator1[,iteratorN]);` | __Stability: 4 - Stable.__<BR>This function merges the iterators and yields the elements of the merged iterator. At least one iterator has to been given.
 `count(iterator,callback);` | __Stability: 4 - Stable.__<BR>This function executes a counter function (that you provide) on each element of the iterator, returning in a single output value. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function.
@@ -490,7 +490,7 @@ Name | Description
 `dropRight(iterator[,n=1]);` | __Stability: 4 - Stable.__<BR>Drop the last N elements of an iterator and return the remained elements in an array. The iterator parameter is mandatory. The n parameter is optional and can be an integer. Default parameter value: n = 1.
 `dropRightWhile(iterator,callback);` | __Stability: 4 - Stable.__<BR>Drop the elements from the end of an iterator while the callback (filter) function returns true and yield the remained elements. The callback function will be called with the actual element of the iterator. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function.
 `dropWhile(iterator,callback);` | __Stability: 4 - Stable.__<BR>Drop the elements of an iterator while the callback (filter) function returns true and yield the remained elements. The callback function will be called with the actual element of the iterator. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function.
-`entries(iterator[,offset=0]);` | __Stability: 1 - Deprecated and will be removed.__<BR>An alias of the `enumerate(iterator);`.
+`entries(iterator[,offset=0]);` | __Stability: 0 - Removed in v5.9.0.__<BR>An alias of the `enumerate(iterator);`.
 `enumerate(iterator[,offset=0]);` | __Stability: 4 - Stable.__<BR>Yield generated pairs (arrays) from the elements of an iterator and a counter. The iterator parameter is mandatory. The offset parameter is optional and can be an integer and it's default value is 0. <BR>__Example:__<BR> `CEL.enumerate(["Picard", "Riker", "Data"], 2);` -> `[2, "Picard"]`, `[3, "Riker"]`, `[4, "Data"]`
 `every(iterator,callback);` | __Stability: 3 - Legacy and can get only fixes.__<BR>__Can be replaced with `Iterator.from(iterable/iterator).every();`__<BR>This function whether all elements in the iterator pass the test implemented by the provided function. It returns a Boolean value and all of the parameters are mandatory. If the iterator is empty, then the return value is false.
 `filter(iterator,callback);` | __Stability: 3 - Legacy and can get only fixes.__<BR>__Can be replaced with `Iterator.from(iterable/iterator).filter();`__<BR>Filter and yield elements of an iterator. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function and called with two parameters: the item and the index of the item (only a counter).
@@ -601,7 +601,7 @@ Name | Description
 `Array.prototype.with();` | The with() method of an Array instance is the copying version of using the bracket notation to change the value of a given index. It returns a new array with the element at the given index replaced with the given value. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/with)!
 `crypto.randomUUID();` | The randomUUID() method of the Crypto interface is used to generate a v4 UUID using a cryptographically secure random number generator. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/API/Crypto/randomUUID)!
 `Error.isError();` | The Error.isError() static method determines whether the passed value is an Error or DOMException. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/isError)!
-`globalThis;` | The "global" property of the global object, a writable, configurable, non-enumerable alias of `window`/`self`. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/globalThis)!
+`globalThis;` | The globalThis global property contains the global <code>this</code> value, which is usually akin to the global object. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/globalThis)!
 `Map.groupBy();` | The Map.groupBy() static method groups the elements of a given iterable using the values returned by a provided callback function. The final returned Map uses the unique values from the test function as keys, which can be used to get the array of elements in each group. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/groupBy)!
 `Math.sumPrecise();` | The Math.sumPrecise() static method takes an iterable of numbers and returns the sum of them. It is more precise than summing them up in a loop, because it avoids floating point precision loss in intermediate results. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/sumPrecise)!
 `Object.groupBy();` | The Object.groupBy() static method groups the elements of a given iterable according to the string values returned by a provided callback function. The returned object has separate properties for each group, containing arrays with the elements in the group. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/groupBy)!
@@ -609,18 +609,13 @@ Name | Description
 `TypedArray.prototype.toReversed();` | The toReversed() method is the copying counterpart of the reverse() method. It returns a new array with the elements in reversed order. This method has the same algorithm as Array.prototype.reverse(). For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/toReversed)!
 `TypedArray.prototype.toSorted();` | The toSorted() method is the copying version of the sort() method. It returns a new array with the elements sorted in ascending order. This method has the same algorithm as Array.prototype.toSorted(), except that it sorts the values numerically instead of as strings by default. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/toSorted)!
 `TypedArray.prototype.with();` | The with() method is the copying version of using the bracket notation to change the value of a given index. It returns a new array with the element at the given index replaced with the given value. This method has the same algorithm as Array.prototype.with(). For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/with)!
-`window.AsyncFunction();` | The AsyncFunction constructor creates a new async function object. In JavaScript, every asynchronous function is actually an AsyncFunction object. Note that AsyncFunction is not a global object, but in the Celestra this is available in the `window` object. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncFunction)!
-`window.GeneratorFunction();` | The GeneratorFunction constructor creates a new generator function object. In JavaScript every generator function is actually a GeneratorFunction object. Note that GeneratorFunction is not a global object, but in the Celestra this is available in the `window` object. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction)!
+`globalThis.AsyncFunction();` | The AsyncFunction constructor creates a new async function object. In JavaScript, every asynchronous function is actually an AsyncFunction object. Note that AsyncFunction is not a global object, but in the Celestra this is available in the `globalThis` object. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncFunction)!
+`globalthis.AsyncGeneratorFunction();` | The AsyncGeneratorFunction() constructor creates AsyncGeneratorFunction objects. Note that AsyncGeneratorFunction is not a global object, but in the Celestra this is available in the `globalThis` object. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncGeneratorFunction/AsyncGeneratorFunction)!
+`globalThis.GeneratorFunction();` | The GeneratorFunction constructor creates a new generator function object. In JavaScript every generator function is actually a GeneratorFunction object. Note that GeneratorFunction is not a global object, but in the Celestra this is available in the `globalThis` object. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction)!
 REMOVED polyfills in v3.1.0 | `Array.from();`<BR>`Array.of();`<BR>`Array.prototype.fill();`<BR>`Array.prototype.find();`<BR>`Array.prototype.findIndex();`<BR>`Object.create();`<BR>`String.prototype.startsWith();`<BR>`String.prototype.endsWith();`<BR>`Array.prototype.copyWithin();`<BR>`String.fromCodePoint();`<BR>`String.prototype.codePointAt();`<BR>`Number.EPSILON;`<BR>`Number.isNaN();`<BR>`isNaN();`<BR>`Number.isInteger();`<BR>`Number.isFinite();`<BR>`Number.isSafeInteger();`<BR>`Number.parseInt();`<BR>`Number.parseFloat();`<BR>`Math.acosh();`<BR>`Math.asinh();`<BR>`Math.atanh();`<BR>`Math.cbrt();`<BR>`Math.clz32();`<BR>`Math.cosh();`<BR>`Math.expm1();`<BR>`Math.fround();`<BR>`Math.hypot();`<BR>`Math.imul();`<BR>`Math.log1p();`<BR>`Math.log10();`<BR>`Math.log2();`<BR>`Math.sign();`<BR>`Math.sinh();`<BR>`Math.tanh();`<BR>`Math.trunc();`
 REMOVED polyfills in v3.8.0 | `Array.prototype.values();`<BR>`Array.prototype.includes();`<BR>`String.prototype.includes();`<BR>`String.prototype.repeat();`<BR>`String.prototype[Symbol.iterator]();`<BR>`Object.assign();`<BR>`Object.entries();`<BR>`Object.values();`<BR>`Object.getOwnPropertyDescriptors();`<BR>`RegExp.prototype.flags;`<BR>`NodeList.prototype.forEach();`<BR>`ChildNode.after();`<BR>`ChildNode.before();`<BR>`ChildNode.remove();`<BR>`ChildNode.replaceWith();`<BR>`ParentNode.append();`<BR>`ParentNode.prepend();`<BR>`Element.prototype.matches();`<BR>`Element.prototype.closest();`<BR>`Element.prototype.toggleAttribute();`<BR>`Element.prototype.getAttributeNames();`<BR>`window.screenLeft;`<BR>`window.screenTop;`
 REMOVED polyfills in v5.6.0 | `Array.prototype.at();`<BR>`Array.prototype.findLast();`<BR>`Array.prototype.findLastIndex();`<BR>`Array.prototype.flat();`<BR>`Array.prototype.flatMap();`<BR>`Number.MIN_SAFE_INTEGER;`<BR>`Number.MAX_SAFE_INTEGER;`<BR>`Object.fromEntries();`<BR>`Object.is();`<BR>`String.prototype.at();`<BR>`String.prototype.matchAll();`<BR>`String.prototype.padStart();`<BR>`String.prototype.padEnd();`<BR>`String.prototype.replaceAll();`<BR>`String.prototype.trimStart();`<BR>`String.prototype.trimLeft();`<BR>`String.prototype.trimEnd();`<BR>`String.prototype.trimRight();`<BR>`Typedarray.prototype.at();`<BR>`TypedArray.prototype.findLast();`<BR>`TypedArray.prototype.findLastIndex();`
-
-
-### Non-standard polyfills
-
-Name | Description
----- | -----------
-`BigInt.prototype.toJSON();` | __Stability: 1 - Deprecated and will be removed.__<BR>Using `JSON.stringify();` with any BigInt value will raise a TypeError as BigInt values aren't serialized in JSON by default. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt#use_within_json)!
+REMOVED polyfills in v5.9.0 | `BigInt.prototype.toJSON();`
 
 
 -----

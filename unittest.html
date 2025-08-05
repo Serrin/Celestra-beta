@@ -102,7 +102,7 @@ textarea, #preCelLog { border-radius: 4px; }
     </td>
     <td class="noborder">
       <p><button onclick=" CEL.importScript('unittest.js'); preCelLog('load <b>unittest.js</b>'); ">load unittest.js</button></p>
-      <p><button onclick=" window.location.reload(true); ">reset</button></p>
+      <p><button onclick=" globalThis.location.reload(true); ">reset</button></p>
       <p><button onclick=" saveResults(); ">save result in HTML</button></p>
     </td>
     <td class="noborder">
@@ -213,7 +213,7 @@ alert(arrayCreateErrorStr);</pre>
     <td>Have to be blue.</td>
   </tr>
   <tr>
-    <td><button onclick=" window['_cel'] = CEL.noConflict(); alert(_cel.VERSION+'\n'+CEL.VERSION); "> noConflict();</button></td>
+    <td><button onclick=" globalThis['_cel'] = CEL.noConflict(); alert(_cel.VERSION+'\n'+CEL.VERSION); "> noConflict();</button></td>
     <td>1x alert</td>
   </tr>
 </table>
@@ -294,8 +294,8 @@ alert(arrayCreateErrorStr);</pre>
 
 import("./celestra.dev.js")
   .then((module) => {
-    window.celestra = module.celestra;
-    window.CEL = module.celestra;
+    globalThis.celestra = module.celestra;
+    globalThis.CEL = module.celestra;
   });
 */
 
@@ -304,30 +304,30 @@ var importStr = "";
 // default loading method in v3.0.2
 // import the celestra object
 import { celestra } from "./celestra.esm.js";
-window.celestra = celestra;
-window.CEL = celestra;
+globalThis.celestra = celestra;
+globalThis.CEL = celestra;
 
 importStr += "\nimport the celestra object - "
   + (typeof celestra.getType === "function");
 
 // import with default with name
 import { default as celestra2 } from "./celestra.esm.js";
-//window.celestra = celestra;
-//window.CEL = celestra;
+//globalThis.celestra = celestra;
+//globalThis.CEL = celestra;
 importStr += "\nimport with default with name - "
   + (typeof celestra2.getType === "function");
 
 // import all functions in an object
 import * as celestra3 from "./celestra.esm.js";
-//window.celestra = celestra;
-//window.CEL = celestra;
+//globalThis.celestra = celestra;
+//globalThis.CEL = celestra;
 importStr += "\nimport all functions in an object - "
   + (typeof celestra3.getType === "function");
 
 // import with defaultExport
 import defaultExport from "./celestra.esm.js";
-//window.celestra = defaultExport;
-//window.CEL = defaultExport;
+//globalThis.celestra = defaultExport;
+//globalThis.CEL = defaultExport;
 importStr += "\nimport with defaultExport - "
   + (typeof defaultExport.getType === "function");
 
@@ -340,7 +340,7 @@ alert(importStr);
 
 /*
 // to test the loading of the module:
-console.log(`celestra.VERSION - ${ window.celestra.VERSION }
+console.log(`celestra.VERSION - ${ globalThis.celestra.VERSION }
 CEL.VERSION - ${ CEL.VERSION }
 true - ${ CEL.isString("ggg") }
 isString false - ${ CEL.isString(42) }
@@ -381,23 +381,23 @@ const _preCel = {
       // Android Webvies 63, Android Chrome 63, Android FF 67, iOS Safari 11.1, no in Samsung browser
       import("./celestra.dev.js")
         .then((module) => {
-          window.celestra = module.celestra;
-          window.CEL = module.celestra;
+          globalThis.celestra = module.celestra;
+          globalThis.CEL = module.celestra;
         });
       */
       var importStr = "";
 
       // import with defaultExport
       import defaultExport from "./celestra.esm.js";
-      //window.celestra = defaultExport;
-      //window.CEL = defaultExport;
+      //globalThis.celestra = defaultExport;
+      //globalThis.CEL = defaultExport;
       importStr += "\\nimport with defaultExport - "
         + (typeof defaultExport.qsa === "function");
 
       // import with default with name
       import { default as celestra } from "./celestra.esm.js";
-      window.celestra = celestra;
-      window.CEL = celestra;
+      globalThis.celestra = celestra;
+      globalThis.CEL = celestra;
       importStr += "\\nimport with default with name - "
         + (typeof celestra.qsa === "function");
 
@@ -420,8 +420,8 @@ const _preCel = {
 
       // import all into a new celestra object
       import * as celestra from "./celestra.esm.js";
-      window.celestra = celestra;
-      window.CEL = celestra;
+      globalThis.celestra = celestra;
+      globalThis.CEL = celestra;
       importStr += "\\nimport all into a new celestra object - "
         + (typeof celestra.qsa === "function");
 

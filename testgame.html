@@ -98,9 +98,9 @@ input:hover, input:focus, button:hover {
 
 CEL.domReady(function () {
 
-  window.results = CEL.qs("#results");
-  window.dice = CEL.qs("#dice");
-  window.rolls = CEL.qs("#rolls");
+  globalThis.results = CEL.qs("#results");
+  globalThis.dice = CEL.qs("#dice");
+  globalThis.rolls = CEL.qs("#rolls");
 
   function getResults () {
     CEL.qsa("span",results).forEach(function (e) { e.remove(); });

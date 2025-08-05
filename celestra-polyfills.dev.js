@@ -1,7 +1,7 @@
 
 /**
  * @name Celestra Removed Polyfills
- * @version 5.8.1 dev
+ * @version 5.9.0 dev
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
@@ -99,6 +99,12 @@ String.prototype.trimRight();
 Typedarray.prototype.at();
 TypedArray.prototype.findLast();
 TypedArray.prototype.findLastIndex();
+*/
+
+/* 
+Removed in v5.9.0
+
+BigInt.prototype.toJSON();
 */
 
 
@@ -886,6 +892,16 @@ if (!("findLastIndex" in Uint8Array.prototype)) {
       while (i--) { if (fn(this[i],i,this)) { return i; } }
       return -1;
     }
+  });
+}
+
+/* Removed in v5.9.0 */
+
+/* BigInt.prototype.toJSON(); */
+if (!!globalThis.BigInt && !("toJSON" in BigInt.prototype)) {
+  Object.defineProperty(BigInt.prototype, "toJSON", {
+    writable: true, enumerable: false, configurable: true,
+    value: function toJSON () { return this.toString(); }
   });
 }
 
