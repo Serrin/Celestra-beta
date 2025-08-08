@@ -5,7 +5,7 @@
  * @license MIT https://opensource.org/licenses/MIT
  */
 
- 
+
  /* globalThis; */
 (function (global) {
   if (!global.globalThis) {
@@ -19,7 +19,7 @@
   }
 })(typeof this === "object" ? this : Function("return this")());
 
- 
+
 (function(globalThis){
 "use strict";
 
@@ -269,14 +269,14 @@ if (!("with" in Uint8Array.prototype)) {
 
 /* globalThis.GeneratorFunction; */
 if (!globalThis.GeneratorFunction) {
-  globalThis.GeneratorFunction = 
+  globalThis.GeneratorFunction =
     Object.getPrototypeOf(function*(){}).constructor;
 }
 
 
 /* globalThis.AsyncFunction; */
 if (!globalThis.AsyncFunction) {
-  globalThis.AsyncFunction = 
+  globalThis.AsyncFunction =
     Object.getPrototypeOf(async function(){}).constructor;
 }
 
@@ -528,7 +528,8 @@ function assertMatch(string, regexp, msg) {
 }
 
 
-/* assertDoesNotMatch(string, regexp [, message | error]): true | thrown error */
+/* assertDoesNotMatch(string, regexp [, message | error]):
+  true | thrown error */
 function assertDoesNotMatch(string, regexp, msg) {
   if (typeof string !== "string") {
     if (Error.isError(msg)) { throw msg; }
@@ -830,8 +831,7 @@ function assertDeepEqual (x, y, msg) {
       if (_isSameInstance(x, y, ArrayBuffer)) {
         if (x.byteLength !== y.byteLength) { return false; }
         if (x.byteLength === 0) { return true; }
-        let xTA = new Int8Array(x);
-        let yTA = new Int8Array(y);
+        let xTA = new Int8Array(x), yTA = new Int8Array(y);
         return xTA.every((v, i) => _isEqual(v, yTA[i]));
       }
       /* objects / DataView */
@@ -847,20 +847,13 @@ function assertDeepEqual (x, y, msg) {
       if (_isSameInstance(x, y, Map)) {
         if (x.size !== y.size) { return false; }
         if (x.size === 0) { return true; }
-        for (let key of x.keys()) {
-          if (!y.has(key)) { return false; }
-          if (!_isDeepEqual(x.get(key), y.get(key))) { return false; }
-        }
-        return true;
+        return [...x.keys()].every((v) => _isDeepEqual(x.get(v), y.get(v)));
       }
       /* objects / Set */
       if (_isSameInstance(x, y, Set)) {
         if (x.size !== y.size) { return false; }
         if (x.size === 0) { return true; }
-        for (let item of x) {
-          if (!y.has(item)) { return false; }
-        }
-        return true;
+        return [...x.keys()].every((v) => y.has(v));
       }
       /* objects / RegExp */
       if (_isSameInstance(x, y, RegExp)) {
@@ -872,17 +865,16 @@ function assertDeepEqual (x, y, msg) {
       if (_isSameInstance(x, y, Error)) {
         return _isDeepEqual(
           Object.getOwnPropertyNames(x)
-            .reduce((acc, prop) => { acc[prop] = x[prop]; return acc; }, {}),
+            .reduce((acc, k) => { acc[k] = x[k]; return acc; }, {}),
           Object.getOwnPropertyNames(y)
-            .reduce((acc, prop) => { acc[prop] = y[prop]; return acc; }, {}),
+            .reduce((acc, k) => { acc[k] = y[k]; return acc; }, {}),
         );
       }
       /* objects / Date */
       if (_isSameInstance(x, y, Date)) { return _isEqual(+x, +y); }
       /* objects / Proxy -> not detectable */
-      /* objects / other objects */
-      let xKeys = _ownKeys(x);
-      let yKeys = _ownKeys(y);
+      /* objects / Objects */
+      let xKeys = _ownKeys(x), yKeys = _ownKeys(y);
       if (xKeys.length !== yKeys.length) { return false; }
       if (xKeys.length === 0) { return true; }
       return xKeys.every((key) => _isDeepEqual(x[key], y[key]));
@@ -983,8 +975,7 @@ function assertNotDeepStrictEqual (x, y, msg) {
       if (_isSameInstance(x, y, ArrayBuffer)) {
         if (x.byteLength !== y.byteLength) { return false; }
         if (x.byteLength === 0) { return true; }
-        let xTA = new Int8Array(x);
-        let yTA = new Int8Array(y);
+        let xTA = new Int8Array(x), yTA = new Int8Array(y);
         return xTA.every((v, i) => _isEqual(v, yTA[i]));
       }
       /* objects / DataView */
@@ -1000,20 +991,14 @@ function assertNotDeepStrictEqual (x, y, msg) {
       if (_isSameInstance(x, y, Map)) {
         if (x.size !== y.size) { return false; }
         if (x.size === 0) { return true; }
-        for (let key of x.keys()) {
-          if (!y.has(key)) { return false; }
-          if (!_isDeepStrictEqual(x.get(key), y.get(key))) { return false; }
-        }
-        return true;
+        return [...x.keys()].every((v) =>
+          _isDeepStrictEqual(x.get(v), y.get(v)));
       }
       /* objects / Set */
       if (_isSameInstance(x, y, Set)) {
         if (x.size !== y.size) { return false; }
         if (x.size === 0) { return true; }
-        for (let item of x) {
-          if (!y.has(item)) { return false; }
-        }
-        return true;
+        return [...x.keys()].every((v) => y.has(v));
       }
       /* objects / RegExp */
       if (_isSameInstance(x, y, RegExp)) {
@@ -1025,17 +1010,16 @@ function assertNotDeepStrictEqual (x, y, msg) {
       if (_isSameInstance(x, y, Error)) {
         return _isDeepStrictEqual(
           Object.getOwnPropertyNames(x)
-            .reduce((acc, prop) => { acc[prop] = x[prop]; return acc; }, {}),
+            .reduce((acc, k) => { acc[k] = x[k]; return acc; }, {}),
           Object.getOwnPropertyNames(y)
-            .reduce((acc, prop) => { acc[prop] = y[prop]; return acc; }, {}),
+            .reduce((acc, k) => { acc[k] = y[k]; return acc; }, {}),
         );
       }
       /* objects / Date */
       if (_isSameInstance(x, y, Date)) { return _isEqual(+x, +y); }
       /* objects / Proxy -> not detectable */
-      /* objects / other objects */
-      let xKeys = _ownKeys(x);
-      let yKeys = _ownKeys(y);
+      /* objects / Objects */
+      let xKeys = _ownKeys(x), yKeys = _ownKeys(y);
       if (xKeys.length !== yKeys.length) { return false; }
       if (xKeys.length === 0) { return true; }
       return xKeys.every((key) => _isDeepStrictEqual(x[key], y[key]));
@@ -1122,8 +1106,7 @@ function assertNotDeepEqual (x, y, msg) {
       if (_isSameInstance(x, y, ArrayBuffer)) {
         if (x.byteLength !== y.byteLength) { return false; }
         if (x.byteLength === 0) { return true; }
-        let xTA = new Int8Array(x);
-        let yTA = new Int8Array(y);
+        let xTA = new Int8Array(x), yTA = new Int8Array(y);
         return xTA.every((v, i) => _isEqual(v, yTA[i]));
       }
       /* objects / DataView */
@@ -1139,20 +1122,13 @@ function assertNotDeepEqual (x, y, msg) {
       if (_isSameInstance(x, y, Map)) {
         if (x.size !== y.size) { return false; }
         if (x.size === 0) { return true; }
-        for (let key of x.keys()) {
-          if (!y.has(key)) { return false; }
-          if (!_isDeepEqual(x.get(key), y.get(key))) { return false; }
-        }
-        return true;
+        return [...x.keys()].every((v) => _isDeepEqual(x.get(v), y.get(v)));
       }
       /* objects / Set */
       if (_isSameInstance(x, y, Set)) {
         if (x.size !== y.size) { return false; }
         if (x.size === 0) { return true; }
-        for (let item of x) {
-          if (!y.has(item)) { return false; }
-        }
-        return true;
+        return [...x.keys()].every((v) => y.has(v));
       }
       /* objects / RegExp */
       if (_isSameInstance(x, y, RegExp)) {
@@ -1164,17 +1140,16 @@ function assertNotDeepEqual (x, y, msg) {
       if (_isSameInstance(x, y, Error)) {
         return _isDeepEqual(
           Object.getOwnPropertyNames(x)
-            .reduce((acc, prop) => { acc[prop] = x[prop]; return acc; }, {}),
+            .reduce((acc, k) => { acc[k] = x[k]; return acc; }, {}),
           Object.getOwnPropertyNames(y)
-            .reduce((acc, prop) => { acc[prop] = y[prop]; return acc; }, {}),
+            .reduce((acc, k) => { acc[k] = y[k]; return acc; }, {}),
         );
       }
       /* objects / Date */
       if (_isSameInstance(x, y, Date)) { return _isEqual(+x, +y); }
       /* objects / Proxy -> not detectable */
-      /* objects / other objects */
-      let xKeys = _ownKeys(x);
-      let yKeys = _ownKeys(y);
+      /* objects / Objects */
+      let xKeys = _ownKeys(x), yKeys = _ownKeys(y);
       if (xKeys.length !== yKeys.length) { return false; }
       if (xKeys.length === 0) { return true; }
       return xKeys.every((key) => _isDeepEqual(x[key], y[key]));
@@ -1276,8 +1251,7 @@ function assertDeepStrictEqual (x, y, msg) {
       if (_isSameInstance(x, y, ArrayBuffer)) {
         if (x.byteLength !== y.byteLength) { return false; }
         if (x.byteLength === 0) { return true; }
-        let xTA = new Int8Array(x);
-        let yTA = new Int8Array(y);
+        let xTA = new Int8Array(x), yTA = new Int8Array(y);
         return xTA.every((v, i) => _isEqual(v, yTA[i]));
       }
       /* objects / DataView */
@@ -1293,20 +1267,15 @@ function assertDeepStrictEqual (x, y, msg) {
       if (_isSameInstance(x, y, Map)) {
         if (x.size !== y.size) { return false; }
         if (x.size === 0) { return true; }
-        for (let key of x.keys()) {
-          if (!y.has(key)) { return false; }
-          if (!_isDeepStrictEqual(x.get(key), y.get(key))) { return false; }
-        }
-        return true;
+        return [...x.keys()].every(
+          (v) => _isDeepStrictEqual(x.get(v), y.get(v))
+        );
       }
       /* objects / Set */
       if (_isSameInstance(x, y, Set)) {
         if (x.size !== y.size) { return false; }
         if (x.size === 0) { return true; }
-        for (let item of x) {
-          if (!y.has(item)) { return false; }
-        }
-        return true;
+        return [...x.keys()].every((v) => y.has(v));
       }
       /* objects / RegExp */
       if (_isSameInstance(x, y, RegExp)) {
@@ -1318,17 +1287,16 @@ function assertDeepStrictEqual (x, y, msg) {
       if (_isSameInstance(x, y, Error)) {
         return _isDeepStrictEqual(
           Object.getOwnPropertyNames(x)
-            .reduce((acc, prop) => { acc[prop] = x[prop]; return acc; }, {}),
+            .reduce((acc, k) => { acc[k] = x[k]; return acc; }, {}),
           Object.getOwnPropertyNames(y)
-            .reduce((acc, prop) => { acc[prop] = y[prop]; return acc; }, {}),
+            .reduce((acc, k) => { acc[k] = y[k]; return acc; }, {}),
         );
       }
       /* objects / Date */
       if (_isSameInstance(x, y, Date)) { return _isEqual(+x, +y); }
       /* objects / Proxy -> not detectable */
-      /* objects / other objects */
-      let xKeys = _ownKeys(x);
-      let yKeys = _ownKeys(y);
+      /* objects / Objects */
+      let xKeys = _ownKeys(x), yKeys = _ownKeys(y);
       if (xKeys.length !== yKeys.length) { return false; }
       if (xKeys.length === 0) { return true; }
       return xKeys.every((key) => _isDeepStrictEqual(x[key], y[key]));
@@ -1350,7 +1318,7 @@ function assertDeepStrictEqual (x, y, msg) {
 /** String API **/
 
 
-/* b64Encode(string): string */
+/* b64Encode(string: string): string */
 function b64Encode (s) {
   return btoa(encodeURIComponent(String(s)).replace(/%([0-9A-F]{2})/g,
     function toSolidBytes (_match, p1) {
@@ -1360,7 +1328,7 @@ function b64Encode (s) {
 }
 
 
-/* b64Decode(string): string */
+/* b64Decode(string: string): string */
 function b64Decode (s) {
   return decodeURIComponent(atob(String(s)).split("").map(function (c) {
     return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
@@ -1368,7 +1336,8 @@ function b64Decode (s) {
 }
 
 
-/* strTruncate(string, newLength [, omission = ""]): string */
+/* strTruncate(string: string, newLength: integer [, omission: string = ""]):
+  string */
 function strTruncate (str, newLen, omission = "") {
   str = String(str);
   omission = String(omission);
@@ -1378,7 +1347,7 @@ function strTruncate (str, newLen, omission = "") {
 }
 
 
-/* strPropercase(string): string */
+/* strPropercase(string: string): string */
 const strPropercase = (s) => String(s).split(" ").map(function (v) {
   var a = Array.from(v).map( (c) => c.toLowerCase() );
   if (a.length) { a[0] = a[0].toUpperCase(); }
@@ -1386,7 +1355,7 @@ const strPropercase = (s) => String(s).split(" ").map(function (v) {
 }).join(" ");
 
 
-/* strTitlecase(string): string */
+/* strTitlecase(string: string): string */
 const strTitlecase = (s) => String(s).split(" ").map(function (v) {
   var a = Array.from(v).map( (c) => c.toLowerCase() );
   if (a.length) { a[0] = a[0].toUpperCase(); }
@@ -1394,7 +1363,7 @@ const strTitlecase = (s) => String(s).split(" ").map(function (v) {
 }).join(" ");
 
 
-/* strCapitalize(string): string */
+/* strCapitalize(string: string): string */
 function strCapitalize (s) {
   var a = [...String(s).toLowerCase()];
   if (a.length) { a[0] = a[0].toUpperCase(); }
@@ -1402,7 +1371,7 @@ function strCapitalize (s) {
 }
 
 
-/* strUpFirst(string): string */
+/* strUpFirst(string: string): string */
 function strUpFirst (s) {
   var a = [...String(s)];
   if (a.length) { a[0] = a[0].toUpperCase(); }
@@ -1410,7 +1379,7 @@ function strUpFirst (s) {
 }
 
 
-/* strDownFirst(string): string */
+/* strDownFirst(string: string): string */
 function strDownFirst (s) {
   var a = [...String(s)];
   if (a.length) { a[0] = a[0].toLowerCase(); }
@@ -1418,15 +1387,15 @@ function strDownFirst (s) {
 }
 
 
-/* strReverse(string): string */
+/* strReverse(string: string): string */
 const strReverse = (s) => Array.from(String(s)).reverse().join("");
 
 
-/* strCodePoints(string): array of strings */
+/* strCodePoints(string: string): array of strings */
 const strCodePoints = (s) => Array.from(String(s), (v) => v.codePointAt(0) );
 
 
-/* strFromCodePoints(iterator): string */
+/* strFromCodePoints(iterator: iterator): string */
 const strFromCodePoints = ([...a]) => String.fromCodePoint(...a);
 
 
@@ -1441,7 +1410,8 @@ function strAt (s, i, nC) {
 }
 
 
-/* strSplice(string, index: integer, count: integer [, add: string]): string */
+/* strSplice(string: string, index: integer, count: integer [, add: string]):
+  string */
 const strSplice = (s, i, c, ...add) =>
   Array.from(s).toSpliced(i, c, add.join("")).join("");
 
@@ -1451,13 +1421,13 @@ const strHTMLRemoveTags = (s) =>
   String(s).replace(/<[^>]*>/g, " ").replace(/\s{2,}/g, " ").trim();
 
 
-/* strHTMLEscape(string): string */
+/* strHTMLEscape(string: string): string */
 const strHTMLEscape = (s) => String(s).replace(/&/g, "&amp;")
   .replace(/</g, "&lt;").replace(/>/g, "&gt;")
   .replace(/"/g, "&quot;").replace(/'/g, "&apos;");
 
 
-/* strHTMLUnEscape(string): string */
+/* strHTMLUnEscape(string: string): string */
 const strHTMLUnEscape = (s) => String(s)
   .replace(/&amp;/g, "&").replace(/&#38;/g, "&")
   .replace(/&lt;/g, "<").replace(/&#60;/g, "<")
@@ -1487,7 +1457,8 @@ function domReady (fn) {
 }
 
 
-/* domCreate(type: string[, properties: object[, innerHTML: string]]): element*/
+/* domCreate(type: string[, properties: object[, innerHTML: string]]):
+  element */
 /* domCreate(element descriptive object): element */
 function domCreate (t, ps, iH) {
   if (arguments.length === 1 && typeof t === "object") {
@@ -1522,8 +1493,8 @@ function domToElement (s) {
 
 
 /* domGetCSS(element [, property: string]): string */
-const domGetCSS = (e, p) =>
-  (p ? globalThis.getComputedStyle(e, null)[p] : globalThis.getComputedStyle(e, null));
+const domGetCSS = (e, p) => (p ? globalThis.getComputedStyle(e, null)[p] :
+  globalThis.getComputedStyle(e, null));
 
 
 /* domSetCSS(element, property: string, value: string): undefined */
@@ -1566,7 +1537,8 @@ function domFadeToggle (e, dur, d = "") {
     s.opacity = (s.opacity || 0);
     s.display = (d || "");
     (function fade () {
-      (s.opacity=parseFloat(s.opacity)+step)>1 ?s.opacity=1:setTimeout(fade,25);
+      (s.opacity = parseFloat(s.opacity) + step) > 1 ? s.opacity = 1 :
+        setTimeout(fade, 25);
     })();
   } else {
     /* same as domFadeOut(); */
@@ -1598,7 +1570,8 @@ function domToggle (e, d = "") {
 
 
 /* domIsHidden(element): boolean */
-const domIsHidden = (e) => (globalThis.getComputedStyle(e,null).display === "none");
+const domIsHidden = (e) =>
+  (globalThis.getComputedStyle(e,null).display === "none");
 
 
 /* domSiblings(element): array */
@@ -1750,7 +1723,8 @@ function getLocation (s, e) {
 }
 
 
-/* createFile(filename: string, content: string [,dataType:string]): undefined*/
+/* createFile(filename: string, content: string [,dataType:string]):
+  undefined */
 function createFile (fln, c, dt) {
   var l = arguments.length;
   if (l > 1) {
@@ -1818,7 +1792,8 @@ const domScrollToTop = () => globalThis.scrollTo(0,0);
 
 
 /* domScrollToBottom(): undefined */
-const domScrollToBottom = () => globalThis.scrollTo(0, document.body.scrollHeight);
+const domScrollToBottom = () =>
+  globalThis.scrollTo(0, document.body.scrollHeight);
 
 
 /* domScrollToElement(element [, top=true]): undefined */
@@ -1826,7 +1801,8 @@ const domScrollToElement = (e, top = true) => e.scrollIntoView(top);
 
 
 /* domClear(element): undefined */
-const domClear = (el) => Array.from(el.children).forEach((item)=>item.remove());
+const domClear = (el) =>
+  Array.from(el.children).forEach((item) => item.remove());
 
 
 /** AJAX API **/
@@ -1890,12 +1866,12 @@ function getJson (url, success) {
 function ajax (o) {
   if (typeof o.url !== "string") {
     throw new TypeError(
-      "Celestra ajax error: The url property have to be a string."
+      "Celestra ajax error: The url property has to be a string."
     );
   }
   if (typeof o.success !== "function") {
     throw new TypeError(
-      "Celestra ajax error: The success property have to be a function."
+      "Celestra ajax error: The success property has to be a function."
     );
   }
   if (o.error === undefined) {
@@ -1905,7 +1881,7 @@ function ajax (o) {
   }
   if (typeof o.error !== "function") {
     throw new TypeError(
-      "Celestra ajax error: The error property have to be a function or undefined."
+      "Celestra ajax error: The error property has to be a function or undefined."
     );
   }
   if (!o.queryType) {
@@ -1923,14 +1899,14 @@ function ajax (o) {
   } else if (o.type === "post") {
     var typeStr = "POST";
   } else {
-    throw "Celestra ajax error: The type property have to be \"get\" or \"post\".";
+    throw "Celestra ajax error: The type property has to be \"get\" or \"post\".";
   }
   if (!o.format) {
     o.format = "text";
   } else {
     o.format = o.format.toLowerCase();
     if (!(["text", "json", "xml"].includes(o.format))) {
-      throw "Celestra ajax error: The format property have to be \"text\" or \"json\" or \"xml\".";
+      throw "Celestra ajax error: The format property has to be \"text\" or \"json\" or \"xml\".";
     }
   }
   var xhr;
@@ -1940,7 +1916,7 @@ function ajax (o) {
     xhr = new XMLHttpRequest();
     if (!("withCredentials" in xhr)) { xhr = new XDomainRequest(); }
   } else {
-    throw "Celestra ajax error: The querytype property have to be \"ajax\" or \"cors\".";
+    throw "Celestra ajax error: The querytype property has to be \"ajax\" or \"cors\".";
   }
   if (typeof o.user === "string" && typeof o.password === "string") {
     xhr.open(typeStr, o.url, true, o.user, o.password);
@@ -2172,8 +2148,7 @@ function isDeepStrictEqual (x, y) {
     if (_isSameInstance(x, y, ArrayBuffer)) {
       if (x.byteLength !== y.byteLength) { return false; }
       if (x.byteLength === 0) { return true; }
-      let xTA = new Int8Array(x);
-      let yTA = new Int8Array(y);
+      let xTA = new Int8Array(x), yTA = new Int8Array(y);
       return xTA.every((v, i) => _isEqual(v, yTA[i]));
     }
     /* objects / DataView */
@@ -2189,20 +2164,13 @@ function isDeepStrictEqual (x, y) {
     if (_isSameInstance(x, y, Map)) {
       if (x.size !== y.size) { return false; }
       if (x.size === 0) { return true; }
-      for (let key of x.keys()) {
-        if (!y.has(key)) { return false; }
-        if (!isDeepStrictEqual(x.get(key), y.get(key))) { return false; }
-      }
-      return true;
+      return [...x.keys()].every((v) => isDeepStrictEqual(x.get(v), y.get(v)));
     }
     /* objects / Set */
     if (_isSameInstance(x, y, Set)) {
       if (x.size !== y.size) { return false; }
       if (x.size === 0) { return true; }
-      for (let item of x) {
-        if (!y.has(item)) { return false; }
-      }
-      return true;
+      return [...x.keys()].every((v) => y.has(v));
     }
     /* objects / RegExp */
     if (_isSameInstance(x, y, RegExp)) {
@@ -2214,17 +2182,16 @@ function isDeepStrictEqual (x, y) {
     if (_isSameInstance(x, y, Error)) {
       return isDeepStrictEqual(
         Object.getOwnPropertyNames(x)
-          .reduce((acc, prop) => { acc[prop] = x[prop]; return acc; }, {}),
+          .reduce((acc, k) => { acc[k] = x[k]; return acc; }, {}),
         Object.getOwnPropertyNames(y)
-          .reduce((acc, prop) => { acc[prop] = y[prop]; return acc; }, {}),
+          .reduce((acc, k) => { acc[k] = y[k]; return acc; }, {}),
       );
     }
     /* objects / Date */
     if (_isSameInstance(x, y, Date)) { return _isEqual(+x, +y); }
     /* objects / Proxy -> not detectable */
-    /* objects / other objects */
-    let xKeys = _ownKeys(x);
-    let yKeys = _ownKeys(y);
+    /* objects / Objects */
+    let xKeys = _ownKeys(x), yKeys = _ownKeys(y);
     if (xKeys.length !== yKeys.length) { return false; }
     if (xKeys.length === 0) { return true; }
     return xKeys.every((key) => isDeepStrictEqual(x[key], y[key]));
@@ -2397,7 +2364,7 @@ const isAsyncFn = (v) => (Object.getPrototypeOf(v).constructor ===
 
 
 /* setCookie(Options object): undefined */
-/* setCookie(name: string, value: string [, hours = 8760 [, path = "/"[,domain
+/* setCookie(name: string, value: string [, hours = 8760 [, path = "/" [, domain
   [, secure [, SameSite = "Lax" [, HttpOnly]]]]]]): undefined */
 function setCookie (name, value, hours = 8760, path = "/", domain, secure,
   SameSite = "Lax", HttpOnly) {
@@ -2449,8 +2416,9 @@ const hasCookie = (n) => (
 
 /* removeCookie(Options object);: boolean */
 /* removeCookie(name: string [, path = "/"
-  [, domain [, secure [, SameSite = "Lax" [, HttpOnly]]]]]): boolean */
-function removeCookie (name, path="/", domain, secure, SameSite="Lax",HttpOnly){
+  [, domain [, secure [, SameSite = "Lax" [, HttpOnly ]]]]]): boolean */
+function removeCookie (name, path="/", domain, secure, SameSite="Lax",
+  HttpOnly){
   if (typeof name === "object") {
     var settings = name;
     name = settings.name;
@@ -2466,7 +2434,8 @@ function removeCookie (name, path="/", domain, secure, SameSite="Lax",HttpOnly){
     + "; path=" + path
     + (domain ? "; domain=" + domain : "")
     + (secure ? "; secure" : "")
-    + (typeof SameSite==="string" && SameSite.length ?"; SameSite="+SameSite:"")
+    + (typeof SameSite === "string" && SameSite.length ? "; SameSite="
+      + SameSite : "")
     + (HttpOnly ? "; HttpOnly" : "")
     + ";";
   return r;
@@ -2475,7 +2444,7 @@ function removeCookie (name, path="/", domain, secure, SameSite="Lax",HttpOnly){
 
 /* clearCookies(Options object): undefined */
 /* clearCookies([path = "/"
-  [, domain [, secure [, SameSite = "Lax" [, HttpOnly]]]]]): undefined */
+  [, domain [, secure [, SameSite = "Lax" [, HttpOnly ]]]]]): undefined */
 function clearCookies (path = "/", domain, secure, SameSite = "Lax", HttpOnly) {
   if (typeof path === "object") {
     var settings = path;
@@ -2493,8 +2462,8 @@ function clearCookies (path = "/", domain, secure, SameSite = "Lax", HttpOnly) {
         + "; path=" + path
         + (domain ? "; domain=" + domain : "")
         + (secure ? "; secure" : "")
-        + (typeof SameSite === "string"
-          && SameSite.length ? "; SameSite=" + SameSite : "")
+        + (typeof SameSite === "string" && SameSite.length ?
+          "; SameSite=" + SameSite : "")
         + (HttpOnly ? "; HttpOnly" : "")
         + ";";
     }
@@ -2505,7 +2474,7 @@ function clearCookies (path = "/", domain, secure, SameSite = "Lax", HttpOnly) {
 /** Collections API **/
 
 
-/* unique(iterator [, resolver: string | function]): array */
+/* unique(iterator: iterator [, resolver: string | function]): array */
 function unique (it, resolver) {
   if (resolver == null) { return [...new Set(it)]; }
   if (typeof resolver === "string") {
@@ -2535,18 +2504,18 @@ function count (it, fn) {
 }
 
 
-/* arrayDeepClone(array): array */
+/* arrayDeepClone(array: array): array */
 function arrayDeepClone ([...a]) {
   const _ADC = (v) => (Array.isArray(v) ? Array.from(v, _ADC) : v);
   return _ADC(a);
 }
 
 
-/* initial(iterator): array */
+/* initial(iterator: iterator): array */
 const initial = ([...a]) => a.slice(0, -1);
 
 
-/* shuffle(iterator): array */
+/* shuffle(iterator: iterator): array */
 function shuffle([...a]) {
   for (let i = a.length - 1; i > 0; i--) {
     let j = Math.floor(Math.random() * (i + 1));
@@ -2556,30 +2525,30 @@ function shuffle([...a]) {
 }
 
 
-/* partition(iterator, callback: function): array */
+/* partition(iterator: iterator, callback: function): array */
 const partition = ([...a],fn) =>
   [a.filter(fn), a.filter((e, i, a) => !(fn(e, i, a)))];
 
 
-/* setUnion(iterator1 [, iteratorN]): set */
+/* setUnion(iterator1: iterator [, iteratorN: iterator]): set */
 const setUnion = (...a) => new Set(a.map(([...e]) => e).flat());
 
 
-/* setIntersection(set1, set2): set */
+/* setIntersection(set1: set, set2: set): set */
 const setIntersection = ([...a], b) => new Set(a.filter((v) => b.has(v)));
 
 
-/* setDifference(set1, set2): set */
+/* setDifference(set1: set, set2: set): set */
 const setDifference = ([...a], b) => new Set(a.filter((v) => !(b.has(v))));
 
 
-/* setSymmetricDifference(set1, set2): set */
+/* setSymmetricDifference(set1: set, set2: set): set */
 const setSymmetricDifference = (a, b) => new Set(
   [...a].filter((v) => !(b.has(v))).concat([...b].filter((v) => !(a.has(v))))
 );
 
 
-/* isSuperset(superCollection, subCollection): boolean */
+/* isSuperset(superCollection: iterator, subCollection: iterator): boolean */
 const isSuperset = ([...sup], [...sub]) => sub.every((v) => sup.includes(v));
 
 
@@ -2595,7 +2564,7 @@ const max = (...a) => a.reduce((acc, v) => (v > acc ? v : acc), a[0]);
 const arrayRepeat = (v, n = 100) => Array(n).fill(v);
 
 
-/* arrayCycle(iterator [, n = 100]): array */
+/* arrayCycle(iterator: iterator [, n: integer = 100]): array */
 const arrayCycle = ([...a], n = 100) => Array(n).fill(a).flat();
 
 
@@ -2604,7 +2573,7 @@ const arrayRange = (s = 0, e = 99, st = 1) =>
   Array.from({length: (e - s) / st + 1}, (_v, i) => s + (i * st));
 
 
-/* zip(iterator1 [, iteratorN]): array */
+/* zip(iterator1: iterator [, iteratorN: iterator]): array */
 function zip (...a) {
   a = a.map((v) => Array.from(v));
   return Array.from({length: Math.min(...a.map(v => v.length))})
@@ -2612,7 +2581,7 @@ function zip (...a) {
 }
 
 
-/* unzip(iterator): array */
+/* unzip(iterator: iterator): array */
 const unzip = ([...a]) =>
   a.map((v) => Array.from(v)).reduce((acc, v) => {
     v.forEach((item, i) => {
@@ -2623,22 +2592,22 @@ const unzip = ([...a]) =>
   }, []);
 
 
-/* zipObj(iterator1, iterator2): object */
+/* zipObj(iterator1: iterator, iterator2: iterator): object */
 function zipObj ([...a1], [...a2]) {
   let r = {}, l = Math.min(a1.length, a2.length);
   for (let i = 0; i < l; i++) { r[a1[i]] = a2[i]; }
   return r;
 }
 
-/* arrayAdd(array, value: any): boolean */
+/* arrayAdd(array: array, value: any): boolean */
 const arrayAdd = (a, v) => (!a.includes(v)) ? !!a.push(v) : false;
 
 
-/* arrayClear(array): array */
+/* arrayClear(array: array): array */
 function arrayClear (a) { a.length = 0; return a; }
 
 
-/* arrayRemove(array, value: any [, all = false]): boolean */
+/* arrayRemove(array: array, value: any [, all: boolean = false]): boolean */
 function arrayRemove (a, v, all = false) {
   var found = a.indexOf(v) > -1;
   if (!all) {
@@ -2652,7 +2621,8 @@ function arrayRemove (a, v, all = false) {
 }
 
 
-/* arrayRemoveBy(array, callback: function [, all = false]): boolean */
+/* arrayRemoveBy(array: array, callback: function [, all: boolean = false]):
+  boolean */
 function arrayRemoveBy (a, fn, all = false) {
   var found = a.findIndex(fn) > -1;
   if (!all) {
@@ -2670,7 +2640,8 @@ function arrayRemoveBy (a, fn, all = false) {
 function arrayMerge (t, ...a) { t.push(... [].concat(...a) ); return t; }
 
 
-/* iterRange([start = 0 [,step = 1 [, end = Infinity]]]): iterator */
+/* iterRange([start: number = 0 [,step: number = 1
+  [, end: number = Infinity]]]): iterator */
 function* iterRange (s = 0, st = 1, e = Infinity) {
   let i = s;
   while (i <= e) {
@@ -2680,7 +2651,7 @@ function* iterRange (s = 0, st = 1, e = Infinity) {
 }
 
 
-/* iterCycle(iterator [, n = Infinity]): iterator */
+/* iterCycle(iterator: iterator [, n = Infinity]): iterator */
 function* iterCycle ([...a], n = Infinity) {
   let i = 0;
   while (i < n) {
@@ -2690,7 +2661,7 @@ function* iterCycle ([...a], n = Infinity) {
 }
 
 
-/* iterRepeat(value: any [, n = Infinity]): iterator */
+/* iterRepeat(value: any [, n: number = Infinity]): iterator */
 function* iterRepeat (v, n = Infinity) {
   let i = 0;
   while (i<n) {
@@ -2700,7 +2671,7 @@ function* iterRepeat (v, n = Infinity) {
 }
 
 
-/* takeWhile(iterator, callback: function): iterator */
+/* takeWhile(iterator: iterator, callback: function): iterator */
 function* takeWhile (it, fn) {
   for (let item of it) {
     if (!fn(item)) { break; }
@@ -2709,7 +2680,7 @@ function* takeWhile (it, fn) {
 }
 
 
-/* dropWhile(iterator, callback: function): iterator */
+/* dropWhile(iterator: iterator, callback: function): iterator */
 function* dropWhile (it, fn) {
   let d = true;
   for (let item of it) {
@@ -2719,7 +2690,7 @@ function* dropWhile (it, fn) {
 }
 
 
-/* take(iterator [, n = 1]): iterator */
+/* take(iterator: iterator [, n: number = 1]): iterator */
 function* take (it, n = 1) {
   let i = n;
   for (let item of it) {
@@ -2730,7 +2701,7 @@ function* take (it, n = 1) {
 }
 
 
-/* drop(iterator [, n =1 ]): iterator */
+/* drop(iterator: iterator [, n: number =1 ]): iterator */
 function* drop (it, n = 1) {
   let i = n;
   for (let item of it) {
@@ -2743,28 +2714,28 @@ function* drop (it, n = 1) {
 }
 
 
-/* forEach(iterator, callback: function): undefined */
+/* forEach(iterator: iterator, callback: function): undefined */
 function forEach (it, fn) {
   let i = 0;
   for (let item of it) { fn(item, i++); }
 }
 
 
-/* forEachRight(iterator, callback: function): undefined */
+/* forEachRight(iterator: iterator, callback: function): undefined */
 function forEachRight ([...a], fn) {
   let i = a.length;
   while (i--) { fn(a[i] ,i); }
 }
 
 
-/* map(iterator, callback: function): iterator */
+/* map(iterator: iterator, callback: function): iterator */
 function* map (it, fn) {
   let i = 0;
   for (let item of it) { yield fn(item, i++); }
 }
 
 
-/* filter(iterator, callback: function): iterator */
+/* filter(iterator: iterator, callback: function): iterator */
 function* filter (it, fn) {
   let i = 0;
   for (let item of it) {
@@ -2773,7 +2744,7 @@ function* filter (it, fn) {
 }
 
 
-/* reject(iterator, callback: function): iterator */
+/* reject(iterator: iterator, callback: function): iterator */
 function* reject (it, fn) {
   let i = 0;
   for (let item of it) {
@@ -2782,7 +2753,8 @@ function* reject (it, fn) {
 }
 
 
-/* slice(iterator [, begin = 0 [, end = Infinity]]): iterator */
+/* slice(iterator: iterator [, begin: number = 0 [, end: number = Infinity]]):
+  iterator */
 function* slice (it, begin = 0, end = Infinity) {
   let i = 0;
   for (let item of it) {
@@ -2796,7 +2768,7 @@ function* slice (it, begin = 0, end = Infinity) {
 }
 
 
-/* tail(iterator): iterator */
+/* tail(iterator: iterator): iterator */
 function* tail (it) {
   let first = true;
   for (let item of it) {
@@ -2809,7 +2781,7 @@ function* tail (it) {
 }
 
 
-/* item(iterator, index: integer): any */
+/* item(iterator: iterator, index: integer): any */
 function item (it, p) {
   let i=0;
   for (let item of it) {
@@ -2818,7 +2790,7 @@ function item (it, p) {
 }
 
 
-/* nth(iterator, index: integer): any */
+/* nth(iterator: iterator, index: integer): any */
 function nth (it, p) {
   let i=0;
   for (let item of it) {
@@ -2827,7 +2799,7 @@ function nth (it, p) {
 }
 
 
-/* size(iterator): integer */
+/* size(iterator: iterator): integer */
 function size (it) {
   let i = 0;
   for (let _item of it) { i++; }
@@ -2835,30 +2807,30 @@ function size (it) {
 }
 
 
-/* first(iterator): any */
+/* first(iterator: iterator): any */
 function first (it) { for (let item of it) { return item; } }
 
 
-/* head(iterator): any */
+/* head(iterator: iterator): any */
 function head (it) { for (let item of it) { return item; } }
 
 
-/* last(iterator): any */
+/* last(iterator: iterator): any */
 const last = ([...a]) => a[a.length - 1];
 
 
-/* reverse(iterator): iterator */
+/* reverse(iterator: iterator): iterator */
 function* reverse ([...a]) {
   var i = a.length;
   while (i--) { yield a[i]; }
 }
 
 
-/* sort(iterator [, numbers = false]): array */
+/* sort(iterator: iterator [, numbers = false]): array */
 const sort = ([...a], ns) => a.sort(ns ? (x, y) => x - y : undefined);
 
 
-/* includes(iterator, value: any): boolean */
+/* includes(iterator: iterator, value: any): boolean */
 function includes (it, v) {
   for (let item of it) {
     if (item === v || (item !== item && v !== v)) { return true; }
@@ -2867,7 +2839,7 @@ function includes (it, v) {
 }
 
 
-/* contains(iterator, value: any): boolean */
+/* contains(iterator: iterator, value: any): boolean */
 function contains (it, v) {
   for (let item of it) {
     if (item === v) { return true; }
@@ -2876,7 +2848,7 @@ function contains (it, v) {
 }
 
 
-/* find(iterator, callback: function): any */
+/* find(iterator: iterator, callback: function): any */
 function find (it, fn) {
   let i = 0;
   for (let item of it) {
@@ -2885,7 +2857,7 @@ function find (it, fn) {
 }
 
 
-/* findLast(iterator, callback: function): any */
+/* findLast(iterator: iterator, callback: function): any */
 function findLast (it, fn) {
   let i = 0, r;
   for (let item of it) {
@@ -2895,7 +2867,7 @@ function findLast (it, fn) {
 }
 
 
-/* every(iterator, callback: function): boolean */
+/* every(iterator: iterator, callback: function): boolean */
 function every (it, fn) {
   let i = 0;
   for (let item of it) {
@@ -2906,7 +2878,7 @@ function every (it, fn) {
 }
 
 
-/* some(iterator, callback: function): boolean */
+/* some(iterator: iterator, callback: function): boolean */
 function some (it, fn) {
   let i = 0;
   for (let item of it) {
@@ -2916,7 +2888,7 @@ function some (it, fn) {
 }
 
 
-/* none(iterator, callback: function): boolean */
+/* none(iterator: iterator, callback: function): boolean */
 function none (it, fn) {
   let i = 0;
   for (let item of it) {
@@ -2927,11 +2899,11 @@ function none (it, fn) {
 }
 
 
-/* takeRight(iterator [, n = 1]): array */
+/* takeRight(iterator: iterator [, n: number = 1]): array */
 const takeRight = ([...a], n = 1) => a.reverse().slice(0, n);
 
 
-/* takeRightWhile(iterator, callback: function): iterator */
+/* takeRightWhile(iterator: iterator, callback: function): iterator */
 function* takeRightWhile ([...a], fn) {
   let i = 0;
   for (let item of a.reverse()) {
@@ -2944,11 +2916,11 @@ function* takeRightWhile ([...a], fn) {
 }
 
 
-/* dropRight(iterator [,n = 1]): array */
+/* dropRight(iterator: iterator [, n: number = 1]): array */
 const dropRight = ([...a], n = 1) => a.reverse().slice(n);
 
 
-/* dropRightWhile(iterator, callback: function): iterator */
+/* dropRightWhile(iterator: iterator, callback: function): iterator */
 function* dropRightWhile ([...a], fn) {
   let d = true, i = 0;
   for (let item of a.reverse()) {
@@ -2958,7 +2930,7 @@ function* dropRightWhile ([...a], fn) {
 }
 
 
-/* concat(iterator1 [, iteratorN]): iterator */
+/* concat(iterator1: iterator [, iteratorN]: iterator): iterator */
 function* concat () {
   for (let item of arguments) {
     if (typeof item[Symbol.iterator] === "function" ||
@@ -2974,7 +2946,7 @@ function* concat () {
 }
 
 
-/* reduce(iterator, callback: function [, initialvalue: any]): any */
+/* reduce(iterator: iterator, callback: function [, initialvalue: any]): any */
 function reduce (it, fn, iv) {
   let acc = iv, i = 0;
   for (let item of it) {
@@ -2988,14 +2960,14 @@ function reduce (it, fn, iv) {
 }
 
 
-/* enumerate(iterator [, offset = 0]): iterator */
+/* enumerate(iterator: iterator [, offset = 0]): iterator */
 function* enumerate (it, offset = 0) {
   let i = offset;
   for (let item of it) { yield [i++, item]; }
 }
 
 
-/* flat(iterator): iterator */
+/* flat(iterator: iterator): iterator */
 function* flat (it) {
   for (let item of it) {
     if (typeof item[Symbol.iterator] === "function" ||
@@ -3011,7 +2983,7 @@ function* flat (it) {
 }
 
 
-/* join(iterator [, separator = ","]): string */
+/* join(iterator: iterator [, separator = ","]): string */
 function join (it, sep = ",") {
   sep = String(sep);
   let r = "";
@@ -3020,7 +2992,7 @@ function join (it, sep = ",") {
 }
 
 
-/* withOut(iterator, filterIterator): array */
+/* withOut(iterator: iterator, filterIterator: iterator): array */
 const withOut = ([...a], [...fl]) => a.filter((e) => fl.indexOf(e) === -1);
 
 
@@ -3043,16 +3015,16 @@ const toIntegerOrInfinity = (v) =>
   ((v = Math.trunc(+v)) !== v || v === 0) ? 0 : v;
 
 
-/* sum(value1 [, valueN]): number */
+/* sum(value1: any [, valueN]: any): any */
 const sum = (...a) => (a.every((v) => typeof v === "number") ?
   Math.sumPrecise(a) : a.slice(1).reduce((acc, v) => acc + v, a[0]));
 
 
-/* avg(value1 [, valueN]): number */
+/* avg(value1: number [, valueN: number]): number */
 const avg = (...a) => Math.sumPrecise(a) / a.length;
 
 
-/* product(value1 [, valueN]): number */
+/* product(value1: number [, valueN]: number): number */
 const product = (f, ...a) => a.reduce((acc, v) => acc * v, f);
 
 
@@ -3234,8 +3206,8 @@ const signbit = (v) =>
   (((v = Number(v)) !== v) ? false : ((v < 0) || Object.is(v, -0)));
 
 
-/* randomInt([max: int]): int */
-/* randomInt(min: int, max: int): int */
+/* randomInt([max: integer]): integer */
+/* randomInt(min: integer, max: integer): integer */
 function randomInt (i = 100, a) {
   if (a == null) {
     a = i;

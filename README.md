@@ -13,7 +13,7 @@
 
 __A helper JavaScript library with useful functions and polyfills and zero dependencies.__
 
-This library isn't compatible with the Node.js.
+This library is working in the Node.js, but there are functions, that don't work. Examples: DOM functions.
 
 Latest version: 5.9.0
 
