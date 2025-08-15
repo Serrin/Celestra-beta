@@ -1,0 +1,2418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Celestra</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="Author" content="Czigler Ferenc" />
+<meta name="Copyright" content="(C) Copyright Czigler Ferenc" />
+<link rel="stylesheet" href="u87.css" type="text/css" />
+<!--<link rel="icon" href="favicon.ico" type="image/x-icon" />-->
+<script> var CEL = { VERSION: "This is another sample library." }; </script>
+<script src="celestra.min.js"></script>
+<style>
+
+html, body { font-size: 15px;  }
+
+#fsdiv { padding: 20px; }
+
+header {
+  padding: 1rem;
+  /*background-color: #222;*/
+  color: white;
+  /*background-image: url("erik-ringsmuth-2000.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  /*background-attachment: fixed;*/
+  /*background-size: contain;*/
+  background: linear-gradient(27deg, #151515 5px, transparent 5px) 0 5px, linear-gradient(207deg, #151515 5px, transparent 5px) 10px 0px, linear-gradient(27deg, #222 5px, transparent 5px) 0px 10px, linear-gradient(207deg, #222 5px, transparent 5px) 10px 5px, linear-gradient(90deg, #1b1b1b 10px, transparent 10px), linear-gradient(#1d1d1d 25%, #1a1a1a 25%, #1a1a1a 50%, transparent 50%, transparent 75%, #242424 75%, #242424);
+  background-size: 20px 20px;
+  background-color: #131313;
+}
+
+footer a, footer a:link, footer a:visited, footer a:active, footer a:hover,
+nav a, nav a:visited, nav a:active, nav a:hover {
+  color: white !important; /* u87 v0.9.13 */
+}
+
+/*@media (max-width: 575.98px) { td { display: block; width: 100% !important; } }*/
+
+</style>
+</head>
+<body>
+
+<header class="center">
+  <pre class="center b font-l" style="background-color: transparent;/*black*/ color: white; line-height: 1.2;">
+  ___  ____  __    ____  ___  ____  ____    __   
+ / __)( ___)(  )  ( ___)/ __)(_  _)(  _ \  /__\  
+( (__  )__)  )(__  )__) \__ \  )(   )   / /(__)\ 
+ \___)(____)(____)(____)(___/ (__) (_)\_)(__)(__)
+                                                 </pre>
+  <!--<h1 class="heading-d">Celestra</h1>-->
+  <nav><b>
+    <a href="#download" class="nobr">Download</a>
+    &nbsp;//&nbsp;
+    <a href="#functions" class="nobr">Functions</a>
+    &nbsp;//&nbsp;
+    <a href="#samples" class="nobr">Samples</a>
+    &nbsp;//&nbsp;
+    <a href="#license" class="nobr">License</a>
+    &nbsp;//&nbsp;
+    <a href="#footer" class="nobr">Contact</a>
+    &nbsp;//&nbsp;
+    <a href="#" onclick=" CEL.importStyle('u87-dark.css'); " class="nobr"><i>Dark</i></a>
+    &nbsp;/&nbsp;
+    <a href="#" onclick=" CEL.importStyle('u87-blue.css'); " class="nobr"><i>Blue</i></a>
+    &nbsp;/&nbsp;
+    <a href="#" onclick=" CEL.importStyle('u87-light.css'); " class="nobr"><i>Light</i></a>
+  </b></nav>
+  <div class="center">
+    <br/>
+    <a href="#FNcoreAPI" style="color: white !important">Core API</a>
+    &nbsp;//&nbsp;
+    <a href="#FNdomAPI" style="color: white !important">DOM API</a>
+    &nbsp;//&nbsp;
+    <a href="#FNstringAPI" style="color: white !important">String API</a>
+    &nbsp;//&nbsp;
+    <a href="#FNassertionAPI" style="color: white !important">Assertion API</a>
+    &nbsp;//&nbsp;
+    <a href="#FNajaxAPI" style="color: white !important">AJAX and CORS API</a>
+    <br/>
+    <a href="#FNcookieAPI" style="color: white !important">Cookie API</a>
+    &nbsp;//&nbsp;
+    <a href="#FNcollectionsAPI" style="color: white !important">Collections API</a>
+    &nbsp;//&nbsp;
+    <a href="#FNtypecheckingAPI" style="color: white !important">Type API</a>    
+    &nbsp;//&nbsp;
+    <a href="#FNmathAPI" style="color: white !important">Math API</a>
+    &nbsp;//&nbsp;
+    <a href="#FNpolyfillsAPI" style="color: white !important">Polyfills</a>
+  </div>
+</header>
+<main class="container">
+
+
+<h2 id="download">Download</h2>
+
+<p><b>A helper JavaScript library with useful functions and polyfills and zero dependencies.</b></p>
+
+<p>Latest version: 6.0.0</p>
+<p>Date: 2025-08-14T23:27:03.482Z</p>
+
+<p><b>Tested on these:</b></p>
+
+ <ul>
+  <li>Windows Firefox</li>
+  <li>Windows Chrome</li>
+  <li>Windows Edge</li>
+  <li>iOS Safari</li>
+  <li>iOS Firefox</li>
+  <li>iOS Chrome</li>
+  <li>iOS Edge</li>
+  <li>Android Firefox</li>
+  <li>Android Chrome</li>
+  <li>Android Samsung Internet</li>
+  <li>Android Edge</li>
+  <li>Node.js (latest current, not LTS)</li>
+  <li>Deno (latest current, not LTS)</li>
+</ul>
+
+<p>The functions are available in the <code>celestra</code> and/or <code>CEL</code> object or any function can be imported.</p>
+
+<table class="table-responsive-sm table-striped">
+  <tr>
+    <td class="center"><b>Edition</b></td>
+    <td class="center"><b>Filename</b></td>
+  </tr>
+  <tr>
+    <td>developer</td>
+    <td><a href="celestra.dev.js" target="_blank">celestra.dev.js</a></td>
+  </tr>
+  <tr>
+    <td>minified</td>
+    <td><a href="celestra.min.js" target="_blank">celestra.min.js</a></td>
+  </tr>
+  <tr>
+    <td>ES6 module</td>
+    <td><a href="celestra.esm.js" target="_blank">celestra.esm.js</a></td>
+  </tr>
+  <tr>
+    <td>Node.js and Deno module</td>
+    <td><a href="celestra.node.mjs" target="_blank">celestra.node.mjs</a></td>
+  </tr>
+  <tr>
+    <td class="center">Celestra Unit Tester (CUT)</td>
+    <td><a href="unittest.html" target="_blank">unittest.html</a></td>
+  </tr>
+  <tr>
+    <td class="center">Version history</td>
+    <td><a href="CHANGELOG.md" target="_blank">CHANGELOG.md</a></td>
+  </tr>
+</table>
+
+<p>DEV and MIN editions: If the <code>CEL</code> global variable is used before the loading of the library, then the value of the variable is saved and you can restore with the <code>noConflict();</code> function.</p>
+
+
+<h3>Github pages</h3>
+
+<table class="table-responsive-sm table-striped">
+  <tr>
+    <td class="center"><b>version</b></td>
+    <td class="center"><b>page link</b></td>
+  </tr>
+  <tr>
+    <td>Stable</td>
+    <td><a href="https://github.com/Serrin/Celestra" target="_blank">https://github.com/Serrin/Celestra</a></td>
+  </tr>
+  <tr>
+    <td>Beta</td>
+    <td><a href="https://github.com/Serrin/Celestra-beta" target="_blank">https://github.com/Serrin/Celestra-beta</a></td>
+  </tr>
+</table>
+
+
+<h3>Removed polyfills</h3>
+
+<p>Some polyfills have been removed in v3.1.0 and v3.8.0 and v5.6.0. With these files can be reusued the old polyfills if needed.</p>
+
+<table class="table-responsive-sm table-striped">
+  <tr>
+    <td class="center"><b>edition</b></td>
+    <td class="center"><b>filename</b></td>
+  </tr>
+  <tr>
+    <td>developer</td>
+    <td><a href="celestra-polyfills.dev.js" target="_blank">celestra-polyfills.dev.js</a></td>
+  </tr>
+  <tr>
+    <td>minified</td>
+    <td><a href="celestra-polyfills.min.js" target="_blank">celestra-polyfills.min.js</a></td>
+  </tr>
+</table>
+
+
+<h3>Cheatsheets</h3>
+
+<table class="table-responsive-sm table-striped">
+  <tr>
+    <td class="center"><b>edition</b></td>
+    <td class="center"><b>filename</b></td>
+  </tr>
+  <tr>
+    <td>Celestra cheatsheet</td>
+    <td><a href="celestra-cheatsheet.pdf" target="_blank">celestra-cheatsheet.pdf</a></td>
+  </tr>
+  <tr>
+    <td>JavaScript cheatsheet</td>
+    <td><a href="js-cheatsheet.pdf" target="_blank">js-cheatsheet.pdf</a></td>
+  </tr>
+</table>
+
+
+<h3>Apps</h3>
+
+<table class="table-responsive-sm table-striped">
+  <tr>
+    <td class="center"><b>app</b></td>
+    <td class="center"><b>filename</b></td>
+  </tr>
+  <tr>
+    <td>RPG dice roller</td>
+    <td><a href="testgame.html" target="_blank">testgame.html</a></td>
+  </tr>
+  <tr>
+    <td>Assert plugin documentation</td>
+    <td><a href="celestra-assert-plugin.html" target="_blank">celestra-assert-plugin.html</a></td>
+  </tr>
+  <tr>
+    <td>Assert plugin developer source</td>
+    <td><a href="celestra-assert-plugin.dev.js" target="_blank">celestra-assert-plugin.dev.js</a></td>
+  </tr>
+  <tr>
+    <td>Assert plugin minified source</td>
+    <td><a href="celestra-assert-plugin.min.js" target="_blank">celestra-assert-plugin.min.js</a></td>
+  </tr>
+  <tr>
+    <td>Assert plugin cheatsheet</td>
+    <td>
+      <a href="celestra-assert-plugin.odt" target="_blank">celestra-assert-plugin.odt</a>
+      <br/>
+      <a href="celestra-assert-plugin.pdf" target="_blank">celestra-assert-plugin.pdf</a>
+    </td>
+  </tr>
+</table>
+
+
+<h3>How to import the ESM edition</h3>
+
+<pre>
+&#60;script type="module"&#62;
+
+// import the defaultExport object
+import defaultExport from "./celestra.esm.js";
+globalThis.celestra = defaultExport;
+globalThis.CEL = defaultExport;
+
+// import with default with name
+import { default as celestra } from "./celestra.esm.js";
+globalThis.celestra = celestra;
+globalThis.CEL = celestra;
+
+// import all into a new celestra object
+import * as celestra from "./celestra.esm.js";
+globalThis.celestra = celestra;
+globalThis.CEL = celestra;
+
+// import some functions
+import { first, classof } from "./celestra.esm.js";
+globalThis.first = first;
+globalThis.classof = classof;
+
+&#60;/script&#62;
+</pre>
+
+<p><b>Another way to import</b></p>
+
+<pre>&#60;script type="module" import "./celestra.min.js"; /script&#62;</pre>
+
+
+<h3>How to import the Node.js edition</h3>
+
+<pre>
+// import the defaultExport object
+import defaultExport from "./celestra.nodejs.mjs";
+globalThis.celestra = defaultExport;
+globalThis.CEL = defaultExport;
+
+// import with default with name
+import { default as celestra } from "./celestra.nodejs.mjs";
+globalThis.celestra = celestra;
+globalThis.CEL = celestra;
+
+// import all into a new celestra object
+import * as celestra from "./celestra.nodejs.mjs";
+globalThis.celestra = celestra;
+globalThis.CEL = celestra;
+
+// import some functions
+import { first, classof } from "./celestra.nodejs.mjs";
+globalThis.first = first;
+globalThis.classof = classof;
+
+// dynamic import
+const celestra = await import("./celestra.node.mjs");
+globalThis.celestra = celestra;
+globalThis.CEL = celestra;
+</pre>
+
+
+<h3>Removed functions in the Node.js edition</h3>
+
+<div>
+  <table class="table-responsive table-striped">
+    <tr>
+      <td style="width: auto;"><b>API</b></td>
+      <td><b>Function</b></td>
+    </tr>
+    <tr>
+      <td style="width: auto;"><b>DOM API</b></td>
+      <td><code>qsa();</code><br/><code>qs();</code><br/><code>domReady();</code><br/><code>domClear();</code><br/><code>domCreate();</code><br/><code>domToElement();</code><br/><code>domGetCSS();</code><br/><code>domSetCSS();</code><br/><code>domFadeIn();</code><br/><code>domFadeOut();</code><br/><code>domFadeToggle();</code><br/><code>domShow();</code><br/><code>domHide();</code><br/><code>domToggle();</code><br/><code>domIsHidden();</code><br/><code>domScrollToTop();</code><br/><code>domScrollToBottom();</code><br/><code>domScrollToElement();</code><br/><code>domSiblings();</code><br/><code>domSiblingsPrev();</code><br/><code>domSiblingsLeft();</code><br/><code>domSiblingsNext();</code><br/><code>domSiblingsRight();</code><br/><code>domGetCSSVar();</code><br/><code>domSetCSSVar();</code><br/><code>importScript();</code><br/><code>importStyle();</code><br/><code>setFullscreenOn();</code><br/><code>setFullscreenOn();</code><br/><code>setFullscreenOff();</code><br/><code>getFullscreen();</code><br/><code>form2array(form);</code><br/><code>form2string(form);</code><br/><code>getDoNotTrack();</code><br/><code>getLocation();</code><br/><code>createFile();</code></td>
+    </tr>
+    <tr>
+      <td style="width: auto;"><b>AJAX and CORS API</b></td>
+      <td><code>getText();</code><br/><code>getJson();</code><br/><code>ajax();</code></td>
+    </tr>
+    <tr>
+      <td style="width: auto;"><b>Cookie API</b></td>
+      <td><code>getCookie();</code><br/><code>hasCookie();</code><br/><code>setCookie();</code><br/><code>removeCookie();</code><br/><code>clearCookies();</code></td>
+    </tr>
+  </table>
+</div>
+
+
+<h3>Celestra v3.0.0 (Hera) changes</h3>
+
+<ul>
+  <li>Only modern browsers (ES6+) are supported. The Internet Explorer 11 and W10M Edge have been removed from the supported browsers.</li>
+  <li>If you would like to use Celestra with older browsers, then you can download the latest v2.x version here: <a href="https://github.com/Serrin/Celestra/releases" target="_blank">https://github.com/Serrin/Celestra/releases</a></li>
+  <li>The library sources have been merged and all of the ES6E functions are available in the <b>celestra.dev.js</b> and <b>celestra.min.js</b></li>
+  <li>Many functions have been deprecated or removed.</li>
+</ul>
+
+<h3>Celestra v3.6.0 (Galactica) changes</h3>
+
+<ul>
+  <li>CommonJS and AMD module compatibility have been removed.</li>
+  <li>In the ESM (ECMAScript 6 module) edition only the whole celestra object is exported as default export and as standalone object.</li>
+  <li>Many functions have been deprecated or removed.</li>
+</ul>
+
+<h3>Celestra v5.0.0 (Defiant) changes</h3>
+
+<ul>
+  <li>The underscore <code>_</code> short object name has been changed to <code>CEL</code> to avoid the compatibility issues.<br/>If need to use the old short name, then with this code will be available again: <code>globalThis._ = globalThis.celestra;</code>.</li>
+</ul>
+
+<h3>Celestra v5.5.0 changes</h3>
+
+<ul>
+  <li>The Math functions are available in the main code files (dev, min, esm) instead of the Math plugins.</li>
+</ul>
+
+<h3>Celestra v5.6.0 (Razorback) changes</h3>
+
+<ul>
+  <li>21 polyfills have been removed.</li>
+</ul>
+
+<h3>Celestra v5.7.0 (Nostromo) changes</h3>
+
+<ul>
+  <li>The module edition (<b>celestra.esm.js</b>) import has been changed.</li>
+  <li>Added <b>Assert API v3</b> and the old assert functions have been removed.</li>
+  <li>The <code>getText();</code> and <code>getJson();</code> functions have been modified to standalone function.</li>
+</ul>
+
+<h3>Celestra v5.8.0 (Uhura) changes</h3>
+
+<ul>
+  <li>50 functions have been removed.</li>
+</ul>
+
+<h3>Celestra v5.9.0 (Final five) changes</h3>
+
+<ul>
+  <li>12 functions and a polyfill have been removed.</li>
+</ul>
+
+<h3>Celestra v6.0.0 (David) changes</h3>
+
+<ul>
+  <li>The Node.js and Deno support has been added.</li>
+</ul>
+
+
+<hr/>
+<h2 id="functions">Functions</h2>
+
+<h3>Stabilities</h3>
+
+<p><span class="removed">Stability: 0 - Removed.</span></p>
+<p><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span></p>
+<p><span class="deprecated">Stability: 2 - Deprecated.</span></p>
+<p><span class="info">Stability: 3 - Legacy and can get only fixes.</span></p>
+<p><span class="info">Stability: 4 - Stable.</span></p>
+<p><span class="removed">Removed</span> and <span class="deprecated">Deprecated</span>: Don't use these in production.</p>
+
+
+<h3 id="FNcoreAPI">Core API</h3>
+
+<p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
+<br/>Example: <code>CEL.delay();</code></p>
+
+<div>
+  <table class="table-responsive table-striped">
+    <tr>
+      <td style="width: auto; min-width: 33%;"><b>Name</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>celestra.noConflict();</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>
+        <p>Restore the previous <code>CEL</code> object value and return the <code>celestra</code> object to create a new alias.</p>
+        <p><span class="info">Tip: You can make a new alias without this function too. Example: <code>globalThis._cel = globalThis.celestra;</code></span></p>
+        <p><span class="info">In the ESM edition only returns the celestra object.</code></span></p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>celestra.VERSION;</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>The library version.</td>
+    </tr>
+    <tr>
+      <td><code>BASE16;</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><code>"0123456789ABCDEF"</code><br/>Can be used with the ID generator functions.</td>
+    </tr>
+    <tr>
+      <td><code>BASE32;</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><code>"234567ABCDEFGHIJKLMNOPQRSTUVWXYZ"</code><br/>Can be used with the ID generator functions.</td>
+    </tr>
+    <tr>
+      <td><code>BASE36;</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><code>"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"</code><br/>Can be used with the ID generator functions.</td>
+    </tr>
+    <tr>
+      <td><code>BASE58;</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><code>"123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"</code><br/>Can be used with the ID generator functions.</td>
+    </tr>
+    <tr>
+      <td><code>BASE62;</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><code>"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"</code><br/>Can be used with the ID generator functions.</td>
+    </tr>
+    <tr>
+      <td><code>WORDSAFEALPHABET;</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><code>"23456789CFGHJMPQRVWXcfghjmpqvwx"</code><br/>Can be used with the ID generator functions.</td>
+    </tr>
+    <tr>
+      <td><code>asyncConstant(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns an async function, which returns a promise with the given value.</td>
+    </tr>
+    <tr>
+      <td><code>asyncIdentity(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This async function returns a promise with the given value.</td>
+    </tr>
+    <tr>
+      <td><code>asyncF();</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This async function returns a promise with false value.</td>
+    </tr>
+    <tr>
+      <td><code>asyncNoop();</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function does nothing and returns a resolved promise.</td>
+    </tr>
+    <tr>
+      <td><code>asyncT();</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This async function returns a promise with true value.</td>
+    </tr>
+    <tr>
+      <td><code>bind(function,context);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Returns a function that is bound to a context. Both of the parameters are mandatory.</td>
+    </tr>
+    <tr>
+      <td><code>constant(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>A one time assignment function to create a constant value in ES5. This returns a function, which returns the given value. (In math: <code>f(x)=x</code>)</td>
+    </tr>
+    <tr>
+      <td><code>createPolyfillMethod(object, property, value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function creates a writable, configurable and non-enumerable property with the given value in the object if the property doesn't exist in the object. The return value boolean and checks that the creating of the method was successful.<br/><b>Example:</b><br/><pre>CEL.createPolyfillMethod(Array.prototype, "at", function(...){...});</pre>
+    </td>
+    </tr>
+    <tr>
+      <td><code>createPolyfillProperty(object, property,value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function creates a writable, configurable and enumerable property with the given value in the object if the property doesn't exist in the object. The return value boolean and checks that the creating of the property was successful.</td>
+    </tr>
+    <tr>
+      <td><code>delay(ms).then(callback);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>
+			  <p>A promise based delay function. The ms parameter is mandatory and have to be an integer (milliseconds).</p>
+        <p><b>Sample:</b></p>
+        <p><button onclick="CEL.delay(5000).then(() => alert('5 seconds')).catch(console.log.bind(console))	.finally(() => alert('done'));">try</button></p>
+        <pre>
+CEL.delay(5000)
+  .then(() => alert("5 seconds"))
+  .catch(console.log.bind(console))
+  .finally(() => alert("done"));</pre>
+	    </td>
+    <tr>
+      <td><code>deleteOwnProperty(object, property[,Throw = false]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function deletes an own property in the given object. If Throw is true and the deleting was unsuccessful, then an error will be thrown.<br/><b>Return values:</b><br/>1 - The property was own and the delete was successful.<BR>0 - The property is own and the delete was unsuccessful.<br/>-1 - The property is not own or not exists.</td>
+    </tr>
+    </tr>
+    <tr>
+      <td><code>extend([deep,]target,source1[,sourceN]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This is an enhanced version of the <code>Object.assign</code> method. The deep parameter (boolean) is optional and sets the deep copy (recursive) of the sources.</td>
+    </tr>
+    <tr>
+      <td><code>F();</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns false.</td>
+    </tr>
+    <tr>
+      <td><code>getUrlVars([str=location.search]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Get the values of the url variables in an object from the <code>location.search</code> <b>(default value)</b> or another given url. The str parameter name is optional and can be a string.
+      <br/>Example: <code>"?showall=true&amp;order_by=updated&amp;o=asc"</code> -> <code>Object { showall: "true", order_by: "updated", o: "asc" }</code></td>
+    </tr>
+    <tr>
+      <td><code>identity(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Return the given value. (In math: <code>f(x)=x</code>)</td>
+    </tr>
+    <tr>
+      <td><code>nanoid([size=21[, alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"]]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Generate a nanoid. The size parameter is optional and the default value is 21. The alphabet parameter is optional and the default value is "A-Za-z0-9_-". The return value is the generated nanoid (string).<br>Example ID: <code>"QsZA2VVTgFIF3D-qFk5oc"</code></td>
+    </tr>
+    <tr>
+      <td><code>noop();</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>It's an empty function (no operation) that returns undefined and usable for optional callback arguments.</td>
+    </tr>
+    <tr>
+      <td><code>obj2string(object);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Convert object to a querystring. The return value is the string. The object parameter is mandatory.</td>
+    </tr>
+    <tr>
+      <td><code>randomBoolean();</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Get a random boolean value. The return value is <code>true</code> or <code>false</code>.</td>
+    </tr>
+    <tr>
+      <td><code>randomUUIDv7();</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns a UUID v7, which cointains a timestamp too. For more information please read the <a href="https://www.rfc-editor.org/rfc/rfc9562.html#name-uuid-version-7" target="_blank">this page</a>!<br/>Example result: <code>"0195d74b-b8c8-7302-a7d3-919df45087f3"</code></td>
+    </tr>
+    <tr>
+      <td><code>sizeIn(object);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Returns the count of the owned properties and symbols of the given object. The object parameter is mandatory. The return value is an integer.</td>
+    </tr>
+    <tr>
+      <td><code>T();</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns true.</td>
+    </tr>
+    <tr>
+      <td><code>timestampID([size=21[,alphabet="123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"]]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Generate a timestamp based sortable ID. The size parameter is optional and the default value is 21, but if the given value smaller than 12, then the value will be 12. The alphabet parameter is optional and the default value is <code>"123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"</code>, same as BASE58. The return value is the generated id (string).<br/>Example ID: <code>"00lirtqi4e-wgGn8vGPyY"</code></td>
+    </tr>
+    <tr>
+      <td><code>toObject(value);</code></td>
+      <td>If the given value is not null or undefined, then the return value is an object, which has been converted from the value, else a <code>TypeError()</code> will be throwned.<br/>If the given value is an object, function or symbol, then the original value will return.</td>
+    </tr>
+    <tr>
+      <td><code>unBind(function);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v5.4.1: <code>toFunction</code>.</span><br/>Returns an unbinded function from an object method. The function parameter is mandatory.</td>
+    </tr>
+  </table>
+</div>
+
+
+<h3 id="FNstringAPI">String API</h3>
+
+<p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
+<br/>Example: <code>CEL.strPropercase();</code></p>
+
+<div>
+  <table class="table-responsive table-striped">
+    <tr>
+      <td style="width: auto; min-width: 33%;"><b>Name</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>b64Decode(string);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Unicode compatible base64 to string converter. Return the original string.</td>
+    </tr>
+    <tr>
+      <td><code>b64Encode(string);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Unicode compatible string to base64 converter. Return the encoded string.</td>
+    </tr>
+    <tr>
+      <td><code>strAt(string,index[,newChar]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>
+        <p>If the newchar is undefined, then returns the unicode character, which has to be on the given index in the string. The index can be negative value (<code>-1 -> last</code>). If the index is out of the string length, then the return value is an empty string. All of the parameters are mandatory and index has to be an integer.</p>
+        <p>If the newChar is not undefined, then the indexed character will be replaced with the newChar and returns the modified string.</p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>strCapitalize(string);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function is unicode compatible and converts the first character to uppercase and the other characters to lowercase. The string parameter is mandatory. The return value is a string.</td>
+    </tr>
+    <tr>
+    <tr>
+      <td><code>strCodePoints(string);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Returns the array of the unicode codepoints of characters of the given string. The string parameter is mandatory.</td>
+    </tr>
+    <tr>
+      <td><code>strDownFirst(string);</code></td>
+      <td>This function is unicode compatible and converts the first character to lowercase. The string parameter is mandatory. The return value is a string.</td>
+    </tr>
+    <tr>
+      <td><code>strFromCodePoints(iterator);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Returns the joined string of the given unicode codepoints. The iterator parameter is mandatory.</td>
+    </tr>
+    <tr>
+      <td><code>strHTMLEscape(string);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function escapes these characters: <code>&#60;</code>, <code>&#62;</code>, <code>&amp;</code>, <code>"</code>, <code>'</code>. The String parameter is mandatory. The return value is the escaped string.</td>
+    </tr>
+    <tr>
+      <td><code>strHTMLRemoveTags(string);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Remove HTML tags from the given string. The string parameter is mandatory. The return value is the new string.</td>
+    </tr>
+    <tr>
+      <td><code>strUnHTMLEscape(string);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function unescapes these characters: <code>&#60;</code>, <code>&#62;</code>, <code>&amp;</code>, <code>"</code>, <code>'</code>. The String parameter is mandatory. The return value is the unescaped string.</td>
+    </tr>
+    <tr>
+      <td><code>strReverse(string);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Returns the reversed variant of the given string. In the ES6 compatible browsers the result will be unicode compatible. The string parameter is mandatory.</td>
+    </tr>
+    <tr>
+      <td><code>strPropercase(string);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function is unicode compatible and capitalizes every word of the given string. The string parameter is mandatory. The return value is a string.<br/><b>Example:</b><br/><code>CEL.strPropercase("arthur conan doyle");</code><br/>-><br/><code>"Arthur Conan Doyle"</code></td>
+    </tr>
+    <tr>
+      <td><code>strSplice(strin,index,count[,add]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function works like the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice" target="_blank">Array.prototype.splice();</a> and can remove characters on the index or replace with other string. The return value is the modified string.</td>
+    </tr>
+    <tr>
+      <td><code>strTitlecase(string);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Alias of the <code>strPropercase(string);</code>.</td>
+    </tr>
+    <tr>
+      <td><code>strTruncate(string, newLength[,omission = ""]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span>
+        <br/>This function truncats the given string to the new length. If the new length is bigger than the original length, then the return value is the original string. The omission parameter is optional.
+        <BR><b>Samples:</b>
+        <br/><code>CEL.strTruncate("Arthur Dent", 6);</code> -> <code>"Arthur"</code>
+        <br/><code>CEL.strTruncate("Arthur Dent", 6, "...");</code> -> <code>"Art..."</code>
+        <br/><code>CEL.strTruncate("Arthur Dent", 20, "...");</code> -> <code>"Arthur Dent"</code>
+      </td>
+    </tr>
+    <tr>
+      <td><code>strUpFirst(string);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function is unicode compatible and converts the first character to uppercase. The string parameter is mandatory. The return value is a string.</td>
+    </tr>
+  </table>
+</div>
+
+
+<h3 id="FNassertionAPI">Assertion API</h3>
+
+<p>There are information about the equalities in the <a href="js-cheatsheet.pdf" target="_blank">js-cheatsheet.pdf</a>.</p>
+
+<p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
+<br/>Example: <code>CEL.assert();</code></p>
+
+<div>
+  <table class="table-responsive table-striped">
+    <tr>
+      <td style="width: auto; min-width: 33%;"><b>Name</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>assert(condition [, message | error]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the condition is falsy. The message parameter is optional. The return value is <code>true</code>, when the test was success.
+      </td>
+    </tr>
+    <tr>
+      <td><code>assertDeepEqual(value1, value2 [, message | error]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 aren't deep equals. (<i>Deep loose equality + NaN equality: primitives (loose equality + NaN equality), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer</i>) The message parameter is optional. The return value is <code>true</code>, when the test was success.<br/><span class="info">This function may give unexpected results. It is safer to use the <code>assertDeepStrictEqual();</code> function.</span></td>
+    </tr>
+    <tr>
+      <td><code>assertDeepStrictEqual(value1, value2 [, message | error]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 aren't deep equals. (<i>Deep strict equality + NaN equality: primitives (SameValue - Object.is()), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer</i>) The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
+    </tr>
+    <tr>
+      <td><code>assertDoesNotMatch(string, regexp [, message | error]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the string matches with the regexp. The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
+    </tr>
+    <tr>
+      <td><code>assertEqual(value1, value2 [, message | error]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 aren't equals. (<i>Loose equality + NaN equality</i>) The message parameter is optional. The return value is <code>true</code>, when the test was success.
+      </td>
+    </tr>
+    <tr>
+      <td><code>assertFail(message | error);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>This function always throws an error. If the argument is an error, then this error will be thrown, else a new error with the message.
+      </td>
+    </tr>
+    <tr>
+      <td><code>assertFalse(condition [, message | error]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the condition is truthy. The message parameter is optional. The return value is <code>true</code>, when the test was success.
+      </td>
+    </tr>
+    <tr>
+      <td><code>assertInstanceOf(value, constructor [, message | error]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error if the constructor of the value in not the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
+      </td>
+    </tr>
+    <tr>
+      <td><code>assertIsNil(value [, message | error]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value is not null or undefined, else the given value is the return value. The message parameter is optional.
+      </td>
+    </tr>
+    <tr>
+      <td><code>assertIsNotNil(value [, message | error]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value is null or undefined, else the given value is the return value. The message parameter is optional.
+      </td>
+    </tr>
+    <tr>
+      <td><code>assertMatch(string, regexp [, message | error]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the string doesn't match with the regexp. The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
+    </tr>
+    <tr>
+      <td><code>assertNotDeepEqual(value1, value2, [, message | error]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 are deep equals. (<i>Deep loose equality + NaN equality: primitives (loose equality + NaN equality), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer</i>) The message parameter is optional. The return value is <code>true</code>, when the test was success.<br/><span class="info">This function may give unexpected results. It is safer to use the <code>assertNotDeepStrictEqual();</code> function.</span></td>
+    </tr>
+    <tr>
+      <td><code>assertNotDeepStrictEqual(value1, value2, [, message | error]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 are deep equals. (<i>Deep strict equality + NaN equality: primitives (SameValue - Object.is()), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer</i>) The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
+    </tr>
+    <tr>
+      <td><code>assertNotInstanceOf(value, constructor [, message | error]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error if the constructor of the value is the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
+      </td>
+    </tr>
+    <tr>
+      <td><code>assertNotStrictEqual(value1, value2 [, message | error]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 are equals. (<i>SameValue equality</i>) The message parameter is optional. The return value is <code>true</code>, when the test was success.
+      </td>
+    </tr>
+    <tr>
+      <td><code>assertNotTypeOf(value [, message | error]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error if the type of the value is the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
+      </td>
+    </tr>
+    <tr>
+      <td><code>assertStrictEqual(value1, value2 [, message | error]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 aren't equals. (<i>SameValue equality</i>) The message parameter is optional. The return value is <code>true</code>, when the test was success.
+      </td>
+    <tr>
+    <tr>
+      <td><code>assertTrue(condition [, message | error]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>This is an alias of the <code>assert(condition [, message | error]);</code>.
+      </td>
+    </tr>
+    <tr>
+      <td><code>assertThrows(callback [, message | error]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>This function catches and returns the error, if the callback throws an error. In other cases throws an error with the message. The message parameter is optional.
+      </td>
+    </tr>
+    <tr>
+      <td><code>assertTypeOf(value, type [, message | error]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error if the type of the value in not the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
+      </td>
+    </tr>
+  </table>
+</div>
+
+
+<h3 id="FNdomAPI">DOM API</h3>
+
+<p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
+<br/>Example: <code>CEL.domCreate();</code></p>
+
+<div>
+  <table class="table-responsive table-striped">
+    <tr>
+      <td style="width: auto; min-width: 33%;"><b>Name</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>createFile(filename,content[,dataType]);</code></td>
+      <td>
+        <p><span class="info">Stability: 4 - Stable.</span><br/>Create and save file without a server. The filename and content parameters are mandatory and have to be a string. The dataType parameter is optional and can be a string.  The default value of the dataType parameter is <code>text/plain</code>.</p>
+        <p><span class="info">Doesn't work in iOS browsers (Safari, Firefox and Chrome) and W10M Edge 14.</span></p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>domClear(element);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>Remove all child element of the given element. The parameter is mandatory.
+      </td>
+    </tr>
+    <tr>
+      <td><code>domCreate(type[,properties[,innerHTML]]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Create a new HTML element. The type is mandatory and has to be a string. The properties object is optional and sets the element properties. (class, style object/string, data-*, etc.) The innerHTML is optional and can be a string.</td>
+    </tr>
+    <tr>
+      <td><code>domCreate(element descriptive object);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>
+        <p>Since v2.0.5, a new element can be created with an object. In this case the element descriptive object is mandatory. The <code>style</code> can be a subobject or a string.</p>
+        <p><b>Sample code:</b></p>
+        <pre>CEL.domCreate({
+  elementType: "a",
+  href: "https://developer.mozilla.org/en-US/",
+  target: "_blank",
+  style: {
+    "background-color": "red",
+    "color": "white"
+  },
+  innerHTML: "MDN Sample url"
+});</pre>
+      </td>
+    </tr>
+    <tr>
+      <td><code>domFadeIn(element [,duration [,display]]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Fade in and show animation for an element. The element is mandatory and has to be a HTML element. The duration parameter is optional and sets the animation time in milisec (the default is 500ms). The display is optional and can be a string (CSS display property values).</td>
+    </tr>
+    <tr>
+      <td><code>domFadeOut(element [,duration]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Fade out and hide animation for an element. The element is mandatory and has to be a HTML element. The duration parameter is optional and sets the animation time in milisec (the default is 500ms).</td>
+    </tr>
+    <tr>
+      <td><code>domFadeToggle(element [,duration [,display]]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Fade in or fade out animation which depends on the state of the element. The element is mandatory and has to be a HTML element. The duration parameter is optional and sets the animation time in millisecond (the default is 500ms). The display is optional and can be a string (CSS display property values).</td>
+    </tr>
+    <tr>
+      <td><code>domGetCSS(element [,property]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Get a CSS property value of an element or all of the css properties in an object. The element is mandatory and has to be a HTML element. The property is optional and can be a string.</td>
+    </tr>
+    <tr>
+      <td><code>domGetCSSVar(name);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns a value of a CSS variable or an empty string, if the variable is unset. The name parameter is mandatory and has to be a string. If the "--" characters are missing at the begin of the variable name, then the function will add these.</td>
+    </tr>
+    <tr>
+      <td><code>domHide(element);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Hide an element. The element is mandatory and has to be a HTML element.</td>
+    </tr>
+    <tr>
+      <td><code>domIsHidden(element);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the element is hidden. The element is mandatory and has to be a HTML element. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>domReady(callback);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Set the document ready (content fully loaded) event.</td>
+    </tr>
+    <tr>
+      <td><code>domSetCSS(element, property,value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Set a CSS property value of an element. The element is mandatory and has to be a HTML element. The property is mandatory and has to be a string. The value is mandatory and has to be a string.</td>
+    </tr>
+    <tr>
+      <td><code>domSetCSS(element, properties);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Set CSS property values of an element. The element is mandatory and has to be a HTML element. The properties object is mandatory. The object properties can be the CSS properties and the property values will be applied to the element.</td>
+    </tr>
+    <tr>
+      <td><code>domSetCSSVar(name,value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function set a value of a CSS variable. Both of the parameters are mandatory and have to be a string. If the "--" characters are missing at the begin of the variable name, then the function will add these.</td>
+    </tr>
+    <tr>
+      <td><code>domShow(element [,display]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Show an element. The element is mandatory and has to be a HTML element. The display is optional and can be a string (CSS display values).</td>
+    </tr>
+    <tr>
+      <td><code>domScrollToBottom();</code></td>
+      <td><span class="info">Old name before v5.5.4: <code>domToBottom</code>.</span><br/>This function is scrolling to the bottom of the page.</td>
+    </tr>
+    <tr>
+      <td><code>domScrollToElement(element [,top=true]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function is scrolling to top or the bottom of element. The element parameter is mandatory and the top parameter is optional and can be boolean.</td>
+    </tr>
+    <tr>
+      <td><code>domScrollToTop();</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v5.5.4: <code>domToTop</code>.</span><br/>This function is scrolling to the top of the page.</td>
+    </tr>
+    <tr>
+      <td><code>domSiblings(element);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Get the siblings of an element. The element parameter is mandatory and the return value is the array.</td>
+    </tr>
+    <tr>
+      <td><code>domSiblingsLeft(element);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Alias of the <code>domSiblingsPrev(element);</code>.</td>
+    </tr>
+    <tr>
+      <td><code>domSiblingsNext(element);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Get the next siblings of an element. The element parameter is mandatory and the return value is the array.</td>
+    </tr>
+    <tr>
+      <td><code>domSiblingsPrev(element);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Get the previous siblings of an element. The element parameter is mandatory and the return value is the array.</td>
+    </tr>
+    <tr>
+      <td><code>domSiblingsRight(element);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Alias of the <code>domSiblingsNext(element);</code>.</td>
+    </tr>
+    <tr>
+      <td><code>domToElement(htmlString);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns a HTML element which is created from the htmlString parameter. The htmlString parameter is mandatory and has to be a string.</td>
+    </tr>
+    <tr>
+      <td><code>domToggle(element [,display]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Show or hide an element. The element is mandatory and has to be a HTML element. The display is optional and can be a string (CSS display values).</td>
+    </tr>
+    <tr>
+      <td><code>importScript(script1[,scriptN]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>
+        <p>Load JavaScript files. The first parameter is mandatory and has to be a string. The other parameters are optional and can be a string.</p>
+        <p><b>Tip:</b><br/>To prevent the caching of a js/css file use versioning in the file url. Example: <code>mylib.js?version=1.10.0</code></p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>importStyle(style1[,styleN]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Load CSS files. The first parameter is mandatory and has to be a string. The other parameters are optional and can be a string.</td>
+    </tr>
+    <tr>
+      <td><code>form2array(form);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Convert (serialize) form input tag names and values to an array with object elements (name and value properties). The return value is the array. The form parameter is mandatory and has to be a html form element.</td>
+    </tr>
+    <tr>
+      <td><code>form2string(form);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Convert (serialize) form input tag names and values to a query string. The return value is the string. The form parameter is mandatory and has to be a html form element.</td>
+    </tr>
+    <tr>
+      <td><code>getDoNotTrack();</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Return the DoNotTrack setting (boolean) of the browser.</td>
+    </tr>
+    <tr>
+      <td><code>getFullscreen();</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>
+        Get the fullscreen element. If this isn't set, then the return value is undefined.
+        <br/>Please check the incompatibility issues on the <a href="http://caniuse.com/#search=fullscreen" target="_blank">http://caniuse.com/#search=fullscreen</a> page.
+      </td>
+    </tr>
+    <tr>
+      <td><code>getLocation(success[,error]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Get the current location as an object with the coordinates. The success is mandatory and has to be a function. The error is optional and can be a function.</td>
+    </tr>
+    <tr>
+      <td><code>setFullscreenOff();</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Set off the fullscreen.</td>
+    </tr>
+    <tr>
+      <td><code>setFullscreenOn(selector);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Set the fullscreen element. The selector can be a css selector string or an element.</td>
+    </tr>
+    <tr>
+      <td><code>qs(selector[,context]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Get the first matched HTML element. The context is optional and can be an element.</td>
+    </tr>
+    <tr>
+      <td><code>qsa(selector[,context]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Get matched HTML elements in an array. The context is optional and can be an element.</td>
+    </tr>
+  </table>
+</div>
+
+<h3 id="FNajaxAPI">AJAX and CORS API</h3>
+
+<p class="info">
+  These functions aren't deprecated, but it's recommend to use the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API" target="_blank">Fetch API</a>, because it's <a href="https://caniuse.com/?search=fetch" target="_blank">supported</a> in every modern browsers.
+</p>
+
+<p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
+<br/>Example: <code>CEL.getJson();</code></p>
+
+<div style="overflow-x:auto;">
+  <table class="table-responsive table-striped">
+    <tr>
+      <td style="width: auto; min-width: 42%;"><b>Name</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>ajax(Options object);</code></td>
+      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>Get content and send data via AJAX and CORS.</td>
+    </tr>
+    <tr>
+      <td><code>getJson(url,success);</code></td>
+      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>Get JSON content via AJAX.</td>
+    </tr>
+    <tr>
+      <td><code>getText(url,success);</code></td>
+      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>Get TEXT content via AJAX.</td>
+    </tr>
+  </table>
+</div>
+
+<p><b>Options object properties:</b></p>
+<ul>
+  <li>The <b>queryType</b> is optional and can be a <b>string</b> with these values: <code>"ajax"</code> or <code>"cors"</code>. The default value is <code>"ajax"</code>.</li>
+  <li>The <b>type</b> is optional and can be a <b>string</b> with these values: <code>"get"</code> or <code>"post"</code>. The default value is <code>"get"</code>.</li>
+  <li>The <b>url</b> is mandatory and has to be a <b>string</b>.</li>
+  <li>The <b>data</b> is optional and has to be a <b>string</b> if the <code>type === "post"</code>.</li>
+  <li>The <b>format</b> is optional and can be a <b>string</b> with these values: <code>"text"</code> or <code>"json"</code> or <code>"xml"</code>. The default value is <code>"text"</code>.
+  <li>The <b>success</b> is mandatory and has to be a <b>function</b>.</li>
+  <li>The <b>error</b> is optional and can be a <b>function</b>.</li>
+  <li>The <b>user</b> is optional and can be a <b>string</b>.</li>
+  <li>The <b>password</b> is optional, but mandatory if the user is set. This parameter can be a <b>string</b>.</li>
+</ul>
+
+
+<h3 id="FNtypecheckingAPI">Type API</h3>
+
+<p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
+<br/>Example: <code>CEL.isUndefined();</code></p>
+
+<div>
+  <table class="table-responsive table-striped">
+    <tr>
+      <td style="width: auto; min-width: 33%;"><b>Name</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>classof(value[,class[,throw=false]]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Get the real type of a value. If this is an object, then the return value is the detailed object type (e.g.: array). If the class (string) parameter is given, then the return value (boolean) is the equality of the type of the value and the second parameter. If the third parameter (boolean) is true and the type of the value and the second parameter aren't equals, then the function is throwing a <code>TypeError();</code>, else the return value is true.</td>
+    </tr>
+    <tr>
+      <td><code>getType(value[,class[,throw=false]]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This is an alias of the <code>classof(value[,class[,throw=false]]);</code>.</td>
+    </tr>
+    <tr>
+      <td><code>isArraylike(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an iterable object. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isAsyncFn(value);</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an async function. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isAsyncGeneratorFn(value);</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an async generator function. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isCallable(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided object has a call method. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isChar(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a string with length 1 character. This function is unicode compatible. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isClass(value);</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided object has a call method. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isCoercedObject(object);</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>If the given object is a coerced object (Number, BigInt, String, Boolean), then the return value is the constructor function. In any other cases retuns false. The object parameter is mandatory.</td>
+    </tr>
+    <tr>
+      <td><code>isDeepStrictEqual(value1, value2);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided values are deep equals. (<i>Deep strict equality + NaN equality: primitives (SameValue - Object.is()), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer</i>) The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isElement(value);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>
+        This function determines whether the provided value is a HTML element. The return value is boolean.
+        <p>
+          For other node types (document, text, comment, etc.) checking please read this MDN page:
+          <br/><a href=" https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType" target="_blank"> https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType</a>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>isEmptyValue(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an empty value. Returns true in these cases: null, undefined, NaN, array, typedarray, arraybuffer, dataview, object, arraylike object, map, set, iterator, iterable. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isFunction(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a function. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isGeneratorFn(value);</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a generator function. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isIndex(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a valid arraylike index number. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isIterable(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an iterable object. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isIterator(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an iterator. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isLength(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Alias of <code>isIndex(value);</code>.</td>
+    </tr>
+    <tr>
+      <td><code>isNil(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is null or undefined. The return value is boolean.</code>.</td>
+    </tr>
+    <tr>
+      <td><code>isNull(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is null. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isNumeric(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a number or can be converted to number. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isObject(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an object or function and not null. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isPlainObject(value);</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an object, which own prototype is the Object.prototype or null. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isPrimitive(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is not null, not object and not function. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isPropertyKey(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a valid propertx key (string or symbol). The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isProxy(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a proxy. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isRegexp(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a regexp. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isSameClass(value1, value2);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns true if the values are same class and uses the <code>Object.prototype.toString();</code> method. The parameters are mandatory. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isSameInstance(value1, value2,Contructor);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns true if the values are same class and uses the <code>instanceof</code> operator. The parameters are mandatory. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isSameType(value1, value2);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns true if the values are same type or both are null or both are undefined. The parameters are mandatory. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isTypedArray(value);</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a typedarray. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isUndefined(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is undefined. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>toIndex(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function converts the provided value to a valid arraylike index number. The return value is an unsigned integer (number). If the value is out of integer range, then a RangeError will be thrown.</td>
+    </tr>
+    <tr>
+      <td><code>toLength(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function converts the provided value to a valid arraylike length number. The return value is an unsigned integer (number).</td>
+    </tr>
+    <tr>
+      <td><code>toPrimitiveValue(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>
+        If the given value is null or undefined, then a <code>TypeError()</code> will be throwned.<br/>
+        If the given value is an object, which can be converted to a primitive variable, then the return value is a primitive variable.<br/>
+        If the given value is a not convertable object (array, map, set, etc.), function or symbol, then the original value will return.
+      </td>
+    </tr>
+    <tr>
+      <td><code>toPropertyKey(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function convert the given value to a valid property key. If the value is not symbol, then will be converted to string, else the symbol will be returned.</td>
+    </tr>
+    <tr>
+      <td><code>type(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns the typeof operator result of the given value, except the null object (<code>"null"</code> instead of <code>"object"</code>).</td>
+    </tr>
+  </table>
+</div>
+
+<h3 id="FNcookieAPI">Cookie API</h3>
+
+<p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
+<br/>Example: <code>CEL.setCookie();</code></p>
+
+<p>
+  Cookie values help:
+  <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie" target="_blank">MDN</a>,
+  <a href="https://web.dev/samesite-cookies-explained" target="_blank">web.dev</a>
+</p>
+
+<div>
+  <table class="table-responsive table-striped">
+    <tr>
+      <td style="width: auto; min-width: 33%;"><b>Name</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>clearCookies([path="/"[, domain[, secure[, SameSite="Lax"[, HttpOnly]]]]]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>
+        <p>Clear all of the cookies. The return value (boolean) is determines whether the cookie was set with the name before the removing.</p>
+        <p><b>Function parameters:</b></p>
+        <ul>
+          <li>The path is optional and can be a string. <i>(Default value: "/")</i> To the local path set the <code>""</code> value!</li>
+          <li>The domain is optional and can be a string.</li>
+          <li>The secure is optional and can be a boolean.</li>
+          <li>The SameSite is optional and can be a string. <i>("Lax", "Strict", "None", default value: "Lax")</i></li>
+          <li>The HttpOnly is optional and can be a boolean.</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td><code>clearCookies(Options object);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>In this case the names of object properties are the same as the function arguments and the default values are the same too.</td>
+    </tr>
+    <tr>
+      <td><code>getCookie([name]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>
+        Get the value of a cookie or all cookies in an object.
+        <br/>With the name parameter (string) the return value is the current cookie value or null. <br/>Without the parameter the return value is an object with the values or an empty object.
+      </td>
+    </tr>
+    <tr>
+      <td><code>hasCookie(name);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the cookie is set with the name parameter. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>removeCookie(name[, path="/"[, domain[, secure[, SameSite="Lax"[, HttpOnly]]]]]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>
+        <p>Remove a cookie. The return value (boolean) is determines whether the cookie was set with the name before the removing.</p>
+        <p><b>Function parameters:</b></p>
+        <ul>
+          <li>The name is mandatory and has to be a string.</li>
+          <li>The path is optional and can be a string. <i>(Default value: "/")</i> To the local path set the <code>""</code> value!</li>
+          <li>The domain is optional and can be a string.</li>
+          <li>The secure is optional and can be a boolean.</li>
+          <li>The SameSite is optional and can be a string. <i>("Lax", "Strict", "None", default value: "Lax")</i></li>
+          <li>The HttpOnly is optional and can be a boolean.</li>
+        </ul>
+        <p>The return value (boolean) is determines whether the cookie was set with the name before the removing.</p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>removeCookie(Options object);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>In this case the names of object properties are the same as the function arguments and the default values are the same too.</td>
+    </tr>
+    <tr>
+      <td><code>setCookie(name, value[, hours="8760"[, path="/"[, domain[, secure[, SameSite="Lax"[, HttpOnly]]]]]]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>
+        <p>Set a cookie.</p>
+        <p><b>Function parameters:</b></p>
+        <ul>
+          <li>The name is mandatory and has to be a string.</li>
+          <li>The value is mandatory and has to be a string.</li>
+          <li>The hours is the expire value and optional and can be a number. <i>(Default value: 8760 = 1 year)</i></li>
+          <li>The path is optional and can be a string. <i>(Default value: "/")</i> To the local path set the <code>""</code> value!</li>
+          <li>The domain is optional and can be a string.</li>
+          <li>The secure is optional and can be a boolean.</li>
+          <li>The SameSite is optional and can be a string. <i>("Lax", "Strict", "None", default value: "Lax")</i></li>
+          <li>The HttpOnly is optional and can be a boolean.</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td><code>setCookie(Options object);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>In this case the names of object properties are the same as the function arguments and the default values are the same too.</td>
+    </tr>
+  </table>
+</div>
+
+<h3 id="FNcollectionsAPI">Collections API</h3>
+
+<p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
+<br/>Example: <code>CEL.arrayAdd();</code></p>
+
+<div>
+  <table class="table-responsive table-striped">
+    <tr>
+      <td style="width: auto; min-width: 33%;"><b>Name</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>arrayAdd(array,value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Push the value to the array if the array doesn't contain the value. The return value is true, when the value is added and false, when not added.</td>
+    </tr>
+    <tr>
+      <td><code>arrayClear(array);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Clear the array and returns the empty array. The array parameter is mandatory.</td>
+    </tr>
+    <tr>
+      <td><code>arrayCycle(iterator[,n=100]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Cycle the given iterator and returns an array with these elements. The iterator parameter is mandatory. The n parameter is optional and can be an integer. Default parameter value: n = 100.</td>
+    </tr>
+    <tr>
+      <td><code>arrayDeepClone(array);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function deeply (recursively) clones an array. The return value is the cloned array.</td>
+    </tr>
+    <tr>
+      <td><code>arrayMerge(target,source1[,sourceN]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Merge two or more arrays or push any values in the target array. The return value is the target array.</td>
+    </tr>
+    <tr>
+      <td><code>arrayRange([start=0[,end=99[,step=1]]]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>Returns the array of values between the start and end parameters. All of the parameters are mandatory and have to be a number. Default parameter values: start = 0, end = 99, step = 1.
+        <br/><b>Example:</b><br/><code>CEL.arrayRange("A".codePointAt(0),"Z".codePointAt(0)).map((v)=>String.fromCodePoint(v));</code><br/>-><br/><code>code>Array(26) [ "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" ]</code>
+      </td>
+    </tr>
+    <tr>
+      <td><code>arrayRemove(array,value[,all=false]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Remove the first or all equivalent values from the array. Returns true, when the value was found and false when not found. The array and value parameters are mandatory. The all parameter is optional and has to be a boolean.</td>
+    </tr>
+    <tr>
+      <td><code>arrayRemoveBy(array,callback[,all=false]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Remove the first or all values from the array with which the given function returns true. Returns true, when the value was found and false when not found. The array and callback parameters are mandatory. The all parameter is optional and has to be a boolean.</td>
+    </tr>
+    <tr>
+      <td><code>arrayRepeat(value[,step=100]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Returns an array with same repeatedly elements. The value parameter is mandatory and the n parameter is optional and can be an integer. Default parameter value: n = 100.</td>
+    </tr>
+    <tr>
+      <td><code>concat(iterator1[,iteratorN]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function merges the iterators and yields the elements of the merged iterator. The given iterators will be not changed. At least one iterator has to been given.</td>
+    </tr>
+    <tr>
+      <td><code>count((iterator,callback););</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function executes a counter function (that you provide) on each element of the iterator, returning in a single output value. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function.</td>
+    </tr>
+    <tr>
+      <td><code>contains(iterator,value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This is an alias of the <code>includes(iterator,value);</code>.</td>
+    </tr>
+    <tr>
+      <td><code>drop(iterator[,n=1]);</code></td>
+      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Iterator.from(iterable/iterator).drop();</code></span><br/>Drop the first N elements of an iterator and yield the remained elements. The iterator parameter is mandatory. The n parameter is optional and can be an integer. Default parameter value: n = 1</td>
+    </tr>
+    <tr>
+      <td><code>dropRight(iterator[,n=1]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Drop the last N elements of an iterator and return the remained elements in an array. The iterator parameter is mandatory. The n parameter is optional and can be an integer. Default parameter value: n = 1.</td>
+    </tr>
+    <tr>
+      <td><code>dropRightWhile(iterator,callback);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Drop the elements from the end of an iterator while the callback (filter) function returns true and yield the remained elements. The callback function will be called with the actual element of the iterator. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function.</td>
+    </tr>
+    <tr>
+      <td><code>dropWhile(iterator,callback);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Drop the elements of an iterator while the callback (filter) function returns true and yield the remained elements. The callback function will be called with the actual element of the iterator. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function.</td>
+    </tr>
+    <tr>
+      <td><code>enumerate(iterator[,offset=0]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>
+        <p>Yield generated pairs (arrays) from the elements of a iterator and a counter. The iterator parameter is mandatory. The offset parameter is optional and can be an integer and it's default value is 0.</p>
+        <p>Example: <code>CEL.enumerate(["Picard", "Riker", "Data"], 2);</code> -> <code>[2, "Picard"]</code>, <code>[3, "Riker"]</code>, <code>[4, "Data"]</code></p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>every(iterator,callback);</code></td>
+      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Iterator.from(iterable/iterator).every();</code></span><br/>This function whether all elements in the iterator pass the test implemented by the provided function. It returns a Boolean value and all of the parameters are mandatory. If the iterator is empty, then the return value is false.</td>
+    </tr>
+    <tr>
+      <td><code>filter(iterator,callback);</code></td>
+      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Iterator.from(iterable/iterator).filter();</code></span><br/>Filter and yield elements of an iterator. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function and called with two parameters: the item and the index of the item (only a counter).</td>
+    </tr>
+    <tr>
+      <td><code>find(iterator,callback);</code></td>
+      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Iterator.from(iterable/iterator).find();</code></span><br/>This function returns the value of the first element in the iterator that satisfies the provided testing function. Otherwise undefined is returned. All of the parameters are mandatory.</td>
+    </tr>
+    <tr>
+      <td><code>findLast(iterator,callback);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns the value of the last element in the iterator that satisfies the provided testing function. Otherwise undefined is returned. All of the parameters are mandatory.</td>
+    </tr>
+    <tr>
+      <td><code>first(iterator);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns the first element of the given iterator. The iterator parameter is mandatory.</td>
+    </tr>
+    <tr>
+      <td><code>forEach(iterator,callback);</code></td>
+      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Iterator.from(iterable/iterator).forEach();</code></span><br/>This function executes a provided function once for each iterator items. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function and called with two parameters: the item and the index of the item (only a counter).</td>
+    </tr>
+    <tr>
+      <td><code>forEachRight(iterator,callback);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function executes a provided function once for each iterator items in reversed order. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function and called with two parameters: the item and the index of the item (only a reversed counter).</td>
+    </tr>
+    <tr>
+      <td><code>head(iterator);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This is an alias of the <code>first(iterator);</code>.</td>
+    </tr>
+    <tr>
+      <td><code>includes(iterator,value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether an iterator includes a certain value among its entries, returning true or false as appropriate. All of the parameters are mandatory.</td>
+    </tr>
+    <tr>
+      <td><code>initial(iterator);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>
+        <p>Returns an array with the values of the given iterator, but without the last value.</p>
+        <p>
+         <b>Example:</b>
+         <br/><code>CEL.initial([-5, 2, -9, 7, 34]);</code>
+         <br/>->
+         <br/><code>[-5, 2, -9, 7]</code>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>isSuperset(superCollection,subCollection);</code></td>
+      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Set.prototype.isSupersetOf();</code>.</span><br/>This function determines whether the first provided iterator is superset of the second iterator. The parameters are mandatory and all parameters can be  an iterator. The return value is a boolean.</td>
+    </tr>
+    <tr>
+      <td><code>item(iterator,index);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns the item from the given iterator on the given index. the iterator parameter is mandatory and has to be  an iterator. The index is mandatory and can be positive number (examples: 0 = the first item, 1 = the second item, 2 = the third item, etc.) Compatible with the Unicode strings.</td>
+    </tr>
+    <tr>
+      <td><code>iterCycle(iter[,n=Infinity]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>
+        <p>Yield the items of an iterator over and over. The iter parameter is mandatory and the n parameter is optional and can be an integer. Default parameter value: n = Infinity</p>
+        <p><code>Note: PLease don't use with infinite iterators!</code></p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>iterRange([start=0[,step=1[,end=Infinity]]]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Yield a range (counter) iterator. All of the parameters are optional. Default parameter values: start = 0, step = 1, end = Infinity.</td>
+    </tr>
+    <tr>
+      <td><code>iterRepeat(value[,n=Infinity]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Yield a value over and over. The value parameter is mandatory and the n parameter is optional and can be an integer. Default parameter value: n = Infinity</td>
+    </tr>
+    <tr>
+      <td><code>join(iterator[,separator=","]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function creates and returns a new string by concatenating all of the elements in an iterator, separated by commas or a specified separator string. The separator is converted to a string if necessary. If the iterator has only one item, then that item will be returned without using the separator. The iterator parameter is mandatory.</td>
+    </tr>
+    <tr>
+      <td><code>flat(iterator);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Yield the subelements of the elements of the given iterator. the iterator parameter is mandatory and all of the elements have to be an iterator or iterable.</td>
+    </tr>
+    <tr>
+      <td><code>last(iterator);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns the last element of the given iterator. The iterator parameter is mandatory.</td>
+    </tr>
+    <tr>
+      <td><code>map(iterator,callback);</code></td>
+      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Iterator.from(iterable/iterator).map();</code></span><br/>This function creates a new iterator with the results of calling a provided function on every element. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function and called with two parameters: the item and the index of the item (only a counter).</td>
+    </tr>
+    <tr>
+      <td><code>max(value1[,valueN]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Returns the maximum value of the given values. The first value parameter is mandatory and can be any type. Works with any type of values, not only with numbers.</td>
+    </tr>
+    <tr>
+      <td><code>min(value1[,valueN]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Returns the minimum value of the given values. The first value parameter is mandatory and can be any type. Works with any type of values, not only with numbers.</td>
+    </tr>
+    <tr>
+      <td><code>none(iterator,callback);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function whether all elements in the iterator do not pass the test implemented by the provided function. It returns a Boolean value and all of the parameters are mandatory. If the iterator is empty, then the return value is false.</td>
+    </tr>
+    <tr>
+      <td><code>nth(iterator,index);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This is an alias of the <code>item(iterator,index);</code>.<td>
+    </tr>
+    <tr>
+      <td><code>partition(iterator,callback);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>
+        <p>Returns an array, with filtered and negative filtered groups of the elements of the original iterator. All of the parameters are mandatory.</p>
+        <p>
+         <b>Example:</b>
+         <br/><code>CEL.partition([-5, 2, -9, 7, 34], (e) => (e > 0) );</code>
+         <br/>->
+         <br/><code>[[2, 7, 34], [-5, -9]]</code>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>reduce(iterator,callback[,initialvalue]);</code></td>
+      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Iterator.from(iterable/iterator).reduce();</code></span><br/>This function executes a reducer function (that you provide) on each element of the iterator, returning in a single output value. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function. The initialvalue parameter is optional and can be any variable type of the Javascript.</td>
+    </tr>
+    <tr>
+      <td><code>reject(iterator,callback);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This is the opposite of the function <code>filter(iterator,callback);</code>. The elements to which the given callback gives a false will be yield. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function and called with two parameters: the item and the index of the item (only a counter).</td>
+    </tr>
+    <tr>
+      <td><code>reverse(iterator);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns an iterator with values of the given iterator in reverse order. The iterator parameter is mandatory.</td>
+    </tr>
+    <tr>
+      <td><code>setDifference(set1,set2);</code></td>
+      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Set.prototype.difference();</code>.</span><br/>Returns the set of unique values that are in the iterator1, excluding the values that are also in the iterator2. All of the parameters are mandatory and have to be a Set. The return value is a Set.</td>
+    </tr>
+    <tr>
+      <td><code>setIntersection(set1,set2);</code></td>
+      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Set.prototype.intersection();</code>.</span><br/>Returns the set of unique values that are in both of the given iterators. All of the parameters are mandatory and have to be a Set. The return value is a Set.</td>
+    </tr>
+    <tr>
+      <td><code>setSymmetricDifference(set1,set2);</code></td>
+      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Set.prototype.symmetricDifference();</code>.</span><br/>Returns the set of unique values that are only in one of given iterators. All of the parameters are mandatory and have to be a Set. The return value is a Set.</td>
+    </tr>
+    <tr>
+      <td><code>setUnion(iterator1[,iteratorN]);</code></td>
+      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Set.prototype.union();</code>.</span><br/>Returns the set of unique values including all values from the given iterators. The first parameter is mandatory. The return value is a Set.</td>
+    </tr>
+    <tr>
+      <td><code>size(iterator);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns the count of the elements in the given iterator. The iterator parameter is mandatory. The return value is an integer.</td>
+    </tr>
+    <tr>
+      <td><code>shuffle(iterator);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>
+        <p>Returns an array with the values of the given iterator, but in shuffled order.</p>
+        <p>
+         <b>Example:</b>
+         <br/><code>CEL.shuffle(["first",4,5,6,7,8,9,"last"]);</code>
+         <br/>->
+         <br/><code>[4,8,5,6,"last",9,7,"first"]</code>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>slice(iterator[,begin=0[,end=Infinity]]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Take a slice of an iterator and yield the elements. The iterator parameter is mandatory. The begin parameter is optional and can be a number and the default value is 0. The end parameter is optional and can be a number and the default value is Infinity.</td>
+    </tr>
+    <tr>
+      <td><code>some(iterator,callback);</code></td>
+      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Iterator.from(iterable/iterator).some();</code></span><br/>This function tests whether at least one element in the array passes the test implemented by the provided function. It returns a Boolean value and all of the parameters are mandatory. If the iterator is empty, then the return value is false.</td>
+    </tr>
+    <tr>
+      <td><code>sort(iterator[,numbers=false]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function sorts the values of the given iterator. The iterator parameter is mandatory. The numbers paramater is optional (boolean) and set true, if the iterator contains only numbers. The return value is an array.</td>
+    </tr>
+    <tr>
+      <td><code>tail(iterator);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Yield the values of an iterator but without the first value. The iterator parameter is mandatory.</td>
+    </tr>
+    <tr>
+      <td><code>take(iterator[,n=1]);</code></td>
+      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Iterator.from(iterable/iterator).take();</code></span><br/>Yield the first N elements of an iterator. The iterator parameter is mandatory. The n parameter is optional and can be an integer. Default parameter value: n = 1</td>
+    </tr>
+    <tr>
+      <td><code>takeRight(iterator[,n=1]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Take the last N elements of an iterator. The iterator parameter is mandatory. The n parameter is optional and can be an integer. Default parameter value: n = 1. The return value is an array.</td>
+    </tr>
+    <tr>
+      <td><code>takeRightWhile(iterator,callback);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Yield the elements from the end of an iterator while the callback (filter) function returns true. The callback function will be called with the actual element of the iterator. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function.</td>
+    </tr>
+    <tr>
+      <td><code>takeWhile(iterator,callback);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Yield the elements of an iterator while the callback (filter) function returns true. The callback function will be called with the actual element of the iterator. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function.</td>
+    </tr>
+    <tr>
+      <td><code>unique(iterator[, resolver]);</code></td>
+      <td>
+        <p><span class="info">Stability: 4 - Stable.</span></p>
+        <p>This function returns a new iterator with unique values. The iterator parameter is mandatory.</p>
+        <p>The resolver parameter can be an object field name or function.</p>
+        <p><b>Examples</b></p>
+        <p>Without resolver:</p>
+        <pre>
+JSON.stringify( CEL.unique( [1, 2, 2, 3] ) );
+// '[1,2,3]'
+        </pre>
+        <p>With resolver:</p>
+        <pre>
+let array = [
+  { "name": "Picard", "rank": "captain" },
+  { "name": "Riker", "rank": "captain" },
+  { "name": "Data", "rank": "commander" },
+  { "name": "Troi", "rank": "commander" }
+];
+
+// key resolver
+JSON.stringify( CEL.unique(array, "rank") );
+// '[{"name":"Picard","rank":"captain"},{"name":"Data","rank":"commander"}]'
+
+// function resolver
+JSON.stringify( CEL.unique(array, (v) => v.rank) );
+// '[{"name":"Picard","rank":"captain"},{"name":"Data","rank":"commander"}]'
+        </pre>
+      </td>
+    </tr>
+    <tr>
+      <td><code>unzip(iterator);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Returns the array of arrays of unpaired values. In the modern browsers compatible with finite iterators. <br/><b>Example:</b><br/><code>CEL.unzip([ [ "a", 3 ], [ "b", 4 ], [ "c", 5 ], [ "d", 6 ] ]);</code><br/>-><br/><code>Array (2) [ ["a","b","c","d"], [3,4,5,6] ]</code></td>
+    </tr>
+    <tr>
+      <td><code>withOut(iterator,filterIterator);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>
+        <p>Returns an array with the values of the first iterator, but without the values of the filterIterator. All of the parameters are mandatory.</p>
+        <p>
+         <b>Example:</b>
+         <br/><code>CEL.withOut(["a","b","c","d"], ["b","d"]);</code>
+         <br/>->
+         <br/><code>["a","c"]</code>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>zip(iterator1[,iteratorN]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Returns the array of paired values of the given iterators. In the modern browsers compatible with finite iterators. <br/><b>Example:</b><br/><code>CEL.zip(["a","b","c","d"], [3,4,5,6,7,8,9]);</code><br/>-><br/><code>Array (4) [ [ "a", 3 ], [ "b", 4 ], [ "c", 5 ], [ "d", 6 ] ]</code></td>
+    </tr>
+    <tr>
+      <td><code>zipObj(iterator1, iterator2);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Returns an object, whose properties are from the first iterator and its values are from the second iterator. The two iterators must be the same size. In the modern browsers compatible with finite iterators.<br/><b>Example:</b><br/><code>zipObj(["a","b","c"],[1,2,3])</code><br/>-><br/><code>{"a":1,"b":2,"c":3}</code></td>
+    </tr>
+  </table>
+</div>
+
+
+<h3 id="FNabstractAPI">Abstract API</h3>
+
+<p>The Ecmascript abstract functions are available in the <a href="https://github.com/Serrin/Zephyr" target="_blank">Zephyr library</a> library.</p>
+
+
+<h3 id="FNmathAPI">Math API</h3>
+
+<p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
+<br/>Example: <code>CEL.sum();</code></p>
+
+<div>
+  <table class="table-responsive table-striped">
+    <tr>
+      <td style="width: auto; min-width: 33%;"><b>Name</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>avg(value1[,valueN]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns the average value from the parameter values.</td>
+    </tr>
+    <tr>
+      <td><code>clamp(value,min,max);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>If the given value is between the min and max values, then this function returns the value. If smaller then the min value, then the return value is the min. If greater then the max value, then the return value is the max. All of the parameters are mandatory and can be number or bigint and if not these types, then will be converted to number. The return value is number or bigint or throw a rangeerror, if the parameters are invalid.</td>
+    </tr>
+    <tr>
+      <td><code>inRange(value,min,max);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is between the min and max values. All of the parameters are mandatory and have to be number. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isEven(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an even number. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isBigInt64(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a BigInt (Int64) value between -2^63 and 2^63 - 1. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isBigUInt64(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a BigInt (Int64) value between 0 and 2^64 - 1. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isFloat(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a float number. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isInt8(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an integer between -128 and 127. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isUInt16(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an integer between 0 and 65535. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isInt32(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an integer between -2147483648 and 2147483647. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isOdd(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an odd number. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isUInt8(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an integer between 0 and 255. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isInt16(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an integer between -32768 and 32767. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isUInt32(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an integer between 0 and 4294967295. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>isFloat16(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a number between -65504 and 65504. The return value is boolean.</td>
+    </tr>
+    <tr>
+      <td><code>minmax(value,min,max);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This is an alias of the <code>clamp(value,min,max);</code>.</td>
+    </tr>
+    <tr>
+      <td><code>product(value1[,valueN]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns the product value from the parameter values.</td>
+    </tr>
+    <tr>
+      <td><code>randomFloat([max]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Get a random float number value within 0 and max value. Without parameter the maximum value is 100.</td>
+    </tr>
+    <tr>
+      <td><code>randomFloat(min,max);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Get a random float number value within min and max value.</td>
+    </tr>
+    <tr>
+      <td><code>randomInt([max]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Get a random integer number value within 0 and max value. Without parameter the maximum value is 100.</td>
+    </tr>
+    <tr>
+      <td><code>randomInt(min,max);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Get a random integer number value within min and max value.</td>
+    </tr>
+    <tr>
+      <td><code>signbit(value);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>
+        <p>This function is based on this proposal:
+          <br/><a href="https://github.com/tc39/proposal-Math.signbit" target="_blank">https://github.com/tc39/proposal-Math.signbit</a>
+        </p>
+        <pre>Returns whether the sign bit of x is set.
+If n is NaN, the result is false.
+If n is -0, the result is true.
+If n is negative, the result is true.
+Otherwise, the result is false.</pre>
+        <p>The value parameter is mandatory.</p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>sum(value1[,valueN]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns the sum value from the parameter values.</td>
+    </tr>
+    <tr>
+      <td><code>toBigInt64(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function clamps ("minmax") the given value to BigInt (Int64) value (-2^63 to 2^63 - 1).</td>
+    </tr>
+    <tr>
+      <td><code>toBigUInt64(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function clamps ("minmax") the given value to unsigned BigInt (Int64) value (0 to 2^64 - 1).</td>
+    </tr>
+    <tr>
+      <td><code>toFloat16(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function clamps ("minmax") the given value to float 16 value (-65504 to 65504).</td>
+    </tr>
+    <tr>
+      <td><code>toFloat32(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function clamps ("minmax") the given value to float 32 value (-3.4e38 to 3.4e38).</td>
+    </tr>
+    <tr>
+      <td><code>toInt8(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function clamps ("minmax") the given value to integer 8 value (-127 to 128).</td>
+    </tr>
+    <tr>
+      <td><code>toInt32(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function clamps ("minmax") the given value to integer 32 value (-2147483648 to 2147483647).</td>
+    </tr>
+    <tr>
+      <td><code>toInteger(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function always converts the provided value to an integer. If the value cannot be converted to an integer, then the return value is 0.</td>
+    </tr>
+    <tr>
+      <td><code>toIntegerOrInfinity(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function always converts the provided value to an integer or Infitiy or -Infinity. If the value cannot be converted to an integer, then the return value is 0.</td>
+    </tr>
+    <tr>
+      <td><code>toUInt8(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function clamps ("minmax") the given value to unsigned integer 8 value (0 to 255).</td>
+    </tr>
+    <tr>
+      <td><code>toUInt16(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function clamps ("minmax") the given value to unsigned integer 16 value (0 to 65535).</td>
+    </tr>
+    <tr>
+      <td><code>toUInt32(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function clamps ("minmax") the given value to unsigned integer 32 value (0 to 4294967295).</td>
+    </tr>
+  </table>
+</div>
+
+
+<h3 id="FNpolyfillsAPI">Polyfills</h3>
+
+<div>
+  <table class="table-responsive table-striped">
+    <tr>
+      <td style="width: auto; min-width: 33%;"><b>Name</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>Array.fromAsync();</code></td>
+      <td>The Array.fromAsync() static method creates a new, shallow-copied Array instance from an async iterable, iterable, or array-like object. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/fromAsync" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr>
+      <td><code>Array.prototype.toReversed();</code></td>
+      <td>The toReversed() method of an Array instance is the copying counterpart of the reverse() method. It returns a new array with the elements in reversed order. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toReversed" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr>
+      <td><code>Array.prototype.toSorted();</code></td>
+      <td>The toSorted() method of an Array instance is the copying version of the sort() method. It returns a new array with the elements sorted in ascending order. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toSorted" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr>
+      <td><code>Array.prototype.toSpliced();</code></td>
+      <td>The toSpliced() method of an Array instance is the copying version of the splice() method. It returns a new array with some elements removed and/or replaced at a given index. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toSpliced" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr>
+      <td><code>Array.prototype.with();</code></td>
+      <td>The with() method of an Array instance is the copying version of using the bracket notation to change the value of a given index. It returns a new array with the element at the given index replaced with the given value. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/with" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr>
+      <td><code>crypto.randomUUID();</code></td>
+      <td>
+        The randomUUID() method of the Crypto interface is used to generate a v4 UUID using a cryptographically secure random number generator. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Crypto/randomUUID" target="_blank">MDN Article</a>!
+      </td>
+    </tr>
+    <tr>
+      <td><code>Error.isError();</code></td>
+      <td>
+        The Error.isError() static method determines whether the passed value is an Error or DOMException. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/isError" target="_blank">MDN Article</a>!
+      </td>
+    </tr>
+    <tr>
+      <td><code>globalThis;</code></td>
+      <td>The "global" property of the global object, a writable, configurable, non-enumerable alias of <code>window</code>/<code>self</code>. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/globalThis" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr>
+      <td><code>Map.groupBy();</code></td>
+      <td>The Map.groupBy() static method groups the elements of a given iterable using the values returned by a provided callback function. The final returned Map uses the unique values from the test function as keys, which can be used to get the array of elements in each group. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/groupBy" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr>
+      <td><code>Math.sumPrecise();</code></td>
+      <td>The Math.sumPrecise() static method takes an iterable of numbers and returns the sum of them. It is more precise than summing them up in a loop, because it avoids floating point precision loss in intermediate results. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/sumPrecise" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr>
+      <td><code>Object.groupBy();</code></td>
+      <td>The Object.groupBy() static method groups the elements of a given iterable according to the string values returned by a provided callback function. The returned object has separate properties for each group, containing arrays with the elements in the group. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/groupBy" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr>
+      <td><code>Object.hasOwn();</code></td>
+      <td>
+        The Object.hasOwn() static method returns true if the specified object has the indicated property as its own property. If the property is inherited, or does not exist, the method returns false. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwn" target="_blank">MDN Article</a>!
+      </td>
+    </tr>
+    <tr>
+      <td><code>TypedArray.prototype.toReversed();</code></td>
+      <td>The toReversed() method is the copying counterpart of the reverse() method. It returns a new array with the elements in reversed order. This method has the same algorithm as Array.prototype.reverse(). For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/toReversed" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr>
+      <td><code>TypedArray.prototype.toSorted();</code></td>
+      <td>The toSorted() method is the copying version of the sort() method. It returns a new array with the elements sorted in ascending order. This method has the same algorithm as Array.prototype.toSorted(), except that it sorts the values numerically instead of as strings by default. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/toSorted" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr>
+      <td><code>TypedArray.prototype.with();</code></td>
+      <td>The with() method is the copying version of using the bracket notation to change the value of a given index. It returns a new array with the element at the given index replaced with the given value. This method has the same algorithm as Array.prototype.with(). For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/with" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr>
+      <td><code>globalThis.AsyncFunction();</code></td>
+      <td>The AsyncFunction constructor creates a new async function object. In JavaScript, every asynchronous function is actually an AsyncFunction object. Note that AsyncFunction is not a global object, but in the Celestra this is available in the <code>globalThis</code> object. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncFunction" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr>
+      <td><code>globalthis.AsyncGeneratorFunction();</code></td>
+      <td>The AsyncGeneratorFunction() constructor creates AsyncGeneratorFunction objects. Note that AsyncGeneratorFunction is not a global object, but in the Celestra this is available in the <code>globalThis</code> object. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncGeneratorFunction/AsyncGeneratorFunction" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr>
+      <td><code>globalThis.GeneratorFunction();</code></td>
+      <td>The GeneratorFunction constructor creates a new generator function object. In JavaScript every generator function is actually a GeneratorFunction object. Note that GeneratorFunction is not a global object, but in the Celestra this is available in the <code>globalThis</code> object. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr>
+      <td>REMOVED polyfills in v3.1.0</td>
+      <td><code>Array.from();</code><br/><code>Array.of();</code><br/><code>Array.prototype.fill();</code><br/><code>Array.prototype.find();</code><br/><code>Array.prototype.findIndex();</code><br/><code>Object.create();</code><br/><code>String.prototype.startsWith();</code><br/><code>String.prototype.endsWith();</code><br/><code>Array.prototype.copyWithin();</code><br/><code>String.fromCodePoint();</code><br/><code>String.prototype.codePointAt();</code><br/><code>Number.EPSILON;</code><br/><code>Number.isNaN();</code><br/><code>isNaN();</code><br/><code>Number.isInteger();</code><br/><code>Number.isFinite();</code><br/><code>Number.isSafeInteger();</code><br/><code>Number.parseInt();</code><br/><code>Number.parseFloat();</code><br/><code>Math.acosh();</code><br/><code>Math.asinh();</code><br/><code>Math.atanh();</code><br/><code>Math.cbrt();</code><br/><code>Math.clz32();</code><br/><code>Math.cosh();</code><br/><code>Math.expm1();</code><br/><code>Math.fround();</code><br/><code>Math.hypot();</code><br/><code>Math.imul();</code><br/><code>Math.log1p();</code><br/><code>Math.log10();</code><br/><code>Math.log2();</code><br/><code>Math.sign();</code><br/><code>Math.sinh();</code><br/><code>Math.tanh();</code><br/><code>Math.trunc();</code></td>
+    </tr>
+    <tr>
+      <td>REMOVED polyfills in v3.8.0</td>
+      <td><code>Array.prototype.values();</code><br/><code>Array.prototype.includes();</code><br/><code>String.prototype.includes();</code><br/><code>String.prototype.repeat();</code><br/><code>String.prototype[Symbol.iterator]();</code><br/><code>Object.assign();</code><br/><code>Object.entries();</code><br/><code>Object.values();</code><br/><code>Object.getOwnPropertyDescriptors();</code><br/><code>RegExp.prototype.flags;</code><br/><code>NodeList.prototype.forEach();</code><br/><code>ChildNode.after();</code><br/><code>ChildNode.before();</code><br/><code>ChildNode.remove();</code><br/><code>ChildNode.replaceWith();</code><br/><code>ParentNode.append();</code><br/><code>ParentNode.prepend();</code><br/><code>Element.prototype.matches();</code><br/><code>Element.prototype.closest();</code><br/><code>Element.prototype.toggleAttribute();</code><br/><code>Element.prototype.getAttributeNames();</code><br/><code>window.screenLeft;</code><br/><code>window.screenTop;</code></td>
+    </tr>
+    <tr>
+      <td>REMOVED polyfills in v5.6.0</td>
+      <td><code>Array.prototype.at();</code><br/><code>Array.prototype.findLast();</code><br/><code>Array.prototype.findLastIndex();</code><br/><code>Array.prototype.flat();</code><br/><code>Array.prototype.flatMap();</code><br/><code>Number.MIN_SAFE_INTEGER;</code><br/><code>Number.MAX_SAFE_INTEGER;</code><br/><code>Object.fromEntries();</code><br/><code>Object.is();</code><br/><code>String.prototype.at();</code><br/><code>String.prototype.matchAll();</code><br/><code>String.prototype.padStart();</code><br/><code>String.prototype.padEnd();</code><br/><code>String.prototype.replaceAll();</code><br/><code>String.prototype.trimStart();</code><br/><code>String.prototype.trimLeft();</code><br/><code>String.prototype.trimEnd();</code><br/><code>String.prototype.trimRight();</code><br/><code>Typedarray.prototype.at();</code><br/><code>TypedArray.prototype.findLast();</code><br/><code>TypedArray.prototype.findLastIndex();</code></td>
+    </tr>
+    <tr>
+      <td>REMOVED polyfills in v5.9.0</td>
+      <td><code>BigInt.prototype.toJSON();</code></td>
+    </tr>
+  </table>
+</div>
+
+
+<hr/>
+<h2 id="samples">Samples</h2>
+
+<p class="big">There are more samples in the <a href="unittest.js" target="_blank">unittest.js</a>.</p>
+
+<div>
+  <table class="table-responsive table-striped">
+    <tr>
+      <td><b>Object name: "celestra"</b></td>
+      <td><button onclick='alert( celestra.randomInt(100,200) );'>Try</button></td>
+      <td><code>alert( celestra.randomInt(100,200) );</code></td>
+    </tr>
+    <tr>
+      <td><b>Object name: "CEL"</b></td>
+      <td><button onclick='alert( CEL.randomInt(100,200) );'>Try</button></td>
+      <td><code>alert( CEL.randomInt(100,200) );</code></td>
+    </tr>
+    <tr>
+      <td><b>VERSION</b></td>
+      <td><button onclick='alert( CEL.VERSION );'>Try</button></td>
+      <td><code>alert( CEL.VERSION );</code></td>
+    </tr>
+    <tr>
+      <td><b>Create an alias without celestra.noConflict();</b></td>
+      <script> var _cel = celestra; </script>
+      <td><button onclick='_cel = celestra; alert( _cel.VERSION ); alert( _cel.randomInt(40,70) ); alert( CEL.VERSION );'>Try</button></td>
+      <td><pre>var _cel = celestra;
+alert( _cel.VERSION );
+alert( _cel.randomInt(40,70) );
+alert( CEL.VERSION );</pre></td>
+    </tr>
+    <tr>
+      <td><b>celestra.noConflict();</b></td>
+      <script> var _C = {}; </script>
+      <td><button onclick='_C = celestra.noConflict(); alert( _C.VERSION ); alert( _C.classof( document.querySelectorAll("div")) ); alert( CEL.VERSION );'>Try</button></td>
+      <td><pre>// in the HTML head before the loading of Celestra:
+var CEL = {};
+CEL.VERSION = "This is another sample library.";
+
+// in the body:
+var _C = {};
+_C = celestra.noConflict();
+alert( _C.VERSION );
+alert( _C.classof( document.querySelectorAll("div")) );
+alert( CEL.VERSION );</pre></td>
+    </tr>
+  </table>
+</div>
+
+<h3>domReady(fn) sample</h3>
+
+<pre>CEL.domReady(function(){
+  CEL.qsa("p",CEL.qs("#div1")).forEach(function fn(el,i) {
+    el.style.color="red";
+  });
+});</pre>
+
+<h3>Testarea</h3>
+
+<p id="p1">p1</p>
+<p id="p2">p2</p>
+
+<div id="div1">
+  <p id="div3">div1 p3</p>
+  <div>div1 divs1</div>
+  <div>div1 divs2</div>
+</div>
+
+<div id="div2">
+  <p id="div2p">div2</p>
+</div>
+
+<h3>Samples</h3>
+
+<div>
+  <table class="table-responsive table-striped">
+    <tr>
+      <td style="min-width: 25%;"><b>domToElement(htmlString);</b></td>
+      <td colspan="2">
+        <p><button onclick='CEL.qs("#div2").append( CEL.domToElement("<div>Hello world!</div>") );'>Try</button></p>
+        <p><code>CEL.qs("#div2").append( CEL.domToElement("divHello world!/div") );</code></p>
+        <p><button onclick='CEL.qs("#div2").append( CEL.domToElement("<p><span style=\"background-color: yellow; color: blue;\">Hello</span> <span style=\"background-color: blue; color: yellow;\">world</span>!</p>") );'>Try</button></p>
+        <p><code>CEL.qs("#div2").append( CEL.domToElement("pspan style=\"background-color: yellow; color: blue;\"Hello/span span style=\"background-color: blue; color: yellow;\"world/span!/p") );</code></p>
+      </td>
+    </tr>
+    <tr>
+      <td><b>domCreate(type,properties,innerHTML); with style object</b></td>
+      <td><button onclick='var el1 = CEL.domCreate("h3", {style: {"background-color": "lightblue", "font-weight": "bold"}}, "H3 Lorem ipsum with style object");  var el2 = CEL.domCreate("p", {}, "Sample created paragraph"); var el3 = CEL.domCreate("br");  var el4 = CEL.domCreate("a", {href: "https://developer.mozilla.org/en-US/", target: "_blank", style: { "background-color": "red", "color": "white"}}, "MDN Sample url"); CEL.qs("#div2").append(el1); el2.append(el3); el2.append(el4); CEL.qs("#div2").append(el2);'>Try</button></td>
+      <td><pre>var el1 = CEL.domCreate("h3", {style: {"background-color": "lightblue", "font-weight": "bold"}}, "H3 Lorem ipsum with style object");
+var el2 = CEL.domCreate("p", {}, "Sample created paragraph");
+var el3 = CEL.domCreate("br");
+var el4 = CEL.domCreate("a", {href: "https://developer.mozilla.org/en-US/", target: "_blank", style: { "background-color": "red", "color": "white"}}, "MDN Sample url");
+CEL.qs("#div2").append(el1);
+el2.append(el3);
+el2.append(el4);
+CEL.qs("#div2").append(el2);</pre></td>
+    </tr>
+    <tr>
+      <td><b>domCreate(type,properties,innerHTML); with style string</b></td>
+      <td><button onclick='var el1 = CEL.domCreate("h3", {style: {"background-color": "lightblue", "font-weight": "bold"}}, "H3 Lorem ipsum with style string");  var el2 = CEL.domCreate("p", {}, "Sample created paragraph"); var el3 = CEL.domCreate("br");  var el4 = CEL.domCreate("a", {href: "https://developer.mozilla.org/en-US/", target: "_blank", style: "background-color: red; color: white;"}, "MDN Sample url"); CEL.qs("#div2").append(el1); el2.append(el3); el2.append(el4); CEL.qs("#div2").append(el2);'>Try</button></td>
+      <td><pre>var el1 = CEL.domCreate("h3", {style: {"background-color": "lightblue", "font-weight": "bold"}}, "H3 Lorem ipsum with style string");
+var el2 = CEL.domCreate("p", {}, "Sample created paragraph");
+var el3 = CEL.domCreate("br");
+var el4 = CEL.domCreate("a", {href: "https://developer.mozilla.org/en-US/", target: "_blank", style: "background-color: red; color: white;"}, "MDN Sample url");
+CEL.qs("#div2").append(el1);
+el2.append(el3);
+el2.append(el4);
+CEL.qs("#div2").append(el2);</pre></td>
+    </tr>
+    <tr>
+      <td><b>domCreate(object); with style object</b></td>
+      <td><button onclick='var el1 = CEL.domCreate({elementType: "h3", style: {"background-color": "lightblue", "font-weight": "bold"}, innerHTML: "H3 Lorem ipsum from object with style object"}); var el2 = CEL.domCreate({elementType: "p", innerHTML: "Sample created paragraph"}); var el3 = CEL.domCreate("br"); var el4 = CEL.domCreate({elementType: "a", href: "https://developer.mozilla.org/en-US/", target: "_blank", style: {"background-color": "red", "color": "white"}, innerHTML: "MDN Sample url"}); CEL.qs("#div2").append(el1); el2.append(el3); el2.append(el4); CEL.qs("#div2").append(el2);'>Try</button></td>
+      <td><pre>var el1 = CEL.domCreate({elementType: "h3", style: {"background-color": "lightblue", "font-weight": "bold"}, innerHTML: "H3 Lorem ipsum from object with style object"});
+var el2 = CEL.domCreate({elementType: "p", innerHTML: "Sample created paragraph"});
+var el3 = CEL.domCreate("br");
+var el4 = CEL.domCreate({elementType: "a", href: "https://developer.mozilla.org/en-US/", target: "_blank", style: {"background-color": "red", "color": "white"}, innerHTML: "MDN Sample url"});
+CEL.qs("#div2").append(el1);
+el2.append(el3);
+el2.append(el4);
+CEL.qs("#div2").append(el2);</pre></td>
+    </tr>
+    <tr>
+      <td><b>domCreate(object); with styles string</b></td>
+      <td><button onclick='var el1 = CEL.domCreate({elementType: "h3", style: {"background-color": "lightblue", "font-weight": "bold"}, innerHTML: "H3 Lorem ipsum from object with style string"}); var el2 = CEL.domCreate({elementType: "p", innerHTML: "Sample created paragraph"}); var el3 = CEL.domCreate("br"); var el4 = CEL.domCreate({elementType: "a", href: "https://developer.mozilla.org/en-US/", target: "_blank", style: "background-color: red; color: white;", innerHTML: "MDN Sample url"}); CEL.qs("#div2").append(el1); el2.append(el3); el2.append(el4); CEL.qs("#div2").append(el2);'>Try</button></td>
+      <td><pre>var el1 = CEL.domCreate({elementType: "h3", style: {"background-color": "lightblue", "font-weight": "bold"}, innerHTML: "H3 Lorem ipsum from object with style string"});
+var el2 = CEL.domCreate({elementType: "p", innerHTML: "Sample created paragraph"});
+var el3 = CEL.domCreate("br");
+var el4 = CEL.domCreate({elementType: "a", href: "https://developer.mozilla.org/en-US/", target: "_blank", style: "background-color: red; color: white;", innerHTML: "MDN Sample url"});
+CEL.qs("#div2").append(el1);
+el2.append(el3);
+el2.append(el4);
+CEL.qs("#div2").append(el2);</pre></td>
+    </tr>
+    <tr>
+      <td><b></b></td>
+      <td></td>
+      <td>
+        <p><a href="?foo=fooValue%20Lorem%20Ipsum%202017%20%C3%A9%C3%A1%C5%B1%C5%91%C3%BA%C3%B6%C3%BC%C3%B3%C3%AD%20%C3%89%C3%81%C5%B0%C5%90%C3%9A%C3%96%C3%9C%C3%93%C3%8D&bar=barValue#url">Test page</a></p>
+      </td>
+    </tr>
+    <tr>
+      <td><b>getUrlVars()</b></td>
+      <td><button onclick='var params = CEL.getUrlVars(); for ( var name in params ) { alert(name+" = "+params[name]); }'>Try</button></td>
+      <td><code>var params = CEL.getUrlVars();<br/>for ( var name in params ) { alert(name+" = "+params[name]); }</code></td>
+    </tr>
+    <tr>
+      <td><b>getUrlVars() found</b></td>
+      <td><button onclick='alert( CEL.getUrlVars()["foo"] );'>Try</button></td>
+      <td><code>alert( CEL.getUrlVars()["foo"] );</code></td>
+    </tr>
+    <tr>
+      <td><b>getUrlVars() not found</b></td>
+      <td><button onclick='alert( CEL.getUrlVars()["foobarbaznotfound"] );'>Try</button></td>
+      <td><code>alert( CEL.getUrlVars()["foobarbaznotfound"] );</code></td>
+    </tr>
+    <tr>
+      <td><b>getUrlVars() with "?showall=true&amp;order_by=updated&amp;o=asc"</b></td>
+      <td><button onclick='var params = CEL.getUrlVars("?showall=true&order_by=updated&o=asc"); for ( var name in params ) { alert(name+" = "+params[name]); }'>Try</button></td>
+      <td><code>var params = CEL.getUrlVars();<br/>for ( var name in params ) { alert(name+" = "+params[name]); }</code></td>
+    </tr>
+    <tr>
+      <td><b>getUrlVars() found with "?testa=a1&amp;testb=b2"</b></td>
+      <td><button onclick='alert( CEL.getUrlVars("?showall=true&order_by=updated&o=asc")["order_by"] );'>Try</button></td>
+      <td><code>alert( CEL.getUrlVars("?showall=true&amp;order_by=updated&amp;o=asc")["order_by"] );</code></td>
+    </tr>
+    <tr>
+      <td><b>getUrlVars() not found with "?testa=a1&amp;testb=b2"</b></td>
+      <td><button onclick='alert( CEL.getUrlVars("?showall=true&order_by=updated&o=asc")["notfound"] );'>Try</button></td>
+      <td><code>alert( CEL.getUrlVars("?showall=true&amp;order_by=updated&amp;o=asc")["notfound"] );</code></td>
+    </tr>
+    <tr>
+      <td><b>getDoNotTrack()</b></td>
+      <td><button onclick='alert( CEL.getDoNotTrack() );'>Try</button></td>
+      <td><code>alert( CEL.getDoNotTrack() );</code></td>
+    </tr>
+<script>
+var txt = "✓ à \r\n\t árvíztűrő tükörfúrógép ÁRVÍZTŰRŐ TÜKÖRFÚRÓGÉP ,?;.:-_* ¤÷×¨¸´˙`˛°˘^ˇ~'+!%/=()|\\<>\"\'\/#&@{}[]€ÍÄíŁß 0123456789 asdfghjklqwertzuiopyxcvbnm ASDFGHJKLQWERTZUIOPYXCVBNM"
+</script>
+    <tr>
+      <td><b>createFile(filename,content,dataType);</b></td>
+      <td colspan="2">
+        <p>Please check the downloaded files in your download folder!</p>
+        <p><code>var txt = "✓ à \r\n\t árvíztűrő tükörfúrógép ÁRVÍZTŰRŐ TÜKÖRFÚRÓGÉP ,?;.:-_* ¤÷×¨¸´˙`˛°˘^ˇ~'+!%/=()|\\\"\'\/#&@{}[]€ÍÄíŁß 0123456789 asdfghjklqwertzuiopyxcvbnm ASDFGHJKLQWERTZUIOPYXCVBNM";</code></p>
+        <p>
+          <button onclick='CEL.createFile();'>no parameter</button>
+          <br/><code>CEL.createFile();</code>
+        </p>
+        <p>
+          <button onclick='CEL.createFile("test-createFile-error.txt");'>only filename</button>
+          <br/><code>CEL.createFile("test-createFile-error.txt");</code>
+        </p>
+        <p>
+          <button onclick='CEL.createFile("test-createFile.txt", txt);'>default type</button>
+          <br/><code>CEL.createFile("test-createFile.txt", txt);</code>
+        </p>
+        <p>
+          <button onclick='CEL.createFile("test-createFile.html", txt, "text/html");'>"text/html" type</button>
+          <br/><code>CEL.createFile("test-createFile.html", txt, "text/html");</code>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td><b>getLocation()</b></td>
+      <td colspan="2">
+        <p><button onclick='CEL.getLocation(function (loc){
+          CEL.qs("#location").innerHTML = "latitude: "+loc.coords.latitude+"<br/>longitude: "+loc.coords.longitude+"<br/>"+"<img src=\"https://maps.googleapis.com/maps/api/staticmap?center="+loc.coords.latitude + "," + loc.coords.longitude+"&zoom=14&size="+"400"+"x"+"400"+"&sensor=false\" alt=\"map\">";},function (errorMessage) { CEL.qs("#location").innerHTML = errorMessage; });'>Try</button></p>
+        <p><code>CEL.getLocation(<br/>function (loc){<br/>CEL.qs("#location").innerHTML = "latitude: "+loc.coords.latitude<br/>+"br/longitude: "+loc.coords.longitude<br/>+"br/"+"img src=\"https://maps.googleapis.com/maps/api/staticmap?center="<br/>+loc.coords.latitude + "," + loc.coords.longitude<br/>+"&#38;zoom=14&#38;size="+"400"+"x"+"400"+"&#38;sensor=false\" alt=\"map\"";},<br/>function (errorMessage) { CEL.qs("#location").innerHTML = errorMessage; }<br/>);</code></p>
+        <p id="location"></p>
+      </td>
+    </tr>
+    <tr>
+      <td><b>Fullscreen functions</b></td>
+      <td colspan="2">
+        <div id="fsdiv">
+          <p>
+            <button onclick='alert( CEL.getFullscreen() );'>getFullscreen</button>
+            <br/><code>alert( CEL.getFullscreen() );</code>
+          </p>
+          <p>
+            <button onclick='CEL.setFullscreenOn("#fsdiv");'>setFullscreen fsdiv string</button>
+            <br/><code>CEL.setFullscreenOn("#fsdiv");</code>
+          </p>
+          <p>
+            <button onclick='CEL.setFullscreenOn( CEL.qs("#fsdiv") );'>setFullscreen fsdiv element</button>
+            <br/><code>CEL.setFullscreenOn( CEL.qs("#fsdiv") );</code>
+          </p>
+          <p>
+            <button onclick='CEL.setFullscreenOn(document.documentElement);'>setFullscreen document.documentElement</button>
+            <br/><code>CEL.setFullscreenOn(document.documentElement);</code>
+          </p>
+          <p>
+            <button onclick='CEL.setFullscreenOff();'>setFullscreenOff</button>
+            <br/><code>CEL.setFullscreenOff();</code>
+          </p>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td><b>domFade functions</b></td>
+      <td colspan="2">
+        <div>
+          <div id="domFadetest"><i>This is the fade test area.</i></div><span class="flex-f-1">This is a span.</span>
+          <hr/>
+          <p>
+            <button onclick='CEL.domFadeIn( CEL.qs("#domFadetest") );'>domFadeIn</button>
+            <code>CEL.domFadeIn( CEL.qs("#domFadetest") );</code>
+          </p>
+          <p>
+            <button onclick='CEL.domFadeIn( CEL.qs("#domFadetest"), 2000 );'>domFadeIn duration</button>
+            <code>CEL.domFadeIn( CEL.qs("#domFadetest"), 2000 );</code>
+          </p>
+          <p>
+            <button onclick='CEL.domFadeIn( CEL.qs("#domFadetest"), 2000, "inline-block" );'>domFadeIn duration display</button>
+            <code>CEL.domFadeIn( CEL.qs("#domFadetest"), 2000, "inline-block" );</code>
+          </p>
+          <p>
+            <button onclick='CEL.domFadeOut( CEL.qs("#domFadetest") );'>domFadeOut</button>
+            <code>CEL.domFadeOut( CEL.qs("#domFadetest") );</code>
+          </p>
+          <p>
+            <button onclick='CEL.domFadeOut( CEL.qs("#domFadetest"), 2000 );'>domFadeOut duration</button>
+            <code>CEL.domFadeOut( CEL.qs("#domFadetest"), 2000 );</code>
+          </p>
+          <p>
+            <button onclick='CEL.domFadeToggle( CEL.qs("#domFadetest") );'>domFadeToggle</button>
+            <code>CEL.domFadeToggle( CEL.qs("#domFadetest") );</code>
+          </p>
+          <p>
+            <button onclick='CEL.domFadeToggle( CEL.qs("#domFadetest"), 2000 );'>domFadeToggle duration</button>
+            <code>CEL.domFadeToggle( CEL.qs("#domFadetest"), 2000 );</code>
+          </p>
+          <p>
+            <button onclick='CEL.domFadeToggle( CEL.qs("#domFadetest"), 2000, "inline-block" );'>domFadeToggle duration display</button>
+            <code>CEL.domFadeToggle( CEL.qs("#domFadetest"), 2000, "inline-block" );</code>
+          </p>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td><b>domHide/Show/Toggle functions</b></td>
+      <td colspan="2">
+        <div id="domhidetest"><i>This is the hide/show/toggle test area.</i></div><span class="flex-f-1">This is a span.</span>
+        <hr/>
+        <p>
+          <button onclick='CEL.domShow( CEL.qs("#domhidetest") );'>domShow</button>
+          <code>CEL.domShow( CEL.qs("#domhidetest") );</code>
+        </p>
+        <p>
+          <button onclick='CEL.domShow( CEL.qs("#domhidetest"), "inline-block" );'>domShow display</button>
+          <code>CEL.domShow( CEL.qs("#domhidetest"), "inline-block" );</code>
+        </p>
+        <p>
+          <button onclick='CEL.domHide( CEL.qs("#domhidetest") );'>domHide</button>
+          <code>CEL.domHide( CEL.qs("#domhidetest") );</code>
+        </p>
+        <p>
+          <button onclick='CEL.domToggle( CEL.qs("#domhidetest") );'>domToggle</button>
+          <code>CEL.domToggle( CEL.qs("#domhidetest") );</code>
+        </p>
+        <p>
+          <button onclick='CEL.domToggle( CEL.qs("#domhidetest"), "inline-block" );'>domToggle display</button>
+          <code>CEL.domToggle( CEL.qs("#domhidetest"), "inline-block" );</code>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td><b>domGetCSS and domSetCSS</b></td>
+      <td colspan="2">
+        <div>
+          <p id="csstest1" style="color: red; border: 1px solid red;">Testarea</p>
+          <p>
+            <button onclick='alert( CEL.domGetCSS( CEL.qs("#csstest1"), "width" ) );'>domGetCSS</button>
+            <br/><code>alert( CEL.domGetCSS( CEL.qs("#csstest1"), "width" ) );</code>
+          </p>
+          <p>
+            <button onclick='CEL.domSetCSS( CEL.qs("#csstest1"), "width", "100px" );'>domSetCSS</button>
+            <br/><code>CEL.domSetCSS( CEL.qs("#csstest1"), "width", "100px" );</code>
+          </p>
+          <p>
+            <button onclick='CEL.domSetCSS( CEL.qs("#csstest1"), { color: "green", fontWeight: "bold" } );'>domSetCSS with object</button>
+            <br/><code>CEL.domSetCSS(<br/> CEL.qs("#csstest1"),<br/> { color: "green", fontWeight: "bold" }<br/>);</code>
+          </p>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td><b>importStyle</b></td>
+      <td colspan="2">
+        <div>
+          <p id="csstest2" style="color: braun; border: 1px solid braun;">Testarea</p>
+          <p>
+            <button onclick='CEL.importStyle("testmodule1.css");'>importStyle 1</button>
+            <br/><code>CEL.importStyle("testmodule1.css");</code>
+          </p>
+          <p>
+            <button onclick='CEL.importStyle("testmodule2.css");'>importStyle 2</button>
+            <br/><code>CEL.importStyle("testmodule2.css");</code>
+          </p>
+          <p>
+            <button onclick='CEL.importStyle("testmodule1.css", "testmodule2.css");'>importStyle 3</button>
+            <br/><code>CEL.importStyle("testmodule1.css, "testmodule2.css"");</code>
+          </p>
+          <p>
+            <button onclick='CEL.importStyle("testmodule-notExist.css");'>importStyle 4 error</button>
+            <br/><code>CEL.importStyle("testmodule-notExist.css");</code>
+          </p>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td><b>Cookie</b></td>
+      <td colspan="2">
+        <p>
+          setCookie();
+          <button onclick='CEL.setCookie("ctest3",cookieTestStr);'>try</button>
+          <code>CEL.setCookie("ctest3",cookieTestStr);</code>
+        </p>
+        <p>
+          hasCookie();
+          <button onclick='alert( CEL.hasCookie("ctest3") );'>try</button>
+          <code>alert( CEL.hasCookie("ctest3") );</code>
+        </p>
+        <p>
+          getCookie(name);
+          <button onclick='alert( CEL.getCookie("ctest3") );'>try</button>
+          <code>alert( CEL.getCookie("ctest3") );</code>
+        </p>
+        <p>
+          getCookie();
+          <button onclick='alert( JSON.stringify(CEL.getCookie()) );'>try</button>
+          <code>alert( JSON.stringify(CEL.getCookie()) );</code>
+        </p>
+        <p>
+          removeCookie();
+          <button onclick='alert( CEL.removeCookie("ctest3") );'>try</button>
+          <code>alert( CEL.removeCookie("ctest3") );</code>
+        </p>
+        <p>Test Code:</p>
+        <pre>var cookieTestStr = "✓ à \r\n\t árvíztűrő tükörfúrógép ÁRVÍZTŰRŐ TÜKÖRFÚRÓGÉP ,?;.:-_* ¤÷×¨¸´˙`˛°˘^ˇ~'+!%/=()|\\ \" \/ # & @{}[]€ ÍÄíŁß 0123456789 asdhjklqweuioyxcbnm ASDHJKLQWEUIOYXCBNM \u00E0\u00E8\u00EC\u00F2\u00F9";
+var cookiestr = "";
+
+cookiestr += "\ndocument.cookie: \""+document.cookie+"\"";
+CEL.setCookie("ctest1",cookieTestStr);
+CEL.setCookie("ctest2",cookieTestStr);
+cookiestr += "document.cookie: \""+document.cookie+"\"";
+cookiestr += "\n"+(CEL.getCookie("ctest1"))+" - (cookie value)"; // cookie value
+cookiestr += "\n"+(CEL.getCookie("ctest2"))+" - (cookie value)"; // cookie value
+cookiestr += "\n"+(CEL.getCookie())+" - (object)"; // object
+cookiestr += "\n"+(CEL.getCookie()["ctest1"])+" - (object value ctest1)"; // object value ctest1
+cookiestr += "\n"+(CEL.getCookie()["ctest2"])+" - (object value ctest2)"; // object value ctest2
+cookiestr += "\n"+(CEL.hasCookie("ctest1"))+" - (true)"; // true
+cookiestr += "\n"+(CEL.hasCookie("ctest2"))+" - (true)"; // true
+cookiestr += "\n"+(CEL.removeCookie("ctest1"))+" - (true)"; // true
+cookiestr += "\n"+(CEL.hasCookie("ctest1"))+" - (false)"; // false
+cookiestr += "\n"+(CEL.hasCookie("ctest2"))+" - (true)"; // true
+cookiestr += "\ndocument.cookie: \""+document.cookie+"\"";
+cookiestr += "\n"+(CEL.removeCookie("ctest1"))+" - (false)"; // false
+cookiestr += "\n"+(CEL.removeCookie("ctest2"))+" - (true)"; // true
+cookiestr += "\n"+(CEL.hasCookie("ctest1"))+" - (false)"; // false
+cookiestr += "\n"+(CEL.hasCookie("ctest2"))+" - (false)"; // false
+cookiestr += "\ndocument.cookie: \""+document.cookie+"\"";
+cookiestr += "\n"+(CEL.removeCookie("ctest1"))+" - (false)"; // false
+cookiestr += "\n"+(CEL.removeCookie("ctest2"))+" - (false)"; // false
+cookiestr += "\n"+(CEL.hasCookie("ctest1"))+" - (false)"; // false
+cookiestr += "\n"+(CEL.hasCookie("ctest2"))+" - (false)"; // false
+
+CEL.qs("#cookieresults").innerHTML = cookiestr;</pre>
+      <p>Test results:</p>
+      <pre id="cookieresults">cookieresults</pre>
+<script>
+var cookieTestStr = "✓ à \r\n\t árvíztűrő tükörfúrógép ÁRVÍZTŰRŐ TÜKÖRFÚRÓGÉP ,?;.:-_* ¤÷×¨¸´˙`˛°˘^ˇ~'+!%/=()|\\ \" \/ # & @{}[]€ ÍÄíŁß 0123456789 asdhjklqweuioyxcbnm ASDHJKLQWEUIOYXCBNM \u00E0\u00E8\u00EC\u00F2\u00F9";
+var cookiestr = "";
+
+cookiestr += "\ndocument.cookie: \""+document.cookie+"\"";
+CEL.setCookie("ctest1",cookieTestStr);
+CEL.setCookie("ctest2",cookieTestStr);
+cookiestr += "document.cookie: \""+document.cookie+"\"";
+cookiestr += "\n"+(CEL.getCookie("ctest1"))+" - (cookie value)"; // cookie value
+cookiestr += "\n"+(CEL.getCookie("ctest2"))+" - (cookie value)"; // cookie value
+cookiestr += "\n"+(CEL.getCookie())+" - (object)"; // object
+cookiestr += "\n"+(CEL.getCookie()["ctest1"])+" - (object value ctest1)"; // object value ctest1
+cookiestr += "\n"+(CEL.getCookie()["ctest2"])+" - (object value ctest2)"; // object value ctest2
+cookiestr += "\n"+(CEL.hasCookie("ctest1"))+" - (true)"; // true
+cookiestr += "\n"+(CEL.hasCookie("ctest2"))+" - (true)"; // true
+cookiestr += "\n"+(CEL.removeCookie("ctest1"))+" - (true)"; // true
+cookiestr += "\n"+(CEL.hasCookie("ctest1"))+" - (false)"; // false
+cookiestr += "\n"+(CEL.hasCookie("ctest2"))+" - (true)"; // true
+cookiestr += "\ndocument.cookie: \""+document.cookie+"\"";
+cookiestr += "\n"+(CEL.removeCookie("ctest1"))+" - (false)"; // false
+cookiestr += "\n"+(CEL.removeCookie("ctest2"))+" - (true)"; // true
+cookiestr += "\n"+(CEL.hasCookie("ctest1"))+" - (false)"; // false
+cookiestr += "\n"+(CEL.hasCookie("ctest2"))+" - (false)"; // false
+cookiestr += "\ndocument.cookie: \""+document.cookie+"\"";
+cookiestr += "\n"+(CEL.removeCookie("ctest1"))+" - (false)"; // false
+cookiestr += "\n"+(CEL.removeCookie("ctest2"))+" - (false)"; // false
+cookiestr += "\n"+(CEL.hasCookie("ctest1"))+" - (false)"; // false
+cookiestr += "\n"+(CEL.hasCookie("ctest2"))+" - (false)"; // false
+
+CEL.qs("#cookieresults").innerHTML = cookiestr;
+</script>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<script>
+var str = "✓ à \r\n\t árvíztűrő tükörfúrógép ÁRVÍZTŰRŐ TÜKÖRFÚRÓGÉP ,?;.:-_* ¤÷×¨¸´˙`˛°˘^ˇ~'+!%/=()|\\<> \" \/ #&@{}[]€ ÍÄíŁß 0123456789 asdfghjklqwertzuiopyxcvbnm ASDFGHJKLQWERTZUIOPYXCVBNM";
+</script>
+
+
+<hr/>
+<h2 id="license">License</h2>
+
+<div>
+  <p><a href="https://opensource.org/licenses/MIT" target="_blank">https://opensource.org/licenses/MIT</a></p>
+  <h3>MIT License</h3>
+  <p><b>SPDX short identifier: MIT</b></p>
+  <p>Copyright (c) 2017 Ferenc Czigler</p>
+  <p>Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:</p>
+  <p>The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.</p>
+  <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.</p>
+</div>
+
+<div class="margin center">
+  <a title="Fast For Good" rel="nofollow" target="_blank" href="https://www.mozilla.org/firefox/this-browser-comes-highly-recommended/?utm_source=devs-for.firefox.com&utm_medium=referral&utm_campaign=devs-for-firefox&utm_content=Fast-For-Good">
+    <img style="border:0 none;" alt="Fast For Good" srcset="https://code.cdn.mozilla.net/for-firefox/badges/assets/Fast-For-Good.png, https://code.cdn.mozilla.net/for-firefox/badges/assets/Fast-For-Good-2x.png 2x" src="https://code.cdn.mozilla.net/for-firefox/badges/assets/Fast-For-Good.png"/>
+  </a>
+</div>
+
+</main>
+
+<footer id="footer" class="container-fluid bg-black">
+  <div class="container">
+    <div class="flex nogap">
+      <div class="flex-w-33">
+        <p><a href="#download">Download</a></p>
+        <p><a href="#functions">Functions</a></p>
+        <p><a href="#samples">Samples</a></p>
+        <p><a href="#license">License</a></p>
+        <p><a href="http://github.com/Serrin" target="_blank">Contact</a></p>
+      </div>
+      <div class="flex-w-33">
+        <p><b>Celestra Unit Tester</b></p>
+        <p><a href="unittest.html" target="_blank">CUT</a></p>
+        <p><b>Github pages</b></p>
+        <p><a href="https://github.com/Serrin/Celestra" target="_blank">Stable</a></p>
+        <p><a href="https://github.com/Serrin/Celestra-beta" target="_blank">Beta</a></p>
+      </div>
+      <div class="flex-w-33">
+        <p><b>Themes</b></p>
+        <p><a href="#" onclick=" CEL.importStyle('u87-dark.css'); "><i>Dark</i></a></p>
+        <p><a href="#" onclick=" CEL.importStyle('u87-blue.css'); "><i>Blue</i></a></p>
+        <p><a href="#" onclick=" CEL.importStyle('u87-light.css'); "><i>Light</i></a></p>
+      </div>
+      <div class="flex-w-100">
+        <hr class="hide-on-mobile" />
+        <p>&copy; Copyright 2017 Ferenc Czigler</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

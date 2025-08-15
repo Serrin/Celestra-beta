@@ -1,0 +1,1 @@
+CUT.isTrue("importScript() (core api) - second script loaded", true);

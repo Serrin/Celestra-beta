@@ -1,0 +1,1 @@
+CUT.isTrue("importScript() (core api) - with more scripts", true);
