@@ -83,7 +83,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
     &nbsp;//&nbsp;
     <a href="#FNcollectionsAPI" style="color: white !important">Collections API</a>
     &nbsp;//&nbsp;
-    <a href="#FNtypecheckingAPI" style="color: white !important">Type API</a>    
+    <a href="#FNtypecheckingAPI" style="color: white !important">Type API</a>
     &nbsp;//&nbsp;
     <a href="#FNmathAPI" style="color: white !important">Math API</a>
     &nbsp;//&nbsp;
@@ -97,7 +97,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
 
 <p><b>A helper JavaScript library with useful functions and polyfills and zero dependencies.</b></p>
 
-<p>Latest version: 6.0.0</p>
+<p>Latest version: 6.0.1</p>
 <p>Date: 2025-08-14T23:27:03.482Z</p>
 
 <p><b>Tested on these:</b></p>
@@ -455,6 +455,10 @@ globalThis.CEL = celestra;
       <td><span class="info">Stability: 4 - Stable.</span><br/><code>"23456789CFGHJMPQRVWXcfghjmpqvwx"</code><br/>Can be used with the ID generator functions.</td>
     </tr>
     <tr>
+      <td><code>assoc(object, key, value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Clone the original object (immutably) and return this new object with original keys and values and the given key and value.</td>
+    </tr>    
+    <tr>
       <td><code>asyncConstant(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns an async function, which returns a promise with the given value.</td>
     </tr>
@@ -479,6 +483,10 @@ globalThis.CEL = celestra;
       <td><span class="info">Stability: 4 - Stable.</span><br/>Returns a function that is bound to a context. Both of the parameters are mandatory.</td>
     </tr>
     <tr>
+      <td><code>compose(function1 [, functionN]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Compose functions right to left. At least one function parameter is mandatory.</td>
+    </tr>    
+    <tr>
       <td><code>constant(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>A one time assignment function to create a constant value in ES5. This returns a function, which returns the given value. (In math: <code>f(x)=x</code>)</td>
     </tr>
@@ -490,6 +498,10 @@ globalThis.CEL = celestra;
     <tr>
       <td><code>createPolyfillProperty(object, property,value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function creates a writable, configurable and enumerable property with the given value in the object if the property doesn't exist in the object. The return value boolean and checks that the creating of the property was successful.</td>
+    </tr>
+    <tr>
+      <td><code>curry(function);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Curries a function, allowing it to be called with a single argument at a time and returning a new function that takes the next argument. The function parameter is mandatory.</td>
     </tr>
     <tr>
       <td><code>delay(ms).then(callback);</code></td>
@@ -504,10 +516,10 @@ CEL.delay(5000)
   .catch(console.log.bind(console))
   .finally(() => alert("done"));</pre>
 	    </td>
+    </tr>
     <tr>
       <td><code>deleteOwnProperty(object, property[,Throw = false]);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function deletes an own property in the given object. If Throw is true and the deleting was unsuccessful, then an error will be thrown.<br/><b>Return values:</b><br/>1 - The property was own and the delete was successful.<BR>0 - The property is own and the delete was unsuccessful.<br/>-1 - The property is not own or not exists.</td>
-    </tr>
     </tr>
     <tr>
       <td><code>extend([deep,]target,source1[,sourceN]);</code></td>
@@ -537,6 +549,18 @@ CEL.delay(5000)
     <tr>
       <td><code>obj2string(object);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>Convert object to a querystring. The return value is the string. The object parameter is mandatory.</td>
+    </tr>
+    <tr>
+      <td><code>omit(object, keys);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Exclude (filter) keys from an object and return these keys and values in a new object (immutably). All of the parameters are mandatory and the keys has to be an array.</td>
+    </tr>    
+    <tr>
+      <td><code>pick(object, keys);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Select (filter) keys from an object and return these keys and values in a new object (immutably). All of the parameters are mandatory and the keys has to be an array.</td>
+    </tr>
+    <tr>
+      <td><code>pipe(function1 [, functionN]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Compose functions left to right. At least one function parameter is mandatory.</td>
     </tr>
     <tr>
       <td><code>randomBoolean();</code></td>

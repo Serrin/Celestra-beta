@@ -157,7 +157,7 @@ var token6 = 0, token7 = 0, token8 = 0, token9 = 0, token10 = 0;
 var token11 = 0, token12 = 0, token13 = 0, token14 = 0, token15 = 0;
 
 
-/* Celestra v6.0.0 testcases */
+/* Celestra v6.0.1 testcases */
 
 
 /** Not auto tested functions **/
@@ -215,7 +215,43 @@ CUT.isEqual("WORDSAFEALPHABET;", CEL.WORDSAFEALPHABET,
 );
 
 
-/* crypto.randomUUID(); */
+/* curry(); */
+CUT.isEqual("curry();", 3, CEL.curry((a, b) => a +b)(1,2));
+
+
+/* pipe(); */
+CUT.isEqual("pipe();", 6, CEL.pipe((x) => x + 1, (x) => x * 2)(2));
+
+
+/* compose(); */
+CUT.isEqual("compose();", 6, CEL.compose((x) => x *2, (x) => x +1)(2));
+
+
+/* pick(); */
+token1 = {"a": 1, "b": 2, "c": 3, "d": 4};
+token2 = CEL.pick(token1, ["a", "b"]);
+CUT.isTrue("pick();",
+  token1 !== token2 && JSON.stringify(token2) === "{\"a\":1,\"b\":2}"
+);
+
+
+/* omit(); */
+token1 = {"a": 1, "b": 2, "c": 3, "d": 4};
+token2 = CEL.omit(token1, ["a", "b"]);
+CUT.isTrue("omit();",
+  token1 !== token2 && JSON.stringify(token2) === "{\"c\":3,\"d\":4}"
+);
+
+
+/* assoc(); */
+token1 = {"a": 1, "b": 2};
+token2 = CEL.assoc(token1, "b", 3);
+CUT.isTrue("assoc();",
+  token1 !== token2 && JSON.stringify(token2) === "{\"a\":1,\"b\":3}"
+);
+
+
+/* randomUUIDv7(); */
 token1 = CEL.randomUUIDv7();
 CUT.isTrue("randomUUIDv7(); - <code>\"" + token1 + "\"</code>",
   token1.length === 36

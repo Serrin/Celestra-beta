@@ -13,7 +13,7 @@
 
 __A helper JavaScript library with useful functions and polyfills and zero dependencies.__
 
-Latest version: 6.0.0
+Latest version: 6.0.1
 
 Date: 2025-08-14T23:27:03.482Z
 
@@ -253,15 +253,18 @@ Name | Description
 `BASE58;`|__Stability: 4 - Stable.__<BR>`"123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"`<BR>Can be used with the ID generator functions.|
 `BASE62;`|__Stability: 4 - Stable.__<BR>`"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"`<BR>Can be used with the ID generator functions.
 `WORDSAFEALPHABET;`|__Stability: 4 - Stable.__<BR>`"23456789CFGHJMPQRVWXcfghjmpqvwx"`<BR>Can be used with the ID generator functions.
+`assoc(object, key, value);`|__Stability: 4 - Stable.__<BR>Clone the original object (immutably) and return this new object with original keys and values and the given key and value.
 `asyncConstant(value);` | __Stability: 4 - Stable.__<BR>This function returns an async function, which returns a promise with the given value.
 `asyncIdentity(value);` | __Stability: 4 - Stable.__<BR>This async function returns a promise with the given value.
 `asyncF();` | __Stability: 4 - Stable.__<BR>This async function returns a promise with false value.
 `asyncNoop();` | __Stability: 4 - Stable.__<BR>This function does nothing and returns a resolved promise.
 `asyncT();` | __Stability: 4 - Stable.__<BR>This async function returns a promise with true value.
 `bind(function,context);` | __Stability: 4 - Stable.__<BR>Returns a function that is bound to a context. Both of the parameters are mandatory.
+`compose(function1 [, functionN]);`|__Stability: 4 - Stable.__<BR>Compose functions right to left. At least one function parameter is mandatory.
 `constant(value);` | __Stability: 4 - Stable.__<BR>A one time assignment function to create a constant value in ES5. This returns a function, which returns the given value. (In math: `f(x)=x`)
 `createPolyfillMethod(object,property,value);`| __Stability: 4 - Stable.__<BR>This function creates a writable, configurable and non-enumerable property with the given value in the object if the property doesn't exist in the object. The return value boolean and checks that the creating of the method was successful.<BR>__Example:__<BR> `CEL.createPolyfillMethod(Array.prototype, "at", function(...){...});`
 `createPolyfillProperty(object,property, value);`| __Stability: 4 - Stable.__<BR>This function creates a writable, configurable and enumerable property with the given value in the object if the property doesn't exist in the object. The return value boolean and checks that the creating of the property was successful.
+`curry(function);`|__Stability: 4 - Stable.__<BR>Curries a function, allowing it to be called with a single argument at a time and returning a new function that takes the next argument. The function parameter is mandatory.
 `delay(ms).then(callback);` | __Stability: 1 - Deprecated and will be removed.__<BR>A promise based delay function. The ms (milliseconds) parameter is mandatory and have to be an integer.<BR>__Sample:__<BR>`CEL.sleep(5000).then(() => alert("5 seconds")).catch(console.log.bind(console)).finally(() => alert("done"));`
 `deleteOwnProperty(object,property[,Throw = false]);`| __Stability: 4 - Stable.__<BR>This function deletes an own property in the given object. If Throw is true and the deleting was unsuccessful, then an error will be thrown.<BR>__Return values:__<BR>1 - The property was own and the delete was successful.<BR>0 - The property is own and the delete was unsuccessful.<BR>-1 - The property is not own or not exists.
 `extend([deep,]target,source1[,sourceN]);` | __Stability: 4 - Stable.__<BR>This is an enhanced version of the `Object.assign` method. The deep parameter (boolean) is optional and sets the deep copy (recursive) of the sources.
@@ -271,6 +274,9 @@ Name | Description
 `nanoid([size=21[,alphabet= "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"]]);` | __Stability: 4 - Stable.__<BR>Generate a nanoid. The size parameter is optional and the default value is 21. The alphabet parameter is optional and the default value is "A-Za-z0-9_-". The return value is the generated nanoid (string).
 `noop();` | __Stability: 4 - Stable.__<BR>It's an empty function (no operation) that returns undefined and usable for optional callback arguments.
 `obj2string(object);` | __Stability: 4 - Stable.__<BR>Convert object to a querystring. The return value is the string. The object parameter is mandatory.
+`omit(object, keys);`|__Stability: 4 - Stable.__<BR>Exclude (filter) keys from an object and return these keys and values in a new object (immutably). All of the parameters are mandatory and the keys has to be an array.
+`pick(object, keys);`|__Stability: 4 - Stable.__<BR>Select (filter) keys from an object and return these keys and values in a new object (immutably). All of the parameters are mandatory and the keys has to be an array.
+`pipe(function1 [, functionN]);`|__Stability: 4 - Stable.__<BR>Compose functions left to right. At least one function parameter is mandatory.
 `randomBoolean();` | __Stability: 4 - Stable.__<BR>Get a random boolean value. The return value is `true` or `false`.
 `randomUUIDv7();` | __Stability: 4 - Stable.__<BR>This function returns a UUID v7, which cointains a timestamp too. For more information please read the [this page](https://www.rfc-editor.org/rfc/rfc9562.html#name-uuid-version-7)!<BR>Example result: `"0195d74b-b8c8-7302-a7d3-919df45087f3"`
 `sizeIn(object);` | __Stability: 4 - Stable.__<BR>Returns the count of the owned properties and symbols of the given object. The object parameter is mandatory. The return value is an integer.
