@@ -583,6 +583,10 @@ CEL.delay(5000)
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns true.</td>
     </tr>
     <tr>
+      <td><code>tap(function): function(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This functions returns a new function, which runs the given function with the value parameter, then returns the value. Usable for testing and logging. All of the parameters are mandatory.</td>
+    </tr>
+    <tr>
       <td><code>timestampID([size=21[,alphabet="123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"]]);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>Generate a timestamp based sortable ID. The size parameter is optional and the default value is 21, but if the given value smaller than 12, then the value will be 12. The alphabet parameter is optional and the default value is <code>"123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"</code>, same as BASE58. The return value is the generated id (string).<br/>Example ID: <code>"00lirtqi4e-wgGn8vGPyY"</code></td>
     </tr>

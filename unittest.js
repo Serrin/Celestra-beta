@@ -215,6 +215,13 @@ CUT.isEqual("WORDSAFEALPHABET;", CEL.WORDSAFEALPHABET,
 );
 
 
+/* tap(); */
+token1 = {"a": 1};
+CUT.isTrue("tap();",
+  CEL.tap((x) => x.a += 1)(token1) === token1 && token1.a === 2
+);
+
+
 /* once(); */
 token1 = CEL.once((v) => v + 1);
 CUT.isEqual("once();", 4, token1(1) + token1(2));
@@ -1113,7 +1120,7 @@ CUT.isEqual("assertNotTypeOf(); 07", token2,
   CEL.assertNotTypeOf(token2, "number")
 );
 CUT.isError("assertNotTypeOf(); 08", () => CEL.assertNotTypeOf(token3, Map));
-CUT.isError("assertNotTypeOf(); 09", 
+CUT.isError("assertNotTypeOf(); 09",
   () => CEL.assertNotTypeOf(token3, Map, new Error("ipsum"))
 );
 
@@ -1269,7 +1276,7 @@ CUT.isError("assertNotStrictEqual(); 04 error",
   () => CEL.assertNotStrictEqual(42, 42, "assertNotStrictEqual(); 04 error")
 );
 CUT.isTrue("assertNotStrictEqual(); 05", CEL.assertNotStrictEqual(42, "42"));
-CUT.isTrue("assertNotStrictEqual(); 05", 
+CUT.isTrue("assertNotStrictEqual(); 05",
   CEL.assertNotStrictEqual(42, "42", new Error("ipsum"))
 );
 

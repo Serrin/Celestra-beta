@@ -299,6 +299,13 @@ const BASE62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 const WORDSAFEALPHABET= "23456789CFGHJMPQRVWXcfghjmpqvwx"; /* 31 */
 
 
+/* tap(function: function): function(v) */
+const tap = (fn) => function (v) {
+  fn(v);
+  return v;
+};
+
+
 /* once(function: function): function */
 function once (fn) {
   let called = false, res;
@@ -3299,6 +3306,7 @@ const celestra = {
   BASE58,
   BASE62,
   WORDSAFEALPHABET,
+  tap,
   once,
   curry,
   pipe,
