@@ -299,6 +299,19 @@ const BASE62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 const WORDSAFEALPHABET= "23456789CFGHJMPQRVWXcfghjmpqvwx"; /* 31 */
 
 
+/* once(function: function): function */
+function once (fn) {
+  let called = false, res;
+  return function (...a) {
+    if (!called) {
+      called = true;
+      res = fn(...a);
+    }
+    return res;
+  };
+}
+
+
 /* curry (function: function): function */
 const curry = (fn) => (...a) =>
   a.length >= fn.length ? fn(...a) : (...rest) => r(...a, ...rest);
@@ -3286,6 +3299,7 @@ const celestra = {
   BASE58,
   BASE62,
   WORDSAFEALPHABET,
+  once,
   curry,
   pipe,
   compose,

@@ -215,6 +215,11 @@ CUT.isEqual("WORDSAFEALPHABET;", CEL.WORDSAFEALPHABET,
 );
 
 
+/* once(); */
+token1 = CEL.once((v) => v + 1);
+CUT.isEqual("once();", 4, token1(1) + token1(2));
+
+
 /* curry(); */
 CUT.isEqual("curry();", 3, CEL.curry((a, b) => a +b)(1,2));
 

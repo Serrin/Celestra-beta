@@ -457,7 +457,7 @@ globalThis.CEL = celestra;
     <tr>
       <td><code>assoc(object, key, value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>Clone the original object (immutably) and return this new object with original keys and values and the given key and value.</td>
-    </tr>    
+    </tr>
     <tr>
       <td><code>asyncConstant(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns an async function, which returns a promise with the given value.</td>
@@ -485,7 +485,7 @@ globalThis.CEL = celestra;
     <tr>
       <td><code>compose(function1 [, functionN]);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>Compose functions right to left. At least one function parameter is mandatory.</td>
-    </tr>    
+    </tr>
     <tr>
       <td><code>constant(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>A one time assignment function to create a constant value in ES5. This returns a function, which returns the given value. (In math: <code>f(x)=x</code>)</td>
@@ -553,7 +553,11 @@ CEL.delay(5000)
     <tr>
       <td><code>omit(object, keys);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>Exclude (filter) keys from an object and return these keys and values in a new object (immutably). All of the parameters are mandatory and the keys has to be an array.</td>
-    </tr>    
+    </tr>
+    <tr>
+      <td><code>once(function);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Ensures a function is only called once. The return value is a new function. The function parameter is mandatory.</td>
+    </tr>
     <tr>
       <td><code>pick(object, keys);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>Select (filter) keys from an object and return these keys and values in a new object (immutably). All of the parameters are mandatory and the keys has to be an array.</td>

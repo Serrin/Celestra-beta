@@ -275,6 +275,7 @@ Name | Description
 `noop();` | __Stability: 4 - Stable.__<BR>It's an empty function (no operation) that returns undefined and usable for optional callback arguments.
 `obj2string(object);` | __Stability: 4 - Stable.__<BR>Convert object to a querystring. The return value is the string. The object parameter is mandatory.
 `omit(object, keys);`|__Stability: 4 - Stable.__<BR>Exclude (filter) keys from an object and return these keys and values in a new object (immutably). All of the parameters are mandatory and the keys has to be an array.
+`once(functions);`|__Stability: 4 - Stable.__<BR>Ensures a function is only called once. The return value is a new function. The function parameter is mandatory.
 `pick(object, keys);`|__Stability: 4 - Stable.__<BR>Select (filter) keys from an object and return these keys and values in a new object (immutably). All of the parameters are mandatory and the keys has to be an array.
 `pipe(function1 [, functionN]);`|__Stability: 4 - Stable.__<BR>Compose functions left to right. At least one function parameter is mandatory.
 `randomBoolean();` | __Stability: 4 - Stable.__<BR>Get a random boolean value. The return value is `true` or `false`.
