@@ -6840,7 +6840,7 @@ Array.fromAsync({"0": 3, "1": 4, "2": 5, length: 3}, (x) => x * 2).then((res) =>
 /* AJAX API */
 /*
 XML Parsing Error: not well-formed
-Location: testdata.json
+Location: unittest-data.json
 Line Number 1, Column 1:
 -> MIME Content-Type: application/json can fix it
 */
@@ -6851,27 +6851,27 @@ token2 = "<p><span class=\"big\">Lorem ipsum dolor sit amet, consectetuer adipis
 
 
 /* getText(); */
-CEL.getText("testdata.txt",
+CEL.getText("unittest-data.txt",
   function(r){ CUT.isEqual("getText();", token2, r); }
 );
 
 
 /* getJson(); */
-CEL.getJson("testdata.json",
+CEL.getJson("unittest-data.json",
   function (r) { CUT.isEqual("getJson();", token1, r.testArray[0].image); }
 );
 
 
 /* ajax begin */
 CEL.ajax({
-  queryType: "ajax", type: "get", url: "testdata.txt", format: "text",
+  queryType: "ajax", type: "get", url: "unittest-data.txt", format: "text",
   success: function(r){ CUT.isEqual("ajax(); ajax get text", token2, r); },
   error: function (e) {
     CUT.isTrue("ajax(); ajax 1 get text: " + JSON.stringify(e), false);
   }
 });
 CEL.ajax({
-  queryType: "ajax", type: "get", url: "testdata.json", format: "json",
+  queryType: "ajax", type: "get", url: "unittest-data.json", format: "json",
   success: function (r) {
     CUT.isEqual("ajax(); ajax get json", token1, r.testArray[0].image);
   },
@@ -6880,7 +6880,7 @@ CEL.ajax({
   }
 });
 CEL.ajax({
-  queryType: "ajax", type: "get", url: "testdata.xml", format: "xml",
+  queryType: "ajax", type: "get", url: "unittest-data.xml", format: "xml",
   success: function (r) {
     var xa = r.getElementsByTagName("picture");
     var xb = xa[0].getElementsByTagName("title")[0].childNodes[0].nodeValue;
@@ -6892,7 +6892,7 @@ CEL.ajax({
 });
 
 CEL.ajax({
-  queryType: "ajax", type: "post", url: "testdata.txt", format: "text",
+  queryType: "ajax", type: "post", url: "unittest-data.txt", format: "text",
   data: "a=foo&b=bar baz",
   success: function (r) { CUT.isEqual("ajax(); ajax post text", token2, r);},
   error: function (e) {
@@ -6900,7 +6900,7 @@ CEL.ajax({
   }
 });
 CEL.ajax({
-  queryType: "ajax", type: "post", url: "testdata.json", format: "json",
+  queryType: "ajax", type: "post", url: "unittest-data.json", format: "json",
   data: "a=foo&b=bar baz",
   success: function (r) {
     CUT.isEqual("ajax(); ajax post json", token1, r.testArray[0].image);
@@ -6910,7 +6910,7 @@ CEL.ajax({
   }
 });
 CEL.ajax({
-  queryType: "ajax", type: "post", url: "testdata.xml", format: "xml",
+  queryType: "ajax", type: "post", url: "unittest-data.xml", format: "xml",
   data: "a=foo&b=bar baz",
   success: function (r) {
     var xa = r.getElementsByTagName("picture");
@@ -6923,14 +6923,14 @@ CEL.ajax({
 });
 
 CEL.ajax({
-  queryType: "cors", type: "get", url: "testdata.txt", format: "text",
+  queryType: "cors", type: "get", url: "unittest-data.txt", format: "text",
   success: function (r) { CUT.isEqual("ajax(); cors get text", token2, r);},
   error: function (e) {
     CUT.isTrue("ajax(); cors get text: " + JSON.stringify(e), false);
   }
 });
 CEL.ajax({
-  queryType: "cors", type: "get", url: "testdata.json", format: "json",
+  queryType: "cors", type: "get", url: "unittest-data.json", format: "json",
   success: function (r) {
     CUT.isEqual("ajax(); cors get json", token1, r.testArray[0].image);
   },
@@ -6939,7 +6939,7 @@ CEL.ajax({
   }
 });
 CEL.ajax({
-  queryType: "cors", type: "get", url: "testdata.xml", format: "xml",
+  queryType: "cors", type: "get", url: "unittest-data.xml", format: "xml",
   success: function (r) {
     var xa = r.getElementsByTagName("picture");
     var xb = xa[0].getElementsByTagName("title")[0].childNodes[0].nodeValue;
@@ -6951,7 +6951,7 @@ CEL.ajax({
 });
 
 CEL.ajax({
-  queryType: "cors", type: "post", url: "testdata.txt", format: "text",
+  queryType: "cors", type: "post", url: "unittest-data.txt", format: "text",
   data: "a=foo&b=bar baz",
   success: function (r) {
     CUT.isEqual("ajax(); cors post text", token2, r);
@@ -6961,7 +6961,7 @@ CEL.ajax({
   }
 });
 CEL.ajax({
-  queryType: "cors", type: "post", url: "testdata.json", format: "json",
+  queryType: "cors", type: "post", url: "unittest-data.json", format: "json",
   data: "a=foo&b=bar baz",
   success: function (r) {
     CUT.isEqual("ajax(); cors post json", token1, r.testArray[0].image);
@@ -6971,7 +6971,7 @@ CEL.ajax({
   }
 });
 CEL.ajax({
-  queryType: "cors", type: "post", url: "testdata.xml", format: "xml",
+  queryType: "cors", type: "post", url: "unittest-data.xml", format: "xml",
   data: "a=foo&b=bar baz",
   success: function (r) {
     var xa = r.getElementsByTagName("picture");
