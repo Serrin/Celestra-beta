@@ -9,6 +9,35 @@
 # Celestra version history
 
 
+## Celestra v6.0.1
+
+1. Documentation and pdf fixes.
+
+2. Rename these files:
+
+Old name | New name
+---------|-----------
+tesdata.json | unittest-data.json
+testdata.txt| unittest-data.txt
+testdata.xml | unittest-data.xml
+testmodule1.css | unittest-module1.css
+testmodule1.js| unittest-module1.js
+testmodule2.css | unittest-module2.css
+testmodule2.js| unittest-module2.js
+
+3. Add these FP functions:
+````javascript
+assoc();
+compose();
+curry();
+omit();
+once();
+pick();
+pipe();
+tap();
+````
+
+
 ## Celestra v6.0.0 David
 
 1. Documentation and pdf fixes.

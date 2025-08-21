@@ -1,14 +1,14 @@
 "use strict";
 
-// import method 1 - defaultExport
-
+/* import method 1 - defaultExport */
+// /*
 console.log("import method 1 - defaultExport");
 import defaultExport from "./celestra.node.mjs";
 globalThis.celestra = defaultExport;
 globalThis.CEL = defaultExport;
+//*/
 
-
-// import method 2 -  default as celestra
+/* import method 2 - default as celestra */
 /*
 console.log("import method 2 - default as celestra");
 import { default as celestra } from "./celestra.node.mjs";
@@ -16,7 +16,7 @@ globalThis.celestra = celestra;
 globalThis.CEL = celestra;
 */
 
-// import method 3 - import *  as celestra
+/* import method 3 - import *  as celestra */
 /*
 console.log("import method 3 - import * as celestra");
 import * as celestra from "./celestra.node.mjs";
@@ -262,7 +262,7 @@ CUT.isEqual("WORDSAFEALPHABET;", CEL.WORDSAFEALPHABET,
 
 /* tap(); */
 token1 = {"a": 1};
-CUT.isTrue("tap();", 
+CUT.isTrue("tap();",
   CEL.tap((x) => x.a += 1)(token1) === token1 && token1.a === 2
 );
 

@@ -300,10 +300,7 @@ const WORDSAFEALPHABET= "23456789CFGHJMPQRVWXcfghjmpqvwx"; /* 31 */
 
 
 /* tap(function: function): function(v) */
-const tap = (fn) => function (v) {
-  fn(v);
-  return v;
-};
+const tap = (fn) => function (v) { fn(v); return v; };
 
 
 /* once(function: function): function */
@@ -2318,10 +2315,9 @@ const isChar = (v) =>
 
 
 /* isNumeric(value: any): boolean */
-const isNumeric = (v) => (
-  ((typeof v === "number" || typeof v === "bigint") && v === v)
-    ? true : (!isNaN(parseFloat(v)) && isFinite(v))
-);
+const isNumeric = (v) =>
+  (((typeof v === "number" || typeof v === "bigint") && v === v)
+    ? true : (!isNaN(parseFloat(v)) && isFinite(v)));
 
 
 /* isObject(value: any): boolean */
@@ -2373,15 +2369,13 @@ const isRegexp = (v) => (v instanceof RegExp);
 
 
 /* isElement(value: any): boolean */
-const isElement = (v) => (
-  v != null && typeof v === "object" && v.nodeType === 1
-);
+const isElement = (v) =>
+  (v != null && typeof v === "object" && v.nodeType === 1);
 
 
 /* isIterable(value: any): boolean */
-const isIterable = (v) => (
-  v != null && typeof v[Symbol.iterator] === "function"
-);
+const isIterable = (v) =>
+  (v != null && typeof v[Symbol.iterator] === "function");
 
 
 /* isTypedArray(value: any): boolean */
@@ -2460,9 +2454,8 @@ function getCookie (name) {
 
 
 /* hasCookie(name: string): boolean */
-const hasCookie = (n) => (
-  document.cookie.includes(encodeURIComponent(n) + "=")
-);
+const hasCookie = (n) =>
+  (document.cookie.includes(encodeURIComponent(n) + "="));
 
 
 /* removeCookie(Options object);: boolean */
