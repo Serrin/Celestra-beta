@@ -217,7 +217,7 @@ var token6 = 0, token7 = 0, token8 = 0, token9 = 0, token10 = 0;
 var token11 = 0, token12 = 0, token13 = 0, token14 = 0, token15 = 0;
 
 
-/* Celestra v6.0.1 testcases */
+/* Celestra v6.0.2 testcases */
 
 
 /** Not auto tested functions **/

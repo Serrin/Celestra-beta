@@ -1,6 +1,6 @@
 /**
  * @name Celestra
- * @version 6.0.1 dev
+ * @version 6.0.2 dev
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
@@ -317,8 +317,13 @@ function once (fn) {
 
 
 /* curry (function: function): function */
-const curry = (fn) => (...a) =>
-  a.length >= fn.length ? fn(...a) : (...rest) => r(...a, ...rest);
+function curry (fn) {
+  const curried = (...args) =>
+    args.length >= fn.length
+      ? fn(...args)
+      : (...rest) => curried(...args, ...rest);
+  return curried;
+}
 
 
 /* pipe (function1:function [, functionN: function]): function */
@@ -2321,12 +2326,12 @@ const isNumeric = (v) =>
 
 
 /* isObject(value: any): boolean */
-const isObject = (v) =>
-  (v != null && (typeof v === "object" || typeof v === "function"));
+const isObject = (O) =>
+  (O != null && (typeof O === "object" || typeof O === "function"));
 
 
 /* isFunction(value: any): boolean */
-const isFunction = (O) => (typeof v === "function" ||
+const isFunction = (O) => (typeof O === "function" ||
   Object.prototype.toString.call(O) === "[object Function]");
 
 
@@ -3281,7 +3286,7 @@ const inRange = (v, min, max) => (v >= min && v <= max);
 /** object header **/
 
 
-const VERSION = "Celestra v6.0.1 dev";
+const VERSION = "Celestra v6.0.2 dev";
 
 
 /* celestra.noConflict(): celestra object */

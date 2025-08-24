@@ -9,6 +9,15 @@
 # Celestra version history
 
 
+## Celestra v6.0.2
+
+1. Documentation and pdf fixes.
+
+2. Fix these functions:
+- `curry();`
+- `isFunction();`
+
+
 ## Celestra v6.0.1
 
 1. Documentation and pdf fixes.

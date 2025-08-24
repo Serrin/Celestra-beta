@@ -1,5 +1,5 @@
 "use strict";
-/** Celestra * @version 6.0.1 esm * @see https://github.com/Serrin/Celestra/ * @license MIT */
+/** Celestra * @version 6.0.2 esm * @see https://github.com/Serrin/Celestra/ * @license MIT */
 /** polyfills **/
 (function(global){if(!global.globalThis){if(Object.defineProperty){Object.defineProperty(global,"globalThis",{configurable:true,enumerable:false,value:global,writable:true});}else{global.globalThis=global;}}})(typeof this==="object"?this:Function("return this")());
 if(!("sumPrecise" in Math)){Math.sumPrecise=function sumPrecise([...a]){if(a.length===0){return-0;}if(a.every((v)=>typeof v==="number")){let inf=a.indexOf(Infinity)>-1,negInf=a.indexOf(-Infinity)>-1;if(a.some((v)=>v!==v)||(inf&&negInf)){return NaN;}if(inf){return Infinity;}if(negInf){return -Infinity;}let hi=a.filter((v)=>(v===1e20||v===-1e20)).reduce((acc,v)=>acc+v,0);let lo=0.0,c=0.0;for(let item of a.filter((v)=>(v!==1e20&&v!==-1e20))){let y=item-c;let t=lo+y;c=(t-lo)-y;lo=t;}if((lo===0&&hi!==0)||(lo>0&&hi>0)||(lo<0&&hi<0)){return hi;}if((lo>0&&hi<0)||(lo<0&&hi>0)){return lo+hi;}return lo;}throw new TypeError("values passed to Math.sumPrecise must be numbers");};}
@@ -28,7 +28,7 @@ const BASE62="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 const WORDSAFEALPHABET="23456789CFGHJMPQRVWXcfghjmpqvwx";
 const tap=(fn)=>function(v){fn(v);return v;};
 function once(fn){let called=false,res;return function(...a){if(!called){called=true;res=fn(...a);}return res;};}
-const curry=(fn)=>(...a)=>a.length>=fn.length?fn(...a):(...rest)=>r(...a,...rest);
+function curry(fn){const curried=(...args)=>args.length>=fn.length?fn(...args):(...rest)=>curried(...args,...rest);return curried;}
 const pipe=(...fns)=>(x)=>fns.reduce((v,f)=>f(v),x);
 const compose=(...fns)=>(x)=>fns.reduceRight((v,f)=>f(v),x);
 const pick=(O,keys)=>keys.reduce(function(acc,key){if(key in O){acc[key]=O[key];}return acc;},{});
@@ -161,8 +161,8 @@ const isClass=(v)=>(typeof v==="function"&&typeof v.prototype==="object");
 const isPlainObject=(v)=>(v!=null&&typeof v==="object"&&(Object.getPrototypeOf(v)===Object.prototype||Object.getPrototypeOf(v)===null));
 const isChar=(v)=>(typeof v==="string"&&(v.length===1||Array.from(v).length===1));
 const isNumeric=(v)=>(((typeof v==="number"||typeof v==="bigint")&& v===v)?true:(!isNaN(parseFloat(v)))&&isFinite(v));
-const isObject=(v)=>(v!=null&&(typeof v==="object"||typeof v==="function"));
-const isFunction=(O)=>(typeof v==="function"||Object.prototype.toString.call(O)==="[object Function]");
+const isObject=(O)=>(O!=null&&(typeof O==="object"||typeof O==="function"));
+const isFunction=(O)=>(typeof O==="function"||Object.prototype.toString.call(O)==="[object Function]");
 const isCallable=(O)=>((O!=null&&["object","function"].includes(typeof O))?(typeof O.call==="function"):false);
 const isArraylike=(v)=>((typeof v==="object"||typeof v==="string")&&v!=null&&typeof v.length==="number"&&v.length>=0&&v.length%1===0);
 const isNull=(v)=>(v===null);
@@ -281,7 +281,7 @@ function randomInt(i=100,a){if(a==null){a=i;i=0;}i=Math.ceil(Number(i));return M
 function randomFloat(i=100,a){if(a==null){a=i;i=0;}var r=(Math.random()*(a-i+1))+i;return r>a?a:r;}
 const inRange=(v,min,max)=>(v>=min&&v<=max);
 /** object header **/
-const VERSION="Celestra v6.0.1 esm";
+const VERSION="Celestra v6.0.2 esm";
 function noConflict(){return celestra;}
 const celestra={/** object header **/ VERSION, noConflict, /** Core API **/ BASE16, BASE32, BASE36, BASE58, BASE62, WORDSAFEALPHABET, tap, once, curry, pipe, compose, pick, omit, assoc, asyncNoop, asyncT, asyncF, asyncConstant, asyncIdentity, deleteOwnProperty, toObject, createPolyfillMethod, createPolyfillProperty, randomUUIDv7, delay, randomBoolean, getUrlVars, obj2string, extend, sizeIn, unBind, bind, constant, identity, noop, T, F, nanoid, timestampID, /** Assertion API **/ assertFail, assertMatch, assertDoesNotMatch, assertThrows, assertIsNotNil, assertIsNil, assertTypeOf, assertNotTypeOf, assertInstanceOf, assertNotInstanceOf, assert, assertTrue, assertFalse, assertEqual, assertStrictEqual, assertNotEqual, assertNotStrictEqual, assertDeepEqual, assertNotDeepStrictEqual, assertNotDeepEqual, assertDeepStrictEqual, /** String API **/ b64Encode, b64Decode, strTruncate, strPropercase, strTitlecase, strCapitalize, strUpFirst, strDownFirst, strReverse, strCodePoints, strFromCodePoints, strAt, strSplice, strHTMLRemoveTags, strHTMLEscape, strHTMLUnEscape, /** DOM API **/ qsa, qs, domReady, domCreate, domToElement, domGetCSS, domSetCSS, domFadeIn, domFadeOut, domFadeToggle, domHide, domShow, domToggle, domIsHidden, domSiblings, domSiblingsPrev, domSiblingsLeft, domSiblingsNext, domSiblingsRight, importScript, importStyle, form2array, form2string, getDoNotTrack, getLocation, createFile, getFullscreen, setFullscreenOn, setFullscreenOff, domGetCSSVar, domSetCSSVar, domScrollToTop, domScrollToBottom, domScrollToElement, domClear, /** AJAX API **/ getText, getJson, ajax, /** Type API **/ classof, getType, toPrimitiveValue, isPropertyKey, toPropertyKey, isIndex, isLength, toIndex, toLength, type, isSameClass, isSameType, isSameInstance, isCoercedObject, isDeepStrictEqual, isEmptyValue, isProxy, isAsyncGeneratorFn, isClass, isPlainObject, isChar, isNumeric, isObject, isFunction, isCallable, isArraylike, isNull, isUndefined, isNil, isPrimitive, isIterator, isRegexp, isElement, isIterable, isTypedArray, isGeneratorFn, isAsyncFn, /** Cookie API **/ setCookie, getCookie, hasCookie, removeCookie, clearCookies, /** Collections API **/ unique, count, arrayDeepClone, initial, shuffle, partition, setUnion, setIntersection, setDifference, setSymmetricDifference, isSuperset, min, max, arrayRepeat, arrayCycle, arrayRange, zip, unzip, zipObj, arrayAdd, arrayClear, arrayRemove, arrayRemoveBy, arrayMerge, iterRange, iterCycle, iterRepeat, takeWhile, dropWhile, take, drop, forEach, forEachRight, map, filter, reject, slice, tail, item, nth, size, first, head, last, reverse, sort, includes, contains, find, findLast, every, some, none, takeRight, takeRightWhile, dropRight, dropRightWhile, concat, reduce, enumerate, flat, join, withOut, /** Math API **/ isFloat, toInteger, toIntegerOrInfinity, sum, avg, product, clamp, minmax, isEven, isOdd, toInt8, toUInt8, toInt16, toUInt16, toInt32, toUInt32, toBigInt64, toBigUInt64, toFloat32, isInt8, isUInt8, isInt16, isUInt16, isInt32, isUInt32, isBigInt64, isBigUInt64, toFloat16, isFloat16, signbit, randomInt, randomFloat, inRange};
 /* ESM */
