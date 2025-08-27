@@ -1,6 +1,6 @@
 /**
  * @name Celestra
- * @version 6.0.2 dev
+ * @version 6.0.3 dev
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
@@ -381,13 +381,6 @@ function deleteOwnProperty (O, P, Throw = false) {
     return +!r;
   }
   return -1;
-}
-
-
-/* toObject(value: any): object | symbol | function | thrown error */
-function toObject (O) {
-  if (O == null) { throw new TypeError("celestra.toObject(); error: " + O); }
-  return (["object", "function"].includes(typeof O)) ? O : Object(O);
 }
 
 
@@ -2017,6 +2010,63 @@ function ajax (o) {
 /** Type API **/
 
 
+/* is (
+    value: any,
+    expected: string | function | array<string | function> | undefined,
+    Throw: boolean = false
+  ): string | function | boolean | throw TypeError */
+function is (value, expected, Throw = false) {
+  /* validate expected */
+  if (!(["string", "function", "undefined"].includes(typeof expected))
+    && !Array.isArray(expected)) {
+    throw new TypeError(
+      "is(); TypeError: expectedType has to be a string, function, array or undefined"
+    );
+  }
+  /* validate Throw */
+  if (typeof Throw !== "boolean") {
+    throw new TypeError("is(); TypeError: Throw has to be a boolean");
+  }
+  /* if expected is empty then return primitive type or constructor */
+  const vType = (value === null ? "null" : typeof value);
+  if (expected == null) {
+    return vType === "object"
+      ? Object.getPrototypeOf(value)?.constructor ?? "object"
+      : vType;
+  }
+  /* check expected types and constructors */
+  let expectedArray = Array.isArray(expected) ? expected : [expected];
+  let matched = expectedArray.some(
+    function (item) {
+      if (typeof item === "string") { return vType === item; }
+      if (typeof item === "function") {
+        return value != null && value instanceof item;
+      }
+      /* validate expected array elements */
+      throw new TypeError(
+        "is(); TypeError: expectedType array elements have to be a string or function"
+      );
+    }
+  );
+  /* throw TypeError if not matched or return the matched result */
+  if (Throw && !matched) {
+    let vName = value.toString ? value : Object.prototype.toString.call(value);
+    let eNames = expectedArray.map( (item) =>
+      (typeof item === "string" ? item.toString() : item.name ?? "anonymous")
+    ).join(", ");
+    throw new TypeError(`is(); TypeError: ${vName} is not a ${eNames}`);
+  }
+  return matched;
+}
+
+
+/* toObject(value: any): object | symbol | function | thrown error */
+function toObject (O) {
+  if (O == null) { throw new TypeError("celestra.toObject(); error: " + O); }
+  return (["object", "function"].includes(typeof O)) ? O : Object(O);
+}
+
+
 /* classof(variable: any): string */
 /* classof(variable: any [, type: string [, throw =false]]): boolean | throw */
 function classof (v, type, Throw = false) {
@@ -3286,7 +3336,7 @@ const inRange = (v, min, max) => (v >= min && v <= max);
 /** object header **/
 
 
-const VERSION = "Celestra v6.0.2 dev";
+const VERSION = "Celestra v6.0.3 dev";
 
 
 /* celestra.noConflict(): celestra object */
@@ -3318,7 +3368,6 @@ const celestra = {
   asyncConstant,
   asyncIdentity,
   deleteOwnProperty,
-  toObject,
   createPolyfillMethod,
   createPolyfillProperty,
   randomUUIDv7,
@@ -3417,6 +3466,8 @@ const celestra = {
   getJson,
   ajax,
   /** Type API **/
+  is,
+  toObject,
   classof,
   getType,
   toPrimitiveValue,

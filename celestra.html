@@ -97,7 +97,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
 
 <p><b>A helper JavaScript library with useful functions and polyfills and zero dependencies.</b></p>
 
-<p>Latest version: 6.0.2</p>
+<p>Latest version: 6.0.3</p>
 <p>Date: Date: 2025-08-24T18:42:54.355Z</p>
 
 <p><b>Tested on these:</b></p>
@@ -591,10 +591,6 @@ CEL.delay(5000)
       <td><span class="info">Stability: 4 - Stable.</span><br/>Generate a timestamp based sortable ID. The size parameter is optional and the default value is 21, but if the given value smaller than 12, then the value will be 12. The alphabet parameter is optional and the default value is <code>"123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"</code>, same as BASE58. The return value is the generated id (string).<br/>Example ID: <code>"00lirtqi4e-wgGn8vGPyY"</code></td>
     </tr>
     <tr>
-      <td><code>toObject(value);</code></td>
-      <td>If the given value is not null or undefined, then the return value is an object, which has been converted from the value, else a <code>TypeError()</code> will be throwned.<br/>If the given value is an object, function or symbol, then the original value will return.</td>
-    </tr>
-    <tr>
       <td><code>unBind(function);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v5.4.1: <code>toFunction</code>.</span><br/>Returns an unbinded function from an object method. The function parameter is mandatory.</td>
     </tr>
@@ -1064,11 +1060,15 @@ CEL.delay(5000)
     </tr>
     <tr>
       <td><code>classof(value[,class[,throw=false]]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Get the real type of a value. If this is an object, then the return value is the detailed object type (e.g.: array). If the class (string) parameter is given, then the return value (boolean) is the equality of the type of the value and the second parameter. If the third parameter (boolean) is true and the type of the value and the second parameter aren't equals, then the function is throwing a <code>TypeError();</code>, else the return value is true.</td>
+      <td><p><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>Get the real type of a value. If this is an object, then the return value is the detailed object type (e.g.: array). If the class (string) parameter is given, then the return value (boolean) is the equality of the type of the value and the second parameter. If the third parameter (boolean) is true and the type of the value and the second parameter aren't equals, then the function is throwing a <code>TypeError();</code>, else the return value is true.</td>
     </tr>
     <tr>
       <td><code>getType(value[,class[,throw=false]]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This is an alias of the <code>classof(value[,class[,throw=false]]);</code>.</td>
+      <td><p><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This is an alias of the <code>classof(value[,class[,throw=false]]);</code>.</td>
+    </tr>
+    <tr>
+      <td><code>is(value[,expectedType[,Throw=false]];</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value type or class is the given expectedType. The expectedType can be a type string, constructor function or an array of the type strings and constructors. If the Throw is true and the value is not matched with the expectedType, then a TypeError will be thrown with detailed error message. The return value is boolean or the type or constructor of the value.</td>
     </tr>
     <tr>
       <td><code>isArraylike(value);</code></td>
@@ -1179,7 +1179,7 @@ CEL.delay(5000)
     </tr>
     <tr>
       <td><code>isSameClass(value1, value2);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns true if the values are same class and uses the <code>Object.prototype.toString();</code> method. The parameters are mandatory. The return value is boolean.</td>
+      <td><p><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function returns true if the values are same class and uses the <code>Object.prototype.toString();</code> method. The parameters are mandatory. The return value is boolean.</td>
     </tr>
     <tr>
       <td><code>isSameInstance(value1, value2,Contructor);</code></td>
@@ -1205,6 +1205,10 @@ CEL.delay(5000)
       <td><code>toLength(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function converts the provided value to a valid arraylike length number. The return value is an unsigned integer (number).</td>
     </tr>
+    <tr>
+      <td><code>toObject(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>If the given value is not null or undefined, then the return value is an object, which has been converted from the value, else a <code>TypeError()</code> will be throwned.<br/>If the given value is an object, function or symbol, then the original value will return.</td>
+    </tr>    
     <tr>
       <td><code>toPrimitiveValue(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>

@@ -157,7 +157,7 @@ var token6 = 0, token7 = 0, token8 = 0, token9 = 0, token10 = 0;
 var token11 = 0, token12 = 0, token13 = 0, token14 = 0, token15 = 0;
 
 
-/* Celestra v6.0.2 testcases */
+/* Celestra v6.0.3 testcases */
 
 
 /** Not auto tested functions **/
@@ -213,6 +213,96 @@ CUT.isEqual("BASE62;", CEL.BASE62,
 CUT.isEqual("WORDSAFEALPHABET;", CEL.WORDSAFEALPHABET,
   "23456789CFGHJMPQRVWXcfghjmpqvwx"
 );
+
+
+/* is(); begin */
+CUT.isTrue("is(); ES5 values",
+  CEL.is([1, 2, 3]) === Array
+    && CEL.is(1998) === "number"
+    && CEL.is("hello world") === "string"
+    && CEL.is({a:1,b:2}) === Object
+    && CEL.is(document) === HTMLDocument
+    && CEL.is(true) === "boolean"
+    && CEL.is(document.querySelectorAll("p")) === NodeList
+    && CEL.is(CEL.qs("p")) === HTMLParagraphElement
+    && CEL.is(null) === "null"
+    && CEL.is(undefined) === "undefined"
+    && CEL.is(function () {}) === "function"
+    && CEL.is(new Date()) === Date
+    && CEL.is(/^\[object (.+)\]$/g) === RegExp
+);
+CUT.isTrue("is(); ES5 true",
+  CEL.is([1, 2, 3], "array")
+    || CEL.is(1998, "number")
+    || CEL.is("hello world", "string")
+    || CEL.is({ a: 1, b: 2}, Object)
+    || CEL.is(document, HTMLDocument)
+    || CEL.is(true, "boolean")
+    || CEL.is(document.querySelectorAll("p"), NodeList)
+    || CEL.is(CEL.qs("p"), TMLParagraphElement)
+    || CEL.is(null, "null")
+    || CEL.is(undefined, "undefined")
+    || CEL.is(function () {}, "function")
+    || CEL.is(new Date(), Date)
+    || CEL.is(/^\[object (.+)\]$/g, RegExp)
+);
+CUT.isFalse("is(); ES5 false",
+  CEL.is([1, 2, 3], "number")
+    || CEL.is(1998, "array")
+    || CEL.is("hello world", "object")
+    || CEL.is({ a: 1 , b: 2}, "string")
+    || CEL.is(document, "boolean")
+    || CEL.is(true, HTMLDocument)
+    || CEL.is(document.querySelectorAll("p"), HTMLDocument)
+    || CEL.is(CEL.qs("p"), NodeList)
+    || CEL.is(null, "undefined")
+    || CEL.is(undefined, "null")
+    || CEL.is(function(){}, Array)
+    || CEL.is(new Date(), "array")
+    || CEL.is(/^\[object (.+)\]$/g, "string")
+);
+CUT.isTrue("is(); ES6 values",
+  CEL.is(new Map()) === Map
+    && CEL.is(new Set()) === Set
+    && CEL.is(new WeakMap()) === WeakMap
+    && CEL.is(new WeakSet()) === WeakSet
+);
+CUT.isTrue("is(); ES6 true",
+  CEL.is(new Map(), Map)
+    && CEL.is(new Set(), Set)
+    && CEL.is(new WeakMap(), WeakMap)
+    && CEL.is(new WeakSet(), WeakSet)
+);
+CUT.isTrue("is(); ES6 true object",
+  CEL.is(new Map(), "object")
+    || CEL.is(new Set(), "object")
+    || CEL.is(new WeakMap(), "object")
+    || CEL.is(new WeakSet(), "object")
+);
+if (globalThis.BigInt) {
+  CUT.isTrue("is(); ES6 bigint",
+    CEL.is(BigInt(456)) === "bigint"
+      &&  CEL.is(456n, "bigint")
+      && !CEL.is(456n, "object")
+  );
+}
+CUT.isTrue("is(); expectedTypes array",
+  CEL.is(BigInt(456), [Object, "bigint"])
+    &&  CEL.is([], ["string", Map, Array])
+    && !CEL.is([], ["string", Map])
+    &&  CEL.is(Object.create(null), [Object, "object"])
+    && !CEL.is(Object.create(null), [Object, "string"])
+);
+CUT.isError("is(); error 1", () => CEL.is(Object.create(null), Object, true));
+CUT.isError("is(); error 2", () => CEL.is([], ["number", Map], true));
+CUT.isError("is(); error 3", () => CEL.is({}, ["string", Map, Array], true));
+CUT.isError("is(); error 4", () => CEL.is({}, ["string", Map, 42], true));
+CUT.isError("is(); error 5", () => CEL.is("dsgds", 42));
+CUT.isError("is(); error 6", () => CEL.is("dsgds", "string", 42));
+CUT.isError("is(); error 7", () => CEL.is("fsdds", "number", true));
+CUT.isError("is(); error 8", () => CEL.is("fsdds", Map, true));
+/* is(); end */
+
 
 
 /* tap(); */
