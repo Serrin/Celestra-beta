@@ -398,11 +398,14 @@ globalThis.CEL = celestra;
 
 <h3>Stabilities</h3>
 
-<p><span class="removed">Stability: 0 - Removed.</span></p>
-<p><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span></p>
-<p><span class="deprecated">Stability: 2 - Deprecated.</span></p>
-<p><span class="info">Stability: 3 - Legacy and can get only fixes.</span></p>
-<p><span class="info">Stability: 4 - Stable.</span></p>
+<ul>
+  <li><span class="removed">Stability: 0 - Removed.</span></li>
+  <li><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span></li>
+  <li><span class="deprecated">Stability: 2 - Deprecated.</span></li>
+  <li><span class="info">Stability: 3 - Legacy and can get only fixes.</span></li>
+  <li><span class="info">Stability: 4 - Stable.</span></li>
+</ul>
+
 <p><span class="removed">Removed</span> and <span class="deprecated">Deprecated</span>: Don't use these in production.</p>
 
 
@@ -741,7 +744,13 @@ CEL.delay(5000)
     <tr>
       <td><code>assertInstanceOf(value, constructor [, message | error]);</code></td>
       <td>
-        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error if the constructor of the value in not the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
+        <span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function throws an error if the constructor of the value in not the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
+      </td>
+    </tr>
+    <tr>
+      <td><code>assertIs(value, expectedType [, message | error]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value type or class is the given expectedType. The expectedType can be a type string, constructor function or an array of the type strings and constructors. If the value is not matched with the expectedType, then a TypeError will be thrown with detailed error message. If these conditions are passed, then the given value is the return value.
       </td>
     </tr>
     <tr>
@@ -750,6 +759,12 @@ CEL.delay(5000)
         <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value is not null or undefined, else the given value is the return value. The message parameter is optional.
       </td>
     </tr>
+    <tr>
+      <td><code>assertIsNot(value, expectedType [, message | error]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value type or class is not the given expectedType. The expectedType can be a type string, constructor function or an array of the type strings and constructors. If the value is matched with the expectedType, then a TypeError will be thrown with detailed error message. If these conditions are passed, then the given value is the return value.
+      </td>
+    </tr>    
     <tr>
       <td><code>assertIsNotNil(value [, message | error]);</code></td>
       <td>
@@ -771,7 +786,7 @@ CEL.delay(5000)
     <tr>
       <td><code>assertNotInstanceOf(value, constructor [, message | error]);</code></td>
       <td>
-        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error if the constructor of the value is the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
+        <span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function throws an error if the constructor of the value is the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
       </td>
     </tr>
     <tr>
@@ -783,7 +798,7 @@ CEL.delay(5000)
     <tr>
       <td><code>assertNotTypeOf(value [, message | error]);</code></td>
       <td>
-        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error if the type of the value is the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
+        <span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function throws an error if the type of the value is the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
       </td>
     </tr>
     <tr>
@@ -807,7 +822,7 @@ CEL.delay(5000)
     <tr>
       <td><code>assertTypeOf(value, type [, message | error]);</code></td>
       <td>
-        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error if the type of the value in not the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
+        <span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function throws an error if the type of the value in not the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
       </td>
     </tr>
   </table>
@@ -1060,11 +1075,11 @@ CEL.delay(5000)
     </tr>
     <tr>
       <td><code>classof(value[,class[,throw=false]]);</code></td>
-      <td><p><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>Get the real type of a value. If this is an object, then the return value is the detailed object type (e.g.: array). If the class (string) parameter is given, then the return value (boolean) is the equality of the type of the value and the second parameter. If the third parameter (boolean) is true and the type of the value and the second parameter aren't equals, then the function is throwing a <code>TypeError();</code>, else the return value is true.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>Get the real type of a value. If this is an object, then the return value is the detailed object type (e.g.: array). If the class (string) parameter is given, then the return value (boolean) is the equality of the type of the value and the second parameter. If the third parameter (boolean) is true and the type of the value and the second parameter aren't equals, then the function is throwing a <code>TypeError();</code>, else the return value is true.</td>
     </tr>
     <tr>
       <td><code>getType(value[,class[,throw=false]]);</code></td>
-      <td><p><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This is an alias of the <code>classof(value[,class[,throw=false]]);</code>.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This is an alias of the <code>classof(value[,class[,throw=false]]);</code>.</td>
     </tr>
     <tr>
       <td><code>is(value[,expectedType[,Throw=false]];</code></td>

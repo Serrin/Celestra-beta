@@ -538,6 +538,98 @@ function timestampID (size = 21,
 /** Assertion API **/
 
 
+/* assertIs (
+    value: any,
+    expected: string | function | array<string | function> | undefined,
+    message: string | error
+  ): any | throw TypeError */
+function assertIs (v, expected, msg) {
+  function _is (value, expected) {
+    /* validate expected */
+    if (!(["string", "function"].includes(typeof expected))
+      && !Array.isArray(expected)) {
+      throw new TypeError(
+        `[assertIs] TypeError: expectedType must be string, function, or array. Got ${typeof expected}`
+      );
+    }
+    /* check expected types and constructors */
+    const vType = (value === null ? "null" : typeof value);
+    let matched = (Array.isArray(expected) ? expected : [expected]).some(
+      function (item) {
+        if (typeof item === "string") { return vType === item; }
+        if (typeof item === "function") {
+          return value != null && value instanceof item;
+        }
+        /* validate expected array elements */
+        throw new TypeError(
+          `[assertIs] TypeError: expectedType array elements have to be a string or function. Got ${typeof item}`
+        );
+      }
+    );
+    return matched;
+  }
+  /* assert type checking */
+  if (!_is(v, expected)) {
+    if (Error.isError(msg)) { throw msg; }
+    let vName = v.toString ? v.toString() : Object.prototype.toString.call(v);
+    let eNames = (Array.isArray(expected) ? expected : [expected]).map((item) =>
+      (typeof item === "string" ? item.toString() : item.name ?? "anonymous")
+    ).join(", ");
+    throw new TypeError(
+      "[assertIs] Assertion failed: " + vName + " is not a " + eNames
+        + (msg ? " - " + msg : "")
+    );
+  }
+  return v;
+}
+
+
+/* assertIsNot (
+    value: any,
+    expected: string | function | array<string | function> | undefined,
+    message: string | error
+  ): any | throw TypeError */
+function assertIsNot (v, expected, msg) {
+  function _is (value, expected) {
+    /* validate expected */
+    if (!(["string", "function"].includes(typeof expected))
+      && !Array.isArray(expected)) {
+      throw new TypeError(
+        `[assertIsNot] TypeError: expectedType must be string, function, or array. Got ${typeof expected}`
+      );
+    }
+    /* check expected types and constructors */
+    const vType = (value === null ? "null" : typeof value);
+    let matched = (Array.isArray(expected) ? expected : [expected]).some(
+      function (item) {
+        if (typeof item === "string") { return vType === item; }
+        if (typeof item === "function") {
+          return value != null && value instanceof item;
+        }
+        /* validate expected array elements */
+        throw new TypeError(
+          `[assertIsNot] TypeError: expectedType array elements have to be a string or function. Got ${typeof item}`
+        );
+      }
+    );
+    return matched;
+  }
+  /* assert type checking */
+  if (_is(v, expected)) {
+    if (Error.isError(msg)) { throw msg; }
+    let vName = v.toString ? v.toString() : Object.prototype.toString.call(v);
+    let eNames = (Array.isArray(expected) ? expected : [expected]).map((item) =>
+      (typeof item === "string" ? item.toString() : item.name ?? "anonymous")
+    ).join(", ");
+    throw new TypeError(
+      "[assertIsNot] Assertion failed: " + vName + " is a " + eNames
+        + (msg ? " - " + msg : "")
+    );
+  }
+  return v;
+}
+
+
 /* assertFail(message | error): thrown error */
 function assertFail(msg) {
   if (Error.isError(msg)) {
@@ -2020,12 +2112,14 @@ function is (value, expected, Throw = false) {
   if (!(["string", "function", "undefined"].includes(typeof expected))
     && !Array.isArray(expected)) {
     throw new TypeError(
-      "is(); TypeError: expectedType has to be a string, function, array or undefined"
+       `is(); TypeError: expectedType must be string, function, array or undefined. Got ${typeof expected}`
     );
   }
   /* validate Throw */
   if (typeof Throw !== "boolean") {
-    throw new TypeError("is(); TypeError: Throw has to be a boolean");
+    throw new TypeError(
+      `is(); TypeError: Throw has to be a boolean. Got ${typeof Throw}`
+    );
   }
   /* if expected is empty then return primitive type or constructor */
   const vType = (value === null ? "null" : typeof value);
@@ -2044,7 +2138,7 @@ function is (value, expected, Throw = false) {
       }
       /* validate expected array elements */
       throw new TypeError(
-        "is(); TypeError: expectedType array elements have to be a string or function"
+         `is(); TypeError: expectedType array elements have to be a string or function. Got ${typeof item}`
       );
     }
   );
@@ -3387,6 +3481,8 @@ const celestra = {
   nanoid,
   timestampID,
   /** Assertion API **/
+  assertIs,
+  assertIsNot,
   assertFail,
   assertMatch,
   assertDoesNotMatch,

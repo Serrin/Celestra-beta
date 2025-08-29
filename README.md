@@ -224,15 +224,11 @@ __Cookie API__ | `getCookie();`<BR>`hasCookie();`<BR>`setCookie();`<BR>`removeCo
 
 ### Stabilities
 
-__Stability: 0 - Removed.__
-
-__Stability: 1 - Deprecated and will be removed.__
-
-__Stability: 2 - Deprecated.__
-
-__Stability: 3 - Legacy and can get only fixes.__
-
-__Stability: 4 - Stable.__
+- __Stability: 0 - Removed.__
+- __Stability: 1 - Deprecated and will be removed.__
+- __Stability: 2 - Deprecated.__
+- __Stability: 3 - Legacy and can get only fixes.__
+- __Stability: 4 - Stable.__
 
 <BR>__Removed__ and __Deprecated__: Don't use these in production.<BR>
 
@@ -330,20 +326,22 @@ Name | Description
 `assertEqual(value1, value2 [, message \| error]);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value1 and value2 aren't equals. (_Loose equality + NaN equality_) The message parameter is optional. The return value is `true`, when the test was success.
 `assertFail(message \| error);` | __Stability: 4 - Stable.__<BR>his function always throws an error. If the argument is an error, then this error will be thrown, else a new error with the message.
 `assertFalse(condition [, message \| error]);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the condition is truthy. The message parameter is optional. The return value is `true`, when the test was success.
-`assertInstanceOf(value, constructor [, message \| error]);` | __Stability: 4 - Stable.__<BR>This function throws an error if the constructor of the value in not the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
+`assertInstanceOf(value, constructor [, message \| error]);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function throws an error if the constructor of the value in not the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
+`assertIs(value, expectedType [, message \| error]);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value type or class is the given expectedType. The expectedType can be a type string, constructor function or an array of the type strings and constructors. If the value is not matched with the expectedType, then a TypeError will be thrown with detailed error message. If these conditions are passed, then the given value is the return value.
 `assertIsNil(value [, message \| error]);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value is not null or undefined, else the given value is the return value. The message parameter is optional.
+`assertIsNot(value, expectedType [, message \| error]);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value type or class is not the given expectedType. The expectedType can be a type string, constructor function or an array of the type strings and constructors. If the value is matched with the expectedType, then a TypeError will be thrown with detailed error message. If these conditions are passed, then the given value is the return value.
 `assertIsNotNil(value [, message \| error]);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value is null or undefined, else the given value is the return value. The message parameter is optional.
 `assertMatch(string, regexp [, message \| error]);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the string doesn't match with the regexp. The message parameter is optional. The return value is `true`, when the test was success.
 `assertNotDeepEqual(value1, value2 [, message \| error]);`| __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value1 and value2 are deep equals. (_Deep loose equality + NaN equality: primitives (loose equality + NaN equality), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer_) The message parameter is optional. The return value is `true`, when the test was success.<BR>__This function may give unexpected results. It is safer to use the `assertNotDeepStrictEqual();` function.__
 `assertNotDeepStrictEqual(value1, value2 [, message \| error]);`| __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value1 and value2 are deep equals. (_Deep strict equality + NaN equality: primitives (SameValue - Object.is()), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer_) The message parameter is optional. The return value is `true`, when the test was success.
 `assertNotEqual(value1, value2 [, message \| error]);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value1 and value2 are equals. (_Loose equality + NaN equality_) The message parameter is optional. The return value is `true`, when the test was success.
-`assertNotInstanceOf(value, constructor [, message \| error]);` | __Stability: 4 - Stable.__<BR>This function throws an error if the constructor of the value is the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
+`assertNotInstanceOf(value, constructor [, message \| error]);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function throws an error if the constructor of the value is the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
 `assertNotStrictEqual(value1, value2 [, message \| error]);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value1 and value2 are equals. (_SameValue equality_) The message parameter is optional. The return value is `true`, when the test was success.
-`assertNotTypeOf(value, type [, message \| error]);` | __Stability: 4 - Stable.__<BR>This function throws an error if the type of the value is the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
+`assertNotTypeOf(value, type [, message \| error]);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function throws an error if the type of the value is the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
 `assertStrictEqual(value1, value2 [, message \| error]);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value1 and value2 aren't equals. (_SameValue equality_) The message parameter is optional. The return value is `true`, when the test was success.
 `assertTrue(condition [, message \| error]);` | __Stability: 4 - Stable.__<BR> This is an alias of the `assert(condition [, message \| error]);`.
 `assertThrows(callback [, message \| error]);` | __Stability: 4 - Stable.__<BR> This function catches and returns the error, if the callback throws an error. In other cases throws an error with the message. The message parameter is optional.
-`assertTypeOf(value, type [, message \| error]);` | __Stability: 4 - Stable.__<BR>This function throws an error if the type of the value in not the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
+`assertTypeOf(value, type [, message \| error]);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function throws an error if the type of the value in not the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
 
 
 ### DOM API

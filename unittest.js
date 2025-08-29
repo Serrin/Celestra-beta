@@ -1042,6 +1042,38 @@ CEL.domClear(token1);
 CUT.isEqual("domClear();", 0, token1.children.length);
 
 
+/* assertIs(); */
+CUT.isTrue("assertIs(); 01 ok", !!CEL.assertIs(42, "number"));
+CUT.isTrue("assertIs(); 01a ok", !!CEL.assertIs(42, "number", "lorem"));
+CUT.isTrue("assertIs(); 02 ok", !!CEL.assertIs(42, [Array, "number"]));
+CUT.isTrue("assertIs(); 02a ok",
+  !!CEL.assertIs(42, [Array, "number"], "lorem")
+);
+CUT.isError("assertIs(); 03a error", () => CEL.assertIs(42, "string"));
+CUT.isError("assertIs(); 03b error", () => CEL.assertIs(42, "string", "lorem"));
+CUT.isError("assertIs(); 04a error", () => CEL.assertIs(42, [Number, Array]));
+CUT.isError("assertIs(); 04b error",
+  () => CEL.assertIs(42, [Number, Array], "lorem")
+);
+
+
+/* assertIsNot(); */
+CUT.isTrue("assertIs(); 01a ok", !!CEL.assertIsNot(42, "string"));
+CUT.isTrue("assertIs(); 01b ok", !!CEL.assertIsNot(42, "string", "lorem"));
+CUT.isTrue("assertIs(); 02a ok", !!CEL.assertIsNot(42, [Number, Array]));
+CUT.isTrue("assertIs(); 02b ok", !!CEL.assertIsNot(42, [Number, Array], "lorem"));
+CUT.isError("assertIs(); 03a error", () => CEL.assertIsNot(42, "number"));
+CUT.isError("assertIs(); 03b error",
+  () => CEL.assertIsNot(42, "number", "lorem")
+);
+CUT.isError("assertIs(); 04a error",
+  () => CEL.assertIsNot(42, [Array, "number"])
+);
+CUT.isError("assertIs(); 04a error",
+  () => CEL.assertIsNot(42, [Array, "number"],"lorem")
+);
+
+
 /* assertFail(); */
 CUT.isError("assertFail(); 01 error", () => CEL.assertFail(42));
 CUT.isError("assertFail(); 02 error", () => CEL.assertFail(new Error("ipsum")));
