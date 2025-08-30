@@ -19,23 +19,20 @@ assert.isTrue = (c, m) => celestra.assertTrue(c, m);
 
 assert.isFalse = (c, m) => celestra.assertFalse(c, m);
 
-assert.equal = (x, y, m) => (
-  assert.strict ? celestra.assertStrictEqual(x, y, m)
-    : celestra.assertEqual(x, y, m)
+assert.equal = (x, y, m) => ( assert.strict
+  ? celestra.assertStrictEqual(x, y, m) : celestra.assertEqual(x, y, m)
 );
 
-assert.notEqual = (x, y, m) => (
-  assert.strict ? celestra.assertNotStrictEqual(x, y, m)
-    : celestra.assertNotEqual(x, y, m)
+assert.notEqual = (x, y, m) => ( assert.strict
+  ? celestra.assertNotStrictEqual(x, y, m) : celestra.assertNotEqual(x, y, m)
 );
 
 assert.strictEqual = (x, y, m) => celestra.assertStrictEqual(x, y, m);
 
 assert.notStrictEqual = (x, y, m) => celestra.assertNotStrictEqual(x, y, m);
 
-assert.deepEqual = (x, y, m) => (
-  assert.strict ? celestra.assertDeepStrictEqual(x, y, m)
-    : celestra.assertDeepEqual(x, y, m)
+assert.deepEqual = (x, y, m) => ( assert.strict
+  ? celestra.assertDeepStrictEqual(x, y, m) : celestra.assertDeepEqual(x, y, m)
 );
 
 assert.notDeepEqual = (x, y, m) => (
@@ -48,13 +45,9 @@ assert.deepStrictEqual = (x, y, m) => celestra.assertDeepStrictEqual(x, y, m);
 assert.notDeepStrictEqual = (x, y, m) =>
   celestra.assertNotDeepStrictEqual(x, y, m);
 
-assert.typeOf = (v, t, m) => celestra.assertTypeOf(v, t, m);
+assert.is = (v, et, m) => celestra.assertIs(v, et, m);
 
-assert.notTypeOf = (v, t, m) => celestra.assertNotTypeOf(v, t, m);
-
-assert.instanceOf = (v, t, m) => celestra.assertInstanceOf(v, t, m);
-
-assert.notInstanceOf = (v, t, m) => celestra.assertNotInstanceOf(v, t, m);
+assert.isNot = (v, et, m) => celestra.assertIsNot(v, et, m);
 
 assert.isNil = (v, m) => celestra.assertIsNil(v, m);
 

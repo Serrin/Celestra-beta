@@ -22,7 +22,6 @@ function testIsOK (message, callback) {
     if (result) { return true; } else { return false; }
   } catch (e) { return false; }
 }
-
 function testIsError (message, callback) {
   try {
     let result = callback();
@@ -44,46 +43,42 @@ function test (message, error = false, callback) {
 function autoTest () {
 
   /* default strict */
-  
+
   test("strict assert.fail(); 01 error", true, () => assert.fail("lorem"));
-  test("strict assert.fail(); 02 error", true, 
+  test("strict assert.fail(); 02 error", true,
     () => assert.fail(new Error("ipsum"))
   );
-  
-  test("strict assert.match(); 01 ok", false, 
+
+  test("strict assert.match(); 01 ok", false,
     () => assert.match("table football", /fo+/, "lorem")
   );
-  test("strict assert.match(); 02 error", true, 
+  test("strict assert.match(); 02 error", true,
     () => assert.match("table football", /go+/, "lorem")
   );
-  test("strict assert.match(); 03 error", true, 
+  test("strict assert.match(); 03 error", true,
     () => assert.match(42, /go+/, "lorem")
   );
-  test("strict assert.match(); 04 error", true, 
+  test("strict assert.match(); 04 error", true,
     () => assert.match("table football", 42, "lorem")
   );
-  
-  test("strict assert.doesNotMatch(); 01 error", true, 
+
+  test("strict assert.doesNotMatch(); 01 error", true,
     () => assert.doesNotMatch("table football", /fo+/, "lorem")
   );
-  test("strict assert.doesNotMatch(); 02 ok", false, 
+  test("strict assert.doesNotMatch(); 02 ok", false,
     () => assert.doesNotMatch("table football", /go+/, "lorem")
   );
-  test("strict assert.doesNotMatch(); 03 error", true, 
+  test("strict assert.doesNotMatch(); 03 error", true,
     () => assert.doesNotMatch(42, /go+/, "lorem")
   );
-  test("strict assert.doesNotMatch(); 04 error", true, 
+  test("strict assert.doesNotMatch(); 04 error", true,
     () => assert.doesNotMatch("table football", 42, "lorem")
   );
 
   test("strict assert.Throws(); 01 ok", false,
-    () => Error.isError(assert.Throws(
-      () => { throw new Error() })
-    ) === true
+    () => Error.isError(assert.Throws(() => { throw new Error() })) === true
   );
-  test("strict assert.Throws(); 02 error", true,
-    () => assert.Throws(42)
-  );
+  test("strict assert.Throws(); 02 error", true, () => assert.Throws(42));
   test("strict assert.Throws(); 03 error", true,
     () => assert.Throws(() => {}, "strict assert.Throws(); 03 error")
   );
@@ -224,85 +219,63 @@ function autoTest () {
     )
   );
 
-  test("number", "strict assert.typeOf(); 01 ok", false,
-    () => assert.typeOf(42, "number", "strict assert.typeOf(); 01 ok")
+  test("number", "strict assert.is(); 01 ok", false,
+    () => assert.is(42, "number", "strict assert.is(); 01 ok")
   );
-  test("strict assert.typeOf(); 02 error", true,
-    () => assert.typeOf(Object(42), Number, "strict assert.typeOf(); 02 error")
+  test("strict assert.is(); 02 error", true,
+    () => assert.is(Object(42), "boolean", "strict assert.is(); 02 error")
   );
-  test("strict assert.typeOf(); 03 error", true,
-    () => assert.typeOf(42, Number, "strict assert.typeOf(); 03 error"),
+  test("strict assert.is(); 03 error", true,
+    () => assert.is(42, Number, "strict assert.is(); 03 error"),
   );
-  test("strict assert.typeOf(); 04 error", true,
-    () => assert.typeOf(Object(42), "number",
-      "strict assert.typeOf(); 04 error"
-    )
+  test("strict assert.is(); 04 error", true,
+    () => assert.is(Object(42), "number", "strict assert.is(); 04 error")
   );
 
-  test("strict assert.notTypeOf(); 01 error", true,
-    () => assert.notTypeOf(42, Number, "strict assert.notTypeOf(); 01 error")
+  test("strict assert.isNot(); 01 error", true,
+    () => assert.isNot(42, "number", "strict assert.isNot(); 01 error")
   );
-  test("strict assert.notTypeOf(); 02 ok", false,
-    () => assert.notTypeOf(
-      Object(42), "number", "strict assert.notTypeOf(); 02 ok"
-    )
+  test("strict assert.isNot(); 02 ok", false,
+    () => assert.isNot(Object(42), "number", "strict assert.isNot(); 02 ok")
   );
-  test("strict assert.notTypeOf(); 03 error", true,
-    () => assert.notTypeOf(42, "number", "strict assert.notTypeOf(); 03 error")
+  test("strict assert.isNot(); 03 error", true,
+    () => assert.isNot(42, "number", "strict assert.isNot(); 03 error")
   );
-  test("strict assert.notTypeOf(); 04 error", true,
-    () =>
-      assert.notTypeOf(Object(42), Number,
-        "strict assert.notTypeOf(); 04 error"
-      )
-  );
-  
-  test("number", "strict assert.instanceOf(); 01 error", true,
-    () => assert.instanceOf(42, "number", "strict assert.instanceOf(); 01 error")
-  );
-  test("strict assert.instanceOf(); 02 ok", false,
-    () => assert.instanceOf(Object(42), Number, 
-      "strict assert.instanceOf(); 02 ok"
-    )
-  );
-  test("strict assert.instanceOf(); 03 error", true,
-    () => assert.instanceOf(42, Number, "strict assert.instanceOf(); 03 error")
-  );
-  test("strict assert.instanceOf(); 04 error", true,
-    () => assert.instanceOf(Object(42), "number",
-      "strict assert.instanceOf(); 04 error"
-    )
+  test("strict assert.isNot(); 04 error", true,
+    () =>assert.isNot(Object(42), Number, "strict assert.isNot(); 04 error")
   );
 
-  test("strict assert.notInstanceOf(); 01 ok", false,
-    () => assert.notInstanceOf(42, Number, 
-      "strict assert.notInstanceOf(); 01 ok"
-    )
+  test("number", "strict assert.is(); 05 error", true,
+    () => assert.is(42, "number", "strict assert.is(); 05 error")
   );
-  test("strict assert.notInstanceOf(); 02 ok", false,
-    () => assert.notInstanceOf(
-      Object(42), Array, "strict assert.notInstanceOf(); 02 ok"
-    )
+  test("strict assert.is(); 06 ok", false,
+    () => assert.is(Object(42), Number, "strict assert.is(); 06 ok")
   );
-  test("strict assert.notInstanceOf(); 03 error", true,
-    () => assert.notInstanceOf(42, "number", 
-      "strict assert.notInstanceOf(); 03 error"
-    )
+  test("strict assert.is(); 07 error", true,
+    () => assert.is(42, Number, "strict assert.is(); 07 error")
   );
-  test("strict assert.notInstanceOf(); 04 error", true,
-    () =>
-      assert.notInstanceOf(Object(42), Number,
-        "strict assert.notInstanceOf(); 04 error"
-      )
+  test("strict assert.is(); 08 error", true,
+    () => assert.is(Object(42), "number", "strict assert.is(); 08 error")
+  );
+
+  test("strict assert.isNot(); 01 ok", false,
+    () => assert.isNot(42, Number, "strict assert.isNot(); 01 ok")
+  );
+  test("strict assert.isNot(); 02 ok", false,
+    () => assert.isNot(Object(42), Array, "strict assert.isNot(); 02 ok")
+  );
+  test("strict assert.isNot(); 03 error", true,
+    () => assert.isNot(42, "number", "strict assert.isNot(); 03 error")
+  );
+  test("strict assert.isNot(); 04 error", true,
+    () => assert.isNot(Object(42), Number, "strict assert.isNot(); 04 error")
   );
 
   test("strict assert.isNil(); 01 ok", false,
     () => null === assert.isNil(null, "strict assert.isNil(); 01 ok")
   );
   test("strict assert.isNil(); 02 ok", false,
-    () => undefined === assert.isNil(
-      undefined , "strict assert.isNil(); 02 ok"
-    )
+    () => undefined === assert.isNil(undefined , "strict assert.isNil(); 02 ok")
   );
   test("strict assert.isNil(); 03 error", true,
     () => assert.isNil({} , "strict assert.isNil(); 03 error")
@@ -327,37 +300,37 @@ function autoTest () {
   );
 
   /* not strict */
-  
+
   test("not strict assert.fail(); 01 error", true, () => assert.fail("lorem"));
-  test("not strict assert.fail(); 02 error", true, 
+  test("not strict assert.fail(); 02 error", true,
     () => assert.fail(new Error("ipsum"))
   );
-  
-  test("not strict assert.match(); 01 ok", false, 
+
+  test("not strict assert.match(); 01 ok", false,
     () => assert.match("table football", /fo+/, "lorem")
   );
-  test("not strict assert.match(); 02 error", true, 
+  test("not strict assert.match(); 02 error", true,
     () => assert.match("table football", /go+/, "lorem")
   );
-  test("not strict assert.match(); 03 error", true, 
+  test("not strict assert.match(); 03 error", true,
     () => assert.match(42, /go+/, "lorem")
   );
-  test("not strict assert.match(); 04 error", true, 
+  test("not strict assert.match(); 04 error", true,
     () => assert.match("table football", 42, "lorem")
   );
-  
-  test("not strict assert.doesNotMatch(); 01 error", true, 
+
+  test("not strict assert.doesNotMatch(); 01 error", true,
     () => assert.doesNotMatch("table football", /fo+/, "lorem")
   );
-  test("not strict assert.doesNotMatch(); 02 ok", false, 
+  test("not strict assert.doesNotMatch(); 02 ok", false,
     () => assert.doesNotMatch("table football", /go+/, "lorem")
   );
-  test("not strict assert.doesNotMatch(); 03 error", true, 
+  test("not strict assert.doesNotMatch(); 03 error", true,
     () => assert.doesNotMatch(42, /go+/, "lorem")
   );
-  test("not strict assert.doesNotMatch(); 04 error", true, 
+  test("not strict assert.doesNotMatch(); 04 error", true,
     () => assert.doesNotMatch("table football", 42, "lorem")
-  );  
+  );
 
   assert.strict = false;
 
@@ -517,86 +490,61 @@ function autoTest () {
     )
   );
 
-  test("number", "not strict assert.typeOf(); 01 ok", false,
-    () => assert.typeOf(42, "number", "not strict assert.typeOf(); 01 ok")
+  test("number", "not strict assert.is(); 01 ok", false,
+    () => assert.is(42, "number", "not strict assert.is(); 01 ok")
   );
-  test("not strict assert.typeOf(); 02 error", true,
-    () => assert.typeOf(Object(42), Number,
-      "not strict assert.typeOf(); 02 error"
-    )
+  test("not strict assert.is(); 02 error", true,
+    () => assert.is(Object(42), "string", "not strict assert.is(); 02 error")
   );
-  test("not strict assert.typeOf(); 03 error", true,
-    () => assert.typeOf(42, Number, "not strict assert.typeOf(); 03 error")
+  test("not strict assert.is(); 03 error", true,
+    () => assert.is(42, Number, "not strict assert.is(); 03 error")
   );
-  test("not strict assert.typeOf(); 04 error", true,
-    () => assert.typeOf(Object(42), "number",
-      "not strict assert.typeOf(); 04 error"
-    )
+  test("not strict assert.is(); 04 error", true,
+    () => assert.is(Object(42), "number", "not strict assert.is(); 04 error")
   );
 
-  test("not strict assert.notTypeOf(); 01 error", true,
-    () => assert.notTypeOf(42, Number,
-      "not strict assert.notTypeOf(); 01 error"
+  test("not strict assert.isNot(); 01 error", true,
+    () => assert.isNot(42, "number", "not strict assert.isNot(); 01 error")
+  );
+  test("not strict assert.isNot(); 02 ok", false,
+    () => assert.isNot(
+      Object(42), "number", "not strict assert.isNot(); 02 ok"
     )
   );
-  test("not strict assert.notTypeOf(); 02 ok", false,
-    () => assert.notTypeOf(
-      Object(42), "number", "not strict assert.notTypeOf(); 02 ok"
-    )
+  test("not strict assert.isNot(); 03 error", true,
+    () => assert.isNot(42, "number", "not strict assert.isNot(); 03 error")
   );
-  test("not strict assert.notTypeOf(); 03 error", true,
-    () => assert.notTypeOf(42, "number",
-      "not strict assert.notTypeOf(); 03 error"
-    )
-  );
-  test("not strict assert.notTypeOf(); 04 error", true,
+  test("not strict assert.isNot(); 04 error", true,
     () =>
-      assert.notTypeOf(Object(42), Number,
-        "not strict assert.notTypeOf(); 04 error"
-      )
+      assert.isNot(Object(42), Number, "not strict assert.isNot(); 04 error")
   );
 
-  test("number", "not strict assert.instanceOf(); 01 error", true,
-    () => assert.instanceOf(42, "number",
-      "not strict assert.instanceOf(); 01 error"
-    )
+  test("number", "not strict assert.is(); 01 error", true,
+    () => assert.is(42, "number", "not strict assert.is(); 01 error")
   );
-  test("not strict assert.instanceOf(); 02 ok", false,
-    () => assert.instanceOf(Object(42), Number,
-      "not strict assert.instanceOf(); 02 ok"
-    )
+  test("not strict assert.is(); 02 ok", false,
+    () => assert.is(Object(42), Number, "not strict assert.is(); 02 ok")
   );
-  test("not strict assert.instanceOf(); 03 error", true,
-    () => assert.instanceOf(42, Number,
-      "not strict assert.instanceOf(); 03 error"
-    )
+  test("not strict assert.is(); 03 error", true,
+    () => assert.is(42, Number, "not strict assert.is(); 03 error")
   );
-  test("not strict assert.instanceOf(); 04 error", true,
-    () => assert.instanceOf(Object(42), "number",
-      "not strict assert.instanceOf(); 04 error"
-    )
+  test("not strict assert.is(); 04 error", true,
+    () => assert.is(Object(42), "number", "not strict assert.is(); 04 error")
   );
 
-  test("not strict assert.notInstanceOf(); 01 ok", false,
-    () => assert.notInstanceOf(42, Number,
-      "not strict assert.notInstanceOf(); 01 ok"
+  test("not strict assert.isNot(); 05 ok", false,
+    () => assert.isNot(42, Number, "not strict assert.isNot(); 05 ok")
+  );
+  test("not strict assert.isNot(); 06 ok", false,
+    () => assert.isNot(
+      Object(42), Array, "not strict assert.isNot(); 06 ok"
     )
   );
-  test("not strict assert.notInstanceOf(); 02 ok", false,
-    () => assert.notInstanceOf(
-      Object(42), Array, "not strict assert.notInstanceOf(); 02 ok"
-    )
+  test("not strict assert.isNot(); 07 error", true,
+    () => assert.isNot(42, "number", "not strict assert.isNot(); 07 error")
   );
-  test("not strict assert.notInstanceOf(); 03 error", true,
-    () => assert.notInstanceOf(42, "number",
-      "not strict assert.notInstanceOf(); 03 error"
-    )
-  );
-  test("not strict assert.notInstanceOf(); 04 error", true,
-    () =>
-      assert.notInstanceOf(Object(42), Number,
-        "not strict assert.notInstanceOf(); 04 error"
-      )
+  test("not strict assert.isNot(); 08 error", true, () =>
+      assert.isNot(Object(42), Number, "not strict assert.isNot(); 08 error")
   );
 
   test("not strict assert.isNil(); 01 ok", false,
@@ -676,86 +624,78 @@ function autoTest () {
     </tr>
     <tr>
       <td><code>assert.strict = true</code></td>
-      <td>Default value is true. If this property is true, then always the strict equality is used in the <code>assert.equal();</code>, <code> assert.notEqual();</code>, <code> assert.deepEqual();</code>, <code>assert.notDeepEqual();</code></td>
+      <td>Default value is true. If this property is true, then always the strict equality is used in these functions:<ul><li><code>assert.equal();</code></li><li><code>assert.notEqual();</code></li><li><code>assert.deepEqual();</code></li><li><code>assert.notDeepEqual();</code></li></ul></td>
     </tr>
     <tr>
       <td><code>assert(condition [, message | error]);</code></td>
-      <td>Same as <code>celestra.assert(condition [, message | error]);</code>.</td>
+      <td>Same as<br/><code>celestra.assert(condition [, message | error]);</code>.</td>
     </tr>
     <tr>
       <td><code>assert.deepEqual(value1, value2 [, message | error]);</code></td>
-      <td>Same as <code>celestra.deepStrictEqual(value1, value2 [, message | error]);</code> or <code>celestra.assertDeepEqual(value1, value2 [, message | error]);</code>.</td>
+      <td>Same as<br/><code>celestra.deepStrictEqual(value1, value2 [, message | error]);</code><br/>or<br/><code>celestra.assertDeepEqual(value1, value2 [, message | error]);</code>.</td>
     </tr>
       <td><code>assert.doesNotMatch(string, regexp, message); </code></td>
-      <td>Same as <code>celestra.assertDoesNotMatch(string, regexp, message);</code>.</td>
+      <td>Same as<br/><code>celestra.assertDoesNotMatch(string, regexp, message);</code>.</td>
     </tr>
     <tr>
       <td><code>assert.equal(value1, value2 [, message | error]);</code></td>
-      <td>Same as <code>celestra.assertStrictEqual(value1, value2 [, message | error]);</code> or <code>celestra.assertEqual(value1, value2 [, message | error]);</code>.</td>
+      <td>Same as<br/><code>celestra.assertStrictEqual(value1, value2 [, message | error]);</code><br/>or<br/><code>celestra.assertEqual(value1, value2 [, message | error]);</code>.</td>
     </tr>
     <tr>
-      <td><code>assert.fail(message OR error);</code></td>
-      <td>Same as <code>celestra.assertFail(message OR error);</code>.</td>
+      <td><code>assert.fail(message | error);</code></td>
+      <td>Same as<br/><code>celestra.assertFail(message | error);</code>.</td>
+    </tr>
+    <tr>
+      <td><code>assert.is(value, expectedType [, message | error]);</code></td>
+      <td>Same as<br/><code>celestra.assertIs(value, expectedType [, message | error]);</code>.</td>
     </tr>
     <tr>
       <td><code>assert.isFalse(condition [, message | error]);</code></td>
-      <td>Same as <code>celestra.assertFalse(condition [, message | error]);</code>.</td>
+      <td>Same as<br/><code>celestra.assertFalse(condition [, message | error]);</code>.</td>
     </tr>
     <tr>
-      <td><code>assert.instanceOf(value, constructor [, message | error]);</code></td>
-      <td>Same as <code>celestra.assertInstanceOf(value, constructor [, message | error]);</code>.</td>
-    </tr>    
-    <tr>
       <td><code>assert.isNil(value [, message | error]);</code></td>
-      <td>Same as <code>celestra.assertIsNil(value [, message | error]);</code>.</td>
+      <td>Same as<br/><code>celestra.assertIsNil(value [, message | error]);</code>.</td>
+    </tr>
+    <tr>
+      <td><code>assert.isNot(value, expectedType [, message | error]);</code></td>
+      <td>Same as<br/><code>celestra.assertIsNot(value, expectedType [, message | error]);</code>.</td>
     </tr>
     <tr>
       <td><code>assert.isNotNil(value [, message | error]);</code></td>
-      <td>Same as <code>celestra.assertIsNotNil(value [, message | error]);</code>.</td>
+      <td>Same as<br/><code>celestra.assertIsNotNil(value [, message | error]);</code>.</td>
     </tr>
     <tr>
       <td><code>assert.isTrue(condition [, message | error]);</code></td>
-      <td>Same as <code>celestra.assertTrue(condition [, message | error]);</code>.</td>
+      <td>Same as<br/><code>celestra.assertTrue(condition [, message | error]);</code>.</td>
     </tr>
     <tr>
       <td><code>assert.match(string, regexp, message); </code></td>
-      <td>Same as <code>celestra.assertMatch(string,regexp, message);</code>.</td>
+      <td>Same as<br/><code>celestra.assertMatch(string,regexp, message);</code>.</td>
     </tr>
     <tr>
       <td><code>assert.notDeepEqual(value1, value2 [, message | error]);</code></td>
-      <td>Same as <code>celestra.assertNotDeepStrictEqual(value1, value2 [, message | error]);</code> or <code>celestra.assertNotDeepEqual(value1, value2 [, message | error]);</code>.</td>
+      <td>Same as<br/><code>celestra.assertNotDeepStrictEqual(value1, value2 [, message | error]);</code><br/>or<br/><code>celestra.assertNotDeepEqual(value1, value2 [, message | error]);</code>.</td>
     </tr>
     <tr>
       <td><code>assert.notEqual(value1, value2 [, message | error]);</code></td>
-      <td>Same as <code>celestra.assertNotStrictEqual(value1, value2 [, message | error]);</code> or <code>celestra.assertNotEqual(value1, value2 [, message | error]);</code>.</td>
-    </tr>
-    <tr>
-      <td><code>assert.notInstanceOf(value, constructor [, message | error]);</code></td>
-      <td>Same as <code>celestra.assertNotInstanceOf(value, constructor [, message | error]);</code>.</td>
+      <td>Same as<br/><code>celestra.assertNotStrictEqual(value1, value2 [, message | error]);</code><br/>or<br/><code>celestra.assertNotEqual(value1, value2 [, message | error]);</code>.</td>
     </tr>
     <tr>
       <td><code>assert.notStrictEqual(value1, value2 [, message | error]);</code></td>
-      <td>Same as <code>celestra.assertNotStrictEqual(value1, value2 [, message | error]);</code>.</td>
-    </tr>
-    <tr>
-      <td><code>assert.notTypeOf(value, type [, message | error]);</code></td>
-      <td>Same as <code>celestra.assertNotTypeOf(value, type [, message | error]);</code>.</td>
+      <td>Same as<br/><code>celestra.assertNotStrictEqual(value1, value2 [, message | error]);</code>.</td>
     </tr>
     <tr>
       <td><code>assert.ok(condition [, message | error]);</code></td>
-      <td>Same as <code>celestra.assert(condition [, message | error]);</code>.</td>
+      <td>Same as<br/><code>celestra.assert(condition [, message | error]);</code>.</td>
     </tr>
     <tr>
       <td><code>assert.strictEqual(value1, value2 [, message | error]);</code></td>
-      <td>Same as <code>celestra.assertStrictEqual(value1, value2 [, message | error]);</code>.</td>
+      <td>Same as<br/><code>celestra.assertStrictEqual(value1, value2 [, message | error]);</code>.</td>
     </tr>
     <tr>
       <td><code>assert.Throws(callback [, message | error]);</code></td>
-      <td>Same as <code>celestra.assertThrows(callback [, message | error]);</code>.</td>
-    </tr>
-    <tr>
-      <td><code>assert.typeOf(value, type [, message | error]);</code></td>
-      <td>Same as <code>celestra.assertTypeOf(value, [, message | error]);</code>.</td>
+      <td>Same as<br/><code>celestra.assertThrows(callback [, message | error]);</code>.</td>
     </tr>
   </table>
 </div>
