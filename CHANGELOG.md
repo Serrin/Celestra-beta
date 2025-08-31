@@ -9,6 +9,31 @@
 # Celestra version history
 
 
+## Celestra v6.0.3
+
+1. Documentation and pdf fixes.
+
+2. Add left sidebar with function index in the __celestra.html__.
+
+3. Add these functions:
+````javascript
+assertIs();
+assertIsNot();
+is();
+````
+
+4. Deprecate _(stability 1)_ these functions:
+````javascript
+assertInstanceOf();
+assertNotInstanceOf();
+assertNotTypeOf();
+assertTypeOf();
+classof();
+getType();
+isSameClass();
+````
+
+
 ## Celestra v6.0.2
 
 1. Documentation and pdf fixes.

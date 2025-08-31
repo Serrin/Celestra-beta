@@ -14,7 +14,7 @@ console.log("import method 2 - default as celestra");
 import { default as celestra } from "./celestra.node.mjs";
 globalThis.celestra = celestra;
 globalThis.CEL = celestra;
-*/
+//*/
 
 /* import method 3 - import *  as celestra */
 /*
