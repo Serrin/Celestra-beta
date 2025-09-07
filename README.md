@@ -13,7 +13,7 @@
 
 __A helper JavaScript library with useful functions and polyfills and zero dependencies.__
 
-Latest version: 6.0.3
+Latest version: 6.0.4
 
 Date: 2025-08-31T17:21:59.326Z
 
@@ -429,7 +429,8 @@ Name | Description
 `classof(value[,class[,throw=false]]);` | __Stability: 1 - Deprecated and will be removed.__<BR>Get the real type of a value. If this is an object, then the return value is the detailed object type (e.g.: array). If the class (string) parameter is given, then the return value (boolean) is the equality of the type of the value and the second parameter. If the third parameter (boolean) is true and the type of the value and the second parameter aren't equals, then the function is throwing a `TypeError();`, else the return value is true.
 `getType(value[,class[,throw=false]]);` | __Stability: 1 - Deprecated and will be removed.__<BR>This is an alias of the `classof(variable[,class[,throw=false]]);`.
 `is(value[,expectedType[,Throw=false]];` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value type or class is the given expectedType. The expectedType can be a type string, constructor function or an array of the type strings and constructors. If the Throw is true and the value is not matched with the expectedType, then a TypeError will be thrown with detailed error message. The return value is boolean or the type or constructor of the value.
-`isArraylike(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an iterable object. The return value is boolean.
+`isArraylike(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an arraylike object. The return value is boolean.
+`isAsyncIterable(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an async iterable object. The return value is boolean.
 `isAsyncFn(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an async function. The return value is boolean.
 `isAsyncGeneratorFn(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an async generator function. The return value is boolean.
 `isCallable(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided object has a call method. The return value is boolean.

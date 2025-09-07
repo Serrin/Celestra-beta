@@ -1,6 +1,6 @@
 /**
  * @name Celestra
- * @version 6.0.3 dev
+ * @version 6.0.4 dev
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
@@ -2187,8 +2187,7 @@ function getType (v, type, Throw = false) {
 }
 
 
-/* toPrimitiveValue(value: any):
-  primitive | object | symbol | function | thrown error */
+/* toPrimitiveValue(value: any): primitive | object | symbol | function */
 function toPrimitiveValue (O) {
   /* null, undefined, Function, Boolean, BigInt, Number, String, Symbol */
   if (O == null || typeof O !== "object") { return O; }
@@ -2525,6 +2524,11 @@ const isElement = (v) =>
 /* isIterable(value: any): boolean */
 const isIterable = (v) =>
   (v != null && typeof v[Symbol.iterator] === "function");
+
+
+/* isAsyncIterable(value: any): boolean */
+const isAsyncIterable = (v) =>
+  (v != null && typeof v[Symbol.asyncIterator] === "function");
 
 
 /* isTypedArray(value: any): boolean */
@@ -3430,7 +3434,7 @@ const inRange = (v, min, max) => (v >= min && v <= max);
 /** object header **/
 
 
-const VERSION = "Celestra v6.0.3 dev";
+const VERSION = "Celestra v6.0.4 dev";
 
 
 /* celestra.noConflict(): celestra object */
@@ -3598,6 +3602,7 @@ const celestra = {
   isRegexp,
   isElement,
   isIterable,
+  isAsyncIterable,
   isTypedArray,
   isGeneratorFn,
   isAsyncFn,

@@ -157,7 +157,7 @@ var token6 = 0, token7 = 0, token8 = 0, token9 = 0, token10 = 0;
 var token11 = 0, token12 = 0, token13 = 0, token14 = 0, token15 = 0;
 
 
-/* Celestra v6.0.3 testcases */
+/* Celestra v6.0.4 testcases */
 
 
 /** Not auto tested functions **/
@@ -6158,6 +6158,21 @@ CUT.isTrue("isIterable();",
   && !CEL.isIterable({a:1,b:2})
   && !CEL.isIterable(true)
   && !CEL.isIterable(false)
+);
+
+
+/* isAsyncIterable(); */
+CUT.isTrue("isAsyncIterable();",
+      CEL.isAsyncIterable((async function* () { yield 1; yield 2; yield 3; })())
+  && !CEL.isAsyncIterable([])
+  && !CEL.isAsyncIterable("")
+  && !CEL.isAsyncIterable(new Map([[1, 2], [3, 4]]))
+  && !CEL.isAsyncIterable(new Set([1,2]))
+  && !CEL.isAsyncIterable(42)
+  && !CEL.isAsyncIterable(3.14)
+  && !CEL.isAsyncIterable({a:1,b:2})
+  && !CEL.isAsyncIterable(true)
+  && !CEL.isAsyncIterable(false)
 );
 
 
