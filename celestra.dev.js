@@ -185,10 +185,7 @@ if (!Object.hasOwn) {
 if (!("toReversed" in Array.prototype)) {
   Object.defineProperty(Array.prototype, "toReversed", {
     "configurable": true, "writable": true, "enumerable": false,
-    "value": function () {
-      "use strict";
-      return this.slice().reverse();
-    }
+    "value": function () { "use strict"; return this.slice().reverse(); }
   });
 }
 
@@ -197,10 +194,7 @@ if (!("toReversed" in Array.prototype)) {
 if (!("toSorted" in Array.prototype)) {
   Object.defineProperty(Array.prototype, "toSorted", {
     "configurable": true, "writable": true, "enumerable": false,
-    "value": function (cFn) {
-      "use strict";
-      return this.slice().sort(cFn);
-    }
+    "value": function (cFn) { "use strict"; return this.slice().sort(cFn); }
   });
 }
 
@@ -245,10 +239,7 @@ if (!("toReversed" in Uint8Array.prototype)) {
 if (!("toSorted" in Uint8Array.prototype)) {
   Object.defineProperty(Uint8Array.prototype, "toSorted", {
     "configurable": true, "writable": true, "enumerable": false,
-    "value": function (cFn) {
-      "use strict";
-      return this.slice().sort(cFn);
-    }
+    "value": function (cFn) { "use strict"; return this.slice().sort(cFn); }
   });
 }
 
@@ -428,7 +419,7 @@ const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 
 /* randomBoolean(): boolean */
-const randomBoolean = () => (Math.random() >= 0.5);
+const randomBoolean = () => !Math.round(Math.random());
 
 
 /* getUrlVars([str = location.search]): string */
@@ -2112,13 +2103,13 @@ function is (value, expected, Throw = false) {
   if (!(["string", "function", "undefined"].includes(typeof expected))
     && !Array.isArray(expected)) {
     throw new TypeError(
-       `is(); TypeError: expectedType must be string, function, array or undefined. Got ${typeof expected}`
+       `[is] TypeError: expectedType must be string, function, array or undefined. Got ${typeof expected}`
     );
   }
   /* validate Throw */
   if (typeof Throw !== "boolean") {
     throw new TypeError(
-      `is(); TypeError: Throw has to be a boolean. Got ${typeof Throw}`
+      `[is] TypeError: Throw has to be a boolean. Got ${typeof Throw}`
     );
   }
   /* if expected is empty then return primitive type or constructor */
@@ -2138,7 +2129,7 @@ function is (value, expected, Throw = false) {
       }
       /* validate expected array elements */
       throw new TypeError(
-         `is(); TypeError: expectedType array elements have to be a string or function. Got ${typeof item}`
+         `[is] TypeError: expectedType array elements have to be a string or function. Got ${typeof item}`
       );
     }
   );
@@ -2148,7 +2139,7 @@ function is (value, expected, Throw = false) {
     let eNames = expectedArray.map( (item) =>
       (typeof item === "string" ? item.toString() : item.name ?? "anonymous")
     ).join(", ");
-    throw new TypeError(`is(); TypeError: ${vName} is not a ${eNames}`);
+    throw new TypeError(`[is] TypeError: ${vName} is not a ${eNames}`);
   }
   return matched;
 }
@@ -3039,7 +3030,7 @@ function includes (it, v) {
 /* contains(iterator: iterator, value: any): boolean */
 function contains (it, v) {
   for (let item of it) {
-    if (item === v) { return true; }
+    if (item === v || (item !== item && v !== v)) { return true; }
   }
   return false;
 }
