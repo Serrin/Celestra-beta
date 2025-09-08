@@ -41,7 +41,7 @@
   },
   //"files": ["./celestra.dev.js", "./unittest.js", "./unittest.node.js"],
   "include": ["./*.js", "./*.mjs", "./*.cjs"],
-/*   "exclude": [
+  "exclude": [
     "./celestra.esm.js",
     "./celestra.min.js",
     "./celestra.node.mjs",
@@ -54,5 +54,5 @@
     "./unittest-is3.js",
     "./unittest-module1.js",
     "./unittest-module2.js"
-  ] */
+  ]
 }
