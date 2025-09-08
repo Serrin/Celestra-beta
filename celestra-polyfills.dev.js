@@ -1,3 +1,5 @@
+// @ts-nocheck
+"use strict";
 
 /**
  * @name Celestra Removed Polyfills

@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use strict";
 /** Celestra * @version 6.0.4 nodejs * @see https://github.com/Serrin/Celestra/ * @license MIT */
 /** polyfills **/
@@ -161,8 +162,8 @@ const unzip=([...a])=>a.map((v)=>Array.from(v)).reduce((acc,v)=>{v.forEach((item
 function zipObj([...a1],[...a2]){let r={},l=Math.min(a1.length,a2.length);for(let i=0;i<l;i++){r[a1[i]]=a2[i];}return r;}
 const arrayAdd=(a,v)=>(!a.includes(v))?!!a.push(v):false;
 function arrayClear(a){a.length=0;return a;}
-function arrayRemove(a,v,all=false){var found=a.indexOf(v)>-1;if(!all){var pos=a.indexOf(v);if(pos>-1){a.splice(pos,1);}}else{var pos=-1;while((pos=a.indexOf(v))>-1){a.splice(pos,1);}}return found;}
-function arrayRemoveBy(a,fn,all=false){var found=a.findIndex(fn)>-1;if(!all){var pos=a.findIndex(fn);if(pos>-1){a.splice(pos,1);}}else{var pos=-1;while((pos=a.findIndex(fn))>-1){a.splice(pos,1);}}return found;}
+function arrayRemove(a,v,all=false){let found=a.indexOf(v)>-1;if(!all){let pos=a.indexOf(v);if(pos>-1){a.splice(pos,1);}}else{let pos=-1;while((pos=a.indexOf(v))>-1){a.splice(pos,1);}}return found;}
+function arrayRemoveBy(a,fn,all=false){let found=a.findIndex(fn)>-1;if(!all){let pos=a.findIndex(fn);if(pos>-1){a.splice(pos,1);}}else{let pos=-1;while((pos=a.findIndex(fn))>-1){a.splice(pos,1)}}return found;}
 function arrayMerge(t,...a){t.push(...[].concat(...a));return t;}
 function*iterRange(s=0,st=1,e=Infinity){let i=s;while(i<=e){yield i;i+=st;}}
 function*iterCycle([...a],n=Infinity){let i=0;while(i<n){yield* a;i++;}}

@@ -1,3 +1,6 @@
+// @ts-check
+"use strict";
+
 /**
  * @name Celestra
  * @version 6.0.4 dev
@@ -29,6 +32,7 @@
 
 /* Math.sumPrecise(); */
 if (!("sumPrecise" in Math)) {
+  // @ts-ignore
   Math.sumPrecise = function sumPrecise ([...a]) {
     /* empty iterator */
     if (a.length === 0) { return -0; }
@@ -71,6 +75,7 @@ if (!("sumPrecise" in Math)) {
 
 /* Error.isError(); */
 if (!("isError" in Error)) {
+  // @ts-ignore
   Error.isError = function isError (v) {
     let s = Object.prototype.toString.call(v).slice(8, -1).toLowerCase();
     return (s === "error" || s === "domexception");
@@ -80,6 +85,7 @@ if (!("isError" in Error)) {
 
 /* Object.groupBy(); */
 if (!("groupBy" in Object)) {
+  // @ts-ignore
   Object.defineProperty(Object, "groupBy", {
     "configurable": true, "writable": true, "enumerable": true,
     "value": function (items, callbackFn) {
@@ -118,6 +124,7 @@ if (!("groupBy" in Map)) {
 
 /* Array.fromAsync(); */
 if (!Array.fromAsync) {
+  // @ts-ignore
   Array.fromAsync = async function fromAsync (arrayLike, mapfn, thisArg) {
     const isConstructor = (v) =>
       (typeof v === "function" && typeof v.prototype === "object");
@@ -159,7 +166,9 @@ if (!Array.fromAsync) {
 
 /* crypto.randomUUID(); */
 if (("crypto" in globalThis) && !("randomUUID" in globalThis.crypto)) {
+  // @ts-ignore
   globalThis.crypto.randomUUID = function randomUUID () {
+    // @ts-ignore
     return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,
       (c)=>(c^crypto.getRandomValues(new Uint8Array(1))[0]&15>>c/4).toString(16)
     );
@@ -344,6 +353,7 @@ const assoc = (O, P, V) => ({...O, [P]: V});
 
 
 /* asyncNoop (): Promise - do nothing */
+// @ts-ignore
 function asyncNoop () { return new Promise(function (resolve) { resolve(); }); }
 
 
@@ -400,6 +410,7 @@ function createPolyfillProperty (O, P, V) {
 /* randomUUIDv7(): string */
 function randomUUIDv7 () {
   let ts = Date.now().toString(16).padStart(12,"0") + "7";
+  // @ts-ignore
   let uuid = Array.from(([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, (c) =>
     (c^crypto.getRandomValues(new Uint8Array(1))[0]&15>>c/4).toString(16)
   ));
@@ -897,16 +908,20 @@ function assertNotStrictEqual (x, y, msg) {
 function assertDeepEqual (x, y, msg) {
   function _isDeepEqual (x, y) {
     /* helper functions */
+    // @ts-ignore
     const _deepType = (x) =>
       ((x === null) ? "null" : (x !== x) ? "NaN" : (typeof x));
+    // @ts-ignore
     const _isPrimitive = (v) =>
       (v == null || (typeof v !== "object" && typeof v !== "function"));
     const _isObject = (x) => (x != null && typeof x === "object");
     const _isSameInstance = (x, y, Class) =>
       (x instanceof Class) && (y instanceof Class);
+    // @ts-ignore
     const _classof = (x) =>
       Object.prototype.toString.call(x).slice(8, -1).toLowerCase();
     const _ownKeys = (x) =>
+      // @ts-ignore
       Object.getOwnPropertyNames(x).concat(Object.getOwnPropertySymbols(x));
     /* strict equality helper function */
     /* const _isEqual = (x, y) => Object.is(x, y); */
@@ -1036,6 +1051,7 @@ function assertNotDeepStrictEqual (x, y, msg) {
     const _classof = (x) =>
       Object.prototype.toString.call(x).slice(8, -1).toLowerCase();
     const _ownKeys = (x) =>
+      // @ts-ignore
       Object.getOwnPropertyNames(x).concat(Object.getOwnPropertySymbols(x));
     /* strict equality helper function */
     const _isEqual = (x, y) => Object.is(x, y);
@@ -1172,16 +1188,20 @@ function assertNotDeepStrictEqual (x, y, msg) {
 function assertNotDeepEqual (x, y, msg) {
   function _isDeepEqual (x, y) {
     /* helper functions */
+    // @ts-ignore
     const _deepType = (x) =>
       ((x === null) ? "null" : (x !== x) ? "NaN" : (typeof x));
+    // @ts-ignore
     const _isPrimitive = (v) =>
       (v == null || (typeof v !== "object" && typeof v !== "function"));
     const _isObject = (x) => (x != null && typeof x === "object");
     const _isSameInstance = (x, y, Class) =>
       (x instanceof Class) && (y instanceof Class);
+    // @ts-ignore
     const _classof = (x) =>
       Object.prototype.toString.call(x).slice(8, -1).toLowerCase();
     const _ownKeys = (x) =>
+      // @ts-ignore
       Object.getOwnPropertyNames(x).concat(Object.getOwnPropertySymbols(x));
     /* strict equality helper function */
     /* const _isEqual = (x, y) => Object.is(x, y); */
@@ -1312,6 +1332,7 @@ function assertDeepStrictEqual (x, y, msg) {
     const _classof = (x) =>
       Object.prototype.toString.call(x).slice(8, -1).toLowerCase();
     const _ownKeys = (x) =>
+      // @ts-ignore
       Object.getOwnPropertyNames(x).concat(Object.getOwnPropertySymbols(x));
     /* strict equality helper function */
     const _isEqual = (x, y) => Object.is(x, y);
@@ -1451,6 +1472,7 @@ function assertDeepStrictEqual (x, y, msg) {
 function b64Encode (s) {
   return btoa(encodeURIComponent(String(s)).replace(/%([0-9A-F]{2})/g,
     function toSolidBytes (_match, p1) {
+      // @ts-ignore
       return String.fromCharCode("0x" + p1);
     }
   ));
@@ -1746,6 +1768,7 @@ function importScript (...a) {
     scr.src = item;
     scr.onerror = function (e) {
       throw new URIError(
+        // @ts-ignore
         "Loading failed for the script with source " + e.target.src
       );
     };
@@ -1763,6 +1786,7 @@ function importStyle (...a) {
     stl.href = item;
     stl.onerror = function (e) {
       throw new URIError(
+        // @ts-ignore
         "Loading failed for the style with source " + e.target.href
       );
     };
@@ -1836,12 +1860,14 @@ function form2string (f) {
 
 /* getDoNotTrack(): boolean */
 const getDoNotTrack = () =>
+  // @ts-ignore
   [navigator.doNotTrack, globalThis.doNotTrack, navigator.msDoNotTrack]
     .some((e) => (e === true || e === 1 || e === "1"));
 
 
 /* getLocation(success: function [, error: function]): undefined */
 function getLocation (s, e) {
+  // @ts-ignore
   if (!e) { var e = function () {}; }
   function getE (error) { e("ERROR(" + error.code + "): " + error.message); }
   if (navigator.geolocation) {
@@ -1859,7 +1885,9 @@ function createFile (fln, c, dt) {
   if (l > 1) {
     if (l === 2) { dt = "text/plain"; }
     var b = new Blob([c], {type: dt});
+    // @ts-ignore
     if (globalThis.navigator.msSaveOrOpenBlob) {
+      // @ts-ignore
       globalThis.navigator.msSaveBlob(b, fln);
     } else {
       var e = globalThis.document.createElement("a");
@@ -1878,8 +1906,11 @@ function createFile (fln, c, dt) {
 
 /* getFullscreen(): element object | undefined */
 const getFullscreen = () => ( document.fullscreenElement
+  // @ts-ignore
   || document.mozFullScreenElement
+  // @ts-ignore
   || document.webkitFullscreenElement
+  // @ts-ignore
   || document.msFullscreenElement
   || undefined
 );
@@ -1888,8 +1919,9 @@ const getFullscreen = () => ( document.fullscreenElement
 /* setFullscreenOn(element): undefined */
 /* setFullscreenOn(selector string): undefined */
 function setFullscreenOn (s) {
-  if (typeof s === "string") { var e = document.querySelector(s); }
-    else if (typeof s === "object") { var e = s; }
+  let e;
+  if (typeof s === "string") { e = document.querySelector(s); }
+    else if (typeof s === "object") { e = s; }
   if (e.requestFullscreen) { e.requestFullscreen(); }
     else if (e.mozRequestFullScreen) { e.mozRequestFullScreen(); }
     else if (e.webkitRequestFullscreen) { e.webkitRequestFullscreen(); }
@@ -1900,8 +1932,11 @@ function setFullscreenOn (s) {
 /* setFullscreenOff(): undefined */
 function setFullscreenOff () {
   if (document.exitFullscreen) { document.exitFullscreen(); }
+    // @ts-ignore
     else if (document.mozCancelFullScreen) { document.mozCancelFullScreen(); }
+    // @ts-ignore
     else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); }
+    // @ts-ignore
     else if (document.msExitFullscreen) { document.msExitFullscreen(); }
 }
 
@@ -1930,8 +1965,8 @@ const domScrollToElement = (e, top = true) => e.scrollIntoView(top);
 
 
 /* domClear(element): undefined */
-const domClear = (el) =>
-  Array.from(el.children).forEach((item) => item.remove());
+// @ts-ignore
+const domClear = (el) => Array.from(el.children).forEach((e) => e.remove());
 
 
 /** AJAX API **/
@@ -2043,6 +2078,7 @@ function ajax (o) {
     xhr = new XMLHttpRequest();
   } else if (o.queryType === "cors") {
     xhr = new XMLHttpRequest();
+    // @ts-ignore
     if (!("withCredentials" in xhr)) { xhr = new XDomainRequest(); }
   } else {
     throw "Celestra ajax error: The querytype property has to be \"ajax\" or \"cors\".";
@@ -2267,6 +2303,7 @@ function isDeepStrictEqual (x, y) {
   const _classof = (x) =>
     Object.prototype.toString.call(x).slice(8, -1).toLowerCase();
   const _ownKeys = (x) =>
+    // @ts-ignore
     Object.getOwnPropertyNames(x).concat(Object.getOwnPropertySymbols(x));
   /* strict equality helper function */
   const _isEqual = (x, y) => Object.is(x, y);
@@ -2636,10 +2673,15 @@ function removeCookie (name, path="/", domain, secure, SameSite="Lax",
 function clearCookies (path = "/", domain, secure, SameSite = "Lax", HttpOnly) {
   if (typeof path === "object") {
     var settings = path;
+    // @ts-ignore
     path = settings.path || "/";
+    // @ts-ignore
     domain = settings.domain;
+    // @ts-ignore
     secure = settings.secure;
+    // @ts-ignore
     SameSite = settings.SameSite || "Lax";
+    // @ts-ignore
     HttpOnly = settings.HttpOnly;
   }
   if (document.cookie.length !== 0) {
@@ -2795,14 +2837,14 @@ const arrayAdd = (a, v) => (!a.includes(v)) ? !!a.push(v) : false;
 function arrayClear (a) { a.length = 0; return a; }
 
 
-/* arrayRemove(array: array, value: any [, all: boolean = false]): boolean */
+//* arrayRemove(array: array, value: any [, all: boolean = false]): boolean */
 function arrayRemove (a, v, all = false) {
-  var found = a.indexOf(v) > -1;
+  let found = a.indexOf(v) > -1;
   if (!all) {
-    var pos = a.indexOf(v);
+    let pos = a.indexOf(v);
     if (pos > -1) { a.splice(pos, 1); }
   } else {
-    var pos = -1;
+    let pos = -1;
     while ((pos = a.indexOf(v)) > -1) { a.splice(pos, 1); }
   }
   return found;
@@ -2812,12 +2854,12 @@ function arrayRemove (a, v, all = false) {
 /* arrayRemoveBy(array: array, callback: function [, all: boolean = false]):
   boolean */
 function arrayRemoveBy (a, fn, all = false) {
-  var found = a.findIndex(fn) > -1;
+  let found = a.findIndex(fn) > -1;
   if (!all) {
-    var pos = a.findIndex(fn);
+    let pos = a.findIndex(fn);
     if (pos > -1) { a.splice(pos, 1); }
   } else {
-    var pos = -1;
+    let pos = -1;
     while ((pos = a.findIndex(fn)) > -1) { a.splice(pos, 1); }
   }
   return found;
@@ -3205,10 +3247,12 @@ const toIntegerOrInfinity = (v) =>
 
 /* sum(value1: any [, valueN]: any): any */
 const sum = (...a) => (a.every((v) => typeof v === "number") ?
+  // @ts-ignore
   Math.sumPrecise(a) : a.slice(1).reduce((acc, v) => acc + v, a[0]));
 
 
 /* avg(value1: number [, valueN: number]): number */
+// @ts-ignore
 const avg = (...a) => Math.sumPrecise(a) / a.length;
 
 

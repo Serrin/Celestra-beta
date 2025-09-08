@@ -1,3 +1,4 @@
+// @ts-check
 "use strict";
 
 /* import method 1 - defaultExport */
@@ -141,8 +142,6 @@ CUT.getHumanReadableJSON = function getReadableJSON (value, space) {
 
 
 const now = new Date();
-const nowISOString = now.toISOString().slice(0, 19) + "\n"
-  +now.toISOString().slice(20);
 console.log("\nCelestra versions");
 const versionTable = {
   "CUT.VERSION     ": CUT.VERSION,
@@ -155,6 +154,7 @@ const versionTable = {
 };
 console.table(versionTable);
 console.log("\nJS versions");
+// @ts-ignore
 console.table(process.versions);
 console.log("");
 
@@ -212,9 +212,10 @@ try {
 "use strict";
 
 
-var token1 = 0, token2 = 0, token3 = 0, token4 = 0, token5 = 0;
-var token6 = 0, token7 = 0, token8 = 0, token9 = 0, token10 = 0;
-var token11 = 0, token12 = 0, token13 = 0, token14 = 0, token15 = 0;
+// @ts-ignore
+var token1, token2, token3, token4, token5, token6, token7, token8;
+// @ts-ignore
+var token9, token10, token11, token12, token13, token14, token15;
 
 
 /* Celestra v6.0.4 testcases */
@@ -314,6 +315,7 @@ CUT.isTrue("is(); ES6 true object",
     || CEL.is(new WeakMap(), "object")
     || CEL.is(new WeakSet(), "object")
 );
+// @ts-ignore
 if (globalThis.BigInt) {
   CUT.isTrue("is(); ES6 bigint",
     CEL.is(BigInt(456)) === "bigint"
@@ -333,6 +335,7 @@ CUT.isError("is(); error 2", () => CEL.is([], ["number", Map], true));
 CUT.isError("is(); error 3", () => CEL.is({}, ["string", Map, Array], true));
 CUT.isError("is(); error 4", () => CEL.is({}, ["string", Map, 42], true));
 CUT.isError("is(); error 5", () => CEL.is("dsgds", 42));
+// @ts-ignore
 CUT.isError("is(); error 6", () => CEL.is("dsgds", "string", 42));
 CUT.isError("is(); error 7", () => CEL.is("fsdds", "number", true));
 CUT.isError("is(); error 8", () => CEL.is("fsdds", Map, true));
@@ -1133,9 +1136,11 @@ CUT.isError("assertNotEqual(); 03 error",
   () => CEL.assertNotEqual(42, 42, "assertNotEqual(); 03 error")
 );
 CUT.isError("42", "assertNotEqual(); 04 error",
+  // @ts-ignore
   () => CEL.assertNotEqual(42, "42", "assertNotEqual(); 04 error")
 );
 CUT.isError("42", "assertNotEqual(); 05 error",
+  // @ts-ignore
   () => CEL.assertNotEqual(42, "42", new Error("ipsum"))
 );
 
@@ -1371,6 +1376,7 @@ CUT.isError("assertDeepEqual(); 09g - error",
 token1 = new Map([["a", 1], ["b", 2]]);
 token2 = new Map([["a", 1], ["b", 2]]);
 token3 = new Map([["a", 1], ["b", 3]]);
+// @ts-ignore
 token4 = new Map([["a", 1], ["b", "2"]]);
 token5 = new Map([["a", 1], ["b", 2], ["c", 3]]);
 CUT.isTrue("assertDeepEqual(); 10a - ok", CEL.assertDeepEqual(token1, token2));
@@ -1439,10 +1445,15 @@ CUT.isTrue("assertDeepEqual(); 15b - ok",
 CUT.isTrue("assertDeepEqual(); 15c - ok", CEL.assertDeepEqual(null, undefined));
 /* structures 1 */
 token1 = new Error("Agradzsag");
+// @ts-ignore
 token2 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1]]])}];
+// @ts-ignore
 token3 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1]]])}];
+// @ts-ignore
 token4 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, 42]]])}];
+// @ts-ignore
 token5 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1, 42]]])}];
+// @ts-ignore
 token6 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1]]])}];
 CUT.isTrue("assertDeepEqual(); 16a - ok", CEL.assertDeepEqual(token2, token2));
 CUT.isTrue("assertDeepEqual(); 16b - ok", CEL.assertDeepEqual(token2, token3));
@@ -1455,10 +1466,15 @@ CUT.isError("assertDeepEqual(); 16d - error",
 CUT.isTrue("assertDeepEqual(); 16e - ok", CEL.assertDeepEqual(token2, token6));
 /* structures 2 */
 token1 = new Error("Agradzsag");
+// @ts-ignore
 token2 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
 token3 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
 token4 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", ["a", 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
 token5 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13, 14])]])}, token1];
+// @ts-ignore
 token6 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
 CUT.isTrue("assertDeepEqual(); 17a - ok", CEL.assertDeepEqual(token2, token2));
 CUT.isTrue("assertDeepEqual(); 17b - ok", CEL.assertDeepEqual(token2, token3));
@@ -1471,10 +1487,15 @@ CUT.isError("assertDeepEqual(); 17d - error",
 CUT.isTrue("assertDeepEqual(); 17e - ok", CEL.assertDeepEqual(token2, token6));
 /* structures 3 */
 token1 = new Error("Agradzsag");
+// @ts-ignore
 token2 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
 token3 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
 token4 = [1, 2, {"3": 4, "5": new Map([["6", 8], ["8", [9, 10]], ["11", new Set([12, 14])]])}, token1];
+// @ts-ignore
 token5 = [1, 2, {"3": 4, "5": new Map([["6", 8], ["8", [9, 10, 15]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
 token6 = [1, 2, {"3": 4, "5": new Map([["6", "7"], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
 CUT.isTrue("assertDeepEqual(); 18a - ok", CEL.assertDeepEqual(token2, token2));
 CUT.isTrue("assertDeepEqual(); 18b - ok", CEL.assertDeepEqual(token2, token3));
@@ -1487,9 +1508,13 @@ CUT.isError("assertDeepEqual(); 18d - error",
 CUT.isTrue("assertDeepEqual(); 18e - ok", CEL.assertDeepEqual(token2, token6));
 /* structures 4 */
 token1 = new Error("Agradzsag");
+// @ts-ignore
 token2 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
 token3 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
 token4 = [1,5,{"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
 token5 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13, 14])]])}, token1];
 CUT.isTrue("assertDeepEqual(); 19a - ok", CEL.assertDeepEqual(token2, token2));
 CUT.isTrue("assertDeepEqual(); 19b - ok", CEL.assertDeepEqual(token2, token3));
@@ -1701,20 +1726,24 @@ CUT.isTrue("assertDeepEqual(); 24i - ok",
 );
 /* objects / not same prototype - error */
 CUT.isError("assertDeepEqual(); 25a - error",
+  // @ts-ignore
   () => CEL.assertDeepEqual(42, new Error(42), "assertDeepEqual(); 25a - error")
 );
 CUT.isError("assertDeepEqual(); 25b - error",
   () => CEL.assertDeepEqual(
+    // @ts-ignore
     Object(42), new Error(42), "assertDeepEqual(); 25b - error"
   )
 );
 CUT.isError("assertDeepEqual(); 25c - error",
   () => CEL.assertDeepEqual(
+    // @ts-ignore
     true, new Error(true), "assertDeepEqual(); 25c - error"
   )
 );
 CUT.isError("assertDeepEqual(); 25d - error",
   () => CEL.assertDeepEqual(
+    // @ts-ignore
     Object(true), new Error(true), "assertDeepEqual(); 25d - error"
   )
 );
@@ -1730,10 +1759,12 @@ CUT.isError("assertDeepEqual(); 25f - error",
 );
 CUT.isError("assertDeepEqual(); 25g - error",
   () =>
+    // @ts-ignore
     CEL.assertDeepEqual(42n, new Error(42n), "assertDeepEqual(); 25g - error")
 );
 CUT.isError("assertDeepEqual(); 25h - error",
   () => CEL.assertDeepEqual(
+    // @ts-ignore
     Object(42n), new Error(42n), "assertDeepEqual(); 25h - error"
   )
 );
@@ -1814,19 +1845,27 @@ CUT.isTrue("assertDeepEqual(); 30f - ok",
 /* dataview + arraybuffer */
 token1 = new ArrayBuffer(2);
 token2 = new DataView(token1);
+// @ts-ignore
 token2.setInt8(0, 125, true);
+// @ts-ignore
 token2.setInt8(1, 100, true);
 token3 = new ArrayBuffer(2);
 token4 = new DataView(token3);
+// @ts-ignore
 token4.setInt8(0, 125, true);
+// @ts-ignore
 token4.setInt8(1, 100, true);
 token5 = new ArrayBuffer(2);
 token6 = new DataView(token5);
+// @ts-ignore
 token6.setInt8(0, 120, true);
+// @ts-ignore
 token6.setInt8(1, 100, true);
 token7 = new ArrayBuffer(3);
 token8 = new DataView(token7);
+// @ts-ignore
 token8.setInt8(0, 125, true);
+// @ts-ignore
 token8.setInt8(1, 100, true);
 CUT.isTrue("assertDeepEqual(); 31a",
      CEL.assertDeepEqual([1, 2, token1, 3], [1, 2, token1, 3])
@@ -2154,6 +2193,7 @@ CUT.isTrue("assertNotDeepStrictEqual(); 09g - ok",
 token1 = new Map([["a", 1], ["b", 2]]);
 token2 = new Map([["a", 1], ["b", 2]]);
 token3 = new Map([["a", 1], ["b", 3]]);
+// @ts-ignore
 token4 = new Map([["a", 1], ["b", "2"]]);
 token5 = new Map([["a", 1], ["b", 2], ["c", 3]]);
 CUT.isError("assertNotDeepStrictEqual(); 10a - error",
@@ -2258,9 +2298,13 @@ CUT.isTrue("assertNotDeepStrictEqual(); 15c - ok",
 );
 /* structures 1 */
 token1 = new Error("Agradzsag");
+// @ts-ignore
 token2 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1]]])}];
+// @ts-ignore
 token3 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1]]])}];
+// @ts-ignore
 token4 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, 42]]])}];
+// @ts-ignore
 token5 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1, 42]]])}];
 CUT.isError("assertNotDeepStrictEqual(); 16a - error",
   () => CEL.assertNotDeepStrictEqual(
@@ -2280,9 +2324,13 @@ CUT.isTrue("assertNotDeepStrictEqual(); 16d - ok",
 );
 /* structures 2 */
 token1 = new Error("Agradzsag");
+// @ts-ignore
 token2 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
 token3 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
 token4 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", ["a", 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
 token5 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13, 14])]])}, token1];
 CUT.isError("assertNotDeepStrictEqual(); 17a - error",
   () => CEL.assertNotDeepStrictEqual(
@@ -2302,9 +2350,13 @@ CUT.isTrue("assertNotDeepStrictEqual(); 17d - ok",
 );
 /* structures 3 */
 token1 = new Error("Agradzsag");
+// @ts-ignore
 token2 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
 token3 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
 token4 = [1, 2, {"3": 4, "5": new Map([["6", 8], ["8", [9, 10]], ["11", new Set([12, 14])]])}, token1];
+// @ts-ignore
 token5 = [1, 2, {"3": 4, "5": new Map([["6", 8], ["8", [9, 10, 15]], ["11", new Set([12, 13])]])}, token1];
 CUT.isError("assertNotDeepStrictEqual(); 18a - error",
   () => CEL.assertNotDeepStrictEqual(
@@ -2324,9 +2376,13 @@ CUT.isTrue("assertNotDeepStrictEqual(); 18d - ok",
 );
 /* structures 4 */
 token1 = new Error("Agradzsag");
+// @ts-ignore
 token2 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
 token3 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
 token4 = [1,5,{"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
 token5 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13, 14])]])}, token1];
 CUT.isError("assertNotDeepStrictEqual(); 19a - error",
   () => CEL.assertNotDeepStrictEqual(
@@ -2516,15 +2572,19 @@ CUT.isTrue("assertNotDeepStrictEqual(); 24i - ok",
 );
 /* objects / not same prototype - ok */
 CUT.isTrue("assertNotDeepStrictEqual(); 25a - ok",
+  // @ts-ignore
   CEL.assertNotDeepStrictEqual(42, new Error(42))
 );
 CUT.isTrue("assertNotDeepStrictEqual(); 25b - ok",
+  // @ts-ignore
   CEL.assertNotDeepStrictEqual(Object(42), new Error(42))
 );
 CUT.isTrue("assertNotDeepStrictEqual(); 25c - ok",
+  // @ts-ignore
   CEL.assertNotDeepStrictEqual(true, new Error(true))
 );
 CUT.isTrue("assertNotDeepStrictEqual(); 25d - ok",
+  // @ts-ignore
   CEL.assertNotDeepStrictEqual(Object(true), new Error(true))
 );
 CUT.isTrue("assertNotDeepStrictEqual(); 25e - ok",
@@ -2534,9 +2594,11 @@ CUT.isTrue("assertNotDeepStrictEqual(); 25f - ok",
   CEL.assertNotDeepStrictEqual(Object("lorem"), new Error("lorem"))
 );
 CUT.isTrue("assertNotDeepStrictEqual(); 25g - ok",
+  // @ts-ignore
   CEL.assertNotDeepStrictEqual(42n, new Error(42n))
 );
 CUT.isTrue("assertNotDeepStrictEqual(); 25h - ok",
+  // @ts-ignore
   CEL.assertNotDeepStrictEqual(Object(42n), new Error(42n))
 );
 /* objects / not same prototype - number */
@@ -2621,19 +2683,27 @@ CUT.isTrue("assertNotDeepStrictEqual(); 30f - ok",
 /* dataview + arraybuffer */
 token1 = new ArrayBuffer(2);
 token2 = new DataView(token1);
+// @ts-ignore
 token2.setInt8(0, 125, true);
+// @ts-ignore
 token2.setInt8(1, 100, true);
 token3 = new ArrayBuffer(2);
 token4 = new DataView(token3);
+// @ts-ignore
 token4.setInt8(0, 125, true);
+// @ts-ignore
 token4.setInt8(1, 100, true);
 token5 = new ArrayBuffer(2);
 token6 = new DataView(token5);
+// @ts-ignore
 token6.setInt8(0, 120, true);
+// @ts-ignore
 token6.setInt8(1, 100, true);
 token7 = new ArrayBuffer(3);
 token8 = new DataView(token7);
+// @ts-ignore
 token8.setInt8(0, 125, true);
+// @ts-ignore
 token8.setInt8(1, 100, true);
 CUT.isTrue("assertNotDeepStrictEqual(); 31a",
      CEL.assertNotDeepStrictEqual([1, 2, token1, 3], [1, 2, token5, 3])
@@ -2937,6 +3007,7 @@ CUT.isTrue("assertNotDeepEqual(); 09g - ok",
 token1 = new Map([["a", 1], ["b", 2]]);
 token2 = new Map([["a", 1], ["b", 2]]);
 token3 = new Map([["a", 1], ["b", 3]]);
+// @ts-ignore
 token4 = new Map([["a", 1], ["b", "2"]]);
 token5 = new Map([["a", 1], ["b", 2], ["c", 3]]);
 CUT.isError("assertNotDeepEqual(); 10a - error",
@@ -3036,10 +3107,15 @@ CUT.isError("assertNotDeepEqual(); 15c - error",
 );
 /* structures 1 */
 token1 = new Error("Agradzsag");
+// @ts-ignore
 token2 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1]]])}];
+// @ts-ignore
 token3 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1]]])}];
+// @ts-ignore
 token4 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, 42]]])}];
+// @ts-ignore
 token5 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1, 42]]])}];
+// @ts-ignore
 token6 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1]]])}];
 CUT.isError("assertNotDeepEqual(); 16a - error",
   () =>
@@ -3061,10 +3137,15 @@ CUT.isError("assertNotDeepEqual(); 16e - error",
 );
 /* structures 2 */
 token1 = new Error("Agradzsag");
+// @ts-ignore
 token2 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
 token3 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
 token4 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", ["a", 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
 token5 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13, 14])]])}, token1];
+// @ts-ignore
 token6 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
 CUT.isError("assertNotDeepEqual(); 17a - error",
   () =>
@@ -3086,10 +3167,15 @@ CUT.isError("assertNotDeepEqual(); 17d - error",
 );
 /* structures 3 */
 token1 = new Error("Agradzsag");
+// @ts-ignore
 token2 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
 token3 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
 token4 = [1, 2, {"3": 4, "5": new Map([["6", 8], ["8", [9, 10]], ["11", new Set([12, 14])]])}, token1];
+// @ts-ignore
 token5 = [1, 2, {"3": 4, "5": new Map([["6", 8], ["8", [9, 10, 15]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
 token6 = [1, 2, {"3": 4, "5": new Map([["6", "7"], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
 CUT.isError("assertNotDeepEqual(); 18a - error",
   () =>
@@ -3111,9 +3197,13 @@ CUT.isError("assertNotDeepEqual(); 18e - error",
 );
 /* structures 4 */
 token1 = new Error("Agradzsag");
+// @ts-ignore
 token2 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
 token3 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
 token4 = [1,5,{"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
 token5 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13, 14])]])}, token1];
 CUT.isError("assertNotDeepEqual(); 19a - error",
   () =>
@@ -3335,15 +3425,19 @@ CUT.isError("assertNotDeepEqual(); 24i - error",
 );
 /* objects / not same prototype - ok */
 CUT.isTrue("assertNotDeepEqual(); 25a - ok",
+  // @ts-ignore
   CEL.assertNotDeepEqual(42, new Error(42))
 );
 CUT.isTrue("assertNotDeepEqual(); 25b - ok",
+  // @ts-ignore
   CEL.assertNotDeepEqual(Object(42), new Error(42))
 );
 CUT.isTrue("assertNotDeepEqual(); 25c - ok",
+  // @ts-ignore
   CEL.assertNotDeepEqual(true, new Error(true))
 );
 CUT.isTrue("assertNotDeepEqual(); 25d - ok",
+  // @ts-ignore
   CEL.assertNotDeepEqual(Object(true), new Error(true))
 );
 CUT.isTrue("assertNotDeepEqual(); 25e - ok",
@@ -3353,9 +3447,11 @@ CUT.isTrue("assertNotDeepEqual(); 25f - ok",
   CEL.assertNotDeepEqual(Object("lorem"), new Error("lorem"))
 );
 CUT.isTrue("assertNotDeepEqual(); 25g - ok",
+  // @ts-ignore
   CEL.assertNotDeepEqual(42n, new Error(42n))
 );
 CUT.isTrue("assertNotDeepEqual(); 25h - ok",
+  // @ts-ignore
   CEL.assertNotDeepEqual(Object(42n), new Error(42n))
 );
 /* objects / not same prototype - number */
@@ -3458,19 +3554,27 @@ CUT.isError("assertNotDeepEqual(); 30f - error",
 /* dataview + arraybuffer */
 token1 = new ArrayBuffer(2);
 token2 = new DataView(token1);
+// @ts-ignore
 token2.setInt8(0, 125, true);
+// @ts-ignore
 token2.setInt8(1, 100, true);
 token3 = new ArrayBuffer(2);
 token4 = new DataView(token3);
+// @ts-ignore
 token4.setInt8(0, 125, true);
+// @ts-ignore
 token4.setInt8(1, 100, true);
 token5 = new ArrayBuffer(2);
 token6 = new DataView(token5);
+// @ts-ignore
 token6.setInt8(0, 120, true);
+// @ts-ignore
 token6.setInt8(1, 100, true);
 token7 = new ArrayBuffer(3);
 token8 = new DataView(token7);
+// @ts-ignore
 token8.setInt8(0, 125, true);
+// @ts-ignore
 token8.setInt8(1, 100, true);
 CUT.isTrue("assertNotDeepEqual(); 31a",
      CEL.assertNotDeepEqual([1, 2, token1, 3], [1, 2, token5, 3])
@@ -3805,7 +3909,7 @@ CUT.isError("assertDeepStrictEqual(); 09f - error",
   )
 );
 CUT.isError("assertDeepStrictEqual(); 09g - error",
-  () => xCEL.assertDeepStrictEqual(
+  () => CEL.assertDeepStrictEqual(
     token6, token8, "assertDeepStrictEqual(); 09g - error"
   )
 );
@@ -3813,6 +3917,7 @@ CUT.isError("assertDeepStrictEqual(); 09g - error",
 token1 = new Map([["a", 1], ["b", 2]]);
 token2 = new Map([["a", 1], ["b", 2]]);
 token3 = new Map([["a", 1], ["b", 3]]);
+// @ts-ignore
 token4 = new Map([["a", 1], ["b", "2"]]);
 token5 = new Map([["a", 1], ["b", 2], ["c", 3]]);
 CUT.isTrue("assertDeepStrictEqual(); 10a - ok",
@@ -3921,9 +4026,13 @@ CUT.isError("assertDeepStrictEqual(); 15c - error",
 );
 /* structures 1 */
 token1 = new Error("Agradzsag");
+// @ts-ignore
 token2 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1]]])}];
+// @ts-ignore
 token3 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1]]])}];
+// @ts-ignore
 token4 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, 42]]])}];
+// @ts-ignore
 token5 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1, 42]]])}];
 CUT.isTrue("assertDeepStrictEqual(); 16a - ok",
   CEL.assertDeepStrictEqual(token2, token2)
@@ -3943,9 +4052,13 @@ CUT.isError("assertDeepStrictEqual(); 16d - error",
 );
 /* structures 2 */
 token1 = new Error("Agradzsag");
+// @ts-ignore
 token2 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
 token3 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
 token4 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", ["a", 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
 token5 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13, 14])]])}, token1];
 CUT.isTrue("assertDeepStrictEqual(); 17a - ok",
   CEL.assertDeepStrictEqual(token2, token2)
@@ -3965,9 +4078,13 @@ CUT.isError("assertDeepStrictEqual(); 17d - error",
 );
 /* structures 3 */
 token1 = new Error("Agradzsag");
+// @ts-ignore
 token2 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
 token3 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
 token4 = [1, 2, {"3": 4, "5": new Map([["6", 8], ["8", [9, 10]], ["11", new Set([12, 14])]])}, token1];
+// @ts-ignore
 token5 = [1, 2, {"3": 4, "5": new Map([["6", 8], ["8", [9, 10, 15]], ["11", new Set([12, 13])]])}, token1];
 CUT.isTrue("assertDeepStrictEqual(); 18a - ok",
   CEL.assertDeepStrictEqual(token2, token2)
@@ -3987,9 +4104,13 @@ CUT.isError("assertDeepStrictEqual(); 18d - error",
 );
 /* structures 4 */
 token1 = new Error("Agradzsag");
+// @ts-ignore
 token2 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
 token3 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
 token4 = [1,5,{"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
 token5 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13, 14])]])}, token1];
 CUT.isTrue("assertDeepStrictEqual(); 19a - ok",
   CEL.assertDeepStrictEqual(token2, token2)
@@ -4290,21 +4411,25 @@ CUT.isError("assertDeepStrictEqual(); 24i - error",
 /* objects / not same prototype - error */
 CUT.isError("assertDeepStrictEqual(); 25a - error",
   () => CEL.assertDeepStrictEqual(
+    // @ts-ignore
     42, new Error(42), "assertDeepStrictEqual(); 25a - error"
   )
 );
 CUT.isError("assertDeepStrictEqual(); 25b - error",
   () => CEL.assertDeepStrictEqual(
+    // @ts-ignore
     Object(42), new Error(42), "assertDeepStrictEqual(); 25b - error"
   )
 );
 CUT.isError("assertDeepStrictEqual(); 25c - error",
   () => CEL.assertDeepStrictEqual(
+    // @ts-ignore
     true, new Error(true), "assertDeepStrictEqual(); 25c - error"
   )
 );
 CUT.isError("assertDeepStrictEqual(); 25d - error",
   () => CEL.assertDeepStrictEqual(
+    // @ts-ignore
     Object(true), new Error(true), "assertDeepStrictEqual(); 25d - error"
   )
 );
@@ -4320,11 +4445,13 @@ CUT.isError("assertDeepStrictEqual(); 25f - error",
 );
 CUT.isError("assertDeepStrictEqual(); 25g - error",
   () => CEL.assertDeepStrictEqual(
+    // @ts-ignore
     42n, new Error(42n), "assertDeepStrictEqual(); 25g - error"
   )
 );
 CUT.isError("assertDeepStrictEqual(); 25h - error",
   () => CEL.assertDeepStrictEqual(
+    // @ts-ignore
     Object(42n), new Error(42n), "assertDeepStrictEqual(); 25h - error"
   )
 );
@@ -4456,19 +4583,27 @@ CUT.isError("assertDeepStrictEqual(); 30f - error",
 /* dataview + arraybuffer */
 token1 = new ArrayBuffer(2);
 token2 = new DataView(token1);
+// @ts-ignore
 token2.setInt8(0, 125, true);
+// @ts-ignore
 token2.setInt8(1, 100, true);
 token3 = new ArrayBuffer(2);
 token4 = new DataView(token3);
+// @ts-ignore
 token4.setInt8(0, 125, true);
+// @ts-ignore
 token4.setInt8(1, 100, true);
 token5 = new ArrayBuffer(2);
 token6 = new DataView(token5);
+// @ts-ignore
 token6.setInt8(0, 120, true);
+// @ts-ignore
 token6.setInt8(1, 100, true);
 token7 = new ArrayBuffer(3);
 token8 = new DataView(token7);
+// @ts-ignore
 token8.setInt8(0, 125, true);
+// @ts-ignore
 token8.setInt8(1, 100, true);
 CUT.isTrue("assertDeepStrictEqual(); 31a",
      CEL.assertDeepStrictEqual([1, 2, token1, 3], [1, 2, token1, 3])
@@ -4604,6 +4739,7 @@ token1 = "";
 CEL.forEach("cat, dog, pig", function (e) { token1 += e.toUpperCase(); });
 CUT.isEqual("forEach(); 02", "CAT, DOG, PIG", token1);
 token1 = "";
+// @ts-ignore
 CEL.forEach(new Map([ ["foo", 3.14], ["bar", 42], ["baz", "Wilson"] ]),
   function (e,i) { token1 += i + "-" + e + "-"; }
 );
@@ -4898,10 +5034,10 @@ CUT.isEqual("concat(); 02", "[\"1\",\"2\",\"3\",4,5,6,7,8,9,10]",
 
 /* reduce(); */
 CUT.isEqual("reduce(); 01", 39,
-  CEL.reduce([4, 5, 6, 7, 8, 9].values(), (acc, v, i) => acc + v, 0)
+  CEL.reduce([4, 5, 6, 7, 8, 9].values(), (acc, v, _i) => acc + v, 0)
 );
 CUT.isEqual("reduce(); 02", 39,
-  CEL.reduce([4, 5, 6, 7, 8, 9].values(), (acc, v, i) => acc + v)
+  CEL.reduce([4, 5, 6, 7, 8, 9].values(), (acc, v, _i) => acc + v)
 );
 
 
@@ -4924,6 +5060,7 @@ CUT.isEqual("flat();", "[1,2,3,4,5,6,7,8,9,10]",
 
 
 /* join(); */
+// @ts-ignore
 var token1 = [2, 4, 6, 4, 8, 2];
 CUT.isEqual("join();",
   "2,4,6,4,8,2 2468 2;4;6;8 2x4x6x8 2true4true6true8 2114116118 ",
@@ -4932,7 +5069,9 @@ CUT.isEqual("join();",
     CEL.join(new Set(token1), ""),
     CEL.join(new Set(token1), ";"),
     CEL.join(new Set(token1), "x"),
+    // @ts-ignore
     CEL.join(new Set(token1), true),
+    // @ts-ignore
     CEL.join(new Set(token1), 11),
     CEL.join([])
   ])
@@ -5214,86 +5353,122 @@ CUT.isEqual("arrayMerge();", token4,
 
 
 /* Math.sumPrecise(); begin */
+// @ts-ignore
 CUT.isEqual("Math.sumPrecise(); 01", Math.sumPrecise([]), -0);
+// @ts-ignore
 CUT.isEqual("Math.sumPrecise(); 02", Math.sumPrecise([Infinity]), Infinity);
 CUT.isEqual("Math.sumPrecise(); 03", Infinity,
+  // @ts-ignore
   Math.sumPrecise([0.1, 0.2, 1e20, -1e20, 1e20, Infinity])
 );
+// @ts-ignore
 CUT.isEqual("Math.sumPrecise(); 04", Math.sumPrecise([-Infinity]), -Infinity);
 CUT.isEqual("Math.sumPrecise(); 05", -Infinity,
+  // @ts-ignore
   Math.sumPrecise([0.1, 0.2, 1e20, -1e20, 1e20, -Infinity])
 );
 CUT.isEqual("Math.sumPrecise(); 06",
+  // @ts-ignore
   Math.sumPrecise([-4234233, 1e20]), 99999999999995770000
 );
 CUT.isEqual("Math.sumPrecise(); 07",
+  // @ts-ignore
   Math.sumPrecise([-4234233.5, 1e20]), 99999999999995770000
 );
 CUT.isEqual("Math.sumPrecise(); 08",
+  // @ts-ignore
   Math.sumPrecise([4234233, -1e20]), -99999999999995770000
 );
 CUT.isEqual("Math.sumPrecise(); 09",
+  // @ts-ignore
   Math.sumPrecise([4234233.5, -1e20]), -99999999999995770000
 );
 CUT.isEqual("Math.sumPrecise(); 10", 1,
+  // @ts-ignore
   Math.sumPrecise([0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1])
 );
+// @ts-ignore
 CUT.isEqual("Math.sumPrecise(); 11", Math.sumPrecise([1, 2]), 3);
+// @ts-ignore
 CUT.isEqual("Math.sumPrecise(); 12", Math.sumPrecise([1, 2, 3]), 6);
+// @ts-ignore
 CUT.isEqual("Math.sumPrecise(); 13", Math.sumPrecise([42]), 42);
+// @ts-ignore
 CUT.isEqual("Math.sumPrecise(); 14", Math.sumPrecise([42, -98]), -56);
+// @ts-ignore
 CUT.isEqual("Math.sumPrecise(); 15", Math.sumPrecise([42, 3.14]), 45.14);
+// @ts-ignore
 CUT.isEqual("Math.sumPrecise(); 16", Math.sumPrecise([42, -53.14]), -11.14);
+// @ts-ignore
 CUT.isEqual("Math.sumPrecise(); 17", Math.sumPrecise([0.1, 0.2]),
   0.30000000000000004
 );
+// @ts-ignore
 CUT.isEqual("Math.sumPrecise(); 18", Math.sumPrecise([1e20, 0.1, -1e20]), 0.1);
+// @ts-ignore
 CUT.isEqual("Math.sumPrecise(); 19", Math.sumPrecise([2, 1e20-1]),
   100000000000000000000
 );
+// @ts-ignore
 CUT.isEqual("Math.sumPrecise(); 20", Math.sumPrecise([1e20, 0.1]),
   100000000000000000000
 );
+// @ts-ignore
 CUT.isEqual("Math.sumPrecise(); 21", Math.sumPrecise([1e20]),
   100000000000000000000
 );
+// @ts-ignore
 CUT.isEqual("Math.sumPrecise(); 22", Math.sumPrecise([-2, -1e20 + 1]),
   -100000000000000000000
 );
+// @ts-ignore
 CUT.isEqual("Math.sumPrecise(); 23", Math.sumPrecise([0.1, -1e20]),
   -100000000000000000000
 );
+// @ts-ignore
 CUT.isEqual("Math.sumPrecise(); 24", Math.sumPrecise([-1e20]),
   -100000000000000000000
 );
 CUT.isNotEqual("Math.sumPrecise(); 25", NaN,
+  // @ts-ignore
   Math.sumPrecise([Infinity, 0.1, 0.2, -Infinity])
 );
 CUT.isNotEqual("Math.sumPrecise(); 26", NaN,
+  // @ts-ignore
   Math.sumPrecise([-Infinity, 0.1, 0.2, Infinity])
 );
+// @ts-ignore
 CUT.isNotEqual("Math.sumPrecise(); 27", NaN, Math.sumPrecise([0.1, 0.1, NaN]));
+// @ts-ignore
 CUT.isError("Math.sumPrecise(); 28", () => Math.sumPrecise(5));
+// @ts-ignore
 CUT.isError("Math.sumPrecise(); 29", () => Math.sumPrecise("1848"));
+// @ts-ignore
 CUT.isError("Math.sumPrecise(); 30", () => Math.sumPrecise("1848a"));
 CUT.isError("Math.sumPrecise(); 31",
+  // @ts-ignore
   () => Math.sumPrecise([0.1,0.1,0.1,0.1,0.1,0.1, 0.1, 0.1, 0.1, "0.1"])
 );
 CUT.isError("Math.sumPrecise(); 32",
+  // @ts-ignore
   () => Math.sumPrecise([0.1,0.1,0.1,0.1,0.1, 0.1, 0.1, 0.1, 0.1, true])
 );
 CUT.isError("Math.sumPrecise(); 33",
+  // @ts-ignore
   () => Math.sumPrecise(
     [0.1,0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, BigInt(5)]
   )
 );
 CUT.isError("Math.sumPrecise(); 34",
+  // @ts-ignore
   () => Math.sumPrecise([Infinity,"0.1", 0.2])
 );
 CUT.isError("Math.sumPrecise(); 35",
+  // @ts-ignore
   () => Math.sumPrecise([-Infinity, "0.1", 0.2])
 );
 CUT.isError("Math.sumPrecise(); 36",
+  // @ts-ignore
   () => Math.sumPrecise([-Infinity, "1", 0.2])
 );
 /* Math.sumPrecise(); end */
@@ -5418,12 +5593,15 @@ CUT.isEqual("globalThis;", globalThis, globalThis);
 
 
 /* GeneratorFunction(); */
+// @ts-ignore
 token1 = new GeneratorFunction("v", "yield v * 3; yield v * 4;");
+// @ts-ignore
 CUT.isEqual("GeneratorFunction();", "9 12", CUT.join(token1(3)));
 
 
 /* AsyncFunction(); */
 CUT.isEqual("AsyncFunction();", "asyncfunction",
+  // @ts-ignore
   CEL.classof(new AsyncFunction("a", "b",
     "return await resolveAfter2Seconds(a) + await resolveAfter2Seconds(b);"
   )
@@ -5490,19 +5668,27 @@ CUT.isFalse("isCoercedObject(); 05",
 /* only structures 1 copied */
 token1 = new ArrayBuffer(2);
 token2 = new DataView(token1);
+// @ts-ignore
 token2.setInt8(0, 125, true);
+// @ts-ignore
 token2.setInt8(1, 100, true);
 token3 = new ArrayBuffer(2);
 token4 = new DataView(token3);
+// @ts-ignore
 token4.setInt8(0, 125, true);
+// @ts-ignore
 token4.setInt8(1, 100, true);
 token5 = new ArrayBuffer(2);
 token6 = new DataView(token5);
+// @ts-ignore
 token6.setInt8(0, 120, true);
+// @ts-ignore
 token6.setInt8(1, 100, true);
 token7 = new ArrayBuffer(3);
 token8 = new DataView(token7);
+// @ts-ignore
 token8.setInt8(0, 125, true);
+// @ts-ignore
 token8.setInt8(1, 100, true);
 CUT.isTrue("isDeepStrictEqual(); 01",
      CEL.isDeepStrictEqual([1, 2, token1, 3], [1, 2, token1, 3])
@@ -5517,9 +5703,13 @@ CUT.isFalse("isDeepStrictEqual(); 02",
   || CEL.isDeepStrictEqual([1, 2, token2, 3], [1, 2, token8, 3])
 );
 token1 = new Error("Agradzsag");
+// @ts-ignore
 token2 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1]]])}];
+// @ts-ignore
 token3 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1]]])}];
+// @ts-ignore
 token4 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, 42]]])}];
+// @ts-ignore
 token5 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1, 42]]])}];
 CUT.isTrue("isDeepStrictEqual(); 16a - ok",
   CEL.isDeepStrictEqual(token2, token2)
@@ -5571,7 +5761,7 @@ CUT.isFalse("isEmptyValue(); 02",
 
 /* isProxy(); */
 token1 = { message1: "hello", message2: "everyone"};
-token2 = { get(target, prop, receiver) { return "world"; } };
+token2 = { get(_target, _prop, _receiver) { return "world"; } };
 CUT.isTrue("isProxy();",
   CEL.isProxy(new Proxy(token1, token2)) && !CEL.isProxy([])
 );
@@ -5611,6 +5801,7 @@ CUT.isTrue("isGeneratorFn();",
   && !CEL.isGeneratorFn(function fn42 () { return 42; })
   && !CEL.isGeneratorFn(42)
   && !CEL.isGeneratorFn(
+       // @ts-ignore
        new AsyncFunction("a", "b",
          "return await resolveAfter2Seconds(a) + await resolveAfter2Seconds(b);"
        ))
@@ -5620,7 +5811,9 @@ CUT.isTrue("isGeneratorFn();",
 /* isAsyncFn(); */
 CUT.isTrue("isAsyncFn();",
   CEL.isAsyncFn(
+    // @ts-ignore
     new AsyncFunction("a", "b",
+      // @ts-ignore
       "return await resolveAfter2Seconds(a) + await resolveAfter2Seconds(b);"
     )
   )
@@ -6184,13 +6377,19 @@ CUT.isEqual("clamp(); 08",    0,   CEL.clamp(-0,  -10,  0));
 CUT.isEqual("clamp(); 09",    0,   CEL.clamp(0,   -10,  -0));
 CUT.isEqual("clamp(); 10",    20,  CEL.clamp(25,   10,  20));
 CUT.isEqual("clamp(); 11",    15,  CEL.clamp(15,   10,  20));
+// @ts-ignore
 CUT.isEqual("clamp(); 12",    0,   CEL.clamp(15,   -0n, 0));
 CUT.isEqual("clamp(); 13",    0n,  CEL.clamp(0n,   -0,  15));
+// @ts-ignore
 CUT.isEqual("clamp(); 14",    15,  CEL.clamp(10,   15,  20n));
 CUT.isEqual("clamp(); 15",    0n,  CEL.clamp(-0n,  -10, 0));
+// @ts-ignore
 CUT.isEqual("clamp(); 16",    0,   CEL.clamp(0,    -10, -0n));
+// @ts-ignore
 CUT.isEqual("clamp(); 17",    20,  CEL.clamp(25,   10n, 20));
+// @ts-ignore
 CUT.isEqual("clamp(); 18",    15n, CEL.clamp(15n,  10n, 20n));
+// @ts-ignore
 CUT.isEqual("clamp(); 19",    10n, CEL.clamp(5,  10n, 20n));
 CUT.isEqual("clamp(); 20",    10,  CEL.clamp(5,  10, 20));
 
@@ -6207,15 +6406,21 @@ CUT.isEqual("minmax(); 08",    0,   CEL.minmax(-0,  -10,  0));
 CUT.isEqual("minmax(); 09",    0,   CEL.minmax(0,   -10,  -0));
 CUT.isEqual("minmax(); 10",    20,  CEL.minmax(25,   10,  20));
 CUT.isEqual("minmax(); 11",    15,  CEL.minmax(15,   10,  20));
+// @ts-ignore
 CUT.isEqual("minmax(); 12",    0,   CEL.minmax(15,   -0n, 0));
 CUT.isEqual("minmax(); 13",    0n,  CEL.minmax(0n,   -0,  15));
+// @ts-ignore
 CUT.isEqual("minmax(); 14",    15,  CEL.minmax(10,   15,  20n));
 CUT.isEqual("minmax(); 15",    0n,  CEL.minmax(-0n,  -10, 0));
+// @ts-ignore
 CUT.isEqual("minmax(); 16",    0,   CEL.minmax(0,    -10, -0n));
+// @ts-ignore
 CUT.isEqual("minmax(); 17",    20,  CEL.minmax(25,   10n, 20));
+// @ts-ignore
 CUT.isEqual("minmax(); 18",    15n, CEL.minmax(15n,  10n, 20n));
-CUT.isEqual("minmax(); 19",    10n, CEL.minmax(5,  10n, 20n));
-CUT.isEqual("minmax(); 20",    10,  CEL.minmax(5,  10, 20));
+// @ts-ignore
+CUT.isEqual("minmax(); 19",    10n, CEL.minmax(5,    10n, 20n));
+CUT.isEqual("minmax(); 20",    10,  CEL.minmax(5,    10, 20));
 
 
 /* product(); */
@@ -6537,7 +6742,7 @@ CUT.log("1x asyncIdentity(); is working</li>");
 
 
 /* asyncNoop(); */
-CEL.asyncNoop().then(function(result) {
+CEL.asyncNoop().then(function(_result) {
   CUT.isTrue("asyncNoop(); is working", true);
 });
 
@@ -6561,7 +6766,7 @@ CEL.asyncF().then(function(result) {
 
 
 /* asyncIdentity(); */
-CEL.asyncIdentity(true).then(function(result) {
+CEL.asyncIdentity(true).then(function(_result) {
   CUT.isTrue("asyncIdentity(); is working", true);
 });
 

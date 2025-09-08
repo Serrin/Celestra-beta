@@ -1,3 +1,6 @@
+// @ts-check
+"use strict";
+
 /**
  * @name Celestra Assert plugin
  * @version 6.0.4 dev
