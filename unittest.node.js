@@ -33,7 +33,11 @@ CUT.VERSION = "Celestra Unit Tester (CUT) v1.30.0 for Node.js";
 /* __addTest__(<step: string>, <expected>, <expression>); */
 /* __addTest__(<step: string>, <expected>, <expression>[, strict: boolean]); */
 /* only for inner calls and selftest */
-CUT.__addTest__ = function __addTest__ (step,expected,expression, strict=true) {
+CUT.__addTest__ = function __addTest__ (
+  /** @type {any} */ step,
+  /** @type {any} */ expected,
+  /** @type {any} */ expression,
+  /** @type {boolean} */ strict = true) {
   step = String(step);
   if (strict === undefined) { strict = true; }
   if (strict ? expected === expression : expected == expression) {
@@ -48,31 +52,47 @@ CUT.__addTest__ = function __addTest__ (step,expected,expression, strict=true) {
 };
 
 /* isTrue(<step: string>, <expression>[, strict: boolean]); */
-CUT.isTrue = function isTrue (step, expression, strict = true) {
+CUT.isTrue = function isTrue (
+  /** @type {any} */ step,
+  /** @type {any} */ expression,
+  /** @type {boolean} */ strict = true) {
   CUT.__addTest__(step, true, expression, strict);
 };
 
 /* isFalse(<step: string>, <expression>[, strict: boolean]); */
-CUT.isFalse = function isFalse (step, expression, strict = true) {
+CUT.isFalse = function isFalse (
+  /** @type {any} */ step,
+  /** @type {any} */ expression,
+  /** @type {boolean} */ strict = true) {
   CUT.__addTest__(step, false, expression, strict);
 };
 
 /* isEqual(<step: string>, <expected>, <expression>); */
 /* isEqual(<step: string>, <expected>, <expression>[, strict: boolean]); */
-CUT.isEqual = function isEqual (step, expected, expression, strict = true) {
+CUT.isEqual = function isEqual (
+  /** @type {any} */ step,
+  /** @type {any} */ expected,
+  /** @type {any} */ expression,
+  /** @type {boolean} */ strict = true) {
   CUT.__addTest__(step, expected, expression, strict);
 };
 
 /* isNotEqual(<step: string>, <notExpected>, <expression>); */
 /* isNotEqual(<step: string>, <notExpected>, <expression>[, strict: boolean]);*/
-CUT.isNotEqual = function (step, notExpected, expression, strict = true) {
+CUT.isNotEqual = function (
+  /** @type {any} */ step,
+  /** @type {any} */ notExpected,
+  /** @type {any} */ expression,
+  /** @type {boolean} */ strict = true) {
   CUT.__addTest__(step, true,
     (strict ? notExpected !== expression : notExpected != expression), true
   );
 };
 
 /* isError((<step: string>, <callback: function>); */
-CUT.isError = function (step, callback) {
+CUT.isError = function (
+  /** @type {string} */ step,
+  /** @type {Function} */ callback) {
   try {
     callback();
     CUT.isTrue(step, false);
@@ -82,12 +102,12 @@ CUT.isError = function (step, callback) {
 };
 
 /* log(<innerHTML>); */
-CUT.log = function log (str) {
+CUT.log = function log (/** @type {any} */ str) {
   console.log("[" + Date.now().toString(36) + "] [info] " + str);
 };
 
 /* logCode(<innerHTML>); */
-CUT.logCode = function log (str) {
+CUT.logCode = function log (/** @type {any} */ str) {
   console.log(
     "[" + Date.now().toString(36) + "] [code] " + "`" + str + "`"
   );
@@ -97,14 +117,16 @@ CUT.logCode = function log (str) {
 CUT.clear = function clear () { console.clear(); };
 
 /* concat(<item1, item2, ...itemN>): string */
-CUT.concat = function concat (...args) {
+CUT.concat = function concat (/** @type {any[]} */ ...args) {
   let r = "";
   for (let item of args) { r += item; }
   return r;
 };
 
 /* join(<iterator>[, separator = " "]): string */
-CUT.join = function join (it, separator = " ") {
+CUT.join = function join (
+  /** @type {Iterable} */ it,
+  /** @type {string} */ separator = " ") {
   separator = String(separator);
   let r = "";
   for (let item of it) { r += separator + item; }
@@ -112,7 +134,9 @@ CUT.join = function join (it, separator = " ") {
 }
 
 /* take(<iterator>[,n=1]): iterator); */
-CUT.take = function* take (it, n = 1) {
+CUT.take = function* take (
+  /** @type {Iterable} */ it,
+  /** @type {number} */  n = 1) {
   let i = n;
   for (let item of it) {
     if (i <= 0) { break; }
@@ -122,7 +146,9 @@ CUT.take = function* take (it, n = 1) {
 }
 
 /* getHumanReadableJSON(<value>[, space]): string */
-CUT.getHumanReadableJSON = function getReadableJSON (value, space) {
+CUT.getHumanReadableJSON = function getReadableJSON (
+  /** @type {any} */ value,
+  /** @type {any} */ space) {
   function _JSONreplacer(_key, value) {
     if (value == null) { return String(value); }
     if (value !== value) { return String(value); }
@@ -198,6 +224,7 @@ CUT.isNotEqual(
 );
 
 } catch (e) {
+  // @ts-ignore
   console.error("CUT initialisation error: " + CUT.getHumanReadableJSON(e));
 }
 
@@ -6815,10 +6842,12 @@ CUT.log("End of the test.")
     + "\n"
     + CUT.getHumanReadableJSON(e, " ")
     + "\n"
+    // @ts-ignore
     + CUT.getHumanReadableJSON(e),
     false
   );
   console.log(CUT.getHumanReadableJSON(e, " "));
+  // @ts-ignore
   console.log(CUT.getHumanReadableJSON(e));
   /* console.log(JSON.stringify(e, Object.getOwnPropertyNames(e))); */
 }
