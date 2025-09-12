@@ -38,18 +38,19 @@ if (!("sumPrecise" in Math)) {
     /* empty iterator */
     if (a.length === 0) { return -0; }
     /* iterator with items */
-    if (a.every((v) => typeof v === "number")) {
+    if (a.every((/** @type {any} */ v) => typeof v === "number")) {
       /* return NaN + Infinity + -Infinity */
       let inf = a.indexOf(Infinity) >- 1, negInf = a.indexOf(-Infinity) > -1;
-      if (a.some((v) => v !== v) || (inf && negInf)) { return NaN; }
+      if (a.some((/** @type {any} */ v) => v !== v) || (inf && negInf)) { return NaN; }
       if (inf) { return Infinity; }
       if (negInf) { return -Infinity; }
       /* sum hi */
-      let hi = a.filter((v) => (v === 1e20 || v === -1e20))
+      let hi = a.filter((/** @type {any} */ v) => (v === 1e20 || v === -1e20))
         .reduce((acc, v) => acc + v, 0);
       /* sum lo - Kahan sum */
       let lo = 0.0, c = 0.0;
-      for (let item of a.filter((v) => (v !== 1e20 && v !== -1e20))) {
+      for (let item of a.filter((/** @type {any} */ v) => 
+        (v !== 1e20 && v !== -1e20))) {
         let y = item - c; let t = lo + y; c = (t - lo) - y; lo = t;
       }
       /* return sum values */
@@ -78,7 +79,8 @@ if (!("sumPrecise" in Math)) {
 if (!("isError" in Error)) {
   // @ts-ignore
   Error.isError = function isError (/** @type {any} */ v) {
-    let s = Object.prototype.toString.call(v).slice(8, -1).toLowerCase();
+    let s = Object.prototype.toString.call(/** @type {any} */ v)
+      .slice(8, -1).toLowerCase();
     return (s === "error" || s === "domexception");
   };
 }
@@ -561,7 +563,7 @@ const identity = (/** @type {any} */ v) => v;
 
 
 /* noop(): undefined */
-/** @return {undefined} */
+/** @return {void} */
 function noop () {}
 
 
@@ -625,7 +627,9 @@ function assertIs (
   /** @type {any} */ v,
   /** @type {string | function | Array<string | function> | undefined} */ expected,
   /** @type {any} */ msg) {
-  function _is (/** @type {any} */ value, expected) {
+  function _is (
+    /** @type {any} */ value,
+    /** @type {string | function | Array<string | function> | undefined} */ expected) {
     /* validate expected */
     if (!(["string", "function"].includes(typeof expected))
       && !Array.isArray(expected)) {
@@ -676,7 +680,9 @@ function assertIsNot (
   /** @type {any} */ v,
   /** @type {string | function | Array<string | function> | undefined} */ expected,
   /** @type {any} */ msg) {
-  function _is (/** @type {any} */ value, expected) {
+  function _is (
+    /** @type {any} */ value,
+    /** @type {string | function | Array<string | function> | undefined} */ expected) {
     /* validate expected */
     if (!(["string", "function"].includes(typeof expected))
       && !Array.isArray(expected)) {
@@ -718,7 +724,7 @@ function assertIsNot (
 
 
 /* assertFail(message | error): thrown error */
-/** @return {undefined} */
+/** @return {void} */
 function assertFail(/** @type {any} */ msg) {
   if (Error.isError(msg)) {
     throw msg;
@@ -1091,7 +1097,8 @@ function assertDeepEqual (
       if (Array.isArray(x) && Array.isArray(y)) {
         if (x.length !== y.length) { return false; }
         if (x.length === 0) { return true; }
-        return x.every((v, i) => _isDeepEqual(v, y[i]));
+        return x.every((/** @type {any} */ v, /** @type {string | number} */ i) => 
+          _isDeepEqual(v, y[i]));
       }
       /* objects / TypedArrays */
       if ( _isSameInstance(x, y, Int8Array)
@@ -1111,14 +1118,16 @@ function assertDeepEqual (
       ) {
         if (x.length !== y.length) { return false; }
         if (x.length === 0) { return true; }
-        return x.every((v, i) => _isEqual(v, y[i]));
+        return x.every((/** @type {any} */ v, /** @type {string | number} */ i) => 
+          _isEqual(v, y[i]));
       }
       /* objects / ArrayBuffer */
       if (_isSameInstance(x, y, ArrayBuffer)) {
         if (x.byteLength !== y.byteLength) { return false; }
         if (x.byteLength === 0) { return true; }
         let xTA = new Int8Array(x), yTA = new Int8Array(y);
-        return xTA.every((v, i) => _isEqual(v, yTA[i]));
+        return xTA.every((/** @type {any} */ v, /** @type {string | number} */ i) => 
+          _isEqual(v, yTA[i]));
       }
       /* objects / DataView */
       if (_isSameInstance(x, y, DataView)) {
@@ -1133,13 +1142,14 @@ function assertDeepEqual (
       if (_isSameInstance(x, y, Map)) {
         if (x.size !== y.size) { return false; }
         if (x.size === 0) { return true; }
-        return [...x.keys()].every((v) => _isDeepEqual(x.get(v), y.get(v)));
+        return [...x.keys()].every((/** @type {any} */ v) => 
+          _isDeepEqual(x.get(v), y.get(v)));
       }
       /* objects / Set */
       if (_isSameInstance(x, y, Set)) {
         if (x.size !== y.size) { return false; }
         if (x.size === 0) { return true; }
-        return [...x.keys()].every((v) => y.has(v));
+        return [...x.keys()].every((/** @type {any} */v) => y.has(v));
       }
       /* objects / RegExp */
       if (_isSameInstance(x, y, RegExp)) {
@@ -1246,7 +1256,8 @@ function assertNotDeepStrictEqual (
       if (Array.isArray(x) && Array.isArray(y)) {
         if (x.length !== y.length) { return false; }
         if (x.length === 0) { return true; }
-        return x.every((v, i) => _isDeepStrictEqual(v, y[i]));
+        return x.every((/** @type {any} */ v, /** @type {string | number} */ i) => 
+          _isDeepStrictEqual(v, y[i]));
       }
       /* objects / TypedArrays */
       if ( _isSameInstance(x, y, Int8Array)
@@ -1266,14 +1277,16 @@ function assertNotDeepStrictEqual (
       ) {
         if (x.length !== y.length) { return false; }
         if (x.length === 0) { return true; }
-        return x.every((v, i) => _isEqual(v, y[i]));
+        return x.every((/** @type {any} */ v, /** @type {string | number} */ i) => 
+          _isEqual(v, y[i]));
       }
       /* objects / ArrayBuffer */
       if (_isSameInstance(x, y, ArrayBuffer)) {
         if (x.byteLength !== y.byteLength) { return false; }
         if (x.byteLength === 0) { return true; }
         let xTA = new Int8Array(x), yTA = new Int8Array(y);
-        return xTA.every((v, i) => _isEqual(v, yTA[i]));
+        return xTA.every((/** @type {any} */ v, /** @type {string | number} */ i) => 
+          _isEqual(v, yTA[i]));
       }
       /* objects / DataView */
       if (_isSameInstance(x, y, DataView)) {
@@ -1288,14 +1301,14 @@ function assertNotDeepStrictEqual (
       if (_isSameInstance(x, y, Map)) {
         if (x.size !== y.size) { return false; }
         if (x.size === 0) { return true; }
-        return [...x.keys()].every((v) =>
+        return [...x.keys()].every((/** @type {any} */v) =>
           _isDeepStrictEqual(x.get(v), y.get(v)));
       }
       /* objects / Set */
       if (_isSameInstance(x, y, Set)) {
         if (x.size !== y.size) { return false; }
         if (x.size === 0) { return true; }
-        return [...x.keys()].every((v) => y.has(v));
+        return [...x.keys()].every((/** @type {any} */ v) => y.has(v));
       }
       /* objects / RegExp */
       if (_isSameInstance(x, y, RegExp)) {
@@ -1390,7 +1403,8 @@ function assertNotDeepEqual (
       if (Array.isArray(x) && Array.isArray(y)) {
         if (x.length !== y.length) { return false; }
         if (x.length === 0) { return true; }
-        return x.every((v, i) => _isDeepEqual(v, y[i]));
+        return x.every((/** @type {any} */ v, /** @type {string | number} */ i) => 
+          _isDeepEqual(v, y[i]));
       }
       /* objects / TypedArrays */
       if ( _isSameInstance(x, y, Int8Array)
@@ -1410,14 +1424,16 @@ function assertNotDeepEqual (
       ) {
         if (x.length !== y.length) { return false; }
         if (x.length === 0) { return true; }
-        return x.every((v, i) => _isEqual(v, y[i]));
+        return x.every((/** @type {any} */ v, /** @type {string | number} */ i) => 
+          _isEqual(v, y[i]));
       }
       /* objects / ArrayBuffer */
       if (_isSameInstance(x, y, ArrayBuffer)) {
         if (x.byteLength !== y.byteLength) { return false; }
         if (x.byteLength === 0) { return true; }
         let xTA = new Int8Array(x), yTA = new Int8Array(y);
-        return xTA.every((v, i) => _isEqual(v, yTA[i]));
+        return xTA.every((/** @type {any} */ v, /** @type {string | number} */ i) => 
+          _isEqual(v, yTA[i]));
       }
       /* objects / DataView */
       if (_isSameInstance(x, y, DataView)) {
@@ -1432,13 +1448,14 @@ function assertNotDeepEqual (
       if (_isSameInstance(x, y, Map)) {
         if (x.size !== y.size) { return false; }
         if (x.size === 0) { return true; }
-        return [...x.keys()].every((v) => _isDeepEqual(x.get(v), y.get(v)));
+        return [...x.keys()].every((/** @type {any} */v) => 
+          _isDeepEqual(x.get(v), y.get(v)));
       }
       /* objects / Set */
       if (_isSameInstance(x, y, Set)) {
         if (x.size !== y.size) { return false; }
         if (x.size === 0) { return true; }
-        return [...x.keys()].every((v) => y.has(v));
+        return [...x.keys()].every((/** @type {any} */ v) => y.has(v));
       }
       /* objects / RegExp */
       if (_isSameInstance(x, y, RegExp)) {
@@ -1545,7 +1562,8 @@ function assertDeepStrictEqual (
       if (Array.isArray(x) && Array.isArray(y)) {
         if (x.length !== y.length) { return false; }
         if (x.length === 0) { return true; }
-        return x.every((v, i) => _isDeepStrictEqual(v, y[i]));
+        return x.every((/** @type {any} */ v, /** @type {string | number} */ i) => 
+          _isDeepStrictEqual(v, y[i]));
       }
       /* objects / TypedArrays */
       if ( _isSameInstance(x, y, Int8Array)
@@ -1565,14 +1583,16 @@ function assertDeepStrictEqual (
       ) {
         if (x.length !== y.length) { return false; }
         if (x.length === 0) { return true; }
-        return x.every((v, i) => _isEqual(v, y[i]));
+        return x.every((/** @type {any} */ v, /** @type {string | number} */ i) => 
+          _isEqual(v, y[i]));
       }
       /* objects / ArrayBuffer */
       if (_isSameInstance(x, y, ArrayBuffer)) {
         if (x.byteLength !== y.byteLength) { return false; }
         if (x.byteLength === 0) { return true; }
         let xTA = new Int8Array(x), yTA = new Int8Array(y);
-        return xTA.every((v, i) => _isEqual(v, yTA[i]));
+        return xTA.every((/** @type {any} */ v, /** @type {string | number} */ i) => 
+          _isEqual(v, yTA[i]));
       }
       /* objects / DataView */
       if (_isSameInstance(x, y, DataView)) {
@@ -1595,7 +1615,7 @@ function assertDeepStrictEqual (
       if (_isSameInstance(x, y, Set)) {
         if (x.size !== y.size) { return false; }
         if (x.size === 0) { return true; }
-        return [...x.keys()].every((v) => y.has(v));
+        return [...x.keys()].every((/** @type {any} */ v) => y.has(v));
       }
       /* objects / RegExp */
       if (_isSameInstance(x, y, RegExp)) {
@@ -1677,7 +1697,7 @@ function strTruncate (
 /* strPropercase(s: any): string */
 /** @return {string} */
 const strPropercase = (/** @type {any} */ s) =>
-  String(s).split(" ").map(function (v) {
+  String(s).split(" ").map(function (/** @type {string} */ v) {
     var a = Array.from(v).map( (c) => c.toLowerCase() );
     if (a.length) { a[0] = a[0].toUpperCase(); }
     return a.join("");
@@ -1687,7 +1707,7 @@ const strPropercase = (/** @type {any} */ s) =>
 /* strTitlecase(s: any): string */
 /** @return {string} */
 const strTitlecase = (/** @type {any} */ s) =>
-  String(s).split(" ").map(function (v) {
+  String(s).split(" ").map(function (/** @type {string} */ v) {
     var a = Array.from(v).map( (c) => c.toLowerCase() );
     if (a.length) { a[0] = a[0].toUpperCase(); }
     return a.join("");
@@ -1730,7 +1750,7 @@ const strReverse = (/** @type {any} */ s) =>
 /* strCodePoints(s: any): array of strings */
 /** @return {Array} */
 const strCodePoints = (/** @type {any} */ s) =>
-  Array.from(String(s), (v) => v.codePointAt(0) );
+  Array.from(String(s), (/** @type {string} */ v) => v.codePointAt(0) );
 
 
 /* strFromCodePoints(iterator: iterator): string */
@@ -1804,7 +1824,7 @@ const qs = (/** @type {string} */ s, /** @type {Object} */ c = document) =>
 
 
 /* domReady(callback: function): undefined */
-/** @return {undefined} */
+/** @return {void} */
 function domReady (/** @type {Function} */ fn) {
   if (document.readyState !== "loading") {
     fn();
@@ -1865,7 +1885,7 @@ const domGetCSS = (
 
 /* domSetCSS(element, property: string, value: string): undefined */
 /* domSetCSS(element, properties: object): undefined */
-/** @return {undefined} */
+/** @return {void} */
 function domSetCSS (
   /** @type {HTMLElement} */ e,
   /** @type {string | Object} */ n,
@@ -1879,7 +1899,7 @@ function domSetCSS (
 
 
 /* domFadeIn(element [, duration = 500 [, display = ""]]): undefined */
-/** @return {undefined} */
+/** @return {void} */
 function domFadeIn (
   /** @type {HTMLElement} */ e,
   /** @type {number} */ dur,
@@ -1896,7 +1916,7 @@ function domFadeIn (
 
 
 /* domFadeOut(element [, duration = 500]): undefined */
-/** @return {undefined} */
+/** @return {void} */
 function domFadeOut (
   /** @type {HTMLElement} */ e,
   /** @type {number} */ dur) {
@@ -1911,7 +1931,7 @@ function domFadeOut (
 
 
 /* domFadeToggle(element [, duration = 500 [, display = ""]]): undefined */
-/** @return {undefined} */
+/** @return {void} */
 function domFadeToggle (
   /** @type {HTMLElement} */ e,
   /** @type {number} */ dur,
@@ -1947,14 +1967,12 @@ const domHide = (/** @type {HTMLElement} */ e) => e.style.display = "none";
 
 /* domShow(element [, display = ""]): undefined */
 /** @return {any} */
-const domShow = (
-  /** @type {HTMLElement} */ e,
-  /** @type {string} */ d = "") =>
+const domShow = (/** @type {HTMLElement} */ e, /** @type {string} */ d = "") =>
   e.style.display = d;
 
 
 /* domToggle(element [, display: string]): undefined */
-/** @return {undefined} */
+/** @return {void} */
 function domToggle (
   /** @type {HTMLElement} */ e,
   /** @type {string} */ d = "") {
@@ -1968,20 +1986,22 @@ function domToggle (
 
 /* domIsHidden(element): boolean */
 /** @return {boolean} */
-const domIsHidden = (/** @type {HTMLElement} */ e) =>
+const domIsHidden = (/** @type {Element} */ e) =>
   (globalThis.getComputedStyle(e,null).display === "none");
 
 
 /* domSiblings(element): array */
 /** @return {Array} */
-const domSiblings = (/** @type {HTMLElement} */ el) =>
+const domSiblings = (/** @type {Element} */ el) =>
   // @ts-ignore
-  Array.prototype.filter.call(el.parentNode.children, (e) => (e !== el));
+  Array.prototype.filter.call(el.parentNode.children, 
+    (/** @type {Element} */ e) => (e !== el)
+  );
 
 
 /* domSiblingsPrev(element): array */
 /** @return {Array} */
-const domSiblingsPrev = (/** @type {HTMLElement} */ el) =>
+const domSiblingsPrev = (/** @type {Element} */ el) =>
   Array.prototype.slice.call(
     // @ts-ignore
     el.parentNode.children, 0,
@@ -1992,7 +2012,7 @@ const domSiblingsPrev = (/** @type {HTMLElement} */ el) =>
 
 /* domSiblingsLeft(element): array */
 /** @return {Array} */
-const domSiblingsLeft = (/** @type {HTMLElement} */ el) =>
+const domSiblingsLeft = (/** @type {Element} */ el) =>
   Array.prototype.slice.call(
     // @ts-ignore
     el.parentNode.children, 0,
@@ -2003,7 +2023,7 @@ const domSiblingsLeft = (/** @type {HTMLElement} */ el) =>
 
 /* domSiblingsNext(element): array */
 /** @return {Array} */
-const domSiblingsNext = (/** @type {HTMLElement} */ el) =>
+const domSiblingsNext = (/** @type {Element} */ el) =>
   Array.prototype.slice.call(
     // @ts-ignore
     el.parentNode.children,
@@ -2028,7 +2048,7 @@ const domSiblingsRight = (/** @type {HTMLElement} */ el) =>
 
 
 /* importScript(script1: string [, scriptN: string]): undefined */
-/** @return {undefined} */
+/** @return {void} */
 function importScript (/** @type {string[]} */ ...a) {
   for (let item of a) {
     let scr = document.createElement("script");
@@ -2046,7 +2066,7 @@ function importScript (/** @type {string[]} */ ...a) {
 
 
 /* importStyle(style1: string [, styleN: string]): undefined */
-/** @return {undefined} */
+/** @return {void} */
 function importStyle (/** @type {string[]} */ ...a) {
   for (let item of a) {
     let stl = document.createElement("link");
@@ -2059,7 +2079,7 @@ function importStyle (/** @type {string[]} */ ...a) {
         "Loading failed for the style with source " + e.target.href
       );
     };
-    (document.head||document.getElementsByTagName("head")[0]).appendChild(stl);
+    (document.head ||document.getElementsByTagName("head")[0]).appendChild(stl);
   }
 }
 
@@ -2135,11 +2155,11 @@ function form2string (/** @type {any} */ f) {
 const getDoNotTrack = () =>
   // @ts-ignore
   [navigator.doNotTrack, globalThis.doNotTrack, navigator.msDoNotTrack]
-    .some((e) => (e === true || e === 1 || e === "1"));
+    .some((/** @type {any} */ e) => (e === true || e === 1 || e === "1"));
 
 
 /* getLocation(success: function [, error: function]): undefined */
-/** @return {undefined} */
+/** @return {void} */
 function getLocation (/** @type {Function} */ s, /** @type {Function} */ e) {
   // @ts-ignore
   if (!e) { var e = function () {}; }
@@ -2155,7 +2175,7 @@ function getLocation (/** @type {Function} */ s, /** @type {Function} */ e) {
 
 /* createFile(filename: string, content: string [,dataType:string]):
   undefined */
-/** @return {undefined} */
+/** @return {void} */
 function createFile (
   /** @type {string} */ fln,
   /** @type {string} */ c,
@@ -2184,7 +2204,7 @@ function createFile (
 
 
 /* getFullscreen(): element object | undefined */
-/** @return {undefined} */
+/** @return {document | HTMLElement | undefined} */
 const getFullscreen = () => (
   document.fullscreenElement
   // @ts-ignore
@@ -2199,7 +2219,7 @@ const getFullscreen = () => (
 
 /* setFullscreenOn(element): undefined */
 /* setFullscreenOn(selector string): undefined */
-/** @return {undefined} */
+/** @return {void} */
 function setFullscreenOn (/** @type {HTMLElement | string} */ s) {
   let e;
   if (typeof s === "string") { e = document.querySelector(s); }
@@ -2216,7 +2236,7 @@ function setFullscreenOn (/** @type {HTMLElement | string} */ s) {
 
 
 /* setFullscreenOff(): undefined */
-/** @return {undefined} */
+/** @return {void} */
 function setFullscreenOff () {
   if (document.exitFullscreen) { document.exitFullscreen(); }
     // @ts-ignore
@@ -2255,7 +2275,7 @@ const domScrollToBottom = () =>
 /* domScrollToElement(element [, top=true]): undefined */
 /** @return {any} */
 const domScrollToElement = (
-  /** @type {HTMLElement} */ e,
+  /** @type {Element} */ e,
   /** @type {boolean} */ top = true) =>
   e.scrollIntoView(top);
 
@@ -2263,15 +2283,15 @@ const domScrollToElement = (
 /* domClear(element): any */
 /** @return {void} */
 // @ts-ignore
-const domClear = (/** @type {HTMLElement} */ el) =>
-  Array.from(el.children).forEach((e) => e.remove());
+const domClear = (/** @type {Element} */ el) =>
+  Array.from(el.children).forEach((/** @type {Element} */ e) => e.remove());
 
 
 /** AJAX API **/
 
 
 /* getText(url: string, success: function): undefined */
-/** @return {undefined} */
+/** @return {void} */
 function getText (/** @type {string} */ url, /** @type {Function} */ success) {
   if (typeof url !== "string") {
     throw new TypeError(
@@ -2299,7 +2319,7 @@ function getText (/** @type {string} */ url, /** @type {Function} */ success) {
 
 
 /* getJson(url: string, success: function): undefined */
-/** @return {undefined} */
+/** @return {void} */
 function getJson (/** @type {string} */ url, /** @type {Function} */ success) {
   if (typeof url !== "string") {
     throw new TypeError(
@@ -2327,7 +2347,7 @@ function getJson (/** @type {string} */ url, /** @type {Function} */ success) {
 
 
 /* ajax(Options object): undefined */
-/** @return {undefined} */
+/** @return {void} */
 function ajax (/** @type {Object} */ o) {
   if (typeof o.url !== "string") {
     throw new TypeError(
@@ -2440,44 +2460,51 @@ function is (
   /** @type {any} */ value,
   /** @type {string | function | Array<string | function> | undefined} */ expected,
   /** @type {boolean} */ Throw = false) {
-  /* validate expected */
+  /* Validate `expected` */
   if (!(["string", "function", "undefined"].includes(typeof expected))
     && !Array.isArray(expected)) {
     throw new TypeError(
-       `[is] TypeError: expectedType must be string, function, array or undefined. Got ${typeof expected}`
+      `[is] TypeError: expectedType must be string, function, array or undefined. Got ${typeof expected}`
     );
   }
-  /* validate Throw */
+  /* Validate `Throw` */
   if (typeof Throw !== "boolean") {
     throw new TypeError(
       `[is] TypeError: Throw has to be a boolean. Got ${typeof Throw}`
     );
   }
-  /* if expected is empty then return primitive type or constructor */
+  /* Determine the type of `value` */
+  /** @type {string} */
   const vType = (value === null ? "null" : typeof value);
+  /* If no expected type provided, return type or constructor */
   if (expected == null) {
     return vType === "object"
       ? Object.getPrototypeOf(value)?.constructor ?? "object"
       : vType;
   }
-  /* check expected types and constructors */
+  /* Normalize expected to an array */
+  /** @type {Array<string | Function>} */
   let expectedArray = Array.isArray(expected) ? expected : [expected];
+  /* Check against expected types or constructors */
+  /** @type {boolean} */
   let matched = expectedArray.some(
-    function (item) {
+    function ( /** @type {string | Function} */ item) {
       if (typeof item === "string") { return vType === item; }
       if (typeof item === "function") {
         return value != null && value instanceof item;
       }
       /* validate expected array elements */
       throw new TypeError(
-         `[is] TypeError: expectedType array elements have to be a string or function. Got ${typeof item}`
+        `[is] TypeError: expectedType array elements have to be a string or function. Got ${typeof item}`
       );
     }
   );
-  /* throw TypeError if not matched or return the matched result */
+  /* Throw error if mismatch and `Throw` is true */
   if (Throw && !matched) {
+    /** @type {string} */
     let vName = value.toString ? value : Object.prototype.toString.call(value);
-    let eNames = expectedArray.map( (item) =>
+    /** @type {string} */
+    let eNames = expectedArray.map( (/** @type {any} */ item) =>
       (typeof item === "string" ? item.toString() : item.name ?? "anonymous")
     ).join(", ");
     throw new TypeError(`[is] TypeError: ${vName} is not a ${eNames}`);
@@ -2688,7 +2715,8 @@ function isDeepStrictEqual (/** @type {any} */ x, /** @type {any} */ y) {
     if (Array.isArray(x) && Array.isArray(y)) {
       if (x.length !== y.length) { return false; }
       if (x.length === 0) { return true; }
-      return x.every((v, i) => isDeepStrictEqual(v, y[i]));
+      return x.every((/** @type {any} */ v, /** @type {string | number} */ i) => 
+        isDeepStrictEqual(v, y[i]));
     }
     /* objects / TypedArrays */
     if ( _isSameInstance(x, y, Int8Array)
@@ -2708,14 +2736,16 @@ function isDeepStrictEqual (/** @type {any} */ x, /** @type {any} */ y) {
     ) {
       if (x.length !== y.length) { return false; }
       if (x.length === 0) { return true; }
-      return x.every((v, i) => _isEqual(v, y[i]));
+      return x.every((/** @type {any} */ v, /** @type {string | number} */ i) => 
+        _isEqual(v, y[i]));
     }
     /* objects / ArrayBuffer */
     if (_isSameInstance(x, y, ArrayBuffer)) {
       if (x.byteLength !== y.byteLength) { return false; }
       if (x.byteLength === 0) { return true; }
       let xTA = new Int8Array(x), yTA = new Int8Array(y);
-      return xTA.every((v, i) => _isEqual(v, yTA[i]));
+      return xTA.every((/** @type {any} */ v, /** @type {string | number} */ i) => 
+        _isEqual(v, yTA[i]));
     }
     /* objects / DataView */
     if (_isSameInstance(x, y, DataView)) {
@@ -2730,13 +2760,14 @@ function isDeepStrictEqual (/** @type {any} */ x, /** @type {any} */ y) {
     if (_isSameInstance(x, y, Map)) {
       if (x.size !== y.size) { return false; }
       if (x.size === 0) { return true; }
-      return [...x.keys()].every((v) => isDeepStrictEqual(x.get(v), y.get(v)));
+      return [...x.keys()].every((/** @type {any} */ v) => 
+        isDeepStrictEqual(x.get(v), y.get(v)));
     }
     /* objects / Set */
     if (_isSameInstance(x, y, Set)) {
       if (x.size !== y.size) { return false; }
       if (x.size === 0) { return true; }
-      return [...x.keys()].every((v) => y.has(v));
+      return [...x.keys()].every((/** @type {any} */ v) => y.has(v));
     }
     /* objects / RegExp */
     if (_isSameInstance(x, y, RegExp)) {
@@ -2962,7 +2993,7 @@ const isAsyncFn = (/** @type {any} */ v) =>
 /* setCookie(Options object): undefined */
 /* setCookie(name: string, value: string [, hours = 8760 [, path = "/" [, domain
   [, secure [, SameSite = "Lax" [, HttpOnly]]]]]]): undefined */
-/** @return {undefined} */
+/** @return {void} */
 function setCookie (
   /** @type {string | Object} */ name,
   /** @type {string} */ value,
@@ -3056,7 +3087,7 @@ function removeCookie (
 /* clearCookies(Options object): undefined */
 /* clearCookies([path = "/"
   [, domain [, secure [, SameSite = "Lax" [, HttpOnly ]]]]]): undefined */
-/** @return {undefined} */
+/** @return {void} */
 function clearCookies (
   /** @type {string | Object} */ path = "/",
   /** @type {string} */ domain,
@@ -3101,7 +3132,8 @@ function unique (
   if (resolver == null) { return [...new Set(it)]; }
   if (typeof resolver === "string") {
     return Array.from(it).reduce(function (acc, el) {
-      if (acc.every((e) => e[resolver] !== el[resolver])) { acc.push(el); }
+      if (acc.every((/** @type {any} */ e) => 
+        e[resolver] !== el[resolver])) { acc.push(el); }
       return acc;
     }, []);
   }
@@ -3172,7 +3204,7 @@ const setUnion = (/** @type {Iterable[]} */ ...a) =>
 const setIntersection = (
   /** @type {Iterable<any>} */ [...a],
   /** @type {Set} */ b) =>
-  new Set(a.filter((v) => b.has(v)));
+  new Set(a.filter((/** @type {any} */ v) => b.has(v)));
 
 
 /* setDifference(set1: set, set2: set): set */
@@ -3180,14 +3212,15 @@ const setIntersection = (
 const setDifference = (
   /** @type {Iterable<any>} */ [...a],
   /** @type {Set} */ b) =>
-  new Set(a.filter((v) => !(b.has(v))));
+  new Set(a.filter((/** @type {any} */ v) => !(b.has(v))));
 
 
 /* setSymmetricDifference(set1: set, set2: set): set */
 /** @return {Set} */
 const setSymmetricDifference = ( /** @type {Set} */ a, /** @type {Set} */ b) =>
   new Set(
-    [...a].filter((v) => !(b.has(v))).concat([...b].filter((v) => !(a.has(v))))
+    [...a].filter((/** @type {any} */ v) => 
+      !(b.has(v))).concat([...b].filter((/** @type {any} */ v) => !(a.has(v))))
   );
 
 
@@ -3237,7 +3270,7 @@ const arrayRange = (
 /* zip(iterator1: iterator [, iteratorN: iterator]): array */
 /** @return {Array} */
 function zip (/** @type {any[]} */ ...a) {
-  a = a.map((v) => Array.from(v));
+  a = a.map((/** @type {Iterable} */ v) => Array.from(v));
   return Array.from({length: Math.min(...a.map(v => v.length))})
     .map((_, i) => a.map(v => v[i]));
 }
@@ -3246,7 +3279,7 @@ function zip (/** @type {any[]} */ ...a) {
 /* unzip(iterator: iterator): array */
 /** @return {Array} */
 const unzip = (/** @type {Iterable<any>} */ [...a]) =>
-  a.map((v) => Array.from(v)).reduce((acc, v) => {
+  a.map((/** @type {Iterable} */ v) => Array.from(v)).reduce((acc, v) => {
     v.forEach((item, i) => {
       if (!Array.isArray(acc[i])) { acc[i] = []; }
       acc[i].push(item);
@@ -3417,7 +3450,7 @@ function* drop (/** @type {Iterable<any>} */ it, /** @type {number} */ n = 1) {
 
 
 /* forEach(iterator: iterator, callback: function): undefined */
-/** @return {undefined} */
+/** @return {void} */
 function forEach (/** @type {Iterable<any>} */ it, /** @type {Function} */ fn) {
   let i = 0;
   for (let item of it) { fn(item, i++); }
@@ -3425,7 +3458,7 @@ function forEach (/** @type {Iterable<any>} */ it, /** @type {Function} */ fn) {
 
 
 /* forEachRight(iterator: iterator, callback: function): undefined */
-/** @return {undefined} */
+/** @return {void} */
 function forEachRight (
   /** @type {Iterable<any>} */ [...a],
   /** @type {Function}} */ fn) {
@@ -3759,7 +3792,7 @@ function join (
 const withOut = (
   /** @type {Iterable<any>} */ [...a],
   /** @type {Iterable<any>} */ [...fl]) =>
-  a.filter((e) => fl.indexOf(e) === -1);
+  a.filter((/** @type {any} */ e) => fl.indexOf(e) === -1);
 
 
 /** Math API **/
@@ -3788,7 +3821,7 @@ const toIntegerOrInfinity = (/** @type {any} */ v) =>
 /* sum(value1: any [, valueN]: any): any */
 /** @return {any} */
 const sum = (/** @type {any[]} */ ...a) =>
-  (a.every((v) => typeof v === "number") ?
+  (a.every((/** @type {any} */ v) => typeof v === "number") ?
   // @ts-ignore
   Math.sumPrecise(a) : a.slice(1).reduce((acc, v) => acc + v, a[0]));
 
@@ -3932,7 +3965,7 @@ const toUInt32 = (/** @type {any} */ v) =>
 
 /* toBigInt64(value: any): bigint */
 /** @return {bigint} */
-const toBigInt64 = /** @type {any} */ (v) => BigInt(typeof v === "bigint"
+const toBigInt64 = (/** @type {any} */ v) => BigInt(typeof v === "bigint"
   ? (v > Math.pow(2,63)-1 ?Math.pow(2,63)-1:v<Math.pow(-2,63)?Math.pow(-2,63):v)
   : ((v = Math.min(Math.max(Math.pow(-2, 63), Math.trunc(Number(v))),
   Math.pow(2, 63) - 1)) === v ) ? v : 0);
