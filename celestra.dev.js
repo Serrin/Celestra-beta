@@ -49,7 +49,7 @@ if (!("sumPrecise" in Math)) {
         .reduce((acc, v) => acc + v, 0);
       /* sum lo - Kahan sum */
       let lo = 0.0, c = 0.0;
-      for (let item of a.filter((/** @type {any} */ v) => 
+      for (let item of a.filter((/** @type {any} */ v) =>
         (v !== 1e20 && v !== -1e20))) {
         let y = item - c; let t = lo + y; c = (t - lo) - y; lo = t;
       }
@@ -153,7 +153,8 @@ if (!Array.fromAsync) {
       r.length = i;
       return r;
     } else {
-      var l=arrayLike.length, r=isConstructor(this) ?new this(l) :Array(l), i=0;
+      var l = arrayLike.length,
+        r = isConstructor(this) ? new this(l) : Array(l) , i = 0;
       while (i < l) {
         if (i > Number.MAX_SAFE_INTEGER) { throw TypeError(errorMsg); }
         var item = await arrayLike[i];
@@ -406,7 +407,7 @@ async function asyncF () { return false; }
 
 
 /* asyncConstant (value): async function */
-/** @return @async {any} */
+/** @return @async {Function} */
 function asyncConstant (/** @type {any} */ v) {
   return async function() { return v; };
 }
@@ -1097,7 +1098,7 @@ function assertDeepEqual (
       if (Array.isArray(x) && Array.isArray(y)) {
         if (x.length !== y.length) { return false; }
         if (x.length === 0) { return true; }
-        return x.every((/** @type {any} */ v, /** @type {string | number} */ i) => 
+        return x.every((/** @type {any} */ v, /** @type {string | number} */ i) =>
           _isDeepEqual(v, y[i]));
       }
       /* objects / TypedArrays */
@@ -1118,7 +1119,7 @@ function assertDeepEqual (
       ) {
         if (x.length !== y.length) { return false; }
         if (x.length === 0) { return true; }
-        return x.every((/** @type {any} */ v, /** @type {string | number} */ i) => 
+        return x.every((/** @type {any} */ v, /** @type {string | number} */ i) =>
           _isEqual(v, y[i]));
       }
       /* objects / ArrayBuffer */
@@ -1126,7 +1127,7 @@ function assertDeepEqual (
         if (x.byteLength !== y.byteLength) { return false; }
         if (x.byteLength === 0) { return true; }
         let xTA = new Int8Array(x), yTA = new Int8Array(y);
-        return xTA.every((/** @type {any} */ v, /** @type {string | number} */ i) => 
+        return xTA.every((/** @type {any} */ v, /** @type {string | number} */ i) =>
           _isEqual(v, yTA[i]));
       }
       /* objects / DataView */
@@ -1142,7 +1143,7 @@ function assertDeepEqual (
       if (_isSameInstance(x, y, Map)) {
         if (x.size !== y.size) { return false; }
         if (x.size === 0) { return true; }
-        return [...x.keys()].every((/** @type {any} */ v) => 
+        return [...x.keys()].every((/** @type {any} */ v) =>
           _isDeepEqual(x.get(v), y.get(v)));
       }
       /* objects / Set */
@@ -1211,6 +1212,7 @@ function assertNotDeepStrictEqual (
       (x instanceof Class) && (y instanceof Class);
     const _classof = (/** @type {any} */ x) =>
       Object.prototype.toString.call(x).slice(8, -1).toLowerCase();
+    /** @return {any[]} */
     const _ownKeys = (/** @type {Object} */ x) =>
       // @ts-ignore
       Object.getOwnPropertyNames(x).concat(Object.getOwnPropertySymbols(x));
@@ -1256,7 +1258,7 @@ function assertNotDeepStrictEqual (
       if (Array.isArray(x) && Array.isArray(y)) {
         if (x.length !== y.length) { return false; }
         if (x.length === 0) { return true; }
-        return x.every((/** @type {any} */ v, /** @type {string | number} */ i) => 
+        return x.every((/** @type {any} */ v, /** @type {string | number} */ i) =>
           _isDeepStrictEqual(v, y[i]));
       }
       /* objects / TypedArrays */
@@ -1277,7 +1279,7 @@ function assertNotDeepStrictEqual (
       ) {
         if (x.length !== y.length) { return false; }
         if (x.length === 0) { return true; }
-        return x.every((/** @type {any} */ v, /** @type {string | number} */ i) => 
+        return x.every((/** @type {any} */ v, /** @type {string | number} */ i) =>
           _isEqual(v, y[i]));
       }
       /* objects / ArrayBuffer */
@@ -1285,7 +1287,7 @@ function assertNotDeepStrictEqual (
         if (x.byteLength !== y.byteLength) { return false; }
         if (x.byteLength === 0) { return true; }
         let xTA = new Int8Array(x), yTA = new Int8Array(y);
-        return xTA.every((/** @type {any} */ v, /** @type {string | number} */ i) => 
+        return xTA.every((/** @type {any} */ v, /** @type {string | number} */ i) =>
           _isEqual(v, yTA[i]));
       }
       /* objects / DataView */
@@ -1403,7 +1405,7 @@ function assertNotDeepEqual (
       if (Array.isArray(x) && Array.isArray(y)) {
         if (x.length !== y.length) { return false; }
         if (x.length === 0) { return true; }
-        return x.every((/** @type {any} */ v, /** @type {string | number} */ i) => 
+        return x.every((/** @type {any} */ v, /** @type {string | number} */ i) =>
           _isDeepEqual(v, y[i]));
       }
       /* objects / TypedArrays */
@@ -1424,7 +1426,7 @@ function assertNotDeepEqual (
       ) {
         if (x.length !== y.length) { return false; }
         if (x.length === 0) { return true; }
-        return x.every((/** @type {any} */ v, /** @type {string | number} */ i) => 
+        return x.every((/** @type {any} */ v, /** @type {string | number} */ i) =>
           _isEqual(v, y[i]));
       }
       /* objects / ArrayBuffer */
@@ -1432,7 +1434,7 @@ function assertNotDeepEqual (
         if (x.byteLength !== y.byteLength) { return false; }
         if (x.byteLength === 0) { return true; }
         let xTA = new Int8Array(x), yTA = new Int8Array(y);
-        return xTA.every((/** @type {any} */ v, /** @type {string | number} */ i) => 
+        return xTA.every((/** @type {any} */ v, /** @type {string | number} */ i) =>
           _isEqual(v, yTA[i]));
       }
       /* objects / DataView */
@@ -1448,7 +1450,7 @@ function assertNotDeepEqual (
       if (_isSameInstance(x, y, Map)) {
         if (x.size !== y.size) { return false; }
         if (x.size === 0) { return true; }
-        return [...x.keys()].every((/** @type {any} */v) => 
+        return [...x.keys()].every((/** @type {any} */v) =>
           _isDeepEqual(x.get(v), y.get(v)));
       }
       /* objects / Set */
@@ -1562,7 +1564,7 @@ function assertDeepStrictEqual (
       if (Array.isArray(x) && Array.isArray(y)) {
         if (x.length !== y.length) { return false; }
         if (x.length === 0) { return true; }
-        return x.every((/** @type {any} */ v, /** @type {string | number} */ i) => 
+        return x.every((/** @type {any} */ v, /** @type {string | number} */ i) =>
           _isDeepStrictEqual(v, y[i]));
       }
       /* objects / TypedArrays */
@@ -1583,7 +1585,7 @@ function assertDeepStrictEqual (
       ) {
         if (x.length !== y.length) { return false; }
         if (x.length === 0) { return true; }
-        return x.every((/** @type {any} */ v, /** @type {string | number} */ i) => 
+        return x.every((/** @type {any} */ v, /** @type {string | number} */ i) =>
           _isEqual(v, y[i]));
       }
       /* objects / ArrayBuffer */
@@ -1591,7 +1593,7 @@ function assertDeepStrictEqual (
         if (x.byteLength !== y.byteLength) { return false; }
         if (x.byteLength === 0) { return true; }
         let xTA = new Int8Array(x), yTA = new Int8Array(y);
-        return xTA.every((/** @type {any} */ v, /** @type {string | number} */ i) => 
+        return xTA.every((/** @type {any} */ v, /** @type {string | number} */ i) =>
           _isEqual(v, yTA[i]));
       }
       /* objects / DataView */
@@ -1994,7 +1996,7 @@ const domIsHidden = (/** @type {Element} */ e) =>
 /** @return {Array} */
 const domSiblings = (/** @type {Element} */ el) =>
   // @ts-ignore
-  Array.prototype.filter.call(el.parentNode.children, 
+  Array.prototype.filter.call(el.parentNode.children,
     (/** @type {Element} */ e) => (e !== el)
   );
 
@@ -2560,12 +2562,10 @@ function getType (
 /* toPrimitiveValue(value: any): primitive | object | symbol | function */
 /** @return {any} */
 function toPrimitiveValue (/** @type {any} */ O) {
-  /* null, undefined, Function, Boolean, BigInt, Number, String, Symbol */
   if (O == null || typeof O !== "object") { return O; }
-  /* object */
-  var ot = Object.prototype.toString.call(O).slice(8, -1);
-  if (["Boolean", "BigInt", "Number", "String"].includes(ot)) {
-    return globalThis[ot](O);
+  const ot = Object.prototype.toString.call(O).slice(8, -1);
+  if (["Boolean", "BigInt", "Number", "String", "Symbol"].includes(ot)) {
+    return O.valueOf();
   }
   return O;
 }
@@ -2645,9 +2645,12 @@ const isSameInstance = (
 function isCoercedObject (/** @type {any} */ O) {
   if (O != null && typeof O === "object") {
     if (O instanceof Number) { return Number; }
-    if (O instanceof BigInt) { return BigInt; }
     if (O instanceof String) { return String; }
     if (O instanceof Boolean) { return Boolean; }
+    /* BigInt wrapper (created via Object(BigInt(...))) */
+    if (typeof O.valueOf?.() === "bigint") { return BigInt; }
+    /* Symbol wrapper (created via Object(Symbol(...))) */
+    if (typeof O.valueOf?.() === "symbol") { return Symbol; }
   }
   return false;
 }
@@ -2715,7 +2718,7 @@ function isDeepStrictEqual (/** @type {any} */ x, /** @type {any} */ y) {
     if (Array.isArray(x) && Array.isArray(y)) {
       if (x.length !== y.length) { return false; }
       if (x.length === 0) { return true; }
-      return x.every((/** @type {any} */ v, /** @type {string | number} */ i) => 
+      return x.every((/** @type {any} */ v, /** @type {string | number} */ i) =>
         isDeepStrictEqual(v, y[i]));
     }
     /* objects / TypedArrays */
@@ -2736,7 +2739,7 @@ function isDeepStrictEqual (/** @type {any} */ x, /** @type {any} */ y) {
     ) {
       if (x.length !== y.length) { return false; }
       if (x.length === 0) { return true; }
-      return x.every((/** @type {any} */ v, /** @type {string | number} */ i) => 
+      return x.every((/** @type {any} */ v, /** @type {string | number} */ i) =>
         _isEqual(v, y[i]));
     }
     /* objects / ArrayBuffer */
@@ -2744,7 +2747,7 @@ function isDeepStrictEqual (/** @type {any} */ x, /** @type {any} */ y) {
       if (x.byteLength !== y.byteLength) { return false; }
       if (x.byteLength === 0) { return true; }
       let xTA = new Int8Array(x), yTA = new Int8Array(y);
-      return xTA.every((/** @type {any} */ v, /** @type {string | number} */ i) => 
+      return xTA.every((/** @type {any} */ v, /** @type {string | number} */ i) =>
         _isEqual(v, yTA[i]));
     }
     /* objects / DataView */
@@ -2760,7 +2763,7 @@ function isDeepStrictEqual (/** @type {any} */ x, /** @type {any} */ y) {
     if (_isSameInstance(x, y, Map)) {
       if (x.size !== y.size) { return false; }
       if (x.size === 0) { return true; }
-      return [...x.keys()].every((/** @type {any} */ v) => 
+      return [...x.keys()].every((/** @type {any} */ v) =>
         isDeepStrictEqual(x.get(v), y.get(v)));
     }
     /* objects / Set */
@@ -2841,7 +2844,7 @@ function isEmptyValue (/** @type {any} */ v) {
 
 /* isProxy(value: any): boolean */
 /** @return {boolean} */
-const isProxy = (/** @type {any} */ O) => Boolean(O.__isProxy);
+const isProxy = (/** @type {any} */ O) => Boolean(O != null && O.__isProxy);
 
 
 /* isAsyncGeneratorFn(value: any): boolean */
@@ -3096,15 +3099,10 @@ function clearCookies (
   /** @type {boolean} */ HttpOnly) {
   if (typeof path === "object") {
     var settings = path;
-    // @ts-ignore
     path = settings.path || "/";
-    // @ts-ignore
     domain = settings.domain;
-    // @ts-ignore
     secure = settings.secure;
-    // @ts-ignore
     SameSite = settings.SameSite || "Lax";
-    // @ts-ignore
     HttpOnly = settings.HttpOnly;
   }
   if (document.cookie.length !== 0) {
@@ -3135,7 +3133,7 @@ function unique (
   if (resolver == null) { return [...new Set(it)]; }
   if (typeof resolver === "string") {
     return Array.from(it).reduce(function (acc, el) {
-      if (acc.every((/** @type {any} */ e) => 
+      if (acc.every((/** @type {any} */ e) =>
         e[resolver] !== el[resolver])) { acc.push(el); }
       return acc;
     }, []);
@@ -3222,7 +3220,7 @@ const setDifference = (
 /** @return {Set} */
 const setSymmetricDifference = ( /** @type {Set} */ a, /** @type {Set} */ b) =>
   new Set(
-    [...a].filter((/** @type {any} */ v) => 
+    [...a].filter((/** @type {any} */ v) =>
       !(b.has(v))).concat([...b].filter((/** @type {any} */ v) => !(a.has(v))))
   );
 
@@ -3238,13 +3236,15 @@ const isSuperset = (
 /* min(value1: any [, valueN]): any */
 /** @return {any} */
 const min = (/** @type {any[]} */ ...a) =>
-  a.reduce((acc, v) => (v < acc ? v : acc), a[0]);
+  a.reduce((/** @type {any} */ acc, /** @type {any} */ v) =>
+    (v < acc ? v : acc), a[0]);
 
 
 /* max(value1: any [, valueN]): any */
 /** @return {any} */
 const max = (/** @type {any[]} */ ...a) =>
-  a.reduce((acc, v) => (v > acc ? v : acc), a[0]);
+  a.reduce((/** @type {any} */ acc, /** @type {any} */ v) =>
+    (v > acc ? v : acc), a[0]);
 
 
 /* arrayRepeat(value: any [, n = 100]): array */
@@ -3464,9 +3464,9 @@ function forEach (/** @type {Iterable<any>} */ it, /** @type {Function} */ fn) {
 /** @return {void} */
 function forEachRight (
   /** @type {Iterable<any>} */ [...a],
-  /** @type {Function}} */ fn) {
+  /** @type {Function} */ fn) {
   let i = a.length;
-  while (i--) { fn(a[i] ,i); }
+  while (i--) { fn(a[i], i); }
 }
 
 
@@ -3668,7 +3668,7 @@ function includes (collection, value, comparator) {
 
 
 /* contains(iterator: iterator, value: any): boolean */
-/** @return {boolean} */
+/** @deprecated * @return {boolean} */
 function contains (/** @type {Iterable<any>} */ it, /** @type {any} */ v) {
   for (let item of it) {
     if (item === v || (item !== item && v !== v)) { return true; }
@@ -4008,7 +4008,8 @@ const toUInt8 = (/** @type {any} */ v) =>
 /* toInt16(value: any): integer -32768..32767 */
 /** @return {number} */
 const toInt16 = (/** @type {any} */ v) =>
-  ((v = Math.min(Math.max(-32768, Math.trunc(Number(v))), 32767)) === v) ? v :0;
+  ((v = Math.min(Math.max(-32768, Math.trunc(Number(v))), 32767)) === v) ? v
+    : 0;
 
 
 /* toUInt16(value: any) integer 0..65535 */
@@ -4027,7 +4028,8 @@ const toInt32 = (/** @type {any} */ v) =>
 /* toUInt32(value: any: integer 0..4294967295 */
 /** @return {number} */
 const toUInt32 = (/** @type {any} */ v) =>
-  ((v = Math.min(Math.max(0, Math.trunc(Number(v))), 4294967295)) === v) ? v :0;
+  ((v = Math.min(Math.max(0, Math.trunc(Number(v))), 4294967295)) === v) ? v
+    : 0;
 
 
 /* toBigInt64(value: any): bigint */
@@ -4042,7 +4044,8 @@ const toBigInt64 = (/** @type {any} */ v) => BigInt(typeof v === "bigint"
 /** @return {bigint} */
 const toBigUInt64 = (/** @type {any} */ v) => BigInt(typeof v === "bigint"
   ? (v > Math.pow(2, 64) - 1 ? Math.pow(2, 64) - 1 : v < 0 ? 0 : v)
-  : ((v=Math.min(Math.max(0,Math.trunc(Number(v))),Math.pow(2,64)-1))===v)?v:0);
+  : ((v = Math.min(Math.max(0, Math.trunc(Number(v))), Math.pow(2, 64) -1))
+    === v) ? v : 0);
 
 
 /* toFloat32(value: any): float */
@@ -4066,7 +4069,7 @@ const isUInt8 = (/** @type {any} */ v) =>
 /* isInt16(value: any): boolean */
 /** @return {boolean} */
 const isInt16 = (/** @type {any} */ v) =>
-  (Number.isInteger(v) ?(v>=-32768 && v <= 32767) : false);
+  (Number.isInteger(v) ?(v >= -32768 && v <= 32767) : false);
 
 
 /* isUInt16(value: any): boolean */
@@ -4102,13 +4105,13 @@ const isBigUInt64 = (/** @type {any} */ v) =>
 /* toFloat16(value: any): float16 */
 /** @return {number} */
 const toFloat16 = (/** @type {any} */ v) =>
-  ((v = Math.min(Math.max(-65504, Number(v)),65504)) === v ) ? v : 0;
+  ((v = Math.min(Math.max(-65504, Number(v)), 65504)) === v ) ? v : 0;
 
 
 /* isFloat16(value: any): boolean */
 /** @return {boolean} */
 const isFloat16 = (/** @type {any} */ v) =>
-  ((typeof v === "number" && v === v) ?(v>=-65504 && v<=65504) : false);
+  ((typeof v === "number" && v === v) ?(v >= -65504 && v <= 65504) : false);
 
 
 /* signbit(value: any): boolean */
