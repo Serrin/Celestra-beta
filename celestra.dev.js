@@ -3124,6 +3124,9 @@ function clearCookies (
 }
 
 
+/** Collections API **/
+
+
 /* unique(iterator: iterator [, resolver: string | function]): array */
 /** @return {Array | any} */
 function unique (
@@ -3590,12 +3593,76 @@ const sort = (/** @type {Iterable<any>} */ [...a], /** @type {number} */ ns) =>
   a.sort(ns ? (x, y) => x - y : undefined);
 
 
-/* includes(iterator: iterator, value: any): boolean */
-/** @return {boolean} */
-function includes (/** @type {Iterable<any>} */ it, /** @type {any} */ v) {
-  for (let item of it) {
-    if (item === v || (item !== item && v !== v)) { return true; }
+/* includes (collection: any, value: any, comparator: undefined | function):
+  boolean */
+/**
+ * @param {any} collection - The collection to search through.
+ * @param {any} value - The value to look for.
+ * @param {undefined | ((a: any, b: any) => boolean)} [comparator] - Optional comparator for equality check.
+ * @return {boolean} - Whether the value was found.
+ * @throws {TypeError} - If comparator is not a Function or undefined.
+ */
+function includes (collection, value, comparator) {
+  /* Comparator Validation - has to be a function or undefined. */
+    if (comparator !== undefined && typeof comparator !== "function") {
+    throw new TypeError(
+      `[includes] TypeError: comparator is not a function or undefined. Got ${typeof comparator}`
+    );
   }
+  /* helper functions */
+  /** @return {boolean} */
+  const _isIterator = (/** @type {any} */ v) =>
+    v != null && typeof v === "object" && typeof v.next === "function";
+  /** @return {boolean} */
+  const _isIterable = (/** @type {any} */ v) =>
+    (v != null && typeof v[Symbol.iterator] === "function");
+  /** @type {(a: any, b: any) => boolean} */
+  const _isEqual = comparator ||
+    (/** @return {boolean} */ (/** @type {any} */ x, /** @type {any} */ y) =>
+      x === y || (x !== x && y !== y)); // SameValueZero
+  /* Collection: Primitives, WeakMap, WeakSet */
+  const cType = (collection === null ? "null" : typeof collection);
+  if (collection == null
+    || !(["object", "function", "string"].includes(cType))
+    || collection instanceof WeakMap
+    || collection instanceof WeakSet) {
+    return false;
+  }
+  /* string and String object */
+  if (typeof collection === "string" || collection instanceof String) {
+    return collection.includes(String(value));
+  }
+  /* Map */
+  if (collection instanceof Map) {
+    for (const item of collection.keys()) {
+      if (_isEqual(item, value)) { return true; }
+    }
+    for (const item of collection.values()) {
+      if (_isEqual(item, value)) { return true; }
+    }
+    return false;
+  }
+  /* Iterator or Iterables (Array, Set, TypedArrays, other Iterables, etc.) */
+  if (_isIterator(collection) || _isIterable(collection)) {
+    for (const item of collection) {
+      if (_isEqual(item, value)) { return true; }
+    }
+    return false;
+  }
+  /* Plain object or function */
+  if (["object", "function"].includes(cType)) {
+    for (const item of Object.keys(collection)) {
+      if (_isEqual(item, value)) { return true; }
+    }
+    for (const item of Object.values(collection)) {
+      if (_isEqual(item, value)) { return true; }
+    }
+    for (const item of Object.getOwnPropertySymbols(collection)) {
+      if (_isEqual(item, value)) { return true; }
+    }
+    return false;
+  }
+  /* default return false */
   return false;
 }
 
@@ -3788,11 +3855,11 @@ function join (
 
 
 /* withOut(iterator: iterator, filterIterator: iterator): array */
-/** @return {Array} */
+/** @return {any[]} */
 const withOut = (
   /** @type {Iterable<any>} */ [...a],
   /** @type {Iterable<any>} */ [...fl]) =>
-  a.filter((/** @type {any} */ e) => fl.indexOf(e) === -1);
+  a.filter((/** @type {any} */ e) => !fl.includes(e));
 
 
 /** Math API **/

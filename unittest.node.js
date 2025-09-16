@@ -240,9 +240,17 @@ try {
 
 
 // @ts-ignore
-var token1, token2, token3, token4, token5, token6, token7, token8;
+var /** @type any */ token1, /** @type any */ token2, /** @type any */ token3;
 // @ts-ignore
-var token9, token10, token11, token12, token13, token14, token15;
+var /** @type any */ token4, /** @type any */ token5, /** @type any */ token6;
+// @ts-ignore
+var /** @type any */ token7, /** @type any */ token8, /** @type any */ token9;
+// @ts-ignore
+var /** @type any */ token10, /** @type any */ token11;
+// @ts-ignore
+var /** @type any */ token12, /** @type any */ token13;
+// @ts-ignore
+var /** @type any */ token14, /** @type any */ token15;
 
 
 /* Celestra v6.0.4 testcases */
@@ -4951,9 +4959,42 @@ CUT.isFalse("shuffle();", CEL.isDeepStrictEqual(CEL.shuffle(token1), token1));
 
 
 /* includes(); */
-CUT.isTrue("includes();",
-  CEL.includes([4, 5, 6, 7, 8, 9], 9) && !CEL.includes([4, 5, 6, 7, 8, 9], 10)
+CUT.isTrue("includes(); 01",
+      CEL.includes([4, 5, 6, 7, 8, 9], 9) 
+  && !CEL.includes([4, 5, 6, 7, 8, 9], 10)
+  &&  CEL.includes([4, 5, 6, 7, 8, 0], 0)
+  && !CEL.includes([4, 5, 6, 7, 8, -0], 0, Object.is)
+  && !CEL.includes(5, 0)
+  && !CEL.includes(true, 0)
+  && !CEL.includes(new WeakMap(), 0)
+  && !CEL.includes(new WeakSet(), 0)
+  &&  CEL.includes("lorem ipsum", "ips")
+  && !CEL.includes("lorem ipsum", "ipx")
+  &&  CEL.includes(new String("lorem ipsum"), "ips")
+  && !CEL.includes(new String("lorem ipsum"), "ipx")
+  // @ts-ignore
+  &&  CEL.includes(new Map([["lorem","ipsum"],[0, 1]]), "lorem")
+  // @ts-ignore
+  &&  CEL.includes(new Map([["lorem","ipsum"],[0, 1]]), 1)
+  // @ts-ignore
+  && !CEL.includes(new Map([["lorem","ipsum"],[0, 1]]), 2)
+  // @ts-ignore
+  &&  CEL.includes(new Map([["lorem","ipsum"],[0, 1]]), -0)
+  // @ts-ignore
+  && !CEL.includes(new Map([["lorem","ipsum"],[0, 1]]), -0, Object.is)
+  &&  CEL.includes(new Set(["lorem","ipsum",0, 1]), -0)
+  && !CEL.includes(new Set(["lorem","ipsum",0, 1]), -0, Object.is)
+  && !CEL.includes(new Set(["lorem","ipsum",0, 1]), 2)
+  // @ts-ignore
+  &&  CEL.includes({"lorem": "ipsum","1": 0}, "lorem")
+  // @ts-ignore
+  &&  CEL.includes({"lorem": "ipsum","1": 0}, -0)
+  // @ts-ignore
+  && !CEL.includes({"lorem": "ipsum","1": 0}, 1)
+  // @ts-ignore
+  && !CEL.includes({"lorem": "ipsum","1": 0}, -0, Object.is)
 );
+CUT.isError("includes(); 02 error", () => CEL.includes([], 2, 2));
 
 
 /* contains(); */

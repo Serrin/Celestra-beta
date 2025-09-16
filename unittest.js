@@ -191,86 +191,17 @@ try {
 const now = new Date();
 
 CUT.addElement("table",
-  "<tr><td>CUT.VERSION</td><td><code>" + CUT.VERSION + "</code></td></tr>"
-    + "<tr><td>celestra.VERSION</td><td><code>" + celestra.VERSION
-     + "</code></td></tr>"
-    + "<tr><td>UTC date</td><td><code>" + now.toISOString()
-     + "</code></td></tr>"
-    + "<tr><td>Local date</td><td><code>" + now.toString()
-      + "</code></td></tr>"
-    + "<tr><td>EPOCH time</td><td><code>" + Number(now) + " (10) / "
-      + Number(now).toString(16)
-      + " (16) / "
-      + Number(now).toString(36)
-      + " (36)</code></td></tr>"
-    + "<tr><td>navigator.appName</td><td><code>" + navigator.appName
-      + "</code></td></tr>"
-    + "<tr><td>navigator.appCodeName</td><td><code>" + navigator.appCodeName
-      + "</code></td></tr>"
-    + "<tr><td>navigator.product</td><td><code>" + navigator.product
-      + "</code></td></tr>"
-    + "<tr><td>navigator.appVersion</td><td><code>" + navigator.appVersion
-      + "</code></td></tr>"
-    // @ts-ignore
-    + "<tr><td>navigator.buildID</td><td><code>" + navigator.buildID
-      + "</code></td></tr>"
-    + "<tr><td>navigator.product</td><td><code>" + navigator.product
-      + "</code></td></tr>"
-    + "<tr><td>navigator.productSub</td><td><code>" + navigator.productSub
-      + "</code></td></tr>"
-    + "<tr><td>navigator.userAgent</td><td><code>" + navigator.userAgent
-      + "</code></td></tr>"
-    + "<tr><td>navigator.userAgentData</td><td><code>"
-      // @ts-ignore
-      + JSON.stringify(navigator.userAgentData)
-      + "</code></td></tr>"
-    + "<tr><td>navigator.doNotTrack</td><td><code>" + navigator.doNotTrack
-      + "</code></td></tr>"
-    + "<tr><td>navigator.vendor</td><td><code>" + navigator.vendor
-      + "</code></td></tr>"
-    + "<tr><td>navigator.platform</td><td><code>" + navigator.platform
-      + "</code></td></tr>"
-    + "<tr><td>navigator.language</td><td><code>" + navigator.language
-      + "</code></td></tr>"
-    // @ts-ignore
-    + "<tr><td>navigator.oscpu</td><td><code>" + navigator.oscpu
-      + "</code></td></tr>"
-    + "<tr><td>navigator.cookieEnabled</td><td><code>"
-      + navigator.cookieEnabled
-      + "</code></td></tr>"
-    + "<tr><td>navigator.javaEnabled()</td><td><code>"
-      + navigator.javaEnabled()
-      + "</code></td></tr>"
-    + "<tr><td>navigator.pdfViewerEnabled</td><td><code>"
-      + navigator.pdfViewerEnabled
-      + "</code></td></tr>"
-    + "<tr><td>globalThis.innerWidth</td><td><code>" + globalThis.innerWidth
-      + "</code></td></tr>"
-    + "<tr><td>globalThis.innerHeight</td><td><code>" + globalThis.innerHeight
-      + "</code></td></tr>"
-    + "<tr><td>screen.width</td><td><code>" + screen.width + "</code></td></tr>"
-    + "<tr><td>screen.height: </td><td><code>" + screen.height
-      + "</code></td></tr>"
-    + "<tr><td>screen.availWidth</td><td><code>" + screen.availWidth
-      + "</code></td></tr>"
-    + "<tr><td>screen.availHeight</td><td><code>" + screen.availHeight
-      + "</code></td></tr>"
-    + "<tr><td>screen.colorDepth</td><td><code>" + screen.colorDepth
-      + "</code></td></tr>"
-    + "<tr><td>screen.pixelDepth</td><td><code>" + screen.pixelDepth
-      + "</code></td></tr>"
+  // @ts-ignore
+  `<tr><td>CUT.VERSION</td><td><code>${CUT.VERSION}</code></td></tr><tr><td>celestra.VERSION</td><td><code>${celestra.VERSION}</code></td></tr><tr><td>UTC date</td><td><code>${now.toISOString()}</code></td></tr><tr><td>Local date</td><td><code>${now.toString()}</code></td></tr><tr><td>EPOCH time</td><td><code>(10) ${Number(now)}<br/>(16) ${Number(now).toString(16)}<br/>(36) ${Number(now).toString(36)}</code></td></tr><tr><td>navigator.appName</td><td><code>${navigator.appName}</code></td></tr><tr><td>navigator.appCodeName</td><td><code>${navigator.appCodeName}</code></td></tr><tr><td>navigator.product</td><td><code>${navigator.product}</code></td></tr><tr><td>navigator.appVersion</td><td><code>${navigator.appVersion}</code></td></tr><tr><td>navigator.buildID</td><td><code>${navigator.buildID}</code></td></tr><tr><td>navigator.product</td><td><code>${navigator.product}</code></td></tr><tr><td>navigator.productSub</td><td><code>${navigator.productSub}</code></td></tr><tr><td>navigator.userAgent</td><td><code>${navigator.userAgent}</code></td></tr><tr><td>navigator.userAgentData</td><td><code>${JSON.stringify(navigator.userAgentData)}</code></td></tr><tr><td>navigator.doNotTrack</td><td><code>${navigator.doNotTrack}</code></td></tr><tr><td>navigator.vendor</td><td><code>${navigator.vendor}</code></td></tr><tr><td>navigator.platform</td><td><code>${navigator.platform}</code></td></tr><tr><td>navigator.language</td><td><code>${navigator.language}</code></td></tr><tr><td>navigator.oscpu</td><td><code>${navigator.oscpu}</code></td></tr><tr><td>navigator.cookieEnabled</td><td><code>${navigator.cookieEnabled}</code></td></tr><tr><td>navigator.javaEnabled()</td><td><code>${navigator.javaEnabled()}</code></td></tr><tr><td>navigator.pdfViewerEnabled</td><td><code>${navigator.pdfViewerEnabled}</code></td></tr><tr><td>globalThis.innerWidth</td><td><code>${globalThis.innerWidth}</code></td></tr><tr><td>globalThis.innerHeight</td><td><code>${globalThis.innerHeight}</code></td></tr><tr><td>screen.width</td><td><code>${screen.width}</code></td></tr><tr><td>screen.height: </td><td><code>${screen.height}</code></td></tr><tr><td>screen.availWidth</td><td><code>${screen.availWidth}</code></td></tr><tr><td>screen.availHeight</td><td><code>${screen.availHeight}</code></td></tr><tr><td>screen.colorDepth</td><td><code>${screen.colorDepth}</code></td></tr><tr><td>screen.pixelDepth</td><td><code>${screen.pixelDepth}</code></td></tr>`
 );
 
 globalThis.saveResults = function saveResults () {
   var dn = Date.now().toString(36);
-  CEL.createFile("results-" + dn + ".html",
-    "<!DOCTYPE html><meta charset=\"utf-8\"><title>Results " + dn + "</title>"
-      + "<style>html { -ms-word-break: break-all; word-break: break-all; word-break: break-word; word-wrap: break-word; overflow-wrap: break-word; } body { margin: 0 auto; max-width: 1200px; font-family: Helvetica, Arial, sans-serif; } h1 { text-align : center; } .passed, .failed { display: inline-block; padding: 3px; }.passed { background-color: #3d9970 !important; color: white !important; }.failed { background-color: #ff4136 !important; color: white !important; } #results { padding: 3px 5px 3px 5px; font-size: 14.5px !important; font-family: consolas, monospace; } code { background-color: slategrey; color: white; padding: 3px 5px 3px 5px; display: inline-block; margin-top: 2px; } </style>"
-      + "<h1>Results " + dn + "</h1>"
-      // @ts-ignore
-      + "<div id='results'>" + CUT.__results__.innerHTML + "</div>",
+  CEL.createFile(`results-${dn}.html`,
+    // @ts-ignore
+    `<!DOCTYPE html><meta charset=\"utf-8\"><title>Results ${dn}</title><style>html { -ms-word-break: break-all; word-break: break-all; word-break: break-word; word-wrap: break-word; overflow-wrap: break-word; } body { margin: 0 auto; max-width: 1200px; font-family: Helvetica, Arial, sans-serif; } h1 { text-align : center; } .passed, .failed { display: inline-block; padding: 3px; }.passed { background-color: #3d9970 !important; color: white !important; }.failed { background-color: #ff4136 !important; color: white !important; } #results { padding: 3px 5px 3px 5px; font-size: 14.5px !important; font-family: consolas, monospace; } code { background-color: slategrey; color: white; padding: 3px 5px 3px 5px; display: inline-block; margin-top: 2px; } </style><h1>Results ${dn}</h1><div id=\"results\">${CUT.__results__.innerHTML}</div>`,
     "text/html"
- );
+  );
 };
 
 
@@ -344,9 +275,17 @@ try {
 
 
 // @ts-ignore
-var token1, token2, token3, token4, token5, token6, token7, token8;
+var /** @type any */ token1, /** @type any */ token2, /** @type any */ token3;
 // @ts-ignore
-var token9, token10, token11, token12, token13, token14, token15;
+var /** @type any */ token4, /** @type any */ token5, /** @type any */ token6;
+// @ts-ignore
+var /** @type any */ token7, /** @type any */ token8, /** @type any */ token9;
+// @ts-ignore
+var /** @type any */ token10, /** @type any */ token11;
+// @ts-ignore
+var /** @type any */ token12, /** @type any */ token13;
+// @ts-ignore
+var /** @type any */ token14, /** @type any */ token15;
 
 
 /* Celestra v6.0.4 testcases */
@@ -5365,9 +5304,59 @@ CUT.isFalse("shuffle();", CEL.isDeepStrictEqual(CEL.shuffle(token1), token1));
 
 
 /* includes(); */
-CUT.isTrue("includes();",
-  CEL.includes([4, 5, 6, 7, 8, 9], 9) && !CEL.includes([4, 5, 6, 7, 8, 9], 10)
+token1 = function () {};
+token1["lorem"] = "ipsum";
+token1["1"] = 0;
+CUT.isTrue("includes(); 01",
+      CEL.includes([4, 5, 6, 7, 8, 9], 9) 
+  && !CEL.includes([4, 5, 6, 7, 8, 9], 10)
+  &&  CEL.includes([4, 5, 6, 7, 8, 0], 0)
+  && !CEL.includes([4, 5, 6, 7, 8, -0], 0, Object.is)
+  && !CEL.includes(5, 0)
+  && !CEL.includes(true, 0)
+  && !CEL.includes(new WeakMap(), 0)
+  && !CEL.includes(new WeakSet(), 0)
+  &&  CEL.includes("lorem ipsum", "ips")
+  && !CEL.includes("lorem ipsum", "ipx")
+  &&  CEL.includes(new String("lorem ipsum"), "ips")
+  && !CEL.includes(new String("lorem ipsum"), "ipx")
+  // @ts-ignore
+  &&  CEL.includes(new Map([["lorem","ipsum"],[0, 1]]), "lorem")
+  // @ts-ignore
+  &&  CEL.includes(new Map([["lorem","ipsum"],[0, 1]]), 1)
+  // @ts-ignore
+  && !CEL.includes(new Map([["lorem","ipsum"],[0, 1]]), 2)
+  // @ts-ignore
+  &&  CEL.includes(new Map([["lorem","ipsum"],[0, 1]]), -0)
+  // @ts-ignore
+  && !CEL.includes(new Map([["lorem","ipsum"],[0, 1]]), -0, Object.is)
+  &&  CEL.includes(new Set(["lorem","ipsum",0, 1]), -0)
+  && !CEL.includes(new Set(["lorem","ipsum",0, 1]), -0, Object.is)
+  && !CEL.includes(new Set(["lorem","ipsum",0, 1]), 2)
+  // @ts-ignore
+  &&  CEL.includes({"lorem": "ipsum","1": 0}, "lorem")
+  // @ts-ignore
+  &&  CEL.includes({"lorem": "ipsum","1": 0}, -0)
+  // @ts-ignore
+  && !CEL.includes({"lorem": "ipsum","1": 0}, 1)
+  // @ts-ignore
+  && !CEL.includes({"lorem": "ipsum","1": 0}, -0, Object.is)
+  && !CEL.includes(new Set(["lorem","ipsum",0, 1]), 2)
+  // @ts-ignore
+  &&  CEL.includes({"lorem": "ipsum","1": 0}, "lorem")
+  // @ts-ignore
+  &&  CEL.includes({"lorem": "ipsum","1": 0}, -0)
+  // @ts-ignore
+  && !CEL.includes({"lorem": "ipsum","1": 0}, 1)
+  // @ts-ignore
+  && !CEL.includes({"lorem": "ipsum","1": 0}, -0, Object.is)
+  && !CEL.includes(new Set(["lorem","ipsum",0, 1]), 2)
+  &&  CEL.includes(token1, "lorem")
+  &&  CEL.includes(token1, -0)
+  && !CEL.includes(token1, 1)
+  && !CEL.includes(token1, -0, Object.is)
 );
+CUT.isError("includes(); 02 error", () => CEL.includes([], 2, 2));
 
 
 /* contains(); */

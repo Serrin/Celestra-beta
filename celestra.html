@@ -1780,7 +1780,7 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-contains();">
       <td><code>contains(iterator,value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This is an alias of the <code>includes(iterator,value);</code>.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether an iterator includes a certain value among its entries, returning true or false as appropriate. All of the parameters are mandatory.</td>
     </tr>
     <tr id="FN-drop();">
       <td><code>drop(iterator[,n=1]);</code></td>
@@ -1840,7 +1840,7 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-includes();">
       <td><code>includes(iterator,value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether an iterator includes a certain value among its entries, returning true or false as appropriate. All of the parameters are mandatory.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether a collection includes a certain value among its entries, returning true or false as appropriate. The collection and the value of the parameters are mandatory and the comparator is optional.<BR>The default comparasion is SameValueZero algorithm, but with the comparator (function) can be other solution. (e.g.: Object.is, which uses the SameValue algorithm).<br/>The collection can be: <i>String</i> (uses the String#includes method), <i>String object</i> (uses the String#includes method), <i>Map</i>, <i>Iterables</i> (Array, Set, TypedArrays, other Iterables), <i>plain objects</i>, <i>functions</i> (as object).<br/>The own keys, values, symbols are compared, example: `CEL.includes({"lorem": "ipsum","1": 0}, -0);` returns true.</td>
     </tr>
     <tr id="FN-initial();">
       <td><code>initial(iterator);</code></td>
