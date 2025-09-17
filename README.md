@@ -275,7 +275,7 @@ Name | Description
 `pick(object, keys);`|__Stability: 4 - Stable.__<BR>Select (filter) keys from an object and return these keys and values in a new object (immutably). All of the parameters are mandatory and the keys has to be an array.
 `pipe(function1 [, functionN]);`|__Stability: 4 - Stable.__<BR>Compose functions left to right. At least one function parameter is mandatory.
 `randomBoolean();` | __Stability: 4 - Stable.__<BR>Get a random boolean value. The return value is `true` or `false`.
-`randomUUIDv7();` | __Stability: 4 - Stable.__<BR>This function returns a UUID v7, which cointains a timestamp too. For more information please read the [this page](https://www.rfc-editor.org/rfc/rfc9562.html#name-uuid-version-7)!<BR>Example result: `"0195d74b-b8c8-7302-a7d3-919df45087f3"`
+`randomUUIDv7(v4 = false);` | __Stability: 4 - Stable.__<BR>This function returns a UUID v7, which cointains a timestamp too. For more information please read the [this page](https://www.rfc-editor.org/rfc/rfc9562.html#name-uuid-version-7)!<BR>Example result: `"0195d74b-b8c8-7302-a7d3-919df45087f3"`<BR>If the v4 parameter (optional) is `true`, then the version in the string will be 4.<BR>Example result: `"0195d74b-b8c8-4302-a7d3-919df45087f3"`.  
 `sizeIn(object);` | __Stability: 4 - Stable.__<BR>Returns the count of the owned properties and symbols of the given object. The object parameter is mandatory. The return value is an integer.
 `T();` | __Stability: 4 - Stable.__<BR>This function returns true.
 `tap(function): function(value);` | __Stability: 4 - Stable.__<BR>This functions returns a new function, which runs the given function with the value parameter, then returns the value. Usable for testing and logging. All of the parameters are mandatory.

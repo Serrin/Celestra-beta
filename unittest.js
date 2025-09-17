@@ -488,11 +488,27 @@ CUT.isTrue("assoc();",
 
 /* randomUUIDv7(); */
 token1 = CEL.randomUUIDv7();
-CUT.isTrue("randomUUIDv7(); - <code>\"" + token1 + "\"</code>",
+CUT.isTrue("randomUUIDv7(); 01 - <code>\"" + token1 + "\"</code>",
   token1.length === 36
     && /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/
       .test(token1)
     && token1[14] === "7"
+    && "89ab".includes(token1[19])
+);
+token1 = CEL.randomUUIDv7(false);
+CUT.isTrue("randomUUIDv7(); 02 - <code>\"" + token1 + "\"</code>",
+  token1.length === 36
+    && /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/
+      .test(token1)
+    && token1[14] === "7"
+    && "89ab".includes(token1[19])
+);
+token1 = CEL.randomUUIDv7(true);
+CUT.isTrue("randomUUIDv7(); 03 - <code>\"" + token1 + "\"</code>",
+  token1.length === 36
+    && /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/
+      .test(token1)
+    && token1[14] === "4"
     && "89ab".includes(token1[19])
 );
 

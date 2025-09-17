@@ -464,10 +464,10 @@ function createPolyfillProperty (
 }
 
 
-/* randomUUIDv7(): string */
+/* randomUUIDv7(v4: boolean = false): string */
 /** @return {string} */
-function randomUUIDv7 () {
-  let ts = Date.now().toString(16).padStart(12,"0") + "7";
+function randomUUIDv7 (/** @type {boolean} */ v4 = false) {
+  let ts = Date.now().toString(16).padStart(12,"0") + (v4 ? "4" : "7");
   // @ts-ignore
   let uuid = Array.from(([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, (c) =>
     (c^crypto.getRandomValues(new Uint8Array(1))[0]&15>>c/4).toString(16)

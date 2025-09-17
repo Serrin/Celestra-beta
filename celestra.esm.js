@@ -43,7 +43,7 @@ async function asyncIdentity(v){return v;}
 function deleteOwnProperty(O,P,Throw=false){if(Object.hasOwn(O,P)){delete O[P];var r=Object.hasOwn(O,P);if(r&&Throw){throw new Error("Celestra.deleteOwnProperty(); error");}return +!r;}return -1;}
 function createPolyfillMethod(O,P,V){if(!(Object.hasOwn(O,P))){Object.defineProperty(O,P,{writable:true,enumerable:false,configurable:true,value:V});}return (O[P]===V);}
 function createPolyfillProperty(O,P,V){if(!(Object.hasOwn(O,P))){Object.defineProperty(O,P,{writable:true,enumerable:true,configurable:true,value:V});}return (O[P]===V);}
-function randomUUIDv7(){let ts=Date.now().toString(16).padStart(12,"0")+"7";let uuid=Array.from(([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,(c)=>(c^crypto.getRandomValues(new Uint8Array(1))[0]&15>>c/4).toString(16)));let i=0,p=0;while(i<13){if(p===8||p===13){p++;}uuid[p]=ts[i];p++;i++;}return uuid.join("");}
+function randomUUIDv7(v4=false){let ts=Date.now().toString(16).padStart(12,"0")+(v4?"4":"7");let uuid=Array.from(([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,(c)=>(c^crypto.getRandomValues(new Uint8Array(1))[0]&15>>c/4).toString(16)));let i=0,p=0;while(i<13){if(p===8||p===13){p++;}uuid[p]=ts[i];p++;i++;}return uuid.join("");}
 const delay=(ms)=>new Promise(resolve=>setTimeout(resolve,ms));
 const randomBoolean=()=>!Math.round(Math.random());
 const getUrlVars=(str=location.search)=>[...new URLSearchParams(str).entries()].reduce(function(o,item){o[item[0]]=item[1];return o;},{});
