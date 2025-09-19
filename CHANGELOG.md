@@ -9,6 +9,23 @@
 # Celestra version history
 
 
+## Celestra v6.0.4
+
+1. Documentation and pdf fixes.
+
+2. Add a new file __jsconfig.json__ and JSDOC comments for error checking in VSC
+
+3. Small fixes in many functions
+
+4. Deprecate this function: `contains();`
+
+5. Replace this function with a new version: `includes();`
+
+6. Add a `v4` parameter in the function `randomUUIDv7();`
+
+7. Add this function: `isAsyncIterable();`
+
+
 ## Celestra v6.0.3
 
 1. Documentation and pdf fixes.

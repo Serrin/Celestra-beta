@@ -2902,9 +2902,10 @@ const isCallable = (/** @type {any} */ O) =>
 
 /* isArraylike(value: any): boolean */
 /** @return {boolean} */
-const isArraylike = (/** @type {any} */ v) =>
-  ((typeof v === "object" || typeof v === "string") && v != null
-    && typeof v.length === "number" && v.length >= 0 && v.length % 1 === 0);
+const isArraylike = (/** @type {any} */ v) => v != null
+  && typeof v !== "function"
+  && (typeof v === "object" || typeof v === "string")
+  && Number.isSafeInteger(v.length) && v.length >= 0;
 
 
 /* isNull(value: any): boolean */

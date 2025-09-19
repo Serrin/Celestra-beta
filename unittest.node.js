@@ -23,7 +23,7 @@ console.log("import method 3 - import * as celestra");
 import * as celestra from "./celestra.node.mjs";
 globalThis.celestra = celestra;
 globalThis.CEL = celestra;
-*/
+// */
 
 
 const CUT = {};

@@ -127,7 +127,7 @@ const isNumeric=(v)=>(((typeof v==="number"||typeof v==="bigint")&& v===v)?true:
 const isObject=(O)=>(O!=null&&(typeof O==="object"||typeof O==="function"));
 const isFunction=(O)=>(typeof O==="function"||Object.prototype.toString.call(O)==="[object Function]");
 const isCallable=(O)=>((O!=null&&["object","function"].includes(typeof O))?(typeof O.call==="function"):false);
-const isArraylike=(v)=>((typeof v==="object"||typeof v==="string")&&v!=null&&typeof v.length==="number"&&v.length>=0&&v.length%1===0);
+const isArraylike=(v)=>v!=null&&typeof v!=="function"&&(typeof v==="object"||typeof v==="string")&&Number.isSafeInteger(v.length)&&v.length>=0;
 const isNull=(v)=>(v===null);
 const isUndefined=(v)=>(v===undefined);
 const isNil=(v)=>(v==null);
