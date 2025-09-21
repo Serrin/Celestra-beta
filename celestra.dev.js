@@ -3,7 +3,7 @@
 
 /**
  * @name Celestra
- * @version 6.0.4 dev
+ * @version 6.0.5 dev
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
@@ -34,23 +34,26 @@
 if (!("sumPrecise" in Math)) {
   // @ts-ignore
   Math.sumPrecise = function sumPrecise (
-    /** @type {Iterable<number>} */ [...a]) {
+    /** @type {Iterable<number>} */ [...array]) {
     /* empty iterator */
-    if (a.length === 0) { return -0; }
+    if (array.length === 0) { return -0; }
     /* iterator with items */
-    if (a.every((/** @type {any} */ v) => typeof v === "number")) {
+    if (array.every((/** @type {any} */ value) => typeof value === "number")) {
       /* return NaN + Infinity + -Infinity */
-      let inf = a.indexOf(Infinity) >- 1, negInf = a.indexOf(-Infinity) > -1;
-      if (a.some((/** @type {any} */ v) => v !== v) || (inf && negInf)) { return NaN; }
+      let inf = array.indexOf(Infinity) >- 1,
+        negInf = array.indexOf(-Infinity) > -1;
+      if (array.some((/** @type {any} */ value) => value !== value)
+        || (inf && negInf)) { return NaN; }
       if (inf) { return Infinity; }
       if (negInf) { return -Infinity; }
       /* sum hi */
-      let hi = a.filter((/** @type {any} */ v) => (v === 1e20 || v === -1e20))
-        .reduce((acc, v) => acc + v, 0);
+      let hi = array.filter((/** @type {any} */ value) =>
+        (value === 1e20 || value === -1e20))
+          .reduce((acc, value) => acc + value, 0);
       /* sum lo - Kahan sum */
       let lo = 0.0, c = 0.0;
-      for (let item of a.filter((/** @type {any} */ v) =>
-        (v !== 1e20 && v !== -1e20))) {
+      for (let item of array.filter((/** @type {any} */ value) =>
+        (value !== 1e20 && value !== -1e20))) {
         let y = item - c; let t = lo + y; c = (t - lo) - y; lo = t;
       }
       /* return sum values */
@@ -78,8 +81,8 @@ if (!("sumPrecise" in Math)) {
 /* Error.isError(); */
 if (!("isError" in Error)) {
   // @ts-ignore
-  Error.isError = function isError (/** @type {any} */ v) {
-    let s = Object.prototype.toString.call(/** @type {any} */ v)
+  Error.isError = function isError (/** @type {any} */ value) {
+    let s = Object.prototype.toString.call(/** @type {any} */ value)
       .slice(8, -1).toLowerCase();
     return (s === "error" || s === "domexception");
   };
@@ -96,13 +99,15 @@ if (!("groupBy" in Object)) {
       /** @type Function */ callbackFn) {
       "use strict";
       if (!(typeof callbackFn === "function")) { throw new TypeError(); }
-      let r = Object.create(null), i = 0;
+      let result = Object.create(null), index = 0;
       for (let item of items) {
-        let key = callbackFn(item, i++);
-        if (!(Object.prototype.hasOwnProperty.call(r, key))) { r[key] = []; }
-        r[key].push(item);
+        let key = callbackFn(item, index++);
+        if (!(Object.prototype.hasOwnProperty.call(result, key))) {
+          result[key] = [];
+        }
+        result[key].push(item);
       }
-      return r;
+      return result;
     }
   });
 }
@@ -117,13 +122,13 @@ if (!("groupBy" in Map)) {
       /** @type {Function} */ callbackFn) {
       "use strict";
       if (!(typeof callbackFn === "function")) { throw new TypeError(); }
-      let r = new Map(), i = 0;
+      let result = new Map(), index = 0;
       for (let item of items) {
-        let key = callbackFn(item, i++);
-        if (!(r.has(key))) { r.set(key, []); }
-        r.get(key).push(item);
+        let key = callbackFn(item, index++);
+        if (!(result.has(key))) { result.set(key, []); }
+        result.get(key).push(item);
       }
-      return r;
+      return result;
     }
   });
 }
@@ -133,40 +138,40 @@ if (!("groupBy" in Map)) {
 if (!Array.fromAsync) {
   // @ts-ignore
   Array.fromAsync = async function fromAsync (arrayLike, mapfn, thisArg) {
-    const isConstructor = (/** @type {any} */ v) =>
-      (typeof v === "function" && typeof v.prototype === "object");
+    const isConstructor = (/** @type {any} */ value) =>
+      (typeof value === "function" && typeof value.prototype === "object");
     const errorMsg = "Input length exceed the Number.MAX_SAFE_INTEGER.";
     if (Symbol.asyncIterator in arrayLike || Symbol.iterator in arrayLike) {
-      var r = isConstructor(this) ? new this : Array(0), i = 0;
+      var result = isConstructor(this) ? new this : Array(0), index = 0;
       for await (const item of arrayLike) {
-        if (i > Number.MAX_SAFE_INTEGER) {
+        if (index > Number.MAX_SAFE_INTEGER) {
           throw TypeError(errorMsg);
         } else {
           if (!mapfn) {
-            r[i] = item;
+            result[index] = item;
           } else {
-            r[i] = await mapfn.call(thisArg,item,i);
+            result[index] = await mapfn.call(thisArg,item,index);
           }
         }
-        i++;
+        index++;
       }
-      r.length = i;
-      return r;
+      result.length = index;
+      return result;
     } else {
       var l = arrayLike.length,
-        r = isConstructor(this) ? new this(l) : Array(l) , i = 0;
-      while (i < l) {
-        if (i > Number.MAX_SAFE_INTEGER) { throw TypeError(errorMsg); }
-        var item = await arrayLike[i];
+        result = isConstructor(this) ? new this(l) : Array(l) , index = 0;
+      while (index < l) {
+        if (index > Number.MAX_SAFE_INTEGER) { throw TypeError(errorMsg); }
+        var item = await arrayLike[index];
         if (!mapfn) {
-          r[i] = item;
+          result[index] = item;
         } else {
-          r[i] = await mapfn.call(thisArg,item,i);
+          result[index] = await mapfn.call(thisArg,item,index);
         }
-        i++;
+        index++;
       }
-      r.length = i;
-      return r;
+      result.length = index;
+      return result;
     }
   };
 }
@@ -214,8 +219,8 @@ if (!("toReversed" in Array.prototype)) {
 if (!("toSorted" in Array.prototype)) {
   Object.defineProperty(Array.prototype, "toSorted", {
     "configurable": true, "writable": true, "enumerable": false,
-    "value": function (/** @type {Function} */ cFn) {
-      "use strict"; return this.slice().sort(cFn);
+    "value": function (/** @type {Function} */ fn) {
+      "use strict"; return this.slice().sort(fn);
     }
   });
 }
@@ -229,9 +234,9 @@ if (!("toSpliced" in Array.prototype)) {
       /** @type {number} */ start,
       /** @type {number} */ deleteCount,
       /** @type {any} */ ...items) {
-      var r = this.slice();
-      r.splice(start, deleteCount, ...items);
-      return r;
+      var result = this.slice();
+      result.splice(start, deleteCount, ...items);
+      return result;
     }
   });
 }
@@ -241,11 +246,13 @@ if (!("toSpliced" in Array.prototype)) {
 if (!("with" in Array.prototype)) {
   Object.defineProperty(Array.prototype, "with", {
     "configurable": true, "writable": true, "enumerable": false,
-    "value": function (/** @type {string | number} */ i, /** @type {any} */ v) {
+    "value": function (
+      /** @type {string | number} */ index,
+      /** @type {any} */ value) {
       "use strict";
-      var r = this.slice();
-      r[i] = v;
-      return r;
+      var result = this.slice();
+      result[index] = value;
+      return result;
     }
   });
 }
@@ -264,9 +271,9 @@ if (!("toReversed" in Uint8Array.prototype)) {
 if (!("toSorted" in Uint8Array.prototype)) {
   Object.defineProperty(Uint8Array.prototype, "toSorted", {
     "configurable": true, "writable": true, "enumerable": false,
-    "value": function (/** @type {Function} */ cFn) {
+    "value": function (/** @type {Function} */ fn) {
       "use strict";
-      return this.slice().sort(cFn);
+      return this.slice().sort(fn);
     }
   });
 }
@@ -276,11 +283,13 @@ if (!("toSorted" in Uint8Array.prototype)) {
 if (!("with" in Uint8Array.prototype)) {
   Object.defineProperty(Uint8Array.prototype, "with", {
     "configurable": true, "writable": true, "enumerable": false,
-    "value": function (/** @type {string | number} */ i, /** @type {any} */ v) {
+    "value": function (
+      /** @type {string | number} */ index,
+      /** @type {any} */ value) {
       "use strict";
-      var r = this.slice();
-      r[i] = v;
-      return r;
+      var result = this.slice();
+      result[index] = value;
+      return result;
     }
   });
 }
@@ -321,17 +330,17 @@ const WORDSAFEALPHABET= "23456789CFGHJMPQRVWXcfghjmpqvwx"; /* 31 */
 /* tap(function: function): function(v) */
 /** @return {any} */
 const tap = (/** @type {Function} */ fn) =>
-  function (/** @type {any} */ v) { fn(v); return v; };
+  function (/** @type {any} */ value) { fn(value); return value; };
 
 
 /* once(function: function): function */
 /** @return {Function} */
 function once (/** @type {Function} */ fn) {
   let called = false, res;
-  return function (/** @type {any[]} */...a) {
+  return function (/** @type {any[]} */ ...args) {
     if (!called) {
       called = true;
-      res = fn(...a);
+      res = fn(...args);
     }
     return res;
   };
@@ -351,30 +360,32 @@ function curry (/** @type {Function} */ fn) {
 
 /* pipe (function1:function [, functionN: function]): function */
 /** @return {Function} */
-const pipe = (/** @type {Function[]} */ ...fns) =>
-  (/** @type {any} */ x) => fns.reduce((v, f) => f(v), x);
+const pipe = (/** @type {Function[]} */ ...functions) =>
+  (/** @type {any} */ first) =>
+    functions.reduce((value, fn) => fn(value), first);
 
 
 /* compose (function1: function [, functionN: function]): function */
 /** @return {Function} */
-const compose = (/** @type {Function[]} */ ...fns) =>
-  (/** @type {any} */ x) => fns.reduceRight((v, f) => f(v), x);
+const compose = (/** @type {Function[]} */ ...functions) =>
+  (/** @type {any} */ first) =>
+    functions.reduceRight((value, fn) => fn(value), first);
 
 
 /* pick (object: object, keys: array): object */
 /** @return {Object} */
-const pick = (/** @type {Object} */ O, /** @type {string[]} */keys) =>
+const pick = (/** @type {Object} */ obj, /** @type {string[]} */ keys) =>
   keys.reduce(function (acc, key) {
-    if (key in O) { acc[key] = O[key]; }
+    if (key in obj) { acc[key] = obj[key]; }
     return acc;
   }, {});
 
 
 /* omit (object: object, keys: array): object */
 /** @return {Object} */
-const omit = (/** @type {Object} */ O, /** @type {string[]} */ keys) =>
-  Object.keys(O).reduce(function (acc, key) {
-    if (!keys.includes(key)) { acc[key] = O[key]; }
+const omit = (/** @type {Object} */ obj, /** @type {string[]} */ keys) =>
+  Object.keys(obj).reduce(function (acc, key) {
+    if (!keys.includes(key)) { acc[key] = obj[key]; }
     return acc;
   }, {});
 
@@ -382,10 +393,10 @@ const omit = (/** @type {Object} */ O, /** @type {string[]} */ keys) =>
 /* assoc (object: object, key: string, value: any): object */
 /** @return {Object} */
 const assoc = (
-  /** @type {Object} */ O,
-  /** @type {string} */ P,
-  /** @type {any} */ V) =>
-  ({...O, [P]: V});
+  /** @type {Object} */ obj,
+  /** @type {string} */ property,
+  /** @type {any} */ value) =>
+  ({...obj, [property]: value});
 
 
 /* asyncNoop (): Promise - do nothing */
@@ -408,27 +419,29 @@ async function asyncF () { return false; }
 
 /* asyncConstant (value): async function */
 /** @return @async {Function} */
-function asyncConstant (/** @type {any} */ v) {
-  return async function() { return v; };
+function asyncConstant (/** @type {any} */ value) {
+  return async function() { return value; };
 }
 
 
 /* asyncIdentity (value): Promise - return value */
 /** @return @async {any} */
-async function asyncIdentity (/** @type {any} */ v) { return v; }
+async function asyncIdentity (/** @type {any} */ value) { return value; }
 
 
 /* deleteOwnProperty(object, property [,Throw = false]): number | thrown error*/
 /** @return {number} */
 function deleteOwnProperty (
-  /** @type {Object} */ O,
-  /** @type {string} */ P,
+  /** @type {Object} */ obj,
+  /** @type {string} */ property,
   /** @type {boolean} */ Throw = false) {
-  if (Object.hasOwn(O, P)) {
-    delete O[P];
-    var r = Object.hasOwn(O, P);
-    if (r && Throw) { throw new Error("Celestra.deleteOwnProperty(); error"); }
-    return +!r;
+  if (Object.hasOwn(obj, property)) {
+    delete obj[property];
+    var result = Object.hasOwn(obj, property);
+    if (result && Throw) {
+      throw new Error("Celestra.deleteOwnProperty(); error");
+    }
+    return +!result;
   }
   return -1;
 }
@@ -437,30 +450,30 @@ function deleteOwnProperty (
 /* createPolyfillMethod(object, property, function: any): boolean */
 /** @return {boolean} */
 function createPolyfillMethod (
-  /** @type {Object} */ O,
-  /** @type {string} */ P,
-  /** @type {Function} */ V) {
-  if (!(Object.hasOwn(O, P))) {
-    Object.defineProperty(O, P, {
-      writable: true, enumerable: false, configurable: true, value: V
+  /** @type {Object} */ obj,
+  /** @type {string} */ property,
+  /** @type {Function} */ value) {
+  if (!(Object.hasOwn(obj, property))) {
+    Object.defineProperty(obj, property, {
+      writable: true, enumerable: false, configurable: true, value: value
     });
   }
-  return (O[P] === V);
+  return (obj[property] === value);
 }
 
 
 /* createPolyfillProperty(object, property, value: any): boolean */
 /** @return {boolean} */
 function createPolyfillProperty (
-  /** @type {Object} */ O,
-  /** @type {string} */ P,
-  /** @type {any} */ V) {
-  if (!(Object.hasOwn(O, P))) {
-    Object.defineProperty(O, P, {
-      writable: true, enumerable: true, configurable: true, value: V
+  /** @type {Object} */ obj,
+  /** @type {string} */ property,
+  /** @type {any} */ value) {
+  if (!(Object.hasOwn(obj, property))) {
+    Object.defineProperty(obj, property, {
+      writable: true, enumerable: true, configurable: true, value: value
     });
   }
-  return (O[P] === V);
+  return (obj[property] === value);
 }
 
 
@@ -470,14 +483,14 @@ function randomUUIDv7 (/** @type {boolean} */ v4 = false) {
   let ts = Date.now().toString(16).padStart(12,"0") + (v4 ? "4" : "7");
   // @ts-ignore
   let uuid = Array.from(([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, (c) =>
-    (c^crypto.getRandomValues(new Uint8Array(1))[0]&15>>c/4).toString(16)
+    (c^crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
   ));
-  let i = 0, p = 0;
-  while (i < 13) {
-    if (p === 8 || p === 13) { p++; }
-    uuid[p] = ts[i];
-    p++;
-    i++;
+  let index = 0, pos = 0;
+  while (index < 13) {
+    if (pos === 8 || pos === 13) { pos++; }
+    uuid[pos] = ts[index];
+    pos++;
+    index++;
   }
   return uuid.join("");
 }
@@ -485,8 +498,8 @@ function randomUUIDv7 (/** @type {boolean} */ v4 = false) {
 
 /* delay(ms: integer).then(callback: function): promise */
 /** @return {Promise} */
-const delay = (/** @type {number} */ ms) =>
-  new Promise(resolve => setTimeout(resolve, ms));
+const delay = (/** @type {number} */ milisec) =>
+  new Promise(resolve => setTimeout(resolve, milisec));
 
 
 /* randomBoolean(): boolean */
@@ -498,49 +511,50 @@ const randomBoolean = () => !Math.round(Math.random());
 /** @return {Object} */
 const getUrlVars = (/** @type {string} */ str = location.search) =>
   [...new URLSearchParams(str).entries()]
-    .reduce(function (o, item) { o[item[0]] = item[1]; return o; }, {});
+    .reduce(function (obj, item) { obj[item[0]] = item[1]; return obj; }, {});
 
 
 /* obj2string(object): string */
 /** @return {string} */
-const obj2string = (/** @type {Object} */ o) => Object.keys(o).reduce(
-  (s,p) => s += encodeURIComponent(p) + "=" + encodeURIComponent(o[p]) + "&",
+const obj2string = (/** @type {Object} */ obj) => Object.keys(obj).reduce(
+  (s,p) => s += encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]) + "&",
   "").slice(0, -1);
 
 
 /* extend([deep: boolean,] target: object, source1: object[, sourceN]): object*/
 /** @return {Object} */
-function extend (/** @type {Object[]} */ ...a) {
-  function _EXT (/** @type {Object[]} */ ...as) {
-    if (typeof as[0] === "boolean") {
-      var t = as[1], d = as[0], s = 2;
+function extend (/** @type {Object[]} */ ...args) {
+  function _EXT (/** @type {Object[]} */ ...args) {
+    if (typeof args[0] === "boolean") {
+      var targetObject = args[1], deep = args[0], start = 2;
     } else {
-      var t = as[0], d = false, s = 1;
+      var targetObject = args[0], deep = false, start = 1;
     }
-    for (var i = s, l = as.length, so; i < l; i++) {
-      so = as[i];
-      if (so != null) {
-        for (var p in so) {
-          if (Object.hasOwn(so, p)) {
-            if (typeof so[p] === "object" && d) {
-              t[p] = _EXT(true, {}, so[p]);
+    for (var i = start, length = args.length, sourceObject; i < length; i++) {
+      sourceObject = args[i];
+      if (sourceObject != null) {
+        for (var key in sourceObject) {
+          if (Object.hasOwn(sourceObject, key)) {
+            if (typeof sourceObject[key] === "object" && deep) {
+              targetObject[key] = _EXT(true, {}, sourceObject[key]);
             } else {
-              t[p] = so[p];
+              targetObject[key] = sourceObject[key];
             }
           }
         }
       }
     }
-    return t;
+    return targetObject;
   }
-  return _EXT(...a);
+  return _EXT(...args);
 }
 
 
 /* sizeIn(object): integer */
 /** @return {number} */
-const sizeIn = (/** @type {Object} */ O) => Object.getOwnPropertyNames(O).length
-  + Object.getOwnPropertySymbols(O).length;
+const sizeIn = (/** @type {Object} */ obj) =>
+  Object.getOwnPropertyNames(obj).length
+    + Object.getOwnPropertySymbols(obj).length;
 
 
 /* unBind(function): function */
@@ -555,12 +569,12 @@ const bind = Function.prototype.call.bind(Function.prototype.bind);
 
 /* constant(value: any): any */
 /** @return {any} */
-const constant = (/** @type {any} */ v) => () => v;
+const constant = (/** @type {any} */ value) => () => value;
 
 
 /* identity(value: any): any */
 /** @return {any} */
-const identity = (/** @type {any} */ v) => v;
+const identity = (/** @type {any} */ value) => value;
 
 
 /* noop(): undefined */
@@ -587,12 +601,12 @@ function nanoid (
   /** @type {string} */
   alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"
   ) {
-  var r = "", dl = alphabet.length, pos, i = size;
-  while (i--) {
+  var result = "", dl = alphabet.length, pos, index = size;
+  while (index--) {
     do { pos = crypto.getRandomValues(new Uint8Array(1))[0]; } while (pos>=dl);
-    r += alphabet[pos];
+    result += alphabet[pos];
   }
-  return r;
+  return result;
 }
 
 
@@ -605,13 +619,13 @@ function timestampID (
   /** @type {string} */
   alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
   ) {
-  var r = Date.now().toString(36).padStart(10, "0") + "-";
-  var dl = alphabet.length, pos, i = ((size > 11) ? size : 12) - 11;
-  while (i--) {
-    do { pos = crypto.getRandomValues(new Uint8Array(1))[0]; } while (pos>=dl);
-    r += alphabet[pos];
+  var result = Date.now().toString(36).padStart(10, "0") + "-";
+  var dl = alphabet.length, pos, index = ((size > 11) ? size : 12) - 11;
+  while (index--) {
+    do { pos = crypto.getRandomValues(new Uint8Array(1))[0]; } while (pos >=dl);
+    result += alphabet[pos];
   }
-  return r;
+  return result;
 }
 
 
@@ -625,9 +639,9 @@ function timestampID (
   ): any | throw TypeError */
 /** @return {any} */
 function assertIs (
-  /** @type {any} */ v,
+  /** @type {any} */ value,
   /** @type {string | function | Array<string | function> | undefined} */ expected,
-  /** @type {any} */ msg) {
+  /** @type {any} */ message) {
   function _is (
     /** @type {any} */ value,
     /** @type {string | function | Array<string | function> | undefined} */ expected) {
@@ -655,19 +669,19 @@ function assertIs (
     return matched;
   }
   /* assert type checking */
-  if (!_is(v, expected)) {
-    if (Error.isError(msg)) { throw msg; }
-    let vName = v.toString ? v.toString() : Object.prototype.toString.call(v);
+  if (!_is(value, expected)) {
+    if (Error.isError(message)) { throw message; }
+    let vName = value.toString ? value.toString() : Object.prototype.toString.call(value);
     let eNames = (Array.isArray(expected) ? expected : [expected]).map((item) =>
       // @ts-ignore
       (typeof item === "string" ? item.toString() : item.name ?? "anonymous")
     ).join(", ");
     throw new TypeError(
       "[assertIs] Assertion failed: " + vName + " is not a " + eNames
-        + (msg ? " - " + msg : "")
+        + (message ? " - " + message : "")
     );
   }
-  return v;
+  return value;
 }
 
 
@@ -678,9 +692,9 @@ function assertIs (
   ): any | throw TypeError */
 /** @return {any} */
 function assertIsNot (
-  /** @type {any} */ v,
+  /** @type {any} */ value,
   /** @type {string | function | Array<string | function> | undefined} */ expected,
-  /** @type {any} */ msg) {
+  /** @type {any} */ message) {
   function _is (
     /** @type {any} */ value,
     /** @type {string | function | Array<string | function> | undefined} */ expected) {
@@ -708,29 +722,31 @@ function assertIsNot (
     return matched;
   }
   /* assert type checking */
-  if (_is(v, expected)) {
-    if (Error.isError(msg)) { throw msg; }
-    let vName = v.toString ? v.toString() : Object.prototype.toString.call(v);
+  if (_is(value, expected)) {
+    if (Error.isError(message)) { throw message; }
+    let vName = value.toString ? value.toString() : Object.prototype.toString.call(value);
     let eNames = (Array.isArray(expected) ? expected : [expected]).map((item) =>
       // @ts-ignore
       (typeof item === "string" ? item.toString() : item.name ?? "anonymous")
     ).join(", ");
     throw new TypeError(
       "[assertIsNot] Assertion failed: " + vName + " is a " + eNames
-        + (msg ? " - " + msg : "")
+        + (message ? " - " + message : "")
     );
   }
-  return v;
+  return value;
 }
 
 
 /* assertFail(message | error): thrown error */
 /** @return {void} */
-function assertFail(/** @type {any} */ msg) {
-  if (Error.isError(msg)) {
-    throw msg;
+function assertFail(/** @type {any} */ message) {
+  if (Error.isError(message)) {
+    throw message;
   } else {
-    throw new Error("[assertFail] Assertion failed" + (msg ? ": " + msg : ""));
+    throw new Error(
+      "[assertFail] Assertion failed" + (message ? ": " + message : "")
+    );
   }
 }
 
@@ -740,25 +756,25 @@ function assertFail(/** @type {any} */ msg) {
 function assertMatch(
   /** @type {string} */ string,
   /** @type {RegExp} */ regexp,
-  /** @type {any} */ msg) {
+  /** @type {any} */ message) {
   if (typeof string !== "string") {
-    if (Error.isError(msg)) { throw msg; }
+    if (Error.isError(message)) { throw message; }
     throw new TypeError(
       "[assertMatch] TypeError: " + string + " is not a string"
-        + (msg ? " - " + msg : "")
+        + (message ? " - " + message : "")
     );
   }
   if (!(regexp instanceof RegExp)) {
-    if (Error.isError(msg)) { throw msg; }
+    if (Error.isError(message)) { throw message; }
     throw new TypeError(
       "[assertMatch] TypeError: " + regexp + " is not a RegExp"
-        + (msg ? " - " + msg : "")
+        + (message ? " - " + message : "")
     );
   }
   if (!(regexp.test(string))) {
-    if (Error.isError(msg)) { throw msg; }
+    if (Error.isError(message)) { throw message; }
     throw new Error(
-      "[assertMatch] Assertion failed" + (msg ? ": " + msg : "")
+      "[assertMatch] Assertion failed" + (message ? ": " + message : "")
     );
   }
   return true;
@@ -771,25 +787,25 @@ function assertMatch(
 function assertDoesNotMatch(
   /** @type {string} */ string,
   /** @type {RegExp} */ regexp,
-  /** @type {any} */ msg) {
+  /** @type {any} */ message) {
   if (typeof string !== "string") {
-    if (Error.isError(msg)) { throw msg; }
+    if (Error.isError(message)) { throw message; }
     throw new TypeError(
       "[assertDoesNotMatch] TypeError: " + string + " is not a string"
-        + (msg ? " - " + msg : "")
+        + (message ? " - " + message : "")
     );
   }
   if (!(regexp instanceof RegExp)) {
-    if (Error.isError(msg)) { throw msg; }
+    if (Error.isError(message)) { throw message; }
     throw new TypeError(
       "[assertDoesNotMatch] TypeError: " + regexp + " is not a RegExp"
-        + (msg ? " - " + msg : "")
+        + (message ? " - " + message : "")
     );
   }
   if (regexp.test(string)) {
-    if (Error.isError(msg)) { throw msg; }
+    if (Error.isError(message)) { throw message; }
     throw new Error(
-      "[assertDoesNotMatch] Assertion failed" + (msg ? ": " + msg : "")
+      "[assertDoesNotMatch] Assertion failed" + (message ? ": " + message : "")
     );
   }
   return true;
@@ -800,43 +816,45 @@ function assertDoesNotMatch(
 /** @return {any} */
 function assertThrows (
   /** @type {Function} */ callback,
-  /** @type {any} */ msg) {
+  /** @type {any} */ message) {
   if (typeof callback !== "function") {
     throw new TypeError(
       "[assertThrows] TypeError: " + callback + " is not a function"
-        + (msg ? " - " + msg : "")
+        + (message ? " - " + message : "")
     );
   }
-  try { callback(); } catch (e) { return e; }
-  if (Error.isError(msg)) { throw msg; }
-  throw new Error("[assertThrow] Assertion failed" + (msg ? ": " + msg : ""));
+  try { callback(); } catch (err) { return err; }
+  if (Error.isError(message)) { throw message; }
+  throw new Error(
+    "[assertThrow] Assertion failed" + (message ? ": " + message : "")
+  );
 }
 
 
 /* assertIsNotNil(value: any [, message | error]): value | thrown error */
-function assertIsNotNil (/** @type {any} */ v, /** @type {any} */ msg) {
-  if (v == null) {
-    if (Error.isError(msg)) { throw msg; }
+function assertIsNotNil (/** @type {any} */ value, /** @type {any} */ message) {
+  if (value == null) {
+    if (Error.isError(message)) { throw message; }
     throw new TypeError(
-      "[assertIsNotNil] Assertion failed: " + v + " is null or undefined"
-        + (msg ? " - " + msg : "")
+      "[assertIsNotNil] Assertion failed: " + value + " is null or undefined"
+        + (message ? " - " + message : "")
     );
   }
-  return v;
+  return value;
 }
 
 
 /* assertIsNil(value: any [, message | error]): value | thrown error */
 /** @return {any} */
-function assertIsNil (/** @type {any} */ v, /** @type {any} */ msg) {
-  if (v != null) {
-    if (Error.isError(msg)) { throw msg; }
+function assertIsNil (/** @type {any} */ value, /** @type {any} */ message) {
+  if (value != null) {
+    if (Error.isError(message)) { throw message; }
     throw new TypeError(
-      "[assertIsNil] Assertion failed: " + v + " is not null or undefined"
-        + (msg ? " - " + msg : "")
+      "[assertIsNil] Assertion failed: " + value + " is not null or undefined"
+        + (message ? " - " + message : "")
     );
   }
-  return v;
+  return value;
 }
 
 
@@ -844,25 +862,26 @@ function assertIsNil (/** @type {any} */ v, /** @type {any} */ msg) {
   value | thrown error */
 /** @deprecated * @return {any} */
 function assertTypeOf (
-  /** @type {any} */ v,
+  /** @type {any} */ value,
   /** @type {string} */ type,
-  /** @type {any} */ msg) {
-  const _type = (/** @type {any} */ v) => ((v === null) ? "null" : (typeof v));
+  /** @type {any} */ message) {
+  const _type = (/** @type {any} */ value) =>
+    ((value === null) ? "null" : (typeof value));
   if (typeof type !== "string") {
-    if (Error.isError(msg)) { throw msg; }
+    if (Error.isError(message)) { throw message; }
     throw new TypeError(
       "[assertTypeOf] TypeError: " + type + " is not a string"
-        + (msg ? " - " + msg : "")
+        + (message ? " - " + message : "")
     );
   }
-  if (_type(v) !== type) {
-    if (Error.isError(msg)) { throw msg; }
+  if (_type(value) !== type) {
+    if (Error.isError(message)) { throw message; }
     throw new TypeError(
-      "[assertTypeOf] Assertion failed: " + v + " is not a " + type
-        + (msg ? " - " + msg : "")
+      "[assertTypeOf] Assertion failed: " + value + " is not a " + type
+        + (message ? " - " + message : "")
     );
   }
-  return v;
+  return value;
 }
 
 
@@ -870,25 +889,26 @@ function assertTypeOf (
   value | thrown error */
 /** @deprecated * @return {any} */
 function assertNotTypeOf (
-  /** @type {any} */ v,
+  /** @type {any} */ value,
   /** @type {string} */ type,
-  /** @type {any} */ msg) {
-  const _type = (/** @type {any} */ v) => ((v === null) ? "null" : (typeof v));
+  /** @type {any} */ message) {
+  const _type = (/** @type {any} */ value) =>
+    ((value === null) ? "null" : (typeof value));
   if (typeof type !== "string") {
-    if (Error.isError(msg)) { throw msg; }
+    if (Error.isError(message)) { throw message; }
     throw new TypeError(
       "[assertNotTypeOf] TypeError: " + type + " is not a string"
-        + (msg ? " - " + msg : "")
+        + (message ? " - " + message : "")
     );
   }
-  if (_type(v) === type) {
-    if (Error.isError(msg)) { throw msg; }
+  if (_type(value) === type) {
+    if (Error.isError(message)) { throw message; }
     throw new TypeError(
-      "[assertNotTypeOf] Assertion failed: " + v + " is not a " + type
-        + (msg ? " - " + msg : "")
+      "[assertNotTypeOf] Assertion failed: " + value + " is not a " + type
+        + (message ? " - " + message : "")
     );
   }
-  return v;
+  return value;
 }
 
 
@@ -896,25 +916,25 @@ function assertNotTypeOf (
   value | thrown error */
 /** @deprecated * @return {any} */
 function assertInstanceOf (
-  /** @type {any} */ v,
+  /** @type {any} */ value,
   /** @type {Function} */ Class,
-  /** @type {any} */ msg) {
+  /** @type {any} */ message) {
   if (typeof Class !== "function") {
-    if (Error.isError(msg)) { throw msg; }
+    if (Error.isError(message)) { throw message; }
     throw new TypeError(
       "[assertInstanceOf] TypeError: " + Class + " is not a function"
-        + (msg ? " - " + msg : "")
+        + (message ? " - " + message : "")
     );
   }
-  if (!(v instanceof Class)) {
-    if (Error.isError(msg)) { throw msg; }
+  if (!(value instanceof Class)) {
+    if (Error.isError(message)) { throw message; }
     throw new TypeError(
-      "[assertInstanceOf] Assertion failed: " + v + " is not a "
+      "[assertInstanceOf] Assertion failed: " + value + " is not a "
         + ((Class.name !== "") ? Class.name : Class)
-        + (msg ? " - " + msg : "")
+        + (message ? " - " + message : "")
     );
   }
-  return v;
+  return value;
 }
 
 
@@ -922,34 +942,36 @@ function assertInstanceOf (
   value | thrown error */
 /** @deprecated * @return {any} */
 function assertNotInstanceOf (
-  /** @type {any} */ v,
+  /** @type {any} */ value,
   /** @type {Function} */ Class,
-  /** @type {any} */ msg) {
+  /** @type {any} */ message) {
   if (typeof Class !== "function") {
-    if (Error.isError(msg)) { throw msg; }
+    if (Error.isError(message)) { throw message; }
     throw new TypeError(
       "[assertNotInstanceOf] TypeError: " + Class + " is not a function"
-        + (msg ? " - " + msg : "")
+        + (message ? " - " + message : "")
     );
   }
-  if (v instanceof Class) {
-    if (Error.isError(msg)) { throw msg; }
+  if (value instanceof Class) {
+    if (Error.isError(message)) { throw message; }
     throw new TypeError(
-      "[assertNotInstanceOf] Assertion failed: " + v + " is not a "
+      "[assertNotInstanceOf] Assertion failed: " + value + " is not a "
         + ((Class.name !== "") ? Class.name : Class)
-        + (msg ? " - " + msg : "")
+        + (message ? " - " + message : "")
     );
   }
-  return v;
+  return value;
 }
 
 
 /* assert(value: any [, message | error]): true | thrown error */
 /** @return {boolean} */
-function assert (/** @type {any} */ c, /** @type {any} */ msg) {
-  if (!c) {
-    if (Error.isError(msg)) { throw msg; }
-    throw new Error("[assert] Assertion failed" + (msg ? ": " + msg : ""));
+function assert (/** @type {any} */ condition, /** @type {any} */ message) {
+  if (!condition) {
+    if (Error.isError(message)) { throw message; }
+    throw new Error(
+      "[assert] Assertion failed" + (message ? ": " + message : "")
+    );
   }
   return true;
 }
@@ -957,10 +979,12 @@ function assert (/** @type {any} */ c, /** @type {any} */ msg) {
 
 /* assertTrue(value: any [, message]): true | thrown error */
 /** @return {boolean} */
-function assertTrue (/** @type {any} */ c, /** @type {any} */ msg) {
-  if (!c) {
-    if (Error.isError(msg)) { throw msg; }
-    throw new Error("[assertTrue] Assertion failed" + (msg ? ": " + msg : ""));
+function assertTrue (/** @type {any} */ condition, /** @type {any} */ message) {
+  if (!condition) {
+    if (Error.isError(message)) { throw message; }
+    throw new Error(
+      "[assertTrue] Assertion failed" + (message ? ": " + message : "")
+    );
   }
   return true;
 }
@@ -968,10 +992,12 @@ function assertTrue (/** @type {any} */ c, /** @type {any} */ msg) {
 
 /* assertFalse(value: any [, message] | error): true | thrown error */
 /** @return {boolean} */
-function assertFalse (/** @type {any} */ c, /** @type {any} */ msg) {
-  if (c) {
-    if (Error.isError(msg)) { throw msg; }
-    throw new Error("[assertFalse] Assertion failed" + (msg ? ": " + msg : ""));
+function assertFalse (/** @type {any} */ condition, /** @type {any} */ message) {
+  if (condition) {
+    if (Error.isError(message)) { throw message; }
+    throw new Error(
+      "[assertFalse] Assertion failed" + (message ? ": " + message : "")
+    );
   }
   return true;
 }
@@ -983,10 +1009,12 @@ function assertFalse (/** @type {any} */ c, /** @type {any} */ msg) {
 function assertEqual (
   /** @type {any} */ x,
   /** @type {any} */ y,
-  /** @type {any} */ msg) {
+  /** @type {any} */ message) {
   if (!(x == y || (x !== x && y !== y))) {
-    if (Error.isError(msg)) { throw msg; }
-    throw new Error("[assertEqual] Assertion failed" + (msg ? ": " + msg : ""));
+    if (Error.isError(message)) { throw message; }
+    throw new Error(
+      "[assertEqual] Assertion failed" + (message ? ": " + message : "")
+    );
   }
   return true;
 }
@@ -998,11 +1026,11 @@ function assertEqual (
 function assertStrictEqual (
   /** @type {any} */ x,
   /** @type {any} */ y,
-  /** @type {any} */ msg) {
+  /** @type {any} */ message) {
   if (!((x === y) ? (x !== 0 || 1/x === 1/y) : (x !== x && y !== y))) {
-    if (Error.isError(msg)) { throw msg; }
+    if (Error.isError(message)) { throw message; }
     throw new Error("[assertStrictEqual] Assertion failed"
-      + (msg ? ": " + msg : "")
+      + (message ? ": " + message : "")
     );
   }
   return true;
@@ -1015,11 +1043,11 @@ function assertStrictEqual (
 function assertNotEqual (
   /** @type {any} */ x,
   /** @type {any} */ y,
-  /** @type {any} */ msg) {
+  /** @type {any} */ message) {
   if (x == y || (x !== x && y !== y)) {
-    if (Error.isError(msg)) { throw msg; }
+    if (Error.isError(message)) { throw message; }
     throw new Error("[assertNotEqual] Assertion failed"
-      + (msg ? ": " + msg : "")
+      + (message ? ": " + message : "")
     );
   }
   return true;
@@ -1033,11 +1061,11 @@ function assertNotEqual (
 function assertNotStrictEqual (
   /** @type {any} */ x,
   /** @type {any} */ y,
-  /** @type {any} */ msg) {
+  /** @type {any} */ message) {
   if ((x === y) ? (x !== 0 || 1/x === 1/y) : (x !== x && y !== y)) {
-    if (Error.isError(msg)) { throw msg; }
+    if (Error.isError(message)) { throw message; }
     throw new Error("[assertNotStrictEqual] Assertion failed"
-      + (msg ? ": " + msg : "")
+      + (message ? ": " + message : "")
     );
   }
   return true;
@@ -1049,15 +1077,15 @@ function assertNotStrictEqual (
 function assertDeepEqual (
   /** @type {any} */ x,
   /** @type {any} */ y,
-  /** @type {any} */ msg) {
+  /** @type {any} */ message) {
   function _isDeepEqual (/** @type {any} */ x, /** @type {any} */ y) {
     /* helper functions */
     // @ts-ignore
     const _deepType = (/** @type {any} */ x) =>
       ((x === null) ? "null" : (x !== x) ? "NaN" : (typeof x));
     // @ts-ignore
-    const _isPrimitive = (/** @type {any} */ v) =>
-      (v == null || (typeof v !== "object" && typeof v !== "function"));
+    const _isPrimitive = (/** @type {any} */ x) =>
+      (x == null || (typeof x !== "object" && typeof x !== "function"));
     const _isObject = (/** @type {any} */ x) =>
       (x != null && typeof x === "object");
     const _isSameInstance = (
@@ -1098,8 +1126,10 @@ function assertDeepEqual (
       if (Array.isArray(x) && Array.isArray(y)) {
         if (x.length !== y.length) { return false; }
         if (x.length === 0) { return true; }
-        return x.every((/** @type {any} */ v, /** @type {string | number} */ i) =>
-          _isDeepEqual(v, y[i]));
+        return x.every(
+          (/** @type {any} */ value, /** @type {string | number} */ index) =>
+            _isDeepEqual(value, y[index])
+        );
       }
       /* objects / TypedArrays */
       if ( _isSameInstance(x, y, Int8Array)
@@ -1119,16 +1149,19 @@ function assertDeepEqual (
       ) {
         if (x.length !== y.length) { return false; }
         if (x.length === 0) { return true; }
-        return x.every((/** @type {any} */ v, /** @type {string | number} */ i) =>
-          _isEqual(v, y[i]));
+        return x.every(
+          (/** @type {any} */ value, /** @type {string | number} */ index) =>
+            _isEqual(value, y[index])
+        );
       }
       /* objects / ArrayBuffer */
       if (_isSameInstance(x, y, ArrayBuffer)) {
         if (x.byteLength !== y.byteLength) { return false; }
         if (x.byteLength === 0) { return true; }
         let xTA = new Int8Array(x), yTA = new Int8Array(y);
-        return xTA.every((/** @type {any} */ v, /** @type {string | number} */ i) =>
-          _isEqual(v, yTA[i]));
+        return xTA.every(
+          (/** @type {any} */ value, /** @type {string | number} */ index) =>
+            _isEqual(value, yTA[index]));
       }
       /* objects / DataView */
       if (_isSameInstance(x, y, DataView)) {
@@ -1143,14 +1176,14 @@ function assertDeepEqual (
       if (_isSameInstance(x, y, Map)) {
         if (x.size !== y.size) { return false; }
         if (x.size === 0) { return true; }
-        return [...x.keys()].every((/** @type {any} */ v) =>
-          _isDeepEqual(x.get(v), y.get(v)));
+        return [...x.keys()].every((/** @type {any} */ value) =>
+          _isDeepEqual(x.get(value), y.get(value)));
       }
       /* objects / Set */
       if (_isSameInstance(x, y, Set)) {
         if (x.size !== y.size) { return false; }
         if (x.size === 0) { return true; }
-        return [...x.keys()].every((/** @type {any} */v) => y.has(v));
+        return [...x.keys()].every((/** @type {any} */value) => y.has(value));
       }
       /* objects / RegExp */
       if (_isSameInstance(x, y, RegExp)) {
@@ -1181,9 +1214,9 @@ function assertDeepEqual (
   }
   /* throw error | return true */
   if (!_isDeepEqual(x, y)) {
-    if (Error.isError(msg)) { throw msg; }
+    if (Error.isError(message)) { throw message; }
     throw new Error("[assertDeepEqual] Assertion failed"
-      + (msg ? ": " + msg : "")
+      + (message ? ": " + message : "")
     );
   }
   return true;
@@ -1196,13 +1229,13 @@ function assertDeepEqual (
 function assertNotDeepStrictEqual (
   /** @type {any} */ x,
   /** @type {any} */ y,
-  /** @type {any} */ msg) {
+  /** @type {any} */ message) {
   function _isDeepStrictEqual (/** @type {any} */ x, /** @type {any} */ y) {
     /* helper functions */
     const _deepType = (/** @type {any} */ x) =>
       ((x === null) ? "null" : (x !== x) ? "NaN" : (typeof x));
-    const _isPrimitive = (/** @type {any} */ v) =>
-      (v == null || (typeof v !== "object" && typeof v !== "function"));
+    const _isPrimitive = (/** @type {any} */ x) =>
+      (x == null || (typeof x !== "object" && typeof x !== "function"));
     const _isObject = (/** @type {any} */ x) =>
       (x != null && typeof x === "object");
     const _isSameInstance = (
@@ -1258,8 +1291,10 @@ function assertNotDeepStrictEqual (
       if (Array.isArray(x) && Array.isArray(y)) {
         if (x.length !== y.length) { return false; }
         if (x.length === 0) { return true; }
-        return x.every((/** @type {any} */ v, /** @type {string | number} */ i) =>
-          _isDeepStrictEqual(v, y[i]));
+        return x.every(
+          (/** @type {any} */ value, /** @type {string | number} */ index) =>
+            _isDeepStrictEqual(value, y[index])
+        );
       }
       /* objects / TypedArrays */
       if ( _isSameInstance(x, y, Int8Array)
@@ -1279,16 +1314,19 @@ function assertNotDeepStrictEqual (
       ) {
         if (x.length !== y.length) { return false; }
         if (x.length === 0) { return true; }
-        return x.every((/** @type {any} */ v, /** @type {string | number} */ i) =>
-          _isEqual(v, y[i]));
+        return x.every(
+          (/** @type {any} */ value, /** @type {string | number} */ index) =>
+            _isEqual(value, y[index])
+        );
       }
       /* objects / ArrayBuffer */
       if (_isSameInstance(x, y, ArrayBuffer)) {
         if (x.byteLength !== y.byteLength) { return false; }
         if (x.byteLength === 0) { return true; }
         let xTA = new Int8Array(x), yTA = new Int8Array(y);
-        return xTA.every((/** @type {any} */ v, /** @type {string | number} */ i) =>
-          _isEqual(v, yTA[i]));
+        return xTA.every(
+          (/** @type {any} */ value, /** @type {string | number} */ index) =>
+            _isEqual(value, yTA[index]));
       }
       /* objects / DataView */
       if (_isSameInstance(x, y, DataView)) {
@@ -1310,7 +1348,7 @@ function assertNotDeepStrictEqual (
       if (_isSameInstance(x, y, Set)) {
         if (x.size !== y.size) { return false; }
         if (x.size === 0) { return true; }
-        return [...x.keys()].every((/** @type {any} */ v) => y.has(v));
+        return [...x.keys()].every((/** @type {any} */ value) => y.has(value));
       }
       /* objects / RegExp */
       if (_isSameInstance(x, y, RegExp)) {
@@ -1341,9 +1379,9 @@ function assertNotDeepStrictEqual (
   }
   /* throw error | return true */
   if (_isDeepStrictEqual(x, y)) {
-    if (Error.isError(msg)) { throw msg; }
+    if (Error.isError(message)) { throw message; }
     throw new Error("[assertNotDeepStrictEqual] Assertion failed"
-      + (msg ? ": " + msg : "")
+      + (message ? ": " + message : "")
     );
   }
   return true;
@@ -1356,15 +1394,15 @@ function assertNotDeepStrictEqual (
 function assertNotDeepEqual (
   /** @type {any} */ x,
   /** @type {any} */ y,
-  /** @type {any} */ msg) {
+  /** @type {any} */ message) {
   function _isDeepEqual (/** @type {any} */ x, /** @type {any} */ y) {
     /* helper functions */
     // @ts-ignore
     const _deepType = (/** @type {any} */ x) =>
       ((x === null) ? "null" : (x !== x) ? "NaN" : (typeof x));
     // @ts-ignore
-    const _isPrimitive = (/** @type {any} */ v) =>
-      (v == null || (typeof v !== "object" && typeof v !== "function"));
+    const _isPrimitive = (/** @type {any} */ x) =>
+      (x == null || (typeof x !== "object" && typeof x !== "function"));
     const _isObject = (/** @type {any} */ x) =>
       (x != null && typeof x === "object");
     const _isSameInstance = (
@@ -1405,8 +1443,10 @@ function assertNotDeepEqual (
       if (Array.isArray(x) && Array.isArray(y)) {
         if (x.length !== y.length) { return false; }
         if (x.length === 0) { return true; }
-        return x.every((/** @type {any} */ v, /** @type {string | number} */ i) =>
-          _isDeepEqual(v, y[i]));
+        return x.every(
+          (/** @type {any} */ value, /** @type {string | number} */ index) =>
+            _isDeepEqual(value, y[index])
+        );
       }
       /* objects / TypedArrays */
       if ( _isSameInstance(x, y, Int8Array)
@@ -1426,16 +1466,19 @@ function assertNotDeepEqual (
       ) {
         if (x.length !== y.length) { return false; }
         if (x.length === 0) { return true; }
-        return x.every((/** @type {any} */ v, /** @type {string | number} */ i) =>
-          _isEqual(v, y[i]));
+        return x.every(
+          (/** @type {any} */ value, /** @type {string | number} */ index) =>
+            _isEqual(value, y[index])
+        );
       }
       /* objects / ArrayBuffer */
       if (_isSameInstance(x, y, ArrayBuffer)) {
         if (x.byteLength !== y.byteLength) { return false; }
         if (x.byteLength === 0) { return true; }
         let xTA = new Int8Array(x), yTA = new Int8Array(y);
-        return xTA.every((/** @type {any} */ v, /** @type {string | number} */ i) =>
-          _isEqual(v, yTA[i]));
+        return xTA.every(
+          (/** @type {any} */ value, /** @type {string | number} */ index) =>
+            _isEqual(value, yTA[index]));
       }
       /* objects / DataView */
       if (_isSameInstance(x, y, DataView)) {
@@ -1457,7 +1500,7 @@ function assertNotDeepEqual (
       if (_isSameInstance(x, y, Set)) {
         if (x.size !== y.size) { return false; }
         if (x.size === 0) { return true; }
-        return [...x.keys()].every((/** @type {any} */ v) => y.has(v));
+        return [...x.keys()].every((/** @type {any} */ value) => y.has(value));
       }
       /* objects / RegExp */
       if (_isSameInstance(x, y, RegExp)) {
@@ -1488,9 +1531,9 @@ function assertNotDeepEqual (
   }
   /* throw error | return true */
   if (_isDeepEqual(x, y)) {
-    if (Error.isError(msg)) { throw msg; }
+    if (Error.isError(message)) { throw message; }
     throw new Error("[assertNotDeepEqual] Assertion failed"
-      + (msg ? ": " + msg : "")
+      + (message ? ": " + message : "")
     );
   }
   return true;
@@ -1503,13 +1546,13 @@ function assertNotDeepEqual (
 function assertDeepStrictEqual (
   /** @type {any} */ x,
   /** @type {any} */ y,
-  /** @type {any} */ msg) {
+  /** @type {any} */ message) {
   function _isDeepStrictEqual (/** @type {any} */ x, /** @type {any} */ y) {
     /* helper functions */
     const _deepType = (/** @type {any} */ x) =>
       ((x === null) ? "null" : (x !== x) ? "NaN" : (typeof x));
-    const _isPrimitive = (/** @type {any} */ v) =>
-      (v == null || (typeof v !== "object" && typeof v !== "function"));
+    const _isPrimitive = (/** @type {any} */ x) =>
+      (x == null || (typeof x !== "object" && typeof x !== "function"));
     const _isObject = (/** @type {any} */ x) =>
       (x != null && typeof x === "object");
     const _isSameInstance = (
@@ -1564,8 +1607,10 @@ function assertDeepStrictEqual (
       if (Array.isArray(x) && Array.isArray(y)) {
         if (x.length !== y.length) { return false; }
         if (x.length === 0) { return true; }
-        return x.every((/** @type {any} */ v, /** @type {string | number} */ i) =>
-          _isDeepStrictEqual(v, y[i]));
+        return x.every(
+          (/** @type {any} */ value, /** @type {string | number} */ index) =>
+            _isDeepStrictEqual(value, y[index])
+        );
       }
       /* objects / TypedArrays */
       if ( _isSameInstance(x, y, Int8Array)
@@ -1585,16 +1630,18 @@ function assertDeepStrictEqual (
       ) {
         if (x.length !== y.length) { return false; }
         if (x.length === 0) { return true; }
-        return x.every((/** @type {any} */ v, /** @type {string | number} */ i) =>
-          _isEqual(v, y[i]));
+        return x.every(
+          (/** @type {any} */ value, /** @type {string | number} */ index) =>
+            _isEqual(value, y[index])
+        );
       }
       /* objects / ArrayBuffer */
       if (_isSameInstance(x, y, ArrayBuffer)) {
         if (x.byteLength !== y.byteLength) { return false; }
         if (x.byteLength === 0) { return true; }
         let xTA = new Int8Array(x), yTA = new Int8Array(y);
-        return xTA.every((/** @type {any} */ v, /** @type {string | number} */ i) =>
-          _isEqual(v, yTA[i]));
+        return xTA.every((/** @type {any} */ value, /** @type {string | number} */ index) =>
+          _isEqual(value, yTA[index]));
       }
       /* objects / DataView */
       if (_isSameInstance(x, y, DataView)) {
@@ -1617,7 +1664,7 @@ function assertDeepStrictEqual (
       if (_isSameInstance(x, y, Set)) {
         if (x.size !== y.size) { return false; }
         if (x.size === 0) { return true; }
-        return [...x.keys()].every((/** @type {any} */ v) => y.has(v));
+        return [...x.keys()].every((/** @type {any} */ value) => y.has(value));
       }
       /* objects / RegExp */
       if (_isSameInstance(x, y, RegExp)) {
@@ -1648,9 +1695,9 @@ function assertDeepStrictEqual (
   }
   /* throw error | return true */
   if (!_isDeepStrictEqual(x, y)) {
-    if (Error.isError(msg)) { throw msg; }
+    if (Error.isError(message)) { throw message; }
     throw new Error("[assertDeepStrictEqual] Assertion failed"
-      + (msg ? ": " + msg : "")
+      + (message ? ": " + message : "")
     );
   }
   return true;
@@ -1662,8 +1709,8 @@ function assertDeepStrictEqual (
 
 /* b64Encode(s: any): string */
 /** @return {string} */
-function b64Encode (/** @type {any} */ s) {
-  return btoa(encodeURIComponent(String(s)).replace(/%([0-9A-F]{2})/g,
+function b64Encode (/** @type {any} */ str) {
+  return btoa(encodeURIComponent(String(str)).replace(/%([0-9A-F]{2})/g,
     function toSolidBytes (_match, p1) {
       // @ts-ignore
       return String.fromCharCode("0x" + p1);
@@ -1674,8 +1721,8 @@ function b64Encode (/** @type {any} */ s) {
 
 /* b64Decode(s: string): string */
 /** @return {string} */
-function b64Decode (/** @type {any} */ s) {
-  return decodeURIComponent(atob(String(s)).split("").map(function (c) {
+function b64Decode (/** @type {any} */ str) {
+  return decodeURIComponent(atob(String(str)).split("").map(function (c) {
     return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
   }).join(""));
 }
@@ -1686,93 +1733,96 @@ function b64Decode (/** @type {any} */ s) {
 /** @return {string} */
 function strTruncate (
   /** @type {any} */ str,
-  /** @type {number} */ newLen,
+  /** @type {number} */ newLength,
   /** @type {string} */ omission = "") {
   str = String(str);
   omission = String(omission);
   var strUC = Array.from(str);
-  if (newLen >= strUC.length) { return str; }
-  return strUC.slice(0, newLen-Array.from(omission).length).join("") + omission;
+  if (newLength >= strUC.length) { return str; }
+  return strUC.slice(0, newLength-Array.from(omission).length).join("")
+    + omission;
 }
 
 
 /* strPropercase(s: any): string */
 /** @return {string} */
-const strPropercase = (/** @type {any} */ s) =>
-  String(s).split(" ").map(function (/** @type {string} */ v) {
-    var a = Array.from(v).map( (c) => c.toLowerCase() );
-    if (a.length) { a[0] = a[0].toUpperCase(); }
-    return a.join("");
+const strPropercase = (/** @type {any} */ str) =>
+  String(str).split(" ").map(function (/** @type {string} */ value) {
+    var chars = Array.from(value).map( (c) => c.toLowerCase() );
+    if (chars.length) { chars[0] = chars[0].toUpperCase(); }
+    return chars.join("");
   }).join(" ");
 
 
 /* strTitlecase(s: any): string */
 /** @return {string} */
-const strTitlecase = (/** @type {any} */ s) =>
-  String(s).split(" ").map(function (/** @type {string} */ v) {
-    var a = Array.from(v).map( (c) => c.toLowerCase() );
-    if (a.length) { a[0] = a[0].toUpperCase(); }
-    return a.join("");
+const strTitlecase = (/** @type {any} */ str) =>
+  String(str).split(" ").map(function (/** @type {string} */ value) {
+    var chars = Array.from(value).map( (c) => c.toLowerCase() );
+    if (chars.length) { chars[0] = chars[0].toUpperCase(); }
+    return chars.join("");
   }).join(" ");
 
 
 /* strCapitalize(s: any): string */
 /** @return {string} */
-function strCapitalize (/** @type {any} */ s) {
-  var a = [...String(s).toLowerCase()];
-  if (a.length) { a[0] = a[0].toUpperCase(); }
-  return a.join("");
+function strCapitalize (/** @type {any} */ str) {
+  var chars = [...String(str).toLowerCase()];
+  if (chars.length) { chars[0] = chars[0].toUpperCase(); }
+  return chars.join("");
 }
 
 
 /* strUpFirst(s: any): string */
 /** @return {string} */
-function strUpFirst (/** @type {any} */ s) {
-  var a = [...String(s)];
-  if (a.length) { a[0] = a[0].toUpperCase(); }
-  return a.join("");
+function strUpFirst (/** @type {any} */ str) {
+  var chars = [...String(str)];
+  if (chars.length) { chars[0] = chars[0].toUpperCase(); }
+  return chars.join("");
 }
 
 
 /* strDownFirst(s: any): string */
 /** @return {string} */
-function strDownFirst (/** @type {any} */ s) {
-  var a = [...String(s)];
-  if (a.length) { a[0] = a[0].toLowerCase(); }
-  return a.join("");
+function strDownFirst (/** @type {any} */ str) {
+  var chars = [...String(str)];
+  if (chars.length) { chars[0] = chars[0].toLowerCase(); }
+  return chars.join("");
 }
 
 
 /* strReverse(s: any): string */
 /** @return {string} */
-const strReverse = (/** @type {any} */ s) =>
-  Array.from(String(s)).reverse().join("");
+const strReverse = (/** @type {any} */ str) =>
+  Array.from(String(str)).reverse().join("");
 
 
 /* strCodePoints(s: any): array of strings */
-/** @return {Array} */
-const strCodePoints = (/** @type {any} */ s) =>
-  Array.from(String(s), (/** @type {string} */ v) => v.codePointAt(0) );
+/** @return {any[]} */
+const strCodePoints = (/** @type {any} */ str) =>
+  Array.from(String(str),
+    (/** @type {string} */ value) => value.codePointAt(0)
+  );
 
 
 /* strFromCodePoints(iterator: iterator): string */
 /** @return {string} */
-const strFromCodePoints = (/** @type {Iterable<any>} */ [...a]) =>
-  String.fromCodePoint(...a);
+const strFromCodePoints = (/** @type {Iterable<any>} */ [...array]) =>
+  String.fromCodePoint(...array);
 
 
 /* strAt(string: string, index: number [, newChar: string]): string */
 /** @return {string} */
 function strAt (
-  /** @type {string} */ s,
-   /** @type {number} */ i,
-   /** @type {string} */ nC) {
-  var a = Array.from(String(s));
-  if (nC == null) { return a.at(i) || ""; }
-  i = i < 0 ? a.length + i : i;
-  if (i > a.length) { return a.join(""); }
-  a[i] = nC;
-  return a.join("");
+  /** @type {string} */ str,
+   /** @type {number} */ index,
+   /** @type {string} */ newChar) {
+  var chars = Array.from(String(str));
+  if (newChar == null) { return chars.at(index) || ""; }
+  index = index < 0 ? chars.length + index : index;
+  if (index > chars.length) { return chars.join(""); }
+  chars[index] = newChar;
+  return chars.join("");
 }
 
 
@@ -1780,29 +1830,30 @@ function strAt (
   string */
 /** @return {string} */
 const strSplice = (
-  /** @type {string} */ s,
-  /** @type {Number} */ i,
-  /** @type {number} */ c, ...add) =>
-  Array.from(s).toSpliced(i, c, add.join("")).join("");
+  /** @type {string} */ str,
+  /** @type {Number} */ index,
+  /** @type {number} */ count,
+  /** @type {any[]} */ ...add) =>
+  Array.from(str).toSpliced(index, count, add.join("")).join("");
 
 
 /* strHTMLRemoveTags(s: any): string */
 /** @return {string} */
-const strHTMLRemoveTags = (/** @type {any} */ s) =>
-  String(s).replace(/<[^>]*>/g, " ").replace(/\s{2,}/g, " ").trim();
+const strHTMLRemoveTags = (/** @type {any} */ str) =>
+  String(str).replace(/<[^>]*>/g, " ").replace(/\s{2,}/g, " ").trim();
 
 
 /* strHTMLEscape(s: any): string */
 /** @return {string} */
-const strHTMLEscape = (/** @type {string} */ s) =>
-  String(s).replace(/&/g, "&amp;")
+const strHTMLEscape = (/** @type {string} */ str) =>
+  String(str).replace(/&/g, "&amp;")
     .replace(/</g, "&lt;").replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;").replace(/'/g, "&apos;");
 
 
 /* strHTMLUnEscape(s: any): string */
 /** @return {string} */
-const strHTMLUnEscape = (/** @type {string} */ s) => String(s)
+const strHTMLUnEscape = (/** @type {string} */ str) => String(str)
   .replace(/&amp;/g, "&").replace(/&#38;/g, "&")
   .replace(/&lt;/g, "<").replace(/&#60;/g, "<")
   .replace(/&gt;/g, ">").replace(/&#62;/g, ">")
@@ -1814,15 +1865,19 @@ const strHTMLUnEscape = (/** @type {string} */ s) => String(s)
 
 
 /* qsa(selector: string [, context: element object]): array */
-/** @return {Array} */
-const qsa = (/** @type {string} */ s, /** @type {Object} */ c = document) =>
-  Array.from(c.querySelectorAll(s));
+/** @return {any[]} */
+const qsa = (
+  /** @type {string} */ str, 
+  /** @type {Object} */ context = document) =>
+  Array.from(context.querySelectorAll(str));
 
 
 /* qs(selector: string [, context: element object]): element object | null */
 /** @return {HTMLElement} */
-const qs = (/** @type {string} */ s, /** @type {Object} */ c = document) =>
-  c.querySelector(s);
+const qs = (
+  /** @type {string} */ str, 
+  /** @type {Object} */ context = document) =>
+  context.querySelector(str);
 
 
 /* domReady(callback: function): undefined */
@@ -1841,18 +1896,18 @@ function domReady (/** @type {Function} */ fn) {
 /* domCreate(element descriptive object): element */
 /** @return {HTMLElement} */
 function domCreate (
-  /** @type {string | Object} */ t,
+  /** @type {string | Object} */ elType,
   /** @type {Object} */ ps,
-  /** @type {string} */ iH) {
-  if (arguments.length === 1 && typeof t === "object") {
-    var obj = t;
-    t = obj.elementType;
+  /** @type {string} */ innerHTML) {
+  if (arguments.length === 1 && typeof elType === "object") {
+    var obj = elType;
+    elType = obj.elementType;
     ps = {};
     for (var p in obj) {
       if (p !== "elementType") { ps[p] = obj[p]; }
     }
   }
-  var el = document.createElement(t);
+  var el = document.createElement(elType);
   if (ps) {
     for (var p in ps) {
       if (p !== "style" || typeof ps[p] === "string") {
@@ -1862,16 +1917,16 @@ function domCreate (
       }
     }
   }
-  if (iH) { el.innerHTML = iH; }
+  if (innerHTML) { el.innerHTML = innerHTML; }
   return el;
 }
 
 
 /* domToElement(htmlString): element object */
 /** @return {Element | null} */
-function domToElement (/** @type {string} */ s) {
+function domToElement (/** @type {string} */ str) {
   var e = document.createElement("div");
-  e.innerHTML = s;
+  e.innerHTML = str;
   return e.firstElementChild;
 }
 
@@ -1879,23 +1934,23 @@ function domToElement (/** @type {string} */ s) {
 /* domGetCSS(element [, property: string]): string */
 /** @return {any} */
 const domGetCSS = (
-  /** @type {Element} */ e,
-  /** @type {string | number} */ p) =>
-  (p ? globalThis.getComputedStyle(e, null)[p] :
-    globalThis.getComputedStyle(e, null));
+  /** @type {Element} */ el,
+  /** @type {string | number} */ property) =>
+  (property ? globalThis.getComputedStyle(el, null)[property] :
+    globalThis.getComputedStyle(el, null));
 
 
 /* domSetCSS(element, property: string, value: string): undefined */
 /* domSetCSS(element, properties: object): undefined */
 /** @return {void} */
 function domSetCSS (
-  /** @type {HTMLElement} */ e,
-  /** @type {string | Object} */ n,
-  /** @type {string} */ v) {
-  if (typeof n === "string") {
-    e.style[n] = v;
-  } else if (typeof n === "object") {
-    Object.keys(n).forEach((p) => (e.style[p] = n[p]));
+  /** @type {HTMLElement} */ el,
+  /** @type {string | Object} */ property,
+  /** @type {string} */ value) {
+  if (typeof property === "string") {
+    el.style[property] = value;
+  } else if (typeof property === "object") {
+    Object.keys(property).forEach((p) => (el.style[p] = property[p]));
   }
 }
 
@@ -1903,13 +1958,13 @@ function domSetCSS (
 /* domFadeIn(element [, duration = 500 [, display = ""]]): undefined */
 /** @return {void} */
 function domFadeIn (
-  /** @type {HTMLElement} */ e,
-  /** @type {number} */ dur,
-  /** @type {string} */ d) {
-  var s = e.style, step = 25/(dur || 500);
+  /** @type {HTMLElement} */ el,
+  /** @type {number} */ duration,
+  /** @type {string} */ display) {
+  var s = el.style, step = 25/(duration || 500);
   // @ts-ignore
   s.opacity = (s.opacity || 0);
-  s.display = (d || "");
+  s.display = (display || "");
   (function fade () {
     // @ts-ignore
     (s.opacity=parseFloat(s.opacity)+step)>1 ? s.opacity=1 :setTimeout(fade,25);
@@ -1920,14 +1975,14 @@ function domFadeIn (
 /* domFadeOut(element [, duration = 500]): undefined */
 /** @return {void} */
 function domFadeOut (
-  /** @type {HTMLElement} */ e,
-  /** @type {number} */ dur) {
-  var s = e.style, step = 25/(dur || 500);
+  /** @type {HTMLElement} */ el,
+  /** @type {number} */ duration) {
+  var style = el.style, step = 25/(duration || 500);
   // @ts-ignore
-  s.opacity = (s.opacity || 1);
+  style.opacity = (style.opacity || 1);
   (function fade () {
     // @ts-ignore
-    (s.opacity -= step) < 0 ? s.display = "none" : setTimeout(fade, 25);
+    (style.opacity -= step) < 0 ? style.display = "none" : setTimeout(fade, 25);
   })();
 }
 
@@ -1935,15 +1990,15 @@ function domFadeOut (
 /* domFadeToggle(element [, duration = 500 [, display = ""]]): undefined */
 /** @return {void} */
 function domFadeToggle (
-  /** @type {HTMLElement} */ e,
-  /** @type {number} */ dur,
-  /** @type {string} */ d = "") {
-  if (globalThis.getComputedStyle(e, null).display === "none") {
+  /** @type {HTMLElement} */ el,
+  /** @type {number} */ duration,
+  /** @type {string} */ display = "") {
+  if (globalThis.getComputedStyle(el, null).display === "none") {
     /* same as domFadeIn(); */
-    var s = e.style, step = 25/(dur || 500);
+    var s = el.style, step = 25/(duration || 500);
     // @ts-ignore
     s.opacity = (s.opacity || 0);
-    s.display = (d || "");
+    s.display = (display || "");
     (function fade () {
       // @ts-ignore
       (s.opacity = parseFloat(s.opacity) + step) > 1 ? s.opacity = 1 :
@@ -1951,7 +2006,7 @@ function domFadeToggle (
     })();
   } else {
     /* same as domFadeOut(); */
-    var s = e.style, step = 25/(dur || 500);
+    var s = el.style, step = 25/(duration || 500);
     // @ts-ignore
     s.opacity = (s.opacity || 1);
     (function fade () {
@@ -1964,36 +2019,38 @@ function domFadeToggle (
 
 /* domHide(element): undefined */
 /** @return {any} */
-const domHide = (/** @type {HTMLElement} */ e) => e.style.display = "none";
+const domHide = (/** @type {HTMLElement} */ el) => el.style.display = "none";
 
 
 /* domShow(element [, display = ""]): undefined */
 /** @return {any} */
-const domShow = (/** @type {HTMLElement} */ e, /** @type {string} */ d = "") =>
-  e.style.display = d;
+const domShow = (
+  /** @type {HTMLElement} */ el,
+  /** @type {string} */ display = "") =>
+  el.style.display = display;
 
 
 /* domToggle(element [, display: string]): undefined */
 /** @return {void} */
 function domToggle (
-  /** @type {HTMLElement} */ e,
-  /** @type {string} */ d = "") {
-  if (globalThis.getComputedStyle(e, null).display === "none") {
-    e.style.display = d;
+  /** @type {HTMLElement} */ el,
+  /** @type {string} */ display = "") {
+  if (globalThis.getComputedStyle(el, null).display === "none") {
+    el.style.display = display;
   } else {
-    e.style.display = "none";
+    el.style.display = "none";
   }
 }
 
 
 /* domIsHidden(element): boolean */
 /** @return {boolean} */
-const domIsHidden = (/** @type {Element} */ e) =>
-  (globalThis.getComputedStyle(e,null).display === "none");
+const domIsHidden = (/** @type {Element} */ el) =>
+  (globalThis.getComputedStyle(el,null).display === "none");
 
 
 /* domSiblings(element): array */
-/** @return {Array} */
+/** @return {any[]} */
 const domSiblings = (/** @type {Element} */ el) =>
   // @ts-ignore
   Array.prototype.filter.call(el.parentNode.children,
@@ -2001,8 +2058,8 @@ const domSiblings = (/** @type {Element} */ el) =>
   );
 
 
-/* domSiblingsPrev(element): array */
-/** @return {Array} */
+/* domSiblingsPrev(element): any[] */
+/** @return {any[]} */
 const domSiblingsPrev = (/** @type {Element} */ el) =>
   Array.prototype.slice.call(
     // @ts-ignore
@@ -2012,8 +2069,8 @@ const domSiblingsPrev = (/** @type {Element} */ el) =>
   );
 
 
-/* domSiblingsLeft(element): array */
-/** @return {Array} */
+/* domSiblingsLeft(element): any[] */
+/** @return {any[]} */
 const domSiblingsLeft = (/** @type {Element} */ el) =>
   Array.prototype.slice.call(
     // @ts-ignore
@@ -2023,8 +2080,8 @@ const domSiblingsLeft = (/** @type {Element} */ el) =>
   );
 
 
-/* domSiblingsNext(element): array */
-/** @return {Array} */
+/* domSiblingsNext(element): any[] */
+/** @return {any[]} */
 const domSiblingsNext = (/** @type {Element} */ el) =>
   Array.prototype.slice.call(
     // @ts-ignore
@@ -2036,8 +2093,8 @@ const domSiblingsNext = (/** @type {Element} */ el) =>
   );
 
 
-/* domSiblingsRight(element): array */
-/** @return {Array} */
+/* domSiblingsRight(element): any[] */
+/** @return {any[]} */
 const domSiblingsRight = (/** @type {HTMLElement} */ el) =>
   Array.prototype.slice.call(
     // @ts-ignore
@@ -2051,104 +2108,106 @@ const domSiblingsRight = (/** @type {HTMLElement} */ el) =>
 
 /* importScript(script1: string [, scriptN: string]): undefined */
 /** @return {void} */
-function importScript (/** @type {string[]} */ ...a) {
-  for (let item of a) {
-    let scr = document.createElement("script");
-    scr.type = "text\/javascript";
-    scr.src = item;
-    scr.onerror = function (e) {
+function importScript (/** @type {string[]} */ ...scripts) {
+  for (let item of scripts) {
+    let el = document.createElement("script");
+    el.type = "text\/javascript";
+    el.src = item;
+    el.onerror = function (e) {
       throw new URIError(
         // @ts-ignore
         "Loading failed for the script with source " + e.target.src
       );
     };
-    (document.head||document.getElementsByTagName("head")[0]).appendChild(scr);
+    (document.head||document.getElementsByTagName("head")[0]).appendChild(el);
   }
 }
 
 
 /* importStyle(style1: string [, styleN: string]): undefined */
 /** @return {void} */
-function importStyle (/** @type {string[]} */ ...a) {
-  for (let item of a) {
-    let stl = document.createElement("link");
-    stl.rel = "stylesheet";
-    stl.type = "text\/css";
-    stl.href = item;
-    stl.onerror = function (e) {
+function importStyle (/** @type {string[]} */ ...styles) {
+  for (let item of styles) {
+    let el = document.createElement("link");
+    el.rel = "stylesheet";
+    el.type = "text\/css";
+    el.href = item;
+    el.onerror = function (e) {
       throw new URIError(
         // @ts-ignore
         "Loading failed for the style with source " + e.target.href
       );
     };
-    (document.head ||document.getElementsByTagName("head")[0]).appendChild(stl);
+    (document.head ||document.getElementsByTagName("head")[0]).appendChild(el);
   }
 }
 
 
-/* form2array(form): array */
-/** @return {Array} */
-function form2array (/** @type {any} */ f) {
-  var fld, a = [];
-  if (typeof f === "object" && f.nodeName.toLowerCase() === "form") {
-    for (var i=0, len=f.elements.length; i<len; i++) {
-      fld = f.elements[i];
-      if (fld.name && !fld.disabled
-        && fld.type !== "file"
-        && fld.type !== "reset"
-        && fld.type !== "submit"
-        && fld.type !== "button") {
-        if (fld.type === "select-multiple") {
-          for (var j=0, l=f.elements[i].options.length; j<l; j++) {
-            if(fld.options[j].selected) {
-              a.push({
-                "name": encodeURIComponent(fld.name),
-                "value": encodeURIComponent(fld.options[j].value)
+/* form2array(form): any[] */
+/** @return {any[]} */
+function form2array (/** @type {any} */ form) {
+  var field, result = [];
+  if (typeof form === "object" && form.nodeName.toLowerCase() === "form") {
+    for (var i=0, len=form.elements.length; i<len; i++) {
+      field = form.elements[i];
+      if (field.name && !field.disabled
+        && field.type !== "file"
+        && field.type !== "reset"
+        && field.type !== "submit"
+        && field.type !== "button") {
+        if (field.type === "select-multiple") {
+          for (var j=0, l=form.elements[i].options.length; j<l; j++) {
+            if(field.options[j].selected) {
+              result.push({
+                "name": encodeURIComponent(field.name),
+                "value": encodeURIComponent(field.options[j].value)
               });
             }
           }
-        } else if ((fld.type!=="checkbox" && fld.type!=="radio")||fld.checked) {
-          a.push({
-            "name": encodeURIComponent(fld.name),
-            "value": encodeURIComponent(fld.value)
+        } else if ((field.type!=="checkbox" && field.type!=="radio")
+            ||field.checked
+          ) {
+          result.push({
+            "name": encodeURIComponent(field.name),
+            "value": encodeURIComponent(field.value)
           });
         }
       }
     }
   }
-  return a;
+  return result;
 }
 
 
 /* form2string(form): string */
 /** @return {string} */
-function form2string (/** @type {any} */ f) {
-  var fld, a = [];
-  if (typeof f === "object" && f.nodeName.toLowerCase() === "form") {
-    for (var i=0, len=f.elements.length; i<len; i++) {
-      fld = f.elements[i];
-      if (fld.name && !fld.disabled
-        && fld.type !== "file"
-        && fld.type !== "reset"
-        && fld.type !== "submit"
-        && fld.type !== "button") {
-        if (fld.type === "select-multiple") {
-          for (var j=0, l=f.elements[i].options.length; j<l; j++) {
-            if(fld.options[j].selected) {
-              a.push(encodeURIComponent(fld.name)
-                + "=" + encodeURIComponent(fld.options[j].value));
+function form2string (/** @type {any} */ form) {
+  var field, result = [];
+  if (typeof form === "object" && form.nodeName.toLowerCase() === "form") {
+    for (var i=0, len=form.elements.length; i<len; i++) {
+      field = form.elements[i];
+      if (field.name && !field.disabled
+        && field.type !== "file"
+        && field.type !== "reset"
+        && field.type !== "submit"
+        && field.type !== "button") {
+        if (field.type === "select-multiple") {
+          for (var j=0, l=form.elements[i].options.length; j<l; j++) {
+            if(field.options[j].selected) {
+              result.push(encodeURIComponent(field.name)
+                + "=" + encodeURIComponent(field.options[j].value));
             }
           }
-        } else if ((fld.type!=="checkbox" && fld.type!=="radio")||fld.checked) {
-          a.push(encodeURIComponent(fld.name)
-
-            + "=" + encodeURIComponent(fld.value)
+        } else if ((field.type!=="checkbox" && field.type!=="radio")
+          || field.checked) {
+          result.push(encodeURIComponent(field.name)
+            + "=" + encodeURIComponent(field.value)
           );
         }
       }
     }
   }
-  return a.join("&").replace(/%20/g, "+");
+  return result.join("&").replace(/%20/g, "+");
 }
 
 
@@ -2157,18 +2216,25 @@ function form2string (/** @type {any} */ f) {
 const getDoNotTrack = () =>
   // @ts-ignore
   [navigator.doNotTrack, globalThis.doNotTrack, navigator.msDoNotTrack]
-    .some((/** @type {any} */ e) => (e === true || e === 1 || e === "1"));
+    .some((/** @type {any} */ item) => 
+      (item === true || item === 1 || item === "1")
+    );
 
 
 /* getLocation(success: function [, error: function]): undefined */
 /** @return {void} */
-function getLocation (/** @type {Function} */ s, /** @type {Function} */ e) {
+function getLocation (
+  /** @type {Function} */ successFn,
+  /** @type {Function} */ errorFn) {
   // @ts-ignore
-  if (!e) { var e = function () {}; }
-  function getE (error) { e("ERROR(" + error.code + "): " + error.message); }
+  if (!errorFn) { var errorFn = function () {}; }
+  function getE (/** @type {any} */ error) {
+    // @ts-ignore
+    errorFn("ERROR(" + error.code + "): " + error.message);
+  }
   if (navigator.geolocation) {
     // @ts-ignore
-    navigator.geolocation.getCurrentPosition(s, getE);
+    navigator.geolocation.getCurrentPosition(successFn, getE);
   } else {
     getE("Geolocation is not supported in this browser.");
   }
@@ -2179,25 +2245,25 @@ function getLocation (/** @type {Function} */ s, /** @type {Function} */ e) {
   undefined */
 /** @return {void} */
 function createFile (
-  /** @type {string} */ fln,
-  /** @type {string} */ c,
-  /** @type {string} */ dt) {
+  /** @type {string} */ filename,
+  /** @type {string} */ content,
+  /** @type {string} */ dataType) {
   var l = arguments.length;
   if (l > 1) {
-    if (l === 2) { dt = "text/plain"; }
-    var b = new Blob([c], {type: dt});
+    if (l === 2) { dataType = "text/plain"; }
+    var b = new Blob([content], {type: dataType});
     // @ts-ignore
     if (globalThis.navigator.msSaveOrOpenBlob) {
       // @ts-ignore
-      globalThis.navigator.msSaveBlob(b, fln);
+      globalThis.navigator.msSaveBlob(b, filename);
     } else {
-      var e = globalThis.document.createElement("a");
-      e.href = globalThis.URL.createObjectURL(b);
-      e.download = fln;
-      document.body.appendChild(e);
-      e.click();
-      document.body.removeChild(e);
-      globalThis.URL.revokeObjectURL(e.href);
+      var el = globalThis.document.createElement("a");
+      el.href = globalThis.URL.createObjectURL(b);
+      el.download = filename;
+      document.body.appendChild(el);
+      el.click();
+      document.body.removeChild(el);
+      globalThis.URL.revokeObjectURL(el.href);
     }
   } else {
     throw "Celestra createFile error: too few parameters.";
@@ -2222,10 +2288,10 @@ const getFullscreen = () => (
 /* setFullscreenOn(element): undefined */
 /* setFullscreenOn(selector string): undefined */
 /** @return {void} */
-function setFullscreenOn (/** @type {HTMLElement | string} */ s) {
+function setFullscreenOn (/** @type {HTMLElement | string} */ el) {
   let e;
-  if (typeof s === "string") { e = document.querySelector(s); }
-    else if (typeof s === "object") { e = s; }
+  if (typeof el === "string") { e = document.querySelector(el); }
+    else if (typeof el === "object") { e = el; }
   // @ts-ignore
   if (e.requestFullscreen) { e.requestFullscreen(); }
     // @ts-ignore
@@ -2252,15 +2318,20 @@ function setFullscreenOff () {
 
 /* domGetCSSVar(name: string): string */
 /** @return {string} */
-const domGetCSSVar = (/** @type {string} */ n) =>
+const domGetCSSVar = (/** @type {string} */ name) =>
   getComputedStyle(document.documentElement)
-    .getPropertyValue( n[0] === "-" ? n : "--" + n );
+    .getPropertyValue( name[0] === "-" ? name : "--" + name );
 
 
 /* domSetCSSVar(name: string, value: string): undefined */
 /** @return {any} */
-const domSetCSSVar = (/** @type {string} */ n, /** @type {string | null} */ v) =>
-  document.documentElement.style.setProperty( (n[0] === "-" ? n : "--" + n), v);
+const domSetCSSVar = (
+  /** @type {string} */ name,
+  /** @type {string | null} */ value) =>
+  document.documentElement.style.setProperty(
+    (name[0] === "-" ? name : "--" + name),
+    value
+  );
 
 
 /* domScrollToTop(): undefined */
@@ -2277,16 +2348,17 @@ const domScrollToBottom = () =>
 /* domScrollToElement(element [, top=true]): undefined */
 /** @return {any} */
 const domScrollToElement = (
-  /** @type {Element} */ e,
+  /** @type {Element} */ el,
   /** @type {boolean} */ top = true) =>
-  e.scrollIntoView(top);
+  el.scrollIntoView(top);
 
 
 /* domClear(element): any */
 /** @return {void} */
 // @ts-ignore
 const domClear = (/** @type {Element} */ el) =>
-  Array.from(el.children).forEach((/** @type {Element} */ e) => e.remove());
+  Array.from(el.children).forEach((/** @type {Element} */ item) => 
+    item.remove());
 
 
 /** AJAX API **/
@@ -2294,13 +2366,15 @@ const domClear = (/** @type {Element} */ el) =>
 
 /* getText(url: string, success: function): undefined */
 /** @return {void} */
-function getText (/** @type {string} */ url, /** @type {Function} */ success) {
+function getText (
+  /** @type {string} */ url, 
+  /** @type {Function} */ successFn) {
   if (typeof url !== "string") {
     throw new TypeError(
       "Celestra ajax error: The url parameter have to be a string."
     );
   }
-  if (typeof success !== "function") {
+  if (typeof successFn !== "function") {
     throw new TypeError(
       "Celestra ajax error: The success parameter have to be a function."
     );
@@ -2312,7 +2386,7 @@ function getText (/** @type {string} */ url, /** @type {Function} */ success) {
   xhr.open("GET", url, true);
   xhr.onreadystatechange = function () {
     if (this.readyState === 4 && this.status === 200) {
-      success(this.responseText);
+      successFn(this.responseText);
     }
   };
   xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
@@ -2322,13 +2396,15 @@ function getText (/** @type {string} */ url, /** @type {Function} */ success) {
 
 /* getJson(url: string, success: function): undefined */
 /** @return {void} */
-function getJson (/** @type {string} */ url, /** @type {Function} */ success) {
+function getJson (
+  /** @type {string} */ url, 
+  /** @type {Function} */ successFn) {
   if (typeof url !== "string") {
     throw new TypeError(
       "Celestra ajax error: The url parameter have to be a string."
     );
   }
-  if (typeof success !== "function") {
+  if (typeof successFn !== "function") {
     throw new TypeError(
       "Celestra ajax error: The success parameter have to be a function."
     );
@@ -2340,7 +2416,7 @@ function getJson (/** @type {string} */ url, /** @type {Function} */ success) {
   xhr.open("GET", url, true);
   xhr.onreadystatechange = function () {
     if (this.readyState === 4 && this.status === 200) {
-      success(JSON.parse(this.responseText));
+      successFn(JSON.parse(this.responseText));
     }
   };
   xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
@@ -2350,101 +2426,110 @@ function getJson (/** @type {string} */ url, /** @type {Function} */ success) {
 
 /* ajax(Options object): undefined */
 /** @return {void} */
-function ajax (/** @type {Object} */ o) {
-  if (typeof o.url !== "string") {
+function ajax (/** @type {Object} */ options) {
+  if (typeof options.url !== "string") {
     throw new TypeError(
       "Celestra ajax error: The url property has to be a string."
     );
   }
-  if (typeof o.success !== "function") {
+  if (typeof options.success !== "function") {
     throw new TypeError(
       "Celestra ajax error: The success property has to be a function."
     );
   }
-  if (o.error === undefined) {
-    o.error = (e) => console.log(
+  if (options.error === undefined) {
+    options.error = (e) => console.log(
       "Celestra ajax GET error: " + JSON.stringify(e)
     );
   }
-  if (typeof o.error !== "function") {
+  if (typeof options.error !== "function") {
     throw new TypeError(
       "Celestra ajax error: The error property has to be a function or undefined."
     );
   }
-  if (!o.queryType) {
-    o.queryType = "ajax";
+  if (!options.queryType) {
+    options.queryType = "ajax";
   } else {
-    o.queryType = o.queryType.toLowerCase();
+    options.queryType = options.queryType.toLowerCase();
   }
-  if (!o.type) {
-    o.type = "get";
+  if (!options.type) {
+    options.type = "get";
   } else {
-    o.type = o.type.toLowerCase();
+    options.type = options.type.toLowerCase();
   }
-  if (o.type === "get") {
+  if (options.type === "get") {
     var typeStr = "GET";
-  } else if (o.type === "post") {
+  } else if (options.type === "post") {
     var typeStr = "POST";
   } else {
     throw "Celestra ajax error: The type property has to be \"get\" or \"post\".";
   }
-  if (!o.format) {
-    o.format = "text";
+  if (!options.format) {
+    options.format = "text";
   } else {
-    o.format = o.format.toLowerCase();
-    if (!(["text", "json", "xml"].includes(o.format))) {
+    options.format = options.format.toLowerCase();
+    if (!(["text", "json", "xml"].includes(options.format))) {
       throw "Celestra ajax error: The format property has to be \"text\" or \"json\" or \"xml\".";
     }
   }
   var xhr;
-  if (o.queryType === "ajax") {
+  if (options.queryType === "ajax") {
     xhr = new XMLHttpRequest();
-  } else if (o.queryType === "cors") {
+  } else if (options.queryType === "cors") {
     xhr = new XMLHttpRequest();
     // @ts-ignore
     if (!("withCredentials" in xhr)) { xhr = new XDomainRequest(); }
   } else {
     throw "Celestra ajax error: The querytype property has to be \"ajax\" or \"cors\".";
   }
-  if (typeof o.user === "string" && typeof o.password === "string") {
-    xhr.open(typeStr, o.url, true, o.user, o.password);
+  if (typeof options.user === "string" 
+      && typeof options.password === "string"
+  ) {
+    xhr.open(
+      typeStr,
+      options.url,
+      true, options.user,
+      options.password);
   } else {
-    xhr.open(typeStr, o.url, true);
+    xhr.open(typeStr, options.url, true);
   }
-  if (o.queryType === "ajax") {
+  if (options.queryType === "ajax") {
     xhr.onreadystatechange = function () {
       if (this.readyState === 4 && this.status === 200) {
-        switch (o.format.toLowerCase()) {
-          case "text": o.success(this.responseText); break;
-          case "json": o.success(JSON.parse(this.responseText)); break;
-          case "xml": o.success(this.responseXML); break;
-          default: o.success(this.responseText);
+        switch (options.format.toLowerCase()) {
+          case "text": options.success(this.responseText); break;
+          case "json": options.success(JSON.parse(this.responseText));
+            break;
+          case "xml": options.success(this.responseXML); break;
+          default: options.success(this.responseText);
         }
       }
     };
     xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-    if (o.typeStr === "POST") {
+    if (options.typeStr === "POST") {
       xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     }
-  } else if (o.queryType === "cors") {
+  } else if (options.queryType === "cors") {
     xhr.onload = function (request) {
-      switch (o.format.toLowerCase()) {
-        case "text": o.success(request.target.responseText
+      switch (options.format.toLowerCase()) {
+        case "text": options.success(request.target.responseText
           || request.currentTarget.response); break;
-        case "json": o.success(JSON.parse(request.target.responseText
-          || request.currentTarget.response)); break;
-        case "xml": o.success(request.target.responseXML
+        case "json": options.success(
+            JSON.parse(request.target.responseText
+            || request.currentTarget.response)
+          ); break;
+        case "xml": options.success(request.target.responseXML
           || request.currentTarget.responseXML); break;
-        default: o.success(request.target.responseText
+        default: options.success(request.target.responseText
           || request.currentTarget.response);
       }
     };
   }
-  if (typeof o.error === "function") { xhr.onerror = o.error; }
+  if (typeof options.error === "function") { xhr.onerror = options.error; }
   if (typeStr === "GET") {
     xhr.send();
   } else if (typeStr === "POST") {
-    xhr.send(encodeURI(o.data));
+    xhr.send(encodeURI(options.data));
   }
 }
 
@@ -2517,9 +2602,12 @@ function is (
 
 /* toObject(value: any): object | symbol | function | thrown error */
 /** @return {Object | symbol | Function} */
-function toObject (/** @type {any} */ O) {
-  if (O == null) { throw new TypeError("celestra.toObject(); error: " + O); }
-  return (["object", "function"].includes(typeof O)) ? O : Object(O);
+function toObject (/** @type {any} */ value) {
+  if (value == null) {
+    throw new TypeError("celestra.toObject(); error: " + value);
+  }
+  return (["object", "function"].includes(typeof value))
+    ? value : Object(value);
 }
 
 
@@ -2528,10 +2616,10 @@ function toObject (/** @type {any} */ O) {
   boolean | thrown error */
 /** @deprecated * @return {string | boolean} */
 function classof (
-  /** @type {any} */ v,
+  /** @type {any} */ value,
   /** @type {string} */ type,
   /** @type {boolean} */ Throw = false) {
-  var ot = Object.prototype.toString.call(v).slice(8, -1).toLowerCase();
+  var ot = Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
   if (arguments.length < 2) { return ot; }
   if (!Throw) { return ot === type.toLowerCase(); }
   if (ot !== type.toLowerCase()) {
@@ -2546,10 +2634,10 @@ function classof (
   boolean | throw error */
 /** @deprecated * @return {string | boolean} */
 function getType (
-  /** @type {any} */ v,
+  /** @type {any} */ value,
   /** @type {string} */ type,
   /** @type {boolean} */ Throw = false) {
-  var ot = Object.prototype.toString.call(v).slice(8, -1).toLowerCase();
+  var ot = Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
   if (arguments.length < 2) { return ot; }
   if (!Throw) { return ot === type.toLowerCase(); }
   if (ot !== type.toLowerCase()) {
@@ -2561,62 +2649,63 @@ function getType (
 
 /* toPrimitiveValue(value: any): primitive | object | symbol | function */
 /** @return {any} */
-function toPrimitiveValue (/** @type {any} */ O) {
-  if (O == null || typeof O !== "object") { return O; }
-  const ot = Object.prototype.toString.call(O).slice(8, -1);
+function toPrimitiveValue (/** @type {any} */ value) {
+  if (value == null || typeof value !== "object") { return value; }
+  const ot = Object.prototype.toString.call(value).slice(8, -1);
   if (["Boolean", "BigInt", "Number", "String", "Symbol"].includes(ot)) {
-    return O.valueOf();
+    return value.valueOf();
   }
-  return O;
+  return value;
 }
 
 
 /* isPropertyKey(value: any): boolean */
 /** @return {boolean} */
-const isPropertyKey = (/** @type {any} */ v) =>
-  (typeof v === "string" || typeof v === "symbol");
+const isPropertyKey = (/** @type {any} */ value) =>
+  (typeof value === "string" || typeof value === "symbol");
 
 
 /* toPropertyKey(value: any): string | symbol */
 /** @return {string | symbol} */
-const toPropertyKey = (/** @type {any} */ v) =>
-  (typeof v === "symbol" ? v : String(v));
+const toPropertyKey = (/** @type {any} */ value) =>
+  (typeof value === "symbol" ? value : String(value));
 
 
 /* isIndex(value: any): boolean */
 /** @return {boolean} */
-const isIndex = (/** @type {any} */ v) =>
-  (Number.isSafeInteger(v) && v >= 0 && 1/v !== 1 / -0);
+const isIndex = (/** @type {any} */ value) =>
+  (Number.isSafeInteger(value) && value >= 0 && 1/value !== 1 / -0);
 
 
 /* isLength(value: any): boolean */
 /** @return {boolean} */
-const isLength = (/** @type {any} */ v) =>
-  (Number.isSafeInteger(v) && v >= 0 && 1/v !== 1 / -0);
+const isLength = (/** @type {any} */ value) =>
+  (Number.isSafeInteger(value) && value >= 0 && 1 / value !== 1 / -0);
 
 
 /* toIndex(value: any): unsigned integer */
 /** @return {number} */
-function toIndex (/** @type {any} */ v) {
-  v = ((v = Math.trunc(+v)) !== v || v === 0) ? 0 : v;
-  if (v < 0 || v > (Math.pow(2, 53) - 1)) {
-    throw new RangeError("toIndex(); RangeError: " + v);
+function toIndex (/** @type {any} */ value) {
+  value = ((value = Math.trunc(+value)) !== value || value === 0) ? 0 : value;
+  if (value < 0 || value > (Math.pow(2, 53) - 1)) {
+    throw new RangeError("toIndex(); RangeError: " + value);
   }
-  return v;
+  return value;
 }
 
 
 /* toLength(value: any): unsigned integer */
 /** @return {number} */
-function toLength (/** @type {any} */ v) {
-  v = ((v = Math.trunc(+v)) !== v || v === 0) ? 0 : v;
-  return Math.min(Math.max(v, 0), Math.pow(2, 53) - 1);
+function toLength (/** @type {any} */ value) {
+  value = ((value = Math.trunc(+value)) !== value || value === 0) ? 0 : value;
+  return Math.min(Math.max(value, 0), Math.pow(2, 53) - 1);
 }
 
 
 /* type(value: any): string */
 /** @return {string} */
-const type = (/** @type {any} */ v) => ((v === null) ? "null" : (typeof v));
+const type = (/** @type {any} */ value) =>
+  ((value === null) ? "null" : (typeof value));
 
 
 /* isSameClass(value1: any, value2: any): boolean */
@@ -2642,15 +2731,15 @@ const isSameInstance = (
 
 /* isCoercedObject(object: any): constructor function | false */
 /** @return {Function | boolean} */
-function isCoercedObject (/** @type {any} */ O) {
-  if (O != null && typeof O === "object") {
-    if (O instanceof Number) { return Number; }
-    if (O instanceof String) { return String; }
-    if (O instanceof Boolean) { return Boolean; }
+function isCoercedObject (/** @type {any} */ value) {
+  if (value != null && typeof value === "object") {
+    if (value instanceof Number) { return Number; }
+    if (value instanceof String) { return String; }
+    if (value instanceof Boolean) { return Boolean; }
     /* BigInt wrapper (created via Object(BigInt(...))) */
-    if (typeof O.valueOf?.() === "bigint") { return BigInt; }
+    if (typeof value.valueOf?.() === "bigint") { return BigInt; }
     /* Symbol wrapper (created via Object(Symbol(...))) */
-    if (typeof O.valueOf?.() === "symbol") { return Symbol; }
+    if (typeof value.valueOf?.() === "symbol") { return Symbol; }
   }
   return false;
 }
@@ -2662,8 +2751,8 @@ function isDeepStrictEqual (/** @type {any} */ x, /** @type {any} */ y) {
   /* helper functions */
   const _deepType = (/** @type {any} */ x) =>
     ((x === null) ? "null" : (x !== x) ? "NaN" : (typeof x));
-  const _isPrimitive = (/** @type {any} */ v) =>
-    (v == null || (typeof v !== "object" && typeof v !== "function"));
+  const _isPrimitive = (/** @type {any} */ x) =>
+    (x == null || (typeof x !== "object" && typeof x !== "function"));
   const _isObject = (/** @type {any} */ x) =>
     (x != null && typeof x === "object");
   const _isSameInstance = (
@@ -2718,8 +2807,10 @@ function isDeepStrictEqual (/** @type {any} */ x, /** @type {any} */ y) {
     if (Array.isArray(x) && Array.isArray(y)) {
       if (x.length !== y.length) { return false; }
       if (x.length === 0) { return true; }
-      return x.every((/** @type {any} */ v, /** @type {string | number} */ i) =>
-        isDeepStrictEqual(v, y[i]));
+      return x.every(
+        (/** @type {any} */ value, /** @type {string | number} */ index) =>
+          isDeepStrictEqual(value, y[index])
+      );
     }
     /* objects / TypedArrays */
     if ( _isSameInstance(x, y, Int8Array)
@@ -2739,16 +2830,19 @@ function isDeepStrictEqual (/** @type {any} */ x, /** @type {any} */ y) {
     ) {
       if (x.length !== y.length) { return false; }
       if (x.length === 0) { return true; }
-      return x.every((/** @type {any} */ v, /** @type {string | number} */ i) =>
-        _isEqual(v, y[i]));
+      return x.every(
+        (/** @type {any} */ value, /** @type {string | number} */ index) =>
+          _isEqual(value, y[index])
+      );
     }
     /* objects / ArrayBuffer */
     if (_isSameInstance(x, y, ArrayBuffer)) {
       if (x.byteLength !== y.byteLength) { return false; }
       if (x.byteLength === 0) { return true; }
       let xTA = new Int8Array(x), yTA = new Int8Array(y);
-      return xTA.every((/** @type {any} */ v, /** @type {string | number} */ i) =>
-        _isEqual(v, yTA[i]));
+      return xTA.every(
+        (/** @type {any} */ value, /** @type {string | number} */ index) =>
+          _isEqual(value, yTA[index]));
     }
     /* objects / DataView */
     if (_isSameInstance(x, y, DataView)) {
@@ -2763,14 +2857,14 @@ function isDeepStrictEqual (/** @type {any} */ x, /** @type {any} */ y) {
     if (_isSameInstance(x, y, Map)) {
       if (x.size !== y.size) { return false; }
       if (x.size === 0) { return true; }
-      return [...x.keys()].every((/** @type {any} */ v) =>
-        isDeepStrictEqual(x.get(v), y.get(v)));
+      return [...x.keys()].every((/** @type {any} */ value) =>
+        isDeepStrictEqual(x.get(value), y.get(value)));
     }
     /* objects / Set */
     if (_isSameInstance(x, y, Set)) {
       if (x.size !== y.size) { return false; }
       if (x.size === 0) { return true; }
-      return [...x.keys()].every((/** @type {any} */ v) => y.has(v));
+      return [...x.keys()].every((/** @type {any} */ value) => y.has(value));
     }
     /* objects / RegExp */
     if (_isSameInstance(x, y, RegExp)) {
@@ -2802,192 +2896,238 @@ function isDeepStrictEqual (/** @type {any} */ x, /** @type {any} */ y) {
 
 
 /* isEmptyValue(value: any): boolean */
-/** @return {boolean} */
-function isEmptyValue (/** @type {any} */ v) {
-  if (v == null || v !== v) { return true; }
-  if (Array.isArray(v)
-    || v instanceof Int8Array
-    || v instanceof Uint8Array
-    || v instanceof Uint8ClampedArray
-    || v instanceof Int16Array
-    || v instanceof Uint16Array
-    || v instanceof Int32Array
-    || v instanceof Uint32Array
-    || ("Float16Array" in globalThis ? v instanceof Float16Array : false)
-    || v instanceof Float32Array
-    || v instanceof Float64Array
-    || v instanceof BigInt64Array
-    || v instanceof BigUint64Array
-    || typeof v === "string"
-    || v instanceof String
-  ) {
-    return v.length === 0;
+/**
+ * Checks if a value is empty.
+ *
+ * - `null`, `undefined`, and `NaN` are empty.
+ * - Arrays, TypedArrays, and strings are empty if length === 0.
+ * - Maps and Sets are empty if size === 0.
+ * - ArrayBuffer and DataView are empty if byteLength === 0.
+ * - Iterable objects are empty if they have no elements.
+ * - Plain objects are empty if they have no own properties.
+ *
+ * @param {any} value The value to check.
+ * @returns boolean
+ */
+function isEmptyValue (value) {
+  /**
+   * Checks if a value is a TypedArray (Int8Array, etc.).
+   *
+   * @param {any} value The value to check.
+   * @returns boolean
+   */
+  function _isTypedArray(value) {
+    const constructors = [
+      Int8Array, Uint8Array, Uint8ClampedArray,
+      Int16Array, Uint16Array,
+      Int32Array, Uint32Array,
+      Float32Array, Float64Array,
+      BigInt64Array, BigUint64Array];
+    if ("Float16Array" in globalThis) {
+      // @ts-ignore
+      constructors.push(globalThis.Float16Array);
+    }
+    return constructors.some((Class) => value instanceof Class);
   }
-  if ( v instanceof Map || v instanceof Set) { return v.size === 0; }
-  if (v instanceof ArrayBuffer || v instanceof DataView) {
-    return v.byteLength === 0;
+  /* Check undefined, null, NaN */
+  if (value == null || Number.isNaN(value)) { return true; }
+  /* Check Array, TypedArrays, string, String */
+  if (Array.isArray(value) || _isTypedArray(value)
+    || typeof value === "string" || value instanceof String) {
+    return value.length === 0;
   }
-  try { for (let _item of v) { return false; } } catch (_e) { }
-  if (typeof v === "object") {
-    let vKeys = [
-      ...Object.getOwnPropertyNames(v),
-      ...Object.getOwnPropertySymbols(v)
+  /* Check Map and Set */
+  if (value instanceof Map || value instanceof Set) { return value.size === 0; }
+  /* Check ArrayBuffer and DataView */
+  if (value instanceof ArrayBuffer || value instanceof DataView) {
+    return value.byteLength === 0;
+  }
+  /* Check Iterable objects */
+  if (typeof value[Symbol.iterator] === "function") {
+    const it = value[Symbol.iterator]();
+    return it.next().done; // avoids consuming entire iterator
+  }
+  /* Check Iterator objects */
+  if ("Iterator" in globalThis ? (value instanceof Iterator)
+    : (value != null && typeof value === "object"
+      && typeof value.next === "function")) {
+    try {
+      /* Has at least one element */
+      for (const _ of value) { return false; }
+      return true;
+    } catch { /* Not iterable */ }
+  }
+  /* Other objects - check own properties (including symbols) */
+  if (isObject(value)) {
+    const keys = [
+      ...Object.getOwnPropertyNames(value),
+      ...Object.getOwnPropertySymbols(value)
     ];
-    if (vKeys.length === 0) { return true; }
-    if (vKeys.length === 1 && vKeys[0] === "length" && v.length === 0) {
+    if (keys.length === 0) return true;
+    /* Special case: object with single "length" property that is 0 */
+    if (keys.length === 1 && keys[0] === "length" &&
+      value.length === 0) {
       return true;
     }
   }
+  /* Return default false */
   return false;
 }
 
 
 /* isProxy(value: any): boolean */
 /** @return {boolean} */
-const isProxy = (/** @type {any} */ O) => Boolean(O != null && O.__isProxy);
+const isProxy = (/** @type {any} */ value) =>
+  Boolean(value != null && value.__isProxy);
 
 
 /* isAsyncGeneratorFn(value: any): boolean */
 /** @return {boolean} */
-const isAsyncGeneratorFn = (/** @type {any} */ v) =>
-  (Object.getPrototypeOf(v).constructor ===
+const isAsyncGeneratorFn = (/** @type {any} */ value) =>
+  (Object.getPrototypeOf(value).constructor ===
     Object.getPrototypeOf(async function*() {}).constructor);
 
 
 /* isClass(value: any): boolean */
 /** @return {boolean} */
-const isClass = (/** @type {any} */ v) =>
-  (typeof v === "function" && typeof v.prototype === "object");
+const isClass = (/** @type {any} */ value) =>
+  (typeof value === "function" && typeof value.prototype === "object");
 
 
 /* isPlainObject(value: any): boolean */
 /** @return {boolean} */
-const isPlainObject = (/** @type {any} */ v) =>
-  (v != null && typeof v === "object" &&
-    (Object.getPrototypeOf(v) === Object.prototype
-      || Object.getPrototypeOf(v) === null));
+const isPlainObject = (/** @type {any} */ value) =>
+  (value != null && typeof value === "object"
+    && (Object.getPrototypeOf(value) === Object.prototype
+      || Object.getPrototypeOf(value) === null));
 
 
 /* isChar(value: any): boolean */
 /** @return {boolean} */
-const isChar = (/** @type {any} */ v) =>
-  (typeof v === "string" && (v.length === 1 || Array.from(v).length === 1));
+const isChar = (/** @type {any} */ value) =>
+  (typeof value === "string"
+    && (value.length === 1 || Array.from(value).length === 1)
+  );
 
 
 /* isNumeric(value: any): boolean */
 /** @return {boolean} */
-const isNumeric = (/** @type {any} */ v) =>
-  (((typeof v === "number" || typeof v === "bigint") && v === v)
-    ? true : (!isNaN(parseFloat(v)) && isFinite(v)));
+const isNumeric = (/** @type {any} */ value) =>
+  (((typeof value === "number" || typeof value === "bigint") && value === value)
+    ? true : (!isNaN(parseFloat(value)) && isFinite(value)));
 
 
 /* isObject(value: any): boolean */
 /** @return {boolean} */
-const isObject = (/** @type {any} */ O) =>
-  (O != null && (typeof O === "object" || typeof O === "function"));
+const isObject = (/** @type {any} */ value) =>
+  (value != null && (typeof value === "object" || typeof value === "function"));
 
 
 /* isFunction(value: any): boolean */
 /** @return {boolean} */
-const isFunction = (/** @type {any} */ O) => (typeof O === "function" ||
-  Object.prototype.toString.call(O) === "[object Function]");
+const isFunction = (/** @type {any} */ value) => (typeof value === "function" ||
+  Object.prototype.toString.call(value) === "[object Function]");
 
 
 /* isCallable(value: any): boolean */
 /** @return {boolean} */
-const isCallable = (/** @type {any} */ O) =>
-  ((O != null && ["object", "function"].includes(typeof O))
-    ? (typeof O.call === "function") : false);
+const isCallable = (/** @type {any} */ value) =>
+  ((value != null && ["object", "function"].includes(typeof value))
+    ? (typeof value.call === "function") : false);
 
 
 /* isArraylike(value: any): boolean */
 /** @return {boolean} */
-const isArraylike = (/** @type {any} */ v) => v != null
-  && typeof v !== "function"
-  && (typeof v === "object" || typeof v === "string")
-  && Number.isSafeInteger(v.length) && v.length >= 0;
+const isArraylike = (/** @type {any} */ value) => value != null
+  && typeof value !== "function"
+  && (typeof value === "object" || typeof value === "string")
+  && Number.isSafeInteger(value.length) && value.length >= 0;
 
 
 /* isNull(value: any): boolean */
 /** @return {boolean} */
-const isNull = (/** @type {any} */ v) => (v === null);
+const isNull = (/** @type {any} */ value) => (value === null);
 
 
 /* isUndefined(value: any): boolean */
 /** @return {boolean} */
-const isUndefined = (/** @type {any} */ v) => (v === undefined);
+const isUndefined = (/** @type {any} */ value) => (value === undefined);
 
 
 /* isNil(value: any): boolean */
 /** @return {boolean} */
-const isNil = (/** @type {any} */ v) => (v == null);
+const isNil = (/** @type {any} */ value) => (value == null);
 
 
 /* isPrimitive(value: any): boolean */
 /** @return {boolean} */
-const isPrimitive = (/** @type {any} */ v) =>
-  (v == null || (typeof v !== "object" && typeof v !== "function"));
+const isPrimitive = (/** @type {any} */ value) =>
+  (value == null || (typeof value !== "object" && typeof value !== "function"));
 
 
 /* isIterator(value: any): boolean */
 /** @return {boolean} */
-const isIterator = (/** @type {any} */ v) =>
-  ("Iterator" in globalThis ? (v instanceof Iterator)
-    : (v != null && typeof v === "object" && typeof v.next === "function"));
+const isIterator = (/** @type {any} */ value) =>
+  ("Iterator" in globalThis ? (value instanceof Iterator)
+    : (value != null && typeof value === "object" && typeof value.next === "function"));
 
 
 /* isRegexp(value: any): boolean */
 /** @return {boolean} */
-const isRegexp = (/** @type {any} */ v) => (v instanceof RegExp);
+const isRegexp = (/** @type {any} */ value) => (value instanceof RegExp);
 
 
 /* isElement(value: any): boolean */
 /** @return {boolean} */
-const isElement = (/** @type {any} */ v) =>
-  (v != null && typeof v === "object" && v.nodeType === 1);
+const isElement = (/** @type {any} */ value) =>
+  (value != null && typeof value === "object" && value.nodeType === 1);
 
 
 /* isIterable(value: any): boolean */
 /** @return {boolean} */
-const isIterable = (/** @type {any} */ v) =>
-  (v != null && typeof v[Symbol.iterator] === "function");
+const isIterable = (/** @type {any} */ value) =>
+  (value != null && typeof value[Symbol.iterator] === "function");
 
 
 /* isAsyncIterable(value: any): boolean */
 /** @return {boolean} */
-const isAsyncIterable = (/** @type {any} */ v) =>
-  (v != null && typeof v[Symbol.asyncIterator] === "function");
+const isAsyncIterable = (/** @type {any} */ value) =>
+  (value != null && typeof value[Symbol.asyncIterator] === "function");
 
 
 /* isTypedArray(value: any): boolean */
-/** @return {boolean} */
-const isTypedArray = (/** @type {any} */ v) => (
-  v instanceof Int8Array
-  || v instanceof Uint8Array
-  || v instanceof Uint8ClampedArray
-  || v instanceof Int16Array
-  || v instanceof Uint16Array
-  || v instanceof Int32Array
-  || v instanceof Uint32Array
-  || ("Float16Array" in globalThis ? v instanceof Float16Array : false)
-  || v instanceof Float32Array
-  || v instanceof Float64Array
-  || v instanceof BigInt64Array
-  || v instanceof BigUint64Array
-);
+/**
+ * Checks if a value is a TypedArray (Int8Array, etc.).
+ *
+ * @param {any} value The value to check.
+ * @returns boolean
+ */
+function isTypedArray (value) {
+  const constructors = [
+    Int8Array, Uint8Array, Uint8ClampedArray,
+    Int16Array, Uint16Array,
+    Int32Array, Uint32Array,
+    Float32Array, Float64Array,
+    BigInt64Array, BigUint64Array];
+  if ("Float16Array" in globalThis) {
+    // @ts-ignore
+    constructors.push(globalThis.Float16Array);
+  }
+  return constructors.some((Class) => value instanceof Class);
+}
 
 
 /* isGeneratorFn(value: any): boolean */
 /** @return {boolean} */
-const isGeneratorFn = (/** @type {any} */ v) =>
-  (Object.getPrototypeOf(v).constructor ===
+const isGeneratorFn = (/** @type {any} */ value) =>
+  (Object.getPrototypeOf(value).constructor ===
     Object.getPrototypeOf(function*(){}).constructor);
 
 
 /* isAsyncFn(value: any): boolean */
 /** @return {boolean} */
-const isAsyncFn = (/** @type {any} */ v) =>
-  (Object.getPrototypeOf(v).constructor ===
+const isAsyncFn = (/** @type {any} */ value) =>
+  (Object.getPrototypeOf(value).constructor ===
     Object.getPrototypeOf(async function(){}).constructor);
 
 
@@ -3037,12 +3177,12 @@ function setCookie (
 /** @return {Object | string} */
 function getCookie (/** @type {string | undefined} */ name) {
   if (document.cookie.length !== 0) {
-    var r = {}, a = document.cookie.split(";");
-    for(var i = 0, l = a.length; i < l; i++) {
-      var e = a[i].trim().split("=");
-      r[decodeURIComponent(e[0])] = decodeURIComponent(e[1]);
+    var result = {}, array = document.cookie.split(";");
+    for(var i = 0, l = array.length; i < l; i++) {
+      var e = array[i].trim().split("=");
+      result[decodeURIComponent(e[0])] = decodeURIComponent(e[1]);
     }
-    return (name ? (r[name] ? r[name] : null) : r);
+    return (name ? (result[name] ? result[name] : null) : result);
   }
   return (name ? null : {});
 }
@@ -3050,8 +3190,8 @@ function getCookie (/** @type {string | undefined} */ name) {
 
 /* hasCookie(name: string): boolean */
 /** @return {boolean} */
-const hasCookie = (/** @type {string} */ n) =>
-  (document.cookie.includes(encodeURIComponent(n) + "="));
+const hasCookie = (/** @type {string} */ name) =>
+  (document.cookie.includes(encodeURIComponent(name) + "="));
 
 
 /* removeCookie(Options object);: boolean */
@@ -3074,7 +3214,7 @@ function removeCookie (
     SameSite = settings.SameSite || "Lax";
     HttpOnly = settings.HttpOnly;
   }
-  var r = (document.cookie.includes(encodeURIComponent(name)+"="));
+  var result = (document.cookie.includes(encodeURIComponent(name) + "="));
   document.cookie = encodeURIComponent(name)
     + "=; expires=Thu, 01 Jan 1970 00:00:01 GMT"
     + "; path=" + path
@@ -3084,7 +3224,7 @@ function removeCookie (
       + SameSite : "")
     + (HttpOnly ? "; HttpOnly" : "")
     + ";";
-  return r;
+  return result;
 }
 
 
@@ -3107,9 +3247,9 @@ function clearCookies (
     HttpOnly = settings.HttpOnly;
   }
   if (document.cookie.length !== 0) {
-    var a = document.cookie.split(";");
-    for(var i = 0, l = a.length; i < l; i++) {
-      document.cookie = encodeURIComponent(a[i].trim().split("=")[0])
+    var array = document.cookie.split(";");
+    for(var i = 0, length = array.length; i < length; i++) {
+      document.cookie = encodeURIComponent(array[i].trim().split("=")[0])
         + "=; expires=Thu, 01 Jan 1970 00:00:01 GMT"
         + "; path=" + path
         + (domain ? "; domain=" + domain : "")
@@ -3129,11 +3269,11 @@ function clearCookies (
 /* unique(iterator: iterator [, resolver: string | function]): array */
 /** @return {Array | any} */
 function unique (
-  /** @type {Iterable<any>} */ it,
+  /** @type {Iterable<any>} */ iter,
   /** @type {string | Function | null | undefined} */ resolver) {
-  if (resolver == null) { return [...new Set(it)]; }
+  if (resolver == null) { return [...new Set(iter)]; }
   if (typeof resolver === "string") {
-    return Array.from(it).reduce(function (acc, el) {
+    return Array.from(iter).reduce(function (acc, el) {
       if (acc.every((/** @type {any} */ e) =>
         e[resolver] !== el[resolver])) { acc.push(el); }
       return acc;
@@ -3141,7 +3281,7 @@ function unique (
   }
   if (typeof resolver === "function") {
     let cache = new Map();
-    for (let item of it) {
+    for (let item of iter) {
       let key = resolver(item);
       if (!cache.has(key)) { cache.set(key, item); }
     }
@@ -3152,180 +3292,185 @@ function unique (
 
 /* count(iterator, callback: function): integer */
 /** @return {number} */
-function count (/** @type {Iterable<any>} */ it, /** @type {Function} */ fn) {
-  let i = 0, r = 0;
-  for (let item of it) {
-    if (fn(item, i++)) { r++; }
+function count (/** @type {Iterable<any>} */ iter, /** @type {Function} */ fn) {
+  let index = 0, result = 0;
+  for (let item of iter) {
+    if (fn(item, index++)) { result++; }
   }
-  return r;
+  return result;
 }
 
 
 /* arrayDeepClone(array: array): array */
-/** @return {Array} */
-function arrayDeepClone (/** @type {Iterable<any>} */ [...a]) {
-  const _ADC = (/** @type {any} */ v) =>
-    (Array.isArray(v) ? Array.from(v, _ADC) : v);
-  return _ADC(a);
+/** @return {any[]} */
+function arrayDeepClone (/** @type {Iterable<any>} */ [...array]) {
+  const _ADC = (/** @type {any} */ value) =>
+    (Array.isArray(value) ? Array.from(value, _ADC) : value);
+  return _ADC(array);
 }
 
 
 /* initial(iterator: iterator): array */
-/** @return {Array} */
-const initial = (/** @type {Iterable<any>} */ [...a]) => a.slice(0, -1);
+/** @return {any[]} */
+const initial = (/** @type {Iterable<any>} */ [...array]) => array.slice(0, -1);
 
 
 /* shuffle(iterator: iterator): array */
-/** @return {Array} */
-function shuffle(/** @type {Iterable<any>} */ [...a]) {
-  for (let i = a.length - 1; i > 0; i--) {
+/** @return {any[]} */
+function shuffle(/** @type {Iterable<any>} */ [...array]) {
+  for (let i = array.length - 1; i > 0; i--) {
     let j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
+    [array[i], array[j]] = [array[j], array[i]];
   }
-  return a;
+  return array;
 }
 
 
 /* partition(iterator: iterator, callback: function): array */
-/** @return {Array} */
+/** @return {any[]} */
 const partition = (
-  /** @type {Iterable<any>} */ [...a],
+  /** @type {Iterable<any>} */ [...array],
   /** @type {Function} */ fn) =>
   // @ts-ignore
-  [a.filter(fn), a.filter((e, i, a) => !(fn(e, i, a)))];
+  [array.filter(fn), array.filter((value, index, a) => !(fn(value, index, a)))];
 
 
 /* setUnion(iterator1: iterator [, iteratorN: iterator]): set */
-/** @return {Set} */
-const setUnion = (/** @type {Iterable[]} */ ...a) =>
-  new Set(a.map(([...e]) => e).flat());
+/** @return {Set<any>} */
+const setUnion = (/** @type {Iterable[]} */ ...args) =>
+  new Set(args.map(([...item]) => item).flat());
 
 
 /* setIntersection(set1: set, set2: set): set */
-/** @return {Set} */
+/** @return {Set<any>} */
 const setIntersection = (
-  /** @type {Iterable<any>} */ [...a],
-  /** @type {Set} */ b) =>
-  new Set(a.filter((/** @type {any} */ v) => b.has(v)));
+  /** @type {Iterable<any>} */ [...array],
+  /** @type {Set<any>} */ b) =>
+  new Set(array.filter((/** @type {any} */ value) => b.has(value)));
 
 
 /* setDifference(set1: set, set2: set): set */
-/** @return {Set} */
+/** @return {Set<any>} */
 const setDifference = (
-  /** @type {Iterable<any>} */ [...a],
-  /** @type {Set} */ b) =>
-  new Set(a.filter((/** @type {any} */ v) => !(b.has(v))));
+  /** @type {Iterable<any>} */ [...array],
+  /** @type {Set<any>} */ b) =>
+  new Set(array.filter((/** @type {any} */ value) => !(b.has(value))));
 
 
 /* setSymmetricDifference(set1: set, set2: set): set */
-/** @return {Set} */
-const setSymmetricDifference = ( /** @type {Set} */ a, /** @type {Set} */ b) =>
+/** @return {Set<any>} */
+const setSymmetricDifference = ( /** @type {Set<any>} */ array, /** @type {Set<any>} */ b) =>
   new Set(
-    [...a].filter((/** @type {any} */ v) =>
-      !(b.has(v))).concat([...b].filter((/** @type {any} */ v) => !(a.has(v))))
+    [...array].filter((/** @type {any} */ value) =>
+      !(b.has(value))).concat([...b]
+        .filter((/** @type {any} */ value) => !(array.has(value))))
   );
 
 
 /* isSuperset(superCollection: iterator, subCollection: iterator): boolean */
 /** @return {boolean} */
 const isSuperset = (
-  /** @type {Iterable<any>} */ [...sup],
-  /** @type {Iterable<any>} */ [...sub]) =>
-  sub.every((/** @type {any} */ v) => sup.includes(v));
+  /** @type {Iterable<any>} */ [...superSet],
+  /** @type {Iterable<any>} */ [...subSet]) =>
+  subSet.every((/** @type {any} */ value) => superSet.includes(value));
 
 
 /* min(value1: any [, valueN]): any */
 /** @return {any} */
-const min = (/** @type {any[]} */ ...a) =>
-  a.reduce((/** @type {any} */ acc, /** @type {any} */ v) =>
-    (v < acc ? v : acc), a[0]);
+const min = (/** @type {any[]} */ ...args) =>
+  args.reduce((/** @type {any} */ acc, /** @type {any} */ value) =>
+    (value < acc ? value : acc), args[0]);
 
 
 /* max(value1: any [, valueN]): any */
 /** @return {any} */
-const max = (/** @type {any[]} */ ...a) =>
-  a.reduce((/** @type {any} */ acc, /** @type {any} */ v) =>
-    (v > acc ? v : acc), a[0]);
+const max = (/** @type {any[]} */ ...args) =>
+  args.reduce((/** @type {any} */ acc, /** @type {any} */ value) =>
+    (value > acc ? value : acc), args[0]);
 
 
 /* arrayRepeat(value: any [, n = 100]): array */
-/** @return {Array} */
-const arrayRepeat = (/** @type {any} */ v, /** @type {number} */ n = 100) =>
-  Array(n).fill(v);
+/** @return {any[]} */
+const arrayRepeat = (/** @type {any} */ value, /** @type {number} */ n = 100) =>
+  Array(n).fill(value);
 
 
 /* arrayCycle(iterator: iterator [, n: integer = 100]): array */
-/** @return {Array} */
+/** @return {any[]} */
 const arrayCycle = (
-  /** @type {Iterable<any>} */ [...a],
+  /** @type {Iterable<any>} */ [...array],
   /** @type {number} */ n = 100) =>
-  Array(n).fill(a).flat();
+  Array(n).fill(array).flat();
 
 
 /* arrayRange([ start = 0 [, end = 99 [, step = 1]]]): array */
-/** @return {Array} */
+/** @return {any[]} */
 const arrayRange = (
-  /** @type {number} */ s = 0,
-  /** @type {number} */ e = 99,
-  /** @type {number} */ st = 1) =>
-  Array.from({length: (e - s) / st + 1}, (_v, i) => s + (i * st));
+  /** @type {number} */ start = 0,
+  /** @type {number} */ end = 99,
+  /** @type {number} */ step = 1) =>
+  Array.from({length: (end - start) / step + 1}, (_v, i) => start + (i * step));
 
 
 /* zip(iterator1: iterator [, iteratorN: iterator]): array */
-/** @return {Array} */
-function zip (/** @type {any[]} */ ...a) {
-  a = a.map((/** @type {Iterable} */ v) => Array.from(v));
-  return Array.from({length: Math.min(...a.map(v => v.length))})
-    .map((_, i) => a.map(v => v[i]));
+/** @return {any[]} */
+function zip (/** @type {any[]} */ ...args) {
+  args = args.map((/** @type {Iterable} */ value) => Array.from(value));
+  return Array.from({length: Math.min(...args.map(v => v.length))})
+    .map((_, i) => args.map(v => v[i]));
 }
 
 
 /* unzip(iterator: iterator): array */
-/** @return {Array} */
-const unzip = (/** @type {Iterable<any>} */ [...a]) =>
-  a.map((/** @type {Iterable} */ v) => Array.from(v)).reduce((acc, v) => {
-    v.forEach((item, i) => {
-      if (!Array.isArray(acc[i])) { acc[i] = []; }
-      acc[i].push(item);
-    });
-    return acc;
-  }, []);
+/** @return {any[]} */
+const unzip = (/** @type {Iterable<any>} */ [...array]) =>
+  array.map((/** @type {Iterable} */ iter) => Array.from(iter))
+    .reduce((acc, v) => {
+      v.forEach((item, index) => {
+        if (!Array.isArray(acc[index])) { acc[index] = []; }
+        acc[index].push(item);
+      });
+      return acc;
+    }, []);
 
 
 /* zipObj(iterator1: iterator, iterator2: iterator): object */
 /** @return {Object} */
 function zipObj (
-  /** @type {Iterable<any>} */ [...a1],
-  /** @type {Iterable<any>} */ [...a2]) {
-  let r = {}, l = Math.min(a1.length, a2.length);
-  for (let i = 0; i < l; i++) { r[a1[i]] = a2[i]; }
-  return r;
+  /** @type {Iterable<any>} */ [...array1],
+  /** @type {Iterable<any>} */ [...array2]) {
+  let result = {}, length = Math.min(array1.length, array2.length);
+  for (let i = 0; i < length; i++) { result[array1[i]] = array2[i]; }
+  return result;
 }
 
 /* arrayAdd(array: array, value: any): boolean */
 /** @return {boolean} */
-const arrayAdd = (/** @type {any[]} */ a, /** @type {any} */ v) =>
-  (!a.includes(v)) ? !!a.push(v) : false;
+const arrayAdd = (/** @type {any[]} */ array, /** @type {any} */ value) =>
+  (!array.includes(value)) ? !!array.push(value) : false;
 
 
 /* arrayClear(array: array): array */
-/** @return {Array} */
-function arrayClear (/** @type {any[]} */ a) { a.length = 0; return a; }
+/** @return {any[]} */
+function arrayClear (/** @type {any[]} */ array) {
+  array.length = 0;
+  return array;
+}
 
 
 //* arrayRemove(array: array, value: any [, all: boolean = false]): boolean */
 /** @return {boolean} */
 function arrayRemove (
-  /** @type {any[]} */ a,
-  /** @type {any} */ v,
+  /** @type {any[]} */ array,
+  /** @type {any} */ value,
   /** @type {boolean} */ all = false) {
-  let found = a.indexOf(v) > -1;
+  let found = array.indexOf(value) > -1;
   if (!all) {
-    let pos = a.indexOf(v);
-    if (pos > -1) { a.splice(pos, 1); }
+    let pos = array.indexOf(value);
+    if (pos > -1) { array.splice(pos, 1); }
   } else {
     let pos = -1;
-    while ((pos = a.indexOf(v)) > -1) { a.splice(pos, 1); }
+    while ((pos = array.indexOf(value)) > -1) { array.splice(pos, 1); }
   }
   return found;
 }
@@ -3335,79 +3480,81 @@ function arrayRemove (
   boolean */
 /** @return {boolean} */
 function arrayRemoveBy (
-  /** @type {any[]} */ a,
+  /** @type {any[]} */ array,
   /** @type {Function} */ fn,
   /** @type {boolean} */ all = false) {
   // @ts-ignore
-  let found = a.findIndex(fn) > -1;
+  let found = array.findIndex(fn) > -1;
   if (!all) {
     // @ts-ignore
-    let pos = a.findIndex(fn);
-    if (pos > -1) { a.splice(pos, 1); }
+    let pos = array.findIndex(fn);
+    if (pos > -1) { array.splice(pos, 1); }
   } else {
     let pos = -1;
     // @ts-ignore
-    while ((pos = a.findIndex(fn)) > -1) { a.splice(pos, 1); }
+    while ((pos = array.findIndex(fn)) > -1) { array.splice(pos, 1); }
   }
   return found;
 }
 
 
 /* arrayMerge(target: array, source1: any [, sourceN: any]): array */
-/** @return {Array} */
-function arrayMerge (/** @type {any[]} */ t, /** @type {any[]} */ ...a) {
-  t.push(... [].concat(...a) );
-  return t;
+/** @return {any[]} */
+function arrayMerge (
+  /** @type {any[]} */ target,
+  /** @type {any[]} */ ...sources) {
+  target.push(... [].concat(...sources) );
+  return target;
 }
 
 
 /* iterRange([start: number = 0 [,step: number = 1
   [, end: number = Infinity]]]): iterator */
-/** @return {Iterator} */
+/** @return {Iterator<any>} */
 function* iterRange (
-  /** @type {number} */ s = 0,
-  /** @type {number} */ st = 1,
-  /** @type {number} */ e = Infinity) {
-  let i = s;
-  while (i <= e) {
-    yield i;
-    i += st;
+  /** @type {number} */ start = 0,
+  /** @type {number} */ step = 1,
+  /** @type {number} */ end = Infinity) {
+  let index = start;
+  while (index <= end) {
+    yield index;
+    index += step;
   }
 }
 
 
 /* iterCycle(iterator: iterator [, n = Infinity]): iterator */
-/** @return {Iterator} */
+/** @return {Iterator<any>} */
 function* iterCycle (
-  /** @type {Iterable<any>} */ [...a],
+  /** @type {Iterable<any>} */ [...array],
   /** @type {number} */ n = Infinity) {
-  let i = 0;
-  while (i < n) {
-    yield* a;
-    i++;
+  let index = 0;
+  while (index < n) {
+    yield* array;
+    index++;
   }
 }
 
 
 /* iterRepeat(value: any [, n: number = Infinity]): iterator */
-/** @return {Iterator} */
+/** @return {Iterator<any>} */
 function* iterRepeat (
-  /** @type {any} */ v,
+  /** @type {any} */ value,
   /** @type {number} */ n = Infinity) {
-  let i = 0;
-  while (i<n) {
-    yield v;
-    i++;
+  let index = 0;
+  while (index < n) {
+    yield value;
+    index++;
   }
 }
 
 
 /* takeWhile(iterator: iterator, callback: function): iterator */
-/** @return {Iterator} */
+/** @return {Iterator<any>} */
 function* takeWhile (
-  /** @type {Iterable<any>} */ it,
+  /** @type {Iterable<any>} */ iter,
   /** @type {Function} */ fn) {
-  for (let item of it) {
+  for (let item of iter) {
     if (!fn(item)) { break; }
     yield item;
   }
@@ -3415,12 +3562,12 @@ function* takeWhile (
 
 
 /* dropWhile(iterator: iterator, callback: function): iterator */
-/** @return {Iterator} */
+/** @return {Iterator<any>} */
 function* dropWhile (
-  /** @type {Iterable<any>} */ it,
+  /** @type {Iterable<any>} */ iter,
   /** @type {Function} */ fn) {
   let d = true;
-  for (let item of it) {
+  for (let item of iter) {
     if (d && !fn(item)) { d = false; }
     if (!d) { yield item; }
   }
@@ -3428,26 +3575,30 @@ function* dropWhile (
 
 
 /* take(iterator: iterator [, n: number = 1]): iterator */
-/** @return {Iterator} */
-function* take (/** @type {Iterable<any>} */ it, /** @type {number} */ n = 1) {
-  let i = n;
-  for (let item of it) {
-    if (i <= 0) { break; }
+/** @return {Iterator<any>} */
+function* take (
+  /** @type {Iterable<any>} */ iter,
+  /** @type {number} */ n = 1) {
+  let index = n;
+  for (let item of iter) {
+    if (index <= 0) { break; }
     yield item;
-    i--;
+    index--;
   }
 }
 
 
 /* drop(iterator: iterator [, n: number =1 ]): iterator */
-/** @return {Iterator} */
-function* drop (/** @type {Iterable<any>} */ it, /** @type {number} */ n = 1) {
-  let i = n;
-  for (let item of it) {
-    if (i < 1) {
+/** @return {Iterator<any>} */
+function* drop (
+  /** @type {Iterable<any>} */ iter,
+  /** @type {number} */ n = 1) {
+  let index = n;
+  for (let item of iter) {
+    if (index < 1) {
       yield item;
     } else {
-      i--;
+      index--;
     }
   }
 }
@@ -3455,74 +3606,80 @@ function* drop (/** @type {Iterable<any>} */ it, /** @type {number} */ n = 1) {
 
 /* forEach(iterator: iterator, callback: function): undefined */
 /** @return {void} */
-function forEach (/** @type {Iterable<any>} */ it, /** @type {Function} */ fn) {
-  let i = 0;
-  for (let item of it) { fn(item, i++); }
+function forEach (
+  /** @type {Iterable<any>} */ iter,
+  /** @type {Function} */ fn) {
+  let index = 0;
+  for (let item of iter) { fn(item, index++); }
 }
 
 
 /* forEachRight(iterator: iterator, callback: function): undefined */
 /** @return {void} */
 function forEachRight (
-  /** @type {Iterable<any>} */ [...a],
+  /** @type {Iterable<any>} */ [...array],
   /** @type {Function} */ fn) {
-  let i = a.length;
-  while (i--) { fn(a[i], i); }
+  let index = array.length;
+  while (index--) { fn(array[index], index); }
 }
 
 
 /* map(iterator: iterator, callback: function): iterator */
-/** @return {Iterator} */
-function* map (/** @type {Iterable<any>} */ it, /** @type {Function} */ fn) {
-  let i = 0;
-  for (let item of it) { yield fn(item, i++); }
+/** @return {Iterator<any>} */
+function* map (/** @type {Iterable<any>} */ iter, /** @type {Function} */ fn) {
+  let index = 0;
+  for (let item of iter) { yield fn(item, index++); }
 }
 
 
 /* filter(iterator: iterator, callback: function): iterator */
-/** @return {Iterator} */
-function* filter (/** @type {Iterable<any>} */ it, /** @type {Function} */ fn) {
-  let i = 0;
-  for (let item of it) {
-    if (fn(item, i++)) { yield item; }
+/** @return {Iterator<any>} */
+function* filter (
+  /** @type {Iterable<any>} */ iter,
+  /** @type {Function} */ fn) {
+  let index = 0;
+  for (let item of iter) {
+    if (fn(item, index++)) { yield item; }
   }
 }
 
 
 /* reject(iterator: iterator, callback: function): iterator */
-/** @return {Iterator} */
-function* reject (/** @type {Iterable<any>} */ it, /** @type {Function} */ fn) {
-  let i = 0;
-  for (let item of it) {
-    if (!fn(item, i++)) { yield item; }
+/** @return {Iterator<any>} */
+function* reject (
+  /** @type {Iterable<any>} */ iter,
+  /** @type {Function} */ fn) {
+  let index = 0;
+  for (let item of iter) {
+    if (!fn(item, index++)) { yield item; }
   }
 }
 
 
 /* slice(iterator: iterator [, begin: number = 0 [, end: number = Infinity]]):
   iterator */
-/** @return {Iterator} */
+/** @return {Iterator<any>} */
 function* slice (
-  /** @type {Iterable<any>} */ it,
+  /** @type {Iterable<any>} */ iter,
   /** @type {number} */ begin = 0,
   /** @type {number} */ end = Infinity) {
-  let i = 0;
-  for (let item of it) {
-    if (i >= begin && i <= end) {
+  let index = 0;
+  for (let item of iter) {
+    if (index >= begin && index <= end) {
       yield item;
-    } else if (i > end) {
+    } else if (index > end) {
       return;
     }
-    i++;
+    index++;
   }
 }
 
 
 /* tail(iterator: iterator): iterator */
-/** @return {Iterator} */
-function* tail (/** @type {Iterable<any>} */ it) {
+/** @return {Iterator<any>} */
+function* tail (/** @type {Iterable<any>} */ iter) {
   let first = true;
-  for (let item of it) {
+  for (let item of iter) {
     if (!first) {
       yield item;
     } else {
@@ -3534,64 +3691,67 @@ function* tail (/** @type {Iterable<any>} */ it) {
 
 /* item(iterator: iterator, index: integer): any */
 /** @return {any} */
-function item (/** @type {Iterable<any>} */ it, /** @type {number} */ p) {
+function item (/** @type {Iterable<any>} */ iter, /** @type {number} */ pos) {
   let i=0;
-  for (let item of it) {
-    if (i++ === p) { return item; }
+  for (let item of iter) {
+    if (i++ === pos) { return item; }
   }
 }
 
 
 /* nth(iterator: iterator, index: integer): any */
 /** @return {any} */
-function nth (/** @type {Iterable<any>} */ it, /** @type {number} */ p) {
+function nth (/** @type {Iterable<any>} */ iter, /** @type {number} */ pos) {
   let i=0;
-  for (let item of it) {
-    if (i++ === p) { return item; }
+  for (let item of iter) {
+    if (i++ === pos) { return item; }
   }
 }
 
 
 /* size(iterator: iterator): integer */
 /** @return {number} */
-function size (/** @type {Iterable<any>} */ it) {
-  let i = 0;
-  for (let _item of it) { i++; }
-  return i;
+function size (/** @type {Iterable<any>} */ iter) {
+  let index = 0;
+  for (let _item of iter) { index++; }
+  return index;
 }
 
 
 /* first(iterator: iterator): any */
 /** @return {any} */
-function first (/** @type {Iterable<any>} */ it) {
-  for (let item of it) { return item; }
+function first (/** @type {Iterable<any>} */ iter) {
+  for (let item of iter) { return item; }
 }
 
 
 /* head(iterator: iterator): any */
 /** @return {any} */
-function head (/** @type {Iterable<any>} */ it) {
-  for (let item of it) { return item; }
+function head (/** @type {Iterable<any>} */ iter) {
+  for (let item of iter) { return item; }
 }
 
 
 /* last(iterator: iterator): any */
 /** @return {any} */
-const last = (/** @type {Iterable<any>} */ [...a]) => a[a.length - 1];
+const last = (/** @type {Iterable<any>} */ [...array]) =>
+  array[array.length - 1];
 
 
 /* reverse(iterator: iterator): iterator */
-/** @return {Iterator} */
-function* reverse (/** @type {Iterable<any>} */ [...a]) {
-  var i = a.length;
-  while (i--) { yield a[i]; }
+/** @return {Iterator<any>} */
+function* reverse (/** @type {Iterable<any>} */ [...array]) {
+  var index = array.length;
+  while (index--) { yield array[index]; }
 }
 
 
 /* sort(iterator: iterator [, numbers = false]): array */
-/** @return {Array} */
-const sort = (/** @type {Iterable<any>} */ [...a], /** @type {number} */ ns) =>
-  a.sort(ns ? (x, y) => x - y : undefined);
+/** @return {any[]} */
+const sort = (
+  /** @type {Iterable<any>} */ [...array],
+  /** @type {number} */ numbers) =>
+  array.sort(numbers ? (x, y) => x - y : undefined);
 
 
 /* includes (collection: any, value: any, comparator: undefined | function):
@@ -3612,11 +3772,12 @@ function includes (collection, value, comparator) {
   }
   /* helper functions */
   /** @return {boolean} */
-  const _isIterator = (/** @type {any} */ v) =>
-    v != null && typeof v === "object" && typeof v.next === "function";
+  const _isIterator = (/** @type {any} */ value) =>
+    value != null && typeof value === "object"
+      && typeof value.next === "function";
   /** @return {boolean} */
-  const _isIterable = (/** @type {any} */ v) =>
-    (v != null && typeof v[Symbol.iterator] === "function");
+  const _isIterable = (/** @type {any} */ value) =>
+    (value != null && typeof value[Symbol.iterator] === "function");
   /** @type {(a: any, b: any) => boolean} */
   const _isEqual = comparator ||
     (/** @return {boolean} */ (/** @type {any} */ x, /** @type {any} */ y) =>
@@ -3670,9 +3831,11 @@ function includes (collection, value, comparator) {
 
 /* contains(iterator: iterator, value: any): boolean */
 /** @deprecated * @return {boolean} */
-function contains (/** @type {Iterable<any>} */ it, /** @type {any} */ v) {
-  for (let item of it) {
-    if (item === v || (item !== item && v !== v)) { return true; }
+function contains (
+  /** @type {Iterable<any>} */ iter,
+  /** @type {any} */ value) {
+  for (let item of iter) {
+    if (item === value || (item !== item && value !== value)) { return true; }
   }
   return false;
 }
@@ -3680,10 +3843,10 @@ function contains (/** @type {Iterable<any>} */ it, /** @type {any} */ v) {
 
 /* find(iterator: iterator, callback: function): any */
 /** @return {any} */
-function find (/** @type {Iterable<any>} */ it, /** @type {Function} */ fn) {
-  let i = 0;
-  for (let item of it) {
-    if (fn(item, i++)) { return item; }
+function find (/** @type {Iterable<any>} */ iter, /** @type {Function} */ fn) {
+  let index = 0;
+  for (let item of iter) {
+    if (fn(item, index++)) { return item; }
   }
 }
 
@@ -3691,34 +3854,34 @@ function find (/** @type {Iterable<any>} */ it, /** @type {Function} */ fn) {
 /* findLast(iterator: iterator, callback: function): any */
 /** @return {any} */
 function findLast (
-  /** @type {Iterable<any>} */ it,
+  /** @type {Iterable<any>} */ iter,
   /** @type {Function} */ fn) {
-  let i = 0, r;
-  for (let item of it) {
-    if (fn(item, i++)) { r = item; }
+  let index = 0, result;
+  for (let item of iter) {
+    if (fn(item, index++)) { result = item; }
   }
-  return r;
+  return result;
 }
 
 
 /* every(iterator: iterator, callback: function): boolean */
 /** @return {boolean} */
-function every (/** @type {Iterable<any>} */ it, /** @type {Function} */ fn) {
-  let i = 0;
-  for (let item of it) {
-    if (!fn(item, i++)) { return false; }
+function every (/** @type {Iterable<any>} */ iter, /** @type {Function} */ fn) {
+  let index = 0;
+  for (let item of iter) {
+    if (!fn(item, index++)) { return false; }
   }
-  if (i === 0) { return false; }
+  if (index === 0) { return false; }
   return true;
 }
 
 
 /* some(iterator: iterator, callback: function): boolean */
 /** @return {boolean} */
-function some (/** @type {Iterable<any>} */ it, /** @type {Function} */ fn) {
-  let i = 0;
-  for (let item of it) {
-    if (fn(item, i++)) { return true; }
+function some (/** @type {Iterable<any>} */ iter, /** @type {Function} */ fn) {
+  let index = 0;
+  for (let item of iter) {
+    if (fn(item, index++)) { return true; }
   }
   return false;
 }
@@ -3726,32 +3889,32 @@ function some (/** @type {Iterable<any>} */ it, /** @type {Function} */ fn) {
 
 /* none(iterator: iterator, callback: function): boolean */
 /** @return {boolean} */
-function none (/** @type {Iterable<any>} */ it, /** @type {Function} */ fn) {
-  let i = 0;
-  for (let item of it) {
-    if (fn(item, i++)) { return false; }
+function none (/** @type {Iterable<any>} */ iter, /** @type {Function} */ fn) {
+  let index = 0;
+  for (let item of iter) {
+    if (fn(item, index++)) { return false; }
   }
-  if (i === 0) { return false; }
+  if (index === 0) { return false; }
   return true;
 }
 
 
 /* takeRight(iterator: iterator [, n: number = 1]): array */
-/** @return {Array} */
+/** @return {any[]} */
 const takeRight = (
-  /** @type {Iterable<any>} */ [...a],
+  /** @type {Iterable<any>} */ [...array],
   /** @type {number} */ n = 1) =>
-  a.reverse().slice(0, n);
+  array.reverse().slice(0, n);
 
 
 /* takeRightWhile(iterator: iterator, callback: function): iterator */
-/** @return {Iterator} */
+/** @return {Iterator<any>} */
 function* takeRightWhile (
-  /** @type {Iterable<any>} */ [...a],
+  /** @type {Iterable<any>} */ [...array],
   /** @type {Function} */ fn) {
-  let i = 0;
-  for (let item of a.reverse()) {
-    if (fn(item, i++)) {
+  let index = 0;
+  for (let item of array.reverse()) {
+    if (fn(item, index++)) {
       yield item;
     } else {
       break;
@@ -3761,28 +3924,28 @@ function* takeRightWhile (
 
 
 /* dropRight(iterator: iterator [, n: number = 1]): array */
-/** @return {Array} */
+/** @return {any[]} */
 const dropRight = (
-  /** @type {Iterable<any>} */ [...a],
+  /** @type {Iterable<any>} */ [...array],
   /** @type {number} */ n = 1) =>
-  a.reverse().slice(n);
+  array.reverse().slice(n);
 
 
 /* dropRightWhile(iterator: iterator, callback: function): iterator */
-/** @return {Iterator} */
+/** @return {Iterator<any>} */
 function* dropRightWhile (
-  /** @type {Iterable<any>} */ [...a],
+  /** @type {Iterable<any>} */ [...array],
   /** @type {Function} */ fn) {
-  let d = true, i = 0;
-  for (let item of a.reverse()) {
-    if (d && !fn(item, i++)) { d = false; }
-    if (!d) { yield item; }
+  let dropping = true, index = 0;
+  for (let item of array.reverse()) {
+    if (dropping && !fn(item, index++)) { dropping = false; }
+    if (!dropping) { yield item; }
   }
 }
 
 
 /* concat(iterator1: iterator [, iteratorN]: iterator): iterator */
-/** @return {Iterator} */
+/** @return {Iterator<any>} */
 function* concat () {
   for (let item of arguments) {
     if (typeof item[Symbol.iterator] === "function" ||
@@ -3801,15 +3964,15 @@ function* concat () {
 /* reduce(iterator: iterator, callback: function [, initialvalue: any]): any */
 /** @return {any} */
 function reduce (
-  /** @type {Iterable<any>} */ it,
+  /** @type {Iterable<any>} */ iter,
   /** @type {Function} */ fn,
-  /** @type {any} */ iv) {
-  let acc = iv, i = 0;
-  for (let item of it) {
-    if (i === 0 && acc === undefined) {
+  /** @type {any} */ initialvalue) {
+  let acc = initialvalue, index = 0;
+  for (let item of iter) {
+    if (index === 0 && acc === undefined) {
       acc = item;
     } else {
-      acc = fn(acc, item, i++);
+      acc = fn(acc, item, index++);
     }
   }
   return acc;
@@ -3817,19 +3980,19 @@ function reduce (
 
 
 /* enumerate(iterator: iterator [, offset = 0]): iterator */
-/** @return {Iterator} */
+/** @return {Iterator<any>} */
 function* enumerate (
-  /** @type {Iterable<any>} */ it,
+  /** @type {Iterable<any>} */ iter,
   /** @type {number} */ offset = 0) {
-  let i = offset;
-  for (let item of it) { yield [i++, item]; }
+  let index = offset;
+  for (let item of iter) { yield [index++, item]; }
 }
 
 
 /* flat(iterator: iterator): iterator */
-/** @return {Iterator} */
-function* flat (/** @type {Iterable<any>} */ it) {
-  for (let item of it) {
+/** @return {Iterator<any>} */
+function* flat (/** @type {Iterable<any>} */ iter) {
+  for (let item of iter) {
     if (typeof item[Symbol.iterator] === "function" ||
       ("Iterator" in globalThis ? (item instanceof Iterator)
         : (typeof item === "object" && typeof item.next === "function")
@@ -3846,21 +4009,21 @@ function* flat (/** @type {Iterable<any>} */ it) {
 /* join(iterator: iterator [, separator = ","]): string */
 /** @return {string} */
 function join (
-  /** @type {Iterable<any>} */ it,
-  /** @type {string} */ sep = ",") {
-  sep = String(sep);
-  let r = "";
-  for (let item of it) { r += sep + item; }
-  return r.slice(sep.length);
+  /** @type {Iterable<any>} */ iter,
+  /** @type {string} */ separator = ",") {
+  separator = String(separator);
+  let result = "";
+  for (let item of iter) { result += separator + item; }
+  return result.slice(separator.length);
 }
 
 
 /* withOut(iterator: iterator, filterIterator: iterator): array */
 /** @return {any[]} */
 const withOut = (
-  /** @type {Iterable<any>} */ [...a],
-  /** @type {Iterable<any>} */ [...fl]) =>
-  a.filter((/** @type {any} */ e) => !fl.includes(e));
+  /** @type {Iterable<any>} */ [...array],
+  /** @type {Iterable<any>} */ [...filterValues]) =>
+  array.filter((/** @type {any} */ e) => !filterValues.includes(e));
 
 
 /** Math API **/
@@ -3868,63 +4031,67 @@ const withOut = (
 
 /* isFloat(value: any): boolean */
 /** @return {boolean} */
-const isFloat = (/** @type {any} */ v) =>
-  (typeof v === "number" && v === v && !!(v % 1));
+const isFloat = (/** @type {any} */ value) =>
+  (typeof value === "number" && value === value && !!(value % 1));
 
 
 /* toInteger(value: any): integer */
 /** @return {number} */
-function toInteger (/** @type {any} */ v) {
-  v = ((v = Math.trunc(+v)) !== v || v === 0) ? 0 : v;
-  return Math.min(Math.max(v, -(Math.pow(2, 53) - 1)), Math.pow(2, 53) - 1);
+function toInteger (/** @type {any} */ value) {
+  value = ((value = Math.trunc(+value)) !== value || value === 0) ? 0 : value;
+  return Math.min(Math.max(value, -(Math.pow(2, 53) - 1)), Math.pow(2, 53) - 1);
 }
 
 
 /* toIntegerOrInfinity(value: any): integer | Infinity | -Infinity */
 /** @return {number} */
-const toIntegerOrInfinity = (/** @type {any} */ v) =>
-  ((v = Math.trunc(+v)) !== v || v === 0) ? 0 : v;
+const toIntegerOrInfinity = (/** @type {any} */ value) =>
+  ((value = Math.trunc(+value)) !== value || value === 0) ? 0 : value;
 
 
 /* sum(value1: any [, valueN]: any): any */
 /** @return {any} */
-const sum = (/** @type {any[]} */ ...a) =>
-  (a.every((/** @type {any} */ v) => typeof v === "number") ?
-  // @ts-ignore
-  Math.sumPrecise(a) : a.slice(1).reduce((acc, v) => acc + v, a[0]));
+const sum = (/** @type {any[]} */ ...values) =>
+  (values.every((/** @type {any} */ value) => typeof value === "number") ?
+    // @ts-ignore
+    Math.sumPrecise(values) : values.slice(1).reduce(
+      (acc, v) => acc + v, values[0])
+    );
 
 
 /* avg(value1: number [, valueN: number]): number */
 /** @return {number} */
 // @ts-ignore
-const avg = (/** @type {number[]} */ ...a) => Math.sumPrecise(a) / a.length;
+const avg = (/** @type {number[]} */ ...args) => Math.sumPrecise(args) / args.length;
 
 
 /* product(value1: number [, valueN]: number): number */
 /** @return {number} */
-const product = (/** @type {any} */ f, /** @type {any[]} */ ...a) =>
-  a.reduce((acc, v) => acc * v, f);
+const product = (/** @type {any} */ first, /** @type {any[]} */ ...args) =>
+  args.reduce((acc, v) => acc * v, first);
 
 
 /* clamp(value: any, min: any, max: any): number */
 /** @return {number} */
 function clamp(
-  /** @type {any} */ val,
+  /** @type {any} */ value,
   /** @type {number} */ min = -9007199254740991,
   /** @type {number} */ max = 9007199254740991) {
   /* normalize */
-  function _normalize (/** @type {any} */ v) {
-    if (typeof v !== "bigint" && typeof v !== "number") { v = Number(v); }
-    if (v === -Infinity) { return -9007199254740991; }
-    if (v === Infinity) { return 9007199254740991; }
-    if (v === 0) { return 0; }
-    return v;
+  function _normalize (/** @type {any} */ value) {
+    if (typeof value !== "bigint" && typeof value !== "number") {
+      value = Number(value);
+    }
+    if (value === -Infinity) { return -9007199254740991; }
+    if (value === Infinity) { return 9007199254740991; }
+    if (value === 0) { return 0; }
+    return value;
   }
-  val = _normalize(val);
+  value = _normalize(value);
   min = _normalize(min);
   max = _normalize(max);
   /* NaN: val, min, max */
-  if (val !== val) { return val; }
+  if (value !== value) { return value; }
   if (min !== min || max !== max) {
     throw new RangeError(
       "clamp(); RangeError: minimum and maximum should not to be NaN"
@@ -3937,29 +4104,31 @@ function clamp(
     );
   }
   /* clamp */
-  return (val < min) ? min : ((val > max) ? max : val);
+  return (value < min) ? min : ((value > max) ? max : value);
 }
 
 
 /* minmax(value: any, min: any, max: any): number */
 /** @return {number} */
 function minmax(
-  /** @type {any} */ val,
+  /** @type {any} */ value,
   /** @type {number} */ min = -9007199254740991,
   /** @type {number} */ max = 9007199254740991) {
   /* normalize */
-  function _normalize (/** @type {any} */ v) {
-    if (typeof v !== "bigint" && typeof v !== "number") { v = Number(v); }
-    if (v === -Infinity) { return -9007199254740991; }
-    if (v === Infinity) { return 9007199254740991; }
-    if (v === 0) { return 0; }
-    return v;
+  function _normalize (/** @type {any} */ value) {
+    if (typeof value !== "bigint" && typeof value !== "number") {
+      value = Number(value);
+    }
+    if (value === -Infinity) { return -9007199254740991; }
+    if (value === Infinity) { return 9007199254740991; }
+    if (value === 0) { return 0; }
+    return value;
   }
-  val = _normalize(val);
+  value = _normalize(value);
   min = _normalize(min);
   max = _normalize(max);
   /* NaN: val, min, max */
-  if (val !== val) { return val; }
+  if (value !== value) { return value; }
   if (min !== min || max !== max) {
     throw new RangeError(
       "clamp(); RangeError: minimum and maximum should not to be NaN"
@@ -3972,167 +4141,179 @@ function minmax(
     );
   }
   /* clamp */
-  return (val < min) ? min : ((val > max) ? max : val);
+  return (value < min) ? min : ((value > max) ? max : value);
 }
 
 
 /* isEven(value: number): boolan */
 /** @return {boolean} */
-function isEven (/** @type {number} */ v) {
-  var r = v % 2;
-  if (r === r) { return r === 0; }
+function isEven (/** @type {number} */ value) {
+  var result = value % 2;
+  if (result === result) { return result === 0; }
   return false;
 }
 
 
 /* isOdd(value: number): boolean */
 /** @return {boolean} */
-function isOdd (/** @type {number} */ v) {
-  var r = v % 2;
-  if (r === r) { return r !== 0; }
+function isOdd (/** @type {number} */ value) {
+  var result = value % 2;
+  if (result === result) { return result !== 0; }
   return false;
 }
 
 
 /* toInt8(value: any): integer -127..128 */
 /** @return {number} */
-const toInt8 = (/** @type {any} */ v) =>
-  ((v = Math.min(Math.max(-128, Math.trunc(Number(v))), 127)) === v) ? v : 0;
+const toInt8 = (/** @type {any} */ value) =>
+  ((value = Math.min(Math.max(-128, Math.trunc(Number(value))), 127)) === value)
+    ? value : 0;
 
 
 /* toUInt8(value: any): integer 0..255 */
 /** @return {number} */
-const toUInt8 = (/** @type {any} */ v) =>
-  ((v = Math.min(Math.max(0, Math.trunc(Number(v))), 255)) === v) ? v : 0;
+const toUInt8 = (/** @type {any} */ value) =>
+  ((value = Math.min(Math.max(0, Math.trunc(Number(value))), 255)) === value)
+    ? value : 0;
 
 
 /* toInt16(value: any): integer -32768..32767 */
 /** @return {number} */
-const toInt16 = (/** @type {any} */ v) =>
-  ((v = Math.min(Math.max(-32768, Math.trunc(Number(v))), 32767)) === v) ? v
-    : 0;
+const toInt16 = (/** @type {any} */ value) =>
+  ((value = Math.min(Math.max(-32768, Math.trunc(Number(value))), 32767))
+    === value) ? value : 0;
 
 
 /* toUInt16(value: any) integer 0..65535 */
 /** @return {number} */
-const toUInt16 = (/** @type {any} */ v) =>
-  ((v = Math.min(Math.max(0, Math.trunc(Number(v))), 65535)) === v) ? v : 0;
+const toUInt16 = (/** @type {any} */ value) =>
+  ((value = Math.min(Math.max(0, Math.trunc(Number(value))), 65535)) === value)
+    ? value : 0;
 
 
 /* toInt32(value: any): integer -2147483648..2147483647 */
 /** @return {number} */
-const toInt32 = (/** @type {any} */ v) =>
-  ((v = Math.min(Math.max(-2147483648, Math.trunc(Number(v))), 2147483647))
-    === v) ? v : 0;
+const toInt32 = (/** @type {any} */ value) =>
+  ((value = Math.min(Math.max(-2147483648, Math.trunc(Number(value))),
+    2147483647)) === value) ? value : 0;
 
 
 /* toUInt32(value: any: integer 0..4294967295 */
 /** @return {number} */
-const toUInt32 = (/** @type {any} */ v) =>
-  ((v = Math.min(Math.max(0, Math.trunc(Number(v))), 4294967295)) === v) ? v
-    : 0;
+const toUInt32 = (/** @type {any} */ value) =>
+  ((value = Math.min(Math.max(0, Math.trunc(Number(value))), 4294967295))
+    === value) ? value : 0;
 
 
 /* toBigInt64(value: any): bigint */
 /** @return {bigint} */
-const toBigInt64 = (/** @type {any} */ v) => BigInt(typeof v === "bigint"
-  ? (v > Math.pow(2,63)-1 ?Math.pow(2,63)-1:v<Math.pow(-2,63)?Math.pow(-2,63):v)
-  : ((v = Math.min(Math.max(Math.pow(-2, 63), Math.trunc(Number(v))),
-  Math.pow(2, 63) - 1)) === v ) ? v : 0);
+const toBigInt64 = (/** @type {any} */ value) =>
+  BigInt(typeof value === "bigint"
+    ? (value > Math.pow(2,63) -1 ?Math.pow(2, 63) -1 : value < Math.pow(-2, 63)
+      ? Math.pow(-2, 63) : value)
+  : ((value = Math.min(Math.max(Math.pow(-2, 63), Math.trunc(Number(value))),
+    Math.pow(2, 63) - 1)) === value ) ? value : 0);
 
 
 /* toBigUInt64(value: any): unsigned bigint */
 /** @return {bigint} */
-const toBigUInt64 = (/** @type {any} */ v) => BigInt(typeof v === "bigint"
-  ? (v > Math.pow(2, 64) - 1 ? Math.pow(2, 64) - 1 : v < 0 ? 0 : v)
-  : ((v = Math.min(Math.max(0, Math.trunc(Number(v))), Math.pow(2, 64) -1))
-    === v) ? v : 0);
+const toBigUInt64 = (/** @type {any} */ value) =>
+  BigInt(typeof value === "bigint"
+    ? (value > Math.pow(2, 64) - 1 ? Math.pow(2,64) - 1 : value < 0 ? 0 : value)
+    : ((value = Math.min(Math.max(0, Math.trunc(Number(value))),
+      Math.pow(2, 64) -1)) === value) ? value : 0);
 
 
 /* toFloat32(value: any): float */
 /** @return {number} */
-const toFloat32 = (/** @type {any} */ v) =>
-  ((v = Math.min(Math.max(-3.4e38, Number(v)), 3.4e38)) === v) ? v : 0;
+const toFloat32 = (/** @type {any} */ value) =>
+  ((value = Math.min(Math.max(-3.4e38, Number(value)), 3.4e38)) === value)
+    ? value : 0;
 
 
 /* isInt8(value: any): boolean */
 /** @return {boolean} */
-const isInt8 = (/** @type {any} */ v) =>
-  (Number.isInteger(v) ? (v >= -128 && v <= 127) : false);
+const isInt8 = (/** @type {any} */ value) =>
+  (Number.isInteger(value) ? (value >= -128 && value <= 127) : false);
 
 
 /* isUInt8(value: any): boolean */
 /** @return {boolean} */
-const isUInt8 = (/** @type {any} */ v) =>
-  (Number.isInteger(v) ? (v >= 0 && v <= 255) : false);
+const isUInt8 = (/** @type {any} */ value) =>
+  (Number.isInteger(value) ? (value >= 0 && value <= 255) : false);
 
 
 /* isInt16(value: any): boolean */
 /** @return {boolean} */
-const isInt16 = (/** @type {any} */ v) =>
-  (Number.isInteger(v) ?(v >= -32768 && v <= 32767) : false);
+const isInt16 = (/** @type {any} */ value) =>
+  (Number.isInteger(value) ?(value >= -32768 && value <= 32767) : false);
 
 
 /* isUInt16(value: any): boolean */
 /** @return {boolean} */
-const isUInt16 = (/** @type {any} */ v) =>
-  (Number.isInteger(v) ? (v >= 0 && v <= 65535) : false);
+const isUInt16 = (/** @type {any} */ value) =>
+  (Number.isInteger(value) ? (value >= 0 && value <= 65535) : false);
 
 
 /* isInt32(value: any): boolean */
 /** @return {boolean} */
-const isInt32 = (/** @type {any} */ v) =>
-  (Number.isInteger(v) ? (v >= -2147483648 && v <= 2147483647) : false);
+const isInt32 = (/** @type {any} */ value) =>
+  (Number.isInteger(value) ? (value >= -2147483648 && value <= 2147483647)
+    : false);
 
 
 /* isUInt32(value: any): boolean */
 /** @return {boolean} */
-const isUInt32 = (/** @type {any} */ v) =>
-  (Number.isInteger(v) ? (v >= 0 && v <= 4294967295) : false);
+const isUInt32 = (/** @type {any} */ value) =>
+  (Number.isInteger(value) ? (value >= 0 && value <= 4294967295) : false);
 
 
 /* isBigInt64(value: any): boolean */
 /** @return {boolean} */
-const isBigInt64 = (/** @type {any} */ v) => (typeof v === "bigint"
-  ? (v >= Math.pow(-2, 63) && v <= Math.pow(2, 63)-1) : false);
+const isBigInt64 = (/** @type {any} */ value) => (typeof value === "bigint"
+  ? (value >= Math.pow(-2, 63) && value <= Math.pow(2, 63)-1) : false);
 
 
 /* isBigUInt64(value: any): boolean */
 /** @return {boolean} */
-const isBigUInt64 = (/** @type {any} */ v) =>
-  (typeof v === "bigint" ? (v >= 0 && v <= Math.pow(2,64)-1) : false);
+const isBigUInt64 = (/** @type {any} */ value) =>
+  (typeof value === "bigint" ? (value >= 0 && value <= Math.pow(2,64)-1)
+    : false);
 
 
 /* toFloat16(value: any): float16 */
 /** @return {number} */
-const toFloat16 = (/** @type {any} */ v) =>
-  ((v = Math.min(Math.max(-65504, Number(v)), 65504)) === v ) ? v : 0;
+const toFloat16 = (/** @type {any} */ value) =>
+  ((value = Math.min(Math.max(-65504, Number(value)), 65504)) === value )
+    ? value : 0;
 
 
 /* isFloat16(value: any): boolean */
 /** @return {boolean} */
-const isFloat16 = (/** @type {any} */ v) =>
-  ((typeof v === "number" && v === v) ?(v >= -65504 && v <= 65504) : false);
+const isFloat16 = (/** @type {any} */ value) =>
+  ((typeof value === "number" && value === value)
+    ? (value >= -65504 && value <= 65504) : false);
 
 
 /* signbit(value: any): boolean */
 /** @return {boolean} */
-const signbit = (/** @type {any} */ v) =>
-  (((v = Number(v)) !== v) ? false : ((v < 0) || Object.is(v, -0)));
+const signbit = (/** @type {any} */ value) =>
+  (((value = Number(value)) !== value)
+    ? false : ((value < 0) || Object.is(value, -0)));
 
 
 /* randomInt([max: integer]): integer */
 /* randomInt(min: integer, max: integer): integer */
 /** @return {number} */
 function randomInt (
-  /** @type {number | undefined} */ i = 100,
-  /** @type {number | null | undefined} */ a) {
-  if (a == null) {
-    a = i;
-    i = 0;
+  /** @type {number | undefined} */ min = 100,
+  /** @type {number | null | undefined} */ max) {
+  if (max == null) {
+    max = min;
+    min = 0;
   }
-  i = Math.ceil(Number(i));
-  return Math.floor(Math.random() * (Math.floor(Number(a)) - i + 1) + i);
+  min = Math.ceil(Number(min));
+  return Math.floor(Math.random() * (Math.floor(Number(max)) - min + 1) + min);
 }
 
 
@@ -4140,30 +4321,30 @@ function randomInt (
 /* randomFloat(min: float, max: float): float */
 /** @return {number} */
 function randomFloat (
-  /** @type {number | undefined} */ i = 100,
-  /** @type {number | null | undefined} */ a) {
-  if (a == null) {
-    a = i;
-    i = 0;
+  /** @type {number | undefined} */ min = 100,
+  /** @type {number | null | undefined} */ max) {
+  if (max == null) {
+    max = min;
+    min = 0;
   }
-  var r = (Math.random() * (a - i + 1)) + i;
-  return r > a ? a : r;
+  var result = (Math.random() * (max - min + 1)) + min;
+  return result > max ? max : result;
 }
 
 
 /* inRange(value: number, min: number, max: number): boolean */
 /** @return {boolean} */
 const inRange = (
-  /** @type {number} */ v,
+  /** @type {number} */ value,
   /** @type {number} */ min,
   /** @type {number} */ max) =>
-  (v >= min && v <= max);
+  (value >= min && value <= max);
 
 
 /** object header **/
 
 
-const VERSION = "Celestra v6.0.4 dev";
+const VERSION = "Celestra v6.0.5 dev";
 
 
 /* celestra.noConflict(): celestra object */

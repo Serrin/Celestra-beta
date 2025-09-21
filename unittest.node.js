@@ -1,6 +1,8 @@
 // @ts-check
 "use strict";
 
+console.log("\x1b[40m\x1b[37m"); /* black - white */
+
 /* import method 1 - defaultExport */
 // /*
 console.log("import method 1 - defaultExport");
@@ -47,9 +49,47 @@ CUT.__addTest__ = function __addTest__ (
     */
   } else {
     let resultStr = "[" + Date.now().toString(36) + "] [failed] " + step;
-    console.error(resultStr);
+    console.error("\x1b[40m\x1b[31m" + resultStr + "\x1b[40m\x1b[37m");
+    /* black - red */
   }
 };
+
+
+/*
+https://stackoverflow.com/questions/9781218/how-to-change-node-jss-console-font-color
+https://en.wikipedia.org/wiki/ANSI_escape_code#Colors
+
+ANSI escape codes:
+
+Reset = "\x1b[0m"
+Bright = "\x1b[1m"
+Dim = "\x1b[2m"
+Underscore = "\x1b[4m"
+Blink = "\x1b[5m"
+Reverse = "\x1b[7m"
+Hidden = "\x1b[8m"
+
+FgBlack = "\x1b[30m"
+FgRed = "\x1b[31m"
+FgGreen = "\x1b[32m"
+FgYellow = "\x1b[33m"
+FgBlue = "\x1b[34m"
+FgMagenta = "\x1b[35m"
+FgCyan = "\x1b[36m"
+FgWhite = "\x1b[37m"
+FgGray = "\x1b[90m"
+
+BgBlack = "\x1b[40m"
+BgRed = "\x1b[41m"
+BgGreen = "\x1b[42m"
+BgYellow = "\x1b[43m"
+BgBlue = "\x1b[44m"
+BgMagenta = "\x1b[45m"
+BgCyan = "\x1b[46m"
+BgWhite = "\x1b[47m"
+BgGray = "\x1b[100m"
+*/
+
 
 /* isTrue(<step: string>, <expression>[, strict: boolean]); */
 CUT.isTrue = function isTrue (
@@ -103,13 +143,21 @@ CUT.isError = function (
 
 /* log(<innerHTML>); */
 CUT.log = function log (/** @type {any} */ str) {
-  console.log("[" + Date.now().toString(36) + "] [info] " + str);
+  console.log(
+    "\x1b[40m\x1b[36m"
+      + "[" + Date.now().toString(36) + "] [info] " + str
+      + "\x1b[40m\x1b[37m"
+    /* black - cyan */
+  );
 };
 
 /* logCode(<innerHTML>); */
 CUT.logCode = function log (/** @type {any} */ str) {
   console.log(
-    "[" + Date.now().toString(36) + "] [code] " + "`" + str + "`"
+    "\x1b[40m\x1b[36m"
+      + "[" + Date.now().toString(36) + "] [code] " + "`" + str + "`"
+      + "\x1b[40m\x1b[37m"
+    /* black - cyan */
   );
 };
 
@@ -253,7 +301,7 @@ var /** @type any */ token12, /** @type any */ token13;
 var /** @type any */ token14, /** @type any */ token15;
 
 
-/* Celestra v6.0.4 testcases */
+/* Celestra v6.0.5 testcases */
 
 
 /** Not auto tested functions **/
@@ -4976,7 +5024,7 @@ CUT.isFalse("shuffle();", CEL.isDeepStrictEqual(CEL.shuffle(token1), token1));
 
 /* includes(); */
 CUT.isTrue("includes(); 01",
-      CEL.includes([4, 5, 6, 7, 8, 9], 9) 
+      CEL.includes([4, 5, 6, 7, 8, 9], 9)
   && !CEL.includes([4, 5, 6, 7, 8, 9], 10)
   &&  CEL.includes([4, 5, 6, 7, 8, 0], 0)
   && !CEL.includes([4, 5, 6, 7, 8, -0], 0, Object.is)
