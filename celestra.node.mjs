@@ -12,11 +12,11 @@ if(("crypto" in globalThis)&&!("randomUUID" in globalThis.crypto)){globalThis.cr
 if(!Object.hasOwn){Object.defineProperty(Object,"hasOwn",{value:function(object,property){if(object==null){throw new TypeError("Cannot convert undefined or null to object");}return Object.prototype.hasOwnProperty.call(Object(object),property);},configurable:true,enumerable:false,writable:true});}
 if(!("toReversed" in Array.prototype)){Object.defineProperty(Array.prototype,"toReversed",{"configurable":true,"writable":true,"enumerable":false,"value":function(){"use strict";return this.slice().reverse();}});}
 if(!("toSorted" in Array.prototype)){Object.defineProperty(Array.prototype,"toSorted",{"configurable":true,"writable":true,"enumerable":false,"value":function(cFn){"use strict";return this.slice().sort(cFn);}});}
-if(!("toSpliced" in Array.prototype)){Object.defineProperty(Array.prototype,"toSpliced",{"configurable":true,"writable":true,"enumerable":false,"value":function(start,deleteCount,...items){var r=this.slice();r.splice(start,deleteCount,...items);return r;}});}
-if(!("with" in Array.prototype)){Object.defineProperty(Array.prototype,"with",{"configurable":true,"writable":true,"enumerable":false,"value":function(i,v){"use strict";var r=this.slice();r[i]=v;return r;}});}
+if(!("toSpliced" in Array.prototype)){Object.defineProperty(Array.prototype,"toSpliced",{"configurable":true,"writable":true,"enumerable":false,"value":function(start,deleteCount,...items){let r=this.slice();r.splice(start,deleteCount,...items);return r;}});}
+if(!("with" in Array.prototype)){Object.defineProperty(Array.prototype,"with",{"configurable":true,"writable":true,"enumerable":false,"value":function(i,v){"use strict";let r=this.slice();r[i]=v;return r;}});}
 if(!("toReversed" in Uint8Array.prototype)){Object.defineProperty(Uint8Array.prototype,"toReversed",{"configurable":true,"writable":true,"enumerable":false,"value":function(){"use strict";return this.slice().reverse();}});}
 if(!("toSorted" in Uint8Array.prototype)){Object.defineProperty(Uint8Array.prototype,"toSorted",{"configurable":true,"writable":true,"enumerable":false,"value":function(cFn){"use strict";return this.slice().sort(cFn);}});}
-if(!("with" in Uint8Array.prototype)){Object.defineProperty(Uint8Array.prototype,"with",{"configurable":true,"writable":true,"enumerable":false,"value":function(i,v){"use strict";var r=this.slice();r[i]=v;return r;}});}
+if(!("with" in Uint8Array.prototype)){Object.defineProperty(Uint8Array.prototype,"with",{"configurable":true,"writable":true,"enumerable":false,"value":function(i,v){"use strict";let r=this.slice();r[i]=v;return r;}});}
 if(!globalThis.GeneratorFunction){globalThis.GeneratorFunction=Object.getPrototypeOf(function*(){}).constructor;}
 if(!globalThis.AsyncFunction){globalThis.AsyncFunction=Object.getPrototypeOf(async function(){}).constructor;}
 if(!globalThis.AsyncGeneratorFunction){globalThis.AsyncGeneratorFunction=Object.getPrototypeOf(async function*(){}).constructor;}
@@ -57,8 +57,8 @@ const identity=(v)=>v;
 function noop(){}
 const T=()=>true;
 const F=()=>false;
-function nanoid(size=21,alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"){var r="",dl=alphabet.length,pos,i=size;while(i--){do{pos=crypto.getRandomValues(new Uint8Array(1))[0];}while(pos>=dl);r+=alphabet[pos];}return r;}
-function timestampID(size=21,alphabet="123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"){var r=Date.now().toString(36).padStart(10,"0")+"-";var dl=alphabet.length,pos,i=((size>11)?size:12)-11;while(i--){do{pos=crypto.getRandomValues(new Uint8Array(1))[0];}while(pos>=dl);r+=alphabet[pos];}return r;}
+function nanoid(size=21,alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"){let r="",dl=alphabet.length,pos,i=size;while(i--){do{pos=crypto.getRandomValues(new Uint8Array(1))[0];}while(pos>=dl);r+=alphabet[pos];}return r;}
+function timestampID(size=21,alphabet="123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"){let r=Date.now().toString(36).padStart(10,"0")+"-";let dl=alphabet.length,pos,i=((size>11)?size:12)-11;while(i--){do{pos=crypto.getRandomValues(new Uint8Array(1))[0];}while(pos>=dl);r+=alphabet[pos];}return r;}
 /** Assertion API **/
 function assertIs(v,expected,msg){function _is(value,expected){if(!(["string", "function"].includes(typeof expected))&&!Array.isArray(expected)){throw new TypeError(`[assertIs] TypeError: expectedType must be string, function, or array. Got ${typeof expected}`);}const vType=(value===null?"null":typeof value);let matched=(Array.isArray(expected)?expected:[expected]).some(function (item){if(typeof item==="string"){return vType===item;}if(typeof item==="function"){return value!=null&&value instanceof item;}throw new TypeError(`[assertIs] TypeError: expectedType array elements have to be a string or function. Got ${typeof item}`);});return matched;}if(!_is(v, expected)){if(Error.isError(msg)){throw msg;}let vName=v.toString?v.toString():Object.prototype.toString.call(v);let eNames=(Array.isArray(expected)?expected:[expected]).map((item)=>(typeof item==="string"?item.toString():item.name??"anonymous")).join(", ");throw new TypeError("[assertIs] Assertion failed: "+vName+" is not a "+eNames+(msg?" - "+msg:""));}return v;}
 function assertIsNot(v,expected,msg){function _is(value,expected){if(!(["string", "function"].includes(typeof expected))&&!Array.isArray(expected)){throw new TypeError(`[assertIsNot] TypeError: expectedType must be string, function, or array. Got ${typeof expected}`);}const vType=(value===null?"null":typeof value);let matched=(Array.isArray(expected)?expected:[expected]).some(function (item){if(typeof item==="string"){return vType===item;}if(typeof item==="function"){return value!=null&&value instanceof item;}throw new TypeError(`[assertIsNot] TypeError: expectedType array elements have to be a string or function. Got ${typeof item}`);});return matched;}if(_is(v,expected)){if(Error.isError(msg)){throw msg;}let vName=v.toString?v.toString():Object.prototype.toString.call(v);let eNames=(Array.isArray(expected)?expected:[expected]).map((item)=>(typeof item==="string"?item.toString():item.name??"anonymous")).join(", ");throw new TypeError("[assertIsNot] Assertion failed: "+vName+" is a "+eNames+(msg?" - "+msg:""));}return v;}
@@ -85,16 +85,16 @@ function assertDeepStrictEqual(x,y,msg){function _isDeepStrictEqual(x,y){const _
 /** String API **/
 function b64Encode(s){return btoa(encodeURIComponent(String(s)).replace(/%([0-9A-F]{2})/g,function toSolidBytes(_match, p1){return String.fromCharCode("0x"+p1);}));}
 function b64Decode(s){return decodeURIComponent(atob(String(s)).split("").map(function(c){return "%"+("00"+c.charCodeAt(0).toString(16)).slice(-2);}).join(""));}
-function strTruncate(str,newLen,omission=""){str=String(str);omission = String(omission);var strUC=Array.from(str);if(newLen>=strUC.length){return str;}return strUC.slice(0,newLen-Array.from(omission).length).join("")+omission;}
-const strPropercase=(s)=>String(s).split(" ").map(function(v){var a=Array.from(v).map((c)=>c.toLowerCase());if(a.length){a[0]=a[0].toUpperCase();}return a.join("");}).join(" ");
-const strTitlecase=(s)=>String(s).split(" ").map(function(v){var a=Array.from(v).map((c)=>c.toLowerCase());if(a.length){a[0]=a[0].toUpperCase();}return a.join("");}).join(" ");
-function strCapitalize(s){var a=[...String(s).toLowerCase()];if(a.length){a[0]=a[0].toUpperCase();}return a.join("");}
-function strUpFirst(s){var a=[...String(s)];if(a.length){a[0]=a[0].toUpperCase();}return a.join("");}
-function strDownFirst(s){var a=[...String(s)];if(a.length){a[0]=a[0].toLowerCase();}return a.join("");}
+function strTruncate(str,newLen,omission=""){str=String(str);omission = String(omission);let strUC=Array.from(str);if(newLen>=strUC.length){return str;}return strUC.slice(0,newLen-Array.from(omission).length).join("")+omission;}
+const strPropercase=(s)=>String(s).split(" ").map(function(v){let a=Array.from(v).map((c)=>c.toLowerCase());if(a.length){a[0]=a[0].toUpperCase();}return a.join("");}).join(" ");
+const strTitlecase=(s)=>String(s).split(" ").map(function(v){let a=Array.from(v).map((c)=>c.toLowerCase());if(a.length){a[0]=a[0].toUpperCase();}return a.join("");}).join(" ");
+function strCapitalize(s){let a=[...String(s).toLowerCase()];if(a.length){a[0]=a[0].toUpperCase();}return a.join("");}
+function strUpFirst(s){let a=[...String(s)];if(a.length){a[0]=a[0].toUpperCase();}return a.join("");}
+function strDownFirst(s){let a=[...String(s)];if(a.length){a[0]=a[0].toLowerCase();}return a.join("");}
 const strReverse=(s)=>Array.from(String(s)).reverse().join("");
 const strCodePoints=(s)=>Array.from(String(s),(v)=>v.codePointAt(0));
 const strFromCodePoints=([...a])=>String.fromCodePoint(...a);
-function strAt(s,i,nC){var a=Array.from(String(s));if(nC==null){return a.at(i)||"";}i=i<0?a.length+i:i;if(i>a.length){return a.join("");}a[i]=nC;return a.join("");}
+function strAt(s,i,nC){let a=Array.from(String(s));if(nC==null){return a.at(i)||"";}i=i<0?a.length+i:i;if(i>a.length){return a.join("");}a[i]=nC;return a.join("");}
 const strSplice=(s,i,c,...add)=>Array.from(s).toSpliced(i,c,add.join("")).join("");
 const strHTMLRemoveTags=(s)=>String(s).replace(/<[^>]*>/g," ").replace(/\s{2,}/g," ").trim();
 const strHTMLEscape=(s)=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&apos;");
@@ -185,7 +185,7 @@ function size(it){let i=0;for(let _item of it){i++;}return i;}
 function first(it){for(let item of it){return item;}}
 function head(it){for(let item of it){return item;}}
 const last=([...a])=>a[a.length-1];
-function*reverse([...a]){var i=a.length;while(i--){yield a[i];}}
+function*reverse([...a]){let i=a.length;while(i--){yield a[i];}}
 const sort=([...a],ns)=>a.sort(ns?(x,y)=>x-y:undefined);
 function includes(collection,value,comparator){if(comparator!==undefined&&typeof comparator!=="function"){throw new TypeError(`[includes] TypeError:comparator is not a function or undefined. Got ${typeof comparator}`);}const _isIterator=(v)=>v!=null&&typeof v==="object" && typeof v.next==="function";const _isIterable=(v)=>(v!=null && typeof v[Symbol.iterator]==="function");const _isEqual=comparator||((x,y)=>x===y||(x!==x&&y!==y));const cType=(collection===null?"null":typeof collection);if(collection==null||!(["object","function","string"].includes(cType))||collection instanceof WeakMap||collection instanceof WeakSet){return false;}if(typeof collection==="string"||collection instanceof String){return collection.includes(String(value));}if(collection instanceof Map){for(const item of collection.keys()){if(_isEqual(item,value)){return true;}}for(const item of collection.values()){if(_isEqual(item,value)){return true;}}return false;}if(_isIterator(collection)||_isIterable(collection)){for(const item of collection){if(_isEqual(item,value)){return true;}}return false;}if(["object","function"].includes(cType)){for(const item of Object.keys(collection)){if(_isEqual(item,value)){return true;}}for(const item of Object.values(collection)){if(_isEqual(item,value)){return true;}}for(const item of Object.getOwnPropertySymbols(collection)){if(_isEqual(item,value)){return true;}}return false;}return false;}
 function contains(it,v){for(let item of it){if(item===v||(item!==item&&v!==v)){return true;}}return false;}
@@ -213,8 +213,8 @@ const avg=(...a)=>Math.sumPrecise(a)/a.length;
 const product=(f,...a)=>a.reduce((acc,v)=>acc*v,f);
 function clamp(val,min=-9007199254740991,max=9007199254740991){function _normalize(v){if(typeof v!=="bigint"&&typeof v!=="number"){v=Number(v);}if(v===-Infinity){return -9007199254740991;}if(v===Infinity){return 9007199254740991;}if(v===0){return 0;}return v;}val=_normalize(val);min=_normalize(min);max=_normalize(max);if(val!==val){return val;}if(min!==min||max!==max){throw new RangeError("clamp();RangeError: minimum and maximum should not to be NaN");}if(min>max){throw new RangeError("clamp();RangeError: minimum should be lower than maximum");}return (val<min)?min:((val>max)?max:val);}
 function minmax(val,min=-9007199254740991,max=9007199254740991){function _normalize(v){if(typeof v!=="bigint"&&typeof v!=="number"){v=Number(v);}if(v===-Infinity){return -9007199254740991;}if(v===Infinity){return 9007199254740991;}if(v===0){return 0;}return v;}val=_normalize(val);min=_normalize(min);max=_normalize(max);if(val!==val){return val;}if(min!==min||max!==max){throw new RangeError("clamp();RangeError: minimum and maximum should not to be NaN");}if(min>max){throw new RangeError("clamp();RangeError: minimum should be lower than maximum");}return (val<min)?min:((val>max)?max:val);}
-function isEven(v){var r=v%2;if(r===r){return r===0;}return false;}
-function isOdd(v){var r=v%2;if(r===r){return r!==0;}return false;}
+function isEven(v){let r=v%2;if(r===r){return r===0;}return false;}
+function isOdd(v){let r=v%2;if(r===r){return r!==0;}return false;}
 const toInt8=(v)=>((v=Math.min(Math.max(-128,Math.trunc(Number(v))),127))===v)?v:0;
 const toUInt8=(v)=>((v=Math.min(Math.max(0,Math.trunc(Number(v))),255))===v)?v:0;
 const toInt16=(v)=>((v=Math.min(Math.max(-32768,Math.trunc(Number(v))),32767))===v)?v:0;
@@ -236,7 +236,7 @@ const toFloat16=(v)=>((v=Math.min(Math.max(-65504,Number(v)),65504))===v)?v:0;
 const isFloat16=(v)=>((typeof v==="number"&&v===v)?(v>=-65504&&v<=65504):false);
 const signbit=(v)=>(((v=Number(v))!==v)?false:((v<0)||Object.is(v,-0)));
 function randomInt(i=100,a){if(a==null){a=i;i=0;}i=Math.ceil(Number(i));return Math.floor(Math.random()*(Math.floor(Number(a))-i+1)+i);}
-function randomFloat(i=100,a){if(a==null){a=i;i=0;}var r=(Math.random()*(a-i+1))+i;return r>a?a:r;}
+function randomFloat(i=100,a){if(a==null){a=i;i=0;}let r=(Math.random()*(a-i+1))+i;return r>a?a:r;}
 const inRange=(v,min,max)=>(v>=min&&v<=max);
 /** object header **/
 const VERSION="Celestra v6.0.5 nodejs";

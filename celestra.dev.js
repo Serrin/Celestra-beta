@@ -158,9 +158,10 @@ if (!Array.fromAsync) {
       result.length = index;
       return result;
     } else {
-      var l = arrayLike.length,
-        result = isConstructor(this) ? new this(l) : Array(l) , index = 0;
-      while (index < l) {
+      var length = arrayLike.length,
+        result = isConstructor(this) ? new this(length) : Array(length), 
+        index = 0;
+      while (index < length) {
         if (index > Number.MAX_SAFE_INTEGER) { throw TypeError(errorMsg); }
         var item = await arrayLike[index];
         if (!mapfn) {
@@ -234,7 +235,7 @@ if (!("toSpliced" in Array.prototype)) {
       /** @type {number} */ start,
       /** @type {number} */ deleteCount,
       /** @type {any} */ ...items) {
-      var result = this.slice();
+      let result = this.slice();
       result.splice(start, deleteCount, ...items);
       return result;
     }
@@ -250,7 +251,7 @@ if (!("with" in Array.prototype)) {
       /** @type {string | number} */ index,
       /** @type {any} */ value) {
       "use strict";
-      var result = this.slice();
+      let result = this.slice();
       result[index] = value;
       return result;
     }
@@ -287,7 +288,7 @@ if (!("with" in Uint8Array.prototype)) {
       /** @type {string | number} */ index,
       /** @type {any} */ value) {
       "use strict";
-      var result = this.slice();
+      let result = this.slice();
       result[index] = value;
       return result;
     }
@@ -336,13 +337,13 @@ const tap = (/** @type {Function} */ fn) =>
 /* once(function: function): function */
 /** @return {Function} */
 function once (/** @type {Function} */ fn) {
-  let called = false, res;
+  let called = false, result;
   return function (/** @type {any[]} */ ...args) {
     if (!called) {
       called = true;
-      res = fn(...args);
+      result = fn(...args);
     }
-    return res;
+    return result;
   };
 }
 
@@ -601,7 +602,7 @@ function nanoid (
   /** @type {string} */
   alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"
   ) {
-  var result = "", dl = alphabet.length, pos, index = size;
+  let result = "", dl = alphabet.length, pos, index = size;
   while (index--) {
     do { pos = crypto.getRandomValues(new Uint8Array(1))[0]; } while (pos>=dl);
     result += alphabet[pos];
@@ -619,8 +620,8 @@ function timestampID (
   /** @type {string} */
   alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
   ) {
-  var result = Date.now().toString(36).padStart(10, "0") + "-";
-  var dl = alphabet.length, pos, index = ((size > 11) ? size : 12) - 11;
+  let result = Date.now().toString(36).padStart(10, "0") + "-";
+  let dl = alphabet.length, pos, index = ((size > 11) ? size : 12) - 11;
   while (index--) {
     do { pos = crypto.getRandomValues(new Uint8Array(1))[0]; } while (pos >=dl);
     result += alphabet[pos];
@@ -1167,8 +1168,8 @@ function assertDeepEqual (
       if (_isSameInstance(x, y, DataView)) {
         if (x.byteLength !== y.byteLength) { return false; }
         if (x.byteLength === 0) { return true; }
-        for (let i = 0; i < x.byteLength; i++) {
-          if (!_isEqual(x.getUint8(i), y.getUint8(i))) { return false; }
+        for (let index = 0; index < x.byteLength; index++) {
+          if (!_isEqual(x.getUint8(index), y.getUint8(index))) { return false; }
         }
         return true;
       }
@@ -1332,8 +1333,8 @@ function assertNotDeepStrictEqual (
       if (_isSameInstance(x, y, DataView)) {
         if (x.byteLength !== y.byteLength) { return false; }
         if (x.byteLength === 0) { return true; }
-        for (let i = 0; i < x.byteLength; i++) {
-          if (!_isEqual(x.getUint8(i), y.getUint8(i))) { return false; }
+        for (let index = 0; index < x.byteLength; index++) {
+          if (!_isEqual(x.getUint8(index), y.getUint8(index))) { return false; }
         }
         return true;
       }
@@ -1484,8 +1485,8 @@ function assertNotDeepEqual (
       if (_isSameInstance(x, y, DataView)) {
         if (x.byteLength !== y.byteLength) { return false; }
         if (x.byteLength === 0) { return true; }
-        for (let i = 0; i < x.byteLength; i++) {
-          if (!_isEqual(x.getUint8(i), y.getUint8(i))) { return false; }
+        for (let index = 0; index < x.byteLength; index++) {
+          if (!_isEqual(x.getUint8(index), y.getUint8(index))) { return false; }
         }
         return true;
       }
@@ -1647,8 +1648,8 @@ function assertDeepStrictEqual (
       if (_isSameInstance(x, y, DataView)) {
         if (x.byteLength !== y.byteLength) { return false; }
         if (x.byteLength === 0) { return true; }
-        for (let i = 0; i < x.byteLength; i++) {
-          if (!_isEqual(x.getUint8(i), y.getUint8(i))) { return false; }
+        for (let index = 0; index < x.byteLength; index++) {
+          if (!_isEqual(x.getUint8(index), y.getUint8(index))) { return false; }
         }
         return true;
       }
@@ -1737,7 +1738,7 @@ function strTruncate (
   /** @type {string} */ omission = "") {
   str = String(str);
   omission = String(omission);
-  var strUC = Array.from(str);
+  let strUC = Array.from(str);
   if (newLength >= strUC.length) { return str; }
   return strUC.slice(0, newLength-Array.from(omission).length).join("")
     + omission;
@@ -1748,7 +1749,7 @@ function strTruncate (
 /** @return {string} */
 const strPropercase = (/** @type {any} */ str) =>
   String(str).split(" ").map(function (/** @type {string} */ value) {
-    var chars = Array.from(value).map( (c) => c.toLowerCase() );
+    let chars = Array.from(value).map( (c) => c.toLowerCase() );
     if (chars.length) { chars[0] = chars[0].toUpperCase(); }
     return chars.join("");
   }).join(" ");
@@ -1758,7 +1759,7 @@ const strPropercase = (/** @type {any} */ str) =>
 /** @return {string} */
 const strTitlecase = (/** @type {any} */ str) =>
   String(str).split(" ").map(function (/** @type {string} */ value) {
-    var chars = Array.from(value).map( (c) => c.toLowerCase() );
+    let chars = Array.from(value).map( (c) => c.toLowerCase() );
     if (chars.length) { chars[0] = chars[0].toUpperCase(); }
     return chars.join("");
   }).join(" ");
@@ -1767,7 +1768,7 @@ const strTitlecase = (/** @type {any} */ str) =>
 /* strCapitalize(s: any): string */
 /** @return {string} */
 function strCapitalize (/** @type {any} */ str) {
-  var chars = [...String(str).toLowerCase()];
+  let chars = [...String(str).toLowerCase()];
   if (chars.length) { chars[0] = chars[0].toUpperCase(); }
   return chars.join("");
 }
@@ -1776,7 +1777,7 @@ function strCapitalize (/** @type {any} */ str) {
 /* strUpFirst(s: any): string */
 /** @return {string} */
 function strUpFirst (/** @type {any} */ str) {
-  var chars = [...String(str)];
+  let chars = [...String(str)];
   if (chars.length) { chars[0] = chars[0].toUpperCase(); }
   return chars.join("");
 }
@@ -1785,7 +1786,7 @@ function strUpFirst (/** @type {any} */ str) {
 /* strDownFirst(s: any): string */
 /** @return {string} */
 function strDownFirst (/** @type {any} */ str) {
-  var chars = [...String(str)];
+  let chars = [...String(str)];
   if (chars.length) { chars[0] = chars[0].toLowerCase(); }
   return chars.join("");
 }
@@ -1817,7 +1818,7 @@ function strAt (
   /** @type {string} */ str,
    /** @type {number} */ index,
    /** @type {string} */ newChar) {
-  var chars = Array.from(String(str));
+  let chars = Array.from(String(str));
   if (newChar == null) { return chars.at(index) || ""; }
   index = index < 0 ? chars.length + index : index;
   if (index > chars.length) { return chars.join(""); }
@@ -1897,23 +1898,23 @@ function domReady (/** @type {Function} */ fn) {
 /** @return {HTMLElement} */
 function domCreate (
   /** @type {string | Object} */ elType,
-  /** @type {Object} */ ps,
+  /** @type {Object} */ properties,
   /** @type {string} */ innerHTML) {
   if (arguments.length === 1 && typeof elType === "object") {
     var obj = elType;
     elType = obj.elementType;
-    ps = {};
-    for (var p in obj) {
-      if (p !== "elementType") { ps[p] = obj[p]; }
+    properties = {};
+    for (var key in obj) {
+      if (key !== "elementType") { properties[key] = obj[key]; }
     }
   }
   var el = document.createElement(elType);
-  if (ps) {
-    for (var p in ps) {
-      if (p !== "style" || typeof ps[p] === "string") {
-        el[p] = ps[p];
+  if (properties) {
+    for (var key in properties) {
+      if (key !== "style" || typeof properties[key] === "string") {
+        el[key] = properties[key];
       } else {
-        Object.assign(el.style, ps[p]);
+        Object.assign(el.style, properties[key]);
       }
     }
   }
@@ -1925,9 +1926,9 @@ function domCreate (
 /* domToElement(htmlString): element object */
 /** @return {Element | null} */
 function domToElement (/** @type {string} */ str) {
-  var e = document.createElement("div");
-  e.innerHTML = str;
-  return e.firstElementChild;
+  let el = document.createElement("div");
+  el.innerHTML = str;
+  return el.firstElementChild;
 }
 
 
@@ -1961,7 +1962,7 @@ function domFadeIn (
   /** @type {HTMLElement} */ el,
   /** @type {number} */ duration,
   /** @type {string} */ display) {
-  var s = el.style, step = 25/(duration || 500);
+  let s = el.style, step = 25/(duration || 500);
   // @ts-ignore
   s.opacity = (s.opacity || 0);
   s.display = (display || "");
@@ -1977,7 +1978,7 @@ function domFadeIn (
 function domFadeOut (
   /** @type {HTMLElement} */ el,
   /** @type {number} */ duration) {
-  var style = el.style, step = 25/(duration || 500);
+  let style = el.style, step = 25/(duration || 500);
   // @ts-ignore
   style.opacity = (style.opacity || 1);
   (function fade () {
@@ -1995,23 +1996,23 @@ function domFadeToggle (
   /** @type {string} */ display = "") {
   if (globalThis.getComputedStyle(el, null).display === "none") {
     /* same as domFadeIn(); */
-    var s = el.style, step = 25/(duration || 500);
+    var style = el.style, step = 25/(duration || 500);
     // @ts-ignore
-    s.opacity = (s.opacity || 0);
-    s.display = (display || "");
+    style.opacity = (style.opacity || 0);
+    style.display = (display || "");
     (function fade () {
       // @ts-ignore
-      (s.opacity = parseFloat(s.opacity) + step) > 1 ? s.opacity = 1 :
+      (style.opacity = parseFloat(style.opacity) + step) > 1 ? style.opacity = 1 :
         setTimeout(fade, 25);
     })();
   } else {
     /* same as domFadeOut(); */
-    var s = el.style, step = 25/(duration || 500);
+    var style = el.style, step = 25/(duration || 500);
     // @ts-ignore
-    s.opacity = (s.opacity || 1);
+    style.opacity = (style.opacity || 1);
     (function fade () {
       // @ts-ignore
-      (s.opacity -= step) < 0 ? s.display = "none" : setTimeout(fade, 25);
+      (style.opacity -= step) < 0 ? style.display = "none" : setTimeout(fade, 25);
     })();
   }
 }
@@ -2146,7 +2147,7 @@ function importStyle (/** @type {string[]} */ ...styles) {
 /* form2array(form): any[] */
 /** @return {any[]} */
 function form2array (/** @type {any} */ form) {
-  var field, result = [];
+  let field, result = [];
   if (typeof form === "object" && form.nodeName.toLowerCase() === "form") {
     for (var i=0, len=form.elements.length; i<len; i++) {
       field = form.elements[i];
@@ -2182,7 +2183,7 @@ function form2array (/** @type {any} */ form) {
 /* form2string(form): string */
 /** @return {string} */
 function form2string (/** @type {any} */ form) {
-  var field, result = [];
+  let field, result = [];
   if (typeof form === "object" && form.nodeName.toLowerCase() === "form") {
     for (var i=0, len=form.elements.length; i<len; i++) {
       field = form.elements[i];
@@ -2248,17 +2249,17 @@ function createFile (
   /** @type {string} */ filename,
   /** @type {string} */ content,
   /** @type {string} */ dataType) {
-  var l = arguments.length;
-  if (l > 1) {
-    if (l === 2) { dataType = "text/plain"; }
-    var b = new Blob([content], {type: dataType});
+  let length = arguments.length;
+  if (length > 1) {
+    if (length === 2) { dataType = "text/plain"; }
+    var blob = new Blob([content], {type: dataType});
     // @ts-ignore
     if (globalThis.navigator.msSaveOrOpenBlob) {
       // @ts-ignore
-      globalThis.navigator.msSaveBlob(b, filename);
+      globalThis.navigator.msSaveBlob(blob, filename);
     } else {
       var el = globalThis.document.createElement("a");
-      el.href = globalThis.URL.createObjectURL(b);
+      el.href = globalThis.URL.createObjectURL(blob);
       el.download = filename;
       document.body.appendChild(el);
       el.click();
@@ -2289,17 +2290,17 @@ const getFullscreen = () => (
 /* setFullscreenOn(selector string): undefined */
 /** @return {void} */
 function setFullscreenOn (/** @type {HTMLElement | string} */ el) {
-  let e;
-  if (typeof el === "string") { e = document.querySelector(el); }
-    else if (typeof el === "object") { e = el; }
+  let elem;
+  if (typeof el === "string") { elem = document.querySelector(el); }
+    else if (typeof el === "object") { elem = el; }
   // @ts-ignore
-  if (e.requestFullscreen) { e.requestFullscreen(); }
+  if (elem.requestFullscreen) { elem.requestFullscreen(); }
     // @ts-ignore
-    else if (e.mozRequestFullScreen) { e.mozRequestFullScreen(); }
+    else if (elem.mozRequestFullScreen) { elem.mozRequestFullScreen(); }
     // @ts-ignore
-    else if (e.webkitRequestFullscreen) { e.webkitRequestFullscreen(); }
+    else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); }
     // @ts-ignore
-    else if (e.msRequestFullscreen) { e.msRequestFullscreen(); }
+    else if (elem.msRequestFullscreen) { elem.msRequestFullscreen(); }
 }
 
 
@@ -2848,8 +2849,8 @@ function isDeepStrictEqual (/** @type {any} */ x, /** @type {any} */ y) {
     if (_isSameInstance(x, y, DataView)) {
       if (x.byteLength !== y.byteLength) { return false; }
       if (x.byteLength === 0) { return true; }
-      for (let i = 0; i < x.byteLength; i++) {
-        if (!_isEqual(x.getUint8(i), y.getUint8(i))) { return false; }
+      for (let index = 0; index < x.byteLength; index++) {
+        if (!_isEqual(x.getUint8(index), y.getUint8(index))) { return false; }
       }
       return true;
     }
@@ -3178,9 +3179,9 @@ function setCookie (
 function getCookie (/** @type {string | undefined} */ name) {
   if (document.cookie.length !== 0) {
     var result = {}, array = document.cookie.split(";");
-    for(var i = 0, l = array.length; i < l; i++) {
-      var e = array[i].trim().split("=");
-      result[decodeURIComponent(e[0])] = decodeURIComponent(e[1]);
+    for(var index = 0, length = array.length; index < length; index++) {
+      var record = array[index].trim().split("=");
+      result[decodeURIComponent(record[0])] = decodeURIComponent(record[1]);
     }
     return (name ? (result[name] ? result[name] : null) : result);
   }
@@ -3248,8 +3249,8 @@ function clearCookies (
   }
   if (document.cookie.length !== 0) {
     var array = document.cookie.split(";");
-    for(var i = 0, length = array.length; i < length; i++) {
-      document.cookie = encodeURIComponent(array[i].trim().split("=")[0])
+    for(var index = 0, length = array.length; index < length; index++) {
+      document.cookie = encodeURIComponent(array[index].trim().split("=")[0])
         + "=; expires=Thu, 01 Jan 1970 00:00:01 GMT"
         + "; path=" + path
         + (domain ? "; domain=" + domain : "")
@@ -3318,9 +3319,9 @@ const initial = (/** @type {Iterable<any>} */ [...array]) => array.slice(0, -1);
 /* shuffle(iterator: iterator): array */
 /** @return {any[]} */
 function shuffle(/** @type {Iterable<any>} */ [...array]) {
-  for (let i = array.length - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
+  for (let index = array.length - 1; index > 0; index--) {
+    let pos = Math.floor(Math.random() * (index + 1));
+    [array[index], array[pos]] = [array[pos], array[index]];
   }
   return array;
 }
@@ -3440,7 +3441,9 @@ function zipObj (
   /** @type {Iterable<any>} */ [...array1],
   /** @type {Iterable<any>} */ [...array2]) {
   let result = {}, length = Math.min(array1.length, array2.length);
-  for (let i = 0; i < length; i++) { result[array1[i]] = array2[i]; }
+  for (let index = 0; index < length; index++) { 
+    result[array1[index]] = array2[index]; 
+  }
   return result;
 }
 
@@ -3566,10 +3569,10 @@ function* takeWhile (
 function* dropWhile (
   /** @type {Iterable<any>} */ iter,
   /** @type {Function} */ fn) {
-  let d = true;
+  let dropping = true;
   for (let item of iter) {
-    if (d && !fn(item)) { d = false; }
-    if (!d) { yield item; }
+    if (dropping && !fn(item)) { dropping = false; }
+    if (!dropping) { yield item; }
   }
 }
 
@@ -3741,7 +3744,7 @@ const last = (/** @type {Iterable<any>} */ [...array]) =>
 /* reverse(iterator: iterator): iterator */
 /** @return {Iterator<any>} */
 function* reverse (/** @type {Iterable<any>} */ [...array]) {
-  var index = array.length;
+  let index = array.length;
   while (index--) { yield array[index]; }
 }
 
@@ -4148,7 +4151,7 @@ function minmax(
 /* isEven(value: number): boolan */
 /** @return {boolean} */
 function isEven (/** @type {number} */ value) {
-  var result = value % 2;
+  let result = value % 2;
   if (result === result) { return result === 0; }
   return false;
 }
@@ -4157,7 +4160,7 @@ function isEven (/** @type {number} */ value) {
 /* isOdd(value: number): boolean */
 /** @return {boolean} */
 function isOdd (/** @type {number} */ value) {
-  var result = value % 2;
+  let result = value % 2;
   if (result === result) { return result !== 0; }
   return false;
 }
@@ -4327,7 +4330,7 @@ function randomFloat (
     max = min;
     min = 0;
   }
-  var result = (Math.random() * (max - min + 1)) + min;
+  let result = (Math.random() * (max - min + 1)) + min;
   return result > max ? max : result;
 }
 

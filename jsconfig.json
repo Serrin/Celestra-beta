@@ -11,7 +11,6 @@
     // "node16", "node18", "node20", "nodenext", "preserve",
     //"moduleResolution": "nodenext",
     // "node16", "nodenext", "node10", "bundler"
-    "allowJs": true,
     "checkJs": true,
     "strict": true,
     "allowUnreachableCode": false,
@@ -33,14 +32,25 @@
     "useUnknownInCatchVariables": true,
     "allowUmdGlobalAccess": true,
     "noUncheckedSideEffectImports": false,
-    "declaration": true,
-    "emitDeclarationOnly": true,
+    "sourceMap": true,
     "downlevelIteration": false,
     "newLine": "CRLF", // "CRLF", "LF",
     "allowSyntheticDefaultImports": false,
-    "declarationMap": true
+    // from https://www.typescriptlang.org/docs/handbook/declaration-files/dts-from-js.html
+    // Tells TypeScript to read JS files, as normally they are ignored as source files
+    "allowJs": true,
+    // Generate d.ts files
+    "declaration": true,
+    // This compiler run should only output d.ts files
+    // go to js file when using IDE functions like "Go to Definition" in VSCode
+    "declarationMap": true,
+    "emitDeclarationOnly": true,
+    // Types should go into this directory.
+    // Removing this would place the .d.ts files next to the .js files
+    "outDir": "."
   },
   "files": ["./celestra.dev.js", "./unittest.js", "./unittest.node.js"],
+  // //"include": ["src/**/*"],
   "include": ["./*.js", "./*.mjs", "./*.cjs"],
   "exclude": [
     "./celestra.esm.js",
