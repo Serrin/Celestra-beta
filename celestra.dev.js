@@ -142,7 +142,7 @@ if (!Array.fromAsync) {
       (typeof value === "function" && typeof value.prototype === "object");
     const errorMsg = "Input length exceed the Number.MAX_SAFE_INTEGER.";
     if (Symbol.asyncIterator in arrayLike || Symbol.iterator in arrayLike) {
-      var result = isConstructor(this) ? new this : Array(0), index = 0;
+      let result = isConstructor(this) ? new this : Array(0), index = 0;
       for await (const item of arrayLike) {
         if (index > Number.MAX_SAFE_INTEGER) {
           throw TypeError(errorMsg);
@@ -158,12 +158,12 @@ if (!Array.fromAsync) {
       result.length = index;
       return result;
     } else {
-      var length = arrayLike.length,
-        result = isConstructor(this) ? new this(length) : Array(length), 
+      let length = arrayLike.length,
+        result = isConstructor(this) ? new this(length) : Array(length),
         index = 0;
       while (index < length) {
         if (index > Number.MAX_SAFE_INTEGER) { throw TypeError(errorMsg); }
-        var item = await arrayLike[index];
+        let item = await arrayLike[index];
         if (!mapfn) {
           result[index] = item;
         } else {
@@ -363,7 +363,8 @@ function curry (/** @type {Function} */ fn) {
 /** @return {Function} */
 const pipe = (/** @type {Function[]} */ ...functions) =>
   (/** @type {any} */ first) =>
-    functions.reduce((value, fn) => fn(value), first);
+    functions.reduce((/** @type {any} */value, /** @type {Function} */fn) =>
+      fn(value), first);
 
 
 /* compose (function1: function [, functionN: function]): function */
@@ -438,7 +439,7 @@ function deleteOwnProperty (
   /** @type {boolean} */ Throw = false) {
   if (Object.hasOwn(obj, property)) {
     delete obj[property];
-    var result = Object.hasOwn(obj, property);
+    let result = Object.hasOwn(obj, property);
     if (result && Throw) {
       throw new Error("Celestra.deleteOwnProperty(); error");
     }
@@ -526,15 +527,16 @@ const obj2string = (/** @type {Object} */ obj) => Object.keys(obj).reduce(
 /** @return {Object} */
 function extend (/** @type {Object[]} */ ...args) {
   function _EXT (/** @type {Object[]} */ ...args) {
+    let targetObject, deep, start;
     if (typeof args[0] === "boolean") {
-      var targetObject = args[1], deep = args[0], start = 2;
+      targetObject = args[1], deep = args[0], start = 2;
     } else {
-      var targetObject = args[0], deep = false, start = 1;
+      targetObject = args[0], deep = false, start = 1;
     }
-    for (var i = start, length = args.length, sourceObject; i < length; i++) {
+    for (let i = start, length = args.length, sourceObject; i < length; i++) {
       sourceObject = args[i];
       if (sourceObject != null) {
-        for (var key in sourceObject) {
+        for (let key in sourceObject) {
           if (Object.hasOwn(sourceObject, key)) {
             if (typeof sourceObject[key] === "object" && deep) {
               targetObject[key] = _EXT(true, {}, sourceObject[key]);
@@ -1868,7 +1870,7 @@ const strHTMLUnEscape = (/** @type {string} */ str) => String(str)
 /* qsa(selector: string [, context: element object]): array */
 /** @return {any[]} */
 const qsa = (
-  /** @type {string} */ str, 
+  /** @type {string} */ str,
   /** @type {Object} */ context = document) =>
   Array.from(context.querySelectorAll(str));
 
@@ -1876,7 +1878,7 @@ const qsa = (
 /* qs(selector: string [, context: element object]): element object | null */
 /** @return {HTMLElement} */
 const qs = (
-  /** @type {string} */ str, 
+  /** @type {string} */ str,
   /** @type {Object} */ context = document) =>
   context.querySelector(str);
 
@@ -1901,16 +1903,16 @@ function domCreate (
   /** @type {Object} */ properties,
   /** @type {string} */ innerHTML) {
   if (arguments.length === 1 && typeof elType === "object") {
-    var obj = elType;
+    let obj = elType;
     elType = obj.elementType;
     properties = {};
-    for (var key in obj) {
+    for (let key in obj) {
       if (key !== "elementType") { properties[key] = obj[key]; }
     }
   }
-  var el = document.createElement(elType);
+  let el = document.createElement(elType);
   if (properties) {
-    for (var key in properties) {
+    for (let key in properties) {
       if (key !== "style" || typeof properties[key] === "string") {
         el[key] = properties[key];
       } else {
@@ -1996,7 +1998,7 @@ function domFadeToggle (
   /** @type {string} */ display = "") {
   if (globalThis.getComputedStyle(el, null).display === "none") {
     /* same as domFadeIn(); */
-    var style = el.style, step = 25/(duration || 500);
+    let style = el.style, step = 25/(duration || 500);
     // @ts-ignore
     style.opacity = (style.opacity || 0);
     style.display = (display || "");
@@ -2007,7 +2009,7 @@ function domFadeToggle (
     })();
   } else {
     /* same as domFadeOut(); */
-    var style = el.style, step = 25/(duration || 500);
+    let style = el.style, step = 25/(duration || 500);
     // @ts-ignore
     style.opacity = (style.opacity || 1);
     (function fade () {
@@ -2149,7 +2151,7 @@ function importStyle (/** @type {string[]} */ ...styles) {
 function form2array (/** @type {any} */ form) {
   let field, result = [];
   if (typeof form === "object" && form.nodeName.toLowerCase() === "form") {
-    for (var i=0, len=form.elements.length; i<len; i++) {
+    for (let i=0, len=form.elements.length; i<len; i++) {
       field = form.elements[i];
       if (field.name && !field.disabled
         && field.type !== "file"
@@ -2157,7 +2159,7 @@ function form2array (/** @type {any} */ form) {
         && field.type !== "submit"
         && field.type !== "button") {
         if (field.type === "select-multiple") {
-          for (var j=0, l=form.elements[i].options.length; j<l; j++) {
+          for (let j=0, l=form.elements[i].options.length; j<l; j++) {
             if(field.options[j].selected) {
               result.push({
                 "name": encodeURIComponent(field.name),
@@ -2185,7 +2187,7 @@ function form2array (/** @type {any} */ form) {
 function form2string (/** @type {any} */ form) {
   let field, result = [];
   if (typeof form === "object" && form.nodeName.toLowerCase() === "form") {
-    for (var i=0, len=form.elements.length; i<len; i++) {
+    for (let i=0, len=form.elements.length; i<len; i++) {
       field = form.elements[i];
       if (field.name && !field.disabled
         && field.type !== "file"
@@ -2193,7 +2195,7 @@ function form2string (/** @type {any} */ form) {
         && field.type !== "submit"
         && field.type !== "button") {
         if (field.type === "select-multiple") {
-          for (var j=0, l=form.elements[i].options.length; j<l; j++) {
+          for (let j=0, l=form.elements[i].options.length; j<l; j++) {
             if(field.options[j].selected) {
               result.push(encodeURIComponent(field.name)
                 + "=" + encodeURIComponent(field.options[j].value));
@@ -2217,7 +2219,7 @@ function form2string (/** @type {any} */ form) {
 const getDoNotTrack = () =>
   // @ts-ignore
   [navigator.doNotTrack, globalThis.doNotTrack, navigator.msDoNotTrack]
-    .some((/** @type {any} */ item) => 
+    .some((/** @type {any} */ item) =>
       (item === true || item === 1 || item === "1")
     );
 
@@ -2227,8 +2229,7 @@ const getDoNotTrack = () =>
 function getLocation (
   /** @type {Function} */ successFn,
   /** @type {Function} */ errorFn) {
-  // @ts-ignore
-  if (!errorFn) { var errorFn = function () {}; }
+  if (!errorFn) { errorFn = function () {}; }
   function getE (/** @type {any} */ error) {
     // @ts-ignore
     errorFn("ERROR(" + error.code + "): " + error.message);
@@ -2252,22 +2253,16 @@ function createFile (
   let length = arguments.length;
   if (length > 1) {
     if (length === 2) { dataType = "text/plain"; }
-    var blob = new Blob([content], {type: dataType});
-    // @ts-ignore
-    if (globalThis.navigator.msSaveOrOpenBlob) {
-      // @ts-ignore
-      globalThis.navigator.msSaveBlob(blob, filename);
-    } else {
-      var el = globalThis.document.createElement("a");
-      el.href = globalThis.URL.createObjectURL(blob);
-      el.download = filename;
-      document.body.appendChild(el);
-      el.click();
-      document.body.removeChild(el);
-      globalThis.URL.revokeObjectURL(el.href);
-    }
+    let blob = new Blob([content], {type: dataType});
+    let el = globalThis.document.createElement("a");
+    el.href = globalThis.URL.createObjectURL(blob);
+    el.download = filename;
+    document.body.appendChild(el);
+    el.click();
+    document.body.removeChild(el);
+    globalThis.URL.revokeObjectURL(el.href);
   } else {
-    throw "Celestra createFile error: too few parameters.";
+    throw new Error("Celestra createFile error: too few parameters.");
   }
 }
 
@@ -2358,7 +2353,7 @@ const domScrollToElement = (
 /** @return {void} */
 // @ts-ignore
 const domClear = (/** @type {Element} */ el) =>
-  Array.from(el.children).forEach((/** @type {Element} */ item) => 
+  Array.from(el.children).forEach((/** @type {Element} */ item) =>
     item.remove());
 
 
@@ -2368,7 +2363,7 @@ const domClear = (/** @type {Element} */ el) =>
 /* getText(url: string, success: function): undefined */
 /** @return {void} */
 function getText (
-  /** @type {string} */ url, 
+  /** @type {string} */ url,
   /** @type {Function} */ successFn) {
   if (typeof url !== "string") {
     throw new TypeError(
@@ -2380,7 +2375,7 @@ function getText (
       "Celestra ajax error: The success parameter have to be a function."
     );
   }
-  var xhr = new XMLHttpRequest();
+  let xhr = new XMLHttpRequest();
   xhr.onerror = (e) => console.log(
     "Celestra ajax GET error: " + JSON.stringify(e)
   );
@@ -2398,7 +2393,7 @@ function getText (
 /* getJson(url: string, success: function): undefined */
 /** @return {void} */
 function getJson (
-  /** @type {string} */ url, 
+  /** @type {string} */ url,
   /** @type {Function} */ successFn) {
   if (typeof url !== "string") {
     throw new TypeError(
@@ -2410,7 +2405,7 @@ function getJson (
       "Celestra ajax error: The success parameter have to be a function."
     );
   }
-  var xhr = new XMLHttpRequest();
+  let xhr = new XMLHttpRequest();
   xhr.onerror = (e) => console.log(
     "Celestra ajax GET error: " + JSON.stringify(e)
   );
@@ -2458,22 +2453,27 @@ function ajax (/** @type {Object} */ options) {
   } else {
     options.type = options.type.toLowerCase();
   }
+  let typeStr;
   if (options.type === "get") {
-    var typeStr = "GET";
+    typeStr = "GET";
   } else if (options.type === "post") {
-    var typeStr = "POST";
+    typeStr = "POST";
   } else {
-    throw "Celestra ajax error: The type property has to be \"get\" or \"post\".";
+    throw new Error(
+      "Celestra ajax error: The type property has to be \"get\" or \"post\"."
+    );
   }
   if (!options.format) {
     options.format = "text";
   } else {
     options.format = options.format.toLowerCase();
     if (!(["text", "json", "xml"].includes(options.format))) {
-      throw "Celestra ajax error: The format property has to be \"text\" or \"json\" or \"xml\".";
+      throw new Error(
+        "Celestra ajax error: The format property has to be \"text\" or \"json\" or \"xml\"."
+      );
     }
   }
-  var xhr;
+  let xhr;
   if (options.queryType === "ajax") {
     xhr = new XMLHttpRequest();
   } else if (options.queryType === "cors") {
@@ -2481,9 +2481,11 @@ function ajax (/** @type {Object} */ options) {
     // @ts-ignore
     if (!("withCredentials" in xhr)) { xhr = new XDomainRequest(); }
   } else {
-    throw "Celestra ajax error: The querytype property has to be \"ajax\" or \"cors\".";
+    throw new Error(
+      "Celestra ajax error: The querytype property has to be \"ajax\" or \"cors\"."
+    );
   }
-  if (typeof options.user === "string" 
+  if (typeof options.user === "string"
       && typeof options.password === "string"
   ) {
     xhr.open(
@@ -2620,7 +2622,7 @@ function classof (
   /** @type {any} */ value,
   /** @type {string} */ type,
   /** @type {boolean} */ Throw = false) {
-  var ot = Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
+  let ot = Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
   if (arguments.length < 2) { return ot; }
   if (!Throw) { return ot === type.toLowerCase(); }
   if (ot !== type.toLowerCase()) {
@@ -2638,7 +2640,7 @@ function getType (
   /** @type {any} */ value,
   /** @type {string} */ type,
   /** @type {boolean} */ Throw = false) {
-  var ot = Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
+  let ot = Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
   if (arguments.length < 2) { return ot; }
   if (!Throw) { return ot === type.toLowerCase(); }
   if (ot !== type.toLowerCase()) {
@@ -3149,7 +3151,7 @@ function setCookie (
   /** @type {string} */ SameSite = "Lax",
   /** @type {boolean} */ HttpOnly) {
   if (typeof name === "object") {
-    var settings = name;
+    let settings = name;
     name = settings.name;
     value = settings.value;
     hours = settings.hours || 8760;
@@ -3159,7 +3161,7 @@ function setCookie (
     SameSite = settings.SameSite || "Lax";
     HttpOnly = settings.HttpOnly;
   }
-  var expire = new Date();
+  let expire = new Date();
   expire.setTime(expire.getTime() + (Math.round(hours * 60 * 60 * 1000)));
   document.cookie = encodeURIComponent(name)
     + "=" + encodeURIComponent(value)
@@ -3178,9 +3180,9 @@ function setCookie (
 /** @return {Object | string} */
 function getCookie (/** @type {string | undefined} */ name) {
   if (document.cookie.length !== 0) {
-    var result = {}, array = document.cookie.split(";");
-    for(var index = 0, length = array.length; index < length; index++) {
-      var record = array[index].trim().split("=");
+    let result = {}, array = document.cookie.split(";");
+    for(let index = 0, length = array.length; index < length; index++) {
+      let record = array[index].trim().split("=");
       result[decodeURIComponent(record[0])] = decodeURIComponent(record[1]);
     }
     return (name ? (result[name] ? result[name] : null) : result);
@@ -3207,7 +3209,7 @@ function removeCookie (
   /** @type {string} */ SameSite="Lax",
   /** @type {boolean} */ HttpOnly){
   if (typeof name === "object") {
-    var settings = name;
+    let settings = name;
     name = settings.name;
     path = settings.path || "/";
     domain = settings.domain;
@@ -3215,7 +3217,7 @@ function removeCookie (
     SameSite = settings.SameSite || "Lax";
     HttpOnly = settings.HttpOnly;
   }
-  var result = (document.cookie.includes(encodeURIComponent(name) + "="));
+  let result = (document.cookie.includes(encodeURIComponent(name) + "="));
   document.cookie = encodeURIComponent(name)
     + "=; expires=Thu, 01 Jan 1970 00:00:01 GMT"
     + "; path=" + path
@@ -3240,7 +3242,7 @@ function clearCookies (
   /** @type {string} */ SameSite = "Lax",
   /** @type {boolean} */ HttpOnly) {
   if (typeof path === "object") {
-    var settings = path;
+    let settings = path;
     path = settings.path || "/";
     domain = settings.domain;
     secure = settings.secure;
@@ -3248,8 +3250,8 @@ function clearCookies (
     HttpOnly = settings.HttpOnly;
   }
   if (document.cookie.length !== 0) {
-    var array = document.cookie.split(";");
-    for(var index = 0, length = array.length; index < length; index++) {
+    let array = document.cookie.split(";");
+    for(let index = 0, length = array.length; index < length; index++) {
       document.cookie = encodeURIComponent(array[index].trim().split("=")[0])
         + "=; expires=Thu, 01 Jan 1970 00:00:01 GMT"
         + "; path=" + path
@@ -3441,8 +3443,8 @@ function zipObj (
   /** @type {Iterable<any>} */ [...array1],
   /** @type {Iterable<any>} */ [...array2]) {
   let result = {}, length = Math.min(array1.length, array2.length);
-  for (let index = 0; index < length; index++) { 
-    result[array1[index]] = array2[index]; 
+  for (let index = 0; index < length; index++) {
+    result[array1[index]] = array2[index];
   }
   return result;
 }
