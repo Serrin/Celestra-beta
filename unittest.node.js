@@ -3,13 +3,13 @@
 
 console.log("\x1b[40m\x1b[37m"); /* black - white */
 
-/* import method 1 - defaultExport */
+// /* import method 1 - defaultExport */
 // /*
 console.log("import method 1 - defaultExport");
 import defaultExport from "./celestra.node.mjs";
 globalThis.celestra = defaultExport;
 globalThis.CEL = defaultExport;
-//*/
+// */
 
 /* import method 2 - default as celestra */
 /*
@@ -48,8 +48,9 @@ CUT.__addTest__ = function __addTest__ (
     console.log(resultStr);
     */
   } else {
-    let resultStr = "[" + Date.now().toString(36) + "] [failed] " + step;
-    console.error("\x1b[40m\x1b[31m" + resultStr + "\x1b[40m\x1b[37m");
+    let resultStr = "" + "\x1b[40m\x1b[31m❌\x1b[40m\x1b[37m [" + Date.now().toString(36)
+      + "] \x1b[41m\x1b[37m[failed]\x1b[40m\x1b[37m " + step; //
+    console.error(resultStr);
     /* black - red */
   }
 };
@@ -144,9 +145,8 @@ CUT.isError = function (
 /* log(<innerHTML>); */
 CUT.log = function log (/** @type {any} */ str) {
   console.log(
-    "\x1b[40m\x1b[36m"
-      + "[" + Date.now().toString(36) + "] [info] " + str
-      + "\x1b[40m\x1b[37m"
+    "\x1b[40m\x1b[36m" + "\u2139\x1b[40m\x1b[37m"
+      + "  [" + Date.now().toString(36) + "] \x1b[44m\x1b[37m[info]\x1b[40m\x1b[37m " + str
     /* black - cyan */
   );
 };
@@ -154,9 +154,9 @@ CUT.log = function log (/** @type {any} */ str) {
 /* logCode(<innerHTML>); */
 CUT.logCode = function log (/** @type {any} */ str) {
   console.log(
-    "\x1b[40m\x1b[36m"
-      + "[" + Date.now().toString(36) + "] [code] " + "`" + str + "`"
-      + "\x1b[40m\x1b[37m"
+    "\x1b[40m\x1b[36m" + "\uD83D\uDEC8"
+      + "  [" + Date.now().toString(36) + "] [code] "
+      + "`" + "\x1b[40m\x1b[37m" + str + "`"
     /* black - cyan */
   );
 };
@@ -241,34 +241,33 @@ try {
 /** Selftest **/
 CUT.log("CUT Selftest");
 
-CUT.__addTest__("[Selftest] - __addTest__(); success", 1, 1);
-CUT.__addTest__("[Selftest] - __addTest__(); failed", 1, 2);
-CUT.__addTest__("[Selftest] - __addTest__(); success non-strict",
+CUT.__addTest__("[Selftest] ✅ - __addTest__(); success", 1, 1);
+CUT.__addTest__("[Selftest] ✅ - __addTest__(); failed", 1, 2);
+CUT.__addTest__("[Selftest] ✅ - __addTest__(); success non-strict",
   0, false, false
 );
-CUT.__addTest__("[Selftest] - __addTest__(); failed strict", 0, false, true);
+CUT.__addTest__("[Selftest] ✅ - __addTest__(); failed strict", 0, false, true);
 
-CUT.isTrue("[Selftest] - isTrue(); success", true);
-CUT.isTrue("[Selftest] - isTrue(); failed", false);
+CUT.isTrue("[Selftest] ✅ - isTrue(); success", true);
+CUT.isTrue("[Selftest] ✅ - isTrue(); failed", false);
 
-CUT.isFalse("[Selftest] - isFalse(); success", false);
-CUT.isFalse("[Selftest] - isFalse(); failed", true);
+CUT.isFalse("[Selftest] ✅ - isFalse(); success", false);
+CUT.isFalse("[Selftest] ✅ - isFalse(); failed", true);
 
-CUT.isEqual("[Selftest] - isEqual(); success", 1, 1);
-CUT.isEqual("[Selftest] - isEqual(); failed", 1, 2);
+CUT.isEqual("[Selftest] ✅ - isEqual(); success", 1, 1);
+CUT.isEqual("[Selftest] ✅ - isEqual(); failed", 1, 2);
 CUT.isEqual(
-  "[Selftest] - isEqual(); success non-strict",
-  0, false, false
+  "[Selftest] ✅ - isEqual(); success non-strict", 0, false, false
 );
-CUT.isEqual("[Selftest] - isEqual(); failed strict", 0, false, true);
+CUT.isEqual("[Selftest] ✅ - isEqual(); failed strict", 0, false, true);
 
-CUT.isNotEqual("[Selftest] - isNotEqual(); success", 1, 2);
-CUT.isNotEqual("[Selftest] - isNotEqual(); failed", 1, 1);
+CUT.isNotEqual("[Selftest] ✅ - isNotEqual(); success", 1, 2);
+CUT.isNotEqual("[Selftest] ✅ - isNotEqual(); failed", 1, 1);
 CUT.isNotEqual(
-  "[Selftest] - isNotEqual(); success strict", 0, false, true
+  "[Selftest] ✅ - isNotEqual(); success strict", 0, false, true
 );
 CUT.isNotEqual(
-  "[Selftest] - isNotEqual(); failed non-strict", 0, false, false
+  "[Selftest] ✅ - isNotEqual(); failed non-strict", 0, false, false
 );
 
 } catch (e) {
@@ -423,6 +422,13 @@ CUT.isError("is(); error 6", () => CEL.is("dsgds", "string", 42));
 CUT.isError("is(); error 7", () => CEL.is("fsdds", "number", true));
 CUT.isError("is(); error 8", () => CEL.is("fsdds", Map, true));
 /* is(); end */
+
+
+/* toSafeString(); */
+CUT.isEqual("toSafeString(); 01", CEL.toSafeString({"a": 1}), '{"a":1}');
+CUT.isEqual("toSafeString(); 02", CEL.toSafeString(Symbol("a")), '"Symbol(a)"');
+CUT.isEqual("toSafeString(); 03", CEL.toSafeString(null), "null");
+CUT.isEqual("toSafeString(); 04", CEL.toSafeString(undefined), "undefined");
 
 
 /* tap(); */
@@ -5228,6 +5234,35 @@ CUT.isEqual("arrayCycle(); 04",
   "[[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5],[3,4],[4,5]]"
 );
 /* arrayCycle(); end */
+
+
+/* castArray(); */
+CUT.isEqual("castArray(); 01",
+  JSON.stringify(CEL.castArray("abc")),
+  "[\"abc\"]"
+);
+CUT.isEqual("castArray(); 02",
+  JSON.stringify(CEL.castArray(3)),
+  "[3]"
+);
+CUT.isEqual("castArray(); 03",
+  JSON.stringify(CEL.castArray([3, 4, 5])),
+  "[3,4,5]"
+);
+CUT.isEqual("castArray(); 04", JSON.stringify(CEL.castArray()), "[]");
+CUT.isEqual("castArray(); 05", JSON.stringify(CEL.castArray(null)), "[null]");
+
+
+/* compact(); */
+CUT.isEqual("compact(); 01", JSON.stringify(CEL.compact([])), "[]");
+CUT.isEqual("compact(); 02",
+  JSON.stringify(
+    CEL.compact(
+      [0, 1, false, 2, "", 3, null, 4, undefined, 5, NaN, "dsfsd", true]
+    )
+  ),
+  "[0,1,2,3,4,5,\"dsfsd\",true]"
+);
 
 
 /* arrayRepeat(); */

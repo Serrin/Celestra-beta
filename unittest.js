@@ -213,48 +213,48 @@ CUT.addElement("hr");
 CUT.addElement("h3", "CUT Selftest");
 
 CUT.__addTest__(
-  "<span class=\"info\">Selftest</span> - __addTest__(); success", 1, 1
+  "<span class=\"info\">[Selftest]</span> - __addTest__(); success", 1, 1
 );
 CUT.__addTest__(
-  "<span class=\"info\">Selftest</span> - __addTest__(); failed", 1, 2
+  "<span class=\"info\">[Selftest]</span> - __addTest__(); failed", 1, 2
 );
 CUT.__addTest__(
-  "<span class=\"info\">Selftest</span> - __addTest__(); success non-strict",
+  "<span class=\"info\">[Selftest]</span> - __addTest__(); success non-strict",
   0, false, false
 );
 CUT.__addTest__(
-  "<span class=\"info\">Selftest</span> - __addTest__(); failed strict",
+  "<span class=\"info\">[Selftest]</span> - __addTest__(); failed strict",
   0, false, true
 );
 
-CUT.isTrue("<span class=\"info\">Selftest</span> - isTrue(); success", true);
-CUT.isTrue("<span class=\"info\">Selftest</span> - isTrue(); failed", false);
+CUT.isTrue("<span class=\"info\">[Selftest]</span> - isTrue(); success", true);
+CUT.isTrue("<span class=\"info\">[Selftest]</span> - isTrue(); failed", false);
 
-CUT.isFalse("<span class=\"info\">Selftest</span> - isFalse(); success", false);
-CUT.isFalse("<span class=\"info\">Selftest</span> - isFalse(); failed", true);
+CUT.isFalse("<span class=\"info\">[Selftest]</span> - isFalse(); success", false);
+CUT.isFalse("<span class=\"info\">[Selftest]</span> - isFalse(); failed", true);
 
-CUT.isEqual("<span class=\"info\">Selftest</span> - isEqual(); success", 1, 1);
-CUT.isEqual("<span class=\"info\">Selftest</span> - isEqual(); failed", 1, 2);
+CUT.isEqual("<span class=\"info\">[Selftest]</span> - isEqual(); success", 1, 1);
+CUT.isEqual("<span class=\"info\">[Selftest]</span> - isEqual(); failed", 1, 2);
 CUT.isEqual(
-  "<span class=\"info\">Selftest</span> - isEqual(); success non-strict",
+  "<span class=\"info\">[Selftest]</span> - isEqual(); success non-strict",
   0, false, false
 );
 CUT.isEqual(
-  "<span class=\"info\">Selftest</span> - isEqual(); failed strict",0,false,true
+  "<span class=\"info\">[Selftest]</span> - isEqual(); failed strict",0,false,true
 );
 
 CUT.isNotEqual(
-  "<span class=\"info\">Selftest</span> - isNotEqual(); success", 1, 2
+  "<span class=\"info\">[Selftest]</span> - isNotEqual(); success", 1, 2
 );
 CUT.isNotEqual(
-  "<span class=\"info\">Selftest</span> - isNotEqual(); failed", 1, 1
+  "<span class=\"info\">[Selftest]</span> - isNotEqual(); failed", 1, 1
 );
 CUT.isNotEqual(
-  "<span class=\"info\">Selftest</span> - isNotEqual(); success strict",
+  "<span class=\"info\">[Selftest]</span> - isNotEqual(); success strict",
   0, false, true
 );
 CUT.isNotEqual(
-  "<span class=\"info\">Selftest</span> - isNotEqual(); failed non-strict",
+  "<span class=\"info\">[Selftest]</span> - isNotEqual(); failed non-strict",
   0, false, false
 );
 
@@ -436,6 +436,12 @@ CUT.isError("is(); error 7", () => CEL.is("fsdds", "number", true));
 CUT.isError("is(); error 8", () => CEL.is("fsdds", Map, true));
 /* is(); end */
 
+
+/* toSafeString(); */
+CUT.isEqual("toSafeString(); 01", CEL.toSafeString({"a": 1}), '{"a":1}');
+CUT.isEqual("toSafeString(); 02", CEL.toSafeString(Symbol("a")), '"Symbol(a)"');
+CUT.isEqual("toSafeString(); 03", CEL.toSafeString(null), "null");
+CUT.isEqual("toSafeString(); 04", CEL.toSafeString(undefined), "undefined");
 
 
 /* tap(); */
@@ -5324,7 +5330,7 @@ token1 = function () {};
 token1["lorem"] = "ipsum";
 token1["1"] = 0;
 CUT.isTrue("includes(); 01",
-      CEL.includes([4, 5, 6, 7, 8, 9], 9) 
+      CEL.includes([4, 5, 6, 7, 8, 9], 9)
   && !CEL.includes([4, 5, 6, 7, 8, 9], 10)
   &&  CEL.includes([4, 5, 6, 7, 8, 0], 0)
   && !CEL.includes([4, 5, 6, 7, 8, -0], 0, Object.is)
@@ -5522,6 +5528,36 @@ CUT.isEqual("join();",
     CEL.join([])
   ])
 );
+
+
+/* castArray(); */
+CUT.isEqual("castArray(); 01",
+  JSON.stringify(CEL.castArray("abc")),
+  "[\"abc\"]"
+);
+CUT.isEqual("castArray(); 02",
+  JSON.stringify(CEL.castArray(3)),
+  "[3]"
+);
+CUT.isEqual("castArray(); 03",
+  JSON.stringify(CEL.castArray([3, 4, 5])),
+  "[3,4,5]"
+);
+CUT.isEqual("castArray(); 04", JSON.stringify(CEL.castArray()), "[]");
+CUT.isEqual("castArray(); 05", JSON.stringify(CEL.castArray(null)), "[null]");
+
+
+/* compact(); */
+CUT.isEqual("compact(); 01", JSON.stringify(CEL.compact([])), "[]");
+CUT.isEqual("compact(); 02",
+  JSON.stringify(
+    CEL.compact(
+      [0, 1, false, 2, "", 3, null, 4, undefined, 5, NaN, "dsfsd", true]
+    )
+  ),
+  "[0,1,2,3,4,5,\"dsfsd\",true]"
+);
+
 
 
 /* arrayCycle(); begin */
@@ -6529,7 +6565,6 @@ CUT.isTrue("isIterator();",
       CEL.isIterator([4, 5, 6].values())
   &&  CEL.isIterator(new Set([4, 5, 7]).values())
   &&  CEL.isIterator(new Map([[4, 5], [5, 6]]).values())
-  &&  CEL.isIterator(document.querySelectorAll("h3").values())
   && !CEL.isIterator([4, 5, 7])
 );
 

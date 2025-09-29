@@ -136,6 +136,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <p><a href="#FN-T();">T();</a></p>
       <p><a href="#FN-tap();">tap();</a></p>
       <p><a href="#FN-timestampID();">timestampID();</a></p>
+      <p><a href="#FN-toSafeString();">toSafeString();</a></p>
       <p><a href="#FN-unBind();">unBind();</a></p>
     </details>
     <!-- String API -->
@@ -301,6 +302,8 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <p><a href="#FN-arrayRemove();">arrayRemove();</a></p>
       <p><a href="#FN-arrayRemoveBy();">arrayRemoveBy();</a></p>
       <p><a href="#FN-arrayRepeat();">arrayRepeat();</a></p>
+      <p><a href="#FN-castArray();">castArray();</a></p>
+      <p><a href="#FN-compact();">compact();</a></p>
       <p><a href="#FN-concat();">concat();</a></p>
       <p><a href="#FN-count();">count();</a></p>
       <p><a href="#FN-contains();">contains();</a></p>
@@ -478,7 +481,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
 <p><strong>A helper JavaScript library with useful functions and polyfills and zero dependencies.</strong></p>
 
 <p>Latest version: 6.0.5</p>
-<p>Date: 2025-09-19T19:27:07.690Z</p>
+<p>Date: 2025-09-29T18:15:48.916Z</p>
 
 <p><strong>Tested on these:</strong></p>
 
@@ -972,6 +975,10 @@ CEL.delay(5000)
     <tr id="FN-timestampID();">
       <td><code>timestampID([size=21[,alphabet="123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"]]);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>Generate a timestamp based sortable ID. The size parameter is optional and the default value is 21, but if the given value smaller than 12, then the value will be 12. The alphabet parameter is optional and the default value is <code>"123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"</code>, same as BASE58. The return value is the generated id (string).<br/>Example ID: <code>"00lirtqi4e-wgGn8vGPyY"</code></td>
+    </tr>
+    <tr id="FN-toSafeString();">
+      <td><code>toSafeString(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function is a general purpose, type safe, predictable stringifier. The value parameter is mandatory and can be any type. The return value is a string.</td>
     </tr>
     <tr id="FN-unBind();">
       <td><code>unBind(function);</code></td>
@@ -1770,9 +1777,17 @@ CEL.delay(5000)
       <td><code>arrayRepeat(value[,step=100]);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>Returns an array with same repeatedly elements. The value parameter is mandatory and the n parameter is optional and can be an integer. Default parameter value: n = 100.</td>
     </tr>
+    <tr id="FN-castArray();">
+      <td><code>castArray([value]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns the original value if this is an array or value a new array. If there is no given value, then the return value is an empty array.</td>
+    </tr>
     <tr id="FN-concat();">
       <td><code>concat(iterator1[,iteratorN]);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function merges the iterators and yields the elements of the merged iterator. The given iterators will be not changed. At least one iterator has to been given.</td>
+    </tr>
+    <tr id="FN-compact();">
+      <td><code>compact(iterator);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This Returns an array with truthy values (but keeps `0`) from the given Iterable or ArrayLike object. The iterator parameter is mandatory.</td>
     </tr>
     <tr id="FN-count();">
       <td><code>count((iterator,callback););</code></td>

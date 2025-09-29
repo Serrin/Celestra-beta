@@ -15,7 +15,7 @@ __A helper JavaScript library with useful functions and polyfills and zero depen
 
 Latest version: 6.0.5
 
-Date: 2025-09-19T19:27:07.690Z
+Date: 2025-09-29T18:15:48.916Z
 
 __Tested on these:__
 
@@ -280,6 +280,7 @@ Name | Description
 `T();` | __Stability: 4 - Stable.__<BR>This function returns true.
 `tap(function): function(value);` | __Stability: 4 - Stable.__<BR>This functions returns a new function, which runs the given function with the value parameter, then returns the value. Usable for testing and logging. All of the parameters are mandatory.
 `timestampID([size=21[,alphabet= "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"]]);` | __Stability: 4 - Stable.__<BR>Generate a timestamp based sortable ID. The size parameter is optional and the default value is 21, but if the given value smaller than 12, then the value will be 12. The alphabet parameter is optional and the default value is `"123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"`, same as BASE58. The return value is the generated id (string).<BR>Example ID:`"00lirtqi4e-wgGn8vGPyY"`
+`toSafeString(value);` | __Stability: 4 - Stable.__<BR>This function is a general purpose, type safe, predictable stringifier. The value parameter is mandatory and can be any type. The return value is a string.
 `unBind(function);` | __Stability: 4 - Stable.__<BR> __Old name before v5.4.1:__ `toFunction`.<BR>Returns an unbinded function from an object method. The function parameter is mandatory.
 
 
@@ -504,10 +505,12 @@ Name | Description
 `arrayRange([start=0[,end=99[,step=1]]]);` | __Stability: 4 - Stable.__<BR>Returns the array of values between the start and end parameters. All of the parameters are mandatory and have to be a number. Default parameter values: start = 0, end = 99, step = 1.<BR>__Example:__<BR>`CEL.arrayRange("A".codePointAt(0),"Z".codePointAt(0)).map((v)=>String.fromCodePoint(v));`<BR>-><BR>`Array(26) [ "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" ]`
 `arrayRemove(array,value[,all=false]);` | __Stability: 4 - Stable.__<BR>Remove the first or all equivalent values from the array. Returns true, when the value was found and false when not found. The array and value parameters are mandatory. The all parameter is optional and has to be a boolean.
 `arrayRemoveBy(array,callback[,all=false]);` | __Stability: 4 - Stable.__<BR>Remove the first or all values from the array with which the given function returns true. Returns true, when the value was found and false when not found. The array and value parameters are mandatory. The all parameter is optional and has to be a boolean.
-`arrayRepeat(value[,n=100]);` | __Stability: 4 - Stable.__<BR>Returns an array with same repeatedly elements. The value parameter is mandatory and the n parameter is optional and can be an integer. Default parameter value: n = 100.
+`arrayRepeat(value);` | __Stability: 4 - Stable.__<BR>Returns an array with same repeatedly elements. The value parameter is mandatory and the n parameter is optional and can be an integer. Default parameter value: n = 100.
+`castArray([value]);` | __Stability: 4 - Stable.__<BR>This function returns the original value if this is an array or value a new array. If there is no given value, then the return value is an empty array.
+`compact(iterator);` | __Stability: 4 - Stable.__<BR>This function merges the iterators and yields the elements of the merged iterator. At least one iterator has to been given.
 `concat(iterator1[,iteratorN]);` | __Stability: 4 - Stable.__<BR>This function merges the iterators and yields the elements of the merged iterator. At least one iterator has to been given.
-`count(iterator,callback);` | __Stability: 4 - Stable.__<BR>This function executes a counter function (that you provide) on each element of the iterator, returning in a single output value. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function.
 `contains(iterator,value);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether an iterator includes a certain value among its entries, returning true or false as appropriate. All of the parameters are mandatory.
+`count(iterator,callback);` | __Stability: 4 - Stable.__<BR>This function executes a counter function (that you provide) on each element of the iterator, returning in a single output value. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function.
 `drop(iterator[,n=1]);` | __Stability: 3 - Legacy and can get only fixes.__<BR>__Can be replaced with `Iterator.from(iterable/iterator).drop();`__<BR>Drop the first N elements of an iterator and yield the remained elements. The iterator parameter is mandatory. The n parameter is optional and can be an integer. Default parameter value: n = 1
 `dropRight(iterator[,n=1]);` | __Stability: 4 - Stable.__<BR>Drop the last N elements of an iterator and return the remained elements in an array. The iterator parameter is mandatory. The n parameter is optional and can be an integer. Default parameter value: n = 1.
 `dropRightWhile(iterator,callback);` | __Stability: 4 - Stable.__<BR>Drop the elements from the end of an iterator while the callback (filter) function returns true and yield the remained elements. The callback function will be called with the actual element of the iterator. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function.

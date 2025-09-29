@@ -9,6 +9,20 @@
 # Celestra version history
 
 
+## Celestra v6.0.5
+
+1. Documentation and pdf fixes. 
+
+2. Refactoring the library JS code to rewrite in TypeScript in the next milestone.
+
+3. Add these functions:
+````javascript
+castArray();
+compact();
+toSafeString();
+````
+
+
 ## Celestra v6.0.4
 
 1. Documentation and pdf fixes.

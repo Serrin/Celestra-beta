@@ -328,6 +328,86 @@ const BASE62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 const WORDSAFEALPHABET= "23456789CFGHJMPQRVWXcfghjmpqvwx"; /* 31 */
 
 
+/*export function toSafeString (value: unknown): string {
+  const seen = new WeakSet<object>();
+  const replacer = (_key: string, value: any) => {
+    if (typeof value === "function") {
+      return `[Function: ${value.name || "anonymous"}]`;
+    }
+    if (typeof value === "symbol") { return value.toString(); }
+    if (value instanceof Date) { return `Date(${value.toISOString()})`; }
+    if (value instanceof Error) {
+      return `${value.name}: ${value.message}, ${value.stack ?? ""}`;
+    }
+    if (value && typeof value === "object") {
+      if (seen.has(value)) { return "[Circular]" };
+      seen.add(value);
+    }
+    return value;
+  };
+  if (["undefined", "null", "string", "number", "boolean", "bigint"]
+    .includes(value === null ? "null" : typeof value)) {
+    return String(value);
+  }
+  if (Array.isArray(value)) {
+    return `[${value.map(v => toSafeString(v)).join(", ")}]`;
+  }
+  if (value instanceof Map) {
+    return `Map(${value.size}){${Array.from(value.entries()).map(([k, v]) => `${toSafeString(k)} => ${toSafeString(v)}`).join(", ")}}`;
+  }
+  if (value instanceof Set) {
+    return `Set(${value.size}){${Array.from(value.values()).map(v => toSafeString(v)).join(", ")}}`;
+  }
+  try {
+    return JSON.stringify(value, replacer) ?? String(value);
+  } catch (_e) {
+    return String(value);
+  }
+}*/
+/**
+ * @description This function is a general purpose, type safe, predictable stringifier.
+ * 
+ * @param {unknown} value 
+ * @returns {string}
+ */
+function toSafeString (value) {
+  const seen = new WeakSet();
+  const replacer = (/** @type {any} */ _key, /** @type {any} */ value) => {
+    if (typeof value === "function") {
+      return `[Function: ${value.name || "anonymous"}]`;
+    }
+    if (typeof value === "symbol") { return value.toString(); }
+    if (value instanceof Date) { return `Date(${value.toISOString()})`; }
+    if (value instanceof Error) {
+      return `${value.name}: ${value.message}, ${value.stack ?? ""}`;
+    }
+    if (value && typeof value === "object") {
+      if (seen.has(value)) { return "[Circular]" };
+      seen.add(value);
+    }
+    return value;
+  };
+  if (["undefined", "null", "string", "number", "boolean", "bigint"]
+    .includes(value === null ? "null" : typeof value)) {
+    return String(value);
+  }
+  if (Array.isArray(value)) {
+    return `[${value.map(v => toSafeString(v)).join(", ")}]`;
+  }
+  if (value instanceof Map) {
+    return `Map(${value.size}){${Array.from(value.entries()).map(([k, v]) => `${toSafeString(k)} => ${toSafeString(v)}`).join(", ")}}`;
+  }
+  if (value instanceof Set) {
+    return `Set(${value.size}){${Array.from(value.values()).map(v => toSafeString(v)).join(", ")}}`;
+  }
+  try {
+    return JSON.stringify(value, replacer) ?? String(value);
+  } catch (_e) {
+    return String(value);
+  }
+}
+
+
 /* tap(function: function): function(v) */
 /** @return {any} */
 const tap = (/** @type {Function} */ fn) =>
@@ -2739,9 +2819,7 @@ function isCoercedObject (/** @type {any} */ value) {
     if (value instanceof Number) { return Number; }
     if (value instanceof String) { return String; }
     if (value instanceof Boolean) { return Boolean; }
-    /* BigInt wrapper (created via Object(BigInt(...))) */
-    if (typeof value.valueOf?.() === "bigint") { return BigInt; }
-    /* Symbol wrapper (created via Object(Symbol(...))) */
+    if (value instanceof BigInt) { return BigInt; }
     if (typeof value.valueOf?.() === "symbol") { return Symbol; }
   }
   return false;
@@ -3267,6 +3345,40 @@ function clearCookies (
 
 
 /** Collections API **/
+
+
+/*function castArray <T>(...args: [T] | []): T[] {
+  if (!args.length) { return []; }
+  const value = args[0];
+  return Array.isArray(value) ? value : [value];
+}*/
+/**
+ * Returns the original value if this is an array or value a new array.
+ *
+ * @param {any[]} args
+ * @returns An array wrapping the value, or the original array if already one.
+ */
+function castArray (...args) {
+  if (!args.length) { return []; }
+  const value = args[0];
+  return Array.isArray(value) ? value : [value];
+}
+
+
+/*export function compact <T>(iter: IterableIterator<any> | Iterable<T> | ArrayLike<T>): T[] {
+  return Array.from(iter).filter(
+    (value) => value || value === 0
+  );
+}*/
+/**
+ * @description Returns an array with truthy values (but keeps `0`) from the given Iterable or ArrayLike object.
+ *
+ * @param {IterableIterator<any> | Iterable<any> | ArrayLike<any>} iter
+ * @returns any[]
+ */
+const compact = (iter) => Array.from(iter).filter(
+  (value) => value || value === 0
+);
 
 
 /* unique(iterator: iterator [, resolver: string | function]): array */
@@ -4369,6 +4481,7 @@ const celestra = {
   BASE58,
   BASE62,
   WORDSAFEALPHABET,
+  toSafeString,
   tap,
   once,
   curry,
@@ -4530,6 +4643,8 @@ const celestra = {
   removeCookie,
   clearCookies,
   /** Collections API **/
+  castArray,
+  compact,
   unique,
   count,
   arrayDeepClone,
