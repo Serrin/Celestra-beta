@@ -3643,7 +3643,7 @@ function* flat (iter: Iterable<any> | Iterator<any>): Iterator<any> {
 
 /* join(iterator: iterator [, separator = ","]): string */
 function join (
-  iter: Iterable<any> | Iterator<any, any, any>,
+  iter: Iterable<any> | Iterator<any>,
   separator: string = ","): string {
   separator = String(separator);
   let result = "";

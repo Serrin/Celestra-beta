@@ -234,7 +234,7 @@ declare function concat(...args: any[]): Iterator<any>;
 declare function reduce(iter: Iterable<any> | Iterator<any>, fn: Function, initialvalue: any): any;
 declare function enumerate(iter: Iterable<any> | Iterator<any>, offset?: number): Iterator<any>;
 declare function flat(iter: Iterable<any> | Iterator<any>): Iterator<any>;
-declare function join(iter: Iterable<any> | Iterator<any, any, any>, separator?: string): string;
+declare function join(iter: Iterable<any> | Iterator<any>, separator?: string): string;
 declare const withOut: ([...array]: any[], [...filterValues]: any[]) => any[];
 declare const isFloat: (value: unknown) => boolean;
 declare function toInteger(value: any): number;

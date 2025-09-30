@@ -1,5 +1,5 @@
 "use strict";
-const VERSION = "Celestra v6.1.0 browser";
+const VERSION = "Celestra v6.1.0 node";
 (function (global) {
     if (!global.globalThis) {
         if (Object.defineProperty) {

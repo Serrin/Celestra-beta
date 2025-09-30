@@ -1,4 +1,4 @@
-declare const VERSION = "Celestra v6.1.0 browser";
+declare const VERSION = "Celestra v6.1.0 node";
 declare const BASE16: string;
 declare const BASE32: string;
 declare const BASE36: string;

@@ -4,14 +4,14 @@
 
 /**
  * @name Celestra
- * @version 6.1.0 browser
+ * @version 6.1.0 node
  * @author Ferenc Czigler
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
 
 
-const VERSION = "Celestra v6.1.0 browser";
+const VERSION = "Celestra v6.1.0 node";
 
 
 /** polyfills **/
