@@ -1,4 +1,4 @@
-// @ts-check
+// @ts-nocheck
 "use strict";
 
 
@@ -304,7 +304,6 @@ CUT.addElement("ul",
     +"<li>domFadeIn(&#60;element&#62;[,duration[,display]]);</li>"
     +"<li>domFadeOut(&#60;element&#62;[,duration]);</li>"
     +"<li>domFadeToggle(&#60;element&#62;[,duration[,display]]);</li>"
-    +"<li>noConflict();</li>"
 );
 
 
@@ -348,6 +347,7 @@ CUT.isEqual("WORDSAFEALPHABET;", CEL.WORDSAFEALPHABET,
 
 /* is(); begin */
 CUT.isTrue("is(); ES5 values",
+  // @ts-ignore
   CEL.is([1, 2, 3]) === Array
     && CEL.is(1998) === "number"
     && CEL.is("hello world") === "string"
@@ -428,7 +428,9 @@ CUT.isTrue("is(); expectedTypes array",
 CUT.isError("is(); error 1", () => CEL.is(Object.create(null), Object, true));
 CUT.isError("is(); error 2", () => CEL.is([], ["number", Map], true));
 CUT.isError("is(); error 3", () => CEL.is({}, ["string", Map, Array], true));
+// @ts-ignore
 CUT.isError("is(); error 4", () => CEL.is({}, ["string", Map, 42], true));
+// @ts-ignore
 CUT.isError("is(); error 5", () => CEL.is("dsgds", 42));
 // @ts-ignore
 CUT.isError("is(); error 6", () => CEL.is("dsgds", "string", 42));
@@ -612,168 +614,6 @@ CUT.isTrue("qsa(); 04",
   token1[0].innerHTML === "#qsaDivP1 test element each"
     && token1[1].innerHTML === "#qsaDivP2 test element each"
 );
-
-
-/* classof(); begin */
-CUT.isEqual("classof(); ES5 values",
-  "array number string object htmldocument boolean nodelist htmlparagraphelement null undefined function date regexp",
-  CUT.join([
-    CEL.classof([1, 2, 3]),
-    CEL.classof(1998),
-    CEL.classof("hello world"),
-    CEL.classof({a: 1, b: 2}),
-    CEL.classof(document),
-    CEL.classof(true),
-    CEL.classof(document.querySelectorAll("p")),
-    CEL.classof(CEL.qs("p")),
-    CEL.classof(null),
-    CEL.classof(undefined),
-    CEL.classof(function () {}),
-    CEL.classof(new Date()),
-    CEL.classof(/^\[object (.+)\]$/g)
-  ])
-);
-CUT.isTrue("classof(); ES5 true",
-  CEL.classof([1, 2, 3], "array")
-    && CEL.classof(1998, "number")
-    && CEL.classof("hello world", "string")
-    && CEL.classof({a : 1, b: 2}, "object")
-    && CEL.classof(document, "htmldocument")
-    && CEL.classof(true, "boolean")
-    && CEL.classof(document.querySelectorAll("p"), "nodelist")
-    && CEL.classof(CEL.qs("p"), "htmlparagraphelement")
-    && CEL.classof(null, "null")
-    && CEL.classof(undefined, "undefined")
-    && CEL.classof(function(){},"function")
-    && CEL.classof(new Date(),"date")
-    && CEL.classof(/^\[object (.+)\]$/g, "regexp")
-);
-CUT.isFalse("classof(); ES5 false",
-  CEL.classof([1, 2, 3], "number")
-    || CEL.classof(1998, "array")
-    || CEL.classof("hello world","object")
-    || CEL.classof({a:1,b:2},"string")
-    || CEL.classof(document, "boolean")
-    || CEL.classof(true, "htmldocument")
-    || CEL.classof(document.querySelectorAll("p"), "htmlheadingelement")
-    || CEL.classof(CEL.qs("p"), "nodelist")
-    || CEL.classof(null, "undefined")
-    || CEL.classof(undefined, "null")
-    || CEL.classof(function(){}, "object")
-    || CEL.classof(new Date(),"array")
-    || CEL.classof(/^\[object (.+)\]$/g, "string")
-);
-CUT.isEqual("classof(); ES6 values", "map set weakmap weakset",
-  CUT.join([
-    CEL.classof(new Map()),
-    CEL.classof(new Set()),
-    CEL.classof(new WeakMap()),
-    CEL.classof(new WeakSet())
-  ])
-);
-CUT.isTrue("classof(); ES6 true",
-  CEL.classof(new Map(), "map")
-    && CEL.classof(new Set(), "set")
-    && CEL.classof(new WeakMap(), "weakmap")
-    && CEL.classof(new WeakSet(), "weakset")
-);
-CUT.isFalse("classof(); ES6 false",
-  CEL.classof(new Map(), "object")
-    || CEL.classof(new Set(), "object")
-    || CEL.classof(new WeakMap(), "object")
-    || CEL.classof(new WeakSet(), "object")
-);
-if (!!globalThis.BigInt) {
-  CUT.isEqual("classof(); ES6 bigint", "bigint true false",
-    CUT.join([
-      CEL.classof(BigInt(456)),
-      CEL.classof(BigInt(456), "bigint"),
-      CEL.classof(BigInt(456), "object")
-    ])
-  );
-}
-/* classof(); end */
-
-
-/* getType(); begin */
-CUT.isEqual("getType(); ES5 values",
-  "array number string object htmldocument boolean nodelist htmlparagraphelement null undefined function date regexp",
-  CUT.join([
-    CEL.getType([1, 2, 3]),
-    CEL.getType(1998),
-    CEL.getType("hello world"),
-    CEL.getType({a:1,b:2}),
-    CEL.getType(document),
-    CEL.getType(true),
-    CEL.getType(document.querySelectorAll("p")),
-    CEL.getType(CEL.qs("p")),
-    CEL.getType(null),
-    CEL.getType(undefined),
-    CEL.getType(function () {}),
-    CEL.getType(new Date()),
-    CEL.getType(/^\[object (.+)\]$/g)
-  ])
-);
-CUT.isTrue("getType(); ES5 true",
-  CEL.getType([1, 2, 3], "array")
-    || CEL.getType(1998, "number")
-    || CEL.getType("hello world", "string")
-    || CEL.getType({ a: 1, b: 2}, "object")
-    || CEL.getType(document, "htmldocument")
-    || CEL.getType(true, "boolean")
-    || CEL.getType(document.querySelectorAll("p"), "nodelist")
-    || CEL.getType(CEL.qs("p"), "htmlparagraphelement")
-    || CEL.getType(null, "null")
-    || CEL.getType(undefined, "undefined")
-    || CEL.getType(function () {}, "function")
-    || CEL.getType(new Date(), "date")
-    || CEL.getType(/^\[object (.+)\]$/g, "regexp")
-);
-CUT.isFalse("getType(); ES5 false",
-  CEL.getType([1, 2, 3], "number")
-    || CEL.getType(1998, "array")
-    || CEL.getType("hello world", "object")
-    || CEL.getType({ a: 1 , b: 2}, "string")
-    || CEL.getType(document, "boolean")
-    || CEL.getType(true, "htmldocument")
-    || CEL.getType(document.querySelectorAll("p"), "htmlheadingelement")
-    || CEL.getType(CEL.qs("p"), "nodelist")
-    || CEL.getType(null, "undefined")
-    || CEL.getType(undefined, "null")
-    || CEL.getType(function(){}, "object")
-    || CEL.getType(new Date(),"array")
-    || CEL.getType(/^\[object (.+)\]$/g, "string")
-);
-CUT.isEqual("getType(); ES6 values", "map set weakmap weakset",
-  CUT.join([
-    CEL.getType(new Map()),
-    CEL.getType(new Set()),
-    CEL.getType(new WeakMap()),
-    CEL.getType(new WeakSet())
-  ])
-);
-CUT.isTrue("getType(); ES6 true",
-  CEL.getType(new Map(), "map")
-    && CEL.getType(new Set(), "set")
-    && CEL.getType(new WeakMap(), "weakmap")
-    && CEL.getType(new WeakSet(), "weakset")
-);
-CUT.isFalse("getType(); ES6 false",
-  CEL.getType(new Map(), "object")
-    || CEL.getType(new Set(), "object")
-    || CEL.getType(new WeakMap(), "object")
-    || CEL.getType(new WeakSet(), "object")
-);
-if (!!globalThis.BigInt) {
-  CUT.isEqual("getType(); ES6 bigint", "bigint true false",
-    CUT.join([
-      CEL.getType(BigInt(456)),
-      CEL.getType(456n, "bigint"),
-      CEL.getType(456n, "object")
-    ])
-  );
-}
-/* getType(); end */
 
 
 /* extend(); */
@@ -1266,6 +1106,7 @@ CUT.isError("assertDoesNotMatch(); 04 error",
   () => CEL.assertDoesNotMatch("table football", 42, "lorem")
 );
 CUT.isError("assertDoesNotMatch(); 05 error",
+  // @ts-ignore
   () => CEL.assertDoesNotMatch("table football", 42, new Error("ipsum"))
 );
 
@@ -1275,6 +1116,7 @@ CUT.isTrue("assertThrows(); 01 ok",
   Error.isError(CEL.assertThrows(() => { throw new Error() }))
 );
 CUT.isError("not strict assert.assertThrows(); 02 error",
+  // @ts-ignore
   () => CEL.assertThrows(42)
 );
 CUT.isError("not strict assert.assertThrows(); 03 error",
@@ -1321,125 +1163,6 @@ CUT.isError("assertIsNotNil(); 04 error",
 );
 CUT.isError("assertIsNotNil(); 05 error",
   () => CEL.assertIsNotNil(undefined, new Error("ipsum"))
-);
-
-
-
-/* assertTypeOf(); */
-token1 = 42;
-token2 = Object(42);
-token3 = [];
-CUT.isEqual("assertTypeOf(); 01", token1, CEL.assertTypeOf(token1, "number"));
-CUT.isError("assertTypeOf(); 02", () => CEL.assertTypeOf(token2, Number));
-CUT.isError("assertTypeOf(); 03", () => CEL.assertTypeOf(token3, Array));
-CUT.isError("assertTypeOf(); 04", () => CEL.assertTypeOf(token3, Object));
-CUT.isError("assertTypeOf(); 05 error",
-  () => CEL.assertTypeOf(token1, 42n, "assertTypeOf(); 05 error")
-);
-CUT.isError("assertTypeOf(); 06 error",
-  () => CEL.assertTypeOf(token1, Number, "assertTypeOf(); 06 error")
-);
-CUT.isError("assertTypeOf(); 07 error",
-  () => CEL.assertTypeOf(token3, Map, "assertTypeOf(); 07 error")
-);
-CUT.isError("assertTypeOf(); 08 error",
-  () => CEL.assertTypeOf(token3, Map, new Error("ipsum"))
-);
-
-
-/* assertInstanceOf(); */
-token1 = 42;
-token2 = Object(42);
-token3 = [];
-CUT.isError("assertInstanceOf(); 01",
-  () => CEL.assertInstanceOf(token1, "number")
-);
-CUT.isEqual("assertInstanceOf(); 02", token2, CEL.assertInstanceOf(token2, Number));
-CUT.isEqual("assertInstanceOf(); 03", token3, CEL.assertInstanceOf(token3, Array));
-CUT.isEqual("assertInstanceOf(); 04", token3, CEL.assertInstanceOf(token3, Object));
-CUT.isError("assertInstanceOf(); 05 error",
-  () => CEL.assertInstanceOf(token1, 42n, "assertInstanceOf(); 05 error")
-);
-CUT.isError("assertInstanceOf(); 06 error",
-  () => CEL.assertInstanceOf(token1, Number, "assertInstanceOf(); 06 error")
-);
-CUT.isError("assertInstanceOf(); 07 error",
-  () => CEL.assertInstanceOf(token3, Map, "assertInstanceOf(); 07 error")
-);
-CUT.isError("assertInstanceOf(); 08 error",
-  () => CEL.assertInstanceOf(token3, Map, new Error("ipsum"))
-);
-
-
-/* assertNotTypeOf(); */
-token1 = 42;
-token2 = Object(42);
-token3 = [];
-CUT.isError("assertNotTypeOf(); 01 error",
-  () => CEL.assertNotTypeOf(token1, "number", "assertNotTypeOf(); 01 error")
-);
-CUT.isError("assertNotTypeOf(); 02 error",
-  () => CEL.assertNotTypeOf(token2, Number, "assertNotTypeOf(); 02 error")
-);
-CUT.isError("assertNotTypeOf(); 03 error",
-  () => CEL.assertNotTypeOf(token3, Array, "assertNotTypeOf(); 03 error")
-);
-CUT.isError("assertNotTypeOf(); 04 error",
-  () => CEL.assertNotTypeOf(token3, Object, "assertNotTypeOf(); 04 error")
-);
-CUT.isError("assertNotTypeOf(); 05 error",
-  () => CEL.assertNotTypeOf(token1, 42, "assertNotTypeOf(); 05 error")
-);
-CUT.isError("assertNotTypeOf(); 06 error",
-  () => CEL.assertNotTypeOf(token1, Number)
-);
-CUT.isEqual("assertNotTypeOf(); 07", token2,
-  CEL.assertNotTypeOf(token2, "number")
-);
-CUT.isError("assertNotTypeOf(); 08", () => CEL.assertNotTypeOf(token3, Map));
-CUT.isError("assertNotTypeOf(); 09",
-  () => CEL.assertNotTypeOf(token3, Map, new Error("ipsum"))
-);
-
-
-/* assertNotInstanceOf(); */
-token1 = 42;
-token2 = Object(42);
-token3 = [];
-CUT.isError("assertNotInstanceOf(); 01 error",
-  () => CEL.assertNotInstanceOf(token1, "number",
-    "assertNotInstanceOf(); 01 error"
-  )
-);
-CUT.isError("assertNotInstanceOf(); 02 error",
-  () => CEL.assertNotInstanceOf(token2, Number,
-    "assertNotInstanceOf(); 02 error"
-  )
-);
-CUT.isError("assertNotInstanceOf(); 03 error",
-  () => CEL.assertNotInstanceOf(token3, Array,
-    "assertNotInstanceOf(); 03 error"
-  )
-);
-CUT.isError("assertNotInstanceOf(); 04 error",
-  () => CEL.assertNotInstanceOf(
-    token3, Object, "assertNotInstanceOf(); 04 error"
-  )
-);
-CUT.isError("assertNotInstanceOf(); 05 error",
-  () => CEL.assertNotInstanceOf(token1, 42, "assertNotInstanceOf(); 05 error")
-);
-CUT.isEqual("assertNotInstanceOf(); 06", token1,
-  CEL.assertNotInstanceOf(token1, Number)
-);
-CUT.isError("assertNotInstanceOf(); 07",
-  () => CEL.assertNotInstanceOf(token2, "number")
-);
-CUT.isEqual("assertNotInstanceOf(); 08", token3,
-  CEL.assertNotInstanceOf(token3, Map)
-);
-CUT.isEqual("assertNotInstanceOf(); 09", token3,
-  CEL.assertNotInstanceOf(token3, Map, new Error("ipsum"))
 );
 
 
@@ -5381,12 +5104,6 @@ CUT.isTrue("includes(); 01",
 CUT.isError("includes(); 02 error", () => CEL.includes([], 2, 2));
 
 
-/* contains(); */
-CUT.isTrue("contains();",
-  CEL.contains([4, 5, 6, 7, 8, 9], 9) && !CEL.contains([4, 5, 6, 7, 8, 9], 10)
-);
-
-
 /* find(); */
 CUT.isEqual("find(); 01", 6, CEL.find([4, 5, 6, 7, 8, 9], (v) => (v > 5)));
 CUT.isEqual("find(); 02", undefined, CEL.find([4, 5, 6, 7, 8, 9],(v) => (v>11)));
@@ -6173,21 +5890,17 @@ CUT.isEqual("GeneratorFunction();", "9 12", CUT.join(token1(3)));
 /* AsyncFunction(); */
 CUT.isEqual("AsyncFunction();", "asyncfunction",
   // @ts-ignore
-  CEL.classof(new AsyncFunction("a", "b",
+  Object.prototype.toString.call(new AsyncFunction("a", "b",
     "return await resolveAfter2Seconds(a) + await resolveAfter2Seconds(b);"
-  )
-));
+  )).slice(8, -1).toLowerCase()
+);
 
 
 /* AsyncGeneratorFunction(); */
 CUT.isEqual("AsyncGeneratorFunction();", "asyncgeneratorfunction",
-  CEL.classof(async function* () {})
+  Object.prototype.toString.call(async function* () {}).slice(8, -1)
+    .toLowerCase()
 );
-
-
-/* isSameClass(); */
-CUT.isTrue("isSameClass(); 01", CEL.isSameClass(NaN, 42));
-CUT.isFalse("isSameClass(); 02", CEL.isSameClass(NaN, "lorem"));
 
 
 /* isSameType(); */
@@ -7030,12 +6743,14 @@ CUT.isEqual("avg(); 05", String(CEL.avg()), "NaN");
 
 /* isEven(); */
 CUT.isTrue("isEven();",
+  // @ts-ignore
   CEL.isEven(8) && !CEL.isEven(9) && !CEL.isEven(8.5) && !CEL.isEven("lorem")
 );
 
 
 /* isOdd(); */
 CUT.isTrue("isOdd();",
+  // @ts-ignore
   CEL.isOdd(9) && CEL.isOdd(8.5) && !CEL.isOdd(8) && !CEL.isOdd("lorem")
 );
 

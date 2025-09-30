@@ -8,8 +8,11 @@
 <meta name="Author" content="Czigler Ferenc"/>
 <meta name="Copyright" content="(C) Copyright Czigler Ferenc"/>
 <link rel="stylesheet" href="u87.css" type="text/css"/>
-<script src="celestra.min.js"></script>
-<!--<script src="celestra-assert-plugin.min.js"></script>-->
+<script type="module">
+  import defaultExport from "./celestra.browser.js";
+  globalThis.celestra = defaultExport;
+  globalThis.CEL = defaultExport;
+</script>
 <style>
 @media (max-width: 575px) { td { display: block; width: 100% !important; } }
 </style>

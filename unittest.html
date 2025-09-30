@@ -9,7 +9,6 @@
 <meta name="Copyright" content="(C) Copyright Czigler Ferenc"/>
 <link rel="stylesheet" href="u87.css" type="text/css"/>
 <link rel="stylesheet" href="u87-blue.css" type="text/css"/>
-<script> var CEL = { VERSION: "This is another sample library." }; </script>
 <style>
 html, body { font-family: consolas, monospace !important; }
 .passed, .failed {
@@ -87,17 +86,11 @@ textarea, #preCelLog { border-radius: 4px; }
 <table class="table-responsive noborder">
   <tr>
     <td class="noborder">
-      <p><button onclick=" _preCel.importScript('celestra.dev.js'); preCelLog('load <b>celestra.dev.js</b>'); ">
-        load celestra.dev.js
-      </button></p>
-      <p><button onclick=" _preCel.importScript('celestra.min.js'); preCelLog('load <b>celestra.min.js</b>'); ">
-        load celestra.min.js
-      </button></p>
       <p><button onclick=" _preCel.importESM1(); preCelLog('load <b>celestra.esm.js</b> 1'); ">
-        load celestra.esm.js 1
+        load celestra.browser.js 1
       </button></p>
       <p><button onclick=" _preCel.importESM2(); preCelLog('load <b>celestra.esm.js</b> 2'); ">
-        load celestra.esm.js 2
+        load celestra.browser.js 2
       </button></p>
     </td>
     <td class="noborder">
@@ -375,27 +368,15 @@ const _preCel = {
     let scrTag = document.createElement("script");
     scrTag.type = "module";
     scrTag.innerHTML = `
-      /*
-      // ok, dynamic imports - async loading too
-      // FF 67, Chrome 63, Safari 11.1, Opera 50, no old EDGE
-      // Android Webvies 63, Android Chrome 63, Android FF 67, iOS Safari 11.1, no in Samsung browser
-      import("./celestra.dev.js")
-        .then((module) => {
-          globalThis.celestra = module.celestra;
-          globalThis.CEL = module.celestra;
-        });
-      */
       var importStr = "";
-
-      // import with defaultExport
-      import defaultExport from "./celestra.esm.js";
+      import defaultExport from "./celestra.browser.js";
       //globalThis.celestra = defaultExport;
       //globalThis.CEL = defaultExport;
       importStr += "\\nimport with defaultExport - "
         + (typeof defaultExport.qsa === "function");
 
       // import with default with name
-      import { default as celestra } from "./celestra.esm.js";
+      import { default as celestra } from "./celestra.browser.js";
       globalThis.celestra = celestra;
       globalThis.CEL = celestra;
       importStr += "\\nimport with default with name - "
@@ -407,19 +388,19 @@ const _preCel = {
     document.body.append(scrTag);
   },
 
-  importESM2: function importESM1 () {
+  importESM2: function importESM2 () {
     let scrTag = document.createElement("script");
     scrTag.type = "module";
     scrTag.innerHTML = `
       var importStr = "";
 
       // import 2 functions
-      import { getType, classof } from "./celestra.esm.js";
+      import { assert, map } from "./celestra.browser.js";
       importStr += "\\nimport 2 functions - "
-        + (typeof getType === "function" && typeof classof === "function");
+        + (typeof assert === "function" && typeof map === "function");
 
       // import all into a new celestra object
-      import * as celestra from "./celestra.esm.js";
+      import * as celestra from "./celestra.browser.js";
       globalThis.celestra = celestra;
       globalThis.CEL = celestra;
       importStr += "\\nimport all into a new celestra object - "

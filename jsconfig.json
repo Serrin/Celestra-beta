@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "rootDirs": ["."],
-    "lib": ["ESNext", "DOM", "DOM.iterable"],
+    "lib": ["ESNext", "DOM", "DOM.iterable", "DOM.asynciterable", "ESNext.Iterator", "webworker.importscripts", "scripthost"],
     // full list: https://github.com/microsoft/TypeScript/tree/main/src/lib
     "target": "ESNext",
     // "ES3", "ES5", "ES6", "ES2015", "ES2016", "ES2017", "ES2018", "ES2019" 
@@ -54,9 +54,6 @@
   // //"include": ["src/**/*"],
   "include": ["./*.js", "./*.mjs", "./*.cjs"],
   "exclude": [
-    "./celestra.esm.js",
-    "./celestra.min.js",
-    "./celestra.node.mjs",
     "./celestra-assert-plugin.dev.js",
     "./celestra-assert-plugin.min.js",
     "./celestra-polyfills.dev.js",
