@@ -10,7 +10,14 @@
 <link rel="stylesheet" href="u87.css" type="text/css" />
 <!--<link rel="icon" href="favicon.ico" type="image/x-icon" />-->
 <script> var CEL = { VERSION: "This is another sample library." }; </script>
-<script src="celestra.min.js"></script>
+<script type="module">
+  // import the defaultExport object
+  import defaultExport from "./celestra.browser.js";
+  globalThis.celestra = defaultExport;
+  globalThis.CEL = defaultExport;
+</script>
+
+
 <style>
 
 html, body { font-size: 15px;  }
@@ -173,9 +180,9 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <p><a href="#FN-assertFalse();">assertFalse();</a></p>
       <p><a href="#FN-assertInstanceOf();">assertInstanceOf();</a></p>
       <p><a href="#FN-assertIs();">assertIs();</a></p>
-      <p><a href="#FN-assertIsNil();">assertIsNil();</a></p>
       <p><a href="#FN-assertIsNot();">assertIsNot();</a></p>
-      <p><a href="#FN-assertIsNotNil();">assertIsNotNil();</a></p>
+      <p><a href="#FN-assertIsNotNullish();">assertIsNotNullish();</a></p>
+      <p><a href="#FN-assertIsNullish();">assertIsNullish();</a></p>
       <p><a href="#FN-assertMatch();">assertMatch();</a></p>
       <p><a href="#FN-assertNotDeepEqual();">assertNotDeepEqual();</a></p>
       <p><a href="#FN-assertNotDeepStrictEqual();">assertNotDeepStrictEqual();</a></p>
@@ -259,8 +266,8 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <p><a href="#FN-isIterable();">isIterable();</a></p>
       <p><a href="#FN-isIterator();">isIterator();</a></p>
       <p><a href="#FN-isLength();">isLength();</a></p>
-      <p><a href="#FN-isNil();">isNil();</a></p>
       <p><a href="#FN-isNull();">isNull();</a></p>
+      <p><a href="#FN-isNullish();">isNullish();</a></p>
       <p><a href="#FN-isNumeric();">isNumeric();</a></p>
       <p><a href="#FN-isObject();">isObject();</a></p>
       <p><a href="#FN-isPlainObject();">isPlainObject();</a></p>
@@ -506,35 +513,30 @@ nav a, nav a:visited, nav a:active, nav a:hover {
 <table class="table-responsive-sm table-striped">
   <tr>
     <td class="center"><strong>Edition</strong></td>
-    <td class="center"><strong>Filename</strong></td>
+    <td class="center"><strong>JS file</strong></td>
+    <td class="center"><strong>TS file</strong></td>
   </tr>
   <tr>
-    <td>developer</td>
-    <td><a href="celestra.dev.js" target="_blank">celestra.dev.js</a></td>
-  </tr>
-  <tr>
-    <td>minified</td>
-    <td><a href="celestra.min.js" target="_blank">celestra.min.js</a></td>
-  </tr>
-  <tr>
-    <td>ES6 module</td>
-    <td><a href="celestra.esm.js" target="_blank">celestra.esm.js</a></td>
+    <td>Browser module</td>
+    <td><a href="celestra.browser.js" target="_blank">celestra.browser.js</a></td>
+    <td><a href="celestra.browser.ts" target="_blank">celestra.browser.ts</a></td>
   </tr>
   <tr>
     <td>Node.js and Deno module</td>
     <td><a href="celestra.node.mjs" target="_blank">celestra.node.mjs</a></td>
+    <td><a href="celestra.node.mts" target="_blank">celestra.node.mts</a></td>
   </tr>
   <tr>
     <td class="center">Celestra Unit Tester (CUT)</td>
     <td><a href="unittest.html" target="_blank">unittest.html</a></td>
+    <td></td>
   </tr>
   <tr>
     <td class="center">Version history</td>
     <td><a href="CHANGELOG.md" target="_blank">CHANGELOG.md</a></td>
+    <td></td>
   </tr>
 </table>
-
-<p>DEV and MIN editions: If the <code>CEL</code> global variable is used before the loading of the library, then the value of the variable is saved and you can restore with the <code>noConflict();</code> function.</p>
 
 
 <h3>Github pages</h3>
@@ -627,37 +629,37 @@ nav a, nav a:visited, nav a:active, nav a:hover {
 </table>
 
 
-<h3>How to import the ESM edition</h3>
+<h3>How to import the browser edition</h3>
 
 <pre>
 &#60;script type="module"&#62;
-
 // import the defaultExport object
-import defaultExport from "./celestra.esm.js";
+import defaultExport from "./celestra.browser.js";
 globalThis.celestra = defaultExport;
 globalThis.CEL = defaultExport;
+&#60;/script&#62;
 
+&#60;script type="module"&#62;
 // import with default with name
-import { default as celestra } from "./celestra.esm.js";
+import { default as celestra } from "./celestra.browser.js";
 globalThis.celestra = celestra;
 globalThis.CEL = celestra;
+&#60;/script&#62;
 
+&#60;script type="module"&#62;
 // import all into a new celestra object
-import * as celestra from "./celestra.esm.js";
+import * as celestra from "./celestra.browser.js";
 globalThis.celestra = celestra;
 globalThis.CEL = celestra;
+&#60;/script&#62;
 
+&#60;script type="module"&#62;
 // import some functions
-import { first, classof } from "./celestra.esm.js";
+import { first, classof } from "./celestra.browser.js";
 globalThis.first = first;
 globalThis.classof = classof;
-
 &#60;/script&#62;
 </pre>
-
-<p><strong>Another way to import</strong></p>
-
-<pre>&#60;script type="module" import "./celestra.min.js"; /script&#62;</pre>
 
 
 <h3>How to import the Node.js edition</h3>
@@ -776,6 +778,21 @@ globalThis.CEL = celestra;
 </ul>
 
 
+<h3>Celestra v6.1.0 (Sulaco) changes</h3>
+
+<ul>
+  <li>Please read in the documentation about the new files and import methods for the browser edition!</li>
+  <li>The <strong>celestra.dev.js</strong> has been replaced with the <strong>celestra.browser.ts</strong>.</li>
+  <li>The <strong>celestra.min.js</strong> has been replaced with the <strong>celestra.browser.js</strong>.</li>
+  <li>The <strong>celestra.node.mjs</strong> has been remained and added the <strong>celestra.node.mts</strong>.</li>
+  <li>The <code>isNil();</code> function has been renamed to <code>isNullish();</code>.</li>
+  <li>The <code>assertIsNil();</code> function has been renamed to <code>assertIsNullish();</code>.</li>
+  <li>The <code>assertIsNotNil();</code> function has been renamed to <code>assertIsNotNullish();</code>.</li>
+  <li>The <code>celestra.noConflict();</code> function has been removed.</li>
+  <li>Some deprecated functions have been removed.</li>
+</ul>
+
+
 <hr/>
 <h2 id="functions">Functions</h2>
 
@@ -794,9 +811,6 @@ globalThis.CEL = celestra;
 
 <h3 id="FNcoreAPI">Core API</h3>
 
-<p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
-<br/>Example: <code>CEL.delay();</code></p>
-
 <div>
   <table class="table-responsive table-striped">
     <tr>
@@ -806,7 +820,7 @@ globalThis.CEL = celestra;
     <tr id="FN-noConflict">
       <td><code>celestra.noConflict();</code></td>
       <td>
-        <span class="info">Stability: 4 - Stable.</span><br/>
+        <span class="removed">Stability: 0 - Removed in v6.1.0</span><br/>
         <p>Restore the previous <code>CEL</code> object value and return the <code>celestra</code> object to create a new alias.</p>
         <p><span class="info">Tip: You can make a new alias without this function too. Example: <code>globalThis._cel = globalThis.celestra;</code></span></p>
         <p><span class="info">In the ESM edition only returns the celestra object.</code></span></p>
@@ -990,9 +1004,6 @@ CEL.delay(5000)
 
 <h3 id="FNstringAPI">String API</h3>
 
-<p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
-<br/>Example: <code>CEL.strPropercase();</code></p>
-
 <div>
   <table class="table-responsive table-striped">
     <tr>
@@ -1082,9 +1093,6 @@ CEL.delay(5000)
 
 <p>There are information about the equalities in the <a href="js-cheatsheet.pdf" target="_blank">js-cheatsheet.pdf</a>.</p>
 
-<p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
-<br/>Example: <code>CEL.assert();</code></p>
-
 <div>
   <table class="table-responsive table-striped">
     <tr>
@@ -1130,7 +1138,7 @@ CEL.delay(5000)
     <tr id="FN-assertInstanceOf();">
       <td><code>assertInstanceOf(value, constructor [, message | error]);</code></td>
       <td>
-        <span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function throws an error if the constructor of the value in not the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
+        <span class="removed">Stability: 0 - Removed in v6.1.0</span><br/>This function throws an error if the constructor of the value in not the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
       </td>
     </tr>
     <tr id="FN-assertIs();">
@@ -1139,24 +1147,24 @@ CEL.delay(5000)
         <span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value type or class is the given expectedType. The expectedType can be a type string, constructor function or an array of the type strings and constructors. If the value is not matched with the expectedType, then a TypeError will be thrown with detailed error message. If these conditions are passed, then the given value is the return value.
       </td>
     </tr>
-    <tr id="FN-assertIsNil();">
-      <td><code>assertIsNil(value [, message | error]);</code></td>
-      <td>
-        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value is not null or undefined, else the given value is the return value. The message parameter is optional.
-      </td>
-    </tr>
     <tr id="FN-assertIsNot();">
       <td><code>assertIsNot(value, expectedType [, message | error]);</code></td>
       <td>
         <span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value type or class is not the given expectedType. The expectedType can be a type string, constructor function or an array of the type strings and constructors. If the value is matched with the expectedType, then a TypeError will be thrown with detailed error message. If these conditions are passed, then the given value is the return value.
       </td>
     </tr>
-    <tr id="FN-assertIsNotNil();">
-      <td><code>assertIsNotNil(value [, message | error]);</code></td>
+    <tr id="FN-assertIsNotNullish();">
+      <td><code>assertIsNotNullish(value [, message | error]);</code></td>
       <td>
-        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value is null or undefined, else the given value is the return value. The message parameter is optional.
+        <span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v6.1.0: <code>assertIsNotNil();</code>.</span><br/>This function throws an error with the message if the value is null or undefined, else the given value is the return value. The message parameter is optional.
       </td>
     </tr>
+    <tr id="FN-assertIsNullish();">
+      <td><code>assertIsNullish(value [, message | error]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v6.1.0: <code>assertIsNil();</code>.</span><br/>This function throws an error with the message if the value is not null or undefined, else the given value is the return value. The message parameter is optional.
+      </td>
+    </tr>    
     <tr id="FN-assertMatch();">
       <td><code>assertMatch(string, regexp [, message | error]);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the string doesn't match with the regexp. The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
@@ -1172,7 +1180,7 @@ CEL.delay(5000)
     <tr id="FN-assertNotInstanceOf();">
       <td><code>assertNotInstanceOf(value, constructor [, message | error]);</code></td>
       <td>
-        <span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function throws an error if the constructor of the value is the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
+        <span class="removed">Stability: 0 - Removed in v6.1.0</span><br/>This function throws an error if the constructor of the value is the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
       </td>
     </tr>
     <tr id="FN-assertNotStrictEqual();">
@@ -1184,7 +1192,7 @@ CEL.delay(5000)
     <tr id="FN-assertNotTypeOf();">
       <td><code>assertNotTypeOf(value [, message | error]);</code></td>
       <td>
-        <span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function throws an error if the type of the value is the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
+        <span class="removed">Stability: 0 - Removed in v6.1.0</span><br/>This function throws an error if the type of the value is the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
       </td>
     </tr>
     <tr id="FN-assertStrictEqual();">
@@ -1208,7 +1216,7 @@ CEL.delay(5000)
     <tr id="FN-assertTypeOf();">
       <td><code>assertTypeOf(value, type [, message | error]);</code></td>
       <td>
-        <span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function throws an error if the type of the value in not the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
+        <span class="removed">Stability: 0 - Removed in v6.1.0</span><br/>This function throws an error if the type of the value in not the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
       </td>
     </tr>
   </table>
@@ -1216,9 +1224,6 @@ CEL.delay(5000)
 
 
 <h3 id="FNdomAPI">DOM API</h3>
-
-<p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
-<br/>Example: <code>CEL.domCreate();</code></p>
 
 <div>
   <table class="table-responsive table-striped">
@@ -1410,9 +1415,6 @@ CEL.delay(5000)
   These functions aren't deprecated, but it's recommend to use the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API" target="_blank">Fetch API</a>, because it's <a href="https://caniuse.com/?search=fetch" target="_blank">supported</a> in every modern browsers.
 </p>
 
-<p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
-<br/>Example: <code>CEL.getJson();</code></p>
-
 <div style="overflow-x:auto;">
   <table class="table-responsive table-striped">
     <tr">
@@ -1450,9 +1452,6 @@ CEL.delay(5000)
 
 <h3 id="FNtypecheckingAPI">Type API</h3>
 
-<p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
-<br/>Example: <code>CEL.isUndefined();</code></p>
-
 <div>
   <table class="table-responsive table-striped">
     <tr>
@@ -1461,11 +1460,11 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-classof();">
       <td><code>classof(value[,class[,throw=false]]);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>Get the real type of a value. If this is an object, then the return value is the detailed object type (e.g.: array). If the class (string) parameter is given, then the return value (boolean) is the equality of the type of the value and the second parameter. If the third parameter (boolean) is true and the type of the value and the second parameter aren't equals, then the function is throwing a <code>TypeError();</code>, else the return value is true.</td>
+      <td><span class="removed">Stability: 0 - Removed in v6.1.0</span><br/>Get the real type of a value. If this is an object, then the return value is the detailed object type (e.g.: array). If the class (string) parameter is given, then the return value (boolean) is the equality of the type of the value and the second parameter. If the third parameter (boolean) is true and the type of the value and the second parameter aren't equals, then the function is throwing a <code>TypeError();</code>, else the return value is true.</td>
     </tr>
     <tr id="FN-getType();">
       <td><code>getType(value[,class[,throw=false]]);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This is an alias of the <code>classof(value[,class[,throw=false]]);</code>.</td>
+      <td><span class="removed">Stability: 0 - Removed in v6.1.0</span><br/>This is an alias of the <code>classof(value[,class[,throw=false]]);</code>.</td>
     </tr>
     <tr id="FN-is();">
       <td><code>is(value[,expectedType[,Throw=false]];</code></td>
@@ -1546,13 +1545,13 @@ CEL.delay(5000)
       <td><code>isLength(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>Alias of <code>isIndex(value);</code>.</td>
     </tr>
-    <tr id="FN-isNil();">
-      <td><code>isNil(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is null or undefined. The return value is boolean.</code>.</td>
-    </tr>
     <tr id="FN-isNull();">
       <td><code>isNull(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is null. The return value is boolean.</td>
+    </tr>
+    <tr id="FN-isNullish();">
+      <td><code>isNullish(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v6.1.0: <code>isNil();</code>.</span><br/>This function determines whether the provided value is null or undefined. The return value is boolean.</td>
     </tr>
     <tr id="FN-isNumeric();">
       <td><code>isNumeric(value);</code></td>
@@ -1584,7 +1583,7 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-isSameClass();">
       <td><code>isSameClass(value1, value2);</code></td>
-      <td><p><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function returns true if the values are same class and uses the <code>Object.prototype.toString();</code> method. The parameters are mandatory. The return value is boolean.</td>
+      <td><span class="removed">Stability: 0 - Removed in v6.1.0</span><br/>This function returns true if the values are same class and uses the <code>Object.prototype.toString();</code> method. The parameters are mandatory. The return value is boolean.</td>
     </tr>
     <tr id="FN-isSameInstance();">
       <td><code>isSameInstance(value1, value2,Contructor);</code></td>
@@ -1634,9 +1633,6 @@ CEL.delay(5000)
 </div>
 
 <h3 id="FNcookieAPI">Cookie API</h3>
-
-<p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
-<br/>Example: <code>CEL.setCookie();</code></p>
 
 <p>
   Cookie values help:
@@ -1729,9 +1725,6 @@ CEL.delay(5000)
 
 <h3 id="FNcollectionsAPI">Collections API</h3>
 
-<p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
-<br/>Example: <code>CEL.arrayAdd();</code></p>
-
 <div>
   <table class="table-responsive table-striped">
     <tr">
@@ -1795,7 +1788,7 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-contains();">
       <td><code>contains(iterator,value);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether an iterator includes a certain value among its entries, returning true or false as appropriate. All of the parameters are mandatory.</td>
+      <td><span class="removed">Stability: 0 - Removed in v6.1.0</span><br/>This function determines whether an iterator includes a certain value among its entries, returning true or false as appropriate. All of the parameters are mandatory.</td>
     </tr>
     <tr id="FN-drop();">
       <td><code>drop(iterator[,n=1]);</code></td>
@@ -2078,13 +2071,10 @@ JSON.stringify( CEL.unique(array, (v) => v.rank) );
 
 <h3 id="FNabstractAPI">Abstract API</h3>
 
-<p>The Ecmascript abstract functions are available in the <a href="https://github.com/Serrin/Zephyr" target="_blank">Zephyr library</a> library.</p>
+<p>The Ecmascript abstract functions are available in the <a href="https://github.com/Serrin/Zephyr" target="_blank">Zephyr library</a>.</p>
 
 
 <h3 id="FNmathAPI">Math API</h3>
-
-<p>These functions are available in the <code>celestra</code> and/or <code>CEL</code> objects.
-<br/>Example: <code>CEL.sum();</code></p>
 
 <div>
   <table class="table-responsive table-striped">
@@ -2368,30 +2358,6 @@ Otherwise, the result is false.</pre>
       <td><strong>VERSION</strong></td>
       <td><button onclick='alert( CEL.VERSION );'>Try</button></td>
       <td><code>alert( CEL.VERSION );</code></td>
-    </tr>
-    <tr>
-      <td><strong>Create an alias without celestra.noConflict();</strong></td>
-      <script> var _cel = celestra; </script>
-      <td><button onclick='_cel = celestra; alert( _cel.VERSION ); alert( _cel.randomInt(40,70) ); alert( CEL.VERSION );'>Try</button></td>
-      <td><pre>var _cel = celestra;
-alert( _cel.VERSION );
-alert( _cel.randomInt(40,70) );
-alert( CEL.VERSION );</pre></td>
-    </tr>
-    <tr>
-      <td><strong>celestra.noConflict();</strong></td>
-      <script> var _C = {}; </script>
-      <td><button onclick='_C = celestra.noConflict(); alert( _C.VERSION ); alert( _C.classof( document.querySelectorAll("div")) ); alert( CEL.VERSION );'>Try</button></td>
-      <td><pre>// in the HTML head before the loading of Celestra:
-var CEL = {};
-CEL.VERSION = "This is another sample library.";
-
-// in the body:
-var _C = {};
-_C = celestra.noConflict();
-alert( _C.VERSION );
-alert( _C.classof( document.querySelectorAll("div")) );
-alert( CEL.VERSION );</pre></td>
     </tr>
   </table>
 </div>

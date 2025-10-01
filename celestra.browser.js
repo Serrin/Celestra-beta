@@ -404,7 +404,10 @@ function noop() { }
 const T = () => true;
 const F = () => false;
 function nanoid(size = 21, alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-") {
-    let result = "", dl = alphabet.length, pos, index = size;
+    let result = "";
+    let dl = alphabet.length;
+    let pos;
+    let index = size;
     while (index--) {
         do {
             pos = crypto.getRandomValues(new Uint8Array(1))[0];
@@ -415,7 +418,9 @@ function nanoid(size = 21, alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmno
 }
 function timestampID(size = 21, alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz") {
     let result = Date.now().toString(36).padStart(10, "0") + "-";
-    let dl = alphabet.length, pos, index = ((size > 11) ? size : 12) - 11;
+    let dl = alphabet.length;
+    let pos;
+    let index = ((size > 11) ? size : 12) - 11;
     while (index--) {
         do {
             pos = crypto.getRandomValues(new Uint8Array(1))[0];
@@ -554,22 +559,22 @@ function assertThrows(callback, message) {
     }
     throw new Error("[assertThrow] Assertion failed" + (message ? ": " + message : ""));
 }
-function assertIsNotNil(value, message) {
+function assertIsNotNullish(value, message) {
     if (value == null) {
         if (Error.isError(message)) {
             throw message;
         }
-        throw new TypeError("[assertIsNotNil] Assertion failed: " + value + " is null or undefined"
+        throw new TypeError("[assertIsNotNullish] Assertion failed: " + value + " is null or undefined"
             + (message ? " - " + message : ""));
     }
     return value;
 }
-function assertIsNil(value, message) {
+function assertIsNullish(value, message) {
     if (value != null) {
         if (Error.isError(message)) {
             throw message;
         }
-        throw new TypeError("[assertIsNil] Assertion failed: " + value + " is not null or undefined"
+        throw new TypeError("[assertIsNullish] Assertion failed: " + value + " is not null or undefined"
             + (message ? " - " + message : ""));
     }
     return value;
@@ -1912,7 +1917,7 @@ function isEmptyValue(value) {
         if ("Float16Array" in globalThis) {
             constructors.push(globalThis.Float16Array);
         }
-        return constructors.some((Class) => value instanceof Class);
+        return constructors.some((item) => value instanceof item);
     }
     if (value == null || Number.isNaN(value)) {
         return true;
@@ -1979,7 +1984,7 @@ const isArraylike = (value) => value != null
     && value.length >= 0;
 const isNull = (value) => (value === null);
 const isUndefined = (value) => (value === undefined);
-const isNil = (value) => (value == null);
+const isNullish = (value) => (value == null);
 const isPrimitive = (value) => value == null || (typeof value !== "object" && typeof value !== "function");
 const isIterator = (value) => "Iterator" in globalThis ? value instanceof Iterator
     : (value != null && typeof value === "object" && typeof value.next === "function");
@@ -2121,7 +2126,8 @@ function unique(iter, resolver) {
     }
 }
 function count(iter, fn) {
-    let index = 0, result = 0;
+    let index = 0;
+    let result = 0;
     for (let item of iter) {
         if (fn(item, index++)) {
             result++;
@@ -2375,7 +2381,7 @@ function* reverse([...array]) {
         yield array[index];
     }
 }
-const sort = ([...array], numbers) => array.sort(numbers ? (x, y) => x - y : undefined);
+const sort = ([...array], numbers = false) => array.sort(numbers ? (x, y) => x - y : undefined);
 function includes(collection, value, comparator) {
     if (comparator !== undefined && typeof comparator !== "function") {
         throw new TypeError(`[includes] TypeError: comparator is not a function or undefined. Got ${typeof comparator}`);
@@ -2567,8 +2573,8 @@ function toInteger(value) {
     return Math.min(Math.max(value, -(Math.pow(2, 53) - 1)), Math.pow(2, 53) - 1);
 }
 const toIntegerOrInfinity = (value) => ((value = Math.trunc(Number(value))) !== value || value === 0) ? 0 : value;
-const sum = (...values) => values.every((value) => typeof value === "number") ?
-    Math.sumPrecise(values) : values.slice(1).reduce((acc, v) => acc + v, values[0]);
+const sum = (...args) => args.every((value) => typeof value === "number") ?
+    Math.sumPrecise(args) : args.slice(1).reduce((acc, value) => acc + value, args[0]);
 const avg = (...args) => Math.sumPrecise(args) / args.length;
 const product = (first, ...args) => args.reduce((acc, v) => acc * v, first);
 function clamp(value, min = Number.MIN_SAFE_INTEGER, max = Number.MAX_SAFE_INTEGER) {
@@ -2747,8 +2753,8 @@ export default {
     assertMatch,
     assertDoesNotMatch,
     assertThrows,
-    assertIsNotNil,
-    assertIsNil,
+    assertIsNotNullish,
+    assertIsNullish,
     assert,
     assertTrue,
     assertFalse,
@@ -2841,7 +2847,7 @@ export default {
     isArraylike,
     isNull,
     isUndefined,
-    isNil,
+    isNullish,
     isPrimitive,
     isIterator,
     isRegexp,
@@ -2954,4 +2960,4 @@ export default {
     randomFloat,
     inRange
 };
-export { VERSION, BASE16, BASE32, BASE36, BASE58, BASE62, WORDSAFEALPHABET, toSafeString, tap, once, curry, pipe, compose, pick, omit, assoc, asyncNoop, asyncT, asyncF, asyncConstant, asyncIdentity, deleteOwnProperty, createPolyfillMethod, createPolyfillProperty, randomUUIDv7, delay, randomBoolean, getUrlVars, obj2string, extend, sizeIn, unBind, bind, constant, identity, noop, T, F, nanoid, timestampID, assertIs, assertIsNot, assertFail, assertMatch, assertDoesNotMatch, assertThrows, assertIsNotNil, assertIsNil, assert, assertTrue, assertFalse, assertEqual, assertStrictEqual, assertNotEqual, assertNotStrictEqual, assertDeepEqual, assertNotDeepStrictEqual, assertNotDeepEqual, assertDeepStrictEqual, b64Encode, b64Decode, strTruncate, strPropercase, strTitlecase, strCapitalize, strUpFirst, strDownFirst, strReverse, strCodePoints, strFromCodePoints, strAt, strSplice, strHTMLRemoveTags, strHTMLEscape, strHTMLUnEscape, qsa, qs, domReady, domCreate, domToElement, domGetCSS, domSetCSS, domFadeIn, domFadeOut, domFadeToggle, domHide, domShow, domToggle, domIsHidden, domSiblings, domSiblingsPrev, domSiblingsLeft, domSiblingsNext, domSiblingsRight, importScript, importStyle, form2array, form2string, getDoNotTrack, getLocation, createFile, getFullscreen, setFullscreenOn, setFullscreenOff, domGetCSSVar, domSetCSSVar, domScrollToTop, domScrollToBottom, domScrollToElement, domClear, getText, getJson, ajax, is, toObject, toPrimitiveValue, isPropertyKey, toPropertyKey, isIndex, isLength, toIndex, toLength, type, isSameType, isSameInstance, isCoercedObject, isDeepStrictEqual, isEmptyValue, isProxy, isAsyncGeneratorFn, isClass, isPlainObject, isChar, isNumeric, isObject, isFunction, isCallable, isArraylike, isNull, isUndefined, isNil, isPrimitive, isIterator, isRegexp, isElement, isIterable, isAsyncIterable, isTypedArray, isGeneratorFn, isAsyncFn, setCookie, getCookie, hasCookie, removeCookie, clearCookies, castArray, compact, unique, count, arrayDeepClone, initial, shuffle, partition, setUnion, setIntersection, setDifference, setSymmetricDifference, isSuperset, min, max, arrayRepeat, arrayCycle, arrayRange, zip, unzip, zipObj, arrayAdd, arrayClear, arrayRemove, arrayRemoveBy, arrayMerge, iterRange, iterCycle, iterRepeat, takeWhile, dropWhile, take, drop, forEach, forEachRight, map, filter, reject, slice, tail, item, nth, size, first, head, last, reverse, sort, includes, find, findLast, every, some, none, takeRight, takeRightWhile, dropRight, dropRightWhile, concat, reduce, enumerate, flat, join, withOut, isFloat, toInteger, toIntegerOrInfinity, sum, avg, product, clamp, minmax, isEven, isOdd, toInt8, toUInt8, toInt16, toUInt16, toInt32, toUInt32, toBigInt64, toBigUInt64, toFloat32, isInt8, isUInt8, isInt16, isUInt16, isInt32, isUInt32, isBigInt64, isBigUInt64, toFloat16, isFloat16, signbit, randomInt, randomFloat, inRange };
+export { VERSION, BASE16, BASE32, BASE36, BASE58, BASE62, WORDSAFEALPHABET, toSafeString, tap, once, curry, pipe, compose, pick, omit, assoc, asyncNoop, asyncT, asyncF, asyncConstant, asyncIdentity, deleteOwnProperty, createPolyfillMethod, createPolyfillProperty, randomUUIDv7, delay, randomBoolean, getUrlVars, obj2string, extend, sizeIn, unBind, bind, constant, identity, noop, T, F, nanoid, timestampID, assertIs, assertIsNot, assertFail, assertMatch, assertDoesNotMatch, assertThrows, assertIsNotNullish, assertIsNullish, assert, assertTrue, assertFalse, assertEqual, assertStrictEqual, assertNotEqual, assertNotStrictEqual, assertDeepEqual, assertNotDeepStrictEqual, assertNotDeepEqual, assertDeepStrictEqual, b64Encode, b64Decode, strTruncate, strPropercase, strTitlecase, strCapitalize, strUpFirst, strDownFirst, strReverse, strCodePoints, strFromCodePoints, strAt, strSplice, strHTMLRemoveTags, strHTMLEscape, strHTMLUnEscape, qsa, qs, domReady, domCreate, domToElement, domGetCSS, domSetCSS, domFadeIn, domFadeOut, domFadeToggle, domHide, domShow, domToggle, domIsHidden, domSiblings, domSiblingsPrev, domSiblingsLeft, domSiblingsNext, domSiblingsRight, importScript, importStyle, form2array, form2string, getDoNotTrack, getLocation, createFile, getFullscreen, setFullscreenOn, setFullscreenOff, domGetCSSVar, domSetCSSVar, domScrollToTop, domScrollToBottom, domScrollToElement, domClear, getText, getJson, ajax, is, toObject, toPrimitiveValue, isPropertyKey, toPropertyKey, isIndex, isLength, toIndex, toLength, type, isSameType, isSameInstance, isCoercedObject, isDeepStrictEqual, isEmptyValue, isProxy, isAsyncGeneratorFn, isClass, isPlainObject, isChar, isNumeric, isObject, isFunction, isCallable, isArraylike, isNull, isUndefined, isNullish, isPrimitive, isIterator, isRegexp, isElement, isIterable, isAsyncIterable, isTypedArray, isGeneratorFn, isAsyncFn, setCookie, getCookie, hasCookie, removeCookie, clearCookies, castArray, compact, unique, count, arrayDeepClone, initial, shuffle, partition, setUnion, setIntersection, setDifference, setSymmetricDifference, isSuperset, min, max, arrayRepeat, arrayCycle, arrayRange, zip, unzip, zipObj, arrayAdd, arrayClear, arrayRemove, arrayRemoveBy, arrayMerge, iterRange, iterCycle, iterRepeat, takeWhile, dropWhile, take, drop, forEach, forEachRight, map, filter, reject, slice, tail, item, nth, size, first, head, last, reverse, sort, includes, find, findLast, every, some, none, takeRight, takeRightWhile, dropRight, dropRightWhile, concat, reduce, enumerate, flat, join, withOut, isFloat, toInteger, toIntegerOrInfinity, sum, avg, product, clamp, minmax, isEven, isOdd, toInt8, toUInt8, toInt16, toUInt16, toInt32, toUInt32, toBigInt64, toBigUInt64, toFloat32, isInt8, isUInt8, isInt16, isUInt16, isInt32, isUInt32, isBigInt64, isBigUInt64, toFloat16, isFloat16, signbit, randomInt, randomFloat, inRange };

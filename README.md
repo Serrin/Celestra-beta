@@ -33,18 +33,12 @@ __Tested on these:__
 - Node.js (latest current, not LTS)
 - Deno (latest current, not LTS)
 
-The functions are available in the `celestra` and/or `CEL` object or any function can be imported.
-
-Edition|Filename
--------|--------
-developer|__celestra.dev.js__
-minified|__celestra.min.js__
-ES6 module|__celestra.esm.js__
-Node.js and Deno module|__celestra.node.mjs__
-Celestra Unit Tester (CUT)|__unittest.html__
-Version history|__CHANGELOG.md__
-
-DEV and MIN editions: If the `CEL` global variable is used before the loading of the library, then the value of the variable is saved and you can restore with the `noConflict();` function.
+Edition|JS file|TS file
+-------|-------|---------
+Browser module|__celestra.browser.js__|__celestra.browser.ts__
+Node.js and Deno module|__celestra.node.mjs__|__celestra.node.mts__
+Celestra Unit Tester (CUT)|__unittest.html__|
+Version history|__CHANGELOG.md__|
 
 
 ### Github pages
@@ -84,41 +78,37 @@ Assert plugin minified source|__celestra-assert-plugin.min.js__
 Assert plugin cheatsheet|__celestra-assert-plugin.odt__<BR>__celestra-assert-plugin.pdf__
 
 
-### How to import the ESM edition
+### How to import the browser edition
 
 ````javascript
 <script type="module">
-
 // import the defaultExport object
-import defaultExport from "./celestra.esm.js";
+import defaultExport from "./celestra.browser.js";
 globalThis.celestra = defaultExport;
 globalThis.CEL = defaultExport;
+</script>
 
+<script type="module">
 // import with default with name
-import { default as celestra } from "./celestra.esm.js";
+import { default as celestra } from "./celestra.browser.js";
 globalThis.celestra = celestra;
 globalThis.CEL = celestra;
+</script>
 
+<script type="module">
 // import all into a new celestra object
-import * as celestra from "./celestra.esm.js";
+import * as celestra from "./celestra.browser.js";
 globalThis.celestra = celestra;
 globalThis.CEL = celestra;
+</script>
 
+<script type="module">
 // import some functions
-import { first, classof } from "./celestra.esm.js";
+import { first, classof } from "./celestra.browser.js";
 globalThis.first = first;
 globalThis.classof = classof;
-
 </script>
 ````
-
-__Another way to import__
-
-
-````
-<script type="module"> import "./celestra.min.js"; </script>
-````
-
 
 ### How to import the Node.js edition
 
@@ -218,6 +208,19 @@ __Cookie API__ | `getCookie();`<BR>`hasCookie();`<BR>`setCookie();`<BR>`removeCo
 - The Node.js and Deno support has been added.
 
 
+### Celestra v6.1.0 (Sulaco) changes
+
+- Please read in the documentation about the new files and import methods for the browser edition!
+- The __celestra.dev.js__ has been replaced with the __celestra.browser.ts__.
+- The __celestra.min.js__ has been replaced with the __celestra.browser.js__.
+- The __celestra.node.mjs__ has been remained and added the __celestra.node.mts__.
+- The `isNil();` function has been renamed to `isNullish();`.
+- The `assertIsNil();` function has been renamed to `assertIsNullish();`.
+- The `assertIsNotNil();` function has been renamed to `assertIsNotNullish();`.
+- The `celestra.noConflict();` function has been removed.
+- Some deprecated functions have been removed.
+
+
 -----
 
 ## Functions
@@ -235,13 +238,11 @@ __Cookie API__ | `getCookie();`<BR>`hasCookie();`<BR>`setCookie();`<BR>`removeCo
 
 ### Core API
 
-These functions are available in the `celestra` and/or `CEL` objects.
-
 Example: `CEL.delay();`
 
 Name | Description
 ---- | -----------
-`celestra.noConflict();` | __Stability: 4 - Stable.__<BR>Restore the previous `CEL` object value and return the `celestra` object to create a new alias.<BR>__Tip: You can make a new alias without this function too. Example: `globalThis._cel = globalThis.celestra;`__<BR>__In the ESM edition only returns the celestra object.__
+`celestra.noConflict();` |__Stability: 0 - Removed in v6.1.0__<BR>Restore the previous `CEL` object value and return the `celestra` object to create a new alias.<BR>__Tip: You can make a new alias without this function too. Example: `globalThis._cel = globalThis.celestra;`__<BR>__In the ESM edition only returns the celestra object.__
 `celestra.VERSION;` | __Stability: 4 - Stable.__<BR>The library version.
 `BASE16;`|__Stability: 4 - Stable.__<BR>`"0123456789ABCDEF"`<BR>Can be used with the ID generator functions.
 `BASE32;`|__Stability: 4 - Stable.__<BR>`"234567ABCDEFGHIJKLMNOPQRSTUVWXYZ"`<BR>Can be used with the ID generator functions.
@@ -286,10 +287,6 @@ Name | Description
 
 ### String API
 
-These functions are available in the `celestra` and/or `CEL` objects.
-
-Example: `CEL.strPropercase();`
-
 Name | Description
 ---- | -----------
 `b64Decode(string);` | __Stability: 4 - Stable.__<BR>Unicode compatible base64 to string converter. Return the original string.
@@ -314,10 +311,6 @@ Name | Description
 
 There are information about the equalities in the __js-cheatsheet.pdf__.
 
-These functions are available in the `celestra` and/or `CEL` objects.
-
-Example: `CEL.assert();`
-
 Name | Description
 ---- | -----------
 `assert(condition [, message |\ error]);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the condition is falsy. The message parameter is optional. The return value is `true`, when the test was success.
@@ -327,29 +320,25 @@ Name | Description
 `assertEqual(value1, value2 [, message \| error]);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value1 and value2 aren't equals. (_Loose equality + NaN equality_) The message parameter is optional. The return value is `true`, when the test was success.
 `assertFail(message \| error);` | __Stability: 4 - Stable.__<BR>his function always throws an error. If the argument is an error, then this error will be thrown, else a new error with the message.
 `assertFalse(condition [, message \| error]);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the condition is truthy. The message parameter is optional. The return value is `true`, when the test was success.
-`assertInstanceOf(value, constructor [, message \| error]);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function throws an error if the constructor of the value in not the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
+`assertInstanceOf(value, constructor [, message \| error]);` | __Stability: 0 - Removed in v6.1.0__<BR>This function throws an error if the constructor of the value in not the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
 `assertIs(value, expectedType [, message \| error]);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value type or class is the given expectedType. The expectedType can be a type string, constructor function or an array of the type strings and constructors. If the value is not matched with the expectedType, then a TypeError will be thrown with detailed error message. If these conditions are passed, then the given value is the return value.
-`assertIsNil(value [, message \| error]);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value is not null or undefined, else the given value is the return value. The message parameter is optional.
 `assertIsNot(value, expectedType [, message \| error]);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value type or class is not the given expectedType. The expectedType can be a type string, constructor function or an array of the type strings and constructors. If the value is matched with the expectedType, then a TypeError will be thrown with detailed error message. If these conditions are passed, then the given value is the return value.
-`assertIsNotNil(value [, message \| error]);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value is null or undefined, else the given value is the return value. The message parameter is optional.
+`assertIsNotNullish(value [, message \| error]);` | __Stability: 4 - Stable.__<BR>__Old name before v6.1.0: `assertIsNotNil();`.__<BR>This function throws an error with the message if the value is null or undefined, else the given value is the return value. The message parameter is optional.
+`assertIsNullish(value [, message \| error]);` | __Stability: 4 - Stable.__<BR>__Old name before v6.1.0: `assertIsNil();`.__<BR>This function throws an error with the message if the value is not null or undefined, else the given value is the return value. The message parameter is optional.
 `assertMatch(string, regexp [, message \| error]);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the string doesn't match with the regexp. The message parameter is optional. The return value is `true`, when the test was success.
 `assertNotDeepEqual(value1, value2 [, message \| error]);`| __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value1 and value2 are deep equals. (_Deep loose equality + NaN equality: primitives (loose equality + NaN equality), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer_) The message parameter is optional. The return value is `true`, when the test was success.<BR>__This function may give unexpected results. It is safer to use the `assertNotDeepStrictEqual();` function.__
 `assertNotDeepStrictEqual(value1, value2 [, message \| error]);`| __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value1 and value2 are deep equals. (_Deep strict equality + NaN equality: primitives (SameValue - Object.is()), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer_) The message parameter is optional. The return value is `true`, when the test was success.
 `assertNotEqual(value1, value2 [, message \| error]);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value1 and value2 are equals. (_Loose equality + NaN equality_) The message parameter is optional. The return value is `true`, when the test was success.
-`assertNotInstanceOf(value, constructor [, message \| error]);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function throws an error if the constructor of the value is the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
+`assertNotInstanceOf(value, constructor [, message \| error]);` | __Stability: 0 - Removed in v6.1.0__<BR>This function throws an error if the constructor of the value is the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
 `assertNotStrictEqual(value1, value2 [, message \| error]);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value1 and value2 are equals. (_SameValue equality_) The message parameter is optional. The return value is `true`, when the test was success.
-`assertNotTypeOf(value, type [, message \| error]);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function throws an error if the type of the value is the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
+`assertNotTypeOf(value, type [, message \| error]);` | __Stability: 0 - Removed in v6.1.0__<BR>This function throws an error if the type of the value is the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
 `assertStrictEqual(value1, value2 [, message \| error]);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value1 and value2 aren't equals. (_SameValue equality_) The message parameter is optional. The return value is `true`, when the test was success.
 `assertTrue(condition [, message \| error]);` | __Stability: 4 - Stable.__<BR> This is an alias of the `assert(condition [, message \| error]);`.
 `assertThrows(callback [, message \| error]);` | __Stability: 4 - Stable.__<BR> This function catches and returns the error, if the callback throws an error. In other cases throws an error with the message. The message parameter is optional.
-`assertTypeOf(value, type [, message \| error]);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function throws an error if the type of the value in not the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
+`assertTypeOf(value, type [, message \| error]);` | __Stability: 0 - Removed in v6.1.0__<BR>This function throws an error if the type of the value in not the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
 
 
 ### DOM API
-
-These functions are available in the `celestra` and/or `CEL` objects.
-
-Example: `CEL.domCreate();`
 
 Name | Description
 ---- | -----------
@@ -396,10 +385,6 @@ Name | Description
 
 __These functions aren't deprecated, but it's recommend to use the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API), because it's [supported](https://caniuse.com/?search=fetch) in every modern browsers.__
 
-These functions are available in the `celestra` and/or `CEL` objects.
-
-Example: `CEL.getJson();`
-
 Name | Description
 ---- | -----------
 `ajax(Options object);` | __Stability: 3 - Legacy and can get only fixes.__<BR>Get content and send data via AJAX and CORS.
@@ -421,14 +406,10 @@ __Options object properties:__
 
 ### Type API
 
-These functions are available in the `celestra` and/or `CEL` objects.
-
-Example: `CEL.isUndefined();`
-
 Name | Description
 ---- | -----------
-`classof(value[,class[,throw=false]]);` | __Stability: 1 - Deprecated and will be removed.__<BR>Get the real type of a value. If this is an object, then the return value is the detailed object type (e.g.: array). If the class (string) parameter is given, then the return value (boolean) is the equality of the type of the value and the second parameter. If the third parameter (boolean) is true and the type of the value and the second parameter aren't equals, then the function is throwing a `TypeError();`, else the return value is true.
-`getType(value[,class[,throw=false]]);` | __Stability: 1 - Deprecated and will be removed.__<BR>This is an alias of the `classof(variable[,class[,throw=false]]);`.
+`classof(value[,class[,throw=false]]);` | __Stability: 0 - Removed in v6.1.0__<BR>Get the real type of a value. If this is an object, then the return value is the detailed object type (e.g.: array). If the class (string) parameter is given, then the return value (boolean) is the equality of the type of the value and the second parameter. If the third parameter (boolean) is true and the type of the value and the second parameter aren't equals, then the function is throwing a `TypeError();`, else the return value is true.
+`getType(value[,class[,throw=false]]);` | __Stability: 0 - Removed in v6.1.0____<BR>This is an alias of the `classof(variable[,class[,throw=false]]);`.
 `is(value[,expectedType[,Throw=false]];` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value type or class is the given expectedType. The expectedType can be a type string, constructor function or an array of the type strings and constructors. If the Throw is true and the value is not matched with the expectedType, then a TypeError will be thrown with detailed error message. The return value is boolean or the type or constructor of the value.
 `isArraylike(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an arraylike object. The return value is boolean.
 `isAsyncIterable(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an async iterable object. The return value is boolean.
@@ -447,8 +428,8 @@ Name | Description
 `isIterable(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an iterable object. The return value is boolean.
 `isIterator(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an iterator. The return value is boolean.
 `isLength(value);`| __Stability: 4 - Stable.__<BR>Alias of `isIndex(value);`.
-`isNil(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is null or undefined. The return value is boolean.
 `isNull(value);` |__Stability: 4 - Stable.__<BR> This function determines whether the provided value is null. The return value is boolean.
+`isNullish(value);` | __Stability: 4 - Stable.__<BR>__Old name before v6.1.0: `isNil();`.__<BR>This function determines whether the provided value is null or undefined. The return value is boolean.
 `isNumeric(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a number or can be converted to number. The return value is boolean.
 `isObject(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an object or function and not null. The return value is boolean.
 `isPlainObject(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an object, which own prototype is the Object.prototype or null. The return value is boolean.
@@ -456,7 +437,7 @@ Name | Description
 `isPropertyKey(value);`| __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a valid propertx key (string or symbol). The return value is boolean.
 `isProxy(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a proxy object. The return value is boolean.
 `isRegexp(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a regexp. The return value is boolean.
-`isSameClass(value1, value2);`| __Stability: 1 - Deprecated and will be removed.__<BR>This function returns true if the values are same class and uses the `Object.prototype.toString();` method. The parameters are mandatory. The return value is boolean.
+`isSameClass(value1, value2);`| __Stability: 0 - Removed in v6.1.0__<BR>This function returns true if the values are same class and uses the `Object.prototype.toString();` method. The parameters are mandatory. The return value is boolean.
 `isSameInstance(value1, value2,Contructor);` | __Stability: 4 - Stable.__<BR>This function returns true if the values are same class and uses the `instanceof` operator. The parameters are mandatory. The return value is boolean.
 `isSameType(value1, value2);`| __Stability: 4 - Stable.__<BR>This function returns true if the values are same type or both are null or both are undefined. The parameters are mandatory. The return value is boolean.
 `isTypedArray(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an typedarray. The return value is boolean.
@@ -470,10 +451,6 @@ Name | Description
 
 
 ### Cookie API
-
-These functions are available in the `celestra` and/or `CEL` objects.
-
-Example: `CEL.setCookie();`
 
 Cookie values help: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie, https://web.dev/samesite-cookies-explained
 
@@ -491,10 +468,6 @@ Name | Description
 
 ### Collections API
 
-These functions are available in the `celestra` and/or `CEL` objects.
-
-Example: `CEL.arrayAdd();`
-
 Name | Description
 ---- | -----------
 `arrayAdd(array,value);` | __Stability: 4 - Stable.__<BR>Push the value to the array if the array doesn't contain the value. The return value is true, when the value is added and false, when not added.
@@ -509,7 +482,7 @@ Name | Description
 `castArray([value]);` | __Stability: 4 - Stable.__<BR>This function returns the original value if this is an array or value a new array. If there is no given value, then the return value is an empty array.
 `compact(iterator);` | __Stability: 4 - Stable.__<BR>This function merges the iterators and yields the elements of the merged iterator. At least one iterator has to been given.
 `concat(iterator1[,iteratorN]);` | __Stability: 4 - Stable.__<BR>This function merges the iterators and yields the elements of the merged iterator. At least one iterator has to been given.
-`contains(iterator,value);` | __Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether an iterator includes a certain value among its entries, returning true or false as appropriate. All of the parameters are mandatory.
+`contains(iterator,value);` | __Stability: 0 - Removed in v6.1.0__<BR>This function determines whether an iterator includes a certain value among its entries, returning true or false as appropriate. All of the parameters are mandatory.
 `count(iterator,callback);` | __Stability: 4 - Stable.__<BR>This function executes a counter function (that you provide) on each element of the iterator, returning in a single output value. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function.
 `drop(iterator[,n=1]);` | __Stability: 3 - Legacy and can get only fixes.__<BR>__Can be replaced with `Iterator.from(iterable/iterator).drop();`__<BR>Drop the first N elements of an iterator and yield the remained elements. The iterator parameter is mandatory. The n parameter is optional and can be an integer. Default parameter value: n = 1
 `dropRight(iterator[,n=1]);` | __Stability: 4 - Stable.__<BR>Drop the last N elements of an iterator and return the remained elements in an array. The iterator parameter is mandatory. The n parameter is optional and can be an integer. Default parameter value: n = 1.
@@ -566,14 +539,10 @@ Name | Description
 
 ### Abstract API
 
-The Ecmascript abstract functions are available in the [Zephyr library](https://github.com/Serrin/Zephyr) library.
+The Ecmascript abstract functions are available in the [Zephyr library](https://github.com/Serrin/Zephyr).
 
 
 ### Math API
-
-These functions are available in the `celestra` and/or `CEL` objects.
-
-Example: `CEL.sum();`
 
 Name | Description
 ---- | -----------

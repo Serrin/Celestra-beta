@@ -1,4 +1,4 @@
-// @ts-nocheck
+// @ts-check
 "use strict";
 
 
@@ -128,18 +128,21 @@ CUT.concat = function concat (/** @type {any[]} */ ...args) {
 };
 
 /* join(<iterator>[, separator = " "]): string */
+/** @returns string */
 CUT.join = function join (
-  /** @type {Iterable} */ it,
+  /** @type {Iterable<any> | Iterator<any> | Generator<any, void, unknown>} */ it,
   /** @type {string} */ separator = " ") {
   separator = String(separator);
   let r = "";
+  // @ts-ignore
   for (let item of it) { r += separator + item; }
   return r.slice(separator.length);
 }
 
 /* take(<iterator>[,n=1]): iterator); */
+/** @returns string */
 CUT.take = function* take (
-  /** @type {Iterable} */ it,
+  /** @type {Iterable<any> | Iterator<any> | Generator<any, void, unknown>} */ it,
   /** @type {number} */  n = 1) {
   let i = n;
   for (let item of it) {
@@ -197,6 +200,7 @@ CUT.addElement("table",
 
 globalThis.saveResults = function saveResults () {
   var dn = Date.now().toString(36);
+  // @ts-ignore
   CEL.createFile(`results-${dn}.html`,
     // @ts-ignore
     `<!DOCTYPE html><meta charset=\"utf-8\"><title>Results ${dn}</title><style>html { -ms-word-break: break-all; word-break: break-all; word-break: break-word; word-wrap: break-word; overflow-wrap: break-word; } body { margin: 0 auto; max-width: 1200px; font-family: Helvetica, Arial, sans-serif; } h1 { text-align : center; } .passed, .failed { display: inline-block; padding: 3px; }.passed { background-color: #3d9970 !important; color: white !important; }.failed { background-color: #ff4136 !important; color: white !important; } #results { padding: 3px 5px 3px 5px; font-size: 14.5px !important; font-family: consolas, monospace; } code { background-color: slategrey; color: white; padding: 3px 5px 3px 5px; display: inline-block; margin-top: 2px; } </style><h1>Results ${dn}</h1><div id=\"results\">${CUT.__results__.innerHTML}</div>`,
@@ -355,6 +359,7 @@ CUT.isTrue("is(); ES5 values",
     && CEL.is(document) === HTMLDocument
     && CEL.is(true) === "boolean"
     && CEL.is(document.querySelectorAll("p")) === NodeList
+    // @ts-ignore
     && CEL.is(CEL.qs("p")) === HTMLParagraphElement
     && CEL.is(null) === "null"
     && CEL.is(undefined) === "undefined"
@@ -370,6 +375,7 @@ CUT.isTrue("is(); ES5 true",
     || CEL.is(document, HTMLDocument)
     || CEL.is(true, "boolean")
     || CEL.is(document.querySelectorAll("p"), NodeList)
+    // @ts-ignore
     || CEL.is(CEL.qs("p"), HTMLParagraphElement)
     || CEL.is(null, "null")
     || CEL.is(undefined, "undefined")
@@ -385,6 +391,7 @@ CUT.isFalse("is(); ES5 false",
     || CEL.is(document, "boolean")
     || CEL.is(true, HTMLDocument)
     || CEL.is(document.querySelectorAll("p"), HTMLDocument)
+    // @ts-ignore
     || CEL.is(CEL.qs("p"), NodeList)
     || CEL.is(null, "undefined")
     || CEL.is(undefined, "null")
@@ -565,6 +572,7 @@ CUT.isTrue(
 
 /* add html test element */
 CUT.addElement(
+  // @ts-ignore
   CEL.domCreate("div", {"id": "qsaDivTestElement"},
     "#qsaDiv test element"
       + "<p id='qsaDivP1'>#qsaDivP1 test element</p>"
@@ -575,38 +583,50 @@ CUT.addElement(
 
 /* qs(); */
 CUT.isEqual("qs(); 1",
+  // @ts-ignore
   document.querySelector("#qsaDivTestElement"), CEL.qs("#qsaDivTestElement")
 );
 CUT.isEqual("qs(); 02",
   document.querySelector("#qsaDivP1"),
+  // @ts-ignore
   CEL.qs("#qsaDivP1", CEL.qs("#qsaDivTestElement"))
 );
 CUT.isEqual("qs(); 03",
   document.querySelector("#qsaDivP1"),
+  // @ts-ignore
   CEL.qs("#qsaDivP1", document.querySelector("#qsaDivTestElement"))
 );
 
 
 /* qsa(); */
+// @ts-ignore
 token1 = CEL.qsa("#qsaDivTestElement > p")
 CUT.isTrue("qsa(); 01",
   Array.isArray(token1)
     && token1.length === 2
+    // @ts-ignore
     && token1[0] === CEL.qs("#qsaDivP1")
+    // @ts-ignore
     && token1[1] === CEL.qs("#qsaDivP2")
 );
+// @ts-ignore
 token1 = CEL.qsa("p", CEL.qs("#qsaDivTestElement"))
 CUT.isTrue("qsa(); 02",
   Array.isArray(token1)
     && token1.length === 2
+    // @ts-ignore
     && token1[0] === CEL.qs("#qsaDivP1")
+    // @ts-ignore
     && token1[1] === CEL.qs("#qsaDivP2")
 );
+// @ts-ignore
 token1 = CEL.qsa("p", CEL.qs("#qsaDivTestElement"))
 CUT.isTrue("qsa(); 03",
   Array.isArray(token1)
     && token1.length === 2
+    // @ts-ignore
     && token1[0] === CEL.qs("#qsaDivP1")
+    // @ts-ignore
     && token1[1] === CEL.qs("#qsaDivP2")
 );
 token1.forEach(function (e) { e.innerHTML += " each"; });
@@ -654,19 +674,23 @@ CUT.isEqual("getUrlVars(); empty object", "{}",
 );
 
 
+// @ts-ignore
 CUT.addElement(CEL.domCreate("div", {"id": "testFormDiv"},
   " <form id='form1'><br/>Text: <input type='text' name='name' value='foo éáűőúöüóíéáűőúöüóí'><br/>Password: <input type='password' name='password' value='bar'><br/>Number: <input type='number' name='number' value='97'><br/> Radio: <input type='radio' name='radio' value='male' checked='checked'>Male <input type='radio' name='radio' value='female'>Female<br/> <select name='animals'> <option value='dog'>dog</option> <option value='cat'>cat</option> <option value='cow'>cow</option> <option value='hippos'>hippos</option> </select><br/> <select name='animals-multiple' multiple='multiple'> <option value='dog' selected='selected'>dog</option> <option value='cat'>cat</option> <option value='cow'>cow</option> <option value='hippos' selected='selected'>hippos</option> </select><br/>Checkbox1: <input type='checkbox' name='checkbox1' value='true' checked='checked'>true<br/>Checkbox2: <input type='checkbox' name='checkbox2' value='false'>false<br/>Textarea1: <textarea name='textarea1'>textarea1</textarea><br/><input type='submit' value='Submit'><br/><input type='reset' value='Reset'><br/><input type='button' value='Button1'><br/><button>Button2</button> </form> "
 ));
 /* form2array(); */
 CUT.isEqual("form2array();",
   '[{"name":"name","value":"foo%20%C3%A9%C3%A1%C5%B1%C5%91%C3%BA%C3%B6%C3%BC%C3%B3%C3%AD%C3%A9%C3%A1%C5%B1%C5%91%C3%BA%C3%B6%C3%BC%C3%B3%C3%AD"},{"name":"password","value":"bar"},{"name":"number","value":"97"},{"name":"radio","value":"male"},{"name":"animals","value":"dog"},{"name":"animals-multiple","value":"dog"},{"name":"animals-multiple","value":"hippos"},{"name":"checkbox1","value":"true"},{"name":"textarea1","value":"textarea1"}]',
+  // @ts-ignore
   JSON.stringify(CEL.form2array(CEL.qs("#form1")))
 );
 /* form2string(); */
 CUT.isEqual("form2string();",
   "name=foo+%C3%A9%C3%A1%C5%B1%C5%91%C3%BA%C3%B6%C3%BC%C3%B3%C3%AD%C3%A9%C3%A1%C5%B1%C5%91%C3%BA%C3%B6%C3%BC%C3%B3%C3%AD&password=bar&number=97&radio=male&animals=dog&animals-multiple=dog&animals-multiple=hippos&checkbox1=true&textarea1=textarea1",
+  // @ts-ignore
   CEL.form2string(CEL.qs("#form1"))
 );
+// @ts-ignore
 CEL.qs("#testFormDiv").remove();
 
 
@@ -693,6 +717,7 @@ CUT.isEqual("sizeIn();", 5, CEL.sizeIn({"a": 1, "b": 2, "c": 3,
 
 
 /* getDoNotTrack(); */
+// @ts-ignore
 CUT.isEqual("getDoNotTrack();", typeof CEL.getDoNotTrack(), "boolean");
 
 
@@ -855,38 +880,51 @@ CUT.isEqual("strHTMLUnEscape();",
 /* domGetCSSVar(); */
 /* domSetCSSVar(); */
 CUT.isEqual("domGetCSSVar(); and domSetCSSVar(); without prefix 1", "",
+  // @ts-ignore
   CEL.domGetCSSVar("testVar1"));
+// @ts-ignore
 CEL.domSetCSSVar("testVar1", "value1");
 CUT.isEqual("domGetCSSVar(); and domSetCSSVar(); without prefix 2 - "
+  // @ts-ignore
   + CEL.domGetCSSVar("testVar1"), "value1",
+  // @ts-ignore
   CEL.domGetCSSVar("testVar1")
 );
 CUT.isEqual("domGetCSSVar(); and domSetCSSVar(); with prefix 1 - "
+  // @ts-ignore
   + CEL.domGetCSSVar("--testVar2"), "",
+  // @ts-ignore
   CEL.domGetCSSVar("--testVar2")
 );
+// @ts-ignore
 CEL.domSetCSSVar("--testVar2", "value2");
 CUT.isEqual("domGetCSSVar(); and domSetCSSVar(); with prefix 2 - "
+  // @ts-ignore
   + CEL.domGetCSSVar("--testVar2"), "value2",
+  // @ts-ignore
   CEL.domGetCSSVar("--testVar2")
 );
 
 
 /* domTestElement variable */
+// @ts-ignore
 CUT.addElement( CEL.domCreate("p",
   {"id": "domTestElement", style: {"width": "250px"}}, "DOM test element"));
+// @ts-ignore
 var domTestElement = CEL.qs("#domTestElement");
 
 
 /* domCreate(); */
 CUT.isTrue("domCreate(); with style object", CEL.isElement(domTestElement));
 CUT.isTrue("domCreate(); with style string",
+  // @ts-ignore
   CEL.isElement(CEL.domCreate("p",
     {"id": "domTestElement", style: "width: 250px; color: blue;" },
     "DOM test element"
   ))
 );
 CUT.isTrue("domCreate(object); with style object",
+  // @ts-ignore
   CEL.isElement(CEL.domCreate({
     elementType: "p",
     "id": "domTestElementObject",
@@ -895,6 +933,7 @@ CUT.isTrue("domCreate(object); with style object",
   }))
 );
 CUT.isTrue("domCreate(object); with style string",
+  // @ts-ignore
   CEL.isElement(CEL.domCreate({
     elementType: "p",
     "id": "domTestElementObject",
@@ -906,10 +945,12 @@ CUT.isTrue("domCreate(object); with style string",
 
 /* domToElement(); */
 CUT.isTrue("domToElement(); simple element",
+  // @ts-ignore
   CEL.isElement(CEL.domToElement("<div>Hello world!</div>"))
 );
 CUT.isTrue("domToElement(); complex element",
   CEL.isElement(
+    // @ts-ignore
     CEL.domToElement(
       "<p><span style=\"background-color: yellow; color: blue;\">Hello</span> <span style=\"background-color: blue; color: yellow;\">world</span>!</p>"
     ).firstElementChild
@@ -919,65 +960,93 @@ CUT.isTrue("domToElement(); complex element",
 
 /* domSetCSS(); */
 /* domgetCSS(); */
+// @ts-ignore
 CEL.domSetCSS(domTestElement, "width", "300px");
 CUT.isEqual("domSetCSS(); property and domGetCSS(); - (300px) - "
+  // @ts-ignore
   + CEL.domGetCSS(domTestElement, "width"), "300px",
+  // @ts-ignore
   CEL.domGetCSS(domTestElement, "width")
 );
+// @ts-ignore
 CEL.domSetCSS(domTestElement, {"width": "350px", "font-weight": "bold"});
 CUT.isEqual("domSetCSS(); properties object and domGetCSS(); - (350px) - "
+  // @ts-ignore
   + CEL.domGetCSS(domTestElement, "width"),
+  // @ts-ignore
   "350px", CEL.domGetCSS(domTestElement, "width")
 );
 CUT.isEqual("domSetCSS(); properties object and domGetCSS() object; (350px)- "
+  // @ts-ignore
   + CEL.domGetCSS(domTestElement)["width"],
+  // @ts-ignore
   "350px", CEL.domGetCSS(domTestElement)["width"]
 );
 
 
 /* domHide(); */
+// @ts-ignore
 CEL.domHide(domTestElement);
+// @ts-ignore
 CUT.isEqual("domHide();", "none", CEL.domGetCSS(domTestElement, "display"));
 
 
 /* domShow(); */
+// @ts-ignore
 CEL.domShow(domTestElement);
+// @ts-ignore
 CUT.isEqual("domShow();", "block", CEL.domGetCSS(domTestElement, "display"));
+// @ts-ignore
 CEL.domHide(domTestElement);
+// @ts-ignore
 CEL.domShow(domTestElement, "inline-block");
 CUT.isEqual("domShow(); inline-block", "inline-block",
+  // @ts-ignore
   CEL.domGetCSS(domTestElement, "display")
 );
 
 
 /* domToggle(); */
+// @ts-ignore
 CEL.domToggle(domTestElement);
+// @ts-ignore
 CUT.isEqual("domToggle(); hide","none",CEL.domGetCSS(domTestElement,"display"));
+// @ts-ignore
 CEL.domToggle(domTestElement);
 CUT.isEqual("domToggle(); show", "block",
+  // @ts-ignore
   CEL.domGetCSS(domTestElement, "display")
 );
+// @ts-ignore
 CEL.domToggle(domTestElement, "inline-block");
 CUT.isEqual("domToggle(); hide inline-block", "none",
+  // @ts-ignore
   CEL.domGetCSS(domTestElement, "display")
 );
 
 
 /* domHide(); */
+// @ts-ignore
 CEL.domToggle(domTestElement, "inline-block");
 CUT.isEqual("domHide(); show inline-block", "inline-block",
+  // @ts-ignore
   CEL.domGetCSS(domTestElement, "display")
 );
 
 
 /* domIsHidden(); */
+// @ts-ignore
 CEL.domShow(domTestElement);
+// @ts-ignore
 CUT.isFalse("domIsHidden(); 01", CEL.domIsHidden(domTestElement));
+// @ts-ignore
 CEL.domHide(domTestElement);
+// @ts-ignore
 CUT.isTrue("domIsHidden(); 02", CEL.domIsHidden(domTestElement));
 
 
 CUT.addElement(
+  // @ts-ignore
   CEL.domCreate("div", {"id": "dsDiv"},
     "<p id=\"dsDivP1\">#dsDivP1</p>"
       + "<p id=\"dsDivP2\">#dsDivP2</p>"
@@ -987,6 +1056,7 @@ CUT.addElement(
   )
 );
 /* domSiblings(); */
+// @ts-ignore
 token1 = CEL.domSiblings(CEL.qs("#dsDivP3"));
 CUT.isTrue("domSiblings();", (
   Array.isArray(token1)
@@ -998,6 +1068,7 @@ CUT.isTrue("domSiblings();", (
   )
 );
 /* domSiblingsPrev(); */
+// @ts-ignore
 token1 = CEL.domSiblingsPrev(CEL.qs("#dsDivP3"));
 CUT.isTrue("domSiblingsPrev();", (
     Array.isArray(token1)
@@ -1007,6 +1078,7 @@ CUT.isTrue("domSiblingsPrev();", (
   )
 );
 /* domSiblingsLeft(); */
+// @ts-ignore
 token1 = CEL.domSiblingsLeft(CEL.qs("#dsDivP3"));
 CUT.isTrue("domSiblingsLeft();", (
   Array.isArray(token1) && token1.length === 2
@@ -1014,6 +1086,7 @@ CUT.isTrue("domSiblingsLeft();", (
     && token1[1].innerHTML === "#dsDivP2"
 ));
 /* domSiblingsNext(); */
+// @ts-ignore
 token1 = CEL.domSiblingsNext(CEL.qs("#dsDivP3"));
 CUT.isTrue("domSiblingsNext();", (
   Array.isArray(token1) && token1.length === 2
@@ -1021,6 +1094,7 @@ CUT.isTrue("domSiblingsNext();", (
     && token1[1].innerHTML === "#dsDivP5"
 ));
 /* domSiblingsRight(); */
+// @ts-ignore
 token1 = CEL.domSiblingsRight(CEL.qs("#dsDivP3"));
 CUT.isTrue("domSiblingsRight();", (
   Array.isArray(token1)
@@ -1028,11 +1102,14 @@ CUT.isTrue("domSiblingsRight();", (
     && token1[0].innerHTML === "#dsDivP4"
     && token1[1].innerHTML === "#dsDivP5"
 ));
+// @ts-ignore
 CEL.qs("#dsDiv").remove();
 
 
 /* domClear(); */
+// @ts-ignore
 token1 = CEL.domToElement("<div><p>1</p><p>2</p><p>3</p>div>");
+// @ts-ignore
 CEL.domClear(token1);
 CUT.isEqual("domClear();", 0, token1.children.length);
 
@@ -1082,12 +1159,15 @@ CUT.isError("assertMatch(); 02 error",
   () => CEL.assertMatch("table football", /go+/, "lorem")
 );
 CUT.isError("assertMatch(); 03 error",
+  // @ts-ignore
   () => CEL.assertMatch(42, /go+/, "lorem")
 );
 CUT.isError("assertMatch(); 04 error",
+  // @ts-ignore
   () => CEL.assertMatch("table football", 42, "lorem")
 );
 CUT.isError("assertMatch(); 05 error",
+  // @ts-ignore
   () => CEL.assertMatch("table football", 42, new Error("ipsum"))
 );
 
@@ -1100,9 +1180,11 @@ CUT.isError("assertDoesNotMatch(); 02 error",
   () => CEL.assertDoesNotMatch("table football", /fo+/, "lorem")
 );
 CUT.isError("assertDoesNotMatch(); 03 error",
+  // @ts-ignore
   () => CEL.assertDoesNotMatch(42, /go+/, "lorem")
 );
 CUT.isError("assertDoesNotMatch(); 04 error",
+  // @ts-ignore
   () => CEL.assertDoesNotMatch("table football", 42, "lorem")
 );
 CUT.isError("assertDoesNotMatch(); 05 error",
@@ -1129,40 +1211,40 @@ CUT.isError("not strict assert.assertThrows(); 04 error",
 );
 
 
-/* assertIsNil(); */
-CUT.isEqual("assertIsNil(); 01 ok", null,
-  CEL.assertIsNil(null, "assert.isNullable(); 01 ok")
+/* assertIsNullish(); */
+CUT.isEqual("assertIsNullish(); 01 ok", null,
+  CEL.assertIsNullish(null, "assert.isNullable(); 01 ok")
 );
-CUT.isEqual("assertIsNil(); 01 ok", undefined,
-  CEL.assertIsNil(undefined, "assert.isNullable(); 01 ok")
+CUT.isEqual("assertIsNullish(); 01 ok", undefined,
+  CEL.assertIsNullish(undefined, "assert.isNullable(); 01 ok")
 );
-CUT.isError("assertIsNil(); 03 error",
-  () => CEL.assertIsNil({}, "assertIsNil(); 03 error")
+CUT.isError("assertIsNullish(); 03 error",
+  () => CEL.assertIsNullish({}, "assertIsNullish(); 03 error")
 );
-CUT.isError("assertIsNil(); 04 error",
-  () => CEL.assertIsNil(42, "assertIsNil(); 04 error")
+CUT.isError("assertIsNullish(); 04 error",
+  () => CEL.assertIsNullish(42, "assertIsNullish(); 04 error")
 );
-CUT.isError("assertIsNil(); 05 error",
-  () => CEL.assertIsNil(42, new Error("ipsum"))
+CUT.isError("assertIsNullish(); 05 error",
+  () => CEL.assertIsNullish(42, new Error("ipsum"))
 );
 
 
-/* assertIsNotNil(); */
-CUT.isEqual("assertIsNotNil(); 01 ok", 42,
-  CEL.assertIsNotNil(42, "assertIsNotNil(); 01 ok")
+/* assertIsNotNullish(); */
+CUT.isEqual("assertIsNotNullish(); 01 ok", 42,
+  CEL.assertIsNotNullish(42, "assertIsNotNullish(); 01 ok")
 );
 token1 = {};
-CUT.isEqual("assertIsNotNil(); 02 ok", token1,
-  CEL.assertIsNotNil(token1, "assertIsNotNil(); 02 ok")
+CUT.isEqual("assertIsNotNullish(); 02 ok", token1,
+  CEL.assertIsNotNullish(token1, "assertIsNotNullish(); 02 ok")
 );
-CUT.isError("assertIsNotNil(); 03 error",
-  () => CEL.assertIsNotNil(null, "assertIsNotNil(); 03 error")
+CUT.isError("assertIsNotNullish(); 03 error",
+  () => CEL.assertIsNotNullish(null, "assertIsNotNullish(); 03 error")
 );
-CUT.isError("assertIsNotNil(); 04 error",
-  () => CEL.assertIsNotNil(undefined, "assertIsNotNil(); 04 error")
+CUT.isError("assertIsNotNullish(); 04 error",
+  () => CEL.assertIsNotNullish(undefined, "assertIsNotNullish(); 04 error")
 );
-CUT.isError("assertIsNotNil(); 05 error",
-  () => CEL.assertIsNotNil(undefined, new Error("ipsum"))
+CUT.isError("assertIsNotNullish(); 05 error",
+  () => CEL.assertIsNotNullish(undefined, new Error("ipsum"))
 );
 
 
@@ -4884,11 +4966,13 @@ CUT.isEqual("map(); 01", "2 4 6", CUT.join(CEL.map([1, 2, 3], (e) => e * 2)));
 CUT.isEqual("map(); 02", "CAT, DOG, PIG",
   CUT.join(CEL.map("cat, dog, pig", (e) => e.toUpperCase()), "")
 );
+// @ts-ignore
 token1 = [...CEL.map(document.querySelectorAll("h3"), (e) => e)];
 CUT.isTrue("map(); 03",
   Array.isArray(token1) && token1.every((e) => CEL.isElement(e))
 );
 token1 = "";
+// @ts-ignore
 for (let item of CEL.map(
   new Map([ ["foo", 1], ["bar", 2], ["baz", 3] ]), (e) => [e[0], e[1] * 2])) {
   token1 += item[0] + item[1];
@@ -5101,6 +5185,7 @@ CUT.isTrue("includes(); 01",
   && !CEL.includes(token1, 1)
   && !CEL.includes(token1, -0, Object.is)
 );
+// @ts-ignore
 CUT.isError("includes(); 02 error", () => CEL.includes([], 2, 2));
 
 
@@ -5168,6 +5253,7 @@ CUT.isEqual("dropRight(); 04", "B C D E F G H I J",
 /* takeRightWhile(); */
 token1 = [16, 14, 12, 10, 8, 6, 4, 2, 0];
 token2 = 0;
+// @ts-ignore
 for (let item of CEL.takeRightWhile(token1, (e) => e < 10)) { token2 += item; }
 CUT.isEqual("takeRightWhile(); 01", token2, 20);
 token2 = 0;
@@ -5555,59 +5641,91 @@ CUT.isEqual("arrayMerge();", token4,
 /* hasCookie(); */
 /* setcookie(); */
 /* removeCookie(); */
+// @ts-ignore
 CEL.setCookie("ctest3", "cookieUnitTestStr");
+// @ts-ignore
 CUT.isTrue("setcookie(); + hasCookie(); true", CEL.hasCookie("ctest3"));
 CUT.isEqual("getCookie(name) value", "cookieUnitTestStr",
+  // @ts-ignore
   CEL.getCookie("ctest3"));
+// @ts-ignore
 CUT.isEqual("getCookie();", "cookieUnitTestStr", CEL.getCookie()["ctest3"]);
+// @ts-ignore
 CUT.isTrue("removeCookie(); true", CEL.removeCookie("ctest3"));
+// @ts-ignore
 CUT.isFalse("removeCookie(); false", CEL.removeCookie("ctest3"));
+// @ts-ignore
 CUT.isFalse("hasCookie(); false", CEL.hasCookie("ctest3"));
+// @ts-ignore
 CUT.isEqual("getCookie(name) null", null, CEL.getCookie("ctest3"));
+// @ts-ignore
 CUT.isEqual("getCookie(); undefined", undefined, CEL.getCookie()["ctest3"]);
 
+// @ts-ignore
 CEL.setCookie("ctest4", "cookieUnitTestStr");
+// @ts-ignore
 CEL.setCookie("ctest5", "cookieUnitTestStr");
+// @ts-ignore
 token1 = String(+CEL.hasCookie("ctest4"));
+// @ts-ignore
 token1 += " " + +CEL.hasCookie("ctest5");
+// @ts-ignore
 CEL.clearCookies();
+// @ts-ignore
 token1 += " " + +CEL.hasCookie("ctest4");
+// @ts-ignore
 token1 += " " + +CEL.hasCookie("ctest5");
 CUT.isEqual("clearCookies();", "1 1 0 0", token1);
 
 
+// @ts-ignore
 CEL.setCookie({"name": "ctest3", "value":"cookieUnitTestStr","SameSite":"Lax"});
 CUT.isTrue("setcookie(); + hasCookie(); true <i>(settings object)</i>",
+  // @ts-ignore
   CEL.hasCookie("ctest3")
 );
 CUT.isEqual("getCookie(name) value <i>(settings object)</i>",
+  // @ts-ignore
   "cookieUnitTestStr", CEL.getCookie("ctest3")
 );
 CUT.isEqual("getCookie(); <i>(settings object)</i>", "cookieUnitTestStr",
+  // @ts-ignore
   CEL.getCookie()["ctest3"]
 );
 CUT.isTrue("removeCookie(); true <i>(settings object)</i>",
+  // @ts-ignore
   CEL.removeCookie({"name": "ctest3", "SameSite": "Lax"})
 );
 CUT.isFalse("removeCookie(); false <i>(settings object)</i>",
+  // @ts-ignore
   CEL.removeCookie({"name": "ctest3", "SameSite": "Lax"})
 );
 CUT.isFalse("hasCookie(); false <i>(settings object)</i>",
+  // @ts-ignore
   CEL.hasCookie("ctest3")
 );
 CUT.isEqual("getCookie(name) null <i>(settings object)</i>", null,
+  // @ts-ignore
   CEL.getCookie("ctest3")
 );
 CUT.isEqual("getCookie(); undefined <i>(settings object)</i>", undefined,
+  // @ts-ignore
   CEL.getCookie()["ctest3"]
 );
 
+// @ts-ignore
 CEL.setCookie({"name":"ctest4", "value":"cookieUnitTestStr", "SameSite":"Lax"});
+// @ts-ignore
 CEL.setCookie({"name":"ctest5", "value":"cookieUnitTestStr", "SameSite":"Lax"});
+// @ts-ignore
 token1 = String(+CEL.hasCookie("ctest4"));
+// @ts-ignore
 token1 += " " + +CEL.hasCookie("ctest5");
+// @ts-ignore
 CEL.clearCookies({"SameSite": "Lax"});
+// @ts-ignore
 token1 += " " + +CEL.hasCookie("ctest4");
+// @ts-ignore
 token1 += " " + +CEL.hasCookie("ctest5");
 CUT.isEqual("clearCookies(); <i>(settings object)</i>", "1 1 0 0", token1);
 /** cookie with settings object end **/
@@ -5755,6 +5873,7 @@ token1 = CUT.join([
   +(Error.isError(true)),
   +(Error.isError(false))
 ]);
+// @ts-ignore
 CEL.qs("iframe").remove();
 CUT.isEqual("Error.isError();", "1 1 1 1 0 0 0 0 0 0 0 0 0", token1);
 CUT.logCode(token1);
@@ -6174,9 +6293,12 @@ CUT.isTrue("isUndefined();",
 );
 
 
-/* isNil(); */
-CUT.isTrue("isNil();",
-  CEL.isNil(undefined) &&  CEL.isNil(null) && !CEL.isNil(NaN) && !CEL.isNil(42)
+/* isNullish(); */
+CUT.isTrue("isNullish();",
+  CEL.isNullish(undefined)
+    &&  CEL.isNullish(null)
+    && !CEL.isNullish(NaN)
+    && !CEL.isNullish(42)
 );
 
 
@@ -6198,6 +6320,7 @@ CUT.isTrue("isRegexp();",
 /* isElement(); */
 CUT.isTrue("isElement();",
       CEL.isElement(document.body)
+  // @ts-ignore
   &&  CEL.isElement(CEL.qs("div"))
   && !CEL.isElement(document.createTextNode("sample text"))
   && !CEL.isElement(document.createComment("sample comment"))
@@ -6355,7 +6478,7 @@ CUT.isTrue("toPrimitiveValue();",
 token1 = {"a": 1, "b": 2};
 CUT.isTrue("createPolyfillMethod(); - <code>"
     + JSON.stringify(token1) + "</code>",
-  CEL.createPolyfillMethod(token1, "c", 3) &&
+  CEL.createPolyfillMethod(token1, "c", () => {}) &&
   !(Object.keys(token1).includes("c")) && ("c" in token1)
 );
 
@@ -6718,8 +6841,10 @@ CUT.isEqual("product(); 01", CEL.product(3), 3);
 CUT.isEqual("product(); 02", CEL.product(3, 5), 15);
 CUT.isEqual("product(); 03", CEL.product(3.14, -5), -15.700000000000001);
 CUT.isEqual("product(); 04", "NaN",
+  // @ts-ignore
   String(CEL.product(true, 3.14, -9, 'Arthur Dent'))
 );
+// @ts-ignore
 CUT.isEqual("product(); 05", CEL.product(), undefined);
 
 
@@ -7043,6 +7168,7 @@ CUT.addElement("ul", "<li>1x domReady(); is working</li>"
 
 
 /* domReady(); */
+// @ts-ignore
 CEL.domReady(function () {
   CUT.isTrue("domReady(); is working", true);
 });
@@ -7079,9 +7205,13 @@ CEL.asyncIdentity(true).then(function(_result) {
 
 
 /* importScript(); */
+// @ts-ignore
 CEL.importScript("unittest-notExist.js");
+// @ts-ignore
 CEL.importScript("unittest-is1.js", "unittest-is2.js", "unittest-is3.js");
+// @ts-ignore
 CEL.importScript("unittest-is1.js");
+// @ts-ignore
 CEL.importScript("unittest-is2.js");
 /*
 Uncaught URIError: Loading failed for the script with source unittest-notExist.js
@@ -7137,18 +7267,21 @@ token2 = "<p><span class=\"big\">Lorem ipsum dolor sit amet, consectetuer adipis
 
 
 /* getText(); */
+// @ts-ignore
 CEL.getText("unittest-data.txt",
   function(r){ CUT.isEqual("getText();", token2, r); }
 );
 
 
 /* getJson(); */
+// @ts-ignore
 CEL.getJson("unittest-data.json",
   function (r) { CUT.isEqual("getJson();", token1, r.testArray[0].image); }
 );
 
 
 /* ajax begin */
+// @ts-ignore
 CEL.ajax({
   queryType: "ajax", type: "get", url: "unittest-data.txt", format: "text",
   success: function(r){ CUT.isEqual("ajax(); ajax get text", token2, r); },
@@ -7156,6 +7289,7 @@ CEL.ajax({
     CUT.isTrue("ajax(); ajax 1 get text: " + JSON.stringify(e), false);
   }
 });
+// @ts-ignore
 CEL.ajax({
   queryType: "ajax", type: "get", url: "unittest-data.json", format: "json",
   success: function (r) {
@@ -7165,6 +7299,7 @@ CEL.ajax({
     CUT.isTrue("ajax(); ajax get json: " + JSON.stringify(e), false);
   }
 });
+// @ts-ignore
 CEL.ajax({
   queryType: "ajax", type: "get", url: "unittest-data.xml", format: "xml",
   success: function (r) {
@@ -7177,6 +7312,7 @@ CEL.ajax({
   }
 });
 
+// @ts-ignore
 CEL.ajax({
   queryType: "ajax", type: "post", url: "unittest-data.txt", format: "text",
   data: "a=foo&b=bar baz",
@@ -7185,6 +7321,7 @@ CEL.ajax({
     CUT.isTrue("ajax(); ajax post text: " + JSON.stringify(e), false);
   }
 });
+// @ts-ignore
 CEL.ajax({
   queryType: "ajax", type: "post", url: "unittest-data.json", format: "json",
   data: "a=foo&b=bar baz",
@@ -7195,6 +7332,7 @@ CEL.ajax({
     CUT.isTrue("ajax(); ajax post json: " + JSON.stringify(e), false);
   }
 });
+// @ts-ignore
 CEL.ajax({
   queryType: "ajax", type: "post", url: "unittest-data.xml", format: "xml",
   data: "a=foo&b=bar baz",
@@ -7208,6 +7346,7 @@ CEL.ajax({
   }
 });
 
+// @ts-ignore
 CEL.ajax({
   queryType: "cors", type: "get", url: "unittest-data.txt", format: "text",
   success: function (r) { CUT.isEqual("ajax(); cors get text", token2, r);},
@@ -7215,6 +7354,7 @@ CEL.ajax({
     CUT.isTrue("ajax(); cors get text: " + JSON.stringify(e), false);
   }
 });
+// @ts-ignore
 CEL.ajax({
   queryType: "cors", type: "get", url: "unittest-data.json", format: "json",
   success: function (r) {
@@ -7224,6 +7364,7 @@ CEL.ajax({
     CUT.isTrue("ajax(); cors get json: " + JSON.stringify(e), false);
   }
 });
+// @ts-ignore
 CEL.ajax({
   queryType: "cors", type: "get", url: "unittest-data.xml", format: "xml",
   success: function (r) {
@@ -7236,6 +7377,7 @@ CEL.ajax({
   }
 });
 
+// @ts-ignore
 CEL.ajax({
   queryType: "cors", type: "post", url: "unittest-data.txt", format: "text",
   data: "a=foo&b=bar baz",
@@ -7246,6 +7388,7 @@ CEL.ajax({
     CUT.isTrue("ajax(); cors post text: " + JSON.stringify(e), false);
   }
 });
+// @ts-ignore
 CEL.ajax({
   queryType: "cors", type: "post", url: "unittest-data.json", format: "json",
   data: "a=foo&b=bar baz",
@@ -7256,6 +7399,7 @@ CEL.ajax({
     CUT.isTrue("ajax(); cors post json: " + JSON.stringify(e), false);
   }
 });
+// @ts-ignore
 CEL.ajax({
   queryType: "cors", type: "post", url: "unittest-data.xml", format: "xml",
   data: "a=foo&b=bar baz",

@@ -1,4 +1,4 @@
-// @ts-check
+// @ts-nocheck
 "use strict";
 
 /**
@@ -52,9 +52,9 @@ assert.is = (v, et, m) => celestra.assertIs(v, et, m);
 
 assert.isNot = (v, et, m) => celestra.assertIsNot(v, et, m);
 
-assert.isNil = (v, m) => celestra.assertIsNil(v, m);
+assert.isNullish = (v, m) => celestra.assertIsNullish(v, m);
 
-assert.isNotNil = (v, m) => celestra.assertIsNotNil(v, m);
+assert.isNotNullish = (v, m) => celestra.assertIsNotNullish(v, m);
 
 assert.Throws = (cb, m) => celestra.assertThrows(cb, m);
 

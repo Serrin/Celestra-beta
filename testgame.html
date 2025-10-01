@@ -93,8 +93,11 @@ input:hover, input:focus, button:hover {
 
 </article>
 
-<script src="celestra.min.js"></script>
-<script>
+<script type="module">
+
+import defaultExport from "./celestra.browser.js";
+globalThis.celestra = defaultExport;
+globalThis.CEL = defaultExport;
 
 CEL.domReady(function () {
 

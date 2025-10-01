@@ -274,32 +274,32 @@ function autoTest () {
     () => assert.isNot(Object(42), Number, "strict assert.isNot(); 04 error")
   );
 
-  test("strict assert.isNil(); 01 ok", false,
-    () => null === assert.isNil(null, "strict assert.isNil(); 01 ok")
+  test("strict assert.isNullish(); 01 ok", false,
+    () => null === assert.isNullish(null, "strict assert.isNullish(); 01 ok")
   );
-  test("strict assert.isNil(); 02 ok", false,
-    () => undefined === assert.isNil(undefined , "strict assert.isNil(); 02 ok")
+  test("strict assert.isNullish(); 02 ok", false,
+    () => undefined === assert.isNullish(undefined , "strict assert.isNullish(); 02 ok")
   );
-  test("strict assert.isNil(); 03 error", true,
-    () => assert.isNil({} , "strict assert.isNil(); 03 error")
+  test("strict assert.isNullish(); 03 error", true,
+    () => assert.isNullish({} , "strict assert.isNullish(); 03 error")
   );
-  test("strict assert.isNil(); 04 error", true,
-    () => assert.isNil(42 , "strict assert.isNil(); 04 error")
+  test("strict assert.isNullish(); 04 error", true,
+    () => assert.isNullish(42 , "strict assert.isNullish(); 04 error")
   );
 
-  test("strict assert.isNotNil(); 01 error", true,
-    () => assert.isNotNil(null , "strict assert.isNotNil(); 01 error")
+  test("strict assert.isNotNullish(); 01 error", true,
+    () => assert.isNotNullish(null , "strict assert.isNotNullish(); 01 error")
   );
-  test("strict assert.isNotNil(); 02 error", true,
-    () => assert.isNotNil(
-      undefined , "strict assert.isNotNil(); 02 error"
+  test("strict assert.isNotNullish(); 02 error", true,
+    () => assert.isNotNullish(
+      undefined , "strict assert.isNotNullish(); 02 error"
     )
   );
-  test("strict assert.isNotNil(); 03 ok", false,
-    () => assert.isNotNil({} , "strict assert.isNotNil(); 03 ok")
+  test("strict assert.isNotNullish(); 03 ok", false,
+    () => assert.isNotNullish({} , "strict assert.isNotNullish(); 03 ok")
   );
-  test("strict assert.isNil(); 04 ok", false,
-    () => assert.isNotNil(42 , "strict assert.isNotNil(); 04 ok")
+  test("strict assert.isNullish(); 04 ok", false,
+    () => assert.isNotNullish(42 , "strict assert.isNotNullish(); 04 ok")
   );
 
   /* not strict */
@@ -550,32 +550,32 @@ function autoTest () {
       assert.isNot(Object(42), Number, "not strict assert.isNot(); 08 error")
   );
 
-  test("not strict assert.isNil(); 01 ok", false,
-    () => null === assert.isNil(null, "not strict assert.isNil(); 01 ok")
+  test("not strict assert.isNullish(); 01 ok", false,
+    () => null === assert.isNullish(null, "not strict assert.isNullish(); 01 ok")
   );
-  test("not strict assert.isNil(); 02 ok", false,
-    () => undefined === assert.isNil(
-      undefined , "not strict assert.isNil(); 02 ok"
+  test("not strict assert.isNullish(); 02 ok", false,
+    () => undefined === assert.isNullish(
+      undefined , "not strict assert.isNullish(); 02 ok"
     )
   );
-  test("not strict assert.isNil(); 03 error", true,
-    () => assert.isNil({} , "not strict assert.isNil(); 03 error")
+  test("not strict assert.isNullish(); 03 error", true,
+    () => assert.isNullish({}, "not strict assert.isNullish(); 03 error")
   );
-  test("not strict assert.isNil(); 04 error", true,
-    () => assert.isNil(42 , "not strict assert.isNil(); 04 error")
+  test("not strict assert.isNullish(); 04 error", true,
+    () => assert.isNullish(42 , "not strict assert.isNullish(); 04 error")
   );
 
-  test("not strict assert.isNotNil(); 01 error", true,
-    () => assert.isNotNil(null , "not strict assert.isNotNil(); 01 error")
+  test("not strict assert.isNotNullish(); 01 error", true,
+    () => assert.isNotNullish(null , "not strict assert.isNotNullish(); 01 error")
   );
-  test("not strict assert.isNotNil(); 02 error", true,
-    () => assert.isNotNil(undefined , "not strict assert.isNotNil(); 02 error")
+  test("not strict assert.isNotNullish(); 02 error", true,
+    () => assert.isNotNullish(undefined , "not strict assert.isNotNullish(); 02 error")
   );
-  test("not strict assert.isNotNil(); 03 ok", false,
-    () => assert.isNotNil({} , "not strict assert.isNotNil(); 03 ok")
+  test("not strict assert.isNotNullish(); 03 ok", false,
+    () => assert.isNotNullish({} , "not strict assert.isNotNullish(); 03 ok")
   );
-  test("not strict assert.isNil(); 04 ok", false,
-    () => assert.isNotNil(42 , "not strict assert.isNotNil(); 04 ok")
+  test("not strict assert.isNotNullish(); 04 ok", false,
+    () => assert.isNotNullish(42 , "not strict assert.isNotNullish(); 04 ok")
   );
 
   alert("End of the test.")
@@ -657,21 +657,20 @@ function autoTest () {
       <td>Same as<br/><code>celestra.assertFalse(condition [, message | error]);</code>.</td>
     </tr>
     <tr>
-      <td><code>assert.isNil(value [, message | error]);</code></td>
-      <td>Same as<br/><code>celestra.assertIsNil(value [, message | error]);</code>.</td>
+      <td><code>assert.isNullish(value [, message | error]);</code></td>
+      <td>Same as<br/><code>celestra.assertIsNullish(value [, message | error]);</code>.</td>
     </tr>
     <tr>
       <td><code>assert.isNot(value, expectedType [, message | error]);</code></td>
       <td>Same as<br/><code>celestra.assertIsNot(value, expectedType [, message | error]);</code>.</td>
     </tr>
     <tr>
-      <td><code>assert.isNotNil(value [, message | error]);</code></td>
-      <td>Same as<br/><code>celestra.assertIsNotNil(value [, message | error]);</code>.</td>
+      <td><code>assert.isNotNullish(value [, message | error]);</code></td>
+      <td>Same as<br/><code>celestra.assertIsNotNullish(value [, message | error]);</code>.</td>
     </tr>
     <tr>
       <td><code>assert.isTrue(condition [, message | error]);</code></td>
       <td>Same as<br/><code>celestra.assertTrue(condition [, message | error]);</code>.</td>
-    </tr>
     <tr>
       <td><code>assert.match(string, regexp, message); </code></td>
       <td>Same as<br/><code>celestra.assertMatch(string,regexp, message);</code>.</td>

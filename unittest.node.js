@@ -1,4 +1,4 @@
-// @ts-nocheck
+// @ts-check
 "use strict";
 
 console.log("\x1b[40m\x1b[37m"); /* black - white */
@@ -166,25 +166,30 @@ CUT.clear = function clear () { console.clear(); };
 /* concat(<item1, item2, ...itemN>): string */
 CUT.concat = function concat (/** @type {any[]} */ ...args) {
   let r = "";
+  // @ts-ignore
   for (let item of args) { r += item; }
   return r;
 };
 
 /* join(<iterator>[, separator = " "]): string */
+/** @returns string */
 CUT.join = function join (
-  /** @type {Iterable} */ it,
+  /** @type {Iterable<any> | Iterator<any> | Generator<any, void, unknown>} */ it,
   /** @type {string} */ separator = " ") {
   separator = String(separator);
   let r = "";
+  // @ts-ignore
   for (let item of it) { r += separator + item; }
   return r.slice(separator.length);
 }
 
 /* take(<iterator>[,n=1]): iterator); */
+/** @returns string */
 CUT.take = function* take (
-  /** @type {Iterable} */ it,
+  /** @type {Iterable<any> | Iterator<any> | Generator<any, void, unknown>} */ it,
   /** @type {number} */  n = 1) {
   let i = n;
+  // @ts-ignore
   for (let item of it) {
     if (i <= 0) { break; }
     yield item;
@@ -834,7 +839,7 @@ CUT.isError("assertDoesNotMatch(); 03 error",
   () => CEL.assertDoesNotMatch(42, /go+/, "lorem")
 );
 CUT.isError("assertDoesNotMatch(); 04 error",
-  // @ts-ignore 
+  // @ts-ignore
   () => CEL.assertDoesNotMatch("table football", 42, "lorem")
 );
 CUT.isError("assertDoesNotMatch(); 05 error",
@@ -861,40 +866,40 @@ CUT.isError("not strict assert.assertThrows(); 04 error",
 );
 
 
-/* assertIsNil(); */
-CUT.isEqual("assertIsNil(); 01 ok", null,
-  CEL.assertIsNil(null, "assert.isNullable(); 01 ok")
+/* assertIsNullish(); */
+CUT.isEqual("assertIsNullish(); 01 ok", null,
+  CEL.assertIsNullish(null, "assert.isNullable(); 01 ok")
 );
-CUT.isEqual("assertIsNil(); 01 ok", undefined,
-  CEL.assertIsNil(undefined, "assert.isNullable(); 01 ok")
+CUT.isEqual("assertIsNullish(); 01 ok", undefined,
+  CEL.assertIsNullish(undefined, "assert.isNullable(); 01 ok")
 );
-CUT.isError("assertIsNil(); 03 error",
-  () => CEL.assertIsNil({}, "assertIsNil(); 03 error")
+CUT.isError("assertIsNullish(); 03 error",
+  () => CEL.assertIsNullish({}, "assertIsNullish(); 03 error")
 );
-CUT.isError("assertIsNil(); 04 error",
-  () => CEL.assertIsNil(42, "assertIsNil(); 04 error")
+CUT.isError("assertIsNullish(); 04 error",
+  () => CEL.assertIsNullish(42, "assertIsNullish(); 04 error")
 );
-CUT.isError("assertIsNil(); 05 error",
-  () => CEL.assertIsNil(42, new Error("ipsum"))
+CUT.isError("assertIsNullish(); 05 error",
+  () => CEL.assertIsNullish(42, new Error("ipsum"))
 );
 
 
-/* assertIsNotNil(); */
-CUT.isEqual("assertIsNotNil(); 01 ok", 42,
-  CEL.assertIsNotNil(42, "assertIsNotNil(); 01 ok")
+/* assertIsNotNullish(); */
+CUT.isEqual("assertIsNotNullish(); 01 ok", 42,
+  CEL.assertIsNotNullish(42, "assertIsNotNullish(); 01 ok")
 );
 token1 = {};
-CUT.isEqual("assertIsNotNil(); 02 ok", token1,
-  CEL.assertIsNotNil(token1, "assertIsNotNil(); 02 ok")
+CUT.isEqual("assertIsNotNullish(); 02 ok", token1,
+  CEL.assertIsNotNullish(token1, "assertIsNotNullish(); 02 ok")
 );
-CUT.isError("assertIsNotNil(); 03 error",
-  () => CEL.assertIsNotNil(null, "assertIsNotNil(); 03 error")
+CUT.isError("assertIsNotNullish(); 03 error",
+  () => CEL.assertIsNotNullish(null, "assertIsNotNullish(); 03 error")
 );
-CUT.isError("assertIsNotNil(); 04 error",
-  () => CEL.assertIsNotNil(undefined, "assertIsNotNil(); 04 error")
+CUT.isError("assertIsNotNullish(); 04 error",
+  () => CEL.assertIsNotNullish(undefined, "assertIsNotNullish(); 04 error")
 );
-CUT.isError("assertIsNotNil(); 05 error",
-  () => CEL.assertIsNotNil(undefined, new Error("ipsum"))
+CUT.isError("assertIsNotNullish(); 05 error",
+  () => CEL.assertIsNotNullish(undefined, new Error("ipsum"))
 );
 
 
@@ -4615,6 +4620,7 @@ CUT.isEqual("map(); 02", "CAT, DOG, PIG",
   CUT.join(CEL.map("cat, dog, pig", (e) => e.toUpperCase()), "")
 );
 token1 = "";
+// @ts-ignore
 for (let item of CEL.map(
   new Map([ ["foo", 1], ["bar", 2], ["baz", 3] ]), (e) => [e[0], e[1] * 2])) {
   token1 += item[0] + item[1];
@@ -4810,6 +4816,7 @@ CUT.isTrue("includes(); 01",
   // @ts-ignore
   && !CEL.includes({"lorem": "ipsum","1": 0}, -0, Object.is)
 );
+// @ts-ignore
 CUT.isError("includes(); 02 error", () => CEL.includes([], 2, 2));
 
 
@@ -4877,6 +4884,7 @@ CUT.isEqual("dropRight(); 04", "B C D E F G H I J",
 /* takeRightWhile(); */
 token1 = [16, 14, 12, 10, 8, 6, 4, 2, 0];
 token2 = 0;
+// @ts-ignore
 for (let item of CEL.takeRightWhile(token1, (e) => e < 10)) { token2 += item; }
 CUT.isEqual("takeRightWhile(); 01", token2, 20);
 token2 = 0;
@@ -5793,9 +5801,12 @@ CUT.isTrue("isUndefined();",
 );
 
 
-/* isNil(); */
-CUT.isTrue("isNil();",
-  CEL.isNil(undefined) &&  CEL.isNil(null) && !CEL.isNil(NaN) && !CEL.isNil(42)
+/* isNullish(); */
+CUT.isTrue("isNullish();",
+  CEL.isNullish(undefined)
+    &&  CEL.isNullish(null)
+    && !CEL.isNullish(NaN)
+    && !CEL.isNullish(42)
 );
 
 
@@ -5968,7 +5979,7 @@ CUT.isTrue("toPrimitiveValue();",
 token1 = {"a": 1, "b": 2};
 CUT.isTrue("createPolyfillMethod(); - <code>"
     + JSON.stringify(token1) + "</code>",
-  CEL.createPolyfillMethod(token1, "c", 3) &&
+  CEL.createPolyfillMethod(token1, "c", () => {}) &&
   !(Object.keys(token1).includes("c")) && ("c" in token1)
 );
 
@@ -6331,8 +6342,10 @@ CUT.isEqual("product(); 01", CEL.product(3), 3);
 CUT.isEqual("product(); 02", CEL.product(3, 5), 15);
 CUT.isEqual("product(); 03", CEL.product(3.14, -5), -15.700000000000001);
 CUT.isEqual("product(); 04", "NaN",
+  // @ts-ignore
   String(CEL.product(true, 3.14, -9, 'Arthur Dent'))
 );
+// @ts-ignore
 CUT.isEqual("product(); 05", CEL.product(), undefined);
 
 
@@ -6356,12 +6369,14 @@ CUT.isEqual("avg(); 05", String(CEL.avg()), "NaN");
 
 /* isEven(); */
 CUT.isTrue("isEven();",
+  // @ts-ignore
   CEL.isEven(8) && !CEL.isEven(9) && !CEL.isEven(8.5) && !CEL.isEven("lorem")
 );
 
 
 /* isOdd(); */
 CUT.isTrue("isOdd();",
+  // @ts-ignore
   CEL.isOdd(9) && CEL.isOdd(8.5) && !CEL.isOdd(8) && !CEL.isOdd("lorem")
 );
 
