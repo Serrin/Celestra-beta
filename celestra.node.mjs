@@ -18,7 +18,8 @@ if (!("sumPrecise" in Math)) {
             return -0;
         }
         if (array.every((value) => typeof value === "number")) {
-            let inf = array.indexOf(Infinity) > -1, negInf = array.indexOf(-Infinity) > -1;
+            let inf = array.indexOf(Infinity) > -1;
+            let negInf = array.indexOf(-Infinity) > -1;
             if (array.some((value) => value !== value)
                 || (inf && negInf)) {
                 return NaN;
@@ -31,7 +32,8 @@ if (!("sumPrecise" in Math)) {
             }
             let hi = array.filter((value) => (value === 1e20 || value === -1e20))
                 .reduce((acc, value) => acc + value, 0);
-            let lo = 0.0, c = 0.0;
+            let lo = 0.0;
+            let c = 0.0;
             for (let item of array.filter((value) => (value !== 1e20 && value !== -1e20))) {
                 let y = item - c;
                 let t = lo + y;
@@ -51,19 +53,19 @@ if (!("sumPrecise" in Math)) {
 }
 if (!("isError" in Error)) {
     Error.isError = function isError(value) {
-        let s = Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
-        return (s === "error" || s === "domexception");
+        let className = Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
+        return (className === "error" || className === "domexception");
     };
 }
 if (!("groupBy" in Object)) {
     Object.defineProperty(Object, "groupBy", {
         "configurable": true, "writable": true, "enumerable": true,
         "value": function (items, callbackFn) {
-            "use strict";
             if (!(typeof callbackFn === "function")) {
                 throw new TypeError();
             }
-            let result = Object.create(null), index = 0;
+            let result = Object.create(null);
+            let index = 0;
             for (let item of items) {
                 let key = callbackFn(item, index++);
                 if (!(Object.prototype.hasOwnProperty.call(result, key))) {
@@ -79,11 +81,11 @@ if (!("groupBy" in Map)) {
     Object.defineProperty(Map, "groupBy", {
         "configurable": true, "writable": true, "enumerable": true,
         "value": function (items, callbackFn) {
-            "use strict";
             if (!(typeof callbackFn === "function")) {
                 throw new TypeError();
             }
-            let result = new Map(), index = 0;
+            let result = new Map();
+            let index = 0;
             for (let item of items) {
                 let key = callbackFn(item, index++);
                 if (!(result.has(key))) {
@@ -100,7 +102,8 @@ if (!Array.fromAsync) {
         const isConstructor = (value) => (typeof value === "function" && typeof value.prototype === "object");
         const errorMsg = "Input length exceed the Number.MAX_SAFE_INTEGER.";
         if (Symbol.asyncIterator in arrayLike || Symbol.iterator in arrayLike) {
-            let result = isConstructor(this) ? new this : Array(0), index = 0;
+            let result = isConstructor(this) ? new this : Array(0);
+            let index = 0;
             for await (const item of arrayLike) {
                 if (index > Number.MAX_SAFE_INTEGER) {
                     throw TypeError(errorMsg);
@@ -147,22 +150,19 @@ if (("crypto" in globalThis) && !("randomUUID" in globalThis.crypto)) {
 }
 if (!Object.hasOwn) {
     Object.defineProperty(Object, "hasOwn", {
+        configurable: true, enumerable: false, writable: true,
         value: function (object, property) {
             if (object == null) {
                 throw new TypeError("Cannot convert undefined or null to object");
             }
             return Object.prototype.hasOwnProperty.call(Object(object), property);
-        },
-        configurable: true, enumerable: false, writable: true
+        }
     });
 }
 if (!("toReversed" in Array.prototype)) {
     Object.defineProperty(Array.prototype, "toReversed", {
         "configurable": true, "writable": true, "enumerable": false,
-        "value": function () {
-            "use strict";
-            return this.slice().reverse();
-        }
+        "value": function () { return this.slice().reverse(); }
     });
 }
 if (!("toSorted" in Array.prototype)) {
@@ -194,10 +194,7 @@ if (!("with" in Array.prototype)) {
 if (!("toReversed" in Uint8Array.prototype)) {
     Object.defineProperty(Uint8Array.prototype, "toReversed", {
         "configurable": true, "writable": true, "enumerable": false,
-        "value": function () {
-            "use strict";
-            return this.slice().reverse();
-        }
+        "value": function () { return this.slice().reverse(); }
     });
 }
 if (!("toSorted" in Uint8Array.prototype)) {
@@ -350,7 +347,8 @@ function createPolyfillProperty(obj, property, value) {
 function randomUUIDv7(v4 = false) {
     let ts = Date.now().toString(16).padStart(12, "0") + (v4 ? "4" : "7");
     let uuid = Array.from(([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) => (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)));
-    let index = 0, pos = 0;
+    let index = 0;
+    let pos = 0;
     while (index < 13) {
         if (pos === 8 || pos === 13) {
             pos++;
@@ -365,10 +363,13 @@ const delay = (milisec) => new Promise(resolve => setTimeout(resolve, milisec));
 const randomBoolean = () => !Math.round(Math.random());
 const getUrlVars = (str = location.search) => [...new URLSearchParams(str).entries()]
     .reduce(function (obj, item) { obj[item[0]] = item[1]; return obj; }, {});
-const obj2string = (obj) => Object.keys(obj).reduce((s, p) => s += encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]) + "&", "").slice(0, -1);
+const obj2string = (obj) => Object.keys(obj).reduce((s, p) => s
+    += encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]) + "&", "").slice(0, -1);
 function extend(...args) {
     function _EXT(...args) {
-        let targetObject, deep, start;
+        let targetObject;
+        let deep;
+        let start;
         if (typeof args[0] === "boolean") {
             targetObject = args[1], deep = args[0], start = 2;
         }
@@ -752,7 +753,8 @@ function assertDeepEqual(x, y, message) {
             if (_isSameInstance(x, y, Date)) {
                 return _isEqual(+x, +y);
             }
-            let xKeys = _ownKeys(x), yKeys = _ownKeys(y);
+            let xKeys = _ownKeys(x);
+            let yKeys = _ownKeys(y);
             if (xKeys.length !== yKeys.length) {
                 return false;
             }
@@ -895,7 +897,8 @@ function assertNotDeepStrictEqual(x, y, message) {
             if (_isSameInstance(x, y, Date)) {
                 return _isEqual(+x, +y);
             }
-            let xKeys = _ownKeys(x), yKeys = _ownKeys(y);
+            let xKeys = _ownKeys(x);
+            let yKeys = _ownKeys(y);
             if (xKeys.length !== yKeys.length) {
                 return false;
             }
@@ -1022,7 +1025,8 @@ function assertNotDeepEqual(x, y, message) {
             if (_isSameInstance(x, y, Date)) {
                 return _isEqual(+x, +y);
             }
-            let xKeys = _ownKeys(x), yKeys = _ownKeys(y);
+            let xKeys = _ownKeys(x);
+            let yKeys = _ownKeys(y);
             if (xKeys.length !== yKeys.length) {
                 return false;
             }
@@ -1165,7 +1169,8 @@ function assertDeepStrictEqual(x, y, message) {
             if (_isSameInstance(x, y, Date)) {
                 return _isEqual(+x, +y);
             }
-            let xKeys = _ownKeys(x), yKeys = _ownKeys(y);
+            let xKeys = _ownKeys(x);
+            let yKeys = _ownKeys(y);
             if (xKeys.length !== yKeys.length) {
                 return false;
             }
@@ -1302,7 +1307,8 @@ function toObject(value) {
         throw new TypeError("celestra.toObject(); error: " + value);
     }
     return (["object", "function"].includes(typeof value))
-        ? value : Object(value);
+        ? value
+        : Object(value);
 }
 function toPrimitiveValue(value) {
     if (value == null || typeof value !== "object") {
@@ -1316,9 +1322,11 @@ function toPrimitiveValue(value) {
 }
 const isPropertyKey = (value) => typeof value === "string" || typeof value === "symbol";
 const toPropertyKey = (value) => typeof value === "symbol" ? value : String(value);
-const isIndex = (value) => Number.isSafeInteger(value) && value >= 0
+const isIndex = (value) => Number.isSafeInteger(value)
+    && value >= 0
     && 1 / value !== 1 / -0;
-const isLength = (value) => Number.isSafeInteger(value) && value >= 0
+const isLength = (value) => Number.isSafeInteger(value)
+    && value >= 0
     && 1 / value !== 1 / -0;
 function toIndex(value) {
     value = ((value = Math.trunc(+value)) !== value || value === 0) ? 0 : value;
@@ -1332,8 +1340,8 @@ function toLength(value) {
     return Math.min(Math.max(value, 0), Math.pow(2, 53) - 1);
 }
 const typeOf = (value) => value === null ? "null" : typeof value;
-const isSameType = (x, y) => ((x == null || y == null) ? (x === y) : (typeof x === typeof y));
-const isSameInstance = (x, y, Contructor) => (x instanceof Contructor && y instanceof Contructor);
+const isSameType = (x, y) => (x == null || y == null) ? (x === y) : (typeof x === typeof y);
+const isSameInstance = (x, y, Contructor) => x instanceof Contructor && y instanceof Contructor;
 function isCoercedObject(value) {
     if (value != null && typeof value === "object") {
         if (value instanceof Number) {
@@ -1476,7 +1484,8 @@ function isDeepStrictEqual(x, y) {
         if (_isSameInstance(x, y, Date)) {
             return _isEqual(+x, +y);
         }
-        let xKeys = _ownKeys(x), yKeys = _ownKeys(y);
+        let xKeys = _ownKeys(x);
+        let yKeys = _ownKeys(y);
         if (xKeys.length !== yKeys.length) {
             return false;
         }
@@ -1504,8 +1513,10 @@ function isEmptyValue(value) {
     if (value == null || Number.isNaN(value)) {
         return true;
     }
-    if (Array.isArray(value) || _isTypedArray(value)
-        || typeof value === "string" || value instanceof String) {
+    if (Array.isArray(value)
+        || _isTypedArray(value)
+        || typeof value === "string"
+        || value instanceof String) {
         return value.length === 0;
     }
     if (value instanceof Map || value instanceof Set) {
@@ -1536,30 +1547,34 @@ function isEmptyValue(value) {
         ];
         if (keys.length === 0)
             return true;
-        if (keys.length === 1 && keys[0] === "length" &&
-            value.length === 0) {
+        if (keys.length === 1
+            && keys[0] === "length"
+            && value.length === 0) {
             return true;
         }
     }
     return false;
 }
 const isProxy = (value) => Boolean(value != null && value.__isProxy);
-const isAsyncGeneratorFn = (value) => (Object.getPrototypeOf(value).constructor ===
-    Object.getPrototypeOf(async function* () { }).constructor);
-const isClass = (value) => (typeof value === "function" && typeof value.prototype === "object");
-const isPlainObject = (value) => (value != null && typeof value === "object"
+const isAsyncGeneratorFn = (value) => Object.getPrototypeOf(value).constructor ===
+    Object.getPrototypeOf(async function* () { }).constructor;
+const isClass = (value) => typeof value === "function" && typeof value.prototype === "object";
+const isPlainObject = (value) => value != null
+    && typeof value === "object"
     && (Object.getPrototypeOf(value) === Object.prototype
-        || Object.getPrototypeOf(value) === null));
-const isChar = (value) => (typeof value === "string"
-    && (value.length === 1 || Array.from(value).length === 1));
-const isNumeric = (value) => (((typeof value === "number" || typeof value === "bigint") && value === value)
-    ? true : (!isNaN(parseFloat(value)) && isFinite(value)));
+        || Object.getPrototypeOf(value) === null);
+const isChar = (value) => typeof value === "string"
+    && (value.length === 1 || Array.from(value).length === 1);
+const isNumeric = (value) => ((typeof value === "number" || typeof value === "bigint") && value === value)
+    ? true : (!isNaN(parseFloat(value)) && isFinite(value));
 const isObject = (value) => value != null && (typeof value === "object" || typeof value === "function");
 const isFunction = (value) => typeof value === "function";
 const isCallable = (value) => (value != null && ["object", "function"].includes(typeof value))
-    ? (typeof value.call === "function") : false;
+    ? (typeof value.call === "function")
+    : false;
 function isArraylike(value) {
-    if (value == null || (typeof value !== "object" && typeof value !== "string")) {
+    if (value == null
+        || (typeof value !== "object" && typeof value !== "string")) {
         return false;
     }
     const maybe = value;
@@ -1573,9 +1588,11 @@ const isNull = (value) => value === null;
 const isUndefined = (value) => value === undefined;
 const isNullish = (value) => value == null;
 const isPrimitive = (value) => value == null || (typeof value !== "object" && typeof value !== "function");
-const isIterator = (value) => "Iterator" in globalThis ? value instanceof Iterator
-    : (value != null && typeof value === "object" && typeof value.next === "function");
-const isRegexp = (value) => (value instanceof RegExp);
+const isIterator = (value) => "Iterator" in globalThis
+    ? value instanceof Iterator
+    : (value != null && typeof value === "object"
+        && typeof value.next === "function");
+const isRegexp = (value) => value instanceof RegExp;
 const isElement = (value) => value != null && typeof value === "object" && value.nodeType === 1;
 const isIterable = (value) => value != null && typeof value[Symbol.iterator] === "function";
 const isAsyncIterable = (value) => value != null && typeof value[Symbol.asyncIterator] === "function";
@@ -1592,10 +1609,10 @@ function isTypedArray(value) {
     }
     return constructors.some((Class) => value instanceof Class);
 }
-const isGeneratorFn = (value) => (Object.getPrototypeOf(value).constructor ===
-    Object.getPrototypeOf(function* () { }).constructor);
-const isAsyncFn = (value) => (Object.getPrototypeOf(value).constructor ===
-    Object.getPrototypeOf(async function () { }).constructor);
+const isGeneratorFn = (value) => Object.getPrototypeOf(value).constructor ===
+    Object.getPrototypeOf(function* () { }).constructor;
+const isAsyncFn = (value) => Object.getPrototypeOf(value).constructor ===
+    Object.getPrototypeOf(async function () { }).constructor;
 function castArray(...args) {
     if (!args.length) {
         return [];
@@ -1603,9 +1620,7 @@ function castArray(...args) {
     const value = args[0];
     return Array.isArray(value) ? value : [value];
 }
-function compact(iter) {
-    return Array.from(iter).filter((value) => Boolean(value) || value === 0);
-}
+const compact = (iter) => Array.from(iter).filter((value) => Boolean(value) || value === 0);
 function unique(iter, resolver) {
     if (resolver == null) {
         return [...new Set(iter)];
@@ -1955,7 +1970,8 @@ function find(iter, fn) {
     }
 }
 function findLast(iter, fn) {
-    let index = 0, result;
+    let index = 0;
+    let result;
     for (let item of iter) {
         if (fn(item, index++)) {
             result = item;
@@ -2010,7 +2026,8 @@ function* takeRightWhile([...array], fn) {
 }
 const dropRight = ([...array], n = 1) => array.reverse().slice(n);
 function* dropRightWhile([...array], fn) {
-    let dropping = true, index = 0;
+    let dropping = true;
+    let index = 0;
     for (let item of array.reverse()) {
         if (dropping && !fn(item, index++)) {
             dropping = false;
@@ -2033,7 +2050,8 @@ function* concat(...args) {
     }
 }
 function reduce(iter, fn, initialvalue) {
-    let acc = initialvalue, index = 0;
+    let acc = initialvalue;
+    let index = 0;
     for (let item of iter) {
         if (index === 0 && acc === undefined) {
             acc = item;
@@ -2071,7 +2089,7 @@ function join(iter, separator = ",") {
     return result.slice(separator.length);
 }
 const withOut = ([...array], [...filterValues]) => array.filter((value) => !filterValues.includes(value));
-const isFloat = (value) => (typeof value === "number" && value === value && !!(value % 1));
+const isFloat = (value) => typeof value === "number" && value === value && !!(value % 1);
 function toInteger(value) {
     value = ((value = Math.trunc(+value)) !== value || value === 0) ? 0 : value;
     return Math.min(Math.max(value, -(Math.pow(2, 53) - 1)), Math.pow(2, 53) - 1);

@@ -17,14 +17,21 @@ const VERSION = "Celestra v6.1.0 node";
 /** TS types */
 
 
+/** @internal */
+type ArrayLike = { length: number; [n: number]: any; };
+/* interface ArrayLike<T> { length: number; [n: number]: T; }; */
+
+/** @internal */
 type IterableAndIterator =
-  Iterable<any> | Iterator<any> | Generator<any, void, unknown>;
+  Iterable<any> | Iterator<any> | IterableIterator<any>;
 
+/** @internal */
 type IterableAndIteratorAndArrayLike =
-  IterableAndIterator | IterableIterator<any>;
+  Iterable<any> | Iterator<any> | IterableIterator<any> | ArrayLike;
 
+/** @internal */
 type IteratorReturn =
-  Iterable<any> | Iterator<any> | Generator<any, void, unknown>;
+  Iterable<any> | IteratorResult<any> | Generator<number, void, unknown>;
 
 
 /** polyfills **/
@@ -47,15 +54,14 @@ type IteratorReturn =
 /* Math.sumPrecise(); */
 if (!("sumPrecise" in Math)) {
   // @ts-ignore
-  Math.sumPrecise = function sumPrecise (
-    [...array] : any[]): number {
+  Math.sumPrecise = function sumPrecise ([...array]): number {
     /* empty iterator */
     if (array.length === 0) { return -0; }
     /* iterator with items */
     if (array.every((value: unknown): boolean => typeof value === "number")) {
       /* return NaN + Infinity + -Infinity */
-      let inf = array.indexOf(Infinity) >- 1,
-        negInf = array.indexOf(-Infinity) > -1;
+      let inf = array.indexOf(Infinity) >- 1;
+      let negInf = array.indexOf(-Infinity) > -1;
       if (array.some((value: unknown): boolean => value !== value)
         || (inf && negInf)) { return NaN; }
       if (inf) { return Infinity; }
@@ -65,7 +71,8 @@ if (!("sumPrecise" in Math)) {
         (value === 1e20 || value === -1e20))
           .reduce((acc, value): number => acc + value, 0);
       /* sum lo - Kahan sum */
-      let lo = 0.0, c = 0.0;
+      let lo: number = 0.0;
+      let c: number = 0.0;
       for (let item of array.filter((value: unknown): boolean =>
         (value !== 1e20 && value !== -1e20))) {
         let y = item - c; let t = lo + y; c = (t - lo) - y; lo = t;
@@ -96,8 +103,9 @@ if (!("sumPrecise" in Math)) {
 if (!("isError" in Error)) {
   // @ts-ignore
   Error.isError = function isError (value: unknown) {
-    let s = Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
-    return (s === "error" || s === "domexception");
+    let className =
+      Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
+    return (className === "error" || className === "domexception");
   };
 }
 
@@ -108,9 +116,9 @@ if (!("groupBy" in Object)) {
   Object.defineProperty(Object, "groupBy", {
     "configurable": true, "writable": true, "enumerable": true,
     "value": function (items: IterableAndIterator, callbackFn: Function) {
-      "use strict";
       if (!(typeof callbackFn === "function")) { throw new TypeError(); }
-      let result = Object.create(null), index = 0;
+      let result = Object.create(null);
+      let index: number = 0;
       for (let item of items as Iterable<any>) {
         let key = callbackFn(item, index++);
         if (!(Object.prototype.hasOwnProperty.call(result, key))) {
@@ -129,9 +137,9 @@ if (!("groupBy" in Map)) {
   Object.defineProperty(Map, "groupBy", {
     "configurable": true, "writable": true, "enumerable": true,
     "value": function (items: IterableAndIterator, callbackFn: Function) {
-      "use strict";
       if (!(typeof callbackFn === "function")) { throw new TypeError(); }
-      let result = new Map(), index = 0;
+      let result = new Map();
+      let index: number = 0;
       for (let item of items as Iterable<any>) {
         let key = callbackFn(item, index++);
         if (!(result.has(key))) { result.set(key, []); }
@@ -151,7 +159,8 @@ if (!Array.fromAsync) {
       (typeof value === "function" && typeof value.prototype === "object");
     const errorMsg = "Input length exceed the Number.MAX_SAFE_INTEGER.";
     if (Symbol.asyncIterator in arrayLike || Symbol.iterator in arrayLike) {
-      let result = isConstructor(this) ? new this : Array(0), index = 0;
+      let result: any[] = isConstructor(this) ? new this : Array(0);
+      let index: number = 0;
       for await (const item of arrayLike) {
         if (index > Number.MAX_SAFE_INTEGER) {
           throw TypeError(errorMsg);
@@ -167,12 +176,12 @@ if (!Array.fromAsync) {
       result.length = index;
       return result;
     } else {
-      let length = arrayLike.length;
-      let result = isConstructor(this) ? new this(length) : Array(length);
-      let index = 0;
+      let length: number = arrayLike.length;
+      let result: any[] = isConstructor(this) ? new this(length) : Array(length);
+      let index: number = 0;
       while (index < length) {
         if (index > Number.MAX_SAFE_INTEGER) { throw TypeError(errorMsg); }
-        let item = await arrayLike[index];
+        let item: any = await arrayLike[index];
         if (!mapfn) {
           result[index] = item;
         } else {
@@ -203,13 +212,13 @@ if (("crypto" in globalThis) && !("randomUUID" in globalThis.crypto)) {
 /* Object.hasOwn(); */
 if (!Object.hasOwn) {
   Object.defineProperty(Object, "hasOwn", {
+    configurable: true, enumerable: false, writable: true,
     value: function (object: object, property: string): boolean {
       if (object == null) {
         throw new TypeError("Cannot convert undefined or null to object");
       }
       return Object.prototype.hasOwnProperty.call(Object(object), property);
-    },
-    configurable: true, enumerable: false, writable: true
+    }
   });
 }
 
@@ -218,7 +227,7 @@ if (!Object.hasOwn) {
 if (!("toReversed" in Array.prototype)) {
   Object.defineProperty(Array.prototype, "toReversed", {
     "configurable": true, "writable": true, "enumerable": false,
-    "value": function () { "use strict"; return this.slice().reverse(); }
+    "value": function () { return this.slice().reverse(); }
   });
 }
 
@@ -239,8 +248,8 @@ if (!("toSpliced" in Array.prototype)) {
     "value": function (
       start: number,
       deleteCount: number,
-     ...items: any[]): any[] {
-      let result = this.slice();
+      ...items: any[]): any[] {
+      let result: any[] = this.slice();
       result.splice(start, deleteCount, ...items);
       return result;
     }
@@ -265,7 +274,7 @@ if (!("with" in Array.prototype)) {
 if (!("toReversed" in Uint8Array.prototype)) {
   Object.defineProperty(Uint8Array.prototype, "toReversed", {
     "configurable": true, "writable": true, "enumerable": false,
-    "value": function () { "use strict"; return this.slice().reverse(); }
+    "value": function () { return this.slice().reverse(); }
   });
 }
 
@@ -322,15 +331,12 @@ if (!globalThis.AsyncGeneratorFunction) {
 /** Core API **/
 
 
-const BASE16: string = "0123456789ABCDEF";
-const BASE32: string = "234567ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-const BASE36: string = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-const BASE58: string =
-  "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
-const BASE62: string =
-  "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-const WORDSAFEALPHABET: string =
-  "23456789CFGHJMPQRVWXcfghjmpqvwx"; /* 31 */
+const BASE16 = "0123456789ABCDEF";
+const BASE32 = "234567ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const BASE36 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const BASE58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+const BASE62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+const WORDSAFEALPHABET = "23456789CFGHJMPQRVWXcfghjmpqvwx"; /* 31 */
 
 
 
@@ -385,7 +391,7 @@ const tap = (fn: Function): any =>
 
 /* once(function: function): function */
 function once (fn: Function): Function {
-  let called = false;
+  let called: boolean = false;
   let result: any;
   return function (...args: any[]): any {
     if (!called) {
@@ -437,10 +443,7 @@ const omit = (obj: object, keys: string[]): object =>
 
 
 /* assoc (object: object, key: string, value: unknown): object */
-const assoc = (
-  obj: object,
-  property: string,
-  value: unknown): object =>
+const assoc = (obj: object, property: string, value: unknown): object =>
   ({...obj, [property]: value});
 
 
@@ -524,7 +527,8 @@ function randomUUIDv7 (v4: boolean = false): string {
   let uuid = Array.from(([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, (c): any =>
     (c^crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
   ));
-  let index = 0, pos = 0;
+  let index: number = 0;
+  let pos: number = 0;
   while (index < 13) {
     if (pos === 8 || pos === 13) { pos++; }
     uuid[pos] = ts[index];
@@ -553,22 +557,25 @@ const getUrlVars = (str: string = location.search): Object =>
 
 /* obj2string(object): string */
 const obj2string = (obj: object): string => Object.keys(obj).reduce(
+  (s, p: string): string => s
   // @ts-ignore
-  (s, p: string): string => s += encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]) + "&",
-  "").slice(0, -1);
+    += encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]) + "&",
+"").slice(0, -1);
 
 
 /* extend([deep: boolean,] target: object, source1: object[, sourceN]): object*/
 function extend (...args: Array<object | boolean>): object {
   function _EXT (...args: Array<object | boolean>): object {
-    let targetObject: {}, deep: boolean, start: number;
+    let targetObject: {};
+    let deep: boolean;
+    let start: number;
     if (typeof args[0] === "boolean") {
       targetObject = args[1], deep = args[0], start = 2;
     } else {
       targetObject = args[0], deep = false, start = 1;
     }
-    for (let i: number = start, length: number = args.length, sourceObject: object;
-      i < length; i++) {
+    for (let i: number = start, length: number = args.length,
+      sourceObject: object; i < length; i++) {
       sourceObject = args[i] as object;
       if (sourceObject != null) {
         for (let key in sourceObject) {
@@ -598,8 +605,7 @@ const sizeIn = (obj: object): number =>
 
 
 /* unBind(function): function */
-const unBind = (fn: Function): Function =>
-   Function.prototype.call.bind(fn);
+const unBind = (fn: Function): Function => Function.prototype.call.bind(fn);
 
 
 /* bind(function, context: any): function */
@@ -692,8 +698,8 @@ function assertIs (
       );
     }
     /* check expected types and constructors */
-    const vType = (value === null ? "null" : typeof value);
-    let matched = (Array.isArray(expected) ? expected : [expected]).some(
+    const vType: string = (value === null ? "null" : typeof value);
+    let matched: boolean = (Array.isArray(expected) ? expected : [expected]).some(
       function (item) {
         if (typeof item === "string") { return vType === item; }
         if (typeof item === "function") {
@@ -744,8 +750,8 @@ function assertIsNot (
       );
     }
     /* check expected types and constructors */
-    const vType = (value === null ? "null" : typeof value);
-    let matched = (Array.isArray(expected) ? expected : [expected]).some(
+    const vType: string = (value === null ? "null" : typeof value);
+    let matched: boolean = (Array.isArray(expected) ? expected : [expected]).some(
       function (item) {
         if (typeof item === "string") { return vType === item; }
         if (typeof item === "function") {
@@ -1102,7 +1108,8 @@ function assertDeepEqual (x: any, y: any, message?: any): boolean {
       if (_isSameInstance(x, y, Date)) { return _isEqual(+x, +y); }
       /* objects / Proxy -> not detectable */
       /* objects / Objects */
-      let xKeys = _ownKeys(x), yKeys = _ownKeys(y);
+      let xKeys: any[] = _ownKeys(x);
+      let yKeys: any[] = _ownKeys(y);
       if (xKeys.length !== yKeys.length) { return false; }
       if (xKeys.length === 0) { return true; }
       return xKeys.every((key: any): boolean => _isDeepEqual(x[key], y[key]));
@@ -1264,7 +1271,8 @@ function assertNotDeepStrictEqual (
       if (_isSameInstance(x, y, Date)) { return _isEqual(+x, +y); }
       /* objects / Proxy -> not detectable */
       /* objects / Objects */
-      let xKeys = _ownKeys(x), yKeys = _ownKeys(y);
+      let xKeys: any[] = _ownKeys(x);
+      let yKeys: any[] = _ownKeys(y);
       if (xKeys.length !== yKeys.length) { return false; }
       if (xKeys.length === 0) { return true; }
       return xKeys.every(
@@ -1413,7 +1421,8 @@ function assertNotDeepEqual (
       if (_isSameInstance(x, y, Date)) { return _isEqual(+x, +y); }
       /* objects / Proxy -> not detectable */
       /* objects / Objects */
-      let xKeys = _ownKeys(x), yKeys = _ownKeys(y);
+      let xKeys: any[] = _ownKeys(x);
+      let yKeys: any[] = _ownKeys(y);
       if (xKeys.length !== yKeys.length) { return false; }
       if (xKeys.length === 0) { return true; }
       return xKeys.every((key: any): boolean => _isDeepEqual(x[key], y[key]));
@@ -1576,7 +1585,8 @@ function assertDeepStrictEqual ( x: any, y: any, message?: any): boolean {
       if (_isSameInstance(x, y, Date)) { return _isEqual(+x, +y); }
       /* objects / Proxy -> not detectable */
       /* objects / Objects */
-      let xKeys = _ownKeys(x), yKeys = _ownKeys(y);
+      let xKeys: any[] = _ownKeys(x);
+      let yKeys: any[] = _ownKeys(y);
       if (xKeys.length !== yKeys.length) { return false; }
       if (xKeys.length === 0) { return true; }
       return xKeys.every(
@@ -1693,8 +1703,8 @@ const strFromCodePoints = ([...array]): string =>
 
 
 /* strAt(string: string, index: number [, newChar: string]): string */
-function strAt (str: string,index: number, newChar?: string): string {
-  let chars = Array.from(String(str));
+function strAt (str: string, index: number, newChar?: string): string {
+  let chars: string[] = Array.from(String(str));
   if (newChar == null) { return chars.at(index) || ""; }
   index = index < 0 ? chars.length + index : index;
   if (index > chars.length) { return chars.join(""); }
@@ -1722,12 +1732,13 @@ const strHTMLEscape = (str: any): string =>
 
 
 /* strHTMLUnEscape(s: any): string */
-const strHTMLUnEscape = (str: string): string => String(str)
-  .replace(/&amp;/g, "&").replace(/&#38;/g, "&")
-  .replace(/&lt;/g, "<").replace(/&#60;/g, "<")
-  .replace(/&gt;/g, ">").replace(/&#62;/g, ">")
-  .replace(/&quot;/g, '"').replace(/&#34;/g, '"')
-  .replace(/&apos;/g, "'").replace(/&#39;/g, "'");
+const strHTMLUnEscape = (str: string): string =>
+  String(str)
+    .replace(/&amp;/g, "&").replace(/&#38;/g, "&")
+    .replace(/&lt;/g, "<").replace(/&#60;/g, "<")
+    .replace(/&gt;/g, ">").replace(/&#62;/g, ">")
+    .replace(/&quot;/g, '"').replace(/&#34;/g, '"')
+    .replace(/&apos;/g, "'").replace(/&#39;/g, "'");
 
 
 /** Type API **/
@@ -1796,7 +1807,8 @@ function toObject (value: unknown): Object | symbol | Function {
     throw new TypeError("celestra.toObject(); error: " + value);
   }
   return (["object", "function"].includes(typeof value))
-    ? value : Object(value);
+    ? value
+    : Object(value);
 }
 
 
@@ -1823,13 +1835,15 @@ const toPropertyKey = (value: unknown): string | symbol =>
 
 /* isIndex(value: unknown): boolean */
 const isIndex = (value: unknown): boolean =>
-  Number.isSafeInteger(value) && value as number >= 0
+  Number.isSafeInteger(value)
+    && (value as number) >= 0
     && 1 / (value as number) !== 1 / -0;
 
 
 /* isLength(value: unknown): boolean */
 const isLength = (value: unknown): boolean =>
-  Number.isSafeInteger(value) && value as number >= 0
+  Number.isSafeInteger(value)
+    && (value as number) >= 0
     && 1 / (value as number) !== 1 / -0;
 
 
@@ -1866,15 +1880,12 @@ const typeOf = (value: unknown): TypeOfTag =>
 
 /* isSameType(value1: any, value2: any): boolean */
 const isSameType = (x: any, y: any): boolean =>
-  ((x == null || y == null) ? (x === y) : (typeof x === typeof y));
+  (x == null || y == null) ? (x === y) : (typeof x === typeof y);
 
 
 /* isSameInstance(value1: any, value2: any, Contructor: function): boolean */
-const isSameInstance = (
-  x: any,
-  y: any,
-  Contructor: Function): boolean =>
-  (x instanceof Contructor && y instanceof Contructor);
+const isSameInstance = (x: any, y: any, Contructor: Function): boolean =>
+  x instanceof Contructor && y instanceof Contructor;
 
 
 /* comment * @internal */
@@ -2026,7 +2037,8 @@ function isDeepStrictEqual (x: any, y: any): boolean {
     if (_isSameInstance(x, y, Date)) { return _isEqual(+x, +y); }
     /* objects / Proxy -> not detectable */
     /* objects / Objects */
-    let xKeys = _ownKeys(x), yKeys = _ownKeys(y);
+    let xKeys: any[] = _ownKeys(x);
+    let yKeys: any[] = _ownKeys(y);
     if (xKeys.length !== yKeys.length) { return false; }
     if (xKeys.length === 0) { return true; }
     return xKeys.every((key: any): boolean => isDeepStrictEqual(x[key], y[key]));
@@ -2072,8 +2084,10 @@ function isEmptyValue (value: any): boolean {
   /* Check undefined, null, NaN */
   if (value == null || Number.isNaN(value)) { return true; }
   /* Check Array, TypedArrays, string, String */
-  if (Array.isArray(value) || _isTypedArray(value)
-    || typeof value === "string" || value instanceof String) {
+  if (Array.isArray(value)
+    || _isTypedArray(value)
+    || typeof value === "string"
+    || value instanceof String) {
     return value.length === 0;
   }
   /* Check Map and Set */
@@ -2099,14 +2113,15 @@ function isEmptyValue (value: any): boolean {
   }
   /* Other objects - check own properties (including symbols) */
   if (isObject(value)) {
-    const keys = [
+    const keys: any[] = [
       ...Object.getOwnPropertyNames(value),
       ...Object.getOwnPropertySymbols(value)
     ];
     if (keys.length === 0) return true;
     /* Special case: object with single "length" property that is 0 */
-    if (keys.length === 1 && keys[0] === "length" &&
-      (value as { length?: unknown }).length === 0) {
+    if (keys.length === 1
+      && keys[0] === "length"
+      && (value as { length?: unknown }).length === 0) {
       return true;
     }
   }
@@ -2122,33 +2137,33 @@ const isProxy = (value: any): boolean =>
 
 /* isAsyncGeneratorFn(value: unknown): boolean */
 const isAsyncGeneratorFn = (value: unknown): boolean =>
-  (Object.getPrototypeOf(value).constructor ===
-    Object.getPrototypeOf(async function*() {}).constructor);
+  Object.getPrototypeOf(value).constructor ===
+    Object.getPrototypeOf(async function*() {}).constructor;
 
 
 /* isClass(value: unknown): boolean */
 const isClass = (value: unknown): boolean =>
-  (typeof value === "function" && typeof value.prototype === "object");
+  typeof value === "function" && typeof value.prototype === "object";
 
 
 /* isPlainObject(value: unknown): boolean */
 const isPlainObject = (value: unknown): boolean =>
-  (value != null && typeof value === "object"
+  value != null
+    && typeof value === "object"
     && (Object.getPrototypeOf(value) === Object.prototype
-      || Object.getPrototypeOf(value) === null));
+      || Object.getPrototypeOf(value) === null);
 
 
 /* isChar(value: unknown): boolean */
 const isChar = (value: unknown): boolean =>
-  (typeof value === "string"
-    && (value.length === 1 || Array.from(value).length === 1)
-  );
+  typeof value === "string"
+    && (value.length === 1 || Array.from(value).length === 1);
 
 
 /* isNumeric(value: unknown): boolean */
 const isNumeric = (value: any): boolean =>
-  (((typeof value === "number" || typeof value === "bigint") && value === value)
-    ? true : (!isNaN(parseFloat(value)) && isFinite(value)));
+  ((typeof value === "number" || typeof value === "bigint") && value === value)
+    ? true : (!isNaN(parseFloat(value)) && isFinite(value));
 
 
 /* isObject(value: unknown): boolean */
@@ -2176,12 +2191,10 @@ const isFunction = (value: unknown): value is Function =>
 /* isCallable(value: unknown): boolean */
 const isCallable = (value: any): boolean =>
   (value != null && ["object", "function"].includes(typeof value))
-    ? (typeof value.call === "function") : false;
+    ? (typeof value.call === "function")
+    : false;
 
 
-/** @internal */
-type ArrayLike = { length: number; [n: number]: any; };
-/* interface ArrayLike<T> { length: number; [n: number]: T; }; */
 /* isArraylike(value: unknown): boolean */
 /**
  * @description Checks if a value is an arraylike object.
@@ -2190,12 +2203,13 @@ type ArrayLike = { length: number; [n: number]: any; };
  * @returns boolean
  */
 function isArraylike (value: unknown): value is ArrayLike {
-  if (value == null || (typeof value !== "object" && typeof value !== "string")) { 
-    return false; 
+  if (value == null
+    || (typeof value !== "object" && typeof value !== "string")) {
+    return false;
   }
   const maybe = value as { length?: unknown };
   if (typeof maybe.length !== "number") { return false; }
-  const len = maybe.length;
+  const len: number = maybe.length;
   return len >= 0 && Number.isFinite(len);
 }
 
@@ -2249,17 +2263,18 @@ const isPrimitive = (value: unknown): value is Primitive =>
 
 /* isIterator(value: unknown): boolean */
 const isIterator = (value: any): boolean =>
-  "Iterator" in globalThis ? value instanceof Iterator
-    : (value != null && typeof value === "object" && typeof value.next === "function");
+  "Iterator" in globalThis
+    ? value instanceof Iterator
+    : (value != null && typeof value === "object"
+        && typeof value.next === "function");
 
 
 /* isRegexp(value: unknown): boolean */
-const isRegexp = (value: unknown): boolean => (value instanceof RegExp);
-
+const isRegexp = (value: unknown): value is RegExp => value instanceof RegExp;
 
 
 /* isElement(value: unknown): boolean */
-const isElement = (value:any): boolean =>
+const isElement = (value: any): boolean =>
   value != null && typeof value === "object" && value.nodeType === 1;
 
 
@@ -2269,7 +2284,8 @@ const isIterable = (value: any): boolean =>
 
 
 /* isAsyncIterable(value: unknown): boolean */
-const isAsyncIterable = (value: any): boolean =>
+const isAsyncIterable = (value: unknown): boolean =>
+  // @ts-ignore
   value != null && typeof value[Symbol.asyncIterator] === "function";
 
 
@@ -2280,7 +2296,6 @@ type TypedArray =
   | Int32Array | Uint32Array
   | Float32Array | Float64Array
   | BigInt64Array | BigUint64Array
-  /* Float16Array might not be available in all environments, so optional:*/
   | (typeof globalThis extends { Float16Array: infer F } ? F : never);
 /* isTypedArray(value: unknown): boolean */
 /**
@@ -2306,14 +2321,14 @@ function isTypedArray (value: unknown): value is TypedArray {
 
 /* isGeneratorFn(value: unknown): boolean */
 const isGeneratorFn = (value: unknown): boolean =>
-  (Object.getPrototypeOf(value).constructor ===
-    Object.getPrototypeOf(function*(){}).constructor);
+  Object.getPrototypeOf(value).constructor ===
+    Object.getPrototypeOf(function*(){}).constructor;
 
 
 /* isAsyncFn(value: unknown): boolean */
 const isAsyncFn = (value: unknown): boolean =>
-  (Object.getPrototypeOf(value).constructor ===
-    Object.getPrototypeOf(async function(){}).constructor);
+  Object.getPrototypeOf(value).constructor ===
+    Object.getPrototypeOf(async function(){}).constructor;
 
 
 /** Collections API **/
@@ -2338,11 +2353,10 @@ function castArray <T>(...args: [T] | []): T[] {
  * @param {IterableAndIteratorAndArrayLike} iter
  * @returns any[]
  */
-function compact <T>(iter: IterableAndIteratorAndArrayLike): T[] {
-  return Array.from(iter as Iterable<T> | ArrayLike).filter(
+const compact = (iter: IterableAndIteratorAndArrayLike): any[] =>
+  Array.from(iter as Iterable<any> | ArrayLike).filter(
     (value: unknown): boolean => Boolean(value) || value === 0
   );
-}
 
 
 /* unique(iterator: iterator [, resolver: string | Function]): array */
@@ -2439,14 +2453,17 @@ const isSuperset = ([...superSet], [...subSet]): boolean =>
 /* min(value1: any [, valueN]): any */
 const min = (...args: any[]): any =>
   args.reduce(
-    (acc: any, value: any): any => (value < acc ? value : acc), args[0]
+    (acc: any, value: any): any => (value < acc ? value : acc),
+    args[0]
   );
 
 
 /* max(value1: any [, valueN]): any */
 const max = (...args: any[]): any =>
   args.reduce((acc: any, value: any): any =>
-    (value > acc ? value : acc), args[0]);
+    (value > acc ? value : acc),
+    args[0]
+  );
 
 
 /* arrayRepeat(value: unknown [, n = 100]): array */
@@ -2464,7 +2481,10 @@ const arrayRange = (
   start: number = 0,
   end: number = 99,
   step: number = 1): any[] =>
-  Array.from({length: (end - start) / step + 1}, (_v, i: number): number => start + (i * step));
+  Array.from(
+    {length: (end - start) / step + 1},
+    (_v, i: number): number => start + (i * step)
+  );
 
 
 /* zip(iterator1: iterator [, iteratorN: iterator]): array */
@@ -2517,7 +2537,7 @@ function arrayRemove (
   array: any[],
   value: unknown,
   all: boolean = false): boolean {
-  let found = array.indexOf(value) > -1;
+  let found: boolean = array.indexOf(value) > -1;
   if (!all) {
     let pos = array.indexOf(value);
     if (pos > -1) { array.splice(pos, 1); }
@@ -2536,7 +2556,7 @@ function arrayRemoveBy (
   fn: Function,
   all: boolean = false): boolean {
 // @ts-ignore
-  let found = array.findIndex(fn) > -1;
+  let found: boolean = array.findIndex(fn) > -1;
   if (!all) {
      // @ts-ignore
     let pos = array.findIndex(fn);
@@ -2551,9 +2571,7 @@ function arrayRemoveBy (
 
 
 /* arrayMerge(target: array, source1: any [, sourceN: any]): array */
-function arrayMerge (
-  target: any[],
-  ...sources: any[]): any[] {
+function arrayMerge (target: any[], ...sources: any[]): any[] {
   target.push(... [].concat(...sources) );
   return target;
 }
@@ -2565,7 +2583,7 @@ function* iterRange (
   start: number = 0,
   step: number = 1,
   end: number = Infinity): Generator<number, void, unknown> {
-  let index = start;
+  let index: number = start;
   while (index <= end) {
     yield index;
     index += step;
@@ -2574,10 +2592,8 @@ function* iterRange (
 
 
 /* iterCycle(iterator: iterator [, n = Infinity]): iterator */
-function* iterCycle (
-  [...array],
-  n: number = Infinity): IteratorReturn {
-  let index = 0;
+function* iterCycle ([...array], n: number = Infinity): IteratorReturn {
+  let index: number = 0;
   while (index < n) {
     yield* array;
     index++;
@@ -2587,7 +2603,7 @@ function* iterCycle (
 
 /* iterRepeat(value: unknown [, n: number = Infinity]): iterator */
 function* iterRepeat (value: unknown, n: number = Infinity): IteratorReturn {
-  let index = 0;
+  let index: number = 0;
   while (index < n) {
     yield value;
     index++;
@@ -2610,7 +2626,7 @@ function* takeWhile (
 function* dropWhile (
   iter: IterableAndIterator,
   fn: Function): IteratorReturn {
-  let dropping = true;
+  let dropping: boolean = true;
   for (let item of iter as Iterable<any>) {
     if (dropping && !fn(item)) { dropping = false; }
     if (!dropping) { yield item; }
@@ -2620,7 +2636,7 @@ function* dropWhile (
 
 /* take(iterator: iterator [, n: number = 1]): iterator */
 function* take (iter: IterableAndIterator, n: number = 1): IteratorReturn {
-  let index = n;
+  let index: number = n;
   for (let item of iter as Iterable<any>) {
     if (index <= 0) { break; }
     yield item;
@@ -2631,7 +2647,7 @@ function* take (iter: IterableAndIterator, n: number = 1): IteratorReturn {
 
 /* drop(iterator: iterator [, n: number =1 ]): iterator */
 function* drop (iter: IterableAndIterator, n: number = 1): IteratorReturn {
-  let index = n;
+  let index: number = n;
   for (let item of iter as Iterable<any>) {
     if (index < 1) {
       yield item;
@@ -2651,21 +2667,21 @@ function forEach (iter: IterableAndIterator, fn: Function): void {
 
 /* forEachRight(iterator: iterator, callback: function): undefined */
 function forEachRight ([...array], fn: Function): void {
-  let index = array.length;
+  let index: number = array.length;
   while (index--) { fn(array[index], index); }
 }
 
 
 /* map(iterator: iterator, callback: function): iterator */
 function* map (iter: IterableAndIterator, fn: Function): IteratorReturn {
-  let index = 0;
+  let index: number = 0;
   for (let item of iter as Iterable<any>) { yield fn(item, index++); }
 }
 
 
 /* filter(iterator: iterator, callback: function): iterator */
 function* filter (iter: IterableAndIterator, fn: Function): IteratorReturn {
-  let index = 0;
+  let index: number = 0;
   for (let item of iter as Iterable<any>) {
     if (fn(item, index++)) { yield item; }
   }
@@ -2674,7 +2690,7 @@ function* filter (iter: IterableAndIterator, fn: Function): IteratorReturn {
 
 /* reject(iterator: iterator, callback: function): iterator */
 function* reject (iter: IterableAndIterator, fn: Function): IteratorReturn {
-  let index = 0;
+  let index: number = 0;
   for (let item of iter as Iterable<any>) {
     if (!fn(item, index++)) { yield item; }
   }
@@ -2687,7 +2703,7 @@ function* slice (
   iter: IterableAndIterator,
   begin: number = 0,
   end: number = Infinity): IteratorReturn {
-  let index = 0;
+  let index: number = 0;
   for (let item of iter as Iterable<any>) {
     if (index >= begin && index <= end) {
       yield item;
@@ -2701,7 +2717,7 @@ function* slice (
 
 /* tail(iterator: iterator): iterator */
 function* tail (iter: IterableAndIterator): IteratorReturn {
-  let first = true;
+  let first: boolean = true;
   for (let item of iter as Iterable<any>) {
     if (!first) {
       yield item;
@@ -2714,7 +2730,7 @@ function* tail (iter: IterableAndIterator): IteratorReturn {
 
 /* item(iterator: iterator, index: integer): any */
 function item (iter: IterableAndIterator, pos: number): any {
-  let i=0;
+  let i: number = 0;
   for (let item of iter as Iterable<any>) {
     if (i++ === pos) { return item; }
   }
@@ -2723,7 +2739,7 @@ function item (iter: IterableAndIterator, pos: number): any {
 
 /* nth(iterator: iterator, index: integer): any */
 function nth (iter: IterableAndIterator, pos: number): any {
-  let i=0;
+  let i: number = 0;
   for (let item of iter as Iterable<any>) {
     if (i++ === pos) { return item; }
   }
@@ -2732,7 +2748,7 @@ function nth (iter: IterableAndIterator, pos: number): any {
 
 /* size(iterator: iterator): integer */
 function size (iter: IterableAndIterator): number {
-  let index = 0;
+  let index: number = 0;
   for (let _item of iter as Iterable<any>) { index++; }
   return index;
 }
@@ -2756,7 +2772,7 @@ const last = ([...array]): any => array[array.length - 1];
 
 /* reverse(iterator: iterator): iterator */
 function* reverse ([...array]): IteratorReturn {
-  let index = array.length;
+  let index: number = array.length;
   while (index--) { yield array[index]; }
 }
 
@@ -2843,7 +2859,7 @@ function includes (
 
 /* find(iterator: iterator, callback: function): any */
 function find (iter: IterableAndIterator, fn: Function): any {
-  let index = 0;
+  let index: number = 0;
   for (let item of iter as Iterable<any>) {
     if (fn(item, index++)) { return item; }
   }
@@ -2854,7 +2870,8 @@ function find (iter: IterableAndIterator, fn: Function): any {
 function findLast (
   iter: IterableAndIterator,
   fn: Function): any {
-  let index = 0, result;
+  let index: number = 0;
+  let result: any;
   for (let item of iter as Iterable<any>) {
     if (fn(item, index++)) { result = item; }
   }
@@ -2864,7 +2881,7 @@ function findLast (
 
 /* every(iterator: iterator, callback: function): boolean */
 function every (iter: IterableAndIterator, fn: Function): boolean {
-  let index = 0;
+  let index: number = 0;
   for (let item of iter as Iterable<any>) {
     if (!fn(item, index++)) { return false; }
   }
@@ -2875,7 +2892,7 @@ function every (iter: IterableAndIterator, fn: Function): boolean {
 
 /* some(iterator: iterator, callback: function): boolean */
 function some (iter: IterableAndIterator, fn: Function): boolean {
-  let index = 0;
+  let index: number = 0;
   for (let item of iter as Iterable<any>) {
     if (fn(item, index++)) { return true; }
   }
@@ -2885,7 +2902,7 @@ function some (iter: IterableAndIterator, fn: Function): boolean {
 
 /* none(iterator: iterator, callback: function): boolean */
 function none (iter: IterableAndIterator, fn: Function): boolean {
-  let index = 0;
+  let index: number = 0;
   for (let item of iter as Iterable<any>) {
     if (fn(item, index++)) { return false; }
   }
@@ -2901,7 +2918,7 @@ const takeRight = ([...array], n: number = 1): any[] =>
 
 /* takeRightWhile(iterator: iterator, callback: function): iterator */
 function* takeRightWhile ([...array], fn: Function): IteratorReturn {
-  let index = 0;
+  let index: number = 0;
   for (let item of array.reverse()) {
     if (fn(item, index++)) {
       yield item;
@@ -2919,7 +2936,8 @@ const dropRight = ([...array], n: number = 1): any[] =>
 
 /* dropRightWhile(iterator: iterator, callback: function): iterator */
 function* dropRightWhile ([...array], fn: Function): IteratorReturn {
-  let dropping = true, index = 0;
+  let dropping: boolean = true;
+  let index: number = 0;
   for (let item of array.reverse()) {
     if (dropping && !fn(item, index++)) { dropping = false; }
     if (!dropping) { yield item; }
@@ -2948,7 +2966,8 @@ function reduce (
   iter: IterableAndIterator,
   fn: Function,
   initialvalue?: any): any {
-  let acc: any = initialvalue, index: number = 0;
+  let acc: any = initialvalue;
+  let index: number = 0;
   for (let item of iter as Iterable<any>) {
     if (index === 0 && acc === undefined) {
       acc = item;
@@ -2962,8 +2981,9 @@ function reduce (
 
 /* enumerate(iterator: iterator [, offset = 0]): iterator */
 function* enumerate (
-  iter: IterableAndIterator, offset: number = 0): IteratorReturn {
-  let index = offset;
+  iter: IterableAndIterator,
+  offset: number = 0): IteratorReturn {
+  let index: number = offset;
   for (let item of iter as Iterable<any>) { yield [index++, item]; }
 }
 
@@ -2989,7 +3009,7 @@ function join (
   iter: IterableAndIterator,
   separator: string = ","): string {
   separator = String(separator);
-  let result = "";
+  let result: string = "";
   for (let item of iter as Iterable<any>) { result += separator + item; }
   return result.slice(separator.length);
 }
@@ -3005,7 +3025,7 @@ const withOut = ([...array], [...filterValues]): any[] =>
 
 /* isFloat(value: unknown): boolean */
 const isFloat = (value: unknown): boolean =>
-  (typeof value === "number" && value === value && !!(value % 1));
+  typeof value === "number" && value === value && !!(value % 1);
 
 
 /* toInteger(value: unknown): integer */
@@ -3025,7 +3045,7 @@ const sum = (...args: any[]): any =>
   args.every((value: unknown): boolean => typeof value === "number") ?
     // @ts-ignore
     Math.sumPrecise(args) : args.slice(1).reduce(
-      (acc, value): any => acc + value, args[0]
+      (acc: any, value: any): any => acc + value, args[0]
     );
 
 
@@ -3115,7 +3135,7 @@ function minmax(
 
 /* isEven(value: number): boolean */
 function isEven (value: number): boolean {
-  let result = value % 2;
+  let result: number = value % 2;
   if (result === result) { return result === 0; }
   return false;
 }
@@ -3123,7 +3143,7 @@ function isEven (value: number): boolean {
 
 /* isOdd(value: number): boolean */
 function isOdd (value: number): boolean {
-  let result = value % 2;
+  let result: number = value % 2;
   if (result === result) { return result !== 0; }
   return false;
 }
@@ -3273,7 +3293,7 @@ function randomFloat (
     max = min;
     min = 0;
   }
-  let result = (Math.random() * (max - min + 1)) + min;
+  let result: number = (Math.random() * (max - min + 1)) + min;
   return result > max ? max : result;
 }
 

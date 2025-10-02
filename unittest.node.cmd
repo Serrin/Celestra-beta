@@ -16,11 +16,13 @@ node unittest.node.js
 echo.
 echo ========================================================================
 echo.
+pause
+echo.
 echo Deno Version:
 deno --version
 echo.
 deno unittest.node.js
 echo.
 echo ========================================================================
-echo. 
+echo.
 pause

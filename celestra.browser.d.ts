@@ -1,13 +1,17 @@
 declare const VERSION = "Celestra v6.1.0 browser";
+type ArrayLike = {
+    length: number;
+    [n: number]: any;
+};
 type IterableAndIterator = Iterable<any> | Iterator<any> | IterableIterator<any>;
 type IterableAndIteratorAndArrayLike = Iterable<any> | Iterator<any> | IterableIterator<any> | ArrayLike;
 type IteratorReturn = Iterable<any> | IteratorResult<any> | Generator<number, void, unknown>;
-declare const BASE16: string;
-declare const BASE32: string;
-declare const BASE36: string;
-declare const BASE58: string;
-declare const BASE62: string;
-declare const WORDSAFEALPHABET: string;
+declare const BASE16 = "0123456789ABCDEF";
+declare const BASE32 = "234567ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+declare const BASE36 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+declare const BASE58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+declare const BASE62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+declare const WORDSAFEALPHABET = "23456789CFGHJMPQRVWXcfghjmpqvwx";
 declare function toSafeString(value: unknown): string;
 declare const tap: (fn: Function) => any;
 declare function once(fn: Function): Function;
@@ -143,10 +147,6 @@ declare const isNumeric: (value: any) => boolean;
 declare const isObject: (value: unknown) => value is object;
 declare const isFunction: (value: unknown) => value is Function;
 declare const isCallable: (value: any) => boolean;
-type ArrayLike = {
-    length: number;
-    [n: number]: any;
-};
 declare function isArraylike(value: unknown): value is ArrayLike;
 declare const isNull: (value: unknown) => value is null;
 declare const isUndefined: (value: unknown) => value is undefined;
@@ -155,10 +155,10 @@ declare const isNullish: (value: unknown) => value is Nullish;
 type Primitive = null | undefined | number | bigint | boolean | string | symbol;
 declare const isPrimitive: (value: unknown) => value is Primitive;
 declare const isIterator: (value: any) => boolean;
-declare const isRegexp: (value: unknown) => boolean;
+declare const isRegexp: (value: unknown) => value is RegExp;
 declare const isElement: (value: any) => boolean;
 declare const isIterable: (value: any) => boolean;
-declare const isAsyncIterable: (value: any) => boolean;
+declare const isAsyncIterable: (value: unknown) => boolean;
 type TypedArray = Int8Array | Uint8Array | Uint8ClampedArray | Int16Array | Uint16Array | Int32Array | Uint32Array | Float32Array | Float64Array | BigInt64Array | BigUint64Array | (typeof globalThis extends {
     Float16Array: infer F;
 } ? F : never);
@@ -184,7 +184,7 @@ type ClearCookiesOptions = {
 };
 declare function clearCookies(path?: string | ClearCookiesOptions, domain?: string, secure?: boolean, SameSite?: string | undefined, HttpOnly?: boolean): void;
 declare function castArray<T>(...args: [T] | []): T[];
-declare function compact(iter: IterableAndIteratorAndArrayLike): any[];
+declare const compact: (iter: IterableAndIteratorAndArrayLike) => any[];
 declare function unique(iter: IterableAndIterator, resolver?: string | Function | null | undefined): any[] | void;
 declare function count(iter: IterableAndIterator, fn: Function): number;
 declare function arrayDeepClone([...array]: Iterable<any, void, undefined>): any[];
@@ -426,10 +426,10 @@ declare const _default: {
     isNullish: (value: unknown) => value is Nullish;
     isPrimitive: (value: unknown) => value is Primitive;
     isIterator: (value: any) => boolean;
-    isRegexp: (value: unknown) => boolean;
+    isRegexp: (value: unknown) => value is RegExp;
     isElement: (value: any) => boolean;
     isIterable: (value: any) => boolean;
-    isAsyncIterable: (value: any) => boolean;
+    isAsyncIterable: (value: unknown) => boolean;
     isTypedArray: typeof isTypedArray;
     isGeneratorFn: (value: unknown) => boolean;
     isAsyncFn: (value: unknown) => boolean;
@@ -439,7 +439,7 @@ declare const _default: {
     removeCookie: typeof removeCookie;
     clearCookies: typeof clearCookies;
     castArray: typeof castArray;
-    compact: typeof compact;
+    compact: (iter: IterableAndIteratorAndArrayLike) => any[];
     unique: typeof unique;
     count: typeof count;
     arrayDeepClone: typeof arrayDeepClone;
