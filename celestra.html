@@ -285,7 +285,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <p><a href="#FN-toObject();">toObject();</a></p>
       <p><a href="#FN-toPrimitiveValue();">toPrimitiveValue();</a></p>
       <p><a href="#FN-toPropertyKey();">toPropertyKey();</a></p>
-      <p><a href="#FN-type();">type();</a></p>
+      <p><a href="#FN-typeOf();">typeOf();</a></p>
     </details>
     <!-- Cookie API -->
     <hr/>
@@ -788,6 +788,7 @@ globalThis.CEL = celestra;
   <li>The <code>isNil();</code> function has been renamed to <code>isNullish();</code>.</li>
   <li>The <code>assertIsNil();</code> function has been renamed to <code>assertIsNullish();</code>.</li>
   <li>The <code>assertIsNotNil();</code> function has been renamed to <code>assertIsNotNullish();</code>.</li>
+  <li>The <code>type();</code> function has been renamed to <code>typeOf();</code>.</li>
   <li>The <code>celestra.noConflict();</code> function has been removed.</li>
   <li>Some deprecated functions have been removed.</li>
 </ul>
@@ -1625,9 +1626,9 @@ CEL.delay(5000)
       <td><code>toPropertyKey(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function convert the given value to a valid property key. If the value is not symbol, then will be converted to string, else the symbol will be returned.</td>
     </tr>
-    <tr id="FN-type();">
-      <td><code>type(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns the typeof operator result of the given value, except the null object (<code>"null"</code> instead of <code>"object"</code>).</td>
+    <tr id="FN-typeOf();">
+      <td><code>typeOf(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v6.1.0: <code>type();</code>.</span><br/>This function returns the typeof operator result of the given value, except the null object (<code>"null"</code> instead of <code>"object"</code>).</td>
     </tr>
   </table>
 </div>

@@ -20,7 +20,7 @@ const VERSION = "Celestra v6.1.0 browser";
 type IterableAndIterator = Iterable<any> | Iterator<any> | IterableIterator<any>;
 
 type IterableAndIteratorAndArrayLike =
-  Iterable<any> | Iterator<any> | IterableIterator<any> | ArrayLike<any>;
+  Iterable<any> | Iterator<any> | IterableIterator<any> | ArrayLike;
 
 type IteratorReturn = Iterable<any> | IteratorResult<any> | Generator<number, void, unknown>;
 
@@ -333,9 +333,9 @@ const WORDSAFEALPHABET: string =
 
 
 /**
- * @description This function is a general purpose, type safe, predictable stringifier.
+ * @description This function is a general purpose, type safe, predictable stringifier. Converts a value into a human-readable string for error messages Handles symbols, functions, nullish, circular references, etc.
  *
- * @param {unknown} value
+ * @param {unknown} value The value to inspect.
  * @returns {string}
  */
 function toSafeString (value: unknown): string {
@@ -2469,9 +2469,18 @@ function toLength (value: any): number {
 }
 
 
-/* type(value: unknown): string */
-const type = (value: unknown): string =>
-  ((value === null) ? "null" : (typeof value));
+/** @internal */
+type TypeOfTag =
+  "null" | "undefined" | "number" | "bigint" | "boolean" | "string" | "symbol" | "object" | "function";
+/* typeOf(value: unknown): string */
+/**
+ * Extended typeof operator with "null" type as string.
+ *
+ * @param {unknown} value
+ * @returns string
+ */
+const typeOf = (value: unknown): TypeOfTag =>
+  value === null ? "null" : typeof value;
 
 
 /* isSameType(value1: any, value2: any): boolean */
@@ -2487,7 +2496,14 @@ const isSameInstance = (
   (x instanceof Contructor && y instanceof Contructor);
 
 
-/* isCoercedObject(object: any): constructor function | false */
+/* comment * @internal */
+/* type CoercedObjects = String | Number | BigInt | Boolean | Symbol; */
+/**
+ * @description Checks if a value is an coerced object (Number, String, etc.).
+ *
+ * @param {unknown} value The value to check.
+ * @returns False if the value is not a coerced object, otherwise the constructor function.
+ */
 function isCoercedObject (value: unknown): Function | boolean {
   if (value != null && typeof value === "object") {
     if (value instanceof Number) { return Number; }
@@ -2709,7 +2725,7 @@ function isEmptyValue (value: any): boolean {
     if (keys.length === 0) return true;
     /* Special case: object with single "length" property that is 0 */
     if (keys.length === 1 && keys[0] === "length" &&
-      value.length === 0) {
+      (value as { length?: unknown }).length === 0) {
       return true;
     }
   }
@@ -2755,13 +2771,25 @@ const isNumeric = (value: any): boolean =>
 
 
 /* isObject(value: unknown): boolean */
-const isObject = (value: unknown): boolean =>
-  (value != null && (typeof value === "object" || typeof value === "function"));
+/**
+ * @description Checks if the given value is an object.
+ *
+ * @param {unknown} value - The value to check.
+ * @returns True if the value is a object, false otherwise.
+ */
+const isObject = (value: unknown): value is object =>
+  value != null && (typeof value === "object" || typeof value === "function");
 
 
 /* isFunction(value: unknown): boolean */
-const isFunction = (value: unknown): boolean => (typeof value === "function" ||
-  Object.prototype.toString.call(value) === "[object Function]");
+/**
+ * @description Checks if the given value is a Function.
+ *
+ * @param {unknown} value - The value to check.
+ * @returns True if the value is a string, false otherwise.
+ */
+const isFunction = (value: unknown): value is Function =>
+  typeof value === "function";
 
 
 /* isCallable(value: unknown): boolean */
@@ -2770,28 +2798,71 @@ const isCallable = (value: any): boolean =>
     ? (typeof value.call === "function") : false;
 
 
+/** @internal */
+type ArrayLike = { length: number; [n: number]: any; };
+/* interface ArrayLike<T> { length: number; [n: number]: T; }; */
 /* isArraylike(value: unknown): boolean */
-const isArraylike = (value: any): boolean => value != null
-  && typeof value !== "function"
-  && (typeof value === "object" || typeof value === "string")
-  && Number.isSafeInteger(value.length)
-  && value.length >= 0;
+/**
+ * @description Checks if a value is an arraylike object.
+ *
+ * @param {unknown} value The value to check.
+ * @returns boolean
+ */
+function isArraylike (value: unknown): value is ArrayLike {
+  if (value == null || (typeof value !== "object" && typeof value !== "string")) { 
+    return false; 
+  }
+  const maybe = value as { length?: unknown };
+  if (typeof maybe.length !== "number") { return false; }
+  const len = maybe.length;
+  return len >= 0 && Number.isFinite(len);
+}
 
 
 /* isNull(value: unknown): boolean */
-const isNull = (value: unknown): boolean => (value === null);
+/**
+ * @description Checks if the given value is null.
+ *
+ * @param {unknown} value - The value to check.
+ * @returns True if the value is null, false otherwise.
+ */
+const isNull = (value: unknown): value is null => value === null;
 
 
 /* isUndefined(value: unknown): boolean */
-const isUndefined = (value: unknown): boolean => (value === undefined);
+/**
+ * @description Checks if the given value is undefined.
+ *
+ * @param {unknown} value - The value to check.
+ * @returns True If the value is undefined, false otherwise.
+ */
+const isUndefined = (value: unknown): value is undefined =>
+  value === undefined;
 
 
 /* isNullish(value: unknown): boolean */
-const isNullish = (value: unknown): boolean => (value == null);
+/** @internal */
+type Nullish = undefined | null;
+/**
+ * @description Checks if the given value is Nullish (null or undefined).
+ * From MDN: The values null and undefined are nullish.
+ *
+ * @param {unknown} value - The value to check.
+ * @returns True if the value is a Nullish, false otherwise.
+ */
+const isNullish = (value: unknown): value is Nullish => value == null;
 
 
 /* isPrimitive(value: unknown): boolean */
-const isPrimitive = (value: unknown): boolean =>
+/** @internal */
+type Primitive = null | undefined | number | bigint | boolean | string | symbol;
+/**
+ * @description Checks if the given value is Primitive.
+ *
+ * @param {unknown} value - The value to check.
+ * @returns True if the value is Primitive, false otherwise.
+ */
+const isPrimitive = (value: unknown): value is Primitive =>
   value == null || (typeof value !== "object" && typeof value !== "function");
 
 
@@ -2821,14 +2892,23 @@ const isAsyncIterable = (value: any): boolean =>
   value != null && typeof value[Symbol.asyncIterator] === "function";
 
 
+/** @internal */
+type TypedArray =
+  | Int8Array | Uint8Array | Uint8ClampedArray
+  | Int16Array | Uint16Array
+  | Int32Array | Uint32Array
+  | Float32Array | Float64Array
+  | BigInt64Array | BigUint64Array
+  /* Float16Array might not be available in all environments, so optional:*/
+  | (typeof globalThis extends { Float16Array: infer F } ? F : never);
 /* isTypedArray(value: unknown): boolean */
 /**
- * Checks if a value is a TypedArray (Int8Array, etc.).
+ * @description Checks if the given value is a TypedArray (Int8Array, etc.).
  *
- * @param {any} value The value to check.
- * @returns boolean
+ * @param {unknown} value - The value to check.
+ * @returns True if the value is a TypedArray, false otherwise.
  */
-function isTypedArray (value: unknown): boolean {
+function isTypedArray (value: unknown): value is TypedArray {
   const constructors = [
     Int8Array, Uint8Array, Uint8ClampedArray,
     Int16Array, Uint16Array,
@@ -2836,10 +2916,10 @@ function isTypedArray (value: unknown): boolean {
     Float32Array, Float64Array,
     BigInt64Array, BigUint64Array];
   if ("Float16Array" in globalThis) {
-     // @ts-ignore
+    // @ts-ignore
     constructors.push(globalThis.Float16Array);
   }
-  return constructors.some((Class): boolean => value instanceof Class);
+  return constructors.some((Class) => value instanceof Class);
 }
 
 
@@ -3016,7 +3096,7 @@ function castArray <T>(...args: [T] | []): T[] {
  * @returns any[]
  */
 function compact (iter: IterableAndIteratorAndArrayLike): any[] {
-  return Array.from(iter as Iterable<any> | ArrayLike<any>).filter(
+  return Array.from(iter as Iterable<any> | ArrayLike).filter(
     (value: unknown): boolean => Boolean(value) || value === 0
   );
 }
@@ -4090,7 +4170,7 @@ export default {
   isLength,
   toIndex,
   toLength,
-  type,
+  typeOf,
   isSameType,
   isSameInstance,
   isCoercedObject,
@@ -4356,7 +4436,7 @@ export {
   isLength,
   toIndex,
   toLength,
-  type,
+  typeOf,
   isSameType,
   isSameInstance,
   isCoercedObject,

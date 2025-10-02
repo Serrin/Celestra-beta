@@ -33,7 +33,7 @@ __Tested on these:__
 - Node.js (latest current, not LTS)
 - Deno (latest current, not LTS)
 
-Edition|JS file|TS file
+Edition||
 -------|-------|---------
 Browser module|__celestra.browser.js__|__celestra.browser.ts__
 Node.js and Deno module|__celestra.node.mjs__|__celestra.node.mts__
@@ -217,6 +217,7 @@ __Cookie API__ | `getCookie();`<BR>`hasCookie();`<BR>`setCookie();`<BR>`removeCo
 - The `isNil();` function has been renamed to `isNullish();`.
 - The `assertIsNil();` function has been renamed to `assertIsNullish();`.
 - The `assertIsNotNil();` function has been renamed to `assertIsNotNullish();`.
+- The `type();` function has been renamed to `typeOf();`.
 - The `celestra.noConflict();` function has been removed.
 - Some deprecated functions have been removed.
 
@@ -282,7 +283,7 @@ Name | Description
 `tap(function): function(value);` | __Stability: 4 - Stable.__<BR>This functions returns a new function, which runs the given function with the value parameter, then returns the value. Usable for testing and logging. All of the parameters are mandatory.
 `timestampID([size=21[,alphabet= "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"]]);` | __Stability: 4 - Stable.__<BR>Generate a timestamp based sortable ID. The size parameter is optional and the default value is 21, but if the given value smaller than 12, then the value will be 12. The alphabet parameter is optional and the default value is `"123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"`, same as BASE58. The return value is the generated id (string).<BR>Example ID:`"00lirtqi4e-wgGn8vGPyY"`
 `toSafeString(value);` | __Stability: 4 - Stable.__<BR>This function is a general purpose, type safe, predictable stringifier. The value parameter is mandatory and can be any type. The return value is a string.
-`unBind(function);` | __Stability: 4 - Stable.__<BR> __Old name before v5.4.1:__ `toFunction`.<BR>Returns an unbinded function from an object method. The function parameter is mandatory.
+`unBind(function);` | __Stability: 4 - Stable.__<BR>__Old name before v5.4.1:__ `toFunction`.<BR>Returns an unbinded function from an object method. The function parameter is mandatory.
 
 
 ### String API
@@ -409,7 +410,7 @@ __Options object properties:__
 Name | Description
 ---- | -----------
 `classof(value[,class[,throw=false]]);` | __Stability: 0 - Removed in v6.1.0__<BR>Get the real type of a value. If this is an object, then the return value is the detailed object type (e.g.: array). If the class (string) parameter is given, then the return value (boolean) is the equality of the type of the value and the second parameter. If the third parameter (boolean) is true and the type of the value and the second parameter aren't equals, then the function is throwing a `TypeError();`, else the return value is true.
-`getType(value[,class[,throw=false]]);` | __Stability: 0 - Removed in v6.1.0____<BR>This is an alias of the `classof(variable[,class[,throw=false]]);`.
+`getType(value[,class[,throw=false]]);` | __Stability: 0 - Removed in v6.1.0__<BR>This is an alias of the `classof(variable[,class[,throw=false]]);`.
 `is(value[,expectedType[,Throw=false]];` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value type or class is the given expectedType. The expectedType can be a type string, constructor function or an array of the type strings and constructors. If the Throw is true and the value is not matched with the expectedType, then a TypeError will be thrown with detailed error message. The return value is boolean or the type or constructor of the value.
 `isArraylike(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an arraylike object. The return value is boolean.
 `isAsyncIterable(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an async iterable object. The return value is boolean.
@@ -447,7 +448,7 @@ Name | Description
 `toObject(value);`| __Stability: 4 - Stable.__<BR>If the given value is not null or undefined, then the return value is an object, which has been converted from the value, else a `TypeError()` will be throwned.<BR>If the given value is an object, function or symbol, then the original value will return.
 `toPrimitiveValue(value);`| __Stability: 4 - Stable.__<BR>If the given value is null or undefined, then a `TypeError()` will be throwned.<BR>If the given value is an object, which can be converted to a primitive variable, then the return value is a primitive variable.<BR>If the given value is a not convertable object (array, map, set, etc.), function or symbol, then the original value will return.
 `toPropertyKey(value);`|__Stability: 4 - Stable.__<BR>This function convert the given value to a valid property key. If the value is not symbol, then will be converted to string, else the symbol will be returned.
-`type(value);`| __Stability: 4 - Stable.__<BR>This function returns the typeof operator result of the given value, except the null object (`"null"` instead of `"object"`).
+`typeOf(value);`| __Stability: 4 - Stable.__<BR>__Old name before v6.1.0: `type();`.__<BR>This function returns the typeof operator result of the given value, except the null object (`"null"` instead of `"object"`).
 
 
 ### Cookie API

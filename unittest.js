@@ -6505,15 +6505,15 @@ CUT.isEqual("deleteOwnProperty(); - <code>\"" + token2 + "\"</code>", token2,
 );
 
 
-/* type(); */
-CUT.isTrue("type();",
-  CEL.type(null) === "null"
-    && CEL.type(undefined) === "undefined"
-    && CEL.type([]) === "object"
-    && CEL.type(function () {}) === "function"
-    && CEL.type(42) === "number"
-    && CEL.type("42") === "string"
-    && CEL.type(true) === "boolean"
+/* typeOf(); */
+CUT.isTrue("typeOf();",
+  CEL.typeOf(null) === "null"
+    && CEL.typeOf(undefined) === "undefined"
+    && CEL.typeOf([]) === "object"
+    && CEL.typeOf(function () {}) === "function"
+    && CEL.typeOf(42) === "number"
+    && CEL.typeOf("42") === "string"
+    && CEL.typeOf(true) === "boolean"
 );
 
 
