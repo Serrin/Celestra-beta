@@ -9,9 +9,79 @@
 # Celestra version history
 
 
+## Celestra v6.1.0 Sulaco
+
+Please read in the documentation about the new files and import methods for the browser edition!
+ 
+1. Documentation and pdf fixes.
+
+2. The __celestra.dev.js__ has been replaced with the __celestra.browser.ts__.
+
+3. The __celestra.min.js__ has been replaced with the __celestra.browser.js__.
+
+4. The __celestra.node.mjs__ has been remained and added the __celestra.node.mts__.
+
+5. Rename these functions:
+
+Old name|New name
+--------|---------
+`isNil();`|`isNullish();`
+`assertIsNil();`|`assertIsNullish();`
+`assertIsNotNil();`|`assertIsNotNullish();`
+`type();`|`typeOf();`
+
+6. Remove these functions:
+````javascript
+celestra.noConflict();
+assertInstanceOf();
+assertNotInstanceOf();
+assertNotTypeOf();
+assertTypeOf();
+classof();
+contains();
+getType();
+isSameClass();
+```` 
+
+
 ## Celestra v6.0.5
 
-1. Documentation and pdf fixes. 
+Please read in the documentation about the new files and import methods for the browser edition!
+
+1. Documentation and pdf fixes.
+
+2. The __celestra.dev.js__ has been replaced with the __celestra.browser.ts__.
+
+3. The __celestra.min.js__ has been replaced with the __celestra.browser.js__.
+
+4. The __celestra.node.mjs__ has been remained and added the __celestra.node.mts__.
+
+5. Rename these functions:
+
+Old name|New name
+--------|---------
+`isNil();`|`isNullish();`
+`assertIsNil();`|`assertIsNullish();`
+`assertIsNotNil();`|`assertIsNotNullish();`
+`type();`|`typeOf();`
+
+6. Remove these functions:
+````javascript
+celestra.noConflict();
+assertInstanceOf();
+assertNotInstanceOf();
+assertNotTypeOf();
+assertTypeOf();
+classof();
+contains();
+getType();
+isSameClass();
+````
+
+
+## Celestra v6.0.5
+
+1. Documentation and pdf fixes.
 
 2. Refactoring the library JS code to rewrite in TypeScript in the next milestone.
 

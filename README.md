@@ -15,7 +15,7 @@ __A helper JavaScript library with useful functions and polyfills and zero depen
 
 Latest version: 6.1.0
 
-Date: 2025-09-29T18:15:48.916Z
+Date: 2025-10-03T01:06:23.987Z
 
 __Tested on these:__
 
@@ -33,54 +33,33 @@ __Tested on these:__
 - Node.js (latest current, not LTS)
 - Deno (latest current, not LTS)
 
-Edition||
--------|-------|---------
-Browser module|__celestra.browser.js__|__celestra.browser.ts__
-Node.js and Deno module|__celestra.node.mjs__|__celestra.node.mts__
-Celestra Unit Tester (CUT)|__unittest.html__|
-Version history|__CHANGELOG.md__|
-
-
-### Github pages
 
 version|page link
 -------|--------
-Stable|__https://github.com/Serrin/Celestra__
-Beta|__https://github.com/Serrin/Celestra-beta__
+Stable repository|__https://github.com/Serrin/Celestra__
+Beta repository|__https://github.com/Serrin/Celestra-beta__
 
 
-### Removed polyfills
-
-Some polyfills have been removed in v3.1.0 and v3.8.0 and v5.6.0. With these files can be reusued the old polyfills if needed.
-
-edition|filename
--------|--------
-developer|__celestra-polyfills.dev.js__
-minified|__celestra-polyfills.min.js__
-
-
-### Cheatsheets
-
-edition|filename
--------|--------
-Celestra cheatsheet|__celestra-cheatsheet.pdf__
-JavaScript cheatsheet|__js-cheatsheet.pdf__
-
-
-### Apps
-
-app|filename
--------|--------
-RPG dice roller|__testgame.html__
-Assert plugin documentation|__celestra-assert-plugin.html__
-Assert plugin developer source|__celestra-assert-plugin.dev.js__
-Assert plugin minified source|__celestra-assert-plugin.min.js__
-Assert plugin cheatsheet|__celestra-assert-plugin.odt__<BR>__celestra-assert-plugin.pdf__
+Edition|Javascript or documentation|Typescript
+-------|--------------------------|------------
+Browser module|__celestra.browser.js__|__celestra.browser.ts__
+Node.js and Deno module|__celestra.node.mjs__|__celestra.node.mts__
+Celestra Unit Tester (CUT)|__unittest.html__|
+Celestra cheatsheet|__celestra-cheatsheet.odt__<BR>__celestra-cheatsheet.pdf__|
+JavaScript cheatsheet|__js-cheatsheet.odt__<BR>__js-cheatsheet.pdf__|
+Version history|__CHANGELOG.md__|
+Removed polyfills (developer)|__celestra-polyfills.dev.js__|
+Removed polyfills (minified)|__celestra-polyfills.min.js__|
+RPG dice roller|__testgame.html__|
+Assert plugin documentation|__celestra-assert-plugin.html__|
+Assert plugin developer source|__celestra-assert-plugin.dev.js__|
+Assert plugin minified source|__celestra-assert-plugin.min.js__|
+Assert plugin cheatsheet|__celestra-assert-plugin.odt__<BR>__celestra-assert-plugin.pdf__|
 
 
 ### How to import the browser edition
 
-````javascript
+````html
 <script type="module">
 // import the defaultExport object
 import defaultExport from "./celestra.browser.js";
@@ -104,9 +83,9 @@ globalThis.CEL = celestra;
 
 <script type="module">
 // import some functions
-import { first, classof } from "./celestra.browser.js";
+import { first, assert } from "./celestra.browser.js";
 globalThis.first = first;
-globalThis.classof = classof;
+globalThis.assert = assert;
 </script>
 ````
 
@@ -129,9 +108,9 @@ globalThis.celestra = celestra;
 globalThis.CEL = celestra;
 
 // import some functions
-import { first, classof } from "./celestra.nodejs.mjs";
+import { first, assert } from "./celestra.nodejs.mjs";
 globalThis.first = first;
-globalThis.classof = classof;
+globalThis.classof = assert;
 
 // dynamic import
 const celestra = await import("./celestra.node.mjs");
@@ -239,12 +218,11 @@ __Cookie API__ | `getCookie();`<BR>`hasCookie();`<BR>`setCookie();`<BR>`removeCo
 
 ### Core API
 
-Example: `CEL.delay();`
 
 Name | Description
 ---- | -----------
-`celestra.noConflict();` |__Stability: 0 - Removed in v6.1.0__<BR>Restore the previous `CEL` object value and return the `celestra` object to create a new alias.<BR>__Tip: You can make a new alias without this function too. Example: `globalThis._cel = globalThis.celestra;`__<BR>__In the ESM edition only returns the celestra object.__
-`celestra.VERSION;` | __Stability: 4 - Stable.__<BR>The library version.
+`noConflict();` |__Stability: 0 - Removed in v6.1.0__<BR>Restore the previous `CEL` object value and return the `celestra` object to create a new alias.<BR>__Tip: You can make a new alias without this function too. Example: `globalThis._cel = globalThis.celestra;`__<BR>__In the ESM edition only returns the celestra object.__
+`VERSION;` | __Stability: 4 - Stable.__<BR>The library version.
 `BASE16;`|__Stability: 4 - Stable.__<BR>`"0123456789ABCDEF"`<BR>Can be used with the ID generator functions.
 `BASE32;`|__Stability: 4 - Stable.__<BR>`"234567ABCDEFGHIJKLMNOPQRSTUVWXYZ"`<BR>Can be used with the ID generator functions.
 `BASE36;`|__Stability: 4 - Stable.__<BR>`"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"`<BR>Can be used with the ID generator functions.
@@ -277,7 +255,7 @@ Name | Description
 `pick(object, keys);`|__Stability: 4 - Stable.__<BR>Select (filter) keys from an object and return these keys and values in a new object (immutably). All of the parameters are mandatory and the keys has to be an array.
 `pipe(function1 [, functionN]);`|__Stability: 4 - Stable.__<BR>Compose functions left to right. At least one function parameter is mandatory.
 `randomBoolean();` | __Stability: 4 - Stable.__<BR>Get a random boolean value. The return value is `true` or `false`.
-`randomUUIDv7(v4 = false);` | __Stability: 4 - Stable.__<BR>This function returns a UUID v7, which cointains a timestamp too. For more information please read the [this page](https://www.rfc-editor.org/rfc/rfc9562.html#name-uuid-version-7)!<BR>Example result: `"0195d74b-b8c8-7302-a7d3-919df45087f3"`<BR>If the v4 parameter (optional) is `true`, then the version in the string will be 4.<BR>Example result: `"0195d74b-b8c8-4302-a7d3-919df45087f3"`.  
+`randomUUIDv7(v4 = false);` | __Stability: 4 - Stable.__<BR>This function returns a UUID v7, which cointains a timestamp too. For more information please read the [this page](https://www.rfc-editor.org/rfc/rfc9562.html#name-uuid-version-7)!<BR>Example result: `"0195d74b-b8c8-7302-a7d3-919df45087f3"`<BR>If the v4 parameter (optional) is `true`, then the version in the string will be 4.<BR>Example result: `"0195d74b-b8c8-4302-a7d3-919df45087f3"`.
 `sizeIn(object);` | __Stability: 4 - Stable.__<BR>Returns the count of the owned properties and symbols of the given object. The object parameter is mandatory. The return value is an integer.
 `T();` | __Stability: 4 - Stable.__<BR>This function returns true.
 `tap(function): function(value);` | __Stability: 4 - Stable.__<BR>This functions returns a new function, which runs the given function with the value parameter, then returns the value. Usable for testing and logging. All of the parameters are mandatory.
@@ -453,7 +431,10 @@ Name | Description
 
 ### Cookie API
 
-Cookie values help: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie, https://web.dev/samesite-cookies-explained
+Cookie values help:
+
+- https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
+- https://web.dev/samesite-cookies-explained
 
 Name | Description
 ---- | -----------
