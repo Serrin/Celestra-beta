@@ -8,11 +8,10 @@
 
 # Celestra version history
 
-
 ## Celestra v6.1.0 Sulaco
 
 Please read in the documentation about the new files and import methods for the browser edition!
- 
+
 1. Documentation and pdf fixes.
 
 2. The __celestra.dev.js__ has been replaced with the __celestra.browser.ts__.
@@ -31,6 +30,7 @@ Old name|New name
 `type();`|`typeOf();`
 
 6. Remove these functions:
+
 ````javascript
 celestra.noConflict();
 assertInstanceOf();
@@ -41,8 +41,7 @@ classof();
 contains();
 getType();
 isSameClass();
-```` 
-
+````
 
 ## Celestra v6.0.5
 
@@ -66,6 +65,7 @@ Old name|New name
 `type();`|`typeOf();`
 
 6. Remove these functions:
+
 ````javascript
 celestra.noConflict();
 assertInstanceOf();
@@ -77,7 +77,6 @@ contains();
 getType();
 isSameClass();
 ````
-
 
 ## Celestra v6.0.5
 
@@ -86,12 +85,12 @@ isSameClass();
 2. Refactoring the library JS code to rewrite in TypeScript in the next milestone.
 
 3. Add these functions:
+
 ````javascript
 castArray();
 compact();
 toSafeString();
 ````
-
 
 ## Celestra v6.0.4
 
@@ -109,7 +108,6 @@ toSafeString();
 
 7. Add this function: `isAsyncIterable();`
 
-
 ## Celestra v6.0.3
 
 1. Documentation and pdf fixes.
@@ -117,6 +115,7 @@ toSafeString();
 2. Add left sidebar with function index in the __celestra.html__.
 
 3. Add these functions:
+
 ````javascript
 assertIs();
 assertIsNot();
@@ -124,6 +123,7 @@ is();
 ````
 
 4. Deprecate _(stability 1)_ these functions:
+
 ````javascript
 assertInstanceOf();
 assertNotInstanceOf();
@@ -134,15 +134,14 @@ getType();
 isSameClass();
 ````
 
-
 ## Celestra v6.0.2
 
 1. Documentation and pdf fixes.
 
 2. Fix these functions:
+
 - `curry();`
 - `isFunction();`
-
 
 ## Celestra v6.0.1
 
@@ -161,6 +160,7 @@ testmodule2.css | unittest-module2.css
 testmodule2.js| unittest-module2.js
 
 3. Add these FP functions:
+
 ````javascript
 assoc();
 compose();
@@ -172,7 +172,6 @@ pipe();
 tap();
 ````
 
-
 ## Celestra v6.0.0 David
 
 1. Documentation and pdf fixes.
@@ -182,10 +181,10 @@ tap();
 3. Remove the documentation of the functions, which have been marked with __Stability: 0 - Removed in v5.9.0__.
 
 4. Same API as in v5.9.0, but add __Node.js and Deno support__ and these files:
+
 - __celestra.node.mjs__
 - __unittest.node.cmd__
 - __unittest.node.js__
-
 
 ## Celestra v5.9.0 Final five
 
@@ -200,6 +199,7 @@ tap();
 5. Move the polyfill `BigInt.prototype.toJSON();` to __celestra-polyfills.dev.js__ and __celestra-polyfills.min.js__.
 
 6. Remove these functions:
+
 ````javascript
 arrayCreate();
 arrayDifference();
@@ -215,7 +215,6 @@ popIn();
 sleep(); // only an alias
 ````
 
-
 ## Celestra v5.8.1
 
 1. Documentation and pdf fixes.
@@ -223,6 +222,7 @@ sleep(); // only an alias
 2. Fix the assert functions with the error parameter.
 
 3. Add these functions:
+
 ````javascript
 asyncConstant();
 asyncF();
@@ -250,16 +250,17 @@ popIn();
 sleep(); // only an alias
 ````
 
-
 ## Celestra v5.8.0 Uhura
 
 1. Documentation and pdf fixes.
 
 2. Add these new files:
+
 - __celestra-assert-plugin.odt__
 - __celestra-assert-plugin.pdf__
 
 3. Add these assert functions and update Assert plugin:
+
 ````javascript
 assertDoesNotMatch();
 assertFail();
@@ -274,6 +275,7 @@ assertTypeOf();
 ````
 
 4. Remove these functions:
+
 ````javascript
 isArrayBuffer();
 isBigInt();
@@ -329,7 +331,6 @@ _map();
 _slice();
 ````
 
-
 ## Celestra v5.7.4
 
 1. Documentation and pdf fixes.
@@ -337,6 +338,7 @@ _slice();
 2. Replace the __Demo plugin__ with the __Assert plugin__.
 
 3. Add support of `DataView` and `ArrayBuffer` in these functions:
+
 ````javascript
 assertDeepEqual();
 assertDeepStrictEqual();
@@ -346,8 +348,8 @@ isDeepStrictEqual();
 ````
 
 4. __Celestra Unit Tester (CUT) v1.30.0:__
-- Add this function: `isError();`
 
+- Add this function: `isError();`
 
 ## Celestra v5.7.3
 
@@ -358,6 +360,7 @@ isDeepStrictEqual();
 3. Replace the Celestra object with the ES6 simple object
 
 4. Add these functions:
+
 ````javascript
 assertType();
 assertNotType();
@@ -368,6 +371,7 @@ isSameInstance();
 5. Deprecate (**Stability 1 - will be removed**) this function: `toArray();`
 
 6. Deprecate (**Stability 1 - will be removed**) these abstract functions, because these are available in the new Zephyr (EcmaScript abstract) library:
+
 ````javascript
 createDataProperty(object,property,value);
 createDataPropertyOrThrow(object,property,value);
@@ -386,12 +390,12 @@ requireObjectCoercible(object);
 toPrimitive(value);
 ````
 
-
 ## Celestra v5.7.2
 
 1. Documentation and pdf fixes.
 
 2. Add new functions:
+
 ````javascript
 assertDeepEqual();
 assertDeepStrictEqual();
@@ -402,6 +406,7 @@ isEmptyValue();
 ````
 
 3. Set __Stability 1__ (will be removed in the next milestone) for this type checking functions:
+
 ````javascript
 isTruthy();
 isFalsy();
@@ -431,6 +436,7 @@ isArrayBuffer();
 ````
 
 4. Set __Stability 4__ (stable) for this type checking functions:
+
 ````javascript
 isObject();
 isRegexp();
@@ -458,26 +464,27 @@ isAsyncFn();
 isIterator();
 ````
 
-
 ## Celestra v5.7.1
 
 1. Documentation and pdf fixes.
 
 2. Add this functions:
+
 ````javascript
 isProxy();
 isSameClass();
 ````
 
 3. Replace these functions:
+
 ````javascript
 toIndex();
 toLength();
 ````
 
 4. __Celestra Unit Tester (CUT) v0.8.29:__
-- Add this function: `getHumanReadableJSON();` and display the global error fields on the page.
 
+- Add this function: `getHumanReadableJSON();` and display the global error fields on the page.
 
 ## Celestra v5.7.0 Nostromo
 
@@ -486,11 +493,13 @@ toLength();
 2. __Change the ESM edition:__ The default export will be the celestra object and the all of the functions will be exported.
 
 3. Deprecate this function (__Stability 1__):
+
 ````javascript
 arrayUnique();
 ````
 
 4. Remove these functions (__Stability 0__):
+
 ````javascript
 inherit()
 isError();
@@ -498,6 +507,7 @@ group();
 ````
 
 5. Set __Stability 3__ of these functions:
+
 ````javascript
 isSuperset();
 arrayDifference();
@@ -511,12 +521,14 @@ setUnion();
 ````
 
 6. Replace these functions with a new version:
+
 ````javascript
 arrayCreate();
 reverse();
 ````
 
 7. Add this function:
+
 ````javascript
 unique();
 ````
@@ -534,6 +546,7 @@ Old function|New function
 
 - Add `token1` - `token10` variables instead of many testvariables of testcases.
 - Add these functions:
+
 ````javascript
 CUT.concat()
 CUT.join();
@@ -542,7 +555,6 @@ CUT.take();
 ````
 
 10. Close the milestone 5.7.0 Nostromo
-
 
 ## Celestra v5.6.6
 
@@ -585,15 +597,16 @@ toObject();
 ````
 
 6. __Celestra Unit Tester (CUT) v0.8.27:__
+
 - CSS and text changes
 - Small fixes
-
 
 ## Celestra v5.6.5
 
 1. Documentation and pdf fixes.
 
 2. Add stabilities in the __celestra.html__ and __README.md__:
+
 ````
 0 - Removed.
 1 - Deprecated and will be removed.
@@ -644,9 +657,9 @@ toObject();
 ````
 
 9. __Celestra Unit Tester (CUT) v0.8.26:__
+
 - CSS and text changes
 - The global try-catch will add a failed line instead of an alert.
-
 
 ## Celestra v5.6.4
 
@@ -661,6 +674,7 @@ toObject();
 5. Deprecate this function: `isError();`
 
 6. Replace these functions with a new version:
+
 ````javascript
 forIn();
 getFullscreen();
@@ -684,7 +698,6 @@ noop();
 strFromCodePoints();
 ````
 
-
 ## Celestra v5.6.3
 
 1. Documentation and pdf fixes.
@@ -692,7 +705,6 @@ strFromCodePoints();
 2. Remove the **btc.app.html**
 
 3. Fix the version number in the **celestra.min.js**
-
 
 ## Celestra v5.6.2
 
@@ -703,17 +715,20 @@ strFromCodePoints();
 3. Add function categories links in the **celestra.html**
 
 4. Add new contents in the **js-cheatsheet.odt** and **js-cheatsheet.pdf**:
+
 - new Set methods
 - Float16Array
 - new Iterator methods
 
 5. Add new functions:
+
 - `isFloat16(<value>);`
 - `toFloat16(<value>);`
 - `count();`
 - `randomUUIDv7();`
 
 6. Deprecate these functions:
+
 - `arrayUnion();`
 - `arrayIntersection();`
 - `arrayDifference();`
@@ -724,15 +739,14 @@ strFromCodePoints();
 - `setSymmetricDifference();`
 - `isSuperset();`
 
-
 ## Celestra v5.6.1
 
 1. Fixed many errors in the documentation and pdf fixes.
 
-
 ## Celestra v5.6.0 Razorback
 
 1. Documentation and pdf fixes.
+
 ````
 HTML - clamp(<value>,<min>,<max>); - This is an alias of the minmax(<value>,<min>,<max>);.
 HTML - REMOVED polyfills in v3.1.0 - String.prototype.codePointAt();7
@@ -743,6 +757,7 @@ HTML - REMOVED polyfills in v3.1.0 - String.prototype.codePointAt();7
 3. Remove these functions: `randomString();`, `randomID();`
 
 4. Add these polyfills:
+
 ````
 Object.groupBy();
 Map.groupBy();
@@ -755,6 +770,7 @@ Map.groupBy();
 7. Add the 4th page in the __celestra-cheatsheet.odt__ and __celestra-cheatsheet.pdf__ with the removed polyfills.
 
 8. Move these polyfills in the **celestra-polyfills.dev.js** and **celestra-polyfills.min.js**
+
 ````
 Array.prototype.at();
 Array.prototype.findLast();
@@ -787,7 +803,6 @@ TypedArray.prototype.findLastIndex();
 
 9. Close the milestone __5.6.0 Razorback__.
 
-
 ## Celestra v5.5.5
 
 1. Documentation and pdf fixes.
@@ -808,7 +823,6 @@ TypedArray.prototype.findLastIndex();
 |`arrayDifference();`|Replace the method `includes();` with `indexOf();`|
 |`arraySymmetricDifference();`|Replace the method `includes();` with `indexOf();`|
 
-
 ## Celestra v5.5.4
 
 1. Documentation and pdf fixes.
@@ -828,6 +842,7 @@ TypedArray.prototype.findLastIndex();
 3. Add a new section: **String API**
 
 4. Move these functions in the section **String API**:
+
 ````javascript
 strPropercase(<string>);
 strTitlecase(<string>);
@@ -845,6 +860,7 @@ strHTMLUnEscape(<string>);
 ````
 
 5. Add these alphabets:
+
 ````javascript
 const BASE16 = "0123456789ABCDEF";
 const BASE32 = "234567ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -855,6 +871,7 @@ const WORDSAFEALPHABET= "23456789CFGHJMPQRVWXcfghjmpqvwx";
 ````
 
 6. Add these functions:
+
 - `strSplice(<string>,<index: integer>,<count: integer>[,add: string]): string`
 - `domScrollToElement(<element>[,top=true]): undefined`
 - `timestampID([size=21[,alphabet="123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"]]): string`
@@ -863,6 +880,7 @@ const WORDSAFEALPHABET= "23456789CFGHJMPQRVWXcfghjmpqvwx";
 to `strAt(<string>,<index: integer>[,newChar: string]): string`
 
 8. Move this functions from __Core API__ to __Math functions__:
+
 ````javascript
 signbit();
 randomInt();
@@ -879,7 +897,6 @@ inRange();
 |domToTop();|domScrollToTop();|
 |domToBottom();|domScrollToBottom();|
 
-
 ## Celestra v5.5.3
 
 1. Documentation and pdf fixes.
@@ -887,6 +904,7 @@ inRange();
 2. Add these functions: `domToTop();`, `domToBottom();`
 
 3. Add these polyfills:
+
 ````javascript
 Array.prototype.toReversed();
 Array.prototype.toSorted();
@@ -896,7 +914,6 @@ TypedArray.prototype.toReversed();
 TypedArray.prototype.toSorted();
 TypedArray.prototype.with();
 ````
-
 
 ## Celestra v5.5.2
 
@@ -918,15 +935,14 @@ TypedArray.prototype.with();
 5. Add a new function: `nanoid([size=21[,alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"]]);`
 
 6. __Celestra Unit Tester (CUT) v0.8.25:__
+
 - CSS and text changes
 - UP & DOWN buttons have been removed, because these caused errors on the test server.
 - Added UTC, local and Epoch time in the log.
 
-
 ## Celestra v5.5.1
 
 1. Documentation and pdf fixes.
-
 
 ## Celestra v5.5.0
 
@@ -948,12 +964,12 @@ TypedArray.prototype.with();
 
 6. Add a demo plugin with these files: `celestra-demoPlugin.html`, `celestra-demoPlugin.dev.js` and `celestra-demoPlugin.min.js`
 
-
 ## Celestra v5.4.4
 
 1. Documentation and pdf fixes.
 
 2. Fix the description of these polyfills with MDN links:
+
 ````javascript
 Array.prototype.findLast();
 Array.prototype.findLastIndex();
@@ -962,6 +978,7 @@ TypedArray.prototype.findLastIndex();
 ````
 
 3. Rename these prototypes:
+
 ````javascript
 Array.prototype.groupBy(); -> Array.prototype.group();
 Array.prototype.groupByToMap(); -> Array.prototype.groupToMap();
@@ -969,12 +986,12 @@ Array.prototype.groupByToMap(); -> Array.prototype.groupToMap();
 
 4. Rename the function `groupBy(<collection>,<callback>[,map=false]);` to `group(<collection>,<callback>[,map=false]);` and add an alias with the old name.
 
-
 ## Celestra v5.4.3
 
 1. Documentation and pdf fixes.
 
 2. Remove this line in the __README.md__:
+
 ````
 Celestra Math plugin cheatsheet: __celestra-math.pdf__
 ````
@@ -991,6 +1008,7 @@ Polyfill|Link
 5. Add an alias: `sleep(<ms>).then(<callback>);` -> `delay(<ms>).then(<callback>);`
 
 6. Revert these functions to old versions -> use the `for of` instead of the array conversion:
+
 ````
 includes(<collection>,<value>);
 contains(<collection>,<value>);
@@ -1003,6 +1021,7 @@ join(<collection>[,separator=","]);
 ````
 
 7. Fix these polyfills to use the `Object.defineProperty();`:
+
 ````
 Array.prototype.flat();
 Array.prototype.flatMap();
@@ -1015,7 +1034,6 @@ String.prototype.padStart();
 String.prototype.padEnd();
 ````
 
-
 ## Celestra v5.4.2
 
 1. Documentation and pdf fixes.
@@ -1023,6 +1041,7 @@ String.prototype.padEnd();
 2. Add a third page in the __celestra-cheatsheet.odt__ and __celestra-cheatsheet.pdf__
 
 3. Delete these files and move the content in the __celestra-cheatsheet.odt__ and __celestra-cheatsheet.pdf__:
+
 - __celestra-math.odt__
 - __celestra-math.pdf__
 
@@ -1032,15 +1051,16 @@ String.prototype.padEnd();
 
 6. __Celestra Unit Tester (CUT) v0.8.24:__ CSS and text changes
 
-
 ## Celestra v5.4.1
 
 1. Documentation and pdf fixes.
 
 2. Add these functions:
+
 - `toArray(<value>);` - in abstract
 
 3. Add these polyfills:
+
 - `Array.prototype.groupBy(<fn>[,thisArg]);`
 - `Array.prototype.groupByToMap(<fn>[,thisArg]);`
 - `Number.MIN_SAFE_INTEGER;`
@@ -1056,7 +1076,6 @@ Function|Fix
 `isNil(<value>);`|Add handle of value of `NaN`
 `toFunction(<function>);`|Rename to `unBind(<function>);` and add an alias with the old name
 
-
 ## Celestra v5.4.0
 
 1. Documentation and pdf fixes.
@@ -1064,11 +1083,13 @@ Function|Fix
 2. CSS changes in the __testgame.html__ and __btc.app.html__
 
 3. Add these buttons in the __celestra-math.html__:
+
 - __load celestra-math.js__
 - __load celestra-math.min.js__
 - __reset page__
 
 4. Add these topics in the __js-cheatsheet.odt__ and __js-cheatsheet.pdf__:
+
 - Nullish coalescing operator (??)
 - Logical nullish assignment (??=)
 - Logical AND assignment (&&=)
@@ -1090,6 +1111,7 @@ Alias|Function
 `strTitlecase(<string>);`|`strPropercase(<string>);`
 
 7. Add these functions:
+
 - `isTruthy(<value>);`
 - `isFalsy(<value>);`
 - `getInV(<value>,<property>);`
@@ -1108,7 +1130,6 @@ Function|Fix
 `randomInt([max] or <min>,<max>);`|Small fixes.
 `randomFloat([max] or <min>,<max>);`|Use `null/undefined` checking.
 
-
 ## Celestra v5.3.2
 
 1. Documentation and pdf fixes.
@@ -1116,11 +1137,13 @@ Function|Fix
 2. Deprecate the `[flat=false,]` parameter in the `arrayMerge([flat=false,]<target>,<source1>[,sourceN]);`
 
 3. Add these files:
+
 - __celestra-math.min.js__
 - __celestra-math.odt__
 - __celestra-math.pdf__
 
 4. Add these functions:
+
 - `arrayCreate([length=0]);`
 - `arrayDeepClone(<array>);`
 - `createDataProperty(<object>,<property>,<value>);`
@@ -1131,6 +1154,7 @@ Function|Fix
 5. Add autotests in the __celestra-math.html__
 
 6. Add these functions in the __Math plugin__:
+
 - `toInt8(<value>);` and `isInt8(<value>);`
 - `toUInt8(<value>);` and `isUInt8(<value>);`
 - `toInt16(<value>);` and `isInt16(<value>);`
@@ -1155,7 +1179,6 @@ Function|Fix
 `toIndex(<value>);`|Fix the handle of `Infinity`
 `toInteger(<value>);`|Fix the handle of `Infinity` and `-Infinity`
 
-
 ## Celestra v5.3.1
 
 1. Documentation and pdf fixes.
@@ -1165,6 +1188,7 @@ Function|Fix
 3. Add a new polyfill: `crypto.randomUUID();`
 
 4. Add these functions:
+
 - `isIndex(<value>);`
 - `toIndex(<value>);`
 - `toInteger(<value>);`
@@ -1184,7 +1208,6 @@ Function|Fix
 `nth(<collection>,<index>);`|Replace the alias code with the original function.
 `randomID([hyphens=true][,usedate=false]);`|Use the `crypto.getRandomValues();`.
 
-
 ## Celestra v5.3.0 Voyager
 
 1. Documentation and pdf fixes.
@@ -1194,11 +1217,13 @@ Function|Fix
 3. Add a new code section: __Abstract functions__
 
 4. Move these functions to the code section __Abstract functions__:
+
 - `hasIn(<object>,<property>);`
 - `getIn(<object>,<property>);`
 - `setIn(<object>,<property>,<value>);`
 
 5. Add these functions in the code section __Abstract functions__:
+
 - `isPropertyKey(<value>);`
 - `toPropertyKey(<value>);`
 - `toObject(<value>);`
@@ -1207,7 +1232,6 @@ Function|Fix
 - `type(<value>);`
 
 6. Close the milestone __5.3.0 Voyager__
-
 
 ## Celestra v5.2.1
 
@@ -1243,7 +1267,6 @@ Function|Fix/Change
 `reduce(<collection>,<callback>[,initialvalue]);`|small fixes
 `zipObj(<collection1>,<collection2>);`|Remove the internal call of the `zip(<collection1>[,collectionN]);`
 
-
 ## Celestra v5.2.0
 
 1. Documentation and pdf fixes.
@@ -1258,7 +1281,6 @@ Function|Fix/Change
 
 6. Add this function: `forEachRight(<collection>,<callback>);`
 
-
 ## Celestra v5.1.0
 
 1. Documentation and pdf fixes.
@@ -1266,10 +1288,12 @@ Function|Fix/Change
 2. Remove the `deepAssign(<target>,<source1>[,srcN]);` function
 
 3. Rename __Demo Plugin__ to __Math Plugin__:
+
 - __celestra-demo-plugin.html__ -> __celestra-math.html__
 - __celestra-demo-plugin.js__ -> __celestra-math.js__
 
 4. Add these functions:
+
 - `getIn(<object>,<property>);`
 - `setIn(<object>,<property>,<value>);`
 - `hasIn(<object>,<property>);`
@@ -1281,7 +1305,6 @@ Old function|New function
 `min(<collection>);`|`min(<value1>[,valueN]);`
 `max(<collection>);`|`max(<value1>[,valueN]);`
 
-
 ## Celestra v5.0.0 Defiant
 
 1. Documentation and pdf fixes.
@@ -1291,6 +1314,7 @@ Old function|New function
 3. Close the milestone __5.0.0 Defiant__
 
 4. Replace the short object name `_` with a new short name `CEL` in these files:
+
 - __btc.app.html__
 - __celestra.html__
 - __celestra.js__
@@ -1304,8 +1328,8 @@ Old function|New function
 - __unittest.js__
 
 5. __CUT v0.8.23__
-- only fixes
 
+- only fixes
 
 ## Celestra v4.5.2
 
@@ -1329,21 +1353,23 @@ Function|Fix
 `strDownFirst(<string>);`|add length check
 
 5. Add these functions in the __Demo Plugin__:
+
 - `product(<value1>[,valueN]);`
 - `clamp(<value>,<min>,<max>);`
 
 6. __CUT v0.8.22__
+
 - Rename the `celTest` object to `CUT` in the __unittest.js__
 - Remove the `_cut` alias of the `CUT` object to in the __unittest.js__
 - Add these buttons in fixed positions: __goto top__ and __goto bottom__
 - Add __Debug Console__ in the __unittest.html__
-
 
 ## Celestra v4.5.1
 
 1. Documentation and pdf fixes.
 
 2. Add these functions:
+
 - `arrayRemoveBy(<array>,<callback>[,all=false]);`
 - `inRange(<value>,<min>,<max>);`
 - `zipObj(<collection1>,<collection2>);`
@@ -1366,6 +1392,7 @@ Function|Fix
 `Object.hasOwn(<object>,<property>);`|only documentation
 
 4. Replace these functions with a smaller size version:
+
 ````javascript
 isNumeric(<value>):
 forIn(<object>,<callback>);
@@ -1385,8 +1412,8 @@ domSetCSS();
 ````
 
 5. __CUT v0.8.21__
-- Show a message on the page, when a __Celestra edition__ and the __unittest.js__ is loaded.
 
+- Show a message on the page, when a __Celestra edition__ and the __unittest.js__ is loaded.
 
 ## Celestra v4.5.0
 
@@ -1419,13 +1446,13 @@ Old function|New function
 `filterIn(<object>,<callback>);`|new ES6+ function with same parameters
 
 6. Remove these functions:
+
 - `importScripts(<scripts> or <script1>[,scN]);`
 - `importStyles(<styles> or <style1>[,styleN]);`
 
 7. __CUT v0.8.20__
+
 - Add a "reset page" button in the __unittest.html__
-
-
 
 ## Celestra v4.4.3
 
@@ -1436,6 +1463,7 @@ Old function|New function
 3. Add an alias: `contains(<collection>,<value>);` -> `includes(<collection>,<value>);`
 
 4. Fix the description of these functions:
+
 ````javascript
 arrayRemove(<array>,<value>[,all=false]);
 arrayCycle(<collection>[,n=100]);
@@ -1453,6 +1481,7 @@ javaHash(<data>[,hexa=false]);
 ````
 
 5. Remove the description of these removed function in __celestra.html__ and __readme.md__ and collect these function names in a new line of the __Collections__ table:
+
 ````javascript
 forOf(<collection>,<callback>);
 mapOf(<collection>,<callback>);
@@ -1481,7 +1510,6 @@ dropOf(<collection>[,n]);
 
 - Replace the __unittest.dev.html__, __unittest.min.html__ and __unittest.esm.html__ files with the __unittest.html__
 
-
 ## Celestra v4.4.2
 
 1.  Documentation and pdf fixes.
@@ -1493,12 +1521,14 @@ dropOf(<collection>[,n]);
 4. Replace the function `groupBy(<collection>,<callback>);` with a real groupBy function instead of the alias of the `partition(<collection>,<callback>);`
 
 5. Amend the description of these functions (stage 3):
+
 - `Array.prototype.findLast(<callback>);`
 - `Array.prototype.findLastIndex(<callback>);`
 - `TypedArray.prototype.findLast(<callback>);`
 - `TypedArray.prototype.findLastIndex(<callback>);`
 
 6. Remove manual testcases (_removed polyfills_) in the __celestra.html__:
+
 ````javascript
 Object.create();
 String.prototype.startsWith();
@@ -1562,7 +1592,6 @@ Element.prototype.getAttributeNames();
 window.screenLeft;
 window.screenTop;
 ````
-
 
 ## Celestra v4.4.1
 
@@ -1575,12 +1604,14 @@ window.screenTop;
 4. Add this function: `reject(<collection>,<callback>);`
 
 5. Add these polyfills:
+
 - `Array.prototype.findLast();`
 - `Array.prototype.findLastIndex();`
 - `TypedArray.prototype.findLast();`
 - `TypedArray.prototype.findLastIndex();`
 
 6. __CUT v0.8.18__
+
 - Simplify the testcases of these polyfills: `Array.prototype.flat();`, `Array.prototype.flatMap();`
 - Move the __Non-starndard polyfills__ into a new section in the __unittest.js__
 - Remove unused and commented codes in the __unittest.js__
@@ -1593,6 +1624,7 @@ unittest-gs2.js|unittest-is2.js
 unittest-gsi.js|unittest-is3.js
 
 - Remove these testcases (_removed polyfills_) in the __unittest.js__:
+
 ````javascript
 Object.create();
 String.prototype.startsWith();
@@ -1657,7 +1689,6 @@ window.screenLeft;
 window.screenTop;
 ````
 
-
 ## Celestra v4.4.0 Trinium
 
 1. Documentation and pdf fixes.
@@ -1667,38 +1698,42 @@ window.screenTop;
 3. Rename the function `strRemoveTags(<string>);` to `strHTMLRemoveTags(<string>);`
 
 4. Add these functions:
+
 - `signbit(<value>);`
 - `randomBoolean();`
 - `strHTMLEscape(<string>);`
 - `strHTMLUnEscape(<string>);`
 
 5. __CUT v0.8.17:__
+
 - Change the HTML titles like this: `Celestra Unit Tester (CUT) - ???` -> `??? - Celestra Unit Tester (CUT)`
 - Add a `(settings object)` notation in the testcases of the section __cookie with settings object__ in the __unittest.js__
 
 6. Close the milestone __4.4.0 Trinium__
-
 
 ## Celestra v4.3.2
 
 1. Documentation and pdf fixes.
 
 2. Add a second `offset` parameter in these functions:
+
 - `enumerate(<collection>[,offset=0]);`
 - `entries(<collection>[,offset=0]);`
 
 3. Add these functions:
+
 - `domSiblingsPrev(<element>);` and an alias `domSiblingsLeft(<element>);`
 - `domSiblingsNext(<element>);` and an alias `domSiblingsRight(<element>);`
 
 4. __Demo Plugin changes:__
+
 - Replace these functions with a new version: `sum();`, `avg();`
 - Add 2 new testcases for the `avg();` function in the __celestra-demo-plugin.html__
-
 
 ## Celestra v4.3.1
 
 1. Documentation and pdf fixes:
+
 - Collect the downloadable editions (dev, min, esm) and CUT files in a table in the __celestra.html__ and __README.md__
 - Collect the removed polyfill editions (dev, min) in a table in the __celestra.html__ and __README.md__
 - Add a description about the polyfill files in the __celestra.html__ and __README.md__
@@ -1711,6 +1746,7 @@ window.screenTop;
 3. Change the order of the error messages (`v1-v2-msg` -> `msg-v1-v2`) in these functions: `assertEq();`, `assertNotEq();`
 
 4. __CUT v0.8.16:__
+
 - Add a new section: __Manual testcases__
 - Move the __delay (2x alert)__ button in the section __Manual testcases__
 - Add the __assert functions (1x alert, 6x cases)__ button in the section __Manual testcases__
@@ -1721,7 +1757,6 @@ window.screenTop;
 - The __v3.8.1 aliases removed in v4.0.0__ steps convert to one step and move it in the __core api and DOM__ section in the __unittest.js__
 - Replace the `assertSomething();` auto testcases in the __unittest.js__
 - Other fixes
-
 
 ## Celestra v4.3.0
 
@@ -1738,15 +1773,16 @@ window.screenTop;
 6. Remove this function: `strReplaceAll(<str>,<search>,<replace>);`
 
 7. Add these functions:
+
 - __string:__ `strCapitalize(<string>);`, `strUpFirst(<string>);`, `strDownFirst(<string>);`
 - __object:__ `sizeIn(<object>);`, `filterIn(<object>,<callback>);`, `popIn(<object>,<property>);`
 
 8. __CUT v0.8.15:__
+
 - Add a new testcase in the __unittest.js__: `Array.prototype.at.call();` with an arraylike object - _(test passed)_
 - Comment many log messages (return values, etc.) in the __unittest.js__
 - Move the __try delay__ button from the __unittest.js__ to __unittest.dev.html__, __unittest.min.html__ and __unittest.esm.html__
 - Fixes under the hood.
-
 
 ## Celestra v4.2.0
 
@@ -1759,11 +1795,13 @@ window.screenTop;
 4. Fix the description of the `strAt(<string>,<pos>);` -> `strAt(<string>,<index>);`
 
 5. Add these polyfills:
+
 - `Array.prototype.at();`
 - `TypedArray.prototype.at();`
 - `String.prototype.at();`
 
 6. Add these functions:
+
 - `isEmptyMap(<value>);`
 - `isEmptySet(<value>);`
 - `isEmptyIterator(<value>);`
@@ -1773,10 +1811,10 @@ window.screenTop;
 - `assertFalse(<msg>,<value>);`
 
 7. Remove these functions:
+
 - `assert(<condition>[,message]);`
 - `assertLog(<condition>[,message]);`
 - `assertAlert(<condition>[,message]);`
-
 
 ## Celestra v4.1.0
 
@@ -1785,6 +1823,7 @@ window.screenTop;
 2. PDF design change: split in two columns the __Collection section__ in the __celestra-cheatsheet.odt__ and __celestra-cheatsheet.pdf__
 
 3. Add these functions:
+
 - `isDataView(<value>);`
 - `withOut(<collection>,<filterCollection>);`
 - `shuffle(<collection>);`
@@ -1797,19 +1836,19 @@ window.screenTop;
 
 4. Add these aliases:
 
-|alias|function|
-|-----|-------|
-|`head(<collection>);`|`first(<collection>);`|
-| `nth(<collection>,<index>);`|`item(<collection>,<index>);`|
+alias|function
+-----|-----------
+`head(<collection>);`|`first(<collection>);`
+`nth(<collection>,<index>);`|`item(<collection>,<index>);`
 
 5. Fix these functions: `reverse(<collection>);` and `sort(<collection>);` - return `array` instead of `array.values();`
 
 6. Modify the `sort(<collection>);` function: add a second parameter -> `sort(<collection>[,numberSort]);`
 
 7. __CUT v0.8.14__
+
 - Collect the failed testcases in new section above the browser information.
 - Fixes under the hood.
-
 
 ## Celestra v4.0.0 Rocinante
 
@@ -1826,6 +1865,7 @@ window.screenTop;
 6. Fix these functions: `forIn(<object>,<callback>);`, `obj2string(<object>);`, `extend([deep,]<target>,<source1>[,srcN]);`, `deepAssign(<target>,<source1>[,srcN]);`
 
 7. Remove these aliases:
+
 ````javascript
 forOf(<collection>,<callback>);
 mapOf(<collection>,<callback>);
@@ -1850,7 +1890,6 @@ takeOf(<collection>[,n]);
 dropOf(<collection>[,n]);
 ````
 
-
 ## Celestra v3.8.1
 
 1. Documentation and pdf fixes.
@@ -1860,6 +1899,7 @@ dropOf(<collection>[,n]);
 3. Add a new function: `isError(<value>);`
 
 4. Function name changes:
+
 ````javascript
 forOf(<collection>,<callback>);
 forEach(<collection>,<callback>);
@@ -1948,7 +1988,6 @@ dropOf(<collection>[,n]);
   -> add old alias
 ````
 
-
 ## Celestra v3.8.0 Odo
 
 1. Documentation and pdf fixes.
@@ -1976,6 +2015,7 @@ dropOf(<collection>[,n]);
 12. Close the milestone __3.8.0 Odo__
 
 13. Move these polyfills into the __celestra-polyfills.js__ and __celestra-polyfills.min.js__:
+
 ````javascript
 Array.prototype.values();
 Array.prototype.includes();
@@ -2002,7 +2042,6 @@ window.screenLeft;
 window.screenTop;
 ````
 
-
 ##  Celestra v3.7.0
 
 1. Documentation and pdf fixes.
@@ -2024,6 +2063,7 @@ window.screenTop;
 9. Replace these functions with a smaller size function: `min(<collection>);`, `max(<collection>);`, `joinOf(<collection>[,separator=","]);`, `arrayRemove(<array>,<value>[,all]);`, `strFromCodePoints(<collection>);`, `getType(<variable>[,type]);`
 
 10. Add new testcases in the __unittest.js__:
+
 ````javascript
 _cut.isEqual("min(); number test", _.min([5, 10, 3]), 3);
 _cut.isEqual("max(); number test", _.max([5, 10, 3]), 10);
@@ -2032,9 +2072,9 @@ _cut.isEqual("max(); number test", _.max([5, 10, 3]), 10);
 11. Deprecate these functions: `minIndex(<collection>);`, `maxIndex(<collection>);`
 
 12. __CUT v0.8.13__
+
 - Removed functions: `isNotIE11();`, `isNotEdge();` - The IE11 and the old EDGE have been removed from the supported browsers.
 - Fixes under the hood.
-
 
 ##  Celestra v3.6.1
 
@@ -2052,7 +2092,6 @@ _cut.isEqual("max(); number test", _.max([5, 10, 3]), 10);
 
 7. Replace the functions of the demo plugin with new ES6 functions: `sum();` and `avg();`
 
-
 ## Celestra 3.6.0 Galactica
 
 1. Documentation and pdf fixes.
@@ -2066,7 +2105,6 @@ _cut.isEqual("max(); number test", _.max([5, 10, 3]), 10);
 5. Rename the function `isGenerator(<value>);` to `isGeneratorFn(<value>);`
 
 6. Add Fetch samples in the __js-cheatsheet.pdf__.
-
 
 ## Celestra 3.5.2
 
@@ -2082,7 +2120,6 @@ _cut.isEqual("max(); number test", _.max([5, 10, 3]), 10);
 
 6. Replace the __spread operator__ with `Array.from();` in the `function qsa();`
 
-
 ## Celestra 3.5.1
 
 1. Documentation and pdf fixes.
@@ -2095,16 +2132,13 @@ _cut.isEqual("max(); number test", _.max([5, 10, 3]), 10);
 
 5. Remove the description of the CommonJS and AMD module only from the documentation!
 
-
 ## Celestra 3.5.0.2
 
 1. __u87.css v0.9.17__
 
-
 ## Celestra 3.5.0.1
 
 1. __u87.css v0.9.16__
-
 
 ## Celestra 3.5.0
 
@@ -2119,7 +2153,6 @@ _cut.isEqual("max(); number test", _.max([5, 10, 3]), 10);
 5. Remove these functions: `isEqual(<value1>,<value2>);`, `random();`
 
 6. Add unicode string functions: `strCodePoints();`, `strFromCodePoints();`, `strAt();`
-
 
 ## Celestra 3.4.2
 
@@ -2139,7 +2172,6 @@ _cut.isEqual("max(); number test", _.max([5, 10, 3]), 10);
 
 8. Redesign the __testcors.html__
 
-
 ## Celestra 3.4.1
 
 1. Documentation and pdf fixes.
@@ -2153,7 +2185,6 @@ _cut.isEqual("max(); number test", _.max([5, 10, 3]), 10);
 5. Fix the polyfill `Object.fromEntries();` - use the `for...of` loop
 
 6. Redesign the __testcors.html__
-
 
 ## Celestra v3.4.0 Blackbird
 
@@ -2172,7 +2203,6 @@ _cut.isEqual("max(); number test", _.max([5, 10, 3]), 10);
 7. __u87.css v0.9.12__: New utility classes and fixes in grid and `flex-w-*` classes.
 
 8. Close the milestone __3.40.0 Blackbird__
-
 
 ## Celestra v3.3.0
 
@@ -2193,7 +2223,6 @@ values:  `"; SameSite=Strict"`, `"; SameSite=Lax"`, `"; SameSite=None"`
 
 6. __u87.css v0.9.11__: add new themes (blue, dark, light) and new flexbox based grid
 
-
 ## Celestra v3.2.0
 
 1. Documentation and pdf fixes.
@@ -2207,7 +2236,6 @@ values:  `"; SameSite=Strict"`, `"; SameSite=Lax"`, `"; SameSite=None"`
 5. Replace the function `map(<collection>,<callback>);` with an alias of the `mapOf(<collection>,<callback>);`
 
 6. Replace these functions with smaller size functions: `removeCookie();`, `arrayRemove();`
-
 
 ## Celestra v3.1.2
 
@@ -2233,7 +2261,6 @@ values:  `"; SameSite=Strict"`, `"; SameSite=Lax"`, `"; SameSite=None"`
 
 11. Update the __u87.css__ to __v0.9.10__
 
-
 ## Celestra v3.1.1
 
 1. Documentation and PDF fixes.
@@ -2254,7 +2281,6 @@ values:  `"; SameSite=Strict"`, `"; SameSite=Lax"`, `"; SameSite=None"`
 
 9. Fix the function `isIterator();`
 
-
 ## Celestra v3.1.0
 
 1. Documentation and PDF fixes.
@@ -2274,7 +2300,6 @@ values:  `"; SameSite=Strict"`, `"; SameSite=Lax"`, `"; SameSite=None"`
 - Modify the documentation
 - Add new testcases
 
-
 ## Celestra v3.0.2
 
 1. Documention and PDF fixes.
@@ -2286,7 +2311,6 @@ values:  `"; SameSite=Strict"`, `"; SameSite=Lax"`, `"; SameSite=None"`
 4. Modify the function `noConflict();` in the __ESM__: The function only returns the celestra object.
 
 5. Update the __CUT__ to __v0.8.9__:  add new HTML file for the ESM version and rename the existing files to have consistent name.
-
 
 ## Celestra v3.0.1
 
@@ -2304,17 +2328,16 @@ values:  `"; SameSite=Strict"`, `"; SameSite=Lax"`, `"; SameSite=None"`
 
 7. Remove the undocumented function `__toArray__();`
 
-
 ## Celestra v3.0.0-debug
 
 Debug these testcases with __unittest.js__:
+
 - In desktop Chrome: `domGetCSS(<element>,<property>);`, `domSetCSS(<element>,<property>,<value>);`, `domSetCSS(<element>,<properties>);`
 => not a bug: __Result / Expected: "299.991px" / "300px"__ and __Result / Expected: "349.997px" / "350px"__
 - In Android Samsung Internet: `Object.is();`
 => not a bug: In the browser the return value of the `Object.is(0, -0);` is true. In every other browsers the return value is false.
 
 The changes of the __unittest.js__ will be merged in the next version of Celestra.
-
 
 ## Celestra v3.0.0 Hera
 
@@ -2348,10 +2371,10 @@ The changes of the __unittest.js__ will be merged in the next version of Celestr
 
 - Close the milestone __3.0.0 Hera__
 
-
 ## Celestra v2.9.1
 
 1. Add these functions in __ES6E__:
+
 - `sizeOf(<collection>);`
 - `lastOf(<collection>);`
 - `reverseOf(<collection>);`
@@ -2369,6 +2392,7 @@ The changes of the __unittest.js__ will be merged in the next version of Celestr
 - `dropRightWhile(<collection>,<callback>);`
 
 2. Move these functions from __Core API__ to __DOM__:
+
 - `qsa(<selector>[,context]).forEach(<fn>);`
 - `qs(<selector>[,context]).argument;`
 - `domReady(<function>);`
@@ -2391,7 +2415,6 @@ The changes of the __unittest.js__ will be merged in the next version of Celestr
 
 7. Replace the `isGenerator(<value>);` with a fat arrow function in __ES6E__
 
-
 ## Celestra v2.9.0
 
 1. Documentation and PDF fixes.
@@ -2409,7 +2432,6 @@ The changes of the __unittest.js__ will be merged in the next version of Celestr
 7. Use the `__objType__(<value>);` in these functions: `isMap(<value>);`, `isSet(<value>);`, `isWeakMap(<value>); isWeakSet(<value>);`, `isIterator(<value>);`, `isDate(<value>);`, `isRegexp(<value>); isArrayBuffer(<value>);`, `isTypedArray(<value>);` - __beta.2__
 
 8. Add the "**unittest-dev.html**" file on the github. - __beta.2__
-
 
 ## Celestra v2.8.0 Roy Batty
 
@@ -2442,13 +2464,11 @@ The changes of the __unittest.js__ will be merged in the next version of Celestr
 5. Add `itemOf(<collection>,<index>);` __in ES6E__
 6. Add `isBigInt(<value>);`
 
-
 ## Celestra v2.7.1
 
 1. Remove the extra spaces at the `function isGenerator()` in the __celestra-es6.min.js__ - __bug__
 2. Add the `RegExp.prototype.flags` polyfill
 3. Add the `String.prototype.matchAll()` polyfill in __ES6E__
-
 
 ## Celestra v2.7.0
 
@@ -2461,7 +2481,6 @@ The changes of the __unittest.js__ will be merged in the next version of Celestr
 7. Add the **Beta Edge (chromium)** to the test devices
 8. Replace the `Array.from()` with `celestra.__toArray__()` in the `min(<collection>);, minIndex(<collection>);, max(<collection>);, maxIndex(<collection>);`
 
-
 ## Celestra v2.6.2
 
 1. Deprecate the `function tap()`
@@ -2469,14 +2488,12 @@ The changes of the __unittest.js__ will be merged in the next version of Celestr
 3. Remove changes infos before v2.5.0 in the __celestra.html__ and __readme.md__
 4. Replace the `function noop()` with this: `function noop () {}`
 
-
 ## Celestra v2.6.1
 
 1.  Move the functions from the __Functional programming__ to __Core API__
 2. Move the `merge([deep,]<target>,<source1>[,srcN]);` from __Core API__ to __Collections__
 3. Rename the `merge([deep,]<target>,<source1>[,srcN]);` to `arrayMerge([deep,]<target>,<source1>[,srcN]);`
 4. Create the old alias for the `arrayMerge([deep,]<target>,<source1>[,srcN]);`
-
 
 ## Celestra v2.6.0
 
@@ -2488,7 +2505,6 @@ The changes of the __unittest.js__ will be merged in the next version of Celestr
 6. Move the `map(<collection>,<callback>);` from FP to Collections
 7. Move the `forIn(<object>,<callback>);` from FP to Core API
 8. Move the `mapIn(<object>,<callback>);` from FP to Core API
-
 
 ## Celestra v2.5.2
 
@@ -2519,7 +2535,6 @@ __Function changes in ES6E:__
 2. Add `iterDrop(<collection>,<n>);` in __ES6E__
 3. Move the `forOf()` and `mapOf()` functions in the ES6E and replace with `for..of` functions
 
-
 ## Celestra v2.5.0 Tamara - add the ES6 extension
 
 1. Add new files: __celestra-es6.js__, __celestra-es6.min.js__, __unittest-es6.js__
@@ -2532,12 +2547,10 @@ __Function changes in ES6E:__
 7. Add new testcases and test loader buttons in the **CUT (unittest.js)**.
 8. Close the milestone __2.5.0 Tamara__ after the publishing of the v2.5.0.
 
-
 ## Celestra v2.4.1
 
 1. Add `Array.prototype.values()` - Missing in Samsung Android browser.
 2. Add the MDN link of the `globalThis`
-
 
 ## Celestra v2.4.0
 
@@ -2548,7 +2561,6 @@ __Function changes in ES6E:__
 5. Remove `getStyles();`
 6. Fix the `importStyles();` in the development version
 7. Add the `item(<collection>,<index>);`
-
 
 ## Celestra v2.3.0
 
@@ -2589,37 +2601,39 @@ __ES6__
 - `setDifference(<set1>,<set2>);`
 - `setSymmetricDifference(<set1>,<set2>);`
 
-
 ## Celestra v2.2.2 (1998)
 
 1. Add 2 functions:
+
 - `isEqual(<value1>,<value2>);`
 - `isIterator(<value>);`
 
 2. Add or modify 4 polyfills:
+
 - `globalThis`
 - Fix the `Math.hypot();`
 - Replace the `Object.values();` with a __Object.keys(o).map(...);__
 - Replace the `Object.entries();` with a __Object.keys(o).map(...);__
-
 
 ## Celestra v2.2.1
 
 1. Modify the "function forIn (o, fn)" to return the object
 
 2. Add 3 functions:
+
 - `arrayClear(<array>);`
 - `arrayRemove(<array>,<value>[,all]);`
 - `tap(<object>,<callback>);`
 
 3. CUT v0.8.7 changes:
+
 - Add `function log(<innerHTML>);` -  this is a shorthand to the `addElement("p", innerHTML);`
 - Add `function clear ();` - this will clear all of the results
-
 
 ## Celestra v2.2.0
 
 1. __Add 7 functions:__
+
 - `isWeakMap()` - _ES6_
 - `isWeakSet()` - _ES6_
 - `forOf()` - _ES6_
@@ -2629,6 +2643,7 @@ __ES6__
 - `domToElement()`
 
 2. __Remove 3 functions__:
+
 - `each()`
 - `toArray()`
 - `toObject()`
@@ -2643,7 +2658,6 @@ __ES6__
 - Add `uniquePush()`
 - Add `uniqueArray()`
 - Deprecate the `each()`
-
 
 - Add __DOMParser__ in the __js-cheatsheet.pdf__
 - Fix the page structure in the __celestra-cheatsheet.pdf__
@@ -2663,15 +2677,16 @@ to
 2. Add `merge()`
 
 3. Deprecate these functions:
+
 - `function toArray(<object>);`
 - `function toObject(<array>);`
 
 4. Remove these sections and informations:
+
 - Object name changes
 - Functional programming (FP) variant
 - `function celToWindow();`
 - ` function fromEntries(<entries>);`
-
 
 ## Celestra v2.1.0 Lacy
 
@@ -2694,6 +2709,7 @@ to
 ## Celestra v2.0.7
 
 1. Add or replace 21 polyfills:
+
 - Array.prototype.copyWithin() - __beta 1__
 - String.fromCodePoint() - __beta 2__
 - String.prototype.codePointAt() - __beta 2__
@@ -2719,12 +2735,14 @@ to
 ## Celestra v2.0.6
 
 1. Modify and fix the function `getUrlVar()` and `function getUrlVarFromString()`:
+
 - The __not found__ return value will be `null`, not `undefined`.
 - Fix the empty object error: `{"":"undefined"}`
 - Add new manual testcases for the __not found__ return value.
 - Add new CUT testcases for the __not found__ return value.
 
 2. Add 7 polyfills:
+
 - `Element.prototype.toggleAttribute()`
 - `Element.prototype.matches()`
 - `Element.prototype.closest()`
@@ -2736,6 +2754,7 @@ to
 3. Update the u87.css to v0.9.6
 
 4. CUT v0.8.5 changes
+
 - Add a new function: `function isNotEdge ();` and use this at the `domCreate() - style string` test cases, because there is error in the __W10M Edge 14__.
 - In the `function addElement (type, innerHTML);` the __innerHTML__ parameter will be optional.
 - Rename the `function addTest ();` to `function __addTest__ ();` and use this only for inner calls and in the selftest section.
@@ -2747,7 +2766,6 @@ to
     String.prototype.padStart() - str.padStart(targetLength[,padString])
     String.prototype.padEnd()   - str.padEnd(targetLength[,padString])
     String.prototype.repeat()   - str.repeat(count);
-
 
 2. Add 4 functions:
 
@@ -2785,6 +2803,7 @@ Name | Description
 ````
 
 4. CUT v0.8.4 changes:
+
 - Add `celTest.isTrue("step", expr, true|false );`
 - Add `celTest.isFalse"step", expr, true|false );`
 - Add `celTest.isEqual("step", true, expr, true|false ); `
@@ -2799,6 +2818,7 @@ Name | Description
 ## Celestra v2.0.3
 
 1. Add 5 polyfills:
+
 - `Object.entries()`
 - `Object.values()`
 - `Object.is()`
@@ -2808,6 +2828,7 @@ Name | Description
 2. Add `fromEntries(<entries>);`
 
 3. CUT v0.8.3 changes:
+
 - Change the date format after the library and CUT versions to ISO string
 - Add new testcases
 
@@ -2820,7 +2841,6 @@ Name | Description
 - `String.prototype.trimEnd()/trimRight()`
 - `String.prototype.startsWith()`
 - `String.prototype.endsWith()`
-
 
 2. Rename wrapper object from `Celestra` to `celestra`
 Add a line `window.Celestra = celestra;` for compatibility reasons.
@@ -2841,6 +2861,7 @@ This line will be removed in the __Celestra v3.0__.
 3.  Add the Android Microsoft Edge to the tested browsers
 
 4. Remove the description of the removed "doc" variable and removed functions
+
 ```
     doc = document
     repeat(<iteration>,<callback>);
@@ -2852,29 +2873,31 @@ This line will be removed in the __Celestra v3.0__.
 ```
 
 5. CUT v0.8.2 changes
-A. **CUT tool**
+
+1. __CUT tool__
+
 - Rename the `Celestra unit tester`  to `Celestra Unit Tester (CUT)` in the documentation headers (celestra.html, README.md, unittest.html, unittest-fp.html)
 - Change the CUT version to 0.8.2
 - Change the object name from `_ct` to `_cut`
-B. **Testcases**
+
+2. __Testcases__
+
 - Change the `domCreate() and qs (core api)` textcase to `domCreate()`
 - Change the `alert()` calls to `_cut.addTest() failed` in the AJAX testcases, test in Chrome
 - Add testcases for the new polyfills
 - Add testcases to test the object names. (`celestra`, `Celestra`, `_`)
 
-
 ## Celestra v2.0.1
 
 1. Add `Array.prototype.find()`
-
 2. Add `Array.prototype.findIndex()`
 3. Add `removeTags(s)`
 4. Fix the text of the celestra-cheatsheet.pdf, remove the description of the variable `doc`
 5. Rename the _"Basic API"_ to _"Core API"_
 6. CUT v0.8.1 changes:
+
 - Developed in beta 3 (v0.8.0) and added in beta 4 (v0.8.1)
 - Celestra unit tester - Add new HTML and JS files
-
 
 ## Celestra v2.0 Zoe
 
@@ -2891,7 +2914,8 @@ B. **Testcases**
 - Add a default value (100) to the max parameter of the function random() + add a new testcase without parameter + update the documentation
 - Add a new `getCookie()` function testcase without parameter -> return object, alert with the `JSON.stringify()`
 - Replace the `setCookie()` function teststring with the unicode version
-- Remove the deprecated functions
+- Remove these deprecated functions:
+
 ```
 doc = document
 repeat(<iteration>,<callback>);
@@ -2909,8 +2933,8 @@ initFalse();
 3. Update the u87.css to v0.9.5
 4. Fix the testcases of the cookie functions
 5. Other small text changes.
-
 6. Deprecate functions:
+
 ```
 repeat(<iteration>,<callback>);
 initArray();
@@ -2949,22 +2973,18 @@ Replace the `typeof o1` with `getType(o1)`, because `typeof [1,2,3] -> "object"`
   Change from:  _Doesn't work in iOS Safari and W10M Edge._
   To: _Doesn't work in iOS browsers (Safari, Firefox and Chrome) and W10M Edge._
 
-
 ## Celestra 1.20.0 Zephyr
 
 - Add function `deepAssign()`
 - Close the __Zephyr__ milestone
 
-
 ## Celestra v1.19.2
 
 Add hasOwnProperty() object method in the extend function
 
-
 ## Celestra v1.19.1
 
 Change the default cookie path to "/" (entire site)
-
 
 ## Celestra v1.19.0
 
@@ -2976,7 +2996,6 @@ Path, httponly, etc. can cause the hidden cookie.
 1. fix the function
 2. fix the sample code
 
-
 ## Celestra v1.18.4
 
 1. Remove the Classic plugin removing information in the download section!
@@ -2986,10 +3005,10 @@ Path, httponly, etc. can cause the hidden cookie.
 4. Add ASCII logo in the HTML files and in the README.md!
 5. Merge the main and the FP cheatsheets!
 
-
 ## Celestra v1.18.3
 
 1. Add "initType" functions:
+
 ```
     function initArray () { return []; }
     function initObject () { return {}; }
@@ -2997,13 +3016,12 @@ Path, httponly, etc. can cause the hidden cookie.
     function initTrue () { return true; }
     function initFalse () { return false; }
 ```
-2. Change the default css to the external u87.css in the HTML documentations and sample files
 
+2. Change the default css to the external u87.css in the HTML documentations and sample files
 
 ## Celestra v1.18.2
 
 Add js-cheatsheet.pdf
-
 
 ## Celestra v1.18.1
 
@@ -3013,6 +3031,7 @@ Add js-cheatsheet.pdf
 ## Celestra v1.18.0
 
 1. __Modify the type functions__:
+
 - Add getType() testcase in the documentation for date
 - Add getType() testcase in the documentation for regexp
 - Add function isDate()
@@ -3020,13 +3039,12 @@ Add js-cheatsheet.pdf
 - Add function isElement()
 
 2. __Add cookie functions__
-3. __Fix geturlvar functions__
 
+3. __Fix geturlvar functions__
 
 ## Celestra v1.17.2
 
 - Fix the versions
-
 
 ## Celestra v1.17.1
 
@@ -3035,7 +3053,6 @@ Add js-cheatsheet.pdf
 - Remove the Classic plugin
 - Change the "can be" texts to "has to be" where the FN parameters are mandatory
 
-
 ## Celestra v1.17.0 Caprica
 
 Make a wrapper object and modify the code and the documentation
@@ -3043,50 +3060,41 @@ Make a wrapper object and modify the code and the documentation
 `qsa();` -> `Celestra.qsa();` and/or `_.qsa();`
 `domSetCSS();` -> `Celestra.domSetCSS();` and/or `_.domSetCSS();`
 
-
 ## Celestra v1.16.3
 
 - Fix the identity() function testcase
 
-
 ## Celestra v1.16.2
 
 - Add `each();` function
-
 
 ## Celestra v1.16.1
 
 - Remove the deprecated and removed functions
 - Add testgame2.html
 
-
 ## Celestra v1.16.0
 
 - Add type checking functions
 - Add cheatsheet.pdf
 
-
 ## Celestra v1.15.6
 
 - Documentation fix - remove the links to the migrate-1.12.1.js file
 
-
 ## Celestra v1.15.5
 
 Fix the `function obj2string (o)`
-
 
 ## Celestra v1.15.4
 
 - Add `obj2string(<object>);`
 - Add `getUrlVarFromString(<querystr>[,name]);`
 
-
 ## Celestra v1.15.2
 
 - Remove the renamined info at the domFadeIn, domFadeOut, domFadeToggle functions
 - Fix: README.MD bug - double entry: getLocation(<success>[,error]);
-
 
 ## Celestra v1.15.1
 

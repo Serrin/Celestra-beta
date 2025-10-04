@@ -8,7 +8,6 @@
 
 # Celestra
 
-
 ## Download
 
 __A helper JavaScript library with useful functions and polyfills and zero dependencies.__
@@ -33,12 +32,10 @@ __Tested on these:__
 - Node.js (latest current, not LTS)
 - Deno (latest current, not LTS)
 
-
 version|page link
 -------|--------
 Stable repository|__https://github.com/Serrin/Celestra__
 Beta repository|__https://github.com/Serrin/Celestra-beta__
-
 
 Edition|Javascript or documentation|Typescript
 -------|--------------------------|------------
@@ -55,7 +52,6 @@ Assert plugin documentation|__celestra-assert-plugin.html__|
 Assert plugin developer source|__celestra-assert-plugin.dev.js__|
 Assert plugin minified source|__celestra-assert-plugin.min.js__|
 Assert plugin cheatsheet|__celestra-assert-plugin.odt__<BR>__celestra-assert-plugin.pdf__|
-
 
 ### How to import the browser edition
 
@@ -118,7 +114,6 @@ globalThis.celestra = celestra;
 globalThis.CEL = celestra;
 ````
 
-
 ### Removed functions in the Node.js edition
 
 API | Function
@@ -126,7 +121,6 @@ API | Function
 __DOM API__ | `qsa();`<BR>`qs();`<BR>`domReady();`<BR>`domClear();`<BR>`domCreate();`<BR>`domToElement();`<BR>`domGetCSS();`<BR>`domSetCSS();`<BR>`domFadeIn();`<BR>`domFadeOut();`<BR>`domFadeToggle();`<BR>`domShow();`<BR>`domHide();`<BR>`domToggle();`<BR>`domIsHidden();`<BR>`domScrollToTop();`<BR>`domScrollToBottom();`<BR>`domScrollToElement();`<BR>`domSiblings();`<BR>`domSiblingsPrev();`<BR>`domSiblingsLeft();`<BR>`domSiblingsNext();`<BR>`domSiblingsRight();`<BR>`domGetCSSVar();`<BR>`domSetCSSVar();`<BR>`importScript();`<BR>`importStyle();`<BR>`setFullscreenOn();`<BR>`setFullscreenOn();`<BR>`setFullscreenOff();`<BR>`getFullscreen();`<BR>`form2array(form);`<BR>`form2string(form);`<BR>`getDoNotTrack();`<BR>`getLocation();`<BR>`createFile();`
 __AJAX and CORS API__ | `getText();`<BR>`getJson();`<BR>`ajax();`
 __Cookie API__ | `getCookie();`<BR>`hasCookie();`<BR>`setCookie();`<BR>`removeCookie();`<BR>`clearCookies();`
-
 
 ### Celestra v3.0.0 (Hera) changes
 
@@ -138,7 +132,6 @@ __Cookie API__ | `getCookie();`<BR>`hasCookie();`<BR>`setCookie();`<BR>`removeCo
 
 - Many functions have been deprecated or removed.
 
-
 ### Celestra v3.6.0 (Galactica) changes
 
 - CommonJS and AMD module compatibility have been removed.
@@ -147,21 +140,17 @@ __Cookie API__ | `getCookie();`<BR>`hasCookie();`<BR>`setCookie();`<BR>`removeCo
 
 - Many functions have been deprecated or removed.
 
-
 ### Celestra v5.0.0 (Defiant) changes
 
 - The underscore `_` short object name has been changed to `CEL` to avoid the compatibility issues.<BR>If need to use the old short name, then with this code will be available again: `globalThis._ = globalThis.celestra;`.
-
 
 ### Celestra v5.5.0 changes
 
 - The Math functions are available in the main code files (dev, min, esm) instead of the Math plugins.
 
-
 ### Celestra v5.6.0 (Razorback) changes
 
 - 21 polyfills have been removed.
-
 
 ### Celestra v5.7.0 (Nostromo) changes
 
@@ -169,23 +158,17 @@ __Cookie API__ | `getCookie();`<BR>`hasCookie();`<BR>`setCookie();`<BR>`removeCo
 - Added __Assert API v3__ and the old assert functions have been removed.
 - The `getText();` and `getJson();` functions have been modified to standalone function.
 
-
 ### Celestra v5.8.0 (Uhura) changes
 
 - 50 functions have been removed.
-
-
 
 ### Celestra v5.9.0 (Final five) changes
 
 - 12 functions and a polyfill have been removed.
 
-
-
 ### Celestra v6.0.0 (David) changes
 
 - The Node.js and Deno support has been added.
-
 
 ### Celestra v6.1.0 (Sulaco) changes
 
@@ -199,7 +182,6 @@ __Cookie API__ | `getCookie();`<BR>`hasCookie();`<BR>`setCookie();`<BR>`removeCo
 - The `type();` function has been renamed to `typeOf();`.
 - The `celestra.noConflict();` function has been removed.
 - Some deprecated functions have been removed.
-
 
 -----
 
@@ -215,9 +197,7 @@ __Cookie API__ | `getCookie();`<BR>`hasCookie();`<BR>`setCookie();`<BR>`removeCo
 
 <BR>__Removed__ and __Deprecated__: Don't use these in production.<BR>
 
-
 ### Core API
-
 
 Name | Description
 ---- | -----------
@@ -244,9 +224,14 @@ Name | Description
 `delay(ms).then(callback);` | __Stability: 1 - Deprecated and will be removed.__<BR>A promise based delay function. The ms (milliseconds) parameter is mandatory and have to be an integer.<BR>__Sample:__<BR>`CEL.sleep(5000).then(() => alert("5 seconds")).catch(console.log.bind(console)).finally(() => alert("done"));`
 `deleteOwnProperty(object,property[,Throw = false]);`| __Stability: 4 - Stable.__<BR>This function deletes an own property in the given object. If Throw is true and the deleting was unsuccessful, then an error will be thrown.<BR>__Return values:__<BR>1 - The property was own and the delete was successful.<BR>0 - The property is own and the delete was unsuccessful.<BR>-1 - The property is not own or not exists.
 `extend([deep,]target,source1[,sourceN]);` | __Stability: 4 - Stable.__<BR>This is an enhanced version of the `Object.assign` method. The deep parameter (boolean) is optional and sets the deep copy (recursive) of the sources.
+`eq(value1, value2);` | __Stability: 4 - Stable.__<BR>SameValueZero equality (like `Object.is`, but +0 === -0). All of the parameters are mandatory and can be any type. The return value is boolean.
 `F();` | __Stability: 4 - Stable.__<BR>This function returns false.
 `getUrlVars([str=location.search]);` | __Stability: 4 - Stable.__<BR>Get the values of the url variables in an object from the `location.search` _(default value)_ or another given url. The str parameter name is optional and can be a string. Example: `"?showall=true&order_by=updated&o=asc"` -> `Object { showall: "true", order_by: "updated", o: "asc" }`
+`gt(value1, value2);` | __Stability: 4 - Stable.__<BR>Greater than. All of the parameters are mandatory and can be any type. The return value is boolean.
+`gte(value1, value2);` | __Stability: 4 - Stable.__<BR>Greater than or equal (SameValueZero). All of the parameters are mandatory and can be any type. The return value is boolean.
 `identity(value);` | __Stability: 4 - Stable.__<BR>Return the given value. (In math: `f(x)=x`)
+`lt(value1, value2);` | __Stability: 4 - Stable.__<BR>Less than. All of the parameters are mandatory and can be any type. The return value is boolean.
+`lte(value1, value2);` | __Stability: 4 - Stable.__<BR>Less than or equal (SameValueZero). All of the parameters are mandatory and can be any type. The return value is boolean.
 `nanoid([size=21[,alphabet= "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"]]);` | __Stability: 4 - Stable.__<BR>Generate a nanoid. The size parameter is optional and the default value is 21. The alphabet parameter is optional and the default value is "A-Za-z0-9_-". The return value is the generated nanoid (string).
 `noop();` | __Stability: 4 - Stable.__<BR>It's an empty function (no operation) that returns undefined and usable for optional callback arguments.
 `obj2string(object);` | __Stability: 4 - Stable.__<BR>Convert object to a querystring. The return value is the string. The object parameter is mandatory.
@@ -260,9 +245,7 @@ Name | Description
 `T();` | __Stability: 4 - Stable.__<BR>This function returns true.
 `tap(function): function(value);` | __Stability: 4 - Stable.__<BR>This functions returns a new function, which runs the given function with the value parameter, then returns the value. Usable for testing and logging. All of the parameters are mandatory.
 `timestampID([size=21[,alphabet= "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"]]);` | __Stability: 4 - Stable.__<BR>Generate a timestamp based sortable ID. The size parameter is optional and the default value is 21, but if the given value smaller than 12, then the value will be 12. The alphabet parameter is optional and the default value is `"123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"`, same as BASE58. The return value is the generated id (string).<BR>Example ID:`"00lirtqi4e-wgGn8vGPyY"`
-`toSafeString(value);` | __Stability: 4 - Stable.__<BR>This function is a general purpose, type safe, predictable stringifier. The value parameter is mandatory and can be any type. The return value is a string.
 `unBind(function);` | __Stability: 4 - Stable.__<BR>__Old name before v5.4.1:__ `toFunction`.<BR>Returns an unbinded function from an object method. The function parameter is mandatory.
-
 
 ### String API
 
@@ -285,14 +268,13 @@ Name | Description
 `strTruncate(string, newLength[,omission = ""]);` | __Stability: 4 - Stable.__<BR>This function truncats the given string to the new length. If the new length is bigger than the original length, then the return value is the original string. The omission parameter is optional.<BR>__Samples:__<BR>`CEL.strTruncate("Arthur Dent", 6);` -> `"Arthur"`<BR>`CEL.strTruncate("Arthur Dent", 6, "...");` -> `"Art..."`<BR>`CEL.strTruncate("Arthur Dent", 20, "...");` -> `"Arthur Dent"`
 `strUpFirst(string);` | __Stability: 4 - Stable.__<BR>This function is unicode compatible and converts the first character to uppercase. The string parameter is mandatory. The return value is a string.
 
-
 ### Assertion API
 
 There are information about the equalities in the __js-cheatsheet.pdf__.
 
 Name | Description
 ---- | -----------
-`assert(condition [, message |\ error]);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the condition is falsy. The message parameter is optional. The return value is `true`, when the test was success.
+`assert(condition [, message |\ error]);`|__Stability: 4 - Stable.__<BR>This function throws an error with the message if the condition is falsy. The message parameter is optional. The return value is `true`, when the test was success.
 `assertDeepEqual(value1, value2 [, message \| error]);`| __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value1 and value2 aren't deep equals. (_Deep loose equality + NaN equality: primitives (loose equality + NaN equality), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer_) The message parameter is optional. The return value is `true`, when the test was success.<BR>__This function may give unexpected results. It is safer to use the `assertDeepStrictEqual();` function.__
 `assertDeepStrictEqual(value1, value2 [, message \| error]);`| __Stability: 4 - Stable.__<BR>This function throws an error with the message if the value1 and value2 aren't deep equals. (_Deep strict equality + NaN equality: primitives (SameValue - Object.is()), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer_) The message parameter is optional. The return value is `true`, when the test was success.
 `assertDoesNotMatch(string, regexp, [, message \| error]);` | __Stability: 4 - Stable.__<BR>This function throws an error with the message if the string matches with the regexp. The message parameter is optional. The return value is `true`, when the test was success.
@@ -315,7 +297,6 @@ Name | Description
 `assertTrue(condition [, message \| error]);` | __Stability: 4 - Stable.__<BR> This is an alias of the `assert(condition [, message \| error]);`.
 `assertThrows(callback [, message \| error]);` | __Stability: 4 - Stable.__<BR> This function catches and returns the error, if the callback throws an error. In other cases throws an error with the message. The message parameter is optional.
 `assertTypeOf(value, type [, message \| error]);` | __Stability: 0 - Removed in v6.1.0__<BR>This function throws an error if the type of the value in not the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
-
 
 ### DOM API
 
@@ -359,7 +340,6 @@ Name | Description
 `qs(selector[,context]);` | __Stability: 4 - Stable.__<BR>Get the first matched HTML element. The context is optional and can be an element.
 `qsa(selector[,context]);` | __Stability: 4 - Stable.__<BR>Get matched HTML elements in an array. The context is optional and can be an element.
 
-
 ### AJAX and CORS API
 
 __These functions aren't deprecated, but it's recommend to use the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API), because it's [supported](https://caniuse.com/?search=fetch) in every modern browsers.__
@@ -372,16 +352,15 @@ Name | Description
 
 __Options object properties:__
 
- - The __queryType__ is optional and can be a __string__ with these values: `"ajax"` or `"cors"`. The default value is `"ajax"`.
- - The __type__ is optional and can be a __string__ with these values: `"get"` or `"post"`. The default value is `"get"`.
- - The __url__ is mandatory and has to be a __string__.
- - The __data__ is optional and has to be a __string__ if the `type === "post"`.
- - The __format__ is optional and can be a __string__ with these values: `"text"` or `"json"` or `"xml"`. The default value is `"text"`.
- - The __success__ is mandatory and has to be a __function__.
- - The __error__ is optional and can be a __function__.
- - The __user__ is optional and can be a __string__.
- - The __password__ is optional, but mandatory if the user is set. This parameter can be a __string__.
-
+- The __queryType__ is optional and can be a __string__ with these values: `"ajax"` or `"cors"`. The default value is `"ajax"`.
+- The __type__ is optional and can be a __string__ with these values: `"get"` or `"post"`. The default value is `"get"`.
+- The __url__ is mandatory and has to be a __string__.
+- The __data__ is optional and has to be a __string__ if the `type === "post"`.
+- The __format__ is optional and can be a __string__ with these values: `"text"` or `"json"` or `"xml"`. The default value is `"text"`.
+- The __success__ is mandatory and has to be a __function__.
+- The __error__ is optional and can be a __function__.
+- The __user__ is optional and can be a __string__.
+- The __password__ is optional, but mandatory if the user is set. This parameter can be a __string__.
 
 ### Type API
 
@@ -426,8 +405,8 @@ Name | Description
 `toObject(value);`| __Stability: 4 - Stable.__<BR>If the given value is not null or undefined, then the return value is an object, which has been converted from the value, else a `TypeError()` will be throwned.<BR>If the given value is an object, function or symbol, then the original value will return.
 `toPrimitiveValue(value);`| __Stability: 4 - Stable.__<BR>If the given value is null or undefined, then a `TypeError()` will be throwned.<BR>If the given value is an object, which can be converted to a primitive variable, then the return value is a primitive variable.<BR>If the given value is a not convertable object (array, map, set, etc.), function or symbol, then the original value will return.
 `toPropertyKey(value);`|__Stability: 4 - Stable.__<BR>This function convert the given value to a valid property key. If the value is not symbol, then will be converted to string, else the symbol will be returned.
+`toSafeString(value);` | __Stability: 4 - Stable.__<BR>This function is a general purpose, type safe, predictable stringifier. The value parameter is mandatory and can be any type. The return value is a string.
 `typeOf(value);`| __Stability: 4 - Stable.__<BR>__Old name before v6.1.0: `type();`.__<BR>This function returns the typeof operator result of the given value, except the null object (`"null"` instead of `"object"`).
-
 
 ### Cookie API
 
@@ -446,7 +425,6 @@ Name | Description
 `removeCookie(Options object);` | __Stability: 4 - Stable.__<BR>In this case the names of object properties are the same as the function arguments and the default values are the same too.
 `setCookie(name,value[, hours=8760[, path="/"[, domain[, secure[, SameSite="Lax"[, HttpOnly]]]]]]);` | __Stability: 4 - Stable.__<BR>Set a cookie. The name is mandatory and has to be a string. The value is mandatory and has to be a string. The hours is the expire value and optional and can be a number _(default value: 8760 = 1 year)_. The path is optional and can be a string _(default value: "/")_. To the local path set the `""` value! The domain is optional and can be a string. The secure is optional and can be a boolean. The SameSite is optional and can be a string _("Lax", "Strict", "None", default value: "Lax")_. The HttpOnly is optional and can be a boolean.
 `setCookie(Options object);` | __Stability: 4 - Stable.__<BR>In this case the names of object properties are the same as the function arguments and the default values are the same too.
-
 
 ### Collections API
 
@@ -518,11 +496,9 @@ Name | Description
 `zip(iterator1[,iteratorN]);` | __Stability: 4 - Stable.__<BR>Returns the array of paired values of the given iterators. In the modern browsers compatible with finite iterators. The return value is an Array.<BR>__Example:__<BR>`CEL.zip(["a","b","c","d"], [3,4,5,6,7,8,9]);`<BR>-><BR>`Array (4) [ [ "a", 3 ], [ "b", 4 ], [ "c", 5 ], [ "d", 6 ] ]`
 `zipObj(iterator1, iterator2);` | __Stability: 4 - Stable.__<BR>Returns an object, whose properties are from the first iterator and its values are from the second iterator. The two iterators must be the same size. In the modern browsers compatible with finite iterators.<BR>__Example:__<BR>`zipObj(["a","b","c"],[1,2,3])`<BR>-><BR>`{"a":1,"b":2,"c":3}`
 
-
 ### Abstract API
 
 The Ecmascript abstract functions are available in the [Zephyr library](https://github.com/Serrin/Zephyr).
-
 
 ### Math API
 
@@ -564,7 +540,6 @@ Name | Description
 `toUInt16(value);` | __Stability: 4 - Stable.__<BR>This function clamps ("minmax") the given value to unsigned integer 16 value (0 to 65535).
 `toUInt32(value);` | __Stability: 4 - Stable.__<BR>This function clamps ("minmax") the given value to unsigned integer 32 value (0 to 4294967295).
 
-
 ### Polyfills
 
 Name | Description
@@ -576,7 +551,7 @@ Name | Description
 `Array.prototype.with();` | The with() method of an Array instance is the copying version of using the bracket notation to change the value of a given index. It returns a new array with the element at the given index replaced with the given value. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/with)!
 `crypto.randomUUID();` | The randomUUID() method of the Crypto interface is used to generate a v4 UUID using a cryptographically secure random number generator. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/API/Crypto/randomUUID)!
 `Error.isError();` | The Error.isError() static method determines whether the passed value is an Error or DOMException. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/isError)!
-`globalThis;` | The globalThis global property contains the global <code>this</code> value, which is usually akin to the global object. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/globalThis)!
+`globalThis;` | The globalThis global property contains the global `this`</code>` value, which is usually akin to the global object. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/globalThis)!
 `Map.groupBy();` | The Map.groupBy() static method groups the elements of a given iterable using the values returned by a provided callback function. The final returned Map uses the unique values from the test function as keys, which can be used to get the array of elements in each group. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/groupBy)!
 `Math.sumPrecise();` | The Math.sumPrecise() static method takes an iterable of numbers and returns the sum of them. It is more precise than summing them up in a loop, because it avoids floating point precision loss in intermediate results. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/sumPrecise)!
 `Object.groupBy();` | The Object.groupBy() static method groups the elements of a given iterable according to the string values returned by a provided callback function. The returned object has separate properties for each group, containing arrays with the elements in the group. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/groupBy)!
@@ -592,19 +567,17 @@ REMOVED polyfills in v3.8.0 | `Array.prototype.values();`<BR>`Array.prototype.in
 REMOVED polyfills in v5.6.0 | `Array.prototype.at();`<BR>`Array.prototype.findLast();`<BR>`Array.prototype.findLastIndex();`<BR>`Array.prototype.flat();`<BR>`Array.prototype.flatMap();`<BR>`Number.MIN_SAFE_INTEGER;`<BR>`Number.MAX_SAFE_INTEGER;`<BR>`Object.fromEntries();`<BR>`Object.is();`<BR>`String.prototype.at();`<BR>`String.prototype.matchAll();`<BR>`String.prototype.padStart();`<BR>`String.prototype.padEnd();`<BR>`String.prototype.replaceAll();`<BR>`String.prototype.trimStart();`<BR>`String.prototype.trimLeft();`<BR>`String.prototype.trimEnd();`<BR>`String.prototype.trimRight();`<BR>`Typedarray.prototype.at();`<BR>`TypedArray.prototype.findLast();`<BR>`TypedArray.prototype.findLastIndex();`
 REMOVED polyfills in v5.9.0 | `BigInt.prototype.toJSON();`
 
-
 -----
 
 ## Samples
 
 There are code samples in the __celestra.html__ and __unittest.js__.
 
-
 -----
 
 ## License
 
-https://opensource.org/licenses/MIT
+[https://opensource.org/licenses/MIT](https://opensource.org/licenses/MIT)
 
 MIT License
 

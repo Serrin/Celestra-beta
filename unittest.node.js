@@ -304,7 +304,7 @@ var /** @type any */ token12, /** @type any */ token13;
 var /** @type any */ token14, /** @type any */ token15;
 
 
-/* Celestra v6.1.0 testcases */
+/* Celestra v6.1.1 testcases */
 
 
 /** Not auto tested functions **/
@@ -435,6 +435,54 @@ CUT.isEqual("toSafeString(); 01", CEL.toSafeString({"a": 1}), '{"a":1}');
 CUT.isEqual("toSafeString(); 02", CEL.toSafeString(Symbol("a")), '"Symbol(a)"');
 CUT.isEqual("toSafeString(); 03", CEL.toSafeString(null), "null");
 CUT.isEqual("toSafeString(); 04", CEL.toSafeString(undefined), "undefined");
+
+
+/* eq(); */
+CUT.isTrue("eq();",
+  CEL.eq(42, 42)
+    && !CEL.eq(42, Object(42))
+    && CEL.eq(NaN, NaN)
+);
+
+
+/* gt(); */
+CUT.isTrue("gt();",
+  CEL.gt(43, 42)
+    && !CEL.gt(42, 43)
+    && !CEL.gt(42, Object(42))
+    && !CEL.gt(42, 42)
+    && !CEL.gt(NaN, NaN)
+);
+
+
+/* gte(); */
+CUT.isTrue("gte();",
+  CEL.gte(43, 42)
+    && !CEL.gte(42, 43)
+    && !CEL.gte(42, Object(42))
+    && CEL.gte(42, 42)
+    && CEL.gte(NaN, NaN)
+);
+
+
+/* lt(); */
+CUT.isTrue("lt();",
+  !CEL.lt(43, 42)
+    && CEL.lt(42, 43)
+    && !CEL.lt(42, Object(42))
+    && !CEL.lt(42, 42)
+    && !CEL.lt(NaN, NaN)
+);
+
+
+/* lte(); */
+CUT.isTrue("lte();",
+  !CEL.lte(43, 42)
+    && CEL.lte(42, 43)
+    && !CEL.lte(42, Object(42))
+    && CEL.lte(42, 42)
+    && CEL.lte(NaN, NaN)
+);
 
 
 /* tap(); */
@@ -4570,19 +4618,24 @@ CUT.isEqual("iterRange(); 02", "10 13.5 17",
 
 /* iterCycle(); */
 CUT.isEqual("iterCycle(); 01", "a b c a b c a b c a b c a b c",
+  // @ts-ignore
   CUT.join(CEL.iterCycle(["a", "b", "c"], 5))
 );
 CUT.isEqual("iterCycle(); 02", "10 13 16 19 10 13 16 19 10 13 16 19",
+  // @ts-ignore
   CUT.join(CEL.iterCycle(CEL.iterRange(10, 3, 20), 3))
 );
 CUT.isEqual("iterCycle(); 03", "A B A B A B A",
+  // @ts-ignore
   CUT.join(CUT.take(CEL.iterCycle(['A', 'B']), 7))
 );
 
 
 /* iterRepeat(); */
+// @ts-ignore
 CUT.isEqual("iterRepeat(); 01", "AB AB AB", CUT.join(CEL.iterRepeat("AB", 3)));
 CUT.isEqual("iterRepeat(); 02", "AB AB AB AB AB",
+  // @ts-ignore
   CUT.join(CUT.take(CEL.iterRepeat("AB"), 5))
 );
 
@@ -4615,9 +4668,14 @@ CUT.isEqual("forEachRight();", "642", token1);
 
 
 /* map(); */
+// @ts-ignore
 CUT.isEqual("map(); 01", "2 4 6", CUT.join(CEL.map([1, 2, 3], (e) => e * 2)));
 CUT.isEqual("map(); 02", "CAT, DOG, PIG",
-  CUT.join(CEL.map("cat, dog, pig", (e) => e.toUpperCase()), "")
+  CUT.join(
+    // @ts-ignore
+    CEL.map("cat, dog, pig", (/** @type {number} */ e) => e.toUpperCase()),
+    ""
+  )
 );
 token1 = "";
 // @ts-ignore
@@ -4627,63 +4685,87 @@ for (let item of CEL.map(
 }
 CUT.isEqual("map(); 04", "foo2bar4baz6", token1);
 CUT.isEqual("map(); 05", "2 4 6",
+  // @ts-ignore
   CUT.join(CEL.map(new Set([1, 2, 3]), (e) => e * 2))
 );
 CUT.isEqual("map(); 06", "3 6 9",
+  // @ts-ignore
   CUT.join(CEL.map((new Set([1, 2, 3])).values(), (e) => e * 3))
 );
 
 
 /* take(); */
 token1 = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
+// @ts-ignore
 CUT.isEqual("take(); 01", "", CUT.join(CEL.take(token1, 0)));
+// @ts-ignore
 CUT.isEqual("take(); 02", "A B C D E F G", CUT.join(CEL.take(token1, 7)));
+// @ts-ignore
 CUT.isEqual("take(); 03", "A B C D E F G H I J", CUT.join(CEL.take(token1, 12)));
+// @ts-ignore
 CUT.isEqual("take(); 04 - default 1", "A", CUT.join(CEL.take(token1)));
 
 
 /* drop(); */
 token1 = ["A", "B" , "C", "D", "E", "F", "G", "H", "I", "J"];
+// @ts-ignore
 CUT.isEqual("drop(); 01", "A B C D E F G H I J", CUT.join(CEL.drop(token1, 0)));
+// @ts-ignore
 CUT.isEqual("drop(); 02", "H I J", CUT.join(CEL.drop(token1, 7)));
+// @ts-ignore
 CUT.isEqual("drop(); 03", "", CUT.join(CEL.drop(token1, 12)));
+// @ts-ignore
 CUT.isEqual("drop(); 04", "B C D E F G H I J", CUT.join(CEL.drop(token1)));
 
 
 /* filter(); */
 CUT.isEqual("filter();", "4 5 6 7 8",
+  // @ts-ignore
   CUT.join(CEL.filter([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], (v) => (v > 3 && v < 9)))
 );
 
 
 /* reject(); */
 CUT.isEqual("reject();", "1 2 3 9 10",
+  // @ts-ignore
   CUT.join(CEL.reject([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], (v) => (v > 3 && v < 9)))
 );
 
 
 /* slice(); */
 token1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+// @ts-ignore
 CUT.isEqual("slice(); 01", "1 2 3 4 5", CUT.join(CEL.slice(token1, 0, 4)));
+// @ts-ignore
 CUT.isEqual("slice(); 02", "6 7 8 9 10", CUT.join(CEL.slice(token1, 5)));
+// @ts-ignore
 CUT.isEqual("slice(); 03", "5 6 7 8 9", CUT.join(CEL.slice(token1, 4, 8)));
+// @ts-ignore
 CUT.isEqual("slice(); 04", "1 2 3 4 5 6 7 8 9 10", CUT.join(CEL.slice(token1)));
 
 
 /* tail(); */
+// @ts-ignore
 CUT.isEqual("tail();", "2 3 4 5 6", CUT.join(CEL.tail([1, 2, 3, 4, 5, 6])));
 
 
 /* takeWhile(); */
 token1 = [0, 2, 4, 6, 8, 10, 12, 14, 16];
 token2 = 0;
-for (let item of CEL.takeWhile(token1, (e) => e < 10)) { token2 += item; }
+// @ts-ignore
+for (let item of CEL.takeWhile(token1, (/** @type {number} */ e) => e < 10)) {
+  token2 += item;
+}
 CUT.isEqual("takeWhile(); 01", token2, 20);
 token2 = 0;
-for (let item of CEL.takeWhile(token1, (e) => e < 0)) { token2 += item; }
+for (let item of CEL.takeWhile(token1, (/** @type {number} */ e) => e < 0)) {
+  token2 += item;
+}
 CUT.isEqual("takeWhile(); 02", token2, 0);
 token2 = 0;
-for (let item of CEL.takeWhile(token1, (e) => e < 30)) { token2 += item; }
+for (let item of CEL.takeWhile(token1, (/** @type {number} */ e) => e < 30)) {
+  token2 += item;
+}
 CUT.isEqual("takeWhile(); 03", token2, 72);
 
 

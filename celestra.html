@@ -89,7 +89,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
 <div id="left-panel" class="hide-on-mobile flex-w-md-15">
   <div id="left-panel-content">
     <!-- version -->
-    <p><strong>Celestra v6.1.0</strong></p>
+    <p><strong>Celestra <v6 class="1 1"></v6></strong></p>
     <!-- Download -->
     <p><strong><a href="#download">Download</a></strong></p>
     <!-- Samples -->
@@ -127,9 +127,14 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <p><a href="#FN-delay();">delay();</a></p>
       <p><a href="#FN-deleteOwnProperty();">deleteOwnProperty();</a></p>
       <p><a href="#FN-extend();">extend();</a></p>
+      <p><a href="#FN-eq();">eq();</a></p>
       <p><a href="#FN-F();">F();</a></p>
       <p><a href="#FN-getUrlVars();">getUrlVars();</a></p>
+      <p><a href="#FN-gt();">gt();</a></p>
+      <p><a href="#FN-gte();">gte();</a></p>
       <p><a href="#FN-identity();">identity();</a></p>
+      <p><a href="#FN-lt();">lt();</a></p>
+      <p><a href="#FN-lte();">lte();</a></p>
       <p><a href="#FN-nanoid();">nanoid();</a></p>
       <p><a href="#FN-noop();">noop();</a></p>
       <p><a href="#FN-obj2string();">obj2string();</a></p>
@@ -143,7 +148,6 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <p><a href="#FN-T();">T();</a></p>
       <p><a href="#FN-tap();">tap();</a></p>
       <p><a href="#FN-timestampID();">timestampID();</a></p>
-      <p><a href="#FN-toSafeString();">toSafeString();</a></p>
       <p><a href="#FN-unBind();">unBind();</a></p>
     </details>
     <!-- String API -->
@@ -285,6 +289,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <p><a href="#FN-toObject();">toObject();</a></p>
       <p><a href="#FN-toPrimitiveValue();">toPrimitiveValue();</a></p>
       <p><a href="#FN-toPropertyKey();">toPropertyKey();</a></p>
+      <p><a href="#FN-toSafeString();">toSafeString();</a></p>
       <p><a href="#FN-typeOf();">typeOf();</a></p>
     </details>
     <!-- Cookie API -->
@@ -487,7 +492,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
 
 <p><strong>A helper JavaScript library with useful functions and polyfills and zero dependencies.</strong></p>
 
-<p>Latest version: 6.1.0</p>
+<p>Latest version: 6.1.1</p>
 <p>Date: 2025-10-03T01:06:23.987Z</p>
 
 <p><strong>Tested on these:</strong></p>
@@ -566,7 +571,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <a href="js-cheatsheet.pdf" target="_blank">js-cheatsheet.pdf</a>
     </td>
     <td></td>
-  </tr>  
+  </tr>
   <tr>
     <td>Version history</td>
     <td><a href="CHANGELOG.md" target="_blank">CHANGELOG.md</a></td>
@@ -581,7 +586,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
     <td>Removed polyfills (minified)</td>
     <td><a href="celestra-polyfills.min.js" target="_blank">celestra-polyfills.min.js</a></td>
     <td></td>
-  </tr>  
+  </tr>
   <tr>
     <td>RPG dice roller</td>
     <td><a href="testgame.html" target="_blank">testgame.html</a></td>
@@ -911,6 +916,10 @@ CEL.delay(5000)
       <td><code>extend([deep,]target,source1[,sourceN]);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This is an enhanced version of the <code>Object.assign</code> method. The deep parameter (boolean) is optional and sets the deep copy (recursive) of the sources.</td>
     </tr>
+    <tr id="FN-eq();">
+      <td><code>eq(value1, value2);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>SameValueZero equality (like `Object.is`, but +0 === -0). All of the parameters are mandatory and can be any type. The return value is boolean.</td>
+    </tr>
     <tr id="FN-F();">
       <td><code>F();</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns false.</td>
@@ -920,9 +929,25 @@ CEL.delay(5000)
       <td><span class="info">Stability: 4 - Stable.</span><br/>Get the values of the url variables in an object from the <code>location.search</code> <strong>(default value)</strong> or another given url. The str parameter name is optional and can be a string.
       <br/>Example: <code>"?showall=true&amp;order_by=updated&amp;o=asc"</code> -> <code>Object { showall: "true", order_by: "updated", o: "asc" }</code></td>
     </tr>
+    <tr id="FN-gt();">
+      <td><code>gt(value1, value2);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Greater than. All of the parameters are mandatory and can be any type. The return value is boolean.</td>
+    </tr>
+    <tr id="FN-gte();">
+      <td><code>gte(value1, value2);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Greater than or equal (SameValueZero). All of the parameters are mandatory and can be any type. The return value is boolean.</td>
+    </tr>
     <tr id="FN-identity();">
       <td><code>identity(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>Return the given value. (In math: <code>f(x)=x</code>)</td>
+    </tr>
+    <tr id="FN-lt();">
+      <td><code>lt(value1, value2);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Less than. All of the parameters are mandatory and can be any type. The return value is boolean.</td>
+    </tr>
+    <tr id="FN-lte();">
+      <td><code>lte(value1, value2);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Less than or equal (SameValueZero). All of the parameters are mandatory and can be any type. The return value is boolean.</td>
     </tr>
     <tr id="FN-nanoid();">
       <td><code>nanoid([size=21[, alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"]]);</code></td>
@@ -975,10 +1000,6 @@ CEL.delay(5000)
     <tr id="FN-timestampID();">
       <td><code>timestampID([size=21[,alphabet="123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"]]);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>Generate a timestamp based sortable ID. The size parameter is optional and the default value is 21, but if the given value smaller than 12, then the value will be 12. The alphabet parameter is optional and the default value is <code>"123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"</code>, same as BASE58. The return value is the generated id (string).<br/>Example ID: <code>"00lirtqi4e-wgGn8vGPyY"</code></td>
-    </tr>
-    <tr id="FN-toSafeString();">
-      <td><code>toSafeString(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function is a general purpose, type safe, predictable stringifier. The value parameter is mandatory and can be any type. The return value is a string.</td>
     </tr>
     <tr id="FN-unBind();">
       <td><code>unBind(function);</code></td>
@@ -1150,7 +1171,7 @@ CEL.delay(5000)
       <td>
         <span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v6.1.0: <code>assertIsNil();</code>.</span><br/>This function throws an error with the message if the value is not null or undefined, else the given value is the return value. The message parameter is optional.
       </td>
-    </tr>    
+    </tr>
     <tr id="FN-assertMatch();">
       <td><code>assertMatch(string, regexp [, message | error]);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the string doesn't match with the regexp. The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
@@ -1610,6 +1631,10 @@ CEL.delay(5000)
     <tr id="FN-toPropertyKey();">
       <td><code>toPropertyKey(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function convert the given value to a valid property key. If the value is not symbol, then will be converted to string, else the symbol will be returned.</td>
+    </tr>
+    <tr id="FN-toSafeString();">
+      <td><code>toSafeString(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function is a general purpose, type safe, predictable stringifier. The value parameter is mandatory and can be any type. The return value is a string.</td>
     </tr>
     <tr id="FN-typeOf();">
       <td><code>typeOf(value);</code></td>

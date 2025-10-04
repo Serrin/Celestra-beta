@@ -4,14 +4,14 @@
 
 /**
  * @name Celestra
- * @version 6.1.0 node
+ * @version 6.1.1 node
  * @author Ferenc Czigler
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
 
 
-const VERSION = "Celestra v6.1.0 node";
+const VERSION = "Celestra v6.1.1 node";
 
 
 /** TS types */
@@ -32,6 +32,13 @@ type IterableAndIteratorAndArrayLike =
 /** @internal */
 type IteratorReturn =
   Iterable<any> | IteratorResult<any> | Generator<number, void, unknown>;
+
+/**
+ * Generic comparable types.
+ *
+ * @internal
+ */
+type Comparable = number | string | bigint;
 
 
 /** polyfills **/
@@ -339,49 +346,68 @@ const BASE62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 const WORDSAFEALPHABET = "23456789CFGHJMPQRVWXcfghjmpqvwx"; /* 31 */
 
 
-
+/* eq (value1: any, value2: any): boolean */
 /**
- * @description This function is a general purpose, type safe, predictable stringifier. Converts a value into a human-readable string for error messages Handles symbols, functions, nullish, circular references, etc.
+ * @description SameValueZero equality (like `Object.is`, but +0 === -0).
  *
- * @param {unknown} value The value to inspect.
- * @returns {string}
+ * @param {any} value1
+ * @param {any} value2
+ * @returns {boolean}
  */
-function toSafeString (value: unknown): string {
-  const seen = new WeakSet<object>();
-  const replacer = (_key: string, value: unknown): any => {
-    if (typeof value === "function") {
-      return `[Function: ${value.name || "anonymous"}]`;
-    }
-    if (typeof value === "symbol") { return value.toString(); }
-    if (value instanceof Date) { return `Date(${value.toISOString()})`; }
-    if (value instanceof Error) {
-      return `${value.name}: ${value.message}, ${value.stack ?? ""}`;
-    }
-    if (value && typeof value === "object") {
-      if (seen.has(value)) { return "[Circular]" };
-      seen.add(value);
-    }
-    return value;
-  };
-  if (["undefined", "null", "string", "number", "boolean", "bigint"]
-    .includes(value === null ? "null" : typeof value)) {
-    return String(value);
-  }
-  if (Array.isArray(value)) {
-    return `[${value.map(v => toSafeString(v)).join(", ")}]`;
-  }
-  if (value instanceof Map) {
-    return `Map(${value.size}){${Array.from(value.entries()).map(([k, v]): string => `${toSafeString(k)} => ${toSafeString(v)}`).join(", ")}}`;
-  }
-  if (value instanceof Set) {
-    return `Set(${value.size}){${Array.from(value.values()).map(v => toSafeString(v)).join(", ")}}`;
-  }
-  try {
-    return JSON.stringify(value, replacer) ?? String(value);
-  } catch (_e) {
-    return String(value);
-  }
-}
+const eq = (value1: unknown, value2: unknown): boolean =>
+  value1 === value2 || (value1 !== value1 && value2 !== value2);
+
+
+/* gt (value1: any, value2: any): boolean */
+/**
+ * @description Greater than.
+ *
+ * @param {any} value1
+ * @param {any} value2
+ * @returns {boolean}
+ */
+const gt = <T extends Comparable>(value1: T, value2: T): boolean =>
+  value1 > value2;
+
+
+/* gte (value1: any, value2: any): boolean */
+/**
+ * @description Greater than or equal (SameValueZero).
+ *
+ * @param {any} value1
+ * @param {any} value2
+ * @returns {boolean}
+ */
+const gte = <T extends Comparable>(value1: T, value2: T): boolean =>
+  value1 > value2
+    || value1 === value2
+    || (value1 !== value1 && value2 !== value2);
+
+
+/* lt (value1: any, value2: any): boolean */
+/**
+ * @description Less than.
+ *
+ * @param {any} value1
+ * @param {any} value2
+ * @returns {boolean}
+ */
+const lt = <T extends Comparable>(value1: T, value2: T): boolean =>
+  value1 < value2;
+
+
+/* lte (value1: any, value2: any): boolean */
+/**
+ * @description Less than or equal (SameValueZero).
+ *
+ * @param {any} value1
+ * @param {any} value2
+ * @returns {boolean}
+ */
+const lte = <T extends Comparable>(value1: T, value2: T): boolean =>
+  value1 < value2
+    || value1 === value2
+    || (value1 !== value1 && value2 !== value2);
 
 
 /* tap(function: function): function(v) */
@@ -1820,6 +1846,50 @@ function toPrimitiveValue (value: unknown): any {
     return value.valueOf();
   }
   return value;
+}
+
+
+/**
+ * @description This function is a general purpose, type safe, predictable stringifier. Converts a value into a human-readable string for error messages Handles symbols, functions, nullish, circular references, etc.
+ *
+ * @param {unknown} value The value to inspect.
+ * @returns {string}
+ */
+function toSafeString (value: unknown): string {
+  const seen = new WeakSet<object>();
+  const replacer = (_key: string, value: unknown): any => {
+    if (typeof value === "function") {
+      return `[Function: ${value.name || "anonymous"}]`;
+    }
+    if (typeof value === "symbol") { return value.toString(); }
+    if (value instanceof Date) { return `Date(${value.toISOString()})`; }
+    if (value instanceof Error) {
+      return `${value.name}: ${value.message}, ${value.stack ?? ""}`;
+    }
+    if (value && typeof value === "object") {
+      if (seen.has(value)) { return "[Circular]" };
+      seen.add(value);
+    }
+    return value;
+  };
+  if (["undefined", "null", "string", "number", "boolean", "bigint"]
+    .includes(value === null ? "null" : typeof value)) {
+    return String(value);
+  }
+  if (Array.isArray(value)) {
+    return `[${value.map(v => toSafeString(v)).join(", ")}]`;
+  }
+  if (value instanceof Map) {
+    return `Map(${value.size}){${Array.from(value.entries()).map(([k, v]): string => `${toSafeString(k)} => ${toSafeString(v)}`).join(", ")}}`;
+  }
+  if (value instanceof Set) {
+    return `Set(${value.size}){${Array.from(value.values()).map(v => toSafeString(v)).join(", ")}}`;
+  }
+  try {
+    return JSON.stringify(value, replacer) ?? String(value);
+  } catch (_e) {
+    return String(value);
+  }
 }
 
 
@@ -3313,7 +3383,11 @@ export default {
   BASE58,
   BASE62,
   WORDSAFEALPHABET,
-  toSafeString,
+  eq,
+  gt,
+  gte,
+  lt,
+  lte,
   tap,
   once,
   curry,
@@ -3387,6 +3461,7 @@ export default {
   is,
   toObject,
   toPrimitiveValue,
+  toSafeString,
   isPropertyKey,
   toPropertyKey,
   isIndex,
@@ -3533,7 +3608,11 @@ export {
   BASE58,
   BASE62,
   WORDSAFEALPHABET,
-  toSafeString,
+  eq,
+  gt,
+  gte,
+  lt,
+  lte,
   tap,
   once,
   curry,
@@ -3607,6 +3686,7 @@ export {
   is,
   toObject,
   toPrimitiveValue,
+  toSafeString,
   isPropertyKey,
   toPropertyKey,
   isIndex,
