@@ -231,12 +231,18 @@ const BASE36 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const BASE58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 const BASE62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 const WORDSAFEALPHABET = "23456789CFGHJMPQRVWXcfghjmpqvwx";
-const eq = (x, y) => x === y || (x !== x && y !== y);
-const gt = (x, y) => x > y;
-const gte = (x, y) => x > y || x === y || (x !== x && y !== y);
-const lt = (x, y) => x < y;
-const lte = (x, y) => x < y || x === y || (x !== x && y !== y);
-const tap = (fn) => function (value) { fn(value); return value; };
+const eq = (value1, value2) => value1 === value2 || (value1 !== value1 && value2 !== value2);
+const gt = (value1, value2) => value1 > value2;
+const gte = (value1, value2) => value1 > value2
+    || value1 === value2
+    || (value1 !== value1 && value2 !== value2);
+const lt = (value1, value2) => value1 < value2;
+const lte = (value1, value2) => value1 < value2
+    || value1 === value2
+    || (value1 !== value1 && value2 !== value2);
+function tap(fn) {
+    return function (value) { fn(value); return value; };
+}
 function once(fn) {
     let called = false;
     let result;
@@ -324,8 +330,8 @@ const delay = (milisec) => new Promise(resolve => setTimeout(resolve, milisec));
 const randomBoolean = () => !Math.round(Math.random());
 const getUrlVars = (str = location.search) => [...new URLSearchParams(str).entries()]
     .reduce(function (obj, item) { obj[item[0]] = item[1]; return obj; }, {});
-const obj2string = (obj) => Object.keys(obj).reduce((s, p) => s
-    += encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]) + "&", "").slice(0, -1);
+const obj2string = (obj) => Object.keys(obj).reduce((str, key) => str
+    += encodeURIComponent(key) + "=" + encodeURIComponent(obj[key]) + "&", "").slice(0, -1);
 function extend(...args) {
     function _EXT(...args) {
         let targetObject;
@@ -513,8 +519,8 @@ function assertThrows(callback, message) {
     try {
         callback();
     }
-    catch (err) {
-        return err;
+    catch (error) {
+        return error;
     }
     if (Error.isError(message)) {
         throw message;
@@ -568,8 +574,8 @@ function assertFalse(condition, message) {
     }
     return true;
 }
-function assertEqual(x, y, message) {
-    if (!(x == y || (x !== x && y !== y))) {
+function assertEqual(value1, value2, message) {
+    if (!(value1 == value2 || (value1 !== value1 && value2 !== value2))) {
         if (Error.isError(message)) {
             throw message;
         }
@@ -577,8 +583,10 @@ function assertEqual(x, y, message) {
     }
     return true;
 }
-function assertStrictEqual(x, y, message) {
-    if (!((x === y) ? (x !== 0 || 1 / x === 1 / y) : (x !== x && y !== y))) {
+function assertStrictEqual(value1, value2, message) {
+    if (!((value1 === value2)
+        ? (value1 !== 0 || 1 / value1 === 1 / value2)
+        : (value1 !== value1 && value2 !== value2))) {
         if (Error.isError(message)) {
             throw message;
         }
@@ -587,8 +595,8 @@ function assertStrictEqual(x, y, message) {
     }
     return true;
 }
-function assertNotEqual(x, y, message) {
-    if (x == y || (x !== x && y !== y)) {
+function assertNotEqual(value1, value2, message) {
+    if (value1 == value2 || (value1 !== value1 && value2 !== value2)) {
         if (Error.isError(message)) {
             throw message;
         }
@@ -597,8 +605,10 @@ function assertNotEqual(x, y, message) {
     }
     return true;
 }
-function assertNotStrictEqual(x, y, message) {
-    if ((x === y) ? (x !== 0 || 1 / x === 1 / y) : (x !== x && y !== y)) {
+function assertNotStrictEqual(value1, value2, message) {
+    if ((value1 === value2)
+        ? (value1 !== 0 || 1 / value1 === 1 / value2)
+        : (value1 !== value1 && value2 !== value2)) {
         if (Error.isError(message)) {
             throw message;
         }
@@ -607,126 +617,127 @@ function assertNotStrictEqual(x, y, message) {
     }
     return true;
 }
-function assertDeepEqual(x, y, message) {
-    function _isDeepEqual(x, y) {
-        const _isObject = (x) => (x != null && typeof x === "object");
-        const _isSameInstance = (x, y, Class) => (x instanceof Class) && (y instanceof Class);
-        const _ownKeys = (x) => Object.getOwnPropertyNames(x).concat(Object.getOwnPropertySymbols(x));
-        const _isEqual = (x, y) => x == y || (x !== x && y !== y);
-        if (_isEqual(x, y)) {
+function assertDeepEqual(value1, value2, message) {
+    function _isDeepEqual(value1, value2) {
+        const _isObject = (value) => value != null && typeof value === "object";
+        const _isSameInstance = (value1, value2, Class) => (value1 instanceof Class) && (value2 instanceof Class);
+        const _ownKeys = (value) => Object.getOwnPropertyNames(value)
+            .concat(Object.getOwnPropertySymbols(value));
+        const _isEqual = (value1, value2) => value1 == value2 || (value1 !== value1 && value2 !== value2);
+        if (_isEqual(value1, value2)) {
             return true;
         }
-        if (_isObject(x) && _isObject(y)) {
-            if (_isEqual(x, y)) {
+        if (_isObject(value1) && _isObject(value2)) {
+            if (_isEqual(value1, value2)) {
                 return true;
             }
-            if (_isSameInstance(x, y, WeakMap) || _isSameInstance(x, y, WeakSet)) {
-                return _isEqual(x, y);
+            if (_isSameInstance(value1, value2, WeakMap) || _isSameInstance(value1, value2, WeakSet)) {
+                return _isEqual(value1, value2);
             }
-            if (_isSameInstance(x, y, Number)
-                || _isSameInstance(x, y, Boolean)
-                || _isSameInstance(x, y, String)
-                || _isSameInstance(x, y, BigInt)) {
-                return _isEqual(x.valueOf(), y.valueOf());
+            if (_isSameInstance(value1, value2, Number)
+                || _isSameInstance(value1, value2, Boolean)
+                || _isSameInstance(value1, value2, String)
+                || _isSameInstance(value1, value2, BigInt)) {
+                return _isEqual(value1.valueOf(), value2.valueOf());
             }
-            if (Array.isArray(x) && Array.isArray(y)) {
-                if (x.length !== y.length) {
+            if (Array.isArray(value1) && Array.isArray(value2)) {
+                if (value1.length !== value2.length) {
                     return false;
                 }
-                if (x.length === 0) {
+                if (value1.length === 0) {
                     return true;
                 }
-                return x.every((value, index) => _isDeepEqual(value, y[index]));
+                return value1.every((value, index) => _isDeepEqual(value, value2[index]));
             }
-            if (_isSameInstance(x, y, Int8Array)
-                || _isSameInstance(x, y, Uint8Array)
-                || _isSameInstance(x, y, Uint8ClampedArray)
-                || _isSameInstance(x, y, Int16Array)
-                || _isSameInstance(x, y, Uint16Array)
-                || _isSameInstance(x, y, Int32Array)
-                || _isSameInstance(x, y, Uint32Array)
+            if (_isSameInstance(value1, value2, Int8Array)
+                || _isSameInstance(value1, value2, Uint8Array)
+                || _isSameInstance(value1, value2, Uint8ClampedArray)
+                || _isSameInstance(value1, value2, Int16Array)
+                || _isSameInstance(value1, value2, Uint16Array)
+                || _isSameInstance(value1, value2, Int32Array)
+                || _isSameInstance(value1, value2, Uint32Array)
                 || ("Float16Array" in globalThis ?
-                    _isSameInstance(x, y, Float16Array) : false)
-                || _isSameInstance(x, y, Float32Array)
-                || _isSameInstance(x, y, Float64Array)
-                || _isSameInstance(x, y, BigInt64Array)
-                || _isSameInstance(x, y, BigUint64Array)) {
-                if (x.length !== y.length) {
+                    _isSameInstance(value1, value2, Float16Array) : false)
+                || _isSameInstance(value1, value2, Float32Array)
+                || _isSameInstance(value1, value2, Float64Array)
+                || _isSameInstance(value1, value2, BigInt64Array)
+                || _isSameInstance(value1, value2, BigUint64Array)) {
+                if (value1.length !== value2.length) {
                     return false;
                 }
-                if (x.length === 0) {
+                if (value1.length === 0) {
                     return true;
                 }
-                return x.every((value, index) => _isEqual(value, y[index]));
+                return value1.every((value, index) => _isEqual(value, value2[index]));
             }
-            if (_isSameInstance(x, y, ArrayBuffer)) {
-                if (x.byteLength !== y.byteLength) {
+            if (_isSameInstance(value1, value2, ArrayBuffer)) {
+                if (value1.byteLength !== value2.byteLength) {
                     return false;
                 }
-                if (x.byteLength === 0) {
+                if (value1.byteLength === 0) {
                     return true;
                 }
-                let xTA = new Int8Array(x), yTA = new Int8Array(y);
+                let xTA = new Int8Array(value1), yTA = new Int8Array(value2);
                 return xTA.every((value, index) => _isEqual(value, yTA[index]));
             }
-            if (_isSameInstance(x, y, DataView)) {
-                if (x.byteLength !== y.byteLength) {
+            if (_isSameInstance(value1, value2, DataView)) {
+                if (value1.byteLength !== value2.byteLength) {
                     return false;
                 }
-                if (x.byteLength === 0) {
+                if (value1.byteLength === 0) {
                     return true;
                 }
-                for (let index = 0; index < x.byteLength; index++) {
-                    if (!_isEqual(x.getUint8(index), y.getUint8(index))) {
+                for (let index = 0; index < value1.byteLength; index++) {
+                    if (!_isEqual(value1.getUint8(index), value2.getUint8(index))) {
                         return false;
                     }
                 }
                 return true;
             }
-            if (_isSameInstance(x, y, Map)) {
-                if (x.size !== y.size) {
+            if (_isSameInstance(value1, value2, Map)) {
+                if (value1.size !== value2.size) {
                     return false;
                 }
-                if (x.size === 0) {
+                if (value1.size === 0) {
                     return true;
                 }
-                return [...x.keys()].every((value) => _isDeepEqual(x.get(value), y.get(value)));
+                return [...value1.keys()].every((value) => _isDeepEqual(value1.get(value), value2.get(value)));
             }
-            if (_isSameInstance(x, y, Set)) {
-                if (x.size !== y.size) {
+            if (_isSameInstance(value1, value2, Set)) {
+                if (value1.size !== value2.size) {
                     return false;
                 }
-                if (x.size === 0) {
+                if (value1.size === 0) {
                     return true;
                 }
-                return [...x.keys()].every((value) => y.has(value));
+                return [...value1.keys()].every((value) => value2.has(value));
             }
-            if (_isSameInstance(x, y, RegExp)) {
-                return _isEqual(x.lastIndex, y.lastIndex)
-                    && _isEqual(x.flags, y.flags)
-                    && _isEqual(x.source, y.source);
+            if (_isSameInstance(value1, value2, RegExp)) {
+                return _isEqual(value1.lastIndex, value2.lastIndex)
+                    && _isEqual(value1.flags, value2.flags)
+                    && _isEqual(value1.source, value2.source);
             }
-            if (_isSameInstance(x, y, Error)) {
-                return _isDeepEqual(Object.getOwnPropertyNames(x)
-                    .reduce((acc, k) => { acc[k] = x[k]; return acc; }, {}), Object.getOwnPropertyNames(y)
-                    .reduce((acc, k) => { acc[k] = y[k]; return acc; }, {}));
+            if (_isSameInstance(value1, value2, Error)) {
+                return _isDeepEqual(Object.getOwnPropertyNames(value1)
+                    .reduce((acc, k) => { acc[k] = value1[k]; return acc; }, {}), Object.getOwnPropertyNames(value2)
+                    .reduce((acc, k) => { acc[k] = value2[k]; return acc; }, {}));
             }
-            if (_isSameInstance(x, y, Date)) {
-                return _isEqual(+x, +y);
+            if (_isSameInstance(value1, value2, Date)) {
+                return _isEqual(+value1, +value2);
             }
-            let xKeys = _ownKeys(x);
-            let yKeys = _ownKeys(y);
-            if (xKeys.length !== yKeys.length) {
+            let value1Keys = _ownKeys(value1);
+            let value2Keys = _ownKeys(value2);
+            if (value1Keys.length !== value2Keys.length) {
                 return false;
             }
-            if (xKeys.length === 0) {
+            if (value1Keys.length === 0) {
                 return true;
             }
-            return xKeys.every((key) => _isDeepEqual(x[key], y[key]));
+            return value1Keys.every((key) => _isDeepEqual(value1[key], value2[key]));
         }
         return false;
     }
-    if (!_isDeepEqual(x, y)) {
+    if (!_isDeepEqual(value1, value2)) {
         if (Error.isError(message)) {
             throw message;
         }
@@ -735,142 +746,147 @@ function assertDeepEqual(x, y, message) {
     }
     return true;
 }
-function assertNotDeepStrictEqual(x, y, message) {
-    function _isDeepStrictEqual(x, y) {
-        const _deepType = (x) => ((x === null) ? "null" : (x !== x) ? "NaN" : (typeof x));
-        const _isPrimitive = (x) => (x == null || (typeof x !== "object" && typeof x !== "function"));
-        const _isObject = (x) => (x != null && typeof x === "object");
-        const _isSameInstance = (x, y, Class) => (x instanceof Class) && (y instanceof Class);
-        const _classof = (x) => Object.prototype.toString.call(x).slice(8, -1).toLowerCase();
-        const _ownKeys = (x) => Object.getOwnPropertyNames(x).concat(Object.getOwnPropertySymbols(x));
-        const _isEqual = (x, y) => Object.is(x, y);
-        if (_isEqual(x, y)) {
+function assertNotDeepStrictEqual(value1, value2, message) {
+    function _isDeepStrictEqual(value1, value2) {
+        const _deepType = (value) => (value === null) ? "null" : (value !== value) ? "NaN" : (typeof value);
+        const _isPrimitive = (value) => value == null
+            || (typeof value !== "object" && typeof value !== "function");
+        const _isObject = (value) => (value != null && typeof value === "object");
+        const _isSameInstance = (value1, value2, Class) => (value1 instanceof Class) && (value2 instanceof Class);
+        const _classof = (value) => Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
+        const _ownKeys = (value) => Object.getOwnPropertyNames(value)
+            .concat(Object.getOwnPropertySymbols(value));
+        const _isEqual = (value1, value2) => Object.is(value1, value2);
+        if (_isEqual(value1, value2)) {
             return true;
         }
-        if (_isObject(x) && _isPrimitive(y) && _classof(x) === typeof y) {
-            return _isEqual(x.valueOf(), y);
+        if (_isObject(value1)
+            && _isPrimitive(value2) && _classof(value1) === typeof value2) {
+            return _isEqual(value1.valueOf(), value2);
         }
-        if (_isPrimitive(x) && _isObject(y) && typeof x === _classof(y)) {
-            return _isEqual(x, y.valueOf());
+        if (_isPrimitive(value1)
+            && _isObject(value2) && typeof value1 === _classof(value2)) {
+            return _isEqual(value1, value2.valueOf());
         }
-        if (_deepType(x) !== _deepType(y)) {
+        if (_deepType(value1) !== _deepType(value2)) {
             return false;
         }
-        if (_isObject(x) && _isObject(y)) {
-            if (_isEqual(x, y)) {
+        if (_isObject(value1) && _isObject(value2)) {
+            if (_isEqual(value1, value2)) {
                 return true;
             }
-            if (Object.getPrototypeOf(x).constructor !==
-                Object.getPrototypeOf(y).constructor) {
+            if (Object.getPrototypeOf(value1).constructor !==
+                Object.getPrototypeOf(value2).constructor) {
                 return false;
             }
-            if (_isSameInstance(x, y, WeakMap) || _isSameInstance(x, y, WeakSet)) {
-                return _isEqual(x, y);
+            if (_isSameInstance(value1, value2, WeakMap)
+                || _isSameInstance(value1, value2, WeakSet)) {
+                return _isEqual(value1, value2);
             }
-            if (_isSameInstance(x, y, Number)
-                || _isSameInstance(x, y, Boolean)
-                || _isSameInstance(x, y, String)
-                || _isSameInstance(x, y, BigInt)) {
-                return _isEqual(x.valueOf(), y.valueOf());
+            if (_isSameInstance(value1, value2, Number)
+                || _isSameInstance(value1, value2, Boolean)
+                || _isSameInstance(value1, value2, String)
+                || _isSameInstance(value1, value2, BigInt)) {
+                return _isEqual(value1.valueOf(), value2.valueOf());
             }
-            if (Array.isArray(x) && Array.isArray(y)) {
-                if (x.length !== y.length) {
+            if (Array.isArray(value1) && Array.isArray(value2)) {
+                if (value1.length !== value2.length) {
                     return false;
                 }
-                if (x.length === 0) {
+                if (value1.length === 0) {
                     return true;
                 }
-                return x.every((value, index) => _isDeepStrictEqual(value, y[index]));
+                return value1.every((value, index) => _isDeepStrictEqual(value, value2[index]));
             }
-            if (_isSameInstance(x, y, Int8Array)
-                || _isSameInstance(x, y, Uint8Array)
-                || _isSameInstance(x, y, Uint8ClampedArray)
-                || _isSameInstance(x, y, Int16Array)
-                || _isSameInstance(x, y, Uint16Array)
-                || _isSameInstance(x, y, Int32Array)
-                || _isSameInstance(x, y, Uint32Array)
+            if (_isSameInstance(value1, value2, Int8Array)
+                || _isSameInstance(value1, value2, Uint8Array)
+                || _isSameInstance(value1, value2, Uint8ClampedArray)
+                || _isSameInstance(value1, value2, Int16Array)
+                || _isSameInstance(value1, value2, Uint16Array)
+                || _isSameInstance(value1, value2, Int32Array)
+                || _isSameInstance(value1, value2, Uint32Array)
                 || ("Float16Array" in globalThis ?
-                    _isSameInstance(x, y, Float16Array) : false)
-                || _isSameInstance(x, y, Float32Array)
-                || _isSameInstance(x, y, Float64Array)
-                || _isSameInstance(x, y, BigInt64Array)
-                || _isSameInstance(x, y, BigUint64Array)) {
-                if (x.length !== y.length) {
+                    _isSameInstance(value1, value2, Float16Array) : false)
+                || _isSameInstance(value1, value2, Float32Array)
+                || _isSameInstance(value1, value2, Float64Array)
+                || _isSameInstance(value1, value2, BigInt64Array)
+                || _isSameInstance(value1, value2, BigUint64Array)) {
+                if (value1.length !== value2.length) {
                     return false;
                 }
-                if (x.length === 0) {
+                if (value1.length === 0) {
                     return true;
                 }
-                return x.every((value, index) => _isEqual(value, y[index]));
+                return value1.every((value, index) => _isEqual(value, value2[index]));
             }
-            if (_isSameInstance(x, y, ArrayBuffer)) {
-                if (x.byteLength !== y.byteLength) {
+            if (_isSameInstance(value1, value2, ArrayBuffer)) {
+                if (value1.byteLength !== value2.byteLength) {
                     return false;
                 }
-                if (x.byteLength === 0) {
+                if (value1.byteLength === 0) {
                     return true;
                 }
-                let xTA = new Int8Array(x), yTA = new Int8Array(y);
+                let xTA = new Int8Array(value1), yTA = new Int8Array(value2);
                 return xTA.every((value, index) => _isEqual(value, yTA[index]));
             }
-            if (_isSameInstance(x, y, DataView)) {
-                if (x.byteLength !== y.byteLength) {
+            if (_isSameInstance(value1, value2, DataView)) {
+                if (value1.byteLength !== value2.byteLength) {
                     return false;
                 }
-                if (x.byteLength === 0) {
+                if (value1.byteLength === 0) {
                     return true;
                 }
-                for (let index = 0; index < x.byteLength; index++) {
-                    if (!_isEqual(x.getUint8(index), y.getUint8(index))) {
+                for (let index = 0; index < value1.byteLength; index++) {
+                    if (!_isEqual(value1.getUint8(index), value2.getUint8(index))) {
                         return false;
                     }
                 }
                 return true;
             }
-            if (_isSameInstance(x, y, Map)) {
-                if (x.size !== y.size) {
+            if (_isSameInstance(value1, value2, Map)) {
+                if (value1.size !== value2.size) {
                     return false;
                 }
-                if (x.size === 0) {
+                if (value1.size === 0) {
                     return true;
                 }
-                return [...x.keys()].every((value) => _isDeepStrictEqual(x.get(value), y.get(value)));
+                return [...value1.keys()].every((value) => _isDeepStrictEqual(value1.get(value), value2.get(value)));
             }
-            if (_isSameInstance(x, y, Set)) {
-                if (x.size !== y.size) {
+            if (_isSameInstance(value1, value2, Set)) {
+                if (value1.size !== value2.size) {
                     return false;
                 }
-                if (x.size === 0) {
+                if (value1.size === 0) {
                     return true;
                 }
-                return [...x.keys()].every((value) => y.has(value));
+                return [...value1.keys()].every((value) => value2.has(value));
             }
-            if (_isSameInstance(x, y, RegExp)) {
-                return _isEqual(x.lastIndex, y.lastIndex)
-                    && _isEqual(x.flags, y.flags)
-                    && _isEqual(x.source, y.source);
+            if (_isSameInstance(value1, value2, RegExp)) {
+                return _isEqual(value1.lastIndex, value2.lastIndex)
+                    && _isEqual(value1.flags, value2.flags)
+                    && _isEqual(value1.source, value2.source);
             }
-            if (_isSameInstance(x, y, Error)) {
-                return _isDeepStrictEqual(Object.getOwnPropertyNames(x)
-                    .reduce((acc, k) => { acc[k] = x[k]; return acc; }, {}), Object.getOwnPropertyNames(y)
-                    .reduce((acc, k) => { acc[k] = y[k]; return acc; }, {}));
+            if (_isSameInstance(value1, value2, Error)) {
+                return _isDeepStrictEqual(Object.getOwnPropertyNames(value1)
+                    .reduce((acc, k) => { acc[k] = value1[k]; return acc; }, {}), Object.getOwnPropertyNames(value2)
+                    .reduce((acc, k) => { acc[k] = value2[k]; return acc; }, {}));
             }
-            if (_isSameInstance(x, y, Date)) {
-                return _isEqual(+x, +y);
+            if (_isSameInstance(value1, value2, Date)) {
+                return _isEqual(+value1, +value2);
             }
-            let xKeys = _ownKeys(x);
-            let yKeys = _ownKeys(y);
-            if (xKeys.length !== yKeys.length) {
+            let value1Keys = _ownKeys(value1);
+            let value2Keys = _ownKeys(value2);
+            if (value1Keys.length !== value2Keys.length) {
                 return false;
             }
-            if (xKeys.length === 0) {
+            if (value1Keys.length === 0) {
                 return true;
             }
-            return xKeys.every((key) => _isDeepStrictEqual(x[key], y[key]));
+            return value1Keys.every((key) => _isDeepStrictEqual(value1[key], value2[key]));
         }
         return false;
     }
-    if (_isDeepStrictEqual(x, y)) {
+    if (_isDeepStrictEqual(value1, value2)) {
         if (Error.isError(message)) {
             throw message;
         }
@@ -879,126 +895,127 @@ function assertNotDeepStrictEqual(x, y, message) {
     }
     return true;
 }
-function assertNotDeepEqual(x, y, message) {
-    function _isDeepEqual(x, y) {
-        const _isObject = (x) => (x != null && typeof x === "object");
-        const _isSameInstance = (x, y, Class) => (x instanceof Class) && (y instanceof Class);
-        const _ownKeys = (x) => Object.getOwnPropertyNames(x).concat(Object.getOwnPropertySymbols(x));
-        const _isEqual = (x, y) => (x == y || (x !== x && y !== y));
-        if (_isEqual(x, y)) {
+function assertNotDeepEqual(value1, value2, message) {
+    function _isDeepEqual(value1, value2) {
+        const _isObject = (value) => (value != null && typeof value === "object");
+        const _isSameInstance = (value1, value2, Class) => (value1 instanceof Class) && (value2 instanceof Class);
+        const _ownKeys = (value) => Object.getOwnPropertyNames(value)
+            .concat(Object.getOwnPropertySymbols(value));
+        const _isEqual = (value1, value2) => (value1 == value2 || (value1 !== value1 && value2 !== value2));
+        if (_isEqual(value1, value2)) {
             return true;
         }
-        if (_isObject(x) && _isObject(y)) {
-            if (_isEqual(x, y)) {
+        if (_isObject(value1) && _isObject(value2)) {
+            if (_isEqual(value1, value2)) {
                 return true;
             }
-            if (_isSameInstance(x, y, WeakMap) || _isSameInstance(x, y, WeakSet)) {
-                return _isEqual(x, y);
+            if (_isSameInstance(value1, value2, WeakMap) || _isSameInstance(value1, value2, WeakSet)) {
+                return _isEqual(value1, value2);
             }
-            if (_isSameInstance(x, y, Number)
-                || _isSameInstance(x, y, Boolean)
-                || _isSameInstance(x, y, String)
-                || _isSameInstance(x, y, BigInt)) {
-                return _isEqual(x.valueOf(), y.valueOf());
+            if (_isSameInstance(value1, value2, Number)
+                || _isSameInstance(value1, value2, Boolean)
+                || _isSameInstance(value1, value2, String)
+                || _isSameInstance(value1, value2, BigInt)) {
+                return _isEqual(value1.valueOf(), value2.valueOf());
             }
-            if (Array.isArray(x) && Array.isArray(y)) {
-                if (x.length !== y.length) {
+            if (Array.isArray(value1) && Array.isArray(value2)) {
+                if (value1.length !== value2.length) {
                     return false;
                 }
-                if (x.length === 0) {
+                if (value1.length === 0) {
                     return true;
                 }
-                return x.every((value, index) => _isDeepEqual(value, y[index]));
+                return value1.every((value, index) => _isDeepEqual(value, value2[index]));
             }
-            if (_isSameInstance(x, y, Int8Array)
-                || _isSameInstance(x, y, Uint8Array)
-                || _isSameInstance(x, y, Uint8ClampedArray)
-                || _isSameInstance(x, y, Int16Array)
-                || _isSameInstance(x, y, Uint16Array)
-                || _isSameInstance(x, y, Int32Array)
-                || _isSameInstance(x, y, Uint32Array)
+            if (_isSameInstance(value1, value2, Int8Array)
+                || _isSameInstance(value1, value2, Uint8Array)
+                || _isSameInstance(value1, value2, Uint8ClampedArray)
+                || _isSameInstance(value1, value2, Int16Array)
+                || _isSameInstance(value1, value2, Uint16Array)
+                || _isSameInstance(value1, value2, Int32Array)
+                || _isSameInstance(value1, value2, Uint32Array)
                 || ("Float16Array" in globalThis ?
-                    _isSameInstance(x, y, Float16Array) : false)
-                || _isSameInstance(x, y, Float32Array)
-                || _isSameInstance(x, y, Float64Array)
-                || _isSameInstance(x, y, BigInt64Array)
-                || _isSameInstance(x, y, BigUint64Array)) {
-                if (x.length !== y.length) {
+                    _isSameInstance(value1, value2, Float16Array) : false)
+                || _isSameInstance(value1, value2, Float32Array)
+                || _isSameInstance(value1, value2, Float64Array)
+                || _isSameInstance(value1, value2, BigInt64Array)
+                || _isSameInstance(value1, value2, BigUint64Array)) {
+                if (value1.length !== value2.length) {
                     return false;
                 }
-                if (x.length === 0) {
+                if (value1.length === 0) {
                     return true;
                 }
-                return x.every((value, index) => _isEqual(value, y[index]));
+                return value1.every((value, index) => _isEqual(value, value2[index]));
             }
-            if (_isSameInstance(x, y, ArrayBuffer)) {
-                if (x.byteLength !== y.byteLength) {
+            if (_isSameInstance(value1, value2, ArrayBuffer)) {
+                if (value1.byteLength !== value2.byteLength) {
                     return false;
                 }
-                if (x.byteLength === 0) {
+                if (value1.byteLength === 0) {
                     return true;
                 }
-                let xTA = new Int8Array(x), yTA = new Int8Array(y);
+                let xTA = new Int8Array(value1), yTA = new Int8Array(value2);
                 return xTA.every((value, index) => _isEqual(value, yTA[index]));
             }
-            if (_isSameInstance(x, y, DataView)) {
-                if (x.byteLength !== y.byteLength) {
+            if (_isSameInstance(value1, value2, DataView)) {
+                if (value1.byteLength !== value2.byteLength) {
                     return false;
                 }
-                if (x.byteLength === 0) {
+                if (value1.byteLength === 0) {
                     return true;
                 }
-                for (let index = 0; index < x.byteLength; index++) {
-                    if (!_isEqual(x.getUint8(index), y.getUint8(index))) {
+                for (let index = 0; index < value1.byteLength; index++) {
+                    if (!_isEqual(value1.getUint8(index), value2.getUint8(index))) {
                         return false;
                     }
                 }
                 return true;
             }
-            if (_isSameInstance(x, y, Map)) {
-                if (x.size !== y.size) {
+            if (_isSameInstance(value1, value2, Map)) {
+                if (value1.size !== value2.size) {
                     return false;
                 }
-                if (x.size === 0) {
+                if (value1.size === 0) {
                     return true;
                 }
-                return [...x.keys()].every((value) => _isDeepEqual(x.get(value), y.get(value)));
+                return [...value1.keys()].every((value) => _isDeepEqual(value1.get(value), value2.get(value)));
             }
-            if (_isSameInstance(x, y, Set)) {
-                if (x.size !== y.size) {
+            if (_isSameInstance(value1, value2, Set)) {
+                if (value1.size !== value2.size) {
                     return false;
                 }
-                if (x.size === 0) {
+                if (value1.size === 0) {
                     return true;
                 }
-                return [...x.keys()].every((value) => y.has(value));
+                return [...value1.keys()].every((value) => value2.has(value));
             }
-            if (_isSameInstance(x, y, RegExp)) {
-                return _isEqual(x.lastIndex, y.lastIndex)
-                    && _isEqual(x.flags, y.flags)
-                    && _isEqual(x.source, y.source);
+            if (_isSameInstance(value1, value2, RegExp)) {
+                return _isEqual(value1.lastIndex, value2.lastIndex)
+                    && _isEqual(value1.flags, value2.flags)
+                    && _isEqual(value1.source, value2.source);
             }
-            if (_isSameInstance(x, y, Error)) {
-                return _isDeepEqual(Object.getOwnPropertyNames(x)
-                    .reduce((acc, k) => { acc[k] = x[k]; return acc; }, {}), Object.getOwnPropertyNames(y)
-                    .reduce((acc, k) => { acc[k] = y[k]; return acc; }, {}));
+            if (_isSameInstance(value1, value2, Error)) {
+                return _isDeepEqual(Object.getOwnPropertyNames(value1)
+                    .reduce((acc, k) => { acc[k] = value1[k]; return acc; }, {}), Object.getOwnPropertyNames(value2)
+                    .reduce((acc, k) => { acc[k] = value2[k]; return acc; }, {}));
             }
-            if (_isSameInstance(x, y, Date)) {
-                return _isEqual(+x, +y);
+            if (_isSameInstance(value1, value2, Date)) {
+                return _isEqual(+value1, +value2);
             }
-            let xKeys = _ownKeys(x);
-            let yKeys = _ownKeys(y);
-            if (xKeys.length !== yKeys.length) {
+            let value1Keys = _ownKeys(value1);
+            let value2Keys = _ownKeys(value2);
+            if (value1Keys.length !== value2Keys.length) {
                 return false;
             }
-            if (xKeys.length === 0) {
+            if (value1Keys.length === 0) {
                 return true;
             }
-            return xKeys.every((key) => _isDeepEqual(x[key], y[key]));
+            return value1Keys.every((key) => _isDeepEqual(value1[key], value2[key]));
         }
         return false;
     }
-    if (_isDeepEqual(x, y)) {
+    if (_isDeepEqual(value1, value2)) {
         if (Error.isError(message)) {
             throw message;
         }
@@ -1007,142 +1024,143 @@ function assertNotDeepEqual(x, y, message) {
     }
     return true;
 }
-function assertDeepStrictEqual(x, y, message) {
-    function _isDeepStrictEqual(x, y) {
-        const _deepType = (x) => ((x === null) ? "null" : (x !== x) ? "NaN" : (typeof x));
-        const _isPrimitive = (x) => (x == null || (typeof x !== "object" && typeof x !== "function"));
-        const _isObject = (x) => (x != null && typeof x === "object");
-        const _isSameInstance = (x, y, Class) => (x instanceof Class) && (y instanceof Class);
-        const _classof = (x) => Object.prototype.toString.call(x).slice(8, -1).toLowerCase();
-        const _ownKeys = (x) => Object.getOwnPropertyNames(x).concat(Object.getOwnPropertySymbols(x));
-        const _isEqual = (x, y) => Object.is(x, y);
-        if (_isEqual(x, y)) {
+function assertDeepStrictEqual(value1, value2, message) {
+    function _isDeepStrictEqual(value1, value2) {
+        const _deepType = (value) => (value === null) ? "null" : (value !== value) ? "NaN" : (typeof value);
+        const _isPrimitive = (value) => (value == null || (typeof value !== "object" && typeof value !== "function"));
+        const _isObject = (value) => (value != null && typeof value === "object");
+        const _isSameInstance = (value1, value2, Class) => (value1 instanceof Class) && (value2 instanceof Class);
+        const _classof = (value) => Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
+        const _ownKeys = (value) => Object.getOwnPropertyNames(value)
+            .concat(Object.getOwnPropertySymbols(value));
+        const _isEqual = (value1, value2) => Object.is(value1, value2);
+        if (_isEqual(value1, value2)) {
             return true;
         }
-        if (_isObject(x) && _isPrimitive(y) && _classof(x) === typeof y) {
-            return _isEqual(x.valueOf(), y);
+        if (_isObject(value1) && _isPrimitive(value2) && _classof(value1) === typeof value2) {
+            return _isEqual(value1.valueOf(), value2);
         }
-        if (_isPrimitive(x) && _isObject(y) && typeof x === _classof(y)) {
-            return _isEqual(x, y.valueOf());
+        if (_isPrimitive(value1) && _isObject(value2) && typeof value1 === _classof(value2)) {
+            return _isEqual(value1, value2.valueOf());
         }
-        if (_deepType(x) !== _deepType(y)) {
+        if (_deepType(value1) !== _deepType(value2)) {
             return false;
         }
-        if (_isObject(x) && _isObject(y)) {
-            if (_isEqual(x, y)) {
+        if (_isObject(value1) && _isObject(value2)) {
+            if (_isEqual(value1, value2)) {
                 return true;
             }
-            if (Object.getPrototypeOf(x).constructor !==
-                Object.getPrototypeOf(y).constructor) {
+            if (Object.getPrototypeOf(value1).constructor !==
+                Object.getPrototypeOf(value2).constructor) {
                 return false;
             }
-            if (_isSameInstance(x, y, WeakMap) || _isSameInstance(x, y, WeakSet)) {
-                return _isEqual(x, y);
+            if (_isSameInstance(value1, value2, WeakMap) || _isSameInstance(value1, value2, WeakSet)) {
+                return _isEqual(value1, value2);
             }
-            if (_isSameInstance(x, y, Number)
-                || _isSameInstance(x, y, Boolean)
-                || _isSameInstance(x, y, String)
-                || _isSameInstance(x, y, BigInt)) {
-                return _isEqual(x.valueOf(), y.valueOf());
+            if (_isSameInstance(value1, value2, Number)
+                || _isSameInstance(value1, value2, Boolean)
+                || _isSameInstance(value1, value2, String)
+                || _isSameInstance(value1, value2, BigInt)) {
+                return _isEqual(value1.valueOf(), value2.valueOf());
             }
-            if (Array.isArray(x) && Array.isArray(y)) {
-                if (x.length !== y.length) {
+            if (Array.isArray(value1) && Array.isArray(value2)) {
+                if (value1.length !== value2.length) {
                     return false;
                 }
-                if (x.length === 0) {
+                if (value1.length === 0) {
                     return true;
                 }
-                return x.every((value, index) => _isDeepStrictEqual(value, y[index]));
+                return value1.every((value, index) => _isDeepStrictEqual(value, value2[index]));
             }
-            if (_isSameInstance(x, y, Int8Array)
-                || _isSameInstance(x, y, Uint8Array)
-                || _isSameInstance(x, y, Uint8ClampedArray)
-                || _isSameInstance(x, y, Int16Array)
-                || _isSameInstance(x, y, Uint16Array)
-                || _isSameInstance(x, y, Int32Array)
-                || _isSameInstance(x, y, Uint32Array)
+            if (_isSameInstance(value1, value2, Int8Array)
+                || _isSameInstance(value1, value2, Uint8Array)
+                || _isSameInstance(value1, value2, Uint8ClampedArray)
+                || _isSameInstance(value1, value2, Int16Array)
+                || _isSameInstance(value1, value2, Uint16Array)
+                || _isSameInstance(value1, value2, Int32Array)
+                || _isSameInstance(value1, value2, Uint32Array)
                 || ("Float16Array" in globalThis ?
-                    _isSameInstance(x, y, Float16Array) : false)
-                || _isSameInstance(x, y, Float32Array)
-                || _isSameInstance(x, y, Float64Array)
-                || _isSameInstance(x, y, BigInt64Array)
-                || _isSameInstance(x, y, BigUint64Array)) {
-                if (x.length !== y.length) {
+                    _isSameInstance(value1, value2, Float16Array) : false)
+                || _isSameInstance(value1, value2, Float32Array)
+                || _isSameInstance(value1, value2, Float64Array)
+                || _isSameInstance(value1, value2, BigInt64Array)
+                || _isSameInstance(value1, value2, BigUint64Array)) {
+                if (value1.length !== value2.length) {
                     return false;
                 }
-                if (x.length === 0) {
+                if (value1.length === 0) {
                     return true;
                 }
-                return x.every((value, index) => _isEqual(value, y[index]));
+                return value1.every((value, index) => _isEqual(value, value2[index]));
             }
-            if (_isSameInstance(x, y, ArrayBuffer)) {
-                if (x.byteLength !== y.byteLength) {
+            if (_isSameInstance(value1, value2, ArrayBuffer)) {
+                if (value1.byteLength !== value2.byteLength) {
                     return false;
                 }
-                if (x.byteLength === 0) {
+                if (value1.byteLength === 0) {
                     return true;
                 }
-                let xTA = new Int8Array(x), yTA = new Int8Array(y);
+                let xTA = new Int8Array(value1), yTA = new Int8Array(value2);
                 return xTA.every((value, index) => _isEqual(value, yTA[index]));
             }
-            if (_isSameInstance(x, y, DataView)) {
-                if (x.byteLength !== y.byteLength) {
+            if (_isSameInstance(value1, value2, DataView)) {
+                if (value1.byteLength !== value2.byteLength) {
                     return false;
                 }
-                if (x.byteLength === 0) {
+                if (value1.byteLength === 0) {
                     return true;
                 }
-                for (let index = 0; index < x.byteLength; index++) {
-                    if (!_isEqual(x.getUint8(index), y.getUint8(index))) {
+                for (let index = 0; index < value1.byteLength; index++) {
+                    if (!_isEqual(value1.getUint8(index), value2.getUint8(index))) {
                         return false;
                     }
                 }
                 return true;
             }
-            if (_isSameInstance(x, y, Map)) {
-                if (x.size !== y.size) {
+            if (_isSameInstance(value1, value2, Map)) {
+                if (value1.size !== value2.size) {
                     return false;
                 }
-                if (x.size === 0) {
+                if (value1.size === 0) {
                     return true;
                 }
-                return [...x.keys()].every((value) => _isDeepStrictEqual(x.get(value), y.get(value)));
+                return [...value1.keys()].every((value) => _isDeepStrictEqual(value1.get(value), value2.get(value)));
             }
-            if (_isSameInstance(x, y, Set)) {
-                if (x.size !== y.size) {
+            if (_isSameInstance(value1, value2, Set)) {
+                if (value1.size !== value2.size) {
                     return false;
                 }
-                if (x.size === 0) {
+                if (value1.size === 0) {
                     return true;
                 }
-                return [...x.keys()].every((value) => y.has(value));
+                return [...value1.keys()].every((value) => value2.has(value));
             }
-            if (_isSameInstance(x, y, RegExp)) {
-                return _isEqual(x.lastIndex, y.lastIndex)
-                    && _isEqual(x.flags, y.flags)
-                    && _isEqual(x.source, y.source);
+            if (_isSameInstance(value1, value2, RegExp)) {
+                return _isEqual(value1.lastIndex, value2.lastIndex)
+                    && _isEqual(value1.flags, value2.flags)
+                    && _isEqual(value1.source, value2.source);
             }
-            if (_isSameInstance(x, y, Error)) {
-                return _isDeepStrictEqual(Object.getOwnPropertyNames(x)
-                    .reduce((acc, k) => { acc[k] = x[k]; return acc; }, {}), Object.getOwnPropertyNames(y)
-                    .reduce((acc, k) => { acc[k] = y[k]; return acc; }, {}));
+            if (_isSameInstance(value1, value2, Error)) {
+                return _isDeepStrictEqual(Object.getOwnPropertyNames(value1)
+                    .reduce((acc, k) => { acc[k] = value1[k]; return acc; }, {}), Object.getOwnPropertyNames(value2)
+                    .reduce((acc, k) => { acc[k] = value2[k]; return acc; }, {}));
             }
-            if (_isSameInstance(x, y, Date)) {
-                return _isEqual(+x, +y);
+            if (_isSameInstance(value1, value2, Date)) {
+                return _isEqual(+value1, +value2);
             }
-            let xKeys = _ownKeys(x);
-            let yKeys = _ownKeys(y);
-            if (xKeys.length !== yKeys.length) {
+            let value1Keys = _ownKeys(value1);
+            let yKeys = _ownKeys(value2);
+            if (value1Keys.length !== yKeys.length) {
                 return false;
             }
-            if (xKeys.length === 0) {
+            if (value1Keys.length === 0) {
                 return true;
             }
-            return xKeys.every((key) => _isDeepStrictEqual(x[key], y[key]));
+            return value1Keys.every((key) => _isDeepStrictEqual(value1[key], value2[key]));
         }
         return false;
     }
-    if (!_isDeepStrictEqual(x, y)) {
+    if (!_isDeepStrictEqual(value1, value2)) {
         if (Error.isError(message)) {
             throw message;
         }
@@ -1275,8 +1293,8 @@ function toPrimitiveValue(value) {
     if (value == null || typeof value !== "object") {
         return value;
     }
-    const ot = Object.prototype.toString.call(value).slice(8, -1);
-    if (["Boolean", "BigInt", "Number", "String", "Symbol"].includes(ot)) {
+    const vType = Object.prototype.toString.call(value).slice(8, -1);
+    if (["Boolean", "BigInt", "Number", "String", "Symbol"].includes(vType)) {
         return value.valueOf();
     }
     return value;
@@ -1345,8 +1363,10 @@ function toLength(value) {
     return Math.min(Math.max(value, 0), Math.pow(2, 53) - 1);
 }
 const typeOf = (value) => value === null ? "null" : typeof value;
-const isSameType = (x, y) => (x == null || y == null) ? (x === y) : (typeof x === typeof y);
-const isSameInstance = (x, y, Contructor) => x instanceof Contructor && y instanceof Contructor;
+const isSameType = (value1, value2) => (value1 == null || value2 == null)
+    ? (value1 === value2)
+    : (typeof value1 === typeof value2);
+const isSameInstance = (value1, value2, Contructor) => value1 instanceof Contructor && value2 instanceof Contructor;
 function isCoercedObject(value) {
     if (value != null && typeof value === "object") {
         if (value instanceof Number) {
@@ -1367,137 +1387,139 @@ function isCoercedObject(value) {
     }
     return false;
 }
-function isDeepStrictEqual(x, y) {
-    const _deepType = (x) => ((x === null) ? "null" : (x !== x) ? "NaN" : (typeof x));
-    const _isPrimitive = (x) => (x == null || (typeof x !== "object" && typeof x !== "function"));
-    const _isObject = (x) => (x != null && typeof x === "object");
-    const _isSameInstance = (x, y, Class) => (x instanceof Class) && (y instanceof Class);
-    const _classof = (x) => Object.prototype.toString.call(x).slice(8, -1).toLowerCase();
-    const _ownKeys = (x) => Object.getOwnPropertyNames(x).concat(Object.getOwnPropertySymbols(x));
-    const _isEqual = (x, y) => Object.is(x, y);
-    if (_isEqual(x, y)) {
+function isDeepStrictEqual(value1, value2) {
+    const _deepType = (value) => (value === null) ? "null" : (value !== value) ? "NaN" : (typeof value);
+    const _isPrimitive = (value) => value == null
+        || (typeof value !== "object" && typeof value !== "function");
+    const _isObject = (value) => (value != null && typeof value === "object");
+    const _isSameInstance = (value1, value2, Class) => (value1 instanceof Class) && (value2 instanceof Class);
+    const _classof = (value) => Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
+    const _ownKeys = (value) => Object.getOwnPropertyNames(value)
+        .concat(Object.getOwnPropertySymbols(value));
+    const _isEqual = (value1, value2) => Object.is(value1, value2);
+    if (_isEqual(value1, value2)) {
         return true;
     }
-    if (_isObject(x) && _isPrimitive(y) && _classof(x) === typeof y) {
-        return _isEqual(x.valueOf(), y);
+    if (_isObject(value1) && _isPrimitive(value2) && _classof(value1) === typeof value2) {
+        return _isEqual(value1.valueOf(), value2);
     }
-    if (_isPrimitive(x) && _isObject(y) && typeof x === _classof(y)) {
-        return _isEqual(x, y.valueOf());
+    if (_isPrimitive(value1) && _isObject(value2) && typeof value1 === _classof(value2)) {
+        return _isEqual(value1, value2.valueOf());
     }
-    if (_deepType(x) !== _deepType(y)) {
+    if (_deepType(value1) !== _deepType(value2)) {
         return false;
     }
-    if (_isObject(x) && _isObject(y)) {
-        if (_isEqual(x, y)) {
+    if (_isObject(value1) && _isObject(value2)) {
+        if (_isEqual(value1, value2)) {
             return true;
         }
-        if (Object.getPrototypeOf(x).constructor !==
-            Object.getPrototypeOf(y).constructor) {
+        if (Object.getPrototypeOf(value1).constructor !==
+            Object.getPrototypeOf(value2).constructor) {
             return false;
         }
-        if (_isSameInstance(x, y, WeakMap) || _isSameInstance(x, y, WeakSet)) {
-            return _isEqual(x, y);
+        if (_isSameInstance(value1, value2, WeakMap) || _isSameInstance(value1, value2, WeakSet)) {
+            return _isEqual(value1, value2);
         }
-        if (_isSameInstance(x, y, Number)
-            || _isSameInstance(x, y, Boolean)
-            || _isSameInstance(x, y, String)
-            || _isSameInstance(x, y, BigInt)) {
-            return _isEqual(x.valueOf(), y.valueOf());
+        if (_isSameInstance(value1, value2, Number)
+            || _isSameInstance(value1, value2, Boolean)
+            || _isSameInstance(value1, value2, String)
+            || _isSameInstance(value1, value2, BigInt)) {
+            return _isEqual(value1.valueOf(), value2.valueOf());
         }
-        if (Array.isArray(x) && Array.isArray(y)) {
-            if (x.length !== y.length) {
+        if (Array.isArray(value1) && Array.isArray(value2)) {
+            if (value1.length !== value2.length) {
                 return false;
             }
-            if (x.length === 0) {
+            if (value1.length === 0) {
                 return true;
             }
-            return x.every((value, index) => isDeepStrictEqual(value, y[index]));
+            return value1.every((value, index) => isDeepStrictEqual(value, value2[index]));
         }
-        if (_isSameInstance(x, y, Int8Array)
-            || _isSameInstance(x, y, Uint8Array)
-            || _isSameInstance(x, y, Uint8ClampedArray)
-            || _isSameInstance(x, y, Int16Array)
-            || _isSameInstance(x, y, Uint16Array)
-            || _isSameInstance(x, y, Int32Array)
-            || _isSameInstance(x, y, Uint32Array)
+        if (_isSameInstance(value1, value2, Int8Array)
+            || _isSameInstance(value1, value2, Uint8Array)
+            || _isSameInstance(value1, value2, Uint8ClampedArray)
+            || _isSameInstance(value1, value2, Int16Array)
+            || _isSameInstance(value1, value2, Uint16Array)
+            || _isSameInstance(value1, value2, Int32Array)
+            || _isSameInstance(value1, value2, Uint32Array)
             || ("Float16Array" in globalThis ?
-                _isSameInstance(x, y, Float16Array) : false)
-            || _isSameInstance(x, y, Float32Array)
-            || _isSameInstance(x, y, Float64Array)
-            || _isSameInstance(x, y, BigInt64Array)
-            || _isSameInstance(x, y, BigUint64Array)) {
-            if (x.length !== y.length) {
+                _isSameInstance(value1, value2, Float16Array) : false)
+            || _isSameInstance(value1, value2, Float32Array)
+            || _isSameInstance(value1, value2, Float64Array)
+            || _isSameInstance(value1, value2, BigInt64Array)
+            || _isSameInstance(value1, value2, BigUint64Array)) {
+            if (value1.length !== value2.length) {
                 return false;
             }
-            if (x.length === 0) {
+            if (value1.length === 0) {
                 return true;
             }
-            return x.every((value, index) => _isEqual(value, y[index]));
+            return value1.every((value, index) => _isEqual(value, value2[index]));
         }
-        if (_isSameInstance(x, y, ArrayBuffer)) {
-            if (x.byteLength !== y.byteLength) {
+        if (_isSameInstance(value1, value2, ArrayBuffer)) {
+            if (value1.byteLength !== value2.byteLength) {
                 return false;
             }
-            if (x.byteLength === 0) {
+            if (value1.byteLength === 0) {
                 return true;
             }
-            let xTA = new Int8Array(x), yTA = new Int8Array(y);
+            let xTA = new Int8Array(value1), yTA = new Int8Array(value2);
             return xTA.every((value, index) => _isEqual(value, yTA[index]));
         }
-        if (_isSameInstance(x, y, DataView)) {
-            if (x.byteLength !== y.byteLength) {
+        if (_isSameInstance(value1, value2, DataView)) {
+            if (value1.byteLength !== value2.byteLength) {
                 return false;
             }
-            if (x.byteLength === 0) {
+            if (value1.byteLength === 0) {
                 return true;
             }
-            for (let index = 0; index < x.byteLength; index++) {
-                if (!_isEqual(x.getUint8(index), y.getUint8(index))) {
+            for (let index = 0; index < value1.byteLength; index++) {
+                if (!_isEqual(value1.getUint8(index), value2.getUint8(index))) {
                     return false;
                 }
             }
             return true;
         }
-        if (_isSameInstance(x, y, Map)) {
-            if (x.size !== y.size) {
+        if (_isSameInstance(value1, value2, Map)) {
+            if (value1.size !== value2.size) {
                 return false;
             }
-            if (x.size === 0) {
+            if (value1.size === 0) {
                 return true;
             }
-            return [...x.keys()].every((value) => isDeepStrictEqual(x.get(value), y.get(value)));
+            return [...value1.keys()].every((value) => isDeepStrictEqual(value1.get(value), value2.get(value)));
         }
-        if (_isSameInstance(x, y, Set)) {
-            if (x.size !== y.size) {
+        if (_isSameInstance(value1, value2, Set)) {
+            if (value1.size !== value2.size) {
                 return false;
             }
-            if (x.size === 0) {
+            if (value1.size === 0) {
                 return true;
             }
-            return [...x.keys()].every((value) => y.has(value));
+            return [...value1.keys()].every((value) => value2.has(value));
         }
-        if (_isSameInstance(x, y, RegExp)) {
-            return _isEqual(x.lastIndex, y.lastIndex)
-                && _isEqual(x.flags, y.flags)
-                && _isEqual(x.source, y.source);
+        if (_isSameInstance(value1, value2, RegExp)) {
+            return _isEqual(value1.lastIndex, value2.lastIndex)
+                && _isEqual(value1.flags, value2.flags)
+                && _isEqual(value1.source, value2.source);
         }
-        if (_isSameInstance(x, y, Error)) {
-            return isDeepStrictEqual(Object.getOwnPropertyNames(x)
-                .reduce((acc, k) => { acc[k] = x[k]; return acc; }, {}), Object.getOwnPropertyNames(y)
-                .reduce((acc, k) => { acc[k] = y[k]; return acc; }, {}));
+        if (_isSameInstance(value1, value2, Error)) {
+            return isDeepStrictEqual(Object.getOwnPropertyNames(value1)
+                .reduce((acc, k) => { acc[k] = value1[k]; return acc; }, {}), Object.getOwnPropertyNames(value2)
+                .reduce((acc, k) => { acc[k] = value2[k]; return acc; }, {}));
         }
-        if (_isSameInstance(x, y, Date)) {
-            return _isEqual(+x, +y);
+        if (_isSameInstance(value1, value2, Date)) {
+            return _isEqual(+value1, +value2);
         }
-        let xKeys = _ownKeys(x);
-        let yKeys = _ownKeys(y);
-        if (xKeys.length !== yKeys.length) {
+        let value1Keys = _ownKeys(value1);
+        let value2Keys = _ownKeys(value2);
+        if (value1Keys.length !== value2Keys.length) {
             return false;
         }
-        if (xKeys.length === 0) {
+        if (value1Keys.length === 0) {
             return true;
         }
-        return xKeys.every((key) => isDeepStrictEqual(x[key], y[key]));
+        return value1Keys.every((key) => isDeepStrictEqual(value1[key], value2[key]));
     }
     return false;
 }
@@ -1631,9 +1653,9 @@ function unique(iter, resolver) {
         return [...new Set(iter)];
     }
     if (typeof resolver === "string") {
-        return Array.from(iter).reduce(function (acc, el) {
-            if (acc.every((e) => e[resolver] !== el[resolver])) {
-                acc.push(el);
+        return Array.from(iter).reduce(function (acc, item) {
+            if (acc.every((item2) => item2[resolver] !== item[resolver])) {
+                acc.push(item);
             }
             return acc;
         }, []);
@@ -1680,8 +1702,8 @@ const setSymmetricDifference = (array, b) => new Set([...array].filter((value) =
 const isSuperset = ([...superSet], [...subSet]) => subSet.every((value) => superSet.includes(value));
 const min = (...args) => args.reduce((acc, value) => (value < acc ? value : acc), args[0]);
 const max = (...args) => args.reduce((acc, value) => (value > acc ? value : acc), args[0]);
-const arrayRepeat = (value, n = 100) => Array(n).fill(value);
-const arrayCycle = ([...array], n = 100) => Array(n).fill(array).flat();
+const arrayRepeat = (value, num = 100) => Array(num).fill(value);
+const arrayCycle = ([...array], num = 100) => Array(num).fill(array).flat();
 const arrayRange = (start = 0, end = 99, step = 1) => Array.from({ length: (end - start) / step + 1 }, (_v, i) => start + (i * step));
 function zip(...args) {
     args = args.map((value) => Array.from(value));
@@ -1754,16 +1776,16 @@ function* iterRange(start = 0, step = 1, end = Infinity) {
         index += step;
     }
 }
-function* iterCycle([...array], n = Infinity) {
+function* iterCycle([...array], num = Infinity) {
     let index = 0;
-    while (index < n) {
+    while (index < num) {
         yield* array;
         index++;
     }
 }
-function* iterRepeat(value, n = Infinity) {
+function* iterRepeat(value, num = Infinity) {
     let index = 0;
-    while (index < n) {
+    while (index < num) {
         yield value;
         index++;
     }
@@ -1787,8 +1809,8 @@ function* dropWhile(iter, fn) {
         }
     }
 }
-function* take(iter, n = 1) {
-    let index = n;
+function* take(iter, num = 1) {
+    let index = num;
     for (let item of iter) {
         if (index <= 0) {
             break;
@@ -1797,8 +1819,8 @@ function* take(iter, n = 1) {
         index--;
     }
 }
-function* drop(iter, n = 1) {
-    let index = n;
+function* drop(iter, num = 1) {
+    let index = num;
     for (let item of iter) {
         if (index < 1) {
             yield item;
@@ -1905,7 +1927,7 @@ function* reverse([...array]) {
         yield array[index];
     }
 }
-const sort = ([...array], numbers = false) => array.sort(numbers ? (x, y) => x - y : undefined);
+const sort = ([...array], numbers = false) => array.sort(numbers ? (value1, value2) => value1 - value2 : undefined);
 function includes(collection, value, comparator) {
     if (comparator !== undefined && typeof comparator !== "function") {
         throw new TypeError(`[includes] TypeError: comparator is not a function or undefined. Got ${typeof comparator}`);
@@ -1914,7 +1936,7 @@ function includes(collection, value, comparator) {
         && typeof value.next === "function";
     const _isIterable = (value) => value != null && typeof value[Symbol.iterator] === "function";
     const _isEqual = comparator ||
-        ((x, y) => x === y || (x !== x && y !== y));
+        ((value1, value2) => value1 === value2 || (value1 !== value1 && value2 !== value2));
     const cType = (collection === null ? "null" : typeof collection);
     if (collection == null
         || !(["object", "function", "string"].includes(cType))
@@ -2017,7 +2039,7 @@ function none(iter, fn) {
     }
     return true;
 }
-const takeRight = ([...array], n = 1) => array.reverse().slice(0, n);
+const takeRight = ([...array], num = 1) => array.reverse().slice(0, num);
 function* takeRightWhile([...array], fn) {
     let index = 0;
     for (let item of array.reverse()) {
@@ -2029,7 +2051,7 @@ function* takeRightWhile([...array], fn) {
         }
     }
 }
-const dropRight = ([...array], n = 1) => array.reverse().slice(n);
+const dropRight = ([...array], num = 1) => array.reverse().slice(num);
 function* dropRightWhile([...array], fn) {
     let dropping = true;
     let index = 0;
@@ -2096,7 +2118,7 @@ function join(iter, separator = ",") {
 const withOut = ([...array], [...filterValues]) => array.filter((value) => !filterValues.includes(value));
 const isFloat = (value) => typeof value === "number" && value === value && !!(value % 1);
 function toInteger(value) {
-    value = ((value = Math.trunc(+value)) !== value || value === 0) ? 0 : value;
+    value = ((value = Math.trunc(Number(value))) !== value || value === 0) ? 0 : value;
     return Math.min(Math.max(value, -(Math.pow(2, 53) - 1)), Math.pow(2, 53) - 1);
 }
 const toIntegerOrInfinity = (value) => ((value = Math.trunc(Number(value))) !== value || value === 0) ? 0 : value;
