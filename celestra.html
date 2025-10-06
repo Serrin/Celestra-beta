@@ -270,6 +270,8 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <p><a href="#FN-isIterable();">isIterable();</a></p>
       <p><a href="#FN-isIterator();">isIterator();</a></p>
       <p><a href="#FN-isLength();">isLength();</a></p>
+      <p><a href="#FN-isNonNullable();">isNonNullable();</a></p>
+      <p><a href="#FN-isNonNullablePrimitive();">isNonNullablePrimitive();();</a></p>
       <p><a href="#FN-isNull();">isNull();</a></p>
       <p><a href="#FN-isNullish();">isNullish();</a></p>
       <p><a href="#FN-isNumeric();">isNumeric();</a></p>
@@ -918,7 +920,7 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-eq();">
       <td><code>eq(value1, value2);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>SameValueZero equality (like `Object.is`, but +0 === -0). All of the parameters are mandatory and can be any type. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>SameValueZero equality (like <code>Object.is();</code>, but <code>+0 === -0</code>). All of the parameters are mandatory and can be any type. The return value is boolean.</td>
     </tr>
     <tr id="FN-F();">
       <td><code>F();</code></td>
@@ -931,11 +933,11 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-gt();">
       <td><code>gt(value1, value2);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Greater than. All of the parameters are mandatory and can be any type. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Strict type greater than. All of the parameters are mandatory and can be number, bigint, string or boolean, but the values have to be same type. If the type of the values are not the same, then return value is false. The return value is boolean.</td>
     </tr>
     <tr id="FN-gte();">
       <td><code>gte(value1, value2);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Greater than or equal (SameValueZero). All of the parameters are mandatory and can be any type. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Strict type greater than or equal (SameValueZero). All of the parameters are mandatory and can be number, bigint, string or boolean, but the values have to be same type. If the type of the values are not the same, then return value is false. The return value is boolean.</td>
     </tr>
     <tr id="FN-identity();">
       <td><code>identity(value);</code></td>
@@ -943,11 +945,11 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-lt();">
       <td><code>lt(value1, value2);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Less than. All of the parameters are mandatory and can be any type. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Strict type less than. All of the parameters are mandatory and can be number, bigint, string or boolean, but the values have to be same type. If the type of the values are not the same, then return value is false. The return value is boolean.</td>
     </tr>
     <tr id="FN-lte();">
       <td><code>lte(value1, value2);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Less than or equal (SameValueZero). All of the parameters are mandatory and can be any type. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Strict type less than or equal (SameValueZero). All of the parameters are mandatory and can be number, bigint, string or boolean, but the values have to be same type. If the type of the values are not the same, then return value is false. The return value is boolean.</td>
     </tr>
     <tr id="FN-nanoid();">
       <td><code>nanoid([size=21[, alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"]]);</code></td>
@@ -1551,6 +1553,14 @@ CEL.delay(5000)
     <tr id="FN-isLength();">
       <td><code>isLength(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>Alias of <code>isIndex(value);</code>.</td>
+    </tr>
+    <tr id="FN-isNonNullable();">
+      <td><code>isNonNullable(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Checks if the given value is NonNullable (not null or undefined). The value parameter is mandatory and can be any type. The return value is boolean.</td>
+    </tr>
+    <tr id="FN-isNonNullablePrimitive();">
+      <td><code>isNonNullablePrimitive(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Checks if the given value is NonNullable (not null, undefined, object or function). The value parameter is mandatory and can be any type. The return value is boolean.</td>
     </tr>
     <tr id="FN-isNull();">
       <td><code>isNull(value);</code></td>

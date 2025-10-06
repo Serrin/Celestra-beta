@@ -38,7 +38,7 @@ type IteratorReturn =
  *
  * @internal
  */
-type Comparable = number | string | bigint;
+type Comparable = number | bigint | string | boolean;
 
 
 /** polyfills **/
@@ -346,12 +346,39 @@ const BASE62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 const WORDSAFEALPHABET = "23456789CFGHJMPQRVWXcfghjmpqvwx"; /* 31 */
 
 
+/*
+built-in type:
+type NonNullable = number | boolean | string | symbol | object | Function;
+*/
+/**
+ * @description Checks if the given value is NonNullable (not null or undefined).
+ *
+ * @param {unknown} value - The value to check.
+ * @returns True if the value is a NonNullable, false otherwise.
+ */
+const isNonNullable = (value: unknown): value is NonNullable<unknown> =>
+  value != null;
+
+
+/** @internal */
+type NonNullablePrimitive = number | boolean | string | symbol;
+/**
+ * @description Checks if the given value is NonNullablePrimitive.
+ *
+ * @param {unknown} value - The value to check.
+ * @returns True if the value is a NonNullable, false otherwise.
+ */
+const isNonNullablePrimitive =
+  (value: unknown): value is NonNullablePrimitive =>
+    value != null && typeof value !== "object" && typeof value !== "function";
+
+
 /* eq (value1: any, value2: any): boolean */
 /**
  * @description SameValueZero equality (like `Object.is`, but +0 === -0).
  *
- * @param {any} value1
- * @param {any} value2
+ * @param {unknown} value1
+ * @param {unknown} value2
  * @returns {boolean}
  */
 const eq = (value1: unknown, value2: unknown): boolean =>
@@ -366,8 +393,11 @@ const eq = (value1: unknown, value2: unknown): boolean =>
  * @param {any} value2
  * @returns {boolean}
  */
-const gt = <T extends Comparable>(value1: T, value2: T): boolean =>
-  value1 > value2;
+function gt (value1: Comparable, value2: Comparable): boolean {
+  const _typeOf = (value: unknown): string =>
+    value === null ? "null" : typeof value;
+  return _typeOf(value1) === _typeOf(value2) && value1 > value2;
+}
 
 
 /* gte (value1: any, value2: any): boolean */
@@ -378,10 +408,14 @@ const gt = <T extends Comparable>(value1: T, value2: T): boolean =>
  * @param {any} value2
  * @returns {boolean}
  */
-const gte = <T extends Comparable>(value1: T, value2: T): boolean =>
-  value1 > value2
-    || value1 === value2
-    || (value1 !== value1 && value2 !== value2);
+function gte (value1: Comparable, value2: Comparable): boolean {
+  const _typeOf = (value: unknown): string =>
+    value === null ? "null" : typeof value;
+  return _typeOf(value1) === _typeOf(value2)
+    && (value1 > value2
+      || value1 === value2
+      || (value1 !== value1 && value2 !== value2));
+}
 
 
 /* lt (value1: any, value2: any): boolean */
@@ -392,8 +426,11 @@ const gte = <T extends Comparable>(value1: T, value2: T): boolean =>
  * @param {any} value2
  * @returns {boolean}
  */
-const lt = <T extends Comparable>(value1: T, value2: T): boolean =>
-  value1 < value2;
+function lt (value1: Comparable, value2: Comparable): boolean {
+  const _typeOf = (value: unknown): string =>
+    value === null ? "null" : typeof value;
+  return _typeOf(value1) === _typeOf(value2) && value1 < value2;
+}
 
 
 /* lte (value1: any, value2: any): boolean */
@@ -404,10 +441,14 @@ const lt = <T extends Comparable>(value1: T, value2: T): boolean =>
  * @param {any} value2
  * @returns {boolean}
  */
-const lte = <T extends Comparable>(value1: T, value2: T): boolean =>
-  value1 < value2
-    || value1 === value2
-    || (value1 !== value1 && value2 !== value2);
+function lte (value1: Comparable, value2: Comparable): boolean {
+  const _typeOf = (value: unknown): string =>
+    value === null ? "null" : typeof value;
+  return _typeOf(value1) === _typeOf(value2)
+    && (value1 < value2
+      || value1 === value2
+      || (value1 !== value1 && value2 !== value2));
+}
 
 
 /* tap(function: function): function(v) */
@@ -2595,7 +2636,15 @@ function toLength (value: any): number {
 
 /** @internal */
 type TypeOfTag =
-  "null" | "undefined" | "number" | "bigint" | "boolean" | "string" | "symbol" | "object" | "function";
+  | "null"
+  | "undefined"
+  | "number"
+  | "bigint"
+  | "boolean"
+  | "string"
+  | "symbol"
+  | "object"
+  | "function";
 /* typeOf(value: unknown): string */
 /**
  * Extended typeof operator with "null" type as string.
@@ -4192,6 +4241,8 @@ export default {
   BASE58,
   BASE62,
   WORDSAFEALPHABET,
+  isNonNullable,
+  isNonNullablePrimitive,  
   eq,
   gt,
   gte,
@@ -4463,6 +4514,8 @@ export {
   BASE58,
   BASE62,
   WORDSAFEALPHABET,
+  isNonNullable,
+  isNonNullablePrimitive,
   eq,
   gt,
   gte,

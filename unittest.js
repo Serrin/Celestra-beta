@@ -293,7 +293,7 @@ var /** @type any */ token12, /** @type any */ token13;
 var /** @type any */ token14, /** @type any */ token15;
 
 
-/* Celestra v6.1.0 testcases */
+/* Celestra v6.1.1 testcases */
 
 
 /** Not auto tested functions **/
@@ -499,6 +499,32 @@ CUT.isTrue("lte();",
     && !CEL.lte(42, Object(42))
     && CEL.lte(42, 42)
     && CEL.lte(NaN, NaN)
+);
+
+
+/* isNonNullable(); */
+CUT.isTrue("isNonNullable();",
+  CEL.isNonNullable(42)
+    && CEL.isNonNullable(true)
+    && CEL.isNonNullable("lorem")
+    && CEL.isNonNullable(Symbol())
+    && CEL.isNonNullable([])
+    && CEL.isNonNullable(() => {})
+    && !CEL.isNonNullable(null)
+    && !CEL.isNonNullable(undefined)
+);
+
+
+/* isNonNullablePrimitive(); */
+CUT.isTrue("isNonNullablePrimitive();",
+  CEL.isNonNullablePrimitive(42)
+    && CEL.isNonNullablePrimitive(true)
+    && CEL.isNonNullablePrimitive("lorem")
+    && CEL.isNonNullablePrimitive(Symbol())
+    && !CEL.isNonNullablePrimitive([])
+    && !CEL.isNonNullablePrimitive(() => {})
+    && !CEL.isNonNullablePrimitive(null)
+    && !CEL.isNonNullablePrimitive(undefined)
 );
 
 

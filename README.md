@@ -12,7 +12,7 @@
 
 __A helper JavaScript library with useful functions and polyfills and zero dependencies.__
 
-Latest version: 6.1.0
+Latest version: 6.1.1
 
 Date: 2025-10-03T01:06:23.987Z
 
@@ -224,14 +224,14 @@ Name | Description
 `delay(ms).then(callback);` | __Stability: 1 - Deprecated and will be removed.__<BR>A promise based delay function. The ms (milliseconds) parameter is mandatory and have to be an integer.<BR>__Sample:__<BR>`CEL.sleep(5000).then(() => alert("5 seconds")).catch(console.log.bind(console)).finally(() => alert("done"));`
 `deleteOwnProperty(object,property[,Throw = false]);`| __Stability: 4 - Stable.__<BR>This function deletes an own property in the given object. If Throw is true and the deleting was unsuccessful, then an error will be thrown.<BR>__Return values:__<BR>1 - The property was own and the delete was successful.<BR>0 - The property is own and the delete was unsuccessful.<BR>-1 - The property is not own or not exists.
 `extend([deep,]target,source1[,sourceN]);` | __Stability: 4 - Stable.__<BR>This is an enhanced version of the `Object.assign` method. The deep parameter (boolean) is optional and sets the deep copy (recursive) of the sources.
-`eq(value1, value2);` | __Stability: 4 - Stable.__<BR>SameValueZero equality (like `Object.is`, but +0 === -0). All of the parameters are mandatory and can be any type. The return value is boolean.
+`eq(value1, value2);` | __Stability: 4 - Stable.__<BR>SameValueZero equality (like `Object.is();`, but `+0 === -0`). All of the parameters are mandatory and can be any type. The return value is boolean.
 `F();` | __Stability: 4 - Stable.__<BR>This function returns false.
 `getUrlVars([str=location.search]);` | __Stability: 4 - Stable.__<BR>Get the values of the url variables in an object from the `location.search` _(default value)_ or another given url. The str parameter name is optional and can be a string. Example: `"?showall=true&order_by=updated&o=asc"` -> `Object { showall: "true", order_by: "updated", o: "asc" }`
-`gt(value1, value2);` | __Stability: 4 - Stable.__<BR>Greater than. All of the parameters are mandatory and can be any type. The return value is boolean.
-`gte(value1, value2);` | __Stability: 4 - Stable.__<BR>Greater than or equal (SameValueZero). All of the parameters are mandatory and can be any type. The return value is boolean.
+`gt(value1, value2);` | __Stability: 4 - Stable.__<BR>Strict type greater than. All of the parameters are mandatory and can be number, bigint, string or boolean, but the values have to be same type. If the type of the values are not the same, then return value is false. The return value is boolean.
+`gte(value1, value2);` | __Stability: 4 - Stable.__<BR>Strict type greater than or equal (SameValueZero). All of the parameters are mandatory and can be number, bigint, string or boolean, but the values have to be same type. If the type of the values are not the same, then return value is false. The return value is boolean.
 `identity(value);` | __Stability: 4 - Stable.__<BR>Return the given value. (In math: `f(x)=x`)
-`lt(value1, value2);` | __Stability: 4 - Stable.__<BR>Less than. All of the parameters are mandatory and can be any type. The return value is boolean.
-`lte(value1, value2);` | __Stability: 4 - Stable.__<BR>Less than or equal (SameValueZero). All of the parameters are mandatory and can be any type. The return value is boolean.
+`lt(value1, value2);` | __Stability: 4 - Stable.__<BR>Strict type less than. All of the parameters are mandatory and can be number, bigint, string or boolean, but the values have to be same type. If the type of the values are not the same, then return value is false. The return value is boolean.
+`lte(value1, value2);` | __Stability: 4 - Stable.__<BR>Strict type less than or equal (SameValueZero). All of the parameters are mandatory and can be number, bigint, string or boolean, but the values have to be same type. If the type of the values are not the same, then return value is false. The return value is boolean.
 `nanoid([size=21[,alphabet= "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"]]);` | __Stability: 4 - Stable.__<BR>Generate a nanoid. The size parameter is optional and the default value is 21. The alphabet parameter is optional and the default value is "A-Za-z0-9_-". The return value is the generated nanoid (string).
 `noop();` | __Stability: 4 - Stable.__<BR>It's an empty function (no operation) that returns undefined and usable for optional callback arguments.
 `obj2string(object);` | __Stability: 4 - Stable.__<BR>Convert object to a querystring. The return value is the string. The object parameter is mandatory.
@@ -386,6 +386,8 @@ Name | Description
 `isIterable(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an iterable object. The return value is boolean.
 `isIterator(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is an iterator. The return value is boolean.
 `isLength(value);`| __Stability: 4 - Stable.__<BR>Alias of `isIndex(value);`.
+`isNonNullable(value);`| __Stability: 4 - Stable.__<BR>Checks if the given value is NonNullable (not null or undefined). The value parameter is mandatory and can be any type. The return value is boolean.
+`isNonNullablePrimitive(value);`| __Stability: 4 - Stable.__<BR>Checks if the given value is NonNullable (not null, undefined, object or function). The value parameter is mandatory and can be any type. The return value is boolean.
 `isNull(value);` |__Stability: 4 - Stable.__<BR> This function determines whether the provided value is null. The return value is boolean.
 `isNullish(value);` | __Stability: 4 - Stable.__<BR>__Old name before v6.1.0: `isNil();`.__<BR>This function determines whether the provided value is null or undefined. The return value is boolean.
 `isNumeric(value);` | __Stability: 4 - Stable.__<BR>This function determines whether the provided value is a number or can be converted to number. The return value is boolean.
