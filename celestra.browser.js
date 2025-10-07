@@ -1691,21 +1691,59 @@ function ajax(options) {
         xhr.send(encodeURI(options.data));
     }
 }
-function is(value, expected, Throw = false) {
-    if (!(["string", "function", "undefined"].includes(typeof expected))
-        && !Array.isArray(expected)) {
-        throw new TypeError(`[is] TypeError: expectedType must be string, function, array or undefined. Got ${typeof expected}`);
+function isTypedCollection(iter, expectedType, Throw = false) {
+    const _typeOf = (value) => value === null ? "null" : typeof value;
+    const _isIterator = (value) => value != null && typeof value === "object"
+        && typeof value.next === "function";
+    const _isIterable = (value) => value != null && typeof value[Symbol.iterator] === "function";
+    if (!_isIterator(iter) && !_isIterable(iter)) {
+        throw new TypeError(`[isTypedCollection] TypeError: iter must be iterable or iterator. Got ${_typeOf(iter)}`);
+    }
+    if (!(["string", "function"].includes(typeof expectedType))
+        && !Array.isArray(expectedType)) {
+        throw new TypeError(`[isTypedCollection] TypeError: expectedType must be string, function, array. Got ${_typeOf(expectedType)}`);
+    }
+    if (typeof Throw !== "boolean") {
+        throw new TypeError(`[isTypedCollection] TypeError: Throw has to be a boolean. Got ${typeof Throw}`);
+    }
+    let expectedArray = Array.isArray(expectedType) ? expectedType : [expectedType];
+    let matched = true;
+    for (let value of iter) {
+        const valueType = _typeOf(value);
+        matched = expectedArray.some(function (item) {
+            if (typeof item === "string") {
+                return valueType === item;
+            }
+            if (typeof item === "function") {
+                return value != null && value instanceof item;
+            }
+            throw new TypeError(`[isTypedCollection] TypeError: expectedType array elements have to be a string or function. Got ${typeof item}`);
+        });
+        if (!matched) {
+            break;
+        }
+    }
+    if (Throw && !matched) {
+        let eNames = expectedArray.map((item) => (typeof item === "string" ? item.toString() : item.name ?? "anonymous")).join(", ");
+        throw new TypeError(`[isTypedCollection] TypeError: one or more items are not ${eNames}`);
+    }
+    return matched;
+}
+function is(value, expectedType, Throw = false) {
+    if (!(["string", "function", "undefined"].includes(typeof expectedType))
+        && !Array.isArray(expectedType)) {
+        throw new TypeError(`[is] TypeError: expectedType must be string, function, array or undefined. Got ${typeof expectedType}`);
     }
     if (typeof Throw !== "boolean") {
         throw new TypeError(`[is] TypeError: Throw has to be a boolean. Got ${typeof Throw}`);
     }
     const vType = (value === null ? "null" : typeof value);
-    if (expected == null) {
+    if (expectedType == null) {
         return vType === "object"
             ? Object.getPrototypeOf(value)?.constructor ?? "object"
             : vType;
     }
-    let expectedArray = Array.isArray(expected) ? expected : [expected];
+    let expectedArray = Array.isArray(expectedType) ? expectedType : [expectedType];
     let matched = expectedArray.some(function (item) {
         if (typeof item === "string") {
             return vType === item;
@@ -2899,6 +2937,7 @@ export default {
     getText,
     getJson,
     ajax,
+    isTypedCollection,
     is,
     toObject,
     toPrimitiveValue,
@@ -3040,4 +3079,4 @@ export default {
     randomFloat,
     inRange
 };
-export { VERSION, BASE16, BASE32, BASE36, BASE58, BASE62, WORDSAFEALPHABET, isNonNullable, isNonNullablePrimitive, eq, gt, gte, lt, lte, tap, once, curry, pipe, compose, pick, omit, assoc, asyncNoop, asyncT, asyncF, asyncConstant, asyncIdentity, deleteOwnProperty, createPolyfillMethod, createPolyfillProperty, randomUUIDv7, delay, randomBoolean, getUrlVars, obj2string, extend, sizeIn, unBind, bind, constant, identity, noop, T, F, nanoid, timestampID, assertIs, assertIsNot, assertFail, assertMatch, assertDoesNotMatch, assertThrows, assertIsNotNullish, assertIsNullish, assert, assertTrue, assertFalse, assertEqual, assertStrictEqual, assertNotEqual, assertNotStrictEqual, assertDeepEqual, assertNotDeepStrictEqual, assertNotDeepEqual, assertDeepStrictEqual, b64Encode, b64Decode, strTruncate, strPropercase, strTitlecase, strCapitalize, strUpFirst, strDownFirst, strReverse, strCodePoints, strFromCodePoints, strAt, strSplice, strHTMLRemoveTags, strHTMLEscape, strHTMLUnEscape, qsa, qs, domReady, domCreate, domToElement, domGetCSS, domSetCSS, domFadeIn, domFadeOut, domFadeToggle, domHide, domShow, domToggle, domIsHidden, domSiblings, domSiblingsPrev, domSiblingsLeft, domSiblingsNext, domSiblingsRight, importScript, importStyle, form2array, form2string, getDoNotTrack, getLocation, createFile, getFullscreen, setFullscreenOn, setFullscreenOff, domGetCSSVar, domSetCSSVar, domScrollToTop, domScrollToBottom, domScrollToElement, domClear, getText, getJson, ajax, is, toObject, toPrimitiveValue, toSafeString, isPropertyKey, toPropertyKey, isIndex, isLength, toIndex, toLength, typeOf, isSameType, isSameInstance, isCoercedObject, isDeepStrictEqual, isEmptyValue, isProxy, isAsyncGeneratorFn, isClass, isPlainObject, isChar, isNumeric, isObject, isFunction, isCallable, isArraylike, isNull, isUndefined, isNullish, isPrimitive, isIterator, isRegexp, isElement, isIterable, isAsyncIterable, isTypedArray, isGeneratorFn, isAsyncFn, setCookie, getCookie, hasCookie, removeCookie, clearCookies, castArray, compact, unique, count, arrayDeepClone, initial, shuffle, partition, setUnion, setIntersection, setDifference, setSymmetricDifference, isSuperset, min, max, arrayRepeat, arrayCycle, arrayRange, zip, unzip, zipObj, arrayAdd, arrayClear, arrayRemove, arrayRemoveBy, arrayMerge, iterRange, iterCycle, iterRepeat, takeWhile, dropWhile, take, drop, forEach, forEachRight, map, filter, reject, slice, tail, item, nth, size, first, head, last, reverse, sort, includes, find, findLast, every, some, none, takeRight, takeRightWhile, dropRight, dropRightWhile, concat, reduce, enumerate, flat, join, withOut, isFloat, toInteger, toIntegerOrInfinity, sum, avg, product, clamp, minmax, isEven, isOdd, toInt8, toUInt8, toInt16, toUInt16, toInt32, toUInt32, toBigInt64, toBigUInt64, toFloat32, isInt8, isUInt8, isInt16, isUInt16, isInt32, isUInt32, isBigInt64, isBigUInt64, toFloat16, isFloat16, signbit, randomInt, randomFloat, inRange };
+export { VERSION, BASE16, BASE32, BASE36, BASE58, BASE62, WORDSAFEALPHABET, isNonNullable, isNonNullablePrimitive, eq, gt, gte, lt, lte, tap, once, curry, pipe, compose, pick, omit, assoc, asyncNoop, asyncT, asyncF, asyncConstant, asyncIdentity, deleteOwnProperty, createPolyfillMethod, createPolyfillProperty, randomUUIDv7, delay, randomBoolean, getUrlVars, obj2string, extend, sizeIn, unBind, bind, constant, identity, noop, T, F, nanoid, timestampID, assertIs, assertIsNot, assertFail, assertMatch, assertDoesNotMatch, assertThrows, assertIsNotNullish, assertIsNullish, assert, assertTrue, assertFalse, assertEqual, assertStrictEqual, assertNotEqual, assertNotStrictEqual, assertDeepEqual, assertNotDeepStrictEqual, assertNotDeepEqual, assertDeepStrictEqual, b64Encode, b64Decode, strTruncate, strPropercase, strTitlecase, strCapitalize, strUpFirst, strDownFirst, strReverse, strCodePoints, strFromCodePoints, strAt, strSplice, strHTMLRemoveTags, strHTMLEscape, strHTMLUnEscape, qsa, qs, domReady, domCreate, domToElement, domGetCSS, domSetCSS, domFadeIn, domFadeOut, domFadeToggle, domHide, domShow, domToggle, domIsHidden, domSiblings, domSiblingsPrev, domSiblingsLeft, domSiblingsNext, domSiblingsRight, importScript, importStyle, form2array, form2string, getDoNotTrack, getLocation, createFile, getFullscreen, setFullscreenOn, setFullscreenOff, domGetCSSVar, domSetCSSVar, domScrollToTop, domScrollToBottom, domScrollToElement, domClear, getText, getJson, ajax, isTypedCollection, is, toObject, toPrimitiveValue, toSafeString, isPropertyKey, toPropertyKey, isIndex, isLength, toIndex, toLength, typeOf, isSameType, isSameInstance, isCoercedObject, isDeepStrictEqual, isEmptyValue, isProxy, isAsyncGeneratorFn, isClass, isPlainObject, isChar, isNumeric, isObject, isFunction, isCallable, isArraylike, isNull, isUndefined, isNullish, isPrimitive, isIterator, isRegexp, isElement, isIterable, isAsyncIterable, isTypedArray, isGeneratorFn, isAsyncFn, setCookie, getCookie, hasCookie, removeCookie, clearCookies, castArray, compact, unique, count, arrayDeepClone, initial, shuffle, partition, setUnion, setIntersection, setDifference, setSymmetricDifference, isSuperset, min, max, arrayRepeat, arrayCycle, arrayRange, zip, unzip, zipObj, arrayAdd, arrayClear, arrayRemove, arrayRemoveBy, arrayMerge, iterRange, iterCycle, iterRepeat, takeWhile, dropWhile, take, drop, forEach, forEachRight, map, filter, reject, slice, tail, item, nth, size, first, head, last, reverse, sort, includes, find, findLast, every, some, none, takeRight, takeRightWhile, dropRight, dropRightWhile, concat, reduce, enumerate, flat, join, withOut, isFloat, toInteger, toIntegerOrInfinity, sum, avg, product, clamp, minmax, isEven, isOdd, toInt8, toUInt8, toInt16, toUInt16, toInt32, toUInt32, toBigInt64, toBigUInt64, toFloat32, isInt8, isUInt8, isInt16, isUInt16, isInt32, isUInt32, isBigInt64, isBigUInt64, toFloat16, isFloat16, signbit, randomInt, randomFloat, inRange };

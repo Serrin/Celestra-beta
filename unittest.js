@@ -350,6 +350,46 @@ CUT.isEqual("WORDSAFEALPHABET;", CEL.WORDSAFEALPHABET,
 );
 
 
+/* isTypedCollection(); begin */
+CUT.isTrue("is(); 01 true",
+  CEL.isTypedCollection([1,2,3], "number")
+    && CEL.isTypedCollection([1,2,3], ["number"])
+    && CEL.isTypedCollection([1,2,3], [Array, "number", Number])
+    && CEL.isTypedCollection([1,{},3], [Array, "number", Object])
+);
+CUT.isFalse("is(); 02 false",
+  CEL.isTypedCollection([1,2,3], "string", false)
+    && CEL.isTypedCollection([1,2,3], ["string"])
+    && CEL.isTypedCollection([1,2,3], [Array, "string", Number], false)
+    && CEL.isTypedCollection([1,{},3], [Array, "string", Map])
+);
+CUT.isError("is(); 03 error",
+  () => CEL.isTypedCollection([1,2,3], "string", true)
+);
+CUT.isError("is(); 04 error",
+  () => CEL.isTypedCollection([1,2,3], ["string"], true)
+);
+CUT.isError("is(); 05 error",
+  () => CEL.isTypedCollection([1,2,3], [Array, "string", Number], true)
+);
+CUT.isError("is(); 06 error",
+  () => CEL.isTypedCollection([1,{},3], [Array, "string", Map], true)
+);
+CUT.isError("is(); 07 parameter error - iter",
+  // @ts-ignore
+  () => CEL.isTypedCollection(42, [Array, "number", Number])
+);
+CUT.isError("is(); 08 parameter error - expected",
+  // @ts-ignore
+  () => CEL.isTypedCollection([1,2,3], 42)
+);
+CUT.isError("is(); 09 parameter error - Throw",
+  // @ts-ignore
+  () => CEL.isTypedCollection([1,2,3], [Array, "number", Number], 42)
+);
+/* isTypedCollection(); end */
+
+
 /* is(); begin */
 CUT.isTrue("is(); ES5 values",
   // @ts-ignore

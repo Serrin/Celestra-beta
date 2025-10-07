@@ -1850,20 +1850,90 @@ const strHTMLUnEscape = (str: string): string =>
 /** Type API **/
 
 
+/* isTypedCollection (
+    iter: iterable<any>,
+    expectedType: string | Function | Array<string | Function>,
+    Throw: boolean = false
+  ): boolean | throw TypeError */
+function isTypedCollection (
+  iter: IterableAndIterator,
+  expectedType: string | Function | Array<string | Function>,
+  Throw: boolean = false): boolean {
+  /* helper functions */
+  const _typeOf = (value: any): string =>
+    value === null ? "null" : typeof value;
+  const _isIterator = (value: any): boolean =>
+    value != null && typeof value === "object"
+      && typeof value.next === "function";
+  const _isIterable = (value: any): boolean =>
+    value != null && typeof value[Symbol.iterator] === "function";
+  /* Validate `iter` */
+  if (!_isIterator(iter) && !_isIterable(iter)) {
+    throw new TypeError(
+      `[isTypedCollection] TypeError: iter must be iterable or iterator. Got ${_typeOf(iter)}`
+    );
+  }
+  /* Validate `expected` */
+  if (!(["string", "function"].includes(typeof expectedType))
+    && !Array.isArray(expectedType)) {
+    throw new TypeError(
+      `[isTypedCollection] TypeError: expectedType must be string, function, array. Got ${_typeOf(expectedType)}`
+    );
+  }
+  /* Validate `Throw` */
+  if (typeof Throw !== "boolean") {
+    throw new TypeError(
+      `[isTypedCollection] TypeError: Throw has to be a boolean. Got ${typeof Throw}`
+    );
+  }
+  /* Normalize expected to an array */
+  let expectedArray: any[] =
+    Array.isArray(expectedType) ? expectedType : [expectedType];
+  /* Check values of iter against expected types or constructors */
+  let matched: boolean = true;
+  for (let value of iter as Iterable<any>) {
+    const valueType: string = _typeOf(value);
+    matched = expectedArray.some(
+      function (item: string | Function): boolean {
+        if (typeof item === "string") { return valueType === item; }
+        if (typeof item === "function") {
+          return value != null && value instanceof item;
+        }
+        /* validate expected array elements */
+        throw new TypeError(
+          `[isTypedCollection] TypeError: expectedType array elements have to be a string or function. Got ${typeof item}`
+        );
+      }
+    );
+    if (!matched) { break; }
+  }
+  /* Throw error if mismatch and `Throw` is true */
+  if (Throw && !matched) {
+    let eNames: string = expectedArray.map((item: any): string =>
+      (typeof item === "string" ? item.toString() : item.name ?? "anonymous")
+    ).join(", ");
+    throw new TypeError(
+      `[isTypedCollection] TypeError: one or more items are not ${eNames}`
+    );
+  }
+  return matched;
+}
+
+
 /* is (
     value: unknown,
-    expected: string | Function | Array<string | Function> | undefined,
+    expectedType: string | Function | Array<string | Function> | undefined,
     Throw: boolean = false
   ): string | Function | boolean | throw TypeError */
 function is (
   value: any,
-  expected?: string | Function | Array<string | Function> | undefined,
+  expectedType?: string | Function | Array<string | Function> | undefined,
   Throw: boolean = false): string | Function | boolean {
   /* Validate `expected` */
-  if (!(["string", "function", "undefined"].includes(typeof expected))
-    && !Array.isArray(expected)) {
+  if (!(["string", "function", "undefined"].includes(typeof expectedType))
+    && !Array.isArray(expectedType)) {
     throw new TypeError(
-      `[is] TypeError: expectedType must be string, function, array or undefined. Got ${typeof expected}`
+      `[is] TypeError: expectedType must be string, function, array or undefined. Got ${typeof expectedType}`
     );
   }
   /* Validate `Throw` */
@@ -1875,13 +1945,14 @@ function is (
   /* Determine the type of `value` */
   const vType: string = (value === null ? "null" : typeof value);
   /* If no expected type provided, return type or constructor */
-  if (expected == null) {
+  if (expectedType == null) {
     return vType === "object"
       ? Object.getPrototypeOf(value)?.constructor ?? "object"
       : vType;
   }
   /* Normalize expected to an array */
-  let expectedArray: Array<string | Function> = Array.isArray(expected) ? expected : [expected];
+  let expectedArray: Array<string | Function> =
+    Array.isArray(expectedType) ? expectedType : [expectedType];
   /* Check against expected types or constructors */
   let matched: boolean = expectedArray.some(
     function (item: string | Function) {
@@ -1897,7 +1968,8 @@ function is (
   );
   /* Throw error if mismatch and `Throw` is true */
   if (Throw && !matched) {
-    let vName: string = value.toString ? value.toString() : Object.prototype.toString.call(value);
+    let vName: string =
+      value.toString ? value.toString() : Object.prototype.toString.call(value);
     let eNames: string = expectedArray.map((item: any): string =>
       (typeof item === "string" ? item.toString() : item.name ?? "anonymous")
     ).join(", ");
@@ -2316,6 +2388,7 @@ const isAsyncGeneratorFn = (value: unknown): boolean =>
 
 
 /* isClass(value: unknown): boolean */
+/** @deprecated */
 const isClass = (value: unknown): boolean =>
   typeof value === "function" && typeof value.prototype === "object";
 
@@ -3567,6 +3640,7 @@ export default {
   strHTMLEscape,
   strHTMLUnEscape,
   /** Type API **/
+  isTypedCollection,
   is,
   toObject,
   toPrimitiveValue,
@@ -3794,6 +3868,7 @@ export {
   strHTMLEscape,
   strHTMLUnEscape,
   /** Type API **/
+  isTypedCollection,
   is,
   toObject,
   toPrimitiveValue,
