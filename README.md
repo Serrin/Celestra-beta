@@ -83,6 +83,13 @@ import { first, assert } from "./celestra.browser.js";
 globalThis.first = first;
 globalThis.assert = assert;
 </script>
+
+<script type="module">
+// dynamic import
+const celestra = await import("./celestra.browser.js");
+globalThis.celestra = celestra;
+globalThis.CEL = celestra;
+</script>
 ````
 
 ### How to import the Node.js edition

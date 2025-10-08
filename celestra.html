@@ -652,6 +652,13 @@ import { first, assert } from "./celestra.browser.js";
 globalThis.first = first;
 globalThis.assert = assert;
 &#60;/script&#62;
+
+&#60;script type="module"&#62;
+// dynamic import
+const celestra = await import("./celestra.browser.js");
+globalThis.celestra = celestra;
+globalThis.CEL = celestra;
+&#60;/script&#62;
 </pre>
 
 
