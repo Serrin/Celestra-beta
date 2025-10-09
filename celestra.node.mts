@@ -46,6 +46,10 @@ type IteratorReturn =
  */
 type Comparable = number | bigint | string | boolean;
 
+/** @internal */
+type PropertyKey = string | symbol;
+
+
 
 /** polyfills **/
 
@@ -2052,26 +2056,40 @@ function toSafeString (value: unknown): string {
 
 
 /* isPropertyKey(value: unknown): boolean */
-const isPropertyKey = (value: unknown): boolean =>
+const isPropertyKey = (value: unknown): value is PropertyKey =>
   typeof value === "string" || typeof value === "symbol";
 
 
 /* toPropertyKey(value: unknown): string | symbol */
-const toPropertyKey = (value: unknown): string | symbol =>
+const toPropertyKey = (value: unknown): PropertyKey =>
   typeof value === "symbol" ? value : String(value);
 
 
 /* isIndex(value: unknown): boolean */
-const isIndex = (value: unknown): boolean =>
+/**
+ * Checks if a value is a valid array index (integer between 0 and Number.MAX_SAFE_INTEGER).
+ *
+ * @param value - The value to check.
+ * @returns True if the value is a valid array index, otherwise false.
+ */
+const isIndex = (value: unknown): value is number =>
   Number.isSafeInteger(value)
     && (value as number) >= 0
+    && (value as number) <= Number.MAX_SAFE_INTEGER
     && 1 / (value as number) !== 1 / -0;
 
 
 /* isLength(value: unknown): boolean */
-const isLength = (value: unknown): boolean =>
+/**
+ * Checks if a value is a valid array length (integer between 0 and Number.MAX_SAFE_INTEGER).
+ *
+ * @param value - The value to check.
+ * @returns True if the value is a valid array length, otherwise false.
+ */
+const isLength = (value: unknown): value is number =>
   Number.isSafeInteger(value)
     && (value as number) >= 0
+    && (value as number) <= Number.MAX_SAFE_INTEGER
     && 1 / (value as number) !== 1 / -0;
 
 
@@ -2155,9 +2173,9 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
     value == null
       || (typeof value !== "object" && typeof value !== "function");
   const _isObject = (value: any): boolean =>
-    (value != null && typeof value === "object");
+    value != null && typeof value === "object";
   const _isSameInstance = (value1: any, value2: any, Class: Function): boolean =>
-    (value1 instanceof Class) && (value2 instanceof Class);
+    value1 instanceof Class && value2 instanceof Class;
   const _classof = (value: any): string =>
     Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
   const _ownKeys = (value: object): any[] =>
@@ -2649,7 +2667,7 @@ function count (iter: IterableAndIterator, fn: Function): number {
 /* arrayDeepClone(array: array): array */
 function arrayDeepClone ([...array]): any[] {
   const _ADC = (value: unknown): any =>
-    (Array.isArray(value) ? Array.from(value, _ADC) : value);
+    Array.isArray(value) ? Array.from(value, _ADC) : value;
   return _ADC(array);
 }
 

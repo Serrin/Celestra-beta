@@ -1,7 +1,7 @@
 
 # Celestra version history
 
-## Celestra v6.1.1 Sulaco
+## Celestra v6.1.1
 
 1. Documentation, pdf and code fixes.
 2. Deprecate this function (_stability: 1_): `isClass();`

@@ -7,6 +7,7 @@ type IterableAndIterator = Iterable<any> | Iterator<any> | IterableIterator<any>
 type IterableAndIteratorAndArrayLike = Iterable<any> | Iterator<any> | IterableIterator<any> | ArrayLike;
 type IteratorReturn = Iterable<any> | IteratorResult<any> | Generator<number, void, unknown>;
 type Comparable = number | bigint | string | boolean;
+type PropertyKey = string | symbol;
 declare const BASE16 = "0123456789ABCDEF";
 declare const BASE32 = "234567ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 declare const BASE36 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -93,10 +94,10 @@ declare function is(value: any, expectedType?: string | Function | Array<string 
 declare function toObject(value: unknown): Object | symbol | Function;
 declare function toPrimitiveValue(value: unknown): any;
 declare function toSafeString(value: unknown): string;
-declare const isPropertyKey: (value: unknown) => boolean;
-declare const toPropertyKey: (value: unknown) => string | symbol;
-declare const isIndex: (value: unknown) => boolean;
-declare const isLength: (value: unknown) => boolean;
+declare const isPropertyKey: (value: unknown) => value is PropertyKey;
+declare const toPropertyKey: (value: unknown) => PropertyKey;
+declare const isIndex: (value: unknown) => value is number;
+declare const isLength: (value: unknown) => value is number;
 declare function toIndex(value: any): number;
 declare function toLength(value: any): number;
 type TypeOfTag = "null" | "undefined" | "number" | "bigint" | "boolean" | "string" | "symbol" | "object" | "function";
@@ -319,10 +320,10 @@ declare const _default: {
     toObject: typeof toObject;
     toPrimitiveValue: typeof toPrimitiveValue;
     toSafeString: typeof toSafeString;
-    isPropertyKey: (value: unknown) => boolean;
-    toPropertyKey: (value: unknown) => string | symbol;
-    isIndex: (value: unknown) => boolean;
-    isLength: (value: unknown) => boolean;
+    isPropertyKey: (value: unknown) => value is PropertyKey;
+    toPropertyKey: (value: unknown) => PropertyKey;
+    isIndex: (value: unknown) => value is number;
+    isLength: (value: unknown) => value is number;
     toIndex: typeof toIndex;
     toLength: typeof toLength;
     typeOf: (value: unknown) => TypeOfTag;
