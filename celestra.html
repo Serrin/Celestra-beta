@@ -395,8 +395,10 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <p><a href="#FN-isFloat16();">isFloat16();</a></p>
       <p><a href="#FN-minmax();">minmax();</a></p>
       <p><a href="#FN-product();">product();</a></p>
+      <p><a href="#FN-quotient();">quotient();</a></p>
       <p><a href="#FN-randomFloat();">randomFloat();</a></p>
       <p><a href="#FN-randomInt();">randomInt();</a></p>
+      <p><a href="#FN-remainder();">remainder();</a></p>
       <p><a href="#FN-signbit();">signbit();</a></p>
       <p><a href="#FN-sum();">sum();</a></p>
       <p><a href="#FN-toBigInt64();">toBigInt64();</a></p>
@@ -495,7 +497,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
 
 <p><strong>A helper JavaScript library with useful functions and polyfills and zero dependencies.</strong></p>
 
-<p>Latest version: 6.1.1</p>
+<p>Latest version: 6.1.2</p>
 <p>Date: 2025-10-09T16:54:49.646Z</p>
 
 <p><strong>Tested on these:</strong></p>
@@ -1813,7 +1815,7 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-compact();">
       <td><code>compact(iterator);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This Returns an array with truthy values (but keeps `0`) from the given Iterable or ArrayLike object. The iterator parameter is mandatory.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This Returns an array with truthy values (but keeps <code>0</code>) from the given Iterable or ArrayLike object. The iterator parameter is mandatory.</td>
     </tr>
     <tr id="FN-count();">
       <td><code>count((iterator,callback););</code></td>
@@ -1881,7 +1883,7 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-includes();">
       <td><code>includes(iterator,value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether a collection includes a certain value among its entries, returning true or false as appropriate. The collection and the value of the parameters are mandatory and the comparator is optional.<BR>The default comparasion is SameValueZero algorithm, but with the comparator (function) can be other solution. (e.g.: Object.is, which uses the SameValue algorithm).<br/>The collection can be: <i>String</i> (uses the String#includes method), <i>String object</i> (uses the String#includes method), <i>Map</i>, <i>Iterables</i> (Array, Set, TypedArrays, other Iterables), <i>plain objects</i>, <i>functions</i> (as object).<br/>The own keys, values, symbols are compared, example: `CEL.includes({"lorem": "ipsum","1": 0}, -0);` returns true.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether a collection includes a certain value among its entries, returning true or false as appropriate. The collection and the value of the parameters are mandatory and the comparator is optional.<BR>The default comparasion is SameValueZero algorithm, but with the comparator (function) can be other solution. (e.g.: Object.is, which uses the SameValue algorithm).<br/>The collection can be: <i>String</i> (uses the String#includes method), <i>String object</i> (uses the String#includes method), <i>Map</i>, <i>Iterables</i> (Array, Set, TypedArrays, other Iterables), <i>plain objects</i>, <i>functions</i> (as object).<br/>The own keys, values, symbols are compared, example: <code>CEL.includes({"lorem": "ipsum","1": 0}, -0);</code> returns true.</td>
     </tr>
     <tr id="FN-initial();">
       <td><code>initial(iterator);</code></td>
@@ -2183,6 +2185,10 @@ JSON.stringify( CEL.unique(array, (v) => v.rank) );
       <td><code>product(value1[,valueN]);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns the product value from the parameter values.</td>
     </tr>
+    <tr id="FN-quotient();">
+      <td><code>quotient(value1,value2);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Performs integer division type safely. Works for both number and bigint values. All fof the parameter is mandatory and can be both number or both bigint. The return value is number or bigint.</td>
+    </tr>
     <tr id="FN-randomFloat();">
       <td><code>randomFloat([max]);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>Get a random float number value within 0 and max value. Without parameter the maximum value is 100.</td>
@@ -2198,6 +2204,10 @@ JSON.stringify( CEL.unique(array, (v) => v.rank) );
     <tr>
       <td><code>randomInt(min,max);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>Get a random integer number value within min and max value.</td>
+    </tr>
+    <tr id="FN-remainder();">
+      <td><code>remainder(value1,value2);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Computes the integer remainder (modulus) type safely. Works for both number and bigint values. All fof the parameter is mandatory and can be both number or both bigint. The return value is number or bigint.</td>
     </tr>
     <tr id="FN-signbit();">
       <td><code>signbit(value);</code></td>

@@ -10,14 +10,14 @@
 
 /**
  * @name Celestra
- * @version 6.1.1 browser
+ * @version 6.1.2 browser
  * @author Ferenc Czigler
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
 
 
-const VERSION = "Celestra v6.1.1 browser";
+const VERSION = "Celestra v6.1.2 browser";
 
 
 /** TS types */
@@ -48,6 +48,9 @@ type Comparable = number | bigint | string | boolean;
 
 /** @internal */
 type PropertyKey = string | symbol;
+
+/** @internal */
+type NumberLike = number | bigint;
 
 
 /** polyfills **/
@@ -559,7 +562,7 @@ function deleteOwnProperty (
     delete obj[property];
     let result = Object.hasOwn(obj, property);
     if (result && Throw) {
-      throw new Error("Celestra.deleteOwnProperty(); error");
+      throw new Error("[deleteOwnProperty] error");
     }
     return +!result;
   }
@@ -2611,7 +2614,7 @@ function is (
 /* toObject(value: unknown): object | symbol | Function | thrown error */
 function toObject (value: unknown): Object | symbol | Function {
   if (value == null) {
-    throw new TypeError("celestra.toObject(); error: " + value);
+    throw new TypeError("[toObject] error: " + value);
   }
   return (["object", "function"].includes(typeof value))
     ? value
@@ -2946,6 +2949,8 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
  * @returns boolean
  */
 function isEmptyValue (value: any): boolean {
+  const _isObject = (value: unknown): value is object =>
+    value != null && (typeof value === "object" || typeof value === "function");
   /**
    * Checks if a value is a TypedArray (Int8Array, etc.).
    *
@@ -2995,7 +3000,7 @@ function isEmptyValue (value: any): boolean {
     } catch { /* Not iterable */ }
   }
   /* Other objects - check own properties (including symbols) */
-  if (isObject(value)) {
+  if (_isObject(value)) {
     const keys: any[] = [
       ...Object.getOwnPropertyNames(value),
       ...Object.getOwnPropertySymbols(value)
@@ -3769,9 +3774,16 @@ function nth (iter: IterableAndIterator, pos: number): any {
 
 
 /* size(iterator: iterator): integer */
-function size (iter: IterableAndIterator): number {
+/**
+ * @description Return the size of the given value.
+ *
+ * @param {unknown} value - The value to check.
+ * @returns {number} The size of the given value.
+ */
+function size (value: any): number {
+  if (typeof value.size === "number") { return value.size; }
   let index: number = 0;
-  for (let _item of iter as Iterable<any>) { index++; }
+  for (let _item of value as Iterable<any>) { index++; }
   return index;
 }
 
@@ -4047,6 +4059,81 @@ const withOut = ([...array], [...filterValues]): any[] =>
 /** Math API **/
 
 
+/**
+ * @description Performs integer division type safely. Works for both `number` and `bigint` values.
+ * `dividend / divisor = quotient + remainder`
+ *
+ * @throws {TypeError} If types mismatch.
+ * @throws {TypeError} If arguments are not both `number` or both `bigint`.
+ * @throws {RangeError} If divisor is zero.
+ * @returns {number | bigint} The result of the integer division.
+ */
+function quotient(dividend: number, divisor: number): number;
+function quotient(dividend: bigint, divisor: bigint): bigint;
+function quotient(dividend: NumberLike, divisor: NumberLike): NumberLike {
+  const dividendType = typeof dividend;
+  /* Ensure both are the same primitive type */
+  if (dividendType !== typeof divisor) {
+    throw new TypeError(
+      "[quotient] divisor and dividend must be the same type (both number or both bigint)"
+    );
+  }
+  /* Ensure both are number or bigint */
+  if (dividendType !== "number" && dividendType !== "bigint") {
+    throw new TypeError(
+      "[quotient] divisor and dividend must be either both number or both bigint"
+    );
+  }
+  // Handle division by zero safely
+  if ((dividendType === "number" && divisor === 0)
+    || (dividendType === "bigint" && divisor === 0n)) {
+    throw new RangeError("[quotient] divisor must not be zero");
+  }
+  /* Perform integer division depending on type */
+  return dividendType === "number"
+    ? Math.trunc((dividend as number) / (divisor as number))
+    /* bigint division automatically truncates */
+    : (dividend as bigint) / (divisor as bigint);
+}
+
+
+/**
+ * @description Computes the integer remainder (modulus) type safely. Works for both `number` and `bigint` values.
+ * `dividend = divisor * quotient + remainder`
+ *
+ * @throws {TypeError} If types mismatch.
+ * @throws {TypeError} If arguments are not both `number` or both `bigint`.
+ * @throws {RangeError} If divisor is zero.
+ * @returns {number | bigint} The remainder of the integer division.
+ */
+function remainder(dividend: number, divisor: number): number;
+function remainder(dividend: bigint, divisor: bigint): bigint;
+function remainder(dividend: NumberLike, divisor: NumberLike): NumberLike {
+  const dividendType = typeof dividend;
+  /* Ensure both are the same primitive type */
+  if (dividendType !== typeof divisor) {
+    throw new TypeError(
+      "[remainder] divisor and dividend must be the same type (both number or both bigint)"
+    );
+  }
+  /* Ensure both are number or bigint */
+  if (dividendType !== "number" && dividendType !== "bigint") {
+    throw new TypeError(
+      "[remainder] divisor and dividend must be either both number or both bigint"
+    );
+  }
+  // Handle division by zero safely
+  if ((dividendType === "number" && divisor === 0)
+    || (dividendType === "bigint" && divisor === 0n)) {
+    throw new RangeError("[remainder] divisor must not be zero");
+  }
+  /* Perform remainder operation depending on type */
+  return dividendType === "number"
+    ? (dividend as number) % (divisor as number)
+    : (dividend as bigint) % (divisor as bigint);
+}
+
+
 /* isFloat(value: unknown): boolean */
 const isFloat = (value: unknown): boolean =>
   typeof value === "number" && value === value && !!(value % 1);
@@ -4107,13 +4194,13 @@ function clamp(
   if (value !== value) { return value; }
   if (min !== min || max !== max) {
     throw new RangeError(
-      "clamp(); RangeError: minimum and maximum should not to be NaN"
+      "[clamp] RangeError: minimum and maximum should not to be NaN"
     );
   }
   /* min > max -> throw RangeError */
   if (min > max) {
     throw new RangeError(
-      "clamp(); RangeError: minimum should be lower than maximum"
+      "[clamp] RangeError: minimum should be lower than maximum"
     );
   }
   /* clamp */
@@ -4143,13 +4230,13 @@ function minmax(
   if (value !== value) { return value; }
   if (min !== min || max !== max) {
     throw new RangeError(
-      "clamp(); RangeError: minimum and maximum should not to be NaN"
+      "[minmax] RangeError: minimum and maximum should not to be NaN"
     );
   }
   /* min > max -> throw RangeError */
   if (min > max) {
     throw new RangeError(
-      "clamp(); RangeError: minimum should be lower than maximum"
+      "[minmax] RangeError: minimum should be lower than maximum"
     );
   }
   /* clamp */
@@ -4565,6 +4652,8 @@ export default {
   join,
   withOut,
   /** Math API **/
+  quotient,
+  remainder,
   isFloat,
   toInteger,
   toIntegerOrInfinity,
@@ -4839,6 +4928,8 @@ export {
   join,
   withOut,
   /** Math API **/
+  quotient,
+  remainder,
   isFloat,
   toInteger,
   toIntegerOrInfinity,

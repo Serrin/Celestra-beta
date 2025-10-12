@@ -293,7 +293,7 @@ var /** @type any */ token12, /** @type any */ token13;
 var /** @type any */ token14, /** @type any */ token15;
 
 
-/* Celestra v6.1.1 testcases */
+/* Celestra v6.1.2 testcases */
 
 
 /** Not auto tested functions **/
@@ -6915,6 +6915,36 @@ CUT.isTrue("signbit();",
   && !CEL.signbit(Infinity)
   && !CEL.signbit(+Infinity)
 );
+
+
+/* quotient(); */
+CUT.isEqual("quotient(); 01", CEL.quotient(7, 3), 2);
+CUT.isEqual("quotient(); 02", CEL.quotient(-7, 3), -2);
+CUT.isEqual("quotient(); 03", CEL.quotient(-7, -3), 2);
+CUT.isEqual("quotient(); 04", CEL.quotient(7n, 3n), 2n);
+CUT.isEqual("quotient(); 05", CEL.quotient(-7n, 3n), -2n);
+CUT.isEqual("quotient(); 06", CEL.quotient(-7n, -3n), 2n);
+// @ts-ignore
+CUT.isError("quotient(); 07", () => CEL.quotient(10, 3n));
+// @ts-ignore
+CUT.isError("quotient(); 08", () => CEL.quotient(false, true));
+CUT.isError("quotient(); 09", () => CEL.quotient(3, 0));
+CUT.isError("quotient(); 10", () => CEL.quotient(3n, 0n));
+
+
+/* remainder(); */
+CUT.isEqual("remainder(); 01", CEL.remainder(7, 3), 1);
+CUT.isEqual("remainder(); 02", CEL.remainder(-7, 3), -1);
+CUT.isEqual("remainder(); 03", CEL.remainder(-7, -3), -1);
+CUT.isEqual("remainder(); 04", CEL.remainder(7n, 3n), 1n);
+CUT.isEqual("remainder(); 05", CEL.remainder(-7n, 3n), -1n);
+CUT.isEqual("remainder(); 06", CEL.remainder(-7n, -3n), -1n);
+// @ts-ignore
+CUT.isError("remainder(); 07", () => CEL.remainder(10, 3n));
+// @ts-ignore
+CUT.isError("remainder(); 08", () => CEL.remainder(false, true));
+CUT.isError("remainder(); 09", () => CEL.remainder(3, 0));
+CUT.isError("remainder(); 10", () => CEL.remainder(3n, 0n));
 
 
 /* clamp(); */
