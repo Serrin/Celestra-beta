@@ -24,6 +24,9 @@ const VERSION = "Celestra v6.1.2 browser";
 
 
 /** @internal */
+type MapLike = { [key: string]: any };
+
+/** @internal */
 type ArrayLike = { length: number; [n: number]: any; };
 /* interface ArrayLike<T> { length: number; [n: number]: T; }; */
 
@@ -506,7 +509,7 @@ const compose = (...functions: Function[]): Function =>
 
 /* pick (object: object, keys: array): object */
 const pick = (obj: object, keys: string[]): object =>
-  keys.reduce(function (acc: { [key: string]: any }, key: string) {
+  keys.reduce(function (acc: MapLike, key: string) {
     // @ts-ignore
     if (key in obj) { acc[key] = obj[key]; }
     return acc;
@@ -515,7 +518,7 @@ const pick = (obj: object, keys: string[]): object =>
 
 /* omit (object: object, keys: array): object */
 const omit = (obj: object, keys: string[]): object =>
-  Object.keys(obj).reduce(function (acc: { [key: string]: any }, key: string) {
+  Object.keys(obj).reduce(function (acc: MapLike, key: string) {
     // @ts-ignore
     if (!keys.includes(key)) { acc[key] = obj[key]; }
     return acc;
@@ -1759,7 +1762,7 @@ function strTruncate (
 
 /* strPropercase(s: any): string */
 const strPropercase = (str: any): string =>
-  String(str).split(" ").map(function (value: string) {
+  String(str).trim().split(" ").map(function (value: string) {
     let chars = Array.from(value).map( (c: string): string => c.toLowerCase() );
     if (chars.length) { chars[0] = chars[0].toUpperCase(); }
     return chars.join("");
@@ -1768,7 +1771,7 @@ const strPropercase = (str: any): string =>
 
 /* strTitlecase(s: any): string */
 const strTitlecase = (str: any): string =>
-  String(str).split(" ").map(function (value: string) {
+  String(str).trim().split(" ").map(function (value: string) {
     let chars = Array.from(value).map( (c: string): string => c.toLowerCase() );
     if (chars.length) { chars[0] = chars[0].toUpperCase(); }
     return chars.join("");
@@ -1777,7 +1780,7 @@ const strTitlecase = (str: any): string =>
 
 /* strCapitalize(s: any): string */
 function strCapitalize (str: any): string {
-  let chars = [...String(str).toLowerCase()];
+  let chars = [...String(str).trim().toLowerCase()];
   if (chars.length) { chars[0] = chars[0].toUpperCase(); }
   return chars.join("");
 }
@@ -1785,7 +1788,7 @@ function strCapitalize (str: any): string {
 
 /* strUpFirst(s: any): string */
 function strUpFirst (str: any): string {
-  let chars = [...String(str)];
+  let chars = [...String(str).trim()];
   if (chars.length) { chars[0] = chars[0].toUpperCase(); }
   return chars.join("");
 }
@@ -1793,7 +1796,7 @@ function strUpFirst (str: any): string {
 
 /* strDownFirst(s: any): string */
 function strDownFirst (str: any): string {
-  let chars = [...String(str)];
+  let chars = [...String(str).trim()];
   if (chars.length) { chars[0] = chars[0].toLowerCase(); }
   return chars.join("");
 }
@@ -1834,19 +1837,22 @@ const strSplice = (str: string, index: number,count: number, ...add: any[]): str
 
 /* strHTMLRemoveTags(s: any): string */
 const strHTMLRemoveTags = (str: any): string =>
-  String(str).replace(/<[^>]*>/g, " ").replace(/\s{2,}/g, " ").trim();
+  String(str).trim().replace(/<[^>]*>/g, " ").replace(/\s{2,}/g, " ").trim();
 
 
 /* strHTMLEscape(str: any): string */
 const strHTMLEscape = (str: any): string =>
-  String(str).replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;").replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;").replace(/'/g, "&apos;");
+  String(str).trim()
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
 
 
 /* strHTMLUnEscape(s: any): string */
 const strHTMLUnEscape = (str: string): string =>
-  String(str)
+  String(str).trim()
     .replace(/&amp;/g, "&").replace(/&#38;/g, "&")
     .replace(/&lt;/g, "<").replace(/&#60;/g, "<")
     .replace(/&gt;/g, ">").replace(/&#62;/g, ">")
@@ -1883,7 +1889,7 @@ function domReady (fn: Function): void {
   element */
 /* domCreate(element descriptive object): element */
 function domCreate (
-  elementType: string | { [key: string]: any },
+  elementType: string | MapLike,
   properties: object,
   innerHTML: string): HTMLElement {
   if (arguments.length === 1 && typeof elementType === "object") {
@@ -2368,7 +2374,7 @@ function getJson (url: string, successFn: Function): void {
 
 
 /* ajax(Options object): undefined */
-function ajax (options: { [key: string]: any }): void {
+function ajax (options: MapLike): void {
   if (typeof options.url !== "string") {
     throw new TypeError(
       "Celestra ajax error: The url property has to be a string."
@@ -3227,7 +3233,7 @@ const isAsyncFn = (value: unknown): boolean =>
 /* setCookie(name: string, value: string [, hours = 8760 [, path = "/" [, domain
   [, secure [, SameSite = "Lax" [, HttpOnly]]]]]]): undefined */
 function setCookie (
-  name: string | { [key: string]: any },
+  name: string | MapLike,
   value: string,
   hours: number = 8760,
   path: string = "/",
@@ -3286,7 +3292,7 @@ const hasCookie = (name: string): boolean =>
 /* removeCookie(name: string [, path = "/"
   [, domain [, secure [, SameSite = "Lax" [, HttpOnly ]]]]]): boolean */
 function removeCookie (
-  name: string | { [key: string]: any },
+  name: string | MapLike,
   path: string = "/",
   domain: string,
   secure: boolean,
@@ -3538,8 +3544,8 @@ const unzip = ([...array]): any[] =>
 /* zipObj(iterator1: iterator, iterator2: iterator): object */
 function zipObj (
   [...array1],
-  [...array2]): { [key: string]: any } {
-  let result: { [key: string]: any } = {};
+  [...array2]): MapLike {
+  let result: MapLike = {};
   let length: number = Math.min(array1.length, array2.length);
   for (let index = 0; index < length; index++) {
     result[array1[index]] = array2[index];

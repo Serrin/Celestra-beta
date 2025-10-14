@@ -1,4 +1,7 @@
 declare const VERSION = "Celestra v6.1.2 node";
+type MapLike = {
+    [key: string]: any;
+};
 type ArrayLike = {
     length: number;
     [n: number]: any;
@@ -154,9 +157,7 @@ declare const arrayCycle: ([...array]: Iterable<any, void, undefined>, num?: num
 declare const arrayRange: (start?: number, end?: number, step?: number) => any[];
 declare function zip(...args: any[]): any[];
 declare const unzip: ([...array]: Iterable<any, void, undefined>) => any[];
-declare function zipObj([...array1]: Iterable<any, void, undefined>, [...array2]: Iterable<any, void, undefined>): {
-    [key: string]: any;
-};
+declare function zipObj([...array1]: Iterable<any, void, undefined>, [...array2]: Iterable<any, void, undefined>): MapLike;
 declare const arrayAdd: (array: any[], value: unknown) => boolean;
 declare function arrayClear(array: any[]): any[];
 declare function arrayRemove(array: any[], value: unknown, all?: boolean): boolean;

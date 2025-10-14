@@ -1,4 +1,7 @@
 declare const VERSION = "Celestra v6.1.2 browser";
+type MapLike = {
+    [key: string]: any;
+};
 type ArrayLike = {
     length: number;
     [n: number]: any;
@@ -92,9 +95,7 @@ declare const strHTMLUnEscape: (str: string) => string;
 declare const qsa: (str: string, context?: Document | HTMLElement) => any[];
 declare const qs: (str: string, context?: Document | Element) => HTMLElement | null;
 declare function domReady(fn: Function): void;
-declare function domCreate(elementType: string | {
-    [key: string]: any;
-}, properties: object, innerHTML: string): HTMLElement;
+declare function domCreate(elementType: string | MapLike, properties: object, innerHTML: string): HTMLElement;
 declare function domToElement(str: string): Element | null;
 declare const domGetCSS: (element: Element, property: string | number) => string | CSSStyleDeclaration;
 declare function domSetCSS(element: HTMLElement, property: string | object, value: string): void;
@@ -128,9 +129,7 @@ declare const domScrollToElement: (element: Element, top?: boolean) => void;
 declare const domClear: (element: Element) => void;
 declare function getText(url: string, successFn: Function): void;
 declare function getJson(url: string, successFn: Function): void;
-declare function ajax(options: {
-    [key: string]: any;
-}): void;
+declare function ajax(options: MapLike): void;
 declare function isTypedCollection(iter: IterableAndIterator, expectedType: string | Function | Array<string | Function>, Throw?: boolean): boolean;
 declare function is(value: any, expectedType?: string | Function | Array<string | Function> | undefined, Throw?: boolean): string | Function | boolean;
 declare function toObject(value: unknown): Object | symbol | Function;
@@ -176,16 +175,12 @@ type TypedArray = Int8Array | Uint8Array | Uint8ClampedArray | Int16Array | Uint
 declare function isTypedArray(value: unknown): value is TypedArray;
 declare const isGeneratorFn: (value: unknown) => boolean;
 declare const isAsyncFn: (value: unknown) => boolean;
-declare function setCookie(name: string | {
-    [key: string]: any;
-}, value: string, hours: number | undefined, path: string | undefined, domain: string, secure: boolean, SameSite: string | undefined, HttpOnly: boolean): void;
+declare function setCookie(name: string | MapLike, value: string, hours: number | undefined, path: string | undefined, domain: string, secure: boolean, SameSite: string | undefined, HttpOnly: boolean): void;
 declare function getCookie(name?: string | undefined): {
     [key: string]: string;
 } | string | null;
 declare const hasCookie: (name: string) => boolean;
-declare function removeCookie(name: string | {
-    [key: string]: any;
-}, path: string | undefined, domain: string, secure: boolean, SameSite: string | undefined, HttpOnly: boolean): boolean;
+declare function removeCookie(name: string | MapLike, path: string | undefined, domain: string, secure: boolean, SameSite: string | undefined, HttpOnly: boolean): boolean;
 type ClearCookiesOptions = {
     path?: string | undefined;
     domain?: string | undefined;
@@ -214,9 +209,7 @@ declare const arrayCycle: ([...array]: Iterable<any, void, undefined>, num?: num
 declare const arrayRange: (start?: number, end?: number, step?: number) => any[];
 declare function zip(...args: any[]): any[];
 declare const unzip: ([...array]: Iterable<any, void, undefined>) => any[];
-declare function zipObj([...array1]: Iterable<any, void, undefined>, [...array2]: Iterable<any, void, undefined>): {
-    [key: string]: any;
-};
+declare function zipObj([...array1]: Iterable<any, void, undefined>, [...array2]: Iterable<any, void, undefined>): MapLike;
 declare const arrayAdd: (array: any[], value: unknown) => boolean;
 declare function arrayClear(array: any[]): any[];
 declare function arrayRemove(array: any[], value: unknown, all?: boolean): boolean;
