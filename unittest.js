@@ -6917,34 +6917,34 @@ CUT.isTrue("signbit();",
 );
 
 
-/* quotient(); */
-CUT.isEqual("quotient(); 01", CEL.quotient(7, 3), 2);
-CUT.isEqual("quotient(); 02", CEL.quotient(-7, 3), -2);
-CUT.isEqual("quotient(); 03", CEL.quotient(-7, -3), 2);
-CUT.isEqual("quotient(); 04", CEL.quotient(7n, 3n), 2n);
-CUT.isEqual("quotient(); 05", CEL.quotient(-7n, 3n), -2n);
-CUT.isEqual("quotient(); 06", CEL.quotient(-7n, -3n), 2n);
+/* mod(); */
+CUT.isEqual("mod(); 01", CEL.mod(7, 3), 2);
+CUT.isEqual("mod(); 02", CEL.mod(-7, 3), -2);
+CUT.isEqual("mod(); 03", CEL.mod(-7, -3), 2);
+CUT.isEqual("mod(); 04", CEL.mod(7n, 3n), 2n);
+CUT.isEqual("mod(); 05", CEL.mod(-7n, 3n), -2n);
+CUT.isEqual("mod(); 06", CEL.mod(-7n, -3n), 2n);
 // @ts-ignore
-CUT.isError("quotient(); 07", () => CEL.quotient(10, 3n));
+CUT.isError("mod(); 07", () => CEL.mod(10, 3n));
 // @ts-ignore
-CUT.isError("quotient(); 08", () => CEL.quotient(false, true));
-CUT.isError("quotient(); 09", () => CEL.quotient(3, 0));
-CUT.isError("quotient(); 10", () => CEL.quotient(3n, 0n));
+CUT.isError("mod(); 08", () => CEL.mod(false, true));
+CUT.isError("mod(); 09", () => CEL.mod(3, 0));
+CUT.isError("mod(); 10", () => CEL.mod(3n, 0n));
 
 
-/* remainder(); */
-CUT.isEqual("remainder(); 01", CEL.remainder(7, 3), 1);
-CUT.isEqual("remainder(); 02", CEL.remainder(-7, 3), -1);
-CUT.isEqual("remainder(); 03", CEL.remainder(-7, -3), -1);
-CUT.isEqual("remainder(); 04", CEL.remainder(7n, 3n), 1n);
-CUT.isEqual("remainder(); 05", CEL.remainder(-7n, 3n), -1n);
-CUT.isEqual("remainder(); 06", CEL.remainder(-7n, -3n), -1n);
+/* rem(); */
+CUT.isEqual("rem(); 01", CEL.rem(7, 3), 1);
+CUT.isEqual("rem(); 02", CEL.rem(-7, 3), -1);
+CUT.isEqual("rem(); 03", CEL.rem(-7, -3), -1);
+CUT.isEqual("rem(); 04", CEL.rem(7n, 3n), 1n);
+CUT.isEqual("rem(); 05", CEL.rem(-7n, 3n), -1n);
+CUT.isEqual("rem(); 06", CEL.rem(-7n, -3n), -1n);
 // @ts-ignore
-CUT.isError("remainder(); 07", () => CEL.remainder(10, 3n));
+CUT.isError("rem(); 07", () => CEL.rem(10, 3n));
 // @ts-ignore
-CUT.isError("remainder(); 08", () => CEL.remainder(false, true));
-CUT.isError("remainder(); 09", () => CEL.remainder(3, 0));
-CUT.isError("remainder(); 10", () => CEL.remainder(3n, 0n));
+CUT.isError("rem(); 08", () => CEL.rem(false, true));
+CUT.isError("rem(); 09", () => CEL.rem(3, 0));
+CUT.isError("rem(); 10", () => CEL.rem(3n, 0n));
 
 
 /* clamp(); */

@@ -3314,6 +3314,7 @@ const withOut = ([...array], [...filterValues]): any[] =>
 /** Math API **/
 
 
+/* function mod(dividend: number | bigint, divisor: number | bigint): number | bigint; */
 /**
  * @description Performs integer division type safely. Works for both `number` and `bigint` values.
  * `dividend / divisor = quotient + remainder`
@@ -3323,26 +3324,26 @@ const withOut = ([...array], [...filterValues]): any[] =>
  * @throws {RangeError} If divisor is zero.
  * @returns {number | bigint} The result of the integer division.
  */
-function quotient(dividend: number, divisor: number): number;
-function quotient(dividend: bigint, divisor: bigint): bigint;
-function quotient(dividend: NumberLike, divisor: NumberLike): NumberLike {
+function mod(dividend: number, divisor: number): number;
+function mod(dividend: bigint, divisor: bigint): bigint;
+function mod(dividend: NumberLike, divisor: NumberLike): NumberLike {
   const dividendType = typeof dividend;
   /* Ensure both are the same primitive type */
   if (dividendType !== typeof divisor) {
     throw new TypeError(
-      "[quotient] divisor and dividend must be the same type (both number or both bigint)"
+      "[mod] divisor and dividend must be the same type (both number or both bigint)"
     );
   }
   /* Ensure both are number or bigint */
   if (dividendType !== "number" && dividendType !== "bigint") {
     throw new TypeError(
-      "[quotient] divisor and dividend must be either both number or both bigint"
+      "[mod] divisor and dividend must be either both number or both bigint"
     );
   }
   // Handle division by zero safely
   if ((dividendType === "number" && divisor === 0)
     || (dividendType === "bigint" && divisor === 0n)) {
-    throw new RangeError("[quotient] divisor must not be zero");
+    throw new RangeError("[mod] divisor must not be zero");
   }
   /* Perform integer division depending on type */
   return dividendType === "number"
@@ -3352,6 +3353,7 @@ function quotient(dividend: NumberLike, divisor: NumberLike): NumberLike {
 }
 
 
+/* function rem(dividend: number | bigint, divisor: number | bigint): number | bigint; */
 /**
  * @description Computes the integer remainder (modulus) type safely. Works for both `number` and `bigint` values.
  * `dividend = divisor * quotient + remainder`
@@ -3361,26 +3363,26 @@ function quotient(dividend: NumberLike, divisor: NumberLike): NumberLike {
  * @throws {RangeError} If divisor is zero.
  * @returns {number | bigint} The remainder of the integer division.
  */
-function remainder(dividend: number, divisor: number): number;
-function remainder(dividend: bigint, divisor: bigint): bigint;
-function remainder(dividend: NumberLike, divisor: NumberLike): NumberLike {
+function rem(dividend: number, divisor: number): number;
+function rem(dividend: bigint, divisor: bigint): bigint;
+function rem(dividend: NumberLike, divisor: NumberLike): NumberLike {
   const dividendType = typeof dividend;
   /* Ensure both are the same primitive type */
   if (dividendType !== typeof divisor) {
     throw new TypeError(
-      "[remainder] divisor and dividend must be the same type (both number or both bigint)"
+      "[rem] divisor and dividend must be the same type (both number or both bigint)"
     );
   }
   /* Ensure both are number or bigint */
   if (dividendType !== "number" && dividendType !== "bigint") {
     throw new TypeError(
-      "[remainder] divisor and dividend must be either both number or both bigint"
+      "[rem] divisor and dividend must be either both number or both bigint"
     );
   }
   // Handle division by zero safely
   if ((dividendType === "number" && divisor === 0)
     || (dividendType === "bigint" && divisor === 0n)) {
-    throw new RangeError("[remainder] divisor must not be zero");
+    throw new RangeError("[rem] divisor must not be zero");
   }
   /* Perform remainder operation depending on type */
   return dividendType === "number"
@@ -3861,8 +3863,8 @@ export default {
   join,
   withOut,
   /** Math API **/
-  quotient,
-  remainder,
+  mod,
+  rem,
   isFloat,
   toInteger,
   toIntegerOrInfinity,
@@ -4091,8 +4093,8 @@ export {
   join,
   withOut,
   /** Math API **/
-  quotient,
-  remainder,
+  mod,
+  rem,
   isFloat,
   toInteger,
   toIntegerOrInfinity,

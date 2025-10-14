@@ -530,13 +530,13 @@ Name|Description
 `isUInt32(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is an integer between 0 and 4294967295. The return value is boolean.
 `isFloat16(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is a number between -65504 and 65504. The return value is boolean.
 `minmax(value,min,max);`|__Stability: 4 - Stable.__<BR>This is an alias of the `clamp(value,min,max);`.
+`mod(value1,value2);(value1[,valueN]);`|__Stability: 4 - Stable.__<BR>Performs integer division type safely. Works for both `number` and `bigint` values. All fof the parameter is mandatory and can be both number or both bigint. The return value is number or bigint.
 `product(value1[,valueN]);`|__Stability: 4 - Stable.__<BR>This function returns the product value from the parameter values.
-`quotient(value1,value2);(value1[,valueN]);`|__Stability: 4 - Stable.__<BR>Performs integer division type safely. Works for both `number` and `bigint` values. All fof the parameter is mandatory and can be both number or both bigint. The return value is number or bigint.
 `randomFloat([max]);`|__Stability: 4 - Stable.__<BR>Get a random float number value within 0 and max value. Without parameter the maximum value is 100.
 `randomFloat(min,max);`|__Stability: 4 - Stable.__<BR>Get a random float number value within min and max value.
 `randomInt([max]);`|__Stability: 4 - Stable.__<BR>Get a random integer number value within 0 and max value. Without parameter the maximum value is 100.
 `randomInt(min,max);`|__Stability: 4 - Stable.__<BR>Get a random integer number value within min and max value.
-`remainder(value1,value2);`|__Stability: 4 - Stable.__<BR>Computes the integer remainder (modulus) type safely. Works for both `number` and `bigint` values. All fof the parameter is mandatory and can be both number or both bigint. The return value is number or bigint.
+`rem(value1,value2);`|__Stability: 4 - Stable.__<BR>Computes the integer remainder (modulus) type safely. Works for both `number` and `bigint` values. All fof the parameter is mandatory and can be both number or both bigint. The return value is number or bigint.
 `signbit(value);`|__Stability: 4 - Stable.__<BR>This function is based on this proposal:<BR>[https://github.com/tc39/proposal-Math.signbit](https://github.com/tc39/proposal-Math.signbit)<BR>`Returns whether the sign bit of x is set.`<BR>`If n is NaN, the result is false.`<BR>`If n is -0, the result is true.`<BR>`If n is negative, the result is true.`<BR>`Otherwise, the result is false.`<BR>The value parameter is mandatory.
 `sum(value1>[,valueN]);`|__Stability: 4 - Stable.__<BR>This function returns the sum value from the parameter values.
 `toBigInt64(value);`|__Stability: 4 - Stable.__<BR>This function clamps ("minmax") the given value to BigInt (Int64) value (-2^63 to 2^63 - 1).

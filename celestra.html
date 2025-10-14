@@ -394,11 +394,11 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <p><a href="#FN-isUInt32();">isUInt32();</a></p>
       <p><a href="#FN-isFloat16();">isFloat16();</a></p>
       <p><a href="#FN-minmax();">minmax();</a></p>
+      <p><a href="#FN-mod();">mod();</a></p>
       <p><a href="#FN-product();">product();</a></p>
-      <p><a href="#FN-quotient();">quotient();</a></p>
       <p><a href="#FN-randomFloat();">randomFloat();</a></p>
       <p><a href="#FN-randomInt();">randomInt();</a></p>
-      <p><a href="#FN-remainder();">remainder();</a></p>
+      <p><a href="#FN-rem();">rem();</a></p>
       <p><a href="#FN-signbit();">signbit();</a></p>
       <p><a href="#FN-sum();">sum();</a></p>
       <p><a href="#FN-toBigInt64();">toBigInt64();</a></p>
@@ -2181,13 +2181,13 @@ JSON.stringify( CEL.unique(array, (v) => v.rank) );
       <td><code>minmax(value,min,max);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This is an alias of the <code>clamp(value,min,max);</code>.</td>
     </tr>
+    <tr id="FN-mod();">
+      <td><code>mod(value1,value2);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Performs integer division type safely. Works for both number and bigint values. All fof the parameter is mandatory and can be both number or both bigint. The return value is number or bigint.</td>
+    </tr>
     <tr id="FN-product();">
       <td><code>product(value1[,valueN]);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns the product value from the parameter values.</td>
-    </tr>
-    <tr id="FN-quotient();">
-      <td><code>quotient(value1,value2);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Performs integer division type safely. Works for both number and bigint values. All fof the parameter is mandatory and can be both number or both bigint. The return value is number or bigint.</td>
     </tr>
     <tr id="FN-randomFloat();">
       <td><code>randomFloat([max]);</code></td>
@@ -2205,8 +2205,8 @@ JSON.stringify( CEL.unique(array, (v) => v.rank) );
       <td><code>randomInt(min,max);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>Get a random integer number value within min and max value.</td>
     </tr>
-    <tr id="FN-remainder();">
-      <td><code>remainder(value1,value2);</code></td>
+    <tr id="FN-rem();">
+      <td><code>rem(value1,value2);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>Computes the integer remainder (modulus) type safely. Works for both number and bigint values. All fof the parameter is mandatory and can be both number or both bigint. The return value is number or bigint.</td>
     </tr>
     <tr id="FN-signbit();">

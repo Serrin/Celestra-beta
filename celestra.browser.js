@@ -2687,33 +2687,33 @@ function join(iter, separator = ",") {
     return result.slice(separator.length);
 }
 const withOut = ([...array], [...filterValues]) => array.filter((value) => !filterValues.includes(value));
-function quotient(dividend, divisor) {
+function mod(dividend, divisor) {
     const dividendType = typeof dividend;
     if (dividendType !== typeof divisor) {
-        throw new TypeError("[quotient] divisor and dividend must be the same type (both number or both bigint)");
+        throw new TypeError("[mod] divisor and dividend must be the same type (both number or both bigint)");
     }
     if (dividendType !== "number" && dividendType !== "bigint") {
-        throw new TypeError("[quotient] divisor and dividend must be either both number or both bigint");
+        throw new TypeError("[mod] divisor and dividend must be either both number or both bigint");
     }
     if ((dividendType === "number" && divisor === 0)
         || (dividendType === "bigint" && divisor === 0n)) {
-        throw new RangeError("[quotient] divisor must not be zero");
+        throw new RangeError("[mod] divisor must not be zero");
     }
     return dividendType === "number"
         ? Math.trunc(dividend / divisor)
         : dividend / divisor;
 }
-function remainder(dividend, divisor) {
+function rem(dividend, divisor) {
     const dividendType = typeof dividend;
     if (dividendType !== typeof divisor) {
-        throw new TypeError("[remainder] divisor and dividend must be the same type (both number or both bigint)");
+        throw new TypeError("[rem] divisor and dividend must be the same type (both number or both bigint)");
     }
     if (dividendType !== "number" && dividendType !== "bigint") {
-        throw new TypeError("[remainder] divisor and dividend must be either both number or both bigint");
+        throw new TypeError("[rem] divisor and dividend must be either both number or both bigint");
     }
     if ((dividendType === "number" && divisor === 0)
         || (dividendType === "bigint" && divisor === 0n)) {
-        throw new RangeError("[remainder] divisor must not be zero");
+        throw new RangeError("[rem] divisor must not be zero");
     }
     return dividendType === "number"
         ? dividend % divisor
@@ -3086,8 +3086,8 @@ export default {
     flat,
     join,
     withOut,
-    quotient,
-    remainder,
+    mod,
+    rem,
     isFloat,
     toInteger,
     toIntegerOrInfinity,
@@ -3122,4 +3122,4 @@ export default {
     randomFloat,
     inRange
 };
-export { VERSION, BASE16, BASE32, BASE36, BASE58, BASE62, WORDSAFEALPHABET, isNonNullable, isNonNullablePrimitive, eq, gt, gte, lt, lte, tap, once, curry, pipe, compose, pick, omit, assoc, asyncNoop, asyncT, asyncF, asyncConstant, asyncIdentity, deleteOwnProperty, createPolyfillMethod, createPolyfillProperty, randomUUIDv7, delay, randomBoolean, getUrlVars, obj2string, extend, sizeIn, unBind, bind, constant, identity, noop, T, F, nanoid, timestampID, assertIs, assertIsNot, assertFail, assertMatch, assertDoesNotMatch, assertThrows, assertIsNotNullish, assertIsNullish, assert, assertTrue, assertFalse, assertEqual, assertStrictEqual, assertNotEqual, assertNotStrictEqual, assertDeepEqual, assertNotDeepStrictEqual, assertNotDeepEqual, assertDeepStrictEqual, b64Encode, b64Decode, strTruncate, strPropercase, strTitlecase, strCapitalize, strUpFirst, strDownFirst, strReverse, strCodePoints, strFromCodePoints, strAt, strSplice, strHTMLRemoveTags, strHTMLEscape, strHTMLUnEscape, qsa, qs, domReady, domCreate, domToElement, domGetCSS, domSetCSS, domFadeIn, domFadeOut, domFadeToggle, domHide, domShow, domToggle, domIsHidden, domSiblings, domSiblingsPrev, domSiblingsLeft, domSiblingsNext, domSiblingsRight, importScript, importStyle, form2array, form2string, getDoNotTrack, getLocation, createFile, getFullscreen, setFullscreenOn, setFullscreenOff, domGetCSSVar, domSetCSSVar, domScrollToTop, domScrollToBottom, domScrollToElement, domClear, getText, getJson, ajax, isTypedCollection, is, toObject, toPrimitiveValue, toSafeString, isPropertyKey, toPropertyKey, isIndex, isLength, toIndex, toLength, typeOf, isSameType, isSameInstance, isCoercedObject, isDeepStrictEqual, isEmptyValue, isProxy, isAsyncGeneratorFn, isClass, isPlainObject, isChar, isNumeric, isObject, isFunction, isCallable, isArraylike, isNull, isUndefined, isNullish, isPrimitive, isIterator, isRegexp, isElement, isIterable, isAsyncIterable, isTypedArray, isGeneratorFn, isAsyncFn, setCookie, getCookie, hasCookie, removeCookie, clearCookies, castArray, compact, unique, count, arrayDeepClone, initial, shuffle, partition, setUnion, setIntersection, setDifference, setSymmetricDifference, isSuperset, min, max, arrayRepeat, arrayCycle, arrayRange, zip, unzip, zipObj, arrayAdd, arrayClear, arrayRemove, arrayRemoveBy, arrayMerge, iterRange, iterCycle, iterRepeat, takeWhile, dropWhile, take, drop, forEach, forEachRight, map, filter, reject, slice, tail, item, nth, size, first, head, last, reverse, sort, includes, find, findLast, every, some, none, takeRight, takeRightWhile, dropRight, dropRightWhile, concat, reduce, enumerate, flat, join, withOut, quotient, remainder, isFloat, toInteger, toIntegerOrInfinity, sum, avg, product, clamp, minmax, isEven, isOdd, toInt8, toUInt8, toInt16, toUInt16, toInt32, toUInt32, toBigInt64, toBigUInt64, toFloat32, isInt8, isUInt8, isInt16, isUInt16, isInt32, isUInt32, isBigInt64, isBigUInt64, toFloat16, isFloat16, signbit, randomInt, randomFloat, inRange };
+export { VERSION, BASE16, BASE32, BASE36, BASE58, BASE62, WORDSAFEALPHABET, isNonNullable, isNonNullablePrimitive, eq, gt, gte, lt, lte, tap, once, curry, pipe, compose, pick, omit, assoc, asyncNoop, asyncT, asyncF, asyncConstant, asyncIdentity, deleteOwnProperty, createPolyfillMethod, createPolyfillProperty, randomUUIDv7, delay, randomBoolean, getUrlVars, obj2string, extend, sizeIn, unBind, bind, constant, identity, noop, T, F, nanoid, timestampID, assertIs, assertIsNot, assertFail, assertMatch, assertDoesNotMatch, assertThrows, assertIsNotNullish, assertIsNullish, assert, assertTrue, assertFalse, assertEqual, assertStrictEqual, assertNotEqual, assertNotStrictEqual, assertDeepEqual, assertNotDeepStrictEqual, assertNotDeepEqual, assertDeepStrictEqual, b64Encode, b64Decode, strTruncate, strPropercase, strTitlecase, strCapitalize, strUpFirst, strDownFirst, strReverse, strCodePoints, strFromCodePoints, strAt, strSplice, strHTMLRemoveTags, strHTMLEscape, strHTMLUnEscape, qsa, qs, domReady, domCreate, domToElement, domGetCSS, domSetCSS, domFadeIn, domFadeOut, domFadeToggle, domHide, domShow, domToggle, domIsHidden, domSiblings, domSiblingsPrev, domSiblingsLeft, domSiblingsNext, domSiblingsRight, importScript, importStyle, form2array, form2string, getDoNotTrack, getLocation, createFile, getFullscreen, setFullscreenOn, setFullscreenOff, domGetCSSVar, domSetCSSVar, domScrollToTop, domScrollToBottom, domScrollToElement, domClear, getText, getJson, ajax, isTypedCollection, is, toObject, toPrimitiveValue, toSafeString, isPropertyKey, toPropertyKey, isIndex, isLength, toIndex, toLength, typeOf, isSameType, isSameInstance, isCoercedObject, isDeepStrictEqual, isEmptyValue, isProxy, isAsyncGeneratorFn, isClass, isPlainObject, isChar, isNumeric, isObject, isFunction, isCallable, isArraylike, isNull, isUndefined, isNullish, isPrimitive, isIterator, isRegexp, isElement, isIterable, isAsyncIterable, isTypedArray, isGeneratorFn, isAsyncFn, setCookie, getCookie, hasCookie, removeCookie, clearCookies, castArray, compact, unique, count, arrayDeepClone, initial, shuffle, partition, setUnion, setIntersection, setDifference, setSymmetricDifference, isSuperset, min, max, arrayRepeat, arrayCycle, arrayRange, zip, unzip, zipObj, arrayAdd, arrayClear, arrayRemove, arrayRemoveBy, arrayMerge, iterRange, iterCycle, iterRepeat, takeWhile, dropWhile, take, drop, forEach, forEachRight, map, filter, reject, slice, tail, item, nth, size, first, head, last, reverse, sort, includes, find, findLast, every, some, none, takeRight, takeRightWhile, dropRight, dropRightWhile, concat, reduce, enumerate, flat, join, withOut, mod, rem, isFloat, toInteger, toIntegerOrInfinity, sum, avg, product, clamp, minmax, isEven, isOdd, toInt8, toUInt8, toInt16, toUInt16, toInt32, toUInt32, toBigInt64, toBigUInt64, toFloat32, isInt8, isUInt8, isInt16, isUInt16, isInt32, isUInt32, isBigInt64, isBigUInt64, toFloat16, isFloat16, signbit, randomInt, randomFloat, inRange };
