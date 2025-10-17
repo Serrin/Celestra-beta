@@ -171,10 +171,10 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <p><a href="#FN-strTruncate();">strTruncate();</a></p>
       <p><a href="#FN-strUpFirst();">strUpFirst();</a></p>
     </details>
-    <!-- Assertion API -->
+    <!-- Legacy Assertion API -->
     <hr/>
     <details open>
-      <summary><strong>Assertion API</strong></summary>
+      <summary><strong>Legacy Assertion API</strong></summary>
       <p><a href="#FN-assert();">assert();</a></p>
       <p><a href="#FN-assertDeepEqual();">assertDeepEqual();</a></p>
       <p><a href="#FN-assertDeepStrictEqual();">assertDeepStrictEqual();</a></p>
@@ -182,7 +182,6 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <p><a href="#FN-assertEqual();">assertEqual();</a></p>
       <p><a href="#FN-assertFail();">assertFail();</a></p>
       <p><a href="#FN-assertFalse();">assertFalse();</a></p>
-      <p><a href="#FN-assertInstanceOf();">assertInstanceOf();</a></p>
       <p><a href="#FN-assertIs();">assertIs();</a></p>
       <p><a href="#FN-assertIsNot();">assertIsNot();</a></p>
       <p><a href="#FN-assertIsNotNullish();">assertIsNotNullish();</a></p>
@@ -190,13 +189,10 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <p><a href="#FN-assertMatch();">assertMatch();</a></p>
       <p><a href="#FN-assertNotDeepEqual();">assertNotDeepEqual();</a></p>
       <p><a href="#FN-assertNotDeepStrictEqual();">assertNotDeepStrictEqual();</a></p>
-      <p><a href="#FN-assertNotInstanceOf();">assertNotInstanceOf();</a></p>
       <p><a href="#FN-assertNotStrictEqual();">assertNotStrictEqual();</a></p>
-      <p><a href="#FN-assertNotTypeOf();">assertNotTypeOf();</a></p>
       <p><a href="#FN-assertStrictEqual();">assertStrictEqual();</a></p>
       <p><a href="#FN-assertTrue();">assertTrue();</a></p>
       <p><a href="#FN-assertThrows();">assertThrows();</a></p>
-      <p><a href="#FN-assertTypeOf();">assertTypeOf();</a></p>
     </details>
     <!-- DOM API -->
     <hr/>
@@ -250,8 +246,6 @@ nav a, nav a:visited, nav a:active, nav a:hover {
     <hr/>
     <details open>
       <summary><strong>Type API</strong></summary>
-      <p><a href="#FN-classof();">classof();</a></p>
-      <p><a href="#FN-getType();">getType();</a></p>
       <p><a href="#FN-is();">is();</a></p>
       <p><a href="#FN-isTypedCollection();">isTypedCollection();</a></p>
       <p><a href="#FN-isArraylike();">isArraylike();</a></p>
@@ -282,7 +276,6 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <p><a href="#FN-isPropertyKey();">isPropertyKey();</a></p>
       <p><a href="#FN-isProxy();">isProxy();</a></p>
       <p><a href="#FN-isRegexp();">isRegexp();</a></p>
-      <p><a href="#FN-isSameClass();">isSameClass();</a></p>
       <p><a href="#FN-isSameInstance();">isSameInstance();</a></p>
       <p><a href="#FN-isSameType();">isSameType();</a></p>
       <p><a href="#FN-isTypedArray();">isTypedArray();</a></p>
@@ -321,7 +314,6 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <p><a href="#FN-compact();">compact();</a></p>
       <p><a href="#FN-concat();">concat();</a></p>
       <p><a href="#FN-count();">count();</a></p>
-      <p><a href="#FN-contains();">contains();</a></p>
       <p><a href="#FN-drop();">drop();</a></p>
       <p><a href="#FN-dropRight();">dropRight();</a></p>
       <p><a href="#FN-dropRightWhile();">dropRightWhile();</a></p>
@@ -475,7 +467,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
     &nbsp;//&nbsp;
     <a href="#FNstringAPI" style="color: white !important">String API</a>
     &nbsp;//&nbsp;
-    <a href="#FNassertionAPI" style="color: white !important">Assertion API</a>
+    <a href="#FNassertionAPI" style="color: white !important">Legacy Assertion API</a>
     &nbsp;//&nbsp;
     <a href="#FNajaxAPI" style="color: white !important">AJAX and CORS API</a>
     <br/>
@@ -1108,7 +1100,9 @@ CEL.delay(5000)
 </div>
 
 
-<h3 id="FNassertionAPI">Assertion API</h3>
+<h3 id="FNassertionAPI">Legacy Assertion API</h3>
+
+<p><span class="info">These functions have been marked as legacy, because the first stable version of <a href="https://github.com/Serrin/assert.js" target="_blank">assert.js</a> libraryhas been published.</span></p>
 
 <p>There are information about the equalities in the <a href="js-cheatsheet.pdf" target="_blank">js-cheatsheet.pdf</a>.</p>
 
@@ -1121,121 +1115,97 @@ CEL.delay(5000)
     <tr id="FN-assert();">
       <td><code>assert(condition [, message | error]);</code></td>
       <td>
-        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the condition is falsy. The message parameter is optional. The return value is <code>true</code>, when the test was success.
+        <span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function throws an error with the message if the condition is falsy. The message parameter is optional. The return value is <code>true</code>, when the test was success.
       </td>
     </tr>
     <tr id="FN-assertDeepEqual();">
       <td><code>assertDeepEqual(value1, value2 [, message | error]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 aren't deep equals. (<em>Deep loose equality + NaN equality: primitives (loose equality + NaN equality), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer</em>) The message parameter is optional. The return value is <code>true</code>, when the test was success.<br/><span class="info">This function may give unexpected results. It is safer to use the <code>assertDeepStrictEqual();</code> function.</span></td>
+      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function throws an error with the message if the value1 and value2 aren't deep equals. (<em>Deep loose equality + NaN equality: primitives (loose equality + NaN equality), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer</em>) The message parameter is optional. The return value is <code>true</code>, when the test was success.<br/><span class="info">This function may give unexpected results. It is safer to use the <code>assertDeepStrictEqual();</code> function.</span></td>
     </tr>
     <tr id="FN-assertDeepStrictEqual();">
       <td><code>assertDeepStrictEqual(value1, value2 [, message | error]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 aren't deep equals. (<em>Deep strict equality + NaN equality: primitives (SameValue - Object.is()), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer</em>) The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
+      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function throws an error with the message if the value1 and value2 aren't deep equals. (<em>Deep strict equality + NaN equality: primitives (SameValue - Object.is()), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer</em>) The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
     </tr>
     <tr id="FN-assertDoesNotMatch();">
       <td><code>assertDoesNotMatch(string, regexp [, message | error]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the string matches with the regexp. The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
+      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function throws an error with the message if the string matches with the regexp. The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
     </tr>
     <tr id="FN-assertEqual();">
       <td><code>assertEqual(value1, value2 [, message | error]);</code></td>
       <td>
-        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 aren't equals. (<em>Loose equality + NaN equality</em>) The message parameter is optional. The return value is <code>true</code>, when the test was success.
+        <span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function throws an error with the message if the value1 and value2 aren't equals. (<em>Loose equality + NaN equality</em>) The message parameter is optional. The return value is <code>true</code>, when the test was success.
       </td>
     </tr>
     <tr id="FN-assertFail();">
       <td><code>assertFail(message | error);</code></td>
       <td>
-        <span class="info">Stability: 4 - Stable.</span><br/>This function always throws an error. If the argument is an error, then this error will be thrown, else a new error with the message.
+        <span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function always throws an error. If the argument is an error, then this error will be thrown, else a new error with the message.
       </td>
     </tr>
     <tr id="FN-assertFalse();">
       <td><code>assertFalse(condition [, message | error]);</code></td>
       <td>
-        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the condition is truthy. The message parameter is optional. The return value is <code>true</code>, when the test was success.
-      </td>
-    </tr>
-    <tr id="FN-assertInstanceOf();">
-      <td><code>assertInstanceOf(value, constructor [, message | error]);</code></td>
-      <td>
-        <span class="removed">Stability: 0 - Removed in v6.1.0</span><br/>This function throws an error if the constructor of the value in not the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
+        <span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function throws an error with the message if the condition is truthy. The message parameter is optional. The return value is <code>true</code>, when the test was success.
       </td>
     </tr>
     <tr id="FN-assertIs();">
       <td><code>assertIs(value, expectedType [, message | error]);</code></td>
       <td>
-        <span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value type or class is the given expectedType. The expectedType can be a type string, constructor function or an array of the type strings and constructors. If the value is not matched with the expectedType, then a TypeError will be thrown with detailed error message. If these conditions are passed, then the given value is the return value.
+        <span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function determines whether the provided value type or class is the given expectedType. The expectedType can be a type string, constructor function or an array of the type strings and constructors. If the value is not matched with the expectedType, then a TypeError will be thrown with detailed error message. If these conditions are passed, then the given value is the return value.
       </td>
     </tr>
     <tr id="FN-assertIsNot();">
       <td><code>assertIsNot(value, expectedType [, message | error]);</code></td>
       <td>
-        <span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value type or class is not the given expectedType. The expectedType can be a type string, constructor function or an array of the type strings and constructors. If the value is matched with the expectedType, then a TypeError will be thrown with detailed error message. If these conditions are passed, then the given value is the return value.
+        <span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function determines whether the provided value type or class is not the given expectedType. The expectedType can be a type string, constructor function or an array of the type strings and constructors. If the value is matched with the expectedType, then a TypeError will be thrown with detailed error message. If these conditions are passed, then the given value is the return value.
       </td>
     </tr>
     <tr id="FN-assertIsNotNullish();">
       <td><code>assertIsNotNullish(value [, message | error]);</code></td>
       <td>
-        <span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v6.1.0: <code>assertIsNotNil();</code>.</span><br/>This function throws an error with the message if the value is null or undefined, else the given value is the return value. The message parameter is optional.
+        <span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Old name before v6.1.0: <code>assertIsNotNil();</code>.</span><br/>This function throws an error with the message if the value is null or undefined, else the given value is the return value. The message parameter is optional.
       </td>
     </tr>
     <tr id="FN-assertIsNullish();">
       <td><code>assertIsNullish(value [, message | error]);</code></td>
       <td>
-        <span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v6.1.0: <code>assertIsNil();</code>.</span><br/>This function throws an error with the message if the value is not null or undefined, else the given value is the return value. The message parameter is optional.
+        <span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Old name before v6.1.0: <code>assertIsNil();</code>.</span><br/>This function throws an error with the message if the value is not null or undefined, else the given value is the return value. The message parameter is optional.
       </td>
     </tr>
     <tr id="FN-assertMatch();">
       <td><code>assertMatch(string, regexp [, message | error]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the string doesn't match with the regexp. The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
+      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function throws an error with the message if the string doesn't match with the regexp. The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
     </tr>
     <tr id="FN-assertNotDeepEqual();">
       <td><code>assertNotDeepEqual(value1, value2, [, message | error]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 are deep equals. (<em>Deep loose equality + NaN equality: primitives (loose equality + NaN equality), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer</em>) The message parameter is optional. The return value is <code>true</code>, when the test was success.<br/><span class="info">This function may give unexpected results. It is safer to use the <code>assertNotDeepStrictEqual();</code> function.</span></td>
+      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function throws an error with the message if the value1 and value2 are deep equals. (<em>Deep loose equality + NaN equality: primitives (loose equality + NaN equality), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer</em>) The message parameter is optional. The return value is <code>true</code>, when the test was success.<br/><span class="info">This function may give unexpected results. It is safer to use the <code>assertNotDeepStrictEqual();</code> function.</span></td>
     </tr>
     <tr id="FN-assertNotDeepStrictEqual();">
       <td><code>assertNotDeepStrictEqual(value1, value2, [, message | error]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 are deep equals. (<em>Deep strict equality + NaN equality: primitives (SameValue - Object.is()), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer</em>) The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
-    </tr>
-    <tr id="FN-assertNotInstanceOf();">
-      <td><code>assertNotInstanceOf(value, constructor [, message | error]);</code></td>
-      <td>
-        <span class="removed">Stability: 0 - Removed in v6.1.0</span><br/>This function throws an error if the constructor of the value is the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
-      </td>
+      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function throws an error with the message if the value1 and value2 are deep equals. (<em>Deep strict equality + NaN equality: primitives (SameValue - Object.is()), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer</em>) The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
     </tr>
     <tr id="FN-assertNotStrictEqual();">
       <td><code>assertNotStrictEqual(value1, value2 [, message | error]);</code></td>
       <td>
-        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 are equals. (<em>SameValue equality</em>) The message parameter is optional. The return value is <code>true</code>, when the test was success.
-      </td>
-    </tr>
-    <tr id="FN-assertNotTypeOf();">
-      <td><code>assertNotTypeOf(value [, message | error]);</code></td>
-      <td>
-        <span class="removed">Stability: 0 - Removed in v6.1.0</span><br/>This function throws an error if the type of the value is the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
+        <span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function throws an error with the message if the value1 and value2 are equals. (<em>SameValue equality</em>) The message parameter is optional. The return value is <code>true</code>, when the test was success.
       </td>
     </tr>
     <tr id="FN-assertStrictEqual();">
       <td><code>assertStrictEqual(value1, value2 [, message | error]);</code></td>
       <td>
-        <span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the value1 and value2 aren't equals. (<em>SameValue equality</em>) The message parameter is optional. The return value is <code>true</code>, when the test was success.
+        <span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function throws an error with the message if the value1 and value2 aren't equals. (<em>SameValue equality</em>) The message parameter is optional. The return value is <code>true</code>, when the test was success.
       </td>
     </tr>
     <tr id="FN-assertTrue();">
       <td><code>assertTrue(condition [, message | error]);</code></td>
       <td>
-        <span class="info">Stability: 4 - Stable.</span><br/>This is an alias of the <code>assert(condition [, message | error]);</code>.
+        <span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This is an alias of the <code>assert(condition [, message | error]);</code>.
       </td>
     </tr>
     <tr id="FN-assertThrows();">
       <td><code>assertThrows(callback [, message | error]);</code></td>
       <td>
-        <span class="info">Stability: 4 - Stable.</span><br/>This function catches and returns the error, if the callback throws an error. In other cases throws an error with the message. The message parameter is optional.
-      </td>
-    </tr>
-    <tr id="FN-assertTypeOf();">
-      <td><code>assertTypeOf(value, type [, message | error]);</code></td>
-      <td>
-        <span class="removed">Stability: 0 - Removed in v6.1.0</span><br/>This function throws an error if the type of the value in not the same as the second parameter. If the second parameter is not a string, then an error will throw. The message parameter is optional. If these conditions are passed, then the given value is the return value.
+        <span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function catches and returns the error, if the callback throws an error. In other cases throws an error with the message. The message parameter is optional.
       </td>
     </tr>
   </table>
@@ -1477,14 +1447,6 @@ CEL.delay(5000)
       <td style="width: auto; min-width: 33%;"><strong>Name</strong></td>
       <td><strong>Description</strong></td>
     </tr>
-    <tr id="FN-classof();">
-      <td><code>classof(value[,class[,throw=false]]);</code></td>
-      <td><span class="removed">Stability: 0 - Removed in v6.1.0</span><br/>Get the real type of a value. If this is an object, then the return value is the detailed object type (e.g.: array). If the class (string) parameter is given, then the return value (boolean) is the equality of the type of the value and the second parameter. If the third parameter (boolean) is true and the type of the value and the second parameter aren't equals, then the function is throwing a <code>TypeError();</code>, else the return value is true.</td>
-    </tr>
-    <tr id="FN-getType();">
-      <td><code>getType(value[,class[,throw=false]]);</code></td>
-      <td><span class="removed">Stability: 0 - Removed in v6.1.0</span><br/>This is an alias of the <code>classof(value[,class[,throw=false]]);</code>.</td>
-    </tr>
     <tr id="FN-is();">
       <td><code>is(value[,expectedType[,Throw=false]];</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value type or class is the given expectedType. The expectedType can be a type string, constructor function or an array of the type strings and constructors. If the Throw is true and the value is not matched with the expectedType, then a TypeError will be thrown with detailed error message. The return value is boolean or the type or constructor of the value.</td>
@@ -1611,10 +1573,6 @@ CEL.delay(5000)
     <tr id="FN-isRegexp();">
       <td><code>isRegexp(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a regexp. The return value is boolean.</td>
-    </tr>
-    <tr id="FN-isSameClass();">
-      <td><code>isSameClass(value1, value2);</code></td>
-      <td><span class="removed">Stability: 0 - Removed in v6.1.0</span><br/>This function returns true if the values are same class and uses the <code>Object.prototype.toString();</code> method. The parameters are mandatory. The return value is boolean.</td>
     </tr>
     <tr id="FN-isSameInstance();">
       <td><code>isSameInstance(value1, value2,Contructor);</code></td>
@@ -1820,10 +1778,6 @@ CEL.delay(5000)
     <tr id="FN-count();">
       <td><code>count((iterator,callback););</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function executes a counter function (that you provide) on each element of the iterator, returning in a single output value. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function.</td>
-    </tr>
-    <tr id="FN-contains();">
-      <td><code>contains(iterator,value);</code></td>
-      <td><span class="removed">Stability: 0 - Removed in v6.1.0</span><br/>This function determines whether an iterator includes a certain value among its entries, returning true or false as appropriate. All of the parameters are mandatory.</td>
     </tr>
     <tr id="FN-drop();">
       <td><code>drop(iterator[,n=1]);</code></td>

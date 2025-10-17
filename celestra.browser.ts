@@ -853,7 +853,7 @@ function timestampID (
 }
 
 
-/** Assertion API **/
+/** Legacy Assertion API **/
 
 
 /* assertIs (
@@ -4538,7 +4538,7 @@ export default {
   F,
   nanoid,
   timestampID,
-  /** Assertion API **/
+  /** Legacy Assertion API **/
   assertIs,
   assertIsNot,
   assertFail,
@@ -4814,7 +4814,7 @@ export {
   F,
   nanoid,
   timestampID,
-  /** Assertion API **/
+  /** Legacy Assertion API **/
   assertIs,
   assertIsNot,
   assertFail,
