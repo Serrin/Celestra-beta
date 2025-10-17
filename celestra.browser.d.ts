@@ -1,6 +1,6 @@
 declare const VERSION = "Celestra v6.1.2 browser";
 type MapLike = {
-    [key: string]: any;
+    [key: string | symbol]: any;
 };
 type ArrayLike = {
     length: number;
@@ -9,8 +9,22 @@ type ArrayLike = {
 type IterableAndIterator = Iterable<any> | Iterator<any> | IterableIterator<any>;
 type IterableAndIteratorAndArrayLike = Iterable<any> | Iterator<any> | IterableIterator<any> | ArrayLike;
 type IteratorReturn = Iterable<any> | IteratorResult<any> | Generator<number, void, unknown>;
+type Nullish = undefined | null;
+type NonNullablePrimitive = number | boolean | string | symbol;
+type Primitive = null | undefined | number | bigint | boolean | string | symbol;
 type Comparable = number | bigint | string | boolean;
 type PropertyKey = string | symbol;
+type TypeOfTag = "null" | "undefined" | "number" | "bigint" | "boolean" | "string" | "symbol" | "object" | "function";
+type TypedArray = Int8Array | Uint8Array | Uint8ClampedArray | Int16Array | Uint16Array | Int32Array | Uint32Array | Float32Array | Float64Array | BigInt64Array | BigUint64Array | (typeof globalThis extends {
+    Float16Array: infer F;
+} ? F : never);
+type ClearCookiesOptions = {
+    path?: string | undefined;
+    domain?: string | undefined;
+    secure?: boolean | undefined;
+    SameSite?: string | undefined;
+    HttpOnly?: boolean | undefined;
+};
 declare const BASE16 = "0123456789ABCDEF";
 declare const BASE32 = "234567ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 declare const BASE36 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -18,7 +32,6 @@ declare const BASE58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwx
 declare const BASE62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 declare const WORDSAFEALPHABET = "23456789CFGHJMPQRVWXcfghjmpqvwx";
 declare const isNonNullable: (value: unknown) => value is NonNullable<unknown>;
-type NonNullablePrimitive = number | boolean | string | symbol;
 declare const isNonNullablePrimitive: (value: unknown) => value is NonNullablePrimitive;
 declare const eq: (value1: unknown, value2: unknown) => boolean;
 declare function gt(value1: Comparable, value2: Comparable): boolean;
@@ -30,9 +43,9 @@ declare function once(fn: Function): Function;
 declare function curry(fn: Function): Function;
 declare const pipe: (...functions: Function[]) => Function;
 declare const compose: (...functions: Function[]) => Function;
-declare const pick: (obj: object, keys: string[]) => object;
-declare const omit: (obj: object, keys: string[]) => object;
-declare const assoc: (obj: object, property: string, value: unknown) => object;
+declare const pick: (obj: MapLike, keys: string[]) => MapLike;
+declare const omit: (obj: MapLike, keys: string[]) => MapLike;
+declare const assoc: (obj: MapLike, property: string, value: unknown) => MapLike;
 declare function asyncNoop(): Promise<void>;
 declare function asyncT(): Promise<boolean>;
 declare function asyncF(): Promise<boolean>;
@@ -141,7 +154,6 @@ declare const isIndex: (value: unknown) => value is number;
 declare const isLength: (value: unknown) => value is number;
 declare function toIndex(value: any): number;
 declare function toLength(value: any): number;
-type TypeOfTag = "null" | "undefined" | "number" | "bigint" | "boolean" | "string" | "symbol" | "object" | "function";
 declare const typeOf: (value: unknown) => TypeOfTag;
 declare const isSameType: (value1: any, value2: any) => boolean;
 declare const isSameInstance: (value1: any, value2: any, Contructor: Function) => boolean;
@@ -160,18 +172,13 @@ declare const isCallable: (value: any) => boolean;
 declare function isArraylike(value: unknown): value is ArrayLike;
 declare const isNull: (value: unknown) => value is null;
 declare const isUndefined: (value: unknown) => value is undefined;
-type Nullish = undefined | null;
 declare const isNullish: (value: unknown) => value is Nullish;
-type Primitive = null | undefined | number | bigint | boolean | string | symbol;
 declare const isPrimitive: (value: unknown) => value is Primitive;
-declare const isIterator: (value: any) => boolean;
+declare const isIterator: (value: unknown) => value is Iterator<any>;
 declare const isRegexp: (value: unknown) => value is RegExp;
 declare const isElement: (value: any) => boolean;
-declare const isIterable: (value: any) => boolean;
+declare const isIterable: (value: unknown) => value is Iterable<any>;
 declare const isAsyncIterable: (value: unknown) => boolean;
-type TypedArray = Int8Array | Uint8Array | Uint8ClampedArray | Int16Array | Uint16Array | Int32Array | Uint32Array | Float32Array | Float64Array | BigInt64Array | BigUint64Array | (typeof globalThis extends {
-    Float16Array: infer F;
-} ? F : never);
 declare function isTypedArray(value: unknown): value is TypedArray;
 declare const isGeneratorFn: (value: unknown) => boolean;
 declare const isAsyncFn: (value: unknown) => boolean;
@@ -181,13 +188,6 @@ declare function getCookie(name?: string | undefined): {
 } | string | null;
 declare const hasCookie: (name: string) => boolean;
 declare function removeCookie(name: string | MapLike, path: string | undefined, domain: string, secure: boolean, SameSite: string | undefined, HttpOnly: boolean): boolean;
-type ClearCookiesOptions = {
-    path?: string | undefined;
-    domain?: string | undefined;
-    secure?: boolean | undefined;
-    SameSite?: string | undefined;
-    HttpOnly?: boolean | undefined;
-};
 declare function clearCookies(path?: string | ClearCookiesOptions, domain?: string, secure?: boolean, SameSite?: string | undefined, HttpOnly?: boolean): void;
 declare function castArray<T>(...args: [T] | []): T[];
 declare const compact: (iter: IterableAndIteratorAndArrayLike) => any[];
@@ -310,9 +310,9 @@ declare const _default: {
     curry: typeof curry;
     pipe: (...functions: Function[]) => Function;
     compose: (...functions: Function[]) => Function;
-    pick: (obj: object, keys: string[]) => object;
-    omit: (obj: object, keys: string[]) => object;
-    assoc: (obj: object, property: string, value: unknown) => object;
+    pick: (obj: MapLike, keys: string[]) => MapLike;
+    omit: (obj: MapLike, keys: string[]) => MapLike;
+    assoc: (obj: MapLike, property: string, value: unknown) => MapLike;
     asyncNoop: typeof asyncNoop;
     asyncT: typeof asyncT;
     asyncF: typeof asyncF;
@@ -441,10 +441,10 @@ declare const _default: {
     isUndefined: (value: unknown) => value is undefined;
     isNullish: (value: unknown) => value is Nullish;
     isPrimitive: (value: unknown) => value is Primitive;
-    isIterator: (value: any) => boolean;
+    isIterator: (value: unknown) => value is Iterator<any>;
     isRegexp: (value: unknown) => value is RegExp;
     isElement: (value: any) => boolean;
-    isIterable: (value: any) => boolean;
+    isIterable: (value: unknown) => value is Iterable<any>;
     isAsyncIterable: (value: unknown) => boolean;
     isTypedArray: typeof isTypedArray;
     isGeneratorFn: (value: unknown) => boolean;

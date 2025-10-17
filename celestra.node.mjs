@@ -637,8 +637,7 @@ function assertDeepEqual(value1, value2, message) {
     function _isDeepEqual(value1, value2) {
         const _isObject = (value) => value != null && typeof value === "object";
         const _isSameInstance = (value1, value2, Class) => (value1 instanceof Class) && (value2 instanceof Class);
-        const _ownKeys = (value) => Object.getOwnPropertyNames(value)
-            .concat(Object.getOwnPropertySymbols(value));
+        const _ownKeys = (value) => [...Object.getOwnPropertyNames(value), ...Object.getOwnPropertySymbols(value)];
         const _isEqual = (value1, value2) => value1 == value2 || (value1 !== value1 && value2 !== value2);
         if (_isEqual(value1, value2)) {
             return true;
@@ -770,8 +769,7 @@ function assertNotDeepStrictEqual(value1, value2, message) {
         const _isObject = (value) => (value != null && typeof value === "object");
         const _isSameInstance = (value1, value2, Class) => (value1 instanceof Class) && (value2 instanceof Class);
         const _classof = (value) => Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
-        const _ownKeys = (value) => Object.getOwnPropertyNames(value)
-            .concat(Object.getOwnPropertySymbols(value));
+        const _ownKeys = (value) => [...Object.getOwnPropertyNames(value), ...Object.getOwnPropertySymbols(value)];
         const _isEqual = (value1, value2) => Object.is(value1, value2);
         if (_isEqual(value1, value2)) {
             return true;
@@ -915,8 +913,7 @@ function assertNotDeepEqual(value1, value2, message) {
     function _isDeepEqual(value1, value2) {
         const _isObject = (value) => (value != null && typeof value === "object");
         const _isSameInstance = (value1, value2, Class) => (value1 instanceof Class) && (value2 instanceof Class);
-        const _ownKeys = (value) => Object.getOwnPropertyNames(value)
-            .concat(Object.getOwnPropertySymbols(value));
+        const _ownKeys = (value) => [...Object.getOwnPropertyNames(value), ...Object.getOwnPropertySymbols(value)];
         const _isEqual = (value1, value2) => (value1 == value2 || (value1 !== value1 && value2 !== value2));
         if (_isEqual(value1, value2)) {
             return true;
@@ -1047,8 +1044,7 @@ function assertDeepStrictEqual(value1, value2, message) {
         const _isObject = (value) => (value != null && typeof value === "object");
         const _isSameInstance = (value1, value2, Class) => (value1 instanceof Class) && (value2 instanceof Class);
         const _classof = (value) => Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
-        const _ownKeys = (value) => Object.getOwnPropertyNames(value)
-            .concat(Object.getOwnPropertySymbols(value));
+        const _ownKeys = (value) => [...Object.getOwnPropertyNames(value), ...Object.getOwnPropertySymbols(value)];
         const _isEqual = (value1, value2) => Object.is(value1, value2);
         if (_isEqual(value1, value2)) {
             return true;
@@ -1453,8 +1449,7 @@ function isDeepStrictEqual(value1, value2) {
     const _isObject = (value) => value != null && typeof value === "object";
     const _isSameInstance = (value1, value2, Class) => value1 instanceof Class && value2 instanceof Class;
     const _classof = (value) => Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
-    const _ownKeys = (value) => Object.getOwnPropertyNames(value)
-        .concat(Object.getOwnPropertySymbols(value));
+    const _ownKeys = (value) => [...Object.getOwnPropertyNames(value), ...Object.getOwnPropertySymbols(value)];
     const _isEqual = (value1, value2) => Object.is(value1, value2);
     if (_isEqual(value1, value2)) {
         return true;

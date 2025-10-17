@@ -23,24 +23,89 @@ const VERSION = "Celestra v6.1.2 browser";
 /** TS types */
 
 
-/** @internal */
-type MapLike = { [key: string]: any };
+/**
+ * @description Map-like object with string or symbol keys.
+ *
+ * @internal
+ * */
+type MapLike = { [key: string | symbol]: any };
 
-/** @internal */
+/**
+ * @description Array-like object.
+ *
+ * @internal
+ * */
 type ArrayLike = { length: number; [n: number]: any; };
 /* interface ArrayLike<T> { length: number; [n: number]: T; }; */
 
-/** @internal */
+/**
+ * @description Set-like object.
+ *
+ * @internal
+ * */
+/*
+type SetLike<T> ={
+  readonly size: number;
+  has(value: T): boolean;
+};
+*/
+
+/**
+ * @description Number-like object.
+ *
+ * @internal
+ * */
+type NumberLike = number | bigint;
+
+/**
+ * @description Iterable and Iterator types.
+ *
+ * @internal
+ */
 type IterableAndIterator =
   Iterable<any> | Iterator<any> | IterableIterator<any>;
 
-/** @internal */
+/**
+ * @description Iterable and Iterator and Array-like types.
+ *
+ * @internal
+ */
 type IterableAndIteratorAndArrayLike =
   Iterable<any> | Iterator<any> | IterableIterator<any> | ArrayLike;
 
-/** @internal */
+/**
+ * @description Iterable and Iterator and Generator types.
+ *
+ * @internal
+ */
 type IteratorReturn =
   Iterable<any> | IteratorResult<any> | Generator<number, void, unknown>;
+
+/**
+ * @description Type for undefined and null values.
+ *
+ * @internal
+ */
+type Nullish = undefined | null;
+
+/*
+built-in type:
+type NonNullable = number | boolean | string | symbol | object | Function;
+*/
+
+/**
+ * @description Not null or undefined or object or function.
+ *
+ * @internal
+ */
+type NonNullablePrimitive = number | boolean | string | symbol;
+
+/**
+ * @description Not object or function.
+ *
+ * @internal
+ */
+type Primitive = null | undefined | number | bigint | boolean | string | symbol;
 
 /**
  * Generic comparable types.
@@ -49,11 +114,48 @@ type IteratorReturn =
  */
 type Comparable = number | bigint | string | boolean;
 
-/** @internal */
+/**
+ * @description Object key type.
+ *
+ * @internal
+ */
 type PropertyKey = string | symbol;
 
-/** @internal */
-type NumberLike = number | bigint;
+/**
+ * @description Primitive types.
+ *
+ * @internal
+ */
+type TypeOfTag =
+  | "null" | "undefined"
+  | "number" | "bigint" | "boolean" | "string" | "symbol"
+  | "object" | "function";
+
+/**
+ * @description TypedArray types.
+ *
+ * @internal
+ */
+type TypedArray =
+  | Int8Array | Uint8Array | Uint8ClampedArray
+  | Int16Array | Uint16Array
+  | Int32Array | Uint32Array
+  | Float32Array | Float64Array
+  | BigInt64Array | BigUint64Array
+  | (typeof globalThis extends { Float16Array: infer F } ? F : never);
+
+/**
+ * @description ClearCookiesOptions object type.
+ *
+ * @internal
+ */
+type ClearCookiesOptions = {
+  path?: string | undefined;
+  domain?: string | undefined;
+  secure?: boolean | undefined;
+  SameSite?: string | undefined;
+  HttpOnly?: boolean | undefined;
+};
 
 
 /** polyfills **/
@@ -361,10 +463,6 @@ const BASE62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 const WORDSAFEALPHABET = "23456789CFGHJMPQRVWXcfghjmpqvwx"; /* 31 */
 
 
-/*
-built-in type:
-type NonNullable = number | boolean | string | symbol | object | Function;
-*/
 /**
  * @description Checks if the given value is NonNullable (not null or undefined).
  *
@@ -375,8 +473,6 @@ const isNonNullable = (value: unknown): value is NonNullable<unknown> =>
   value != null;
 
 
-/** @internal */
-type NonNullablePrimitive = number | boolean | string | symbol;
 /**
  * @description Checks if the given value is NonNullablePrimitive.
  *
@@ -508,16 +604,15 @@ const compose = (...functions: Function[]): Function =>
 
 
 /* pick (object: object, keys: array): object */
-const pick = (obj: object, keys: string[]): object =>
+const pick = (obj: MapLike, keys: string[]): MapLike =>
   keys.reduce(function (acc: MapLike, key: string) {
-    // @ts-ignore
     if (key in obj) { acc[key] = obj[key]; }
     return acc;
   }, {});
 
 
 /* omit (object: object, keys: array): object */
-const omit = (obj: object, keys: string[]): object =>
+const omit = (obj: MapLike, keys: string[]): MapLike =>
   Object.keys(obj).reduce(function (acc: MapLike, key: string) {
     // @ts-ignore
     if (!keys.includes(key)) { acc[key] = obj[key]; }
@@ -526,7 +621,7 @@ const omit = (obj: object, keys: string[]): object =>
 
 
 /* assoc (object: object, key: string, value: unknown): object */
-const assoc = (obj: object, property: string, value: unknown): object =>
+const assoc = (obj: MapLike, property: string, value: unknown): MapLike =>
   ({...obj, [property]: value});
 
 
@@ -1085,10 +1180,8 @@ function assertDeepEqual (value1: any, value2: any, message?: any): boolean {
       (value1 instanceof Class) && (value2 instanceof Class);
     /*const _classof = (value: any): string =>
       Object.prototype.toString.call(value).slice(8, -1).toLowerCase();*/
-    const _ownKeys = (value1: object): any[] =>
-      Object.getOwnPropertyNames(value1)
-        // @ts-ignore
-        .concat(Object.getOwnPropertySymbols(value1));
+    const _ownKeys = (value: object): any[] =>
+      [...Object.getOwnPropertyNames(value), ...Object.getOwnPropertySymbols(value)];
     /* strict equality helper function */
     /* const _isEqual = (value1: any, value2: any): boolean =>
       Object.is(value1, value2); */
@@ -1240,9 +1333,7 @@ function assertNotDeepStrictEqual (
     const _classof = (value: any): string =>
       Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
     const _ownKeys = (value: object): any[] =>
-      Object.getOwnPropertyNames(value)
-        // @ts-ignore
-        .concat(Object.getOwnPropertySymbols(value));
+      [...Object.getOwnPropertyNames(value), ...Object.getOwnPropertySymbols(value)];
     /* strict equality helper function */
     const _isEqual = (value1: any, value: any): boolean => Object.is(value1, value);
     /* not strict equality helper function */
@@ -1409,9 +1500,7 @@ function assertNotDeepEqual (
     /*const _classof = (value: any): string =>
       Object.prototype.toString.call(value).slice(8, -1).toLowerCase();*/
     const _ownKeys = (value: object): any[] =>
-      Object.getOwnPropertyNames(value)
-        // @ts-ignore
-        .concat(Object.getOwnPropertySymbols(value));
+      [...Object.getOwnPropertyNames(value), ...Object.getOwnPropertySymbols(value)];
     /* strict equality helper function */
     /* const _isEqual = (value1, value2): boolean => Object.is(value1, value2); */
     /* not strict equality helper function */
@@ -1563,9 +1652,7 @@ function assertDeepStrictEqual ( value1: any, value2: any, message?: any): boole
     const _classof = (value: any): string =>
       Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
     const _ownKeys = (value: object): any[] =>
-      Object.getOwnPropertyNames(value)
-        // @ts-ignore
-        .concat(Object.getOwnPropertySymbols(value));
+      [...Object.getOwnPropertyNames(value), ...Object.getOwnPropertySymbols(value)];
     /* strict equality helper function */
     const _isEqual = (value1: any, value2: any): boolean =>
       Object.is(value1, value2);
@@ -2738,17 +2825,6 @@ function toLength (value: any): number {
 }
 
 
-/** @internal */
-type TypeOfTag =
-  | "null"
-  | "undefined"
-  | "number"
-  | "bigint"
-  | "boolean"
-  | "string"
-  | "symbol"
-  | "object"
-  | "function";
 /* typeOf(value: unknown): string */
 /**
  * Extended typeof operator with "null" type as string.
@@ -2806,10 +2882,8 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
     value1 instanceof Class && value2 instanceof Class;
   const _classof = (value: any): string =>
     Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
-  const _ownKeys = (value: object): any[] =>
-    Object.getOwnPropertyNames(value)
-      // @ts-ignore
-      .concat(Object.getOwnPropertySymbols(value));
+    const _ownKeys = (value: object): any[] =>
+      [...Object.getOwnPropertyNames(value), ...Object.getOwnPropertySymbols(value)];
   /* strict equality helper function */
   const _isEqual = (value1: any, value2: any): boolean =>
     Object.is(value1, value2);
@@ -3077,7 +3151,7 @@ const isObject = (value: unknown): value is object =>
  * @description Checks if the given value is a Function.
  *
  * @param {unknown} value - The value to check.
- * @returns True if the value is a string, false otherwise.
+ * @returns True if the value is a function, false otherwise.
  */
 const isFunction = (value: unknown): value is Function =>
   typeof value === "function";
@@ -3131,8 +3205,6 @@ const isUndefined = (value: unknown): value is undefined =>
 
 
 /* isNullish(value: unknown): boolean */
-/** @internal */
-type Nullish = undefined | null;
 /**
  * @description Checks if the given value is Nullish (null or undefined).
  * From MDN: The values null and undefined are nullish.
@@ -3144,8 +3216,6 @@ const isNullish = (value: unknown): value is Nullish => value == null;
 
 
 /* isPrimitive(value: unknown): boolean */
-/** @internal */
-type Primitive = null | undefined | number | bigint | boolean | string | symbol;
 /**
  * @description Checks if the given value is Primitive.
  *
@@ -3157,11 +3227,18 @@ const isPrimitive = (value: unknown): value is Primitive =>
 
 
 /* isIterator(value: unknown): boolean */
-const isIterator = (value: any): boolean =>
+/**
+ * Tests whether a value is an Iterator.
+ *
+ * @param {unknown} value The value to check.
+ * @return {boolean} Return true if value is an Iterator, false if not.
+ * @internal
+ */
+const isIterator = (value: unknown): value is Iterator<any> =>
   "Iterator" in globalThis
     ? value instanceof Iterator
     : (value != null && typeof value === "object"
-        && typeof value.next === "function");
+        && typeof (value as any).next === "function");
 
 
 /* isRegexp(value: unknown): boolean */
@@ -3174,24 +3251,22 @@ const isElement = (value: any): boolean =>
 
 
 /* isIterable(value: unknown): boolean */
-const isIterable = (value: any): boolean =>
-  value != null && typeof value[Symbol.iterator] === "function";
+/**
+ * Tests whether a value is an Iterable.
+ *
+ * @param {unknown} value The value to check.
+ * @return {boolean} Return true if value is an Iterable, false if not.
+ * @internal
+ */
+const isIterable = (value: unknown): value is Iterable<any> =>
+  value != null && typeof (value as any)[Symbol.iterator] === "function";
 
 
 /* isAsyncIterable(value: unknown): boolean */
 const isAsyncIterable = (value: unknown): boolean =>
-  // @ts-ignore
-  value != null && typeof value[Symbol.asyncIterator] === "function";
+  value != null && typeof (value as any)[Symbol.asyncIterator] === "function";
 
 
-/** @internal */
-type TypedArray =
-  | Int8Array | Uint8Array | Uint8ClampedArray
-  | Int16Array | Uint16Array
-  | Int32Array | Uint32Array
-  | Float32Array | Float64Array
-  | BigInt64Array | BigUint64Array
-  | (typeof globalThis extends { Float16Array: infer F } ? F : never);
 /* isTypedArray(value: unknown): boolean */
 /**
  * @description Checks if the given value is a TypedArray (Int8Array, etc.).
@@ -3208,7 +3283,7 @@ function isTypedArray (value: unknown): value is TypedArray {
     BigInt64Array, BigUint64Array];
   if ("Float16Array" in globalThis) {
     // @ts-ignore
-    constructors.push(globalThis.Float16Array);
+    constructors.push(globalThis?.Float16Array);
   }
   return constructors.some((Class) => value instanceof Class);
 }
@@ -3321,14 +3396,6 @@ function removeCookie (
   return result;
 }
 
-
-type ClearCookiesOptions = {
-  path?: string | undefined;
-  domain?: string | undefined;
-  secure?: boolean | undefined;
-  SameSite?: string | undefined;
-  HttpOnly?: boolean | undefined;
-};
 /* clearCookies(Options object): undefined */
 /* clearCookies([path = "/"
   [, domain [, secure [, SameSite = "Lax" [, HttpOnly ]]]]]): undefined */
