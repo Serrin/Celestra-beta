@@ -14,9 +14,9 @@ __A helper JavaScript library with useful functions and polyfills and zero depen
 
 Latest version: 6.1.2
 
-Date: 2025-10-09T16:54:49.646Z
+Date: 2025-10-19T14:08:55.125Z
 
-__Tested on these:__
+__Tested on these environments:__
 
 - Windows Firefox
 - Windows Chrome
@@ -126,7 +126,7 @@ globalThis.CEL = celestra;
 API|Function
 ----|-----------
 __DOM API__|`qsa();`<BR>`qs();`<BR>`domReady();`<BR>`domClear();`<BR>`domCreate();`<BR>`domToElement();`<BR>`domGetCSS();`<BR>`domSetCSS();`<BR>`domFadeIn();`<BR>`domFadeOut();`<BR>`domFadeToggle();`<BR>`domShow();`<BR>`domHide();`<BR>`domToggle();`<BR>`domIsHidden();`<BR>`domScrollToTop();`<BR>`domScrollToBottom();`<BR>`domScrollToElement();`<BR>`domSiblings();`<BR>`domSiblingsPrev();`<BR>`domSiblingsLeft();`<BR>`domSiblingsNext();`<BR>`domSiblingsRight();`<BR>`domGetCSSVar();`<BR>`domSetCSSVar();`<BR>`importScript();`<BR>`importStyle();`<BR>`setFullscreenOn();`<BR>`setFullscreenOn();`<BR>`setFullscreenOff();`<BR>`getFullscreen();`<BR>`form2array(form);`<BR>`form2string(form);`<BR>`getDoNotTrack();`<BR>`getLocation();`<BR>`createFile();`
-__AJAX and CORS API__|`getText();`<BR>`getJson();`<BR>`ajax();`
+__Legacy AJAX API__|`getText();`<BR>`getJson();`<BR>`ajax();`
 __Cookie API__|`getCookie();`<BR>`hasCookie();`<BR>`setCookie();`<BR>`removeCookie();`<BR>`clearCookies();`
 
 ### Celestra v3.0.0 (Hera) changes
@@ -345,7 +345,7 @@ Name|Description
 `qs(selector[,context]);`|__Stability: 4 - Stable.__<BR>Get the first matched HTML element. The context is optional and can be an element.
 `qsa(selector[,context]);`|__Stability: 4 - Stable.__<BR>Get matched HTML elements in an array. The context is optional and can be an element.
 
-### AJAX and CORS API
+### Legacy AJAX API
 
 __These functions aren't deprecated, but it's recommend to use the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API), because it's [supported](https://caniuse.com/?search=fetch) in every modern browsers.__
 

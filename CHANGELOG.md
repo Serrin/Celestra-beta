@@ -4,9 +4,10 @@
 ## Celestra v6.1.2
 
 1. Documentation, pdf and code fixes.
-2. Rename the __Assertion API__ to __Legacy Assertion API__
-3. Set _Stability 3_ for the __Legacy Assertion API__, because the first stable version of [assert.js](https://github.com/Serrin/assert.js) library has been published.
-4. Add these functions: `mod();`, `rem();`
+2. Rename the __AJAX and CORS API__ to __Legacy AJAX API__
+3. Rename the __Assertion API__ to __Legacy Assertion API__
+4. Set _Stability 3_ for the functions of the __Legacy Assertion API__, because the first stable version of [assert.js](https://github.com/Serrin/assert.js) library has been published.
+5. Add these functions: `mod();`, `rem();`
 
 ## Celestra v6.1.1
 

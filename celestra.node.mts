@@ -850,6 +850,7 @@ function timestampID (
     expected: string | Function | Array<string | Function> | undefined,
     message: string | error
   ): any | throw TypeError */
+/** @deprecated */
 function assertIs (
   value: any,
   expected: string | Function | Array<string | Function> | undefined,
@@ -902,7 +903,8 @@ function assertIs (
     expected: string | Function | Array<string | Function> | undefined,
     message: string | error
   ): any | throw TypeError */
-function assertIsNot (
+/** @deprecated */
+  function assertIsNot (
   value: any,
   expected: string | Function | Array<string | Function> | undefined,
   message?: any): any {
@@ -953,6 +955,7 @@ function assertIsNot (
 
 
 /* assertFail(message | error): thrown error */
+/** @deprecated */
 function assertFail (message?: any): void {
   if (Error.isError(message)) {
     throw message;
@@ -965,6 +968,7 @@ function assertFail (message?: any): void {
 
 
 /* assertMatch(string, regexp [, message | error]): true | thrown error */
+/** @deprecated */
 function assertMatch (string: string, regexp: RegExp, message?: any): boolean {
   if (typeof string !== "string") {
     if (Error.isError(message)) { throw message; }
@@ -992,6 +996,7 @@ function assertMatch (string: string, regexp: RegExp, message?: any): boolean {
 
 /* assertDoesNotMatch(string, regexp [, message | error]):
   true | thrown error */
+/** @deprecated */
 function assertDoesNotMatch(
   string: string,
   regexp: RegExp,
@@ -1021,6 +1026,7 @@ function assertDoesNotMatch(
 
 
 /* assertThrows(callback: function [, message | error]): error | thrown error */
+/** @deprecated */
 function assertThrows (callback: Function, message?: any): any  {
   if (typeof callback !== "function") {
     throw new TypeError(
@@ -1037,6 +1043,7 @@ function assertThrows (callback: Function, message?: any): any  {
 
 
 /* assertIsNotNullish(value: unknown [, message | error]): value | thrown error */
+/** @deprecated */
 function assertIsNotNullish (value: unknown, message?: any) {
   if (value == null) {
     if (Error.isError(message)) { throw message; }
@@ -1050,6 +1057,7 @@ function assertIsNotNullish (value: unknown, message?: any) {
 
 
 /* assertIsNullish(value: unknown [, message | error]): value | thrown error */
+/** @deprecated */
 function assertIsNullish (value: unknown, message?: any): any  {
   if (value != null) {
     if (Error.isError(message)) { throw message; }
@@ -1063,6 +1071,7 @@ function assertIsNullish (value: unknown, message?: any): any  {
 
 
 /* assert(value: unknown [, message | error]): true | thrown error */
+/** @deprecated */
 function assert (condition: any, message?: any): boolean {
   if (!condition) {
     if (Error.isError(message)) { throw message; }
@@ -1075,6 +1084,7 @@ function assert (condition: any, message?: any): boolean {
 
 
 /* assertTrue(value: unknown [, message]): true | thrown error */
+/** @deprecated */
 function assertTrue (condition: any, message?: any): boolean {
   if (!condition) {
     if (Error.isError(message)) { throw message; }
@@ -1087,6 +1097,7 @@ function assertTrue (condition: any, message?: any): boolean {
 
 
 /* assertFalse(value: unknown [, message] | error): true | thrown error */
+/** @deprecated */
 function assertFalse (condition: any, message?: any): boolean {
   if (condition) {
     if (Error.isError(message)) { throw message; }
@@ -1100,6 +1111,7 @@ function assertFalse (condition: any, message?: any): boolean {
 
 /* assertEqual(value1: any, value2: any [, message | error]): true | thrown error */
 /* loose equality + NaN equality */
+/** @deprecated */
 function assertEqual (value1: any, value2: any, message?: any): boolean {
   if (!(value1 == value2 || (value1 !== value1 && value2 !== value2))) {
     if (Error.isError(message)) { throw message; }
@@ -1113,6 +1125,7 @@ function assertEqual (value1: any, value2: any, message?: any): boolean {
 
 /* assertStrictEqual(value1: any, value2: any [, message | error]): true | thrown error */
 /* SameValue equality */
+/** @deprecated */
 function assertStrictEqual (value1: any, value2: any, message?: any): boolean {
   if (!((value1 === value2)
     ? (value1 !== 0 || 1/value1 === 1/value2)
@@ -1128,6 +1141,7 @@ function assertStrictEqual (value1: any, value2: any, message?: any): boolean {
 
 /* assertNotEqual(value1: any, value2: any [, message | error]): true | thrown error */
 /* loose equality + NaN equality */
+/** @deprecated */
 function assertNotEqual (value1: any, value2: any, message?: any): boolean {
   if (value1 == value2 || (value1 !== value1 && value2 !== value2)) {
     if (Error.isError(message)) { throw message; }
@@ -1142,6 +1156,7 @@ function assertNotEqual (value1: any, value2: any, message?: any): boolean {
 /* assertNotStrictEqual(value1: any, value2: any [, message | error]):
   true | thrown error */
 /* SameValue equality */
+/** @deprecated */
 function assertNotStrictEqual (value1: any, value2: any, message?: any): boolean {
   if ((value1 === value2)
     ? (value1 !== 0 || 1/value1 === 1/value2)
@@ -1156,6 +1171,7 @@ function assertNotStrictEqual (value1: any, value2: any, message?: any): boolean
 
 
 /* assertDeepEqual(value1: any, value2: any [, message | error]): true | thrown error */
+/** @deprecated */
 function assertDeepEqual (value1: any, value2: any, message?: any): boolean {
   function _isDeepEqual (value1: any, value2: any): boolean {
     /* helper functions */
@@ -1304,6 +1320,7 @@ function assertDeepEqual (value1: any, value2: any, message?: any): boolean {
 
 /* assertNotDeepStrictEqual(value1: any, value2: any [, message | error]):
   true | throw error */
+/** @deprecated */
 function assertNotDeepStrictEqual (
   value1: any,
   value2: any,
@@ -1481,6 +1498,7 @@ function assertNotDeepStrictEqual (
 
 /* assertNotDeepEqual(value1: any, value2: any [, message | error]):
   true | thrown error */
+/** @deprecated */
 function assertNotDeepEqual (
   value1: any,
   value2: any,
@@ -1632,6 +1650,7 @@ function assertNotDeepEqual (
 
 /* assertDeepStrictEqual(value1: any, value2: any [, message | error]):
   true | thrown error */
+/** @deprecated */
 function assertDeepStrictEqual (
   value1: any,
   value2: any,
