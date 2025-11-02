@@ -10,14 +10,14 @@
 
 /**
  * @name Celestra
- * @version 6.1.2 browser
+ * @version 6.2.0 browser
  * @author Ferenc Czigler
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
 
 
-const VERSION = "Celestra v6.1.2 browser";
+const VERSION = "Celestra v6.2.0 browser";
 
 
 /** TS types */
@@ -98,7 +98,7 @@ type NonNullable = number | boolean | string | symbol | object | Function;
  *
  * @internal
  */
-type NonNullablePrimitive = number | boolean | string | symbol;
+type NonNullablePrimitive = number | bigint | boolean | string | symbol;
 
 /**
  * @description Not object or function.
@@ -461,6 +461,25 @@ const BASE36 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const BASE58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 const BASE62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 const WORDSAFEALPHABET = "23456789CFGHJMPQRVWXcfghjmpqvwx"; /* 31 */
+
+
+/* assert(value: unknown [, message | error]): thrown error */
+/**
+ * @description Ensures that `condition` is truthy. Throws an `Error` if falsy.
+ *
+ * @param {unknown} condition The value to check.
+ * @param {unknown} [message] - Optional message or Error to throw.
+ * @throws {Error} If assertion is failed.
+ */
+function assert (condition: unknown, message?: unknown): asserts condition {
+  if (!condition) {
+    // @ts-ignore
+    if (Error.isError(message)) { throw message; }
+    let errorMessage =
+      `[assert] Assertion failed: ${condition} should be truly${message ? " - " + message : ""}`;
+    throw new Error(errorMessage, {cause: errorMessage});
+  }
+}
 
 
 /**
@@ -1078,19 +1097,6 @@ function assertIsNullish (value: unknown, message?: any): any  {
     );
   }
   return value;
-}
-
-
-/* assert(value: unknown [, message | error]): true | thrown error */
-/** @deprecated */
-function assert (condition: any, message?: any): boolean {
-  if (!condition) {
-    if (Error.isError(message)) { throw message; }
-    throw new Error(
-      "[assert] Assertion failed" + (message ? ": " + message : "")
-    );
-  }
-  return true;
 }
 
 
@@ -4521,6 +4527,7 @@ export default {
   BASE58,
   BASE62,
   WORDSAFEALPHABET,
+  assert,
   isNonNullable,
   isNonNullablePrimitive,
   eq,
@@ -4569,7 +4576,6 @@ export default {
   assertThrows,
   assertIsNotNullish,
   assertIsNullish,
-  assert,
   assertTrue,
   assertFalse,
   assertEqual,
@@ -4797,6 +4803,7 @@ export {
   BASE58,
   BASE62,
   WORDSAFEALPHABET,
+  assert,
   isNonNullable,
   isNonNullablePrimitive,
   eq,
@@ -4845,7 +4852,6 @@ export {
   assertThrows,
   assertIsNotNullish,
   assertIsNullish,
-  assert,
   assertTrue,
   assertFalse,
   assertEqual,

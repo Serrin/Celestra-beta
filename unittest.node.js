@@ -304,7 +304,7 @@ var /** @type any */ token12, /** @type any */ token13;
 var /** @type any */ token14, /** @type any */ token15;
 
 
-/* Celestra v6.1.2 testcases */
+/* Celestra v6.2.0 testcases */
 
 
 /** Not auto tested functions **/
@@ -1019,10 +1019,10 @@ CUT.isError("assertIsNotNullish(); 05 error",
 
 /* assert(); */
 CUT.isTrue("assert(); 01",
-     CEL.assert(true)
-  && CEL.assert(true, "assert true")
-  && CEL.assert(1)
-  && CEL.assert(1, "assert true")
+     CEL.assert(true) === undefined
+  && CEL.assert(true, "assert true") === undefined
+  && CEL.assert(1) === undefined
+  && CEL.assert(1, "assert true") === undefined
 );
 CUT.isError("assert(); 02 error",
   () => CEL.assert(false, "assert(); 02 error")
@@ -5833,12 +5833,6 @@ CUT.isTrue("isAsyncGeneratorFn();",
     && !CEL.isAsyncGeneratorFn(Array)
     && !CEL.isAsyncGeneratorFn(Array.from)
     && !CEL.isAsyncGeneratorFn(0)
-);
-
-
-/* isClass(); */
-CUT.isTrue("isClass();",
-  CEL.isClass(Array) && !CEL.isClass(Array.from) && !CEL.isClass(0)
 );
 
 

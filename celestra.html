@@ -112,6 +112,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <p><a href="#FN-BASE58;">BASE58;</a></p>
       <p><a href="#FN-BASE62;">BASE62;</a></p>
       <p><a href="#FN-WORDSAFEALPHABET;">WORDSAFEALPHABET;</a></p>
+      <p><a href="#FN-assert();">assert();</a></p>
       <p><a href="#FN-assoc();">assoc();</a></p>
       <p><a href="#FN-asyncConstant();">asyncConstant();</a></p>
       <p><a href="#FN-asyncIdentity();">asyncIdentity();</a></p>
@@ -175,7 +176,6 @@ nav a, nav a:visited, nav a:active, nav a:hover {
     <hr/>
     <details open>
       <summary><strong>Legacy Assertion API</strong></summary>
-      <p><a href="#FN-assert();">assert();</a></p>
       <p><a href="#FN-assertDeepEqual();">assertDeepEqual();</a></p>
       <p><a href="#FN-assertDeepStrictEqual();">assertDeepStrictEqual();</a></p>
       <p><a href="#FN-assertDoesNotMatch();">assertDoesNotMatch();</a></p>
@@ -254,7 +254,6 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <p><a href="#FN-isAsyncGeneratorFn();">isAsyncGeneratorFn();</a></p>
       <p><a href="#FN-isCallable();">isCallable();</a></p>
       <p><a href="#FN-isChar();">isChar();</a></p>
-      <p><a href="#FN-isClass();">isClass();</a></p>
       <p><a href="#FN-isCoercedObject();">isCoercedObject();</a></p>
       <p><a href="#FN-isDeepStrictEqual();">isDeepStrictEqual();</a></p>
       <p><a href="#FN-isElement();">isElement();</a></p>
@@ -489,12 +488,12 @@ nav a, nav a:visited, nav a:active, nav a:hover {
 
 <p><strong>A helper JavaScript library with useful functions and polyfills and zero dependencies.</strong></p>
 
-<p>Latest version: 6.1.2</p>
+<p>Latest version: 6.2.0</p>
 <p>Date: 2025-10-19T14:08:55.125Z</p>
 
 <p><strong>Tested on these environments:</strong></p>
 
- <ul>
+<ul>
   <li>Windows Firefox</li>
   <li>Windows Chrome</li>
   <li>Windows Edge</li>
@@ -587,30 +586,6 @@ nav a, nav a:visited, nav a:active, nav a:hover {
   <tr>
     <td>RPG dice roller</td>
     <td><a href="testgame.html" target="_blank">testgame.html</a></td>
-     <td></td>
-  </tr>
-  <tr>
-    <td>Assert plugin documentation</td>
-    <td><a href="celestra-assert-plugin.html" target="_blank">celestra-assert-plugin.html</a></td>
-     <td></td>
-  </tr>
-  <tr>
-    <td>Assert plugin developer source</td>
-    <td><a href="celestra-assert-plugin.dev.js" target="_blank">celestra-assert-plugin.dev.js</a></td>
-     <td></td>
-  </tr>
-  <tr>
-    <td>Assert plugin minified source</td>
-    <td><a href="celestra-assert-plugin.min.js" target="_blank">celestra-assert-plugin.min.js</a></td>
-     <td></td>
-  </tr>
-  <tr>
-    <td>Assert plugin cheatsheet</td>
-    <td>
-      <a href="celestra-assert-plugin.odt" target="_blank">celestra-assert-plugin.odt</a>
-      <br/>
-      <a href="celestra-assert-plugin.pdf" target="_blank">celestra-assert-plugin.pdf</a>
-    </td>
     <td></td>
   </tr>
 </table>
@@ -730,7 +705,7 @@ globalThis.CEL = celestra;
 <h3>Celestra v5.0.0 (Defiant) changes</h3>
 
 <ul>
-  <li>The underscore <code>_</code> short object name has been changed to <code>CEL</code> to avoid the compatibility issues.<br/>If need to use the old short name, then with this code will be available again: <code>globalThis._ = globalThis.celestra;</code>.</li>
+  <li>The underscore <code>_</code> short object name has been changed to <code>CEL</code> to avoid the compatibility issues.</li>
 </ul>
 
 <h3>Celestra v5.5.0 changes</h3>
@@ -848,6 +823,10 @@ globalThis.CEL = celestra;
     <tr id="FN-WORDSAFEALPHABET;">
       <td><code>WORDSAFEALPHABET;</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/><code>"23456789CFGHJMPQRVWXcfghjmpqvwx"</code><br/>Can be used with the ID generator functions.</td>
+    </tr>
+    <tr id="FN-assert();">
+      <td><code>assert(condition [, message | error]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the condition is falsy. The message parameter is optional.
     </tr>
     <tr id="FN-assoc();">
       <td><code>assoc(object, key, value);</code></td>
@@ -1102,7 +1081,7 @@ CEL.delay(5000)
 
 <h3 id="FNassertionAPI">Legacy Assertion API</h3>
 
-<p><span class="info">These functions have been marked as legacy, because the first stable version of <a href="https://github.com/Serrin/assert.js" target="_blank">assert.js</a> libraryhas been published.</span></p>
+<p><span class="info">These functions have been deprecated and will be removed, because the first stable version of <a href="https://github.com/Serrin/assert.js" target="_blank">assert.js</a> libraryhas been published.</span></p>
 
 <p>There are information about the equalities in the <a href="js-cheatsheet.pdf" target="_blank">js-cheatsheet.pdf</a>.</p>
 
@@ -1112,101 +1091,73 @@ CEL.delay(5000)
       <td style="width: auto; min-width: 33%;"><strong>Name</strong></td>
       <td><strong>Description</strong></td>
     </tr>
-    <tr id="FN-assert();">
-      <td><code>assert(condition [, message | error]);</code></td>
-      <td>
-        <span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function throws an error with the message if the condition is falsy. The message parameter is optional. The return value is <code>true</code>, when the test was success.
-      </td>
-    </tr>
     <tr id="FN-assertDeepEqual();">
       <td><code>assertDeepEqual(value1, value2 [, message | error]);</code></td>
-      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function throws an error with the message if the value1 and value2 aren't deep equals. (<em>Deep loose equality + NaN equality: primitives (loose equality + NaN equality), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer</em>) The message parameter is optional. The return value is <code>true</code>, when the test was success.<br/><span class="info">This function may give unexpected results. It is safer to use the <code>assertDeepStrictEqual();</code> function.</span></td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function throws an error with the message if the value1 and value2 aren't deep equals. (<em>Deep loose equality + NaN equality: primitives (loose equality + NaN equality), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer</em>) The message parameter is optional. The return value is <code>true</code>, when the test was success.<br/><span class="info">This function may give unexpected results. It is safer to use the <code>assertDeepStrictEqual();</code> function.</span></td>
     </tr>
     <tr id="FN-assertDeepStrictEqual();">
       <td><code>assertDeepStrictEqual(value1, value2 [, message | error]);</code></td>
-      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function throws an error with the message if the value1 and value2 aren't deep equals. (<em>Deep strict equality + NaN equality: primitives (SameValue - Object.is()), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer</em>) The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function throws an error with the message if the value1 and value2 aren't deep equals. (<em>Deep strict equality + NaN equality: primitives (SameValue - Object.is()), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer</em>) The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
     </tr>
     <tr id="FN-assertDoesNotMatch();">
       <td><code>assertDoesNotMatch(string, regexp [, message | error]);</code></td>
-      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function throws an error with the message if the string matches with the regexp. The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function throws an error with the message if the string matches with the regexp. The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
     </tr>
     <tr id="FN-assertEqual();">
       <td><code>assertEqual(value1, value2 [, message | error]);</code></td>
-      <td>
-        <span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function throws an error with the message if the value1 and value2 aren't equals. (<em>Loose equality + NaN equality</em>) The message parameter is optional. The return value is <code>true</code>, when the test was success.
-      </td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function throws an error with the message if the value1 and value2 aren't equals. (<em>Loose equality + NaN equality</em>) The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
     </tr>
     <tr id="FN-assertFail();">
       <td><code>assertFail(message | error);</code></td>
-      <td>
-        <span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function always throws an error. If the argument is an error, then this error will be thrown, else a new error with the message.
-      </td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function always throws an error. If the argument is an error, then this error will be thrown, else a new error with the message.</td>
     </tr>
     <tr id="FN-assertFalse();">
       <td><code>assertFalse(condition [, message | error]);</code></td>
-      <td>
-        <span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function throws an error with the message if the condition is truthy. The message parameter is optional. The return value is <code>true</code>, when the test was success.
-      </td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function throws an error with the message if the condition is truthy. The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
     </tr>
     <tr id="FN-assertIs();">
       <td><code>assertIs(value, expectedType [, message | error]);</code></td>
-      <td>
-        <span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function determines whether the provided value type or class is the given expectedType. The expectedType can be a type string, constructor function or an array of the type strings and constructors. If the value is not matched with the expectedType, then a TypeError will be thrown with detailed error message. If these conditions are passed, then the given value is the return value.
-      </td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided value type or class is the given expectedType. The expectedType can be a type string, constructor function or an array of the type strings and constructors. If the value is not matched with the expectedType, then a TypeError will be thrown with detailed error message. If these conditions are passed, then the given value is the return value.</td>
     </tr>
     <tr id="FN-assertIsNot();">
       <td><code>assertIsNot(value, expectedType [, message | error]);</code></td>
-      <td>
-        <span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function determines whether the provided value type or class is not the given expectedType. The expectedType can be a type string, constructor function or an array of the type strings and constructors. If the value is matched with the expectedType, then a TypeError will be thrown with detailed error message. If these conditions are passed, then the given value is the return value.
-      </td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided value type or class is not the given expectedType. The expectedType can be a type string, constructor function or an array of the type strings and constructors. If the value is matched with the expectedType, then a TypeError will be thrown with detailed error message. If these conditions are passed, then the given value is the return value.</td>
     </tr>
     <tr id="FN-assertIsNotNullish();">
       <td><code>assertIsNotNullish(value [, message | error]);</code></td>
-      <td>
-        <span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Old name before v6.1.0: <code>assertIsNotNil();</code>.</span><br/>This function throws an error with the message if the value is null or undefined, else the given value is the return value. The message parameter is optional.
-      </td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/><span class="info">Old name before v6.1.0: <code>assertIsNotNil();</code>.</span><br/>This function throws an error with the message if the value is null or undefined, else the given value is the return value. The message parameter is optional.</td>
     </tr>
     <tr id="FN-assertIsNullish();">
       <td><code>assertIsNullish(value [, message | error]);</code></td>
-      <td>
-        <span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Old name before v6.1.0: <code>assertIsNil();</code>.</span><br/>This function throws an error with the message if the value is not null or undefined, else the given value is the return value. The message parameter is optional.
-      </td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/><span class="info">Old name before v6.1.0: <code>assertIsNil();</code>.</span><br/>This function throws an error with the message if the value is not null or undefined, else the given value is the return value. The message parameter is optional.</td>
     </tr>
     <tr id="FN-assertMatch();">
       <td><code>assertMatch(string, regexp [, message | error]);</code></td>
-      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function throws an error with the message if the string doesn't match with the regexp. The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function throws an error with the message if the string doesn't match with the regexp. The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
     </tr>
     <tr id="FN-assertNotDeepEqual();">
       <td><code>assertNotDeepEqual(value1, value2, [, message | error]);</code></td>
-      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function throws an error with the message if the value1 and value2 are deep equals. (<em>Deep loose equality + NaN equality: primitives (loose equality + NaN equality), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer</em>) The message parameter is optional. The return value is <code>true</code>, when the test was success.<br/><span class="info">This function may give unexpected results. It is safer to use the <code>assertNotDeepStrictEqual();</code> function.</span></td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function throws an error with the message if the value1 and value2 are deep equals. (<em>Deep loose equality + NaN equality: primitives (loose equality + NaN equality), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer</em>) The message parameter is optional. The return value is <code>true</code>, when the test was success.<br/><span class="info">This function may give unexpected results. It is safer to use the <code>assertNotDeepStrictEqual();</code> function.</span></td>
     </tr>
     <tr id="FN-assertNotDeepStrictEqual();">
       <td><code>assertNotDeepStrictEqual(value1, value2, [, message | error]);</code></td>
-      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function throws an error with the message if the value1 and value2 are deep equals. (<em>Deep strict equality + NaN equality: primitives (SameValue - Object.is()), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer</em>) The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function throws an error with the message if the value1 and value2 are deep equals. (<em>Deep strict equality + NaN equality: primitives (SameValue - Object.is()), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer</em>) The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
     </tr>
     <tr id="FN-assertNotStrictEqual();">
       <td><code>assertNotStrictEqual(value1, value2 [, message | error]);</code></td>
-      <td>
-        <span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function throws an error with the message if the value1 and value2 are equals. (<em>SameValue equality</em>) The message parameter is optional. The return value is <code>true</code>, when the test was success.
-      </td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function throws an error with the message if the value1 and value2 are equals. (<em>SameValue equality</em>) The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
     </tr>
     <tr id="FN-assertStrictEqual();">
       <td><code>assertStrictEqual(value1, value2 [, message | error]);</code></td>
-      <td>
-        <span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function throws an error with the message if the value1 and value2 aren't equals. (<em>SameValue equality</em>) The message parameter is optional. The return value is <code>true</code>, when the test was success.
-      </td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function throws an error with the message if the value1 and value2 aren't equals. (<em>SameValue equality</em>) The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
     </tr>
     <tr id="FN-assertTrue();">
       <td><code>assertTrue(condition [, message | error]);</code></td>
-      <td>
-        <span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This is an alias of the <code>assert(condition [, message | error]);</code>.
-      </td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This is an alias of the <code>assert(condition [, message | error]);</code>.</td>
     </tr>
     <tr id="FN-assertThrows();">
       <td><code>assertThrows(callback [, message | error]);</code></td>
-      <td>
-        <span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>This function catches and returns the error, if the callback throws an error. In other cases throws an error with the message. The message parameter is optional.
-      </td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function catches and returns the error, if the callback throws an error. In other cases throws an error with the message. The message parameter is optional.</td>
     </tr>
   </table>
 </div>
@@ -1401,7 +1352,7 @@ CEL.delay(5000)
 <h3 id="FNajaxAPI">Legacy AJAX API</h3>
 
 <p class="info">
-  These functions aren't deprecated, but it's recommend to use the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API" target="_blank">Fetch API</a>, because it's <a href="https://caniuse.com/?search=fetch" target="_blank">supported</a> in every modern browsers.
+  These functions are deprecated, and will be removed. It's recommend to use the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API" target="_blank">Fetch API</a>, because this is <a href="https://caniuse.com/?search=fetch" target="_blank">supported</a> in every modern browsers.
 </p>
 
 <div style="overflow-x:auto;">
@@ -1412,15 +1363,15 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-ajax();">
       <td><code>ajax(Options object);</code></td>
-      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>Get content and send data via AJAX and CORS.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>Get content and send data via AJAX and CORS.</td>
     </tr>
     <tr id="FN-getJson();">
       <td><code>getJson(url,success);</code></td>
-      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>Get JSON content via AJAX.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>Get JSON content via AJAX.</td>
     </tr>
     <tr id="FN-getText();">
       <td><code>getText(url,success);</code></td>
-      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/>Get TEXT content via AJAX.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>Get TEXT content via AJAX.</td>
     </tr>
   </table>
 </div>
@@ -1478,10 +1429,6 @@ CEL.delay(5000)
     <tr id="FN-isChar();">
       <td><code>isChar(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a string with length 1 character. This function is unicode compatible. The return value is boolean.</td>
-    </tr>
-    <tr id="FN-isClass();">
-      <td><code>isClass(value);</td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided object has a call method. The return value is boolean.</td>
     </tr>
     <tr id="FN-isCoercedObject();">
       <td><code>isCoercedObject(object);</td>

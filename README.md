@@ -12,7 +12,7 @@
 
 __A helper JavaScript library with useful functions and polyfills and zero dependencies.__
 
-Latest version: 6.1.2
+Latest version: 6.2.0
 
 Date: 2025-10-19T14:08:55.125Z
 
@@ -48,10 +48,6 @@ Version history|__CHANGELOG.md__
 Removed polyfills (developer)|__celestra-polyfills.dev.js__
 Removed polyfills (minified)|__celestra-polyfills.min.js__
 RPG dice roller|__testgame.html__
-Assert plugin documentation|__celestra-assert-plugin.html__
-Assert plugin developer source|__celestra-assert-plugin.dev.js__
-Assert plugin minified source|__celestra-assert-plugin.min.js__
-Assert plugin cheatsheet|__celestra-assert-plugin.odt__<BR>__celestra-assert-plugin.pdf__
 
 ### How to import the browser edition
 
@@ -149,7 +145,7 @@ __Cookie API__|`getCookie();`<BR>`hasCookie();`<BR>`setCookie();`<BR>`removeCook
 
 ### Celestra v5.0.0 (Defiant) changes
 
-- The underscore `_` short object name has been changed to `CEL` to avoid the compatibility issues.<BR>If need to use the old short name, then with this code will be available again: `globalThis._ = globalThis.celestra;`.
+- The underscore `_` short object name has been changed to `CEL` to avoid the compatibility issues.
 
 ### Celestra v5.5.0 changes
 
@@ -216,6 +212,7 @@ Name|Description
 `BASE58;`|__Stability: 4 - Stable.__<BR>`"123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"`<BR>Can be used with the ID generator functions.
 `BASE62;`|__Stability: 4 - Stable.__<BR>`"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"`<BR>Can be used with the ID generator functions.
 `WORDSAFEALPHABET;`|__Stability: 4 - Stable.__<BR>`"23456789CFGHJMPQRVWXcfghjmpqvwx"`<BR>Can be used with the ID generator functions.
+`assert(condition [, message \| error]);`|__Stability: 4 - Stable.__<BR>This function throws an error with the message if the condition is falsy. The message parameter is optional.
 `assoc(object, key, value);`|__Stability: 4 - Stable.__<BR>Clone the original object (immutably) and return this new object with original keys and values and the given key and value.
 `asyncConstant(value);`|__Stability: 4 - Stable.__<BR>This function returns an async function, which returns a promise with the given value.
 `asyncIdentity(value);`|__Stability: 4 - Stable.__<BR>This async function returns a promise with the given value.
@@ -277,31 +274,30 @@ Name|Description
 
 ### Legacy Assertion API
 
-__These functions have been marked as legacy, because the first stable version of the [assert.js](https://github.com/Serrin/assert.js) library has been published.__
+__These functions have been deprecated and will be removed, because the first stable version of the [assert.js](https://github.com/Serrin/assert.js) library has been published.__
 
 There are information about the equalities in the __js-cheatsheet.pdf__.
 
 Name|Description
 ----|-----------
-`assert(condition [, message \| error]);`|__Stability: 3 - Legacy and can get only fixes.__<BR>This function throws an error with the message if the condition is falsy. The message parameter is optional. The return value is `true`, when the test was success.
-`assertDeepEqual(value1, value2 [, message \| error]);`|__Stability: 3 - Legacy and can get only fixes.__<BR>This function throws an error with the message if the value1 and value2 aren't deep equals. (_Deep loose equality + NaN equality: primitives (loose equality + NaN equality), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer_) The message parameter is optional. The return value is `true`, when the test was success.<BR>__This function may give unexpected results. It is safer to use the `assertDeepStrictEqual();` function.__
-`assertDeepStrictEqual(value1, value2 [, message \| error]);`|__Stability: 3 - Legacy and can get only fixes.__<BR>This function throws an error with the message if the value1 and value2 aren't deep equals. (_Deep strict equality + NaN equality: primitives (SameValue - Object.is()), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer_) The message parameter is optional. The return value is `true`, when the test was success.
-`assertDoesNotMatch(string, regexp, [, message \| error]);`|__Stability: 3 - Legacy and can get only fixes.__<BR>This function throws an error with the message if the string matches with the regexp. The message parameter is optional. The return value is `true`, when the test was success.
-`assertEqual(value1, value2 [, message \| error]);`|__Stability: 3 - Legacy and can get only fixes.__<BR>This function throws an error with the message if the value1 and value2 aren't equals. (_Loose equality + NaN equality_) The message parameter is optional. The return value is `true`, when the test was success.
-`assertFail(message \| error);`|__Stability: 3 - Legacy and can get only fixes.__<BR>his function always throws an error. If the argument is an error, then this error will be thrown, else a new error with the message.
-`assertFalse(condition [, message \| error]);`|__Stability: 3 - Legacy and can get only fixes.__<BR>This function throws an error with the message if the condition is truthy. The message parameter is optional. The return value is `true`, when the test was success.
-`assertIs(value, expectedType [, message \| error]);`|__Stability: 3 - Legacy and can get only fixes.__<BR>This function determines whether the provided value type or class is the given expectedType. The expectedType can be a type string, constructor function or an array of the type strings and constructors. If the value is not matched with the expectedType, then a TypeError will be thrown with detailed error message. If these conditions are passed, then the given value is the return value.
-`assertIsNot(value, expectedType [, message \| error]);`|__Stability: 3 - Legacy and can get only fixes.__<BR>This function determines whether the provided value type or class is not the given expectedType. The expectedType can be a type string, constructor function or an array of the type strings and constructors. If the value is matched with the expectedType, then a TypeError will be thrown with detailed error message. If these conditions are passed, then the given value is the return value.
-`assertIsNotNullish(value [, message \| error]);`|__Stability: 3 - Legacy and can get only fixes.__<BR>__Old name before v6.1.0: `assertIsNotNil();`.__<BR>This function throws an error with the message if the value is null or undefined, else the given value is the return value. The message parameter is optional.
-`assertIsNullish(value [, message \| error]);`|__Stability: 3 - Legacy and can get only fixes.__<BR>__Old name before v6.1.0: `assertIsNil();`.__<BR>This function throws an error with the message if the value is not null or undefined, else the given value is the return value. The message parameter is optional.
-`assertMatch(string, regexp [, message \| error]);`|__Stability: 3 - Legacy and can get only fixes.__<BR>This function throws an error with the message if the string doesn't match with the regexp. The message parameter is optional. The return value is `true`, when the test was success.
-`assertNotDeepEqual(value1, value2 [, message \| error]);`|__Stability: 3 - Legacy and can get only fixes.__<BR>This function throws an error with the message if the value1 and value2 are deep equals. (_Deep loose equality + NaN equality: primitives (loose equality + NaN equality), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer_) The message parameter is optional. The return value is `true`, when the test was success.<BR>__This function may give unexpected results. It is safer to use the `assertNotDeepStrictEqual();` function.__
-`assertNotDeepStrictEqual(value1, value2 [, message \| error]);`|__Stability: 3 - Legacy and can get only fixes.__<BR>This function throws an error with the message if the value1 and value2 are deep equals. (_Deep strict equality + NaN equality: primitives (SameValue - Object.is()), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer_) The message parameter is optional. The return value is `true`, when the test was success.
-`assertNotEqual(value1, value2 [, message \| error]);`|__Stability: 3 - Legacy and can get only fixes.__<BR>This function throws an error with the message if the value1 and value2 are equals. (_Loose equality + NaN equality_) The message parameter is optional. The return value is `true`, when the test was success.
-`assertNotStrictEqual(value1, value2 [, message \| error]);`|__Stability: 3 - Legacy and can get only fixes.__<BR>This function throws an error with the message if the value1 and value2 are equals. (_SameValue equality_) The message parameter is optional. The return value is `true`, when the test was success.
-`assertStrictEqual(value1, value2 [, message \| error]);`|__Stability: 3 - Legacy and can get only fixes.__<BR>This function throws an error with the message if the value1 and value2 aren't equals. (_SameValue equality_) The message parameter is optional. The return value is `true`, when the test was success.
-`assertTrue(condition [, message \| error]);`|__Stability: 3 - Legacy and can get only fixes.__<BR>This is an alias of the `assert(condition [, message \| error]);`.
-`assertThrows(callback [, message \| error]);`|__Stability: 3 - Legacy and can get only fixes.__<BR>This function catches and returns the error, if the callback throws an error. In other cases throws an error with the message. The message parameter is optional.
+`assertDeepEqual(value1, value2 [, message \| error]);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function throws an error with the message if the value1 and value2 aren't deep equals. (_Deep loose equality + NaN equality: primitives (loose equality + NaN equality), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer_) The message parameter is optional. The return value is `true`, when the test was success.<BR>__This function may give unexpected results. It is safer to use the `assertDeepStrictEqual();` function.__
+`assertDeepStrictEqual(value1, value2 [, message \| error]);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function throws an error with the message if the value1 and value2 aren't deep equals. (_Deep strict equality + NaN equality: primitives (SameValue - Object.is()), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer_) The message parameter is optional. The return value is `true`, when the test was success.
+`assertDoesNotMatch(string, regexp, [, message \| error]);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function throws an error with the message if the string matches with the regexp. The message parameter is optional. The return value is `true`, when the test was success.
+`assertEqual(value1, value2 [, message \| error]);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function throws an error with the message if the value1 and value2 aren't equals. (_Loose equality + NaN equality_) The message parameter is optional. The return value is `true`, when the test was success.
+`assertFail(message \| error);`|__Stability: 1 - Deprecated and will be removed.__<BR>his function always throws an error. If the argument is an error, then this error will be thrown, else a new error with the message.
+`assertFalse(condition [, message \| error]);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function throws an error with the message if the condition is truthy. The message parameter is optional. The return value is `true`, when the test was success.
+`assertIs(value, expectedType [, message \| error]);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value type or class is the given expectedType. The expectedType can be a type string, constructor function or an array of the type strings and constructors. If the value is not matched with the expectedType, then a TypeError will be thrown with detailed error message. If these conditions are passed, then the given value is the return value.
+`assertIsNot(value, expectedType [, message \| error]);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value type or class is not the given expectedType. The expectedType can be a type string, constructor function or an array of the type strings and constructors. If the value is matched with the expectedType, then a TypeError will be thrown with detailed error message. If these conditions are passed, then the given value is the return value.
+`assertIsNotNullish(value [, message \| error]);`|__Stability: 1 - Deprecated and will be removed.__<BR>__Old name before v6.1.0: `assertIsNotNil();`.__<BR>This function throws an error with the message if the value is null or undefined, else the given value is the return value. The message parameter is optional.
+`assertIsNullish(value [, message \| error]);`|__Stability: 1 - Deprecated and will be removed.__<BR>__Old name before v6.1.0: `assertIsNil();`.__<BR>This function throws an error with the message if the value is not null or undefined, else the given value is the return value. The message parameter is optional.
+`assertMatch(string, regexp [, message \| error]);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function throws an error with the message if the string doesn't match with the regexp. The message parameter is optional. The return value is `true`, when the test was success.
+`assertNotDeepEqual(value1, value2 [, message \| error]);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function throws an error with the message if the value1 and value2 are deep equals. (_Deep loose equality + NaN equality: primitives (loose equality + NaN equality), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer_) The message parameter is optional. The return value is `true`, when the test was success.<BR>__This function may give unexpected results. It is safer to use the `assertNotDeepStrictEqual();` function.__
+`assertNotDeepStrictEqual(value1, value2 [, message \| error]);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function throws an error with the message if the value1 and value2 are deep equals. (_Deep strict equality + NaN equality: primitives (SameValue - Object.is()), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer_) The message parameter is optional. The return value is `true`, when the test was success.
+`assertNotEqual(value1, value2 [, message \| error]);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function throws an error with the message if the value1 and value2 are equals. (_Loose equality + NaN equality_) The message parameter is optional. The return value is `true`, when the test was success.
+`assertNotStrictEqual(value1, value2 [, message \| error]);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function throws an error with the message if the value1 and value2 are equals. (_SameValue equality_) The message parameter is optional. The return value is `true`, when the test was success.
+`assertStrictEqual(value1, value2 [, message \| error]);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function throws an error with the message if the value1 and value2 aren't equals. (_SameValue equality_) The message parameter is optional. The return value is `true`, when the test was success.
+`assertTrue(condition [, message \| error]);`|__Stability: 1 - Deprecated and will be removed.__<BR>This is an alias of the `assert(condition [, message \| error]);`.
+`assertThrows(callback [, message \| error]);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function catches and returns the error, if the callback throws an error. In other cases throws an error with the message. The message parameter is optional.
 
 ### DOM API
 
@@ -347,13 +343,13 @@ Name|Description
 
 ### Legacy AJAX API
 
-__These functions aren't deprecated, but it's recommend to use the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API), because it's [supported](https://caniuse.com/?search=fetch) in every modern browsers.__
+__These functions are deprecated, and will be removed. It's recommend to use the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API), because this is [supported](https://caniuse.com/?search=fetch) in every modern browsers.__
 
 Name|Description
 ----|-----------
-`ajax(Options object);`|__Stability: 3 - Legacy and can get only fixes.__<BR>Get content and send data via AJAX and CORS.
-`getJson(url,success);`|__Stability: 3 - Legacy and can get only fixes.__<BR>Get JSON content via AJAX.
-`getText(url,success);`|__Stability: 3 - Legacy and can get only fixes.__<BR>Get TEXT content via AJAX.
+`ajax(Options object);`|__Stability: 1 - Deprecated and will be removed.__<BR>Get content and send data via AJAX and CORS.
+`getJson(url,success);`|__Stability: 1 - Deprecated and will be removed.__<BR>Get JSON content via AJAX.
+`getText(url,success);`|__Stability: 1 - Deprecated and will be removed.__<BR>Get TEXT content via AJAX.
 
 __Options object properties:__
 
@@ -379,7 +375,6 @@ Name|Description
 `isAsyncGeneratorFn(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is an async generator function. The return value is boolean.
 `isCallable(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided object has a call method. The return value is boolean.
 `isChar(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is a string with length 1 character. This function is unicode compatible. The return value is boolean.
-`isClass(value);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value is a constructable function. The return value is boolean.
 `isCoercedObject(object);`|__Stability: 4 - Stable.__<BR>If the given object is a coerced object (Number, BigInt, String, Boolean), then the return value is the constructor function. In any other cases retuns false. The object parameter is mandatory.
 `isDeepStrictEqual(value1, value2);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided values are deep equals. (_Deep strict equality + NaN equality: primitives (SameValue - Object.is()), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date_) The return value is boolean.
 `isElement(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is a HTML element. The return value is boolean.
