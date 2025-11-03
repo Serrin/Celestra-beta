@@ -1,6 +1,16 @@
 
 # Celestra version history
 
+## Celestra v6.2.0
+
+1. Documentation, pdf and code fixes.
+2. Deprecate (_Stability: 1_) the __Legacy AJAX API__
+3. Deprecate (_Stability: 1_) the __Legacy Assertion API__
+4. Remove the __Legacy Assertion API__ from the __celestra-cheatsheet.odt__ and __celestra-cheatsheet.pdf__
+5. Remove the __Assert Plugin__ and the files of the plugin.
+6. Remove this deprecated function: `isClass();`
+7. Add the __Minimal Assertion API__ (only one function: `assert(value: unknown [, message | error]): thrown error`) - copy from the __assert.js__ library.
+
 ## Celestra v6.1.2
 
 1. Documentation, pdf and code fixes.

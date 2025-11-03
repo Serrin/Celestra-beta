@@ -678,9 +678,7 @@ function deleteOwnProperty (
     // @ts-ignore
     delete obj[property];
     let result = Object.hasOwn(obj, property);
-    if (result && Throw) {
-      throw new Error("[deleteOwnProperty] error");
-    }
+    if (result && Throw) { throw new Error("[deleteOwnProperty] error"); }
     return +!result;
   }
   return -1;
@@ -1246,7 +1244,7 @@ function assertDeepEqual (value1: any, value2: any, message?: any): boolean {
         || _isSameInstance(value1, value2, Uint32Array)
         || ("Float16Array" in globalThis ?
             _isSameInstance(value1, value2, Float16Array) : false
-           )
+          )
         || _isSameInstance(value1, value2, Float32Array)
         || _isSameInstance(value1, value2, Float64Array)
         || _isSameInstance(value1, value2, BigInt64Array)
@@ -1301,7 +1299,7 @@ function assertDeepEqual (value1: any, value2: any, message?: any): boolean {
           Object.getOwnPropertyNames(value1)
             .reduce((acc: Record<string, any>, k: string): object =>
               { acc[k] = value1[k]; return acc; }, {}
-           ),
+          ),
           Object.getOwnPropertyNames(value2)
             .reduce((acc: Record<string, any>, k: string): object =>
               { acc[k] = value2[k]; return acc; }, {}
@@ -1319,7 +1317,7 @@ function assertDeepEqual (value1: any, value2: any, message?: any): boolean {
       if (value1Keys.length !== yKeys.length) { return false; }
       if (value1Keys.length === 0) { return true; }
       return value1Keys.every((key: any): boolean =>
-         _isDeepEqual(value1[key], value2[key]));
+        _isDeepEqual(value1[key], value2[key]));
     }
     /* default return false */
     return false;
@@ -1414,7 +1412,7 @@ function assertNotDeepStrictEqual (
         || _isSameInstance(value1, value2, Uint32Array)
         || ("Float16Array" in globalThis ?
             _isSameInstance(value1, value2, Float16Array) : false
-           )
+          )
         || _isSameInstance(value1, value2, Float32Array)
         || _isSameInstance(value1, value2, Float64Array)
         || _isSameInstance(value1, value2, BigInt64Array)
@@ -1566,7 +1564,7 @@ function assertNotDeepEqual (
         || _isSameInstance(value1, value2, Uint32Array)
         || ("Float16Array" in globalThis ?
             _isSameInstance(value1, value2, Float16Array) : false
-           )
+          )
         || _isSameInstance(value1, value2, Float32Array)
         || _isSameInstance(value1, value2, Float64Array)
         || _isSameInstance(value1, value2, BigInt64Array)
@@ -1740,7 +1738,7 @@ function assertDeepStrictEqual ( value1: any, value2: any, message?: any): boole
         || _isSameInstance(value1, value2, Uint32Array)
         || ("Float16Array" in globalThis ?
             _isSameInstance(value1, value2, Float16Array) : false
-           )
+          )
         || _isSameInstance(value1, value2, Float32Array)
         || _isSameInstance(value1, value2, Float64Array)
         || _isSameInstance(value1, value2, BigInt64Array)
@@ -2068,7 +2066,7 @@ function domSetCSS (
 function domFadeIn (
   element: HTMLElement,
   duration: number,
-   display: string): void {
+  display: string): void {
   let s = element.style;
   let step: number = 25/(duration || 500);
   s.opacity = (s.opacity ?? 0);
@@ -2170,7 +2168,7 @@ const domSiblingsLeft = (element: Element): Element[] =>
     // @ts-ignore
     element.parentNode.children,
     0,
-     // @ts-ignore
+    // @ts-ignore
     Array.prototype.indexOf.call(element.parentNode.children, element)
   );
 
@@ -2180,9 +2178,9 @@ const domSiblingsNext = (element: Element): Element[] =>
   Array.prototype.slice.call(
     // @ts-ignore
     element.parentNode.children,
-     // @ts-ignore
+    // @ts-ignore
     Array.prototype.indexOf.call(element.parentNode.children, element) + 1,
-     // @ts-ignore
+    // @ts-ignore
     element.parentNode.children.length
   );
 
@@ -2190,11 +2188,11 @@ const domSiblingsNext = (element: Element): Element[] =>
 /* domSiblingsRight(element): any[] */
 const domSiblingsRight = (element: HTMLElement): Element[] =>
   Array.prototype.slice.call(
-     // @ts-ignore
+    // @ts-ignore
     element.parentNode.children,
-     // @ts-ignore
+    // @ts-ignore
     Array.prototype.indexOf.call(element.parentNode.children, element) + 1,
-     // @ts-ignore
+    // @ts-ignore
     element.parentNode.children.length
   );
 
@@ -2205,10 +2203,10 @@ function importScript (...scripts: string[]): void {
     let element: HTMLScriptElement = document.createElement("script");
     element.type = "text\/javascript";
     element.src = item;
-     // @ts-ignore
+    // @ts-ignore
     element.onerror = function (error: Error): void {
       throw new URIError(
-         // @ts-ignore
+        // @ts-ignore
         "Loading failed for the script with source " + error.target.src
       );
     };
@@ -2226,7 +2224,7 @@ function importStyle (...styles: string[]): void {
     element.href = item;
     element.onerror = function (error) {
       throw new URIError(
-         // @ts-ignore
+        // @ts-ignore
         "Loading failed for the style with source " + error.target.href
       );
     };
@@ -2248,7 +2246,7 @@ function form2array (form: HTMLFormElement): object[] {
         && field.type !== "submit"
         && field.type !== "button") {
         if (field.type === "select-multiple") {
-           // @ts-ignore
+          // @ts-ignore
           for (let j = 0, l = form.elements[i].options.length; j < l; j++) {
             if(field.options[j].selected) {
               result.push({
@@ -2285,7 +2283,7 @@ function form2string (form: HTMLFormElement): string {
         && field.type !== "submit"
         && field.type !== "button") {
         if (field.type === "select-multiple") {
-           // @ts-ignore
+          // @ts-ignore
           for (let j = 0, l = form.elements[i].options.length; j < l; j++) {
             if(field.options[j].selected) {
               result.push(encodeURIComponent(field.name)
@@ -2387,9 +2385,9 @@ function setFullscreenOff (): void {
   if (document.exitFullscreen) { document.exitFullscreen(); }
    // @ts-ignore
     else if (document.mozCancelFullScreen) { document.mozCancelFullScreen(); }
-     // @ts-ignore
+    // @ts-ignore
     else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); }
-     // @ts-ignore
+    // @ts-ignore
     else if (document.msExitFullscreen) { document.msExitFullscreen(); }
 }
 
@@ -2915,9 +2913,6 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
   /* strict equality helper function */
   const _isEqual = (value1: any, value2: any): boolean =>
     Object.is(value1, value2);
-  /* not strict equality helper function */
-  /* const _isEqual = (value1, value2): boolean =>
-    value1 == value2 || (value1 !== value1 && value2 !== value2); */
   /* primitives: Boolean, Number, BigInt, String + Function + Symbol */
   if (_isEqual(value1, value2)) { return true; }
   /* Object Wrappers (Boolean, Number, BigInt, String) */
@@ -2969,7 +2964,7 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
       || _isSameInstance(value1, value2, Uint32Array)
       || ("Float16Array" in globalThis ?
           _isSameInstance(value1, value2, Float16Array) : false
-         )
+        )
       || _isSameInstance(value1, value2, Float32Array)
       || _isSameInstance(value1, value2, Float64Array)
       || _isSameInstance(value1, value2, BigInt64Array)
@@ -4239,7 +4234,7 @@ function rem(dividend: NumberLike, divisor: NumberLike): NumberLike {
 
 /* isFloat(value: unknown): boolean */
 const isFloat = (value: unknown): boolean =>
-  typeof value === "number" && value === value && !!(value % 1);
+  typeof value === "number" && value === value && Boolean(value % 1);
 
 
 /* toInteger(value: unknown): integer */

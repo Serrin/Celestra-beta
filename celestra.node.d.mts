@@ -1,4 +1,4 @@
-declare const VERSION = "Celestra v6.1.2 node";
+declare const VERSION = "Celestra v6.2.0 node";
 type MapLike = {
     [key: string | symbol]: any;
 };
@@ -10,7 +10,7 @@ type IterableAndIterator = Iterable<any> | Iterator<any> | IterableIterator<any>
 type IterableAndIteratorAndArrayLike = Iterable<any> | Iterator<any> | IterableIterator<any> | ArrayLike;
 type IteratorReturn = Iterable<any> | IteratorResult<any> | Generator<number, void, unknown>;
 type Nullish = undefined | null;
-type NonNullablePrimitive = number | boolean | string | symbol;
+type NonNullablePrimitive = number | bigint | boolean | string | symbol;
 type Primitive = null | undefined | number | bigint | boolean | string | symbol;
 type Comparable = number | bigint | string | boolean;
 type PropertyKey = string | symbol;
@@ -24,6 +24,7 @@ declare const BASE36 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 declare const BASE58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 declare const BASE62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 declare const WORDSAFEALPHABET = "23456789CFGHJMPQRVWXcfghjmpqvwx";
+declare function assert(condition: unknown, message?: unknown): asserts condition;
 declare const isNonNullable: (value: unknown) => value is NonNullable<unknown>;
 declare const isNonNullablePrimitive: (value: unknown) => value is NonNullablePrimitive;
 declare const eq: (value1: unknown, value2: unknown) => boolean;
@@ -71,7 +72,6 @@ declare function assertDoesNotMatch(string: string, regexp: RegExp, message?: an
 declare function assertThrows(callback: Function, message?: any): any;
 declare function assertIsNotNullish(value: unknown, message?: any): {};
 declare function assertIsNullish(value: unknown, message?: any): any;
-declare function assert(condition: any, message?: any): boolean;
 declare function assertTrue(condition: any, message?: any): boolean;
 declare function assertFalse(condition: any, message?: any): boolean;
 declare function assertEqual(value1: any, value2: any, message?: any): boolean;
@@ -246,6 +246,7 @@ declare const _default: {
     BASE58: string;
     BASE62: string;
     WORDSAFEALPHABET: string;
+    assert: typeof assert;
     isNonNullable: (value: unknown) => value is NonNullable<unknown>;
     isNonNullablePrimitive: (value: unknown) => value is NonNullablePrimitive;
     eq: (value1: unknown, value2: unknown) => boolean;
@@ -293,7 +294,6 @@ declare const _default: {
     assertThrows: typeof assertThrows;
     assertIsNotNullish: typeof assertIsNotNullish;
     assertIsNullish: typeof assertIsNullish;
-    assert: typeof assert;
     assertTrue: typeof assertTrue;
     assertFalse: typeof assertFalse;
     assertEqual: typeof assertEqual;
@@ -460,5 +460,5 @@ declare const _default: {
     inRange: (value: number, min: number, max: number) => boolean;
 };
 export default _default;
-export { VERSION, BASE16, BASE32, BASE36, BASE58, BASE62, WORDSAFEALPHABET, isNonNullable, isNonNullablePrimitive, eq, gt, gte, lt, lte, tap, once, curry, pipe, compose, pick, omit, assoc, asyncNoop, asyncT, asyncF, asyncConstant, asyncIdentity, deleteOwnProperty, createPolyfillMethod, createPolyfillProperty, randomUUIDv7, delay, randomBoolean, getUrlVars, obj2string, extend, sizeIn, unBind, bind, constant, identity, noop, T, F, nanoid, timestampID, assertIs, assertIsNot, assertFail, assertMatch, assertDoesNotMatch, assertThrows, assertIsNotNullish, assertIsNullish, assert, assertTrue, assertFalse, assertEqual, assertStrictEqual, assertNotEqual, assertNotStrictEqual, assertDeepEqual, assertNotDeepStrictEqual, assertNotDeepEqual, assertDeepStrictEqual, b64Encode, b64Decode, strTruncate, strPropercase, strTitlecase, strCapitalize, strUpFirst, strDownFirst, strReverse, strCodePoints, strFromCodePoints, strAt, strSplice, strHTMLRemoveTags, strHTMLEscape, strHTMLUnEscape, isTypedCollection, is, toObject, toPrimitiveValue, toSafeString, isPropertyKey, toPropertyKey, isIndex, isLength, toIndex, toLength, typeOf, isSameType, isSameInstance, isCoercedObject, isDeepStrictEqual, isEmptyValue, isProxy, isAsyncGeneratorFn, isClass, isPlainObject, isChar, isNumeric, isObject, isFunction, isCallable, isArraylike, isNull, isUndefined, isNullish, isPrimitive, isIterator, isRegexp, isElement, isIterable, isAsyncIterable, isTypedArray, isGeneratorFn, isAsyncFn, castArray, compact, unique, count, arrayDeepClone, initial, shuffle, partition, setUnion, setIntersection, setDifference, setSymmetricDifference, isSuperset, min, max, arrayRepeat, arrayCycle, arrayRange, zip, unzip, zipObj, arrayAdd, arrayClear, arrayRemove, arrayRemoveBy, arrayMerge, iterRange, iterCycle, iterRepeat, takeWhile, dropWhile, take, drop, forEach, forEachRight, map, filter, reject, slice, tail, item, nth, size, first, head, last, reverse, sort, includes, find, findLast, every, some, none, takeRight, takeRightWhile, dropRight, dropRightWhile, concat, reduce, enumerate, flat, join, withOut, mod, rem, isFloat, toInteger, toIntegerOrInfinity, sum, avg, product, clamp, minmax, isEven, isOdd, toInt8, toUInt8, toInt16, toUInt16, toInt32, toUInt32, toBigInt64, toBigUInt64, toFloat32, isInt8, isUInt8, isInt16, isUInt16, isInt32, isUInt32, isBigInt64, isBigUInt64, toFloat16, isFloat16, signbit, randomInt, randomFloat, inRange };
+export { VERSION, BASE16, BASE32, BASE36, BASE58, BASE62, WORDSAFEALPHABET, assert, isNonNullable, isNonNullablePrimitive, eq, gt, gte, lt, lte, tap, once, curry, pipe, compose, pick, omit, assoc, asyncNoop, asyncT, asyncF, asyncConstant, asyncIdentity, deleteOwnProperty, createPolyfillMethod, createPolyfillProperty, randomUUIDv7, delay, randomBoolean, getUrlVars, obj2string, extend, sizeIn, unBind, bind, constant, identity, noop, T, F, nanoid, timestampID, assertIs, assertIsNot, assertFail, assertMatch, assertDoesNotMatch, assertThrows, assertIsNotNullish, assertIsNullish, assertTrue, assertFalse, assertEqual, assertStrictEqual, assertNotEqual, assertNotStrictEqual, assertDeepEqual, assertNotDeepStrictEqual, assertNotDeepEqual, assertDeepStrictEqual, b64Encode, b64Decode, strTruncate, strPropercase, strTitlecase, strCapitalize, strUpFirst, strDownFirst, strReverse, strCodePoints, strFromCodePoints, strAt, strSplice, strHTMLRemoveTags, strHTMLEscape, strHTMLUnEscape, isTypedCollection, is, toObject, toPrimitiveValue, toSafeString, isPropertyKey, toPropertyKey, isIndex, isLength, toIndex, toLength, typeOf, isSameType, isSameInstance, isCoercedObject, isDeepStrictEqual, isEmptyValue, isProxy, isAsyncGeneratorFn, isClass, isPlainObject, isChar, isNumeric, isObject, isFunction, isCallable, isArraylike, isNull, isUndefined, isNullish, isPrimitive, isIterator, isRegexp, isElement, isIterable, isAsyncIterable, isTypedArray, isGeneratorFn, isAsyncFn, castArray, compact, unique, count, arrayDeepClone, initial, shuffle, partition, setUnion, setIntersection, setDifference, setSymmetricDifference, isSuperset, min, max, arrayRepeat, arrayCycle, arrayRange, zip, unzip, zipObj, arrayAdd, arrayClear, arrayRemove, arrayRemoveBy, arrayMerge, iterRange, iterCycle, iterRepeat, takeWhile, dropWhile, take, drop, forEach, forEachRight, map, filter, reject, slice, tail, item, nth, size, first, head, last, reverse, sort, includes, find, findLast, every, some, none, takeRight, takeRightWhile, dropRight, dropRightWhile, concat, reduce, enumerate, flat, join, withOut, mod, rem, isFloat, toInteger, toIntegerOrInfinity, sum, avg, product, clamp, minmax, isEven, isOdd, toInt8, toUInt8, toInt16, toUInt16, toInt32, toUInt32, toBigInt64, toBigUInt64, toFloat32, isInt8, isUInt8, isInt16, isUInt16, isInt32, isUInt32, isBigInt64, isBigUInt64, toFloat16, isFloat16, signbit, randomInt, randomFloat, inRange };
 //# sourceMappingURL=celestra.node.d.mts.map
