@@ -808,23 +808,50 @@ const unBind = (fn: Function): Function => Function.prototype.call.bind(fn);
 const bind = Function.prototype.call.bind(Function.prototype.bind);
 
 
-/* constant(value: unknown): any */
-const constant = (value: unknown): Function => (): any => value;
+/* constant(value: unknown): unknown */
+/**
+ * @description Returns a function that always returns the same value.
+ *
+ * @param {unknown} value
+ * @returns {unknown}
+ */
+const constant = <T>(value: T): (() => T) => () => value;
 
 
 /* identity(value: unknown): any */
-const identity = (value: unknown): any => value;
+/**
+ * @description Returns value unchanged.
+ *
+ * @param {unknown} value
+ * @returns {unknown}
+ */
+const identity = <T,>(value: T): T => value;
 
 
 /* noop(): undefined */
+/**
+ * @description A function that does nothing.
+ *
+ * @returns {void}
+ */
 function noop (): void {}
 
 
 /* T(): true */
+/**
+ * @description Always returns true.
+ *
+ * @returns {true}
+ */
 const T = (): boolean => true;
 
 
 /* F(): false */
+/**
+ * @description Always returns false.
+ *
+ * @returns {false}
+ */
 const F = (): boolean => false;
 
 

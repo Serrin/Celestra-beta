@@ -14,7 +14,7 @@ __A helper JavaScript library with useful functions and polyfills and zero depen
 
 Latest version: 6.2.0
 
-Date: 2025-11-03T19:07:37.936Z
+Date: 2025-11-04T18:25:47.121Z
 
 __Tested on these environments:__
 
@@ -75,9 +75,9 @@ globalThis.CEL = celestra;
 
 <script type="module">
 // import some functions
-import { first, assert } from "./celestra.browser.js";
+import { first, map } from "./celestra.browser.js";
 globalThis.first = first;
-globalThis.assert = assert;
+globalThis.map = map;
 </script>
 
 <script type="module">
@@ -107,9 +107,9 @@ globalThis.celestra = celestra;
 globalThis.CEL = celestra;
 
 // import some functions
-import { first, assert } from "./celestra.nodejs.mjs";
+import { first, map } from "./celestra.nodejs.mjs";
 globalThis.first = first;
-globalThis.assert = assert;
+globalThis.map = map;
 
 // dynamic import
 const celestra = await import("./celestra.node.mjs");
