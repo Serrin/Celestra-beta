@@ -1,6 +1,14 @@
 
 # Celestra version history
 
+## Celestra v6.3.0
+
+1. Documentation, pdf and code fixes.
+2. Remove the __Legacy AJAX API__
+3. Remove the __Legacy Assertion API__
+4. Remove these AJAX test files: __unittest-data.json__, __unittest-data.txt__, __unittest-data.xml__
+5. Add these new methods in the __js-cheatsheet.odt__ and __js-cheatsheet.pdf__: `Map#getOrInsert();`, `Map#getOrInsertComputed();`, `WeakMap#getOrInsert();`, `WeakMap#getOrInsertComputed();`
+
 ## Celestra v6.2.0
 
 1. Documentation, pdf and code fixes.

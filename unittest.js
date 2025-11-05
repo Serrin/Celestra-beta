@@ -293,7 +293,7 @@ var /** @type any */ token12, /** @type any */ token13;
 var /** @type any */ token14, /** @type any */ token15;
 
 
-/* Celestra v6.2.0 testcases */
+/* Celestra v6.3.0 testcases */
 
 
 /** Not auto tested functions **/
@@ -1229,140 +1229,6 @@ CEL.domClear(token1);
 CUT.isEqual("domClear();", 0, token1.children.length);
 
 
-/* assertIs(); */
-CUT.isTrue("assertIs(); 01 ok", !!CEL.assertIs(42, "number"));
-CUT.isTrue("assertIs(); 01a ok", !!CEL.assertIs(42, "number", "lorem"));
-CUT.isTrue("assertIs(); 02 ok", !!CEL.assertIs(42, [Array, "number"]));
-CUT.isTrue("assertIs(); 02a ok",
-  !!CEL.assertIs(42, [Array, "number"], "lorem")
-);
-CUT.isError("assertIs(); 03a error", () => CEL.assertIs(42, "string"));
-CUT.isError("assertIs(); 03b error", () => CEL.assertIs(42, "string", "lorem"));
-CUT.isError("assertIs(); 04a error", () => CEL.assertIs(42, [Number, Array]));
-CUT.isError("assertIs(); 04b error",
-  () => CEL.assertIs(42, [Number, Array], "lorem")
-);
-
-
-/* assertIsNot(); */
-CUT.isTrue("assertIs(); 01a ok", !!CEL.assertIsNot(42, "string"));
-CUT.isTrue("assertIs(); 01b ok", !!CEL.assertIsNot(42, "string", "lorem"));
-CUT.isTrue("assertIs(); 02a ok", !!CEL.assertIsNot(42, [Number, Array]));
-CUT.isTrue("assertIs(); 02b ok", !!CEL.assertIsNot(42, [Number, Array], "lorem"));
-CUT.isError("assertIs(); 03a error", () => CEL.assertIsNot(42, "number"));
-CUT.isError("assertIs(); 03b error",
-  () => CEL.assertIsNot(42, "number", "lorem")
-);
-CUT.isError("assertIs(); 04a error",
-  () => CEL.assertIsNot(42, [Array, "number"])
-);
-CUT.isError("assertIs(); 04a error",
-  () => CEL.assertIsNot(42, [Array, "number"],"lorem")
-);
-
-
-/* assertFail(); */
-CUT.isError("assertFail(); 01 error", () => CEL.assertFail(42));
-CUT.isError("assertFail(); 02 error", () => CEL.assertFail(new Error("ipsum")));
-
-
-/* assertMatch(); */
-CUT.isTrue("assertMatch(); 01 ok",
-  CEL.assertMatch("table football", /fo+/, "lorem")
-);
-CUT.isError("assertMatch(); 02 error",
-  () => CEL.assertMatch("table football", /go+/, "lorem")
-);
-CUT.isError("assertMatch(); 03 error",
-  // @ts-ignore
-  () => CEL.assertMatch(42, /go+/, "lorem")
-);
-CUT.isError("assertMatch(); 04 error",
-  // @ts-ignore
-  () => CEL.assertMatch("table football", 42, "lorem")
-);
-CUT.isError("assertMatch(); 05 error",
-  // @ts-ignore
-  () => CEL.assertMatch("table football", 42, new Error("ipsum"))
-);
-
-
-/* assertDoesNotMatch(); */
-CUT.isTrue("assertDoesNotMatch(); 01 ok",
-  CEL.assertDoesNotMatch("table football", /go+/, "lorem")
-);
-CUT.isError("assertDoesNotMatch(); 02 error",
-  () => CEL.assertDoesNotMatch("table football", /fo+/, "lorem")
-);
-CUT.isError("assertDoesNotMatch(); 03 error",
-  // @ts-ignore
-  () => CEL.assertDoesNotMatch(42, /go+/, "lorem")
-);
-CUT.isError("assertDoesNotMatch(); 04 error",
-  // @ts-ignore
-  () => CEL.assertDoesNotMatch("table football", 42, "lorem")
-);
-CUT.isError("assertDoesNotMatch(); 05 error",
-  // @ts-ignore
-  () => CEL.assertDoesNotMatch("table football", 42, new Error("ipsum"))
-);
-
-
-/* assertThrows(); */
-CUT.isTrue("assertThrows(); 01 ok",
-  Error.isError(CEL.assertThrows(() => { throw new Error() }))
-);
-CUT.isError("not strict assert.assertThrows(); 02 error",
-  // @ts-ignore
-  () => CEL.assertThrows(42)
-);
-CUT.isError("not strict assert.assertThrows(); 03 error",
-  () => CEL.assertThrows(
-    () => {}, "not strict assert.assertThrows(); 03 error"
-  )
-);
-CUT.isError("not strict assert.assertThrows(); 04 error",
-  () => CEL.assertThrows(() => {}, new Error("ipsum"))
-);
-
-
-/* assertIsNullish(); */
-CUT.isEqual("assertIsNullish(); 01 ok", null,
-  CEL.assertIsNullish(null, "assert.isNullable(); 01 ok")
-);
-CUT.isEqual("assertIsNullish(); 01 ok", undefined,
-  CEL.assertIsNullish(undefined, "assert.isNullable(); 01 ok")
-);
-CUT.isError("assertIsNullish(); 03 error",
-  () => CEL.assertIsNullish({}, "assertIsNullish(); 03 error")
-);
-CUT.isError("assertIsNullish(); 04 error",
-  () => CEL.assertIsNullish(42, "assertIsNullish(); 04 error")
-);
-CUT.isError("assertIsNullish(); 05 error",
-  () => CEL.assertIsNullish(42, new Error("ipsum"))
-);
-
-
-/* assertIsNotNullish(); */
-CUT.isEqual("assertIsNotNullish(); 01 ok", 42,
-  CEL.assertIsNotNullish(42, "assertIsNotNullish(); 01 ok")
-);
-token1 = {};
-CUT.isEqual("assertIsNotNullish(); 02 ok", token1,
-  CEL.assertIsNotNullish(token1, "assertIsNotNullish(); 02 ok")
-);
-CUT.isError("assertIsNotNullish(); 03 error",
-  () => CEL.assertIsNotNullish(null, "assertIsNotNullish(); 03 error")
-);
-CUT.isError("assertIsNotNullish(); 04 error",
-  () => CEL.assertIsNotNullish(undefined, "assertIsNotNullish(); 04 error")
-);
-CUT.isError("assertIsNotNullish(); 05 error",
-  () => CEL.assertIsNotNullish(undefined, new Error("ipsum"))
-);
-
-
 /* assert(); */
 CUT.isTrue("assert(); 01",
     CEL.assert(true) === undefined
@@ -1381,3578 +1247,6 @@ CUT.isError("assert(); 04 error",
 );
 
 
-/* assertTrue(); */
-CUT.isTrue("assertTrue(); 01",
-     CEL.assertTrue(true)
-  && CEL.assertTrue(true, "assert true")
-  && CEL.assertTrue(1)
-  && CEL.assertTrue(1, "assert true")
-);
-CUT.isError("assertTrue(); 02 error",
-  () => CEL.assert(false, "assertTrue(); 02 error")
-);
-CUT.isError("assertTrue(); 03 error",
-  () => CEL.assert(0, "assertTrue(); 03 error")
-);
-CUT.isError("assertTrue(); 04 error", () => CEL.assert(0, new Error("ipsum")));
-
-
-/* assertFalse(); */
-CUT.isTrue("assertFalse(); 01",
-     CEL.assertFalse(false)
-  && CEL.assertFalse(false, "lorem")
-  && CEL.assertFalse(0)
-  && CEL.assertFalse(0, "lorem")
-);
-CUT.isError("assertFalse(); 02 error",
-  () => CEL.assertFalse(true, "assertFalse(); 02 error")
-);
-CUT.isError("assertFalse(); 03 error",
-  () => CEL.assertFalse(1, "assertFalse(); 03 error")
-);
-CUT.isError("assertFalse(); 04 error",
-  () => CEL.assertFalse(1, new Error("ipsum"))
-);
-
-
-/* assertEqual(); */
-CUT.isTrue("assertEqual(); 01",
-     CEL.assertEqual(NaN, NaN)
-  && CEL.assertEqual(42, 42)
-  && CEL.assertEqual(42, "42")
-);
-CUT.isError("assertEqual(); 02 error",
-  () => CEL.assertEqual(null, false, "assertEqual(); 02 error")
-);
-CUT.isError("assertEqual(); 03 error",
-  () => CEL.assertEqual(null, false, new Error("ipsum"))
-);
-
-
-/* assertStrictEqual(); */
-CUT.isTrue("assertStrictEqual(); 01", CEL.assertStrictEqual(NaN, NaN));
-CUT.isTrue("assertStrictEqual(); 02", CEL.assertStrictEqual(42, 42));
-CUT.isError("assertStrictEqual(); 03 error",
-  () => CEL.assertStrictEqual(42, "42", "assertStrictEqual(); 03 error")
-);
-CUT.isError("assertStrictEqual(); 04 error",
-  () => CEL.assertStrictEqual(null, false, "assertStrictEqual(); 04 error")
-);
-CUT.isError("assertStrictEqual(); 05 error",
-  () => CEL.assertStrictEqual(null, false, new Error("ipsum"))
-);
-
-
-/* assertNotEqual(); */
-CUT.isTrue("assertNotEqual(); 01", CEL.assertNotEqual(null, false, "lorem"));
-CUT.isError("assertNotEqual(); 02 error",
-  () => CEL.assertNotEqual(NaN, NaN, "assertNotEqual(); 02 error")
-);
-CUT.isError("assertNotEqual(); 03 error",
-  () => CEL.assertNotEqual(42, 42, "assertNotEqual(); 03 error")
-);
-CUT.isError("42", "assertNotEqual(); 04 error",
-  // @ts-ignore
-  () => CEL.assertNotEqual(42, "42", "assertNotEqual(); 04 error")
-);
-CUT.isError("42", "assertNotEqual(); 05 error",
-  // @ts-ignore
-  () => CEL.assertNotEqual(42, "42", new Error("ipsum"))
-);
-
-
-/* assertNotStrictEqual(); */
-CUT.isTrue("assertNotStrictEqual(); 01",
-  CEL.assertNotStrictEqual(42, "42", "assertNotStrictEqual(); 01")
-);
-CUT.isTrue("assertNotStrictEqual(); 02",
-  CEL.assertNotStrictEqual(null, false, "assertNotStrictEqual(); 02")
-);
-CUT.isError("assertNotStrictEqual(); 03 error",
-  () => CEL.assertNotStrictEqual(NaN, NaN, "assertNotStrictEqual(); 03")
-);
-CUT.isError("assertNotStrictEqual(); 04 error",
-  () => CEL.assertNotStrictEqual(42, 42, "assertNotStrictEqual(); 04 error")
-);
-CUT.isTrue("assertNotStrictEqual(); 05", CEL.assertNotStrictEqual(42, "42"));
-CUT.isTrue("assertNotStrictEqual(); 05",
-  CEL.assertNotStrictEqual(42, "42", new Error("ipsum"))
-);
-
-
-/* assertDeepEqual(); begin */
-CUT.isError("assertDeepEqual(); 00 - error parameter",
-  () => CEL.assertDeepEqual(42, 43, new Error("ipsum"))
-);
-/* primitives / number + Object wrappers */
-CUT.isTrue("assertDeepEqual(); 01a - ok", CEL.assertDeepEqual(42, 42));
-CUT.isError("assertDeepEqual(); 01b - error",
-  () => CEL.assertDeepEqual(42, 43, "assertDeepEqual(); 01b - error")
-);
-CUT.isTrue("assertDeepEqual(); 01c - ok", CEL.assertDeepEqual(42, Object(42)));
-CUT.isTrue("assertDeepEqual(); 01d - ok", CEL.assertDeepEqual(Object(42), 42));
-CUT.isError("assertDeepEqual(); 01e - error",
-  () => CEL.assertDeepEqual(42, Object(43), "assertDeepEqual(); 01e - error")
-);
-CUT.isError("assertDeepEqual(); 01f - error",
-  () => CEL.assertDeepEqual(Object(42), 43, "assertDeepEqual(); 01f - error")
-);
-CUT.isTrue("assertDeepEqual(); 01g - ok",
-  CEL.assertDeepEqual(Object(42), Object(42))
-);
-CUT.isError("assertDeepEqual(); 01h - error",
-  () =>
-  CEL.assertDeepEqual(Object(42), Object(43), "assertDeepEqual(); 01h - error")
-);
-/* primitives / number: 0, -0, NaN, Infinity, -Infinity */
-CUT.isTrue("assertDeepEqual(); 01i - ok", CEL.assertDeepEqual(0, 0));
-CUT.isTrue("assertDeepEqual(); 01j - ok", CEL.assertDeepEqual(-0, -0));
-CUT.isTrue("assertDeepEqual(); 01k - ok", CEL.assertDeepEqual(-0, 0));
-CUT.isTrue("assertDeepEqual(); 01l - ok", CEL.assertDeepEqual(-0, +0));
-CUT.isTrue("assertDeepEqual(); 01m - ok", CEL.assertDeepEqual(NaN, NaN));
-CUT.isTrue("assertDeepEqual(); 01n - ok",
-  CEL.assertDeepEqual(Infinity, Infinity)
-);
-CUT.isTrue("assertDeepEqual(); 01o - ok",
-  CEL.assertDeepEqual(-Infinity, -Infinity)
-);
-CUT.isError("assertDeepEqual(); 01p - error",
-  () =>
-    CEL.assertDeepEqual(Infinity, -Infinity, "assertDeepEqual(); 01p - error")
-);
-/* primitives / not same type */
-CUT.isTrue("assertDeepEqual(); 01q - ok", CEL.assertDeepEqual(42, "42"));
-CUT.isTrue("assertDeepEqual(); 01r - ok", CEL.assertDeepEqual(1, true));
-CUT.isTrue("assertDeepEqual(); 01s - ok", CEL.assertDeepEqual(1n, true));
-CUT.isError("assertDeepEqual(); 01t - error",
-  () => CEL.assertDeepEqual(1n, "1n","assertDeepEqual(); 01t - error")
-);
-CUT.isTrue("assertDeepEqual(); 01u - ok", CEL.assertDeepEqual(false, ""));
-/* primitives / bigint + Object wrappers */
-CUT.isTrue("assertDeepEqual(); 02a - ok", CEL.assertDeepEqual(42n, 42n));
-CUT.isError("assertDeepEqual(); 02b - error",
-  () => CEL.assertDeepEqual(42n, 43n, "assertDeepEqual(); 02b - error")
-);
-CUT.isTrue("assertDeepEqual(); 02c - ok",
-  CEL.assertDeepEqual(42n, Object(42n))
-);
-CUT.isTrue("assertDeepEqual(); 02d - ok",
-  CEL.assertDeepEqual(Object(42n), 42n)
-);
-CUT.isError("assertDeepEqual(); 02e - error",
-  () => CEL.assertDeepEqual(42n, Object(43n), "assertDeepEqual(); 02e - error")
-);
-CUT.isError("assertDeepEqual(); 02f - error",
-  () => CEL.assertDeepEqual(Object(42n), 43n, "assertDeepEqual(); 02f - error")
-);
-CUT.isTrue("assertDeepEqual(); 02g - ok",
-  CEL.assertDeepEqual(Object(42n), Object(42n))
-);
-CUT.isError("assertDeepEqual(); 02h - error",
-  () => CEL.assertDeepEqual(
-    Object(42n), Object(43n), "assertDeepEqual(); 02h - error"
-  )
-);
-/* primitives / string + Object wrappers */
-CUT.isTrue("assertDeepEqual(); 03a - ok",
-  CEL.assertDeepEqual("lorem", "lorem")
-);
-CUT.isError("assertDeepEqual(); 03b - error",
-  () => CEL.assertDeepEqual("lorem", "ipsum", "assertDeepEqual(); 03b - error")
-);
-CUT.isTrue("assertDeepEqual(); 03c - ok",
-  CEL.assertDeepEqual("lorem", Object("lorem"))
-);
-CUT.isTrue("assertDeepEqual(); 03d - ok",
-  CEL.assertDeepEqual(Object("lorem"), "lorem")
-);
-CUT.isError("assertDeepEqual(); 03e - error",
-  () => CEL.assertDeepEqual("lorem", Object("ipsum"),
-    "assertDeepEqual(); 03e - error"
-  )
-);
-CUT.isError("assertDeepEqual(); 03f - error",
-  () => CEL.assertDeepEqual(Object("lorem"), "ipsum",
-    "assertDeepEqual(); 03f - error"
-  )
-);
-CUT.isTrue("assertDeepEqual(); 03g - ok",
-  CEL.assertDeepEqual(Object("lorem"), Object("lorem"))
-);
-CUT.isError("assertDeepEqual(); 03h - error",
-  () => CEL.assertDeepEqual(Object("lorem"), Object("ipsum"),
-    "assertDeepEqual(); 03h - error"
-  )
-);
-/* primitives / boolean + Object wrappers */
-CUT.isTrue("assertDeepEqual(); 04a - ok", CEL.assertDeepEqual(true, true));
-CUT.isError("assertDeepEqual(); 04b - error",
-  () => CEL.assertDeepEqual(true, false, "assertDeepEqual(); 04b - error")
-);
-CUT.isTrue("assertDeepEqual(); 04c - ok",
-  CEL.assertDeepEqual(true, Object(true))
-);
-CUT.isTrue("assertDeepEqual(); 04d - ok",
-  CEL.assertDeepEqual(Object(true), true)
-);
-CUT.isTrue("assertDeepEqual(); 04d - ok",
-  CEL.assertDeepEqual(Object(true), true)
-);
-CUT.isError("assertDeepEqual(); 04e - error",
-  () => CEL.assertDeepEqual(true, Object(false), "assertDeepEqual(); 04e - error")
-);
-CUT.isError("assertDeepEqual(); 04f - error",
-  () =>
-    CEL.assertDeepEqual(Object(true), false, "assertDeepEqual(); 04f - error")
-);
-CUT.isTrue("assertDeepEqual(); 04g - ok",
-  CEL.assertDeepEqual(Object(true), Object(true))
-);
-CUT.isError("assertDeepEqual(); 04h - error",
-  () => CEL.assertDeepEqual(
-    Object(true), Object(false), "assertDeepEqual(); 04h - error"
-  )
-);
-/* primitives / Symbol */
-token1 = Symbol("Agradzsag");
-token2 = Symbol("Agradzsag");
-token3 = Symbol("Trillian");
-CUT.isTrue("assertDeepEqual(); 05a - ok", CEL.assertDeepEqual(token1, token1));
-CUT.isError("assertDeepEqual(); 05b - error",
-  () => CEL.assertDeepEqual(token1, token2, "assertDeepEqual(); 05b - error")
-);
-CUT.isError("assertDeepEqual(); 05c - error",
-  () => CEL.assertDeepEqual(token1, token3, "assertDeepEqual(); 05c - error")
-);
-/* objects / Array */
-CUT.isTrue("assertDeepEqual(); 06a - ok", CEL.assertDeepEqual([1, 2], [1, 2]));
-CUT.isError("assertDeepEqual(); 06b - error",
-  () => CEL.assertDeepEqual([1, 2], [1, 3], "assertDeepEqual(); 06b - error")
-);
-CUT.isTrue("assertDeepEqual(); 06c - ok",
-  CEL.assertDeepEqual([1, 2], [1, "2"])
-);
-CUT.isError("assertDeepEqual(); 06d - error",
-  () => CEL.assertDeepEqual([1, 2], [1, 2, 3], "assertDeepEqual(); 06d - error")
-);
-/* objects / Set */
-token1 = new Set([1, 2]);
-token2 = new Set([1, 2]);
-token3 = new Set([1, 3]);
-token4 = new Set([1, "2"]);
-token5 = new Set([1, 2, 3]);
-CUT.isTrue("assertDeepEqual(); 07a - ok", CEL.assertDeepEqual(token1, token2));
-CUT.isError("assertDeepEqual(); 07b - error",
-  () => CEL.assertDeepEqual(token1, token3, "assertDeepEqual(); 07b - error")
-);
-CUT.isError("assertDeepEqual(); 07c - error",
-  () => CEL.assertDeepEqual(token1, token4, "assertDeepEqual(); 07c - error")
-);
-CUT.isError("assertDeepEqual(); 07d - error",
-  () => CEL.assertDeepEqual(token1, token5, "assertDeepEqual(); 07d - error")
-);
-/* objects / TypedArrays */
-token1 = Int16Array.from([34, 45]);
-token2 = Int16Array.from([34, 45]);
-token3 = Int16Array.from([34, 46]);
-token5 = Int16Array.from([34, 45, 56]);
-CUT.isTrue("assertDeepEqual(); 08a - ok", CEL.assertDeepEqual(token1, token2));
-CUT.isError("assertDeepEqual(); 08b - error",
-  () => CEL.assertDeepEqual(token1, token3, "assertDeepEqual(); 08b - error")
-);
-CUT.isError("assertDeepEqual(); 08c - error",
-  () => CEL.assertDeepEqual(token1, token5, "assertDeepEqual(); 08c - error")
-);
-/* objects / Object (other objects) */
-/* objects / same reference (same object) */
-token1 = {"a": 1, "b": 2};
-token2 = {"a": 1, "b": 2};
-token3 = {"a": 1, "b": 3};
-token4 = {"a": 1, "b": "2"};
-token5 = {"a": 1, "b": 2, "c": 3};
-token6 = {"a": 1, "b": 2, "c": 3, [Symbol()]: 4};
-token7 = {"a": 1, "b": 2, "c": 3, [Symbol()]: 4};
-token8 = {"a": 1, "b": 2, "c": 3, [Symbol()]: 5};
-CUT.isTrue("assertDeepEqual(); 09a - ok", CEL.assertDeepEqual(token1, token2));
-CUT.isTrue("assertDeepEqual(); 09b - ok", CEL.assertDeepEqual(token6, token6));
-CUT.isError("assertDeepEqual(); 09c - error",
-  () => CEL.assertDeepEqual(token1, token3, "assertDeepEqual(); 09c - error")
-);
-CUT.isTrue("assertDeepEqual(); 09d - ok", CEL.assertDeepEqual(token1, token4));
-CUT.isError("assertDeepEqual(); 09e - error",
-  () => CEL.assertDeepEqual(token1, token5, "assertDeepEqual(); 09e - error")
-);
-CUT.isError("assertDeepEqual(); 09f - error",
-  () => CEL.assertDeepEqual(token6, token7, "assertDeepEqual(); 09f - error")
-);
-CUT.isError("assertDeepEqual(); 09g - error",
-  () => CEL.assertDeepEqual(token6, token8, "assertDeepEqual(); 09g - error")
-);
-/* objects / Map */
-token1 = new Map([["a", 1], ["b", 2]]);
-token2 = new Map([["a", 1], ["b", 2]]);
-token3 = new Map([["a", 1], ["b", 3]]);
-// @ts-ignore
-token4 = new Map([["a", 1], ["b", "2"]]);
-token5 = new Map([["a", 1], ["b", 2], ["c", 3]]);
-CUT.isTrue("assertDeepEqual(); 10a - ok", CEL.assertDeepEqual(token1, token2));
-CUT.isError("assertDeepEqual(); 10b - error",
-  () => CEL.assertDeepEqual(token1, token3, "assertDeepEqual(); 10b - error")
-);
-CUT.isTrue("assertDeepEqual(); 10c - ok", CEL.assertDeepEqual(token1, token4));
-CUT.isError("assertDeepEqual(); 10d - error",
-  () => CEL.assertDeepEqual(token1, token5, "assertDeepEqual(); 10d - error")
-);
-/* objects / weakset + weakmap*/
-token1 = new WeakSet();
-token2 = new WeakSet();
-CUT.isTrue("assertDeepEqual(); 11a - ok", CEL.assertDeepEqual(token1, token1));
-CUT.isError("assertDeepEqual(); 11b - error",
-  () => CEL.assertDeepEqual(token1, token2, "assertDeepEqual(); 11b - error")
-);
-token1 = new WeakMap();
-token2 = new WeakMap();
-CUT.isTrue("assertDeepEqual(); 11c - ok", CEL.assertDeepEqual(token1, token1));
-CUT.isError("assertDeepEqual(); 11d - error",
-  () => CEL.assertDeepEqual(token1, token2, "assertDeepEqual(); 11d - error")
-);
-/* objects / Function */
-CUT.isTrue("assertDeepEqual(); 12a - ok",
-  CEL.assertDeepEqual(Array.from, Array.from)
-);
-CUT.isError("assertDeepEqual(); 12b - error",
-  () => CEL.assertDeepEqual(
-    Array.from, Array.of, "assertDeepEqual(); 12b - error"
-  )
-);
-/* objects / Date */
-token1 = new Date();
-token2 = new Date();
-if (token2.getMilliseconds() === 1) {
-  token2.setMilliseconds(2);
-} else {
-  token2.setMilliseconds(1);
-}
-token3 = {};
-Object.setPrototypeOf(token3, Date);
-CUT.isTrue("assertDeepEqual(); 13a - ok", CEL.assertDeepEqual(token1, token1));
-CUT.isError("assertDeepEqual(); 13b - error",
-  () => CEL.assertDeepEqual(token1, token2, "assertDeepEqual(); 13b - error")
-);
-CUT.isTrue("assertDeepEqual(); 13c - ok", CEL.assertDeepEqual(token1, token3));
-/* objects / Error */
-token1 = new Error("Agradzsag");
-token2 = new Error("Agradzsag");
-token3 = new TypeError("Agradzsag");
-token3 = new TypeError("Agradzsag");
-CUT.isTrue("assertDeepEqual(); 14a - ok", CEL.assertDeepEqual(token1, token1));
-CUT.isTrue("assertDeepEqual(); 14b - ok", CEL.assertDeepEqual(token3, token3));
-CUT.isError("assertDeepEqual(); 14c - error",
-  () => CEL.assertDeepEqual(token1, token2, "assertDeepEqual(); 14c - error")
-);
-CUT.isError("assertDeepEqual(); 14d - error",
-  () => CEL.assertDeepEqual(token1, token3, "assertDeepEqual(); 14d - error")
-);
-/* types: null, undefined */
-CUT.isTrue("assertDeepEqual(); 15a - ok", CEL.assertDeepEqual(null, null));
-CUT.isTrue("assertDeepEqual(); 15b - ok",
-  CEL.assertDeepEqual(undefined, undefined)
-);
-CUT.isTrue("assertDeepEqual(); 15c - ok", CEL.assertDeepEqual(null, undefined));
-/* structures 1 */
-token1 = new Error("Agradzsag");
-// @ts-ignore
-token2 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1]]])}];
-// @ts-ignore
-token3 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1]]])}];
-// @ts-ignore
-token4 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, 42]]])}];
-// @ts-ignore
-token5 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1, 42]]])}];
-// @ts-ignore
-token6 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1]]])}];
-CUT.isTrue("assertDeepEqual(); 16a - ok", CEL.assertDeepEqual(token2, token2));
-CUT.isTrue("assertDeepEqual(); 16b - ok", CEL.assertDeepEqual(token2, token3));
-CUT.isError("assertDeepEqual(); 16c - error",
-  () => CEL.assertDeepEqual(token2, token4, "assertDeepEqual(); 16c - error")
-);
-CUT.isError("assertDeepEqual(); 16d - error",
-  () => CEL.assertDeepEqual(token2, token5, "assertDeepEqual(); 16d - error")
-);
-CUT.isTrue("assertDeepEqual(); 16e - ok", CEL.assertDeepEqual(token2, token6));
-/* structures 2 */
-token1 = new Error("Agradzsag");
-// @ts-ignore
-token2 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
-// @ts-ignore
-token3 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
-// @ts-ignore
-token4 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", ["a", 10]], ["11", new Set([12, 13])]])}, token1];
-// @ts-ignore
-token5 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13, 14])]])}, token1];
-// @ts-ignore
-token6 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
-CUT.isTrue("assertDeepEqual(); 17a - ok", CEL.assertDeepEqual(token2, token2));
-CUT.isTrue("assertDeepEqual(); 17b - ok", CEL.assertDeepEqual(token2, token3));
-CUT.isError("assertDeepEqual(); 17c - error",
-  () => CEL.assertDeepEqual(token2, token4, "assertDeepEqual(); 17c - error")
-);
-CUT.isError("assertDeepEqual(); 17d - error",
-  () => CEL.assertDeepEqual(token2, token5, "assertDeepEqual(); 17d - error")
-);
-CUT.isTrue("assertDeepEqual(); 17e - ok", CEL.assertDeepEqual(token2, token6));
-/* structures 3 */
-token1 = new Error("Agradzsag");
-// @ts-ignore
-token2 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
-// @ts-ignore
-token3 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
-// @ts-ignore
-token4 = [1, 2, {"3": 4, "5": new Map([["6", 8], ["8", [9, 10]], ["11", new Set([12, 14])]])}, token1];
-// @ts-ignore
-token5 = [1, 2, {"3": 4, "5": new Map([["6", 8], ["8", [9, 10, 15]], ["11", new Set([12, 13])]])}, token1];
-// @ts-ignore
-token6 = [1, 2, {"3": 4, "5": new Map([["6", "7"], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
-CUT.isTrue("assertDeepEqual(); 18a - ok", CEL.assertDeepEqual(token2, token2));
-CUT.isTrue("assertDeepEqual(); 18b - ok", CEL.assertDeepEqual(token2, token3));
-CUT.isError("assertDeepEqual(); 18c - error",
-  () => CEL.assertDeepEqual(token2, token4, "assertDeepEqual(); 18c - error")
-);
-CUT.isError("assertDeepEqual(); 18d - error",
-  () => CEL.assertDeepEqual(token2, token5, "assertDeepEqual(); 18d - error")
-);
-CUT.isTrue("assertDeepEqual(); 18e - ok", CEL.assertDeepEqual(token2, token6));
-/* structures 4 */
-token1 = new Error("Agradzsag");
-// @ts-ignore
-token2 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
-// @ts-ignore
-token3 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
-// @ts-ignore
-token4 = [1,5,{"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
-// @ts-ignore
-token5 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13, 14])]])}, token1];
-CUT.isTrue("assertDeepEqual(); 19a - ok", CEL.assertDeepEqual(token2, token2));
-CUT.isTrue("assertDeepEqual(); 19b - ok", CEL.assertDeepEqual(token2, token3));
-CUT.isError("assertDeepEqual(); 19c - error",
-  () => CEL.assertDeepEqual(token2, token4, "assertDeepEqual(); 19c - error")
-);
-CUT.isError("assertDeepEqual(); 19d - error",
-  () => CEL.assertDeepEqual(token2, token5, "assertDeepEqual(); 19d - error")
-);
-/* objects / not same prototype - array */
-CUT.isError("assertDeepEqual(); 20a - error",
-  () => CEL.assertDeepEqual({}, [], "assertDeepEqual(); 20a - error")
-);
-CUT.isError("assertDeepEqual(); 20b - error",
-  () => CEL.assertDeepEqual(new Map(), [], "assertDeepEqual(); 20b - error")
-);
-CUT.isError("assertDeepEqual(); 20c - error",
-  () => CEL.assertDeepEqual(new Set(), [], "assertDeepEqual(); 20c - error")
-);
-CUT.isError("assertDeepEqual(); 20d - error",
-  () => CEL.assertDeepEqual(new WeakMap(), [], "assertDeepEqual(); 20d - error")
-);
-CUT.isError("assertDeepEqual(); 20e - error",
-  () => CEL.assertDeepEqual(new WeakSet(), [], "assertDeepEqual(); 20e - error")
-);
-CUT.isError("assertDeepEqual(); 20f - error",
-  () => CEL.assertDeepEqual(new Error(), [], "assertDeepEqual(); 20f - error")
-);
-CUT.isTrue("assertDeepEqual(); 20g - ok", CEL.assertDeepEqual(42, [42]));
-CUT.isError("assertDeepEqual(); 20h - error",
-  () => CEL.assertDeepEqual(Object(42), [42], "assertDeepEqual(); 20h - error")
-);
-CUT.isError("assertDeepEqual(); 20i - error",
-  () => CEL.assertDeepEqual(true, [true], "assertDeepEqual(); 20i - error")
-);
-CUT.isError("assertDeepEqual(); 20j - error",
-  () =>
-    CEL.assertDeepEqual(Object(true), [true], "assertDeepEqual(); 20j - error")
-);
-CUT.isTrue("assertDeepEqual(); 20k - ok",
-  CEL.assertDeepEqual("lorem", ["lorem"])
-);
-CUT.isError("assertDeepEqual(); 20l - error",
-  () => CEL.assertDeepEqual(
-    Object("lorem"), ["lorem"], "assertDeepEqual(); 20l - error"
-  )
-);
-CUT.isTrue("assertDeepEqual(); 20m - ok", CEL.assertDeepEqual(42n, [42n]));
-CUT.isError("assertDeepEqual(); 20n - error",
-  () => CEL.assertDeepEqual(
-    Object(42n), [42n], "assertDeepEqual(); 20n - error"
-  )
-);
-/* objects / not same prototype - map */
-CUT.isTrue("assertDeepEqual(); 21a - ok",
-  CEL.assertDeepEqual(new Map(), new Set())
-);
-CUT.isTrue("assertDeepEqual(); 21b - ok",
-  CEL.assertDeepEqual(new Map(), new WeakSet())
-);
-CUT.isTrue( "assertDeepEqual(); 21c - ok",
-  CEL.assertDeepEqual(new Map(), new WeakMap())
-);
-CUT.isError("assertDeepEqual(); 21d - error",
-  () => CEL.assertDeepEqual(
-    new Error(), new Map(), "assertDeepEqual(); 21d - error"
-  )
-);
-CUT.isError("assertDeepEqual(); 21e - error",
-  () => CEL.assertDeepEqual(42, new Map(), "assertDeepEqual(); 21e - error")
-);
-CUT.isTrue("assertDeepEqual(); 21f - ok",
-  CEL.assertDeepEqual(Object(42), new Map())
-);
-CUT.isError("assertDeepEqual(); 21g - error",
-  () => CEL.assertDeepEqual(true, new Map(), "assertDeepEqual(); 21g - error")
-);
-CUT.isTrue("assertDeepEqual(); 21h - ok",
-  CEL.assertDeepEqual(Object(true), new Map())
-);
-CUT.isError("assertDeepEqual(); 21i - error",
-  () => CEL.assertDeepEqual(
-    "lorem", new Map(), "assertDeepEqual(); 21i - error"
-  )
-);
-CUT.isError("assertDeepEqual(); 21j - error",
-  () => CEL.assertDeepEqual(
-    Object("lorem"), new Map(), "assertDeepEqual(); 21j - error"
-  )
-);
-CUT.isError("assertDeepEqual(); 21k - error",
-  () => CEL.assertDeepEqual(42n, new Map(), "assertDeepEqual(); 21k - error")
-);
-CUT.isTrue("assertDeepEqual(); 21l - ok",
-  CEL.assertDeepEqual(Object(42n), new Map())
-);
-/* objects / not same prototype - set */
-CUT.isTrue("assertDeepEqual(); 22a - ok",
-  CEL.assertDeepEqual(new WeakMap(), new Set())
-);
-CUT.isError("assertDeepEqual(); 22b - error",
-  () => CEL.assertDeepEqual(
-    new Error(), new Set(), "assertDeepEqual(); 22b - error"
-  )
-);
-CUT.isError("assertDeepEqual(); 22c - error",
-  () => CEL.assertDeepEqual(42, new Set(), "assertDeepEqual(); 22c - error")
-);
-CUT.isTrue("assertDeepEqual(); 22d - ok",
-  CEL.assertDeepEqual(Object(42), new Set())
-);
-CUT.isError("assertDeepEqual(); 22e - error",
-  () => CEL.assertDeepEqual(true, new Set(), "assertDeepEqual(); 22e - error")
-);
-CUT.isTrue("assertDeepEqual(); 22f - ok",
-  CEL.assertDeepEqual(Object(true), new Set())
-);
-CUT.isError("assertDeepEqual(); 22g - error",
-  () => CEL.assertDeepEqual(
-    "lorem", new Set(), "assertDeepEqual(); 22g - error"
-  )
-);
-CUT.isError("assertDeepEqual(); 22h - error",
-  () => CEL.assertDeepEqual(
-    Object("lorem"), new Set(), "assertDeepEqual(); 22h - error"
-  )
-);
-CUT.isError("assertDeepEqual(); 22i - error",
-  () => CEL.assertDeepEqual(42n, new Set(), "assertDeepEqual(); 22i - error")
-);
-CUT.isTrue("assertDeepEqual(); 22j - ok",
-  CEL.assertDeepEqual(Object(42n), new Set())
-);
-/* objects / not same prototype - weakset */
-CUT.isTrue("assertDeepEqual(); 23a - ok",
-  CEL.assertDeepEqual(new WeakMap(), new WeakSet())
-);
-CUT.isError("assertDeepEqual(); 23b - error",
-  () => CEL.assertDeepEqual(
-    new Error(), new WeakSet(), "assertDeepEqual(); 23b - error"
-  )
-);
-CUT.isError("assertDeepEqual(); 23c - error",
-  () => CEL.assertDeepEqual(42, new WeakSet(), "assertDeepEqual(); 23c - error")
-);
-CUT.isTrue("assertDeepEqual(); 23d - ok",
-  CEL.assertDeepEqual(Object(42), new WeakSet())
-);
-CUT.isError("assertDeepEqual(); 23e - error",
-  () => CEL.assertDeepEqual(
-    true, new WeakSet(), "assertDeepEqual(); 23e - error"
-  )
-);
-CUT.isTrue( "assertDeepEqual(); 23f - ok",
-  CEL.assertDeepEqual(Object(true), new WeakSet())
-);
-CUT.isError("assertDeepEqual(); 23g - error",
-  () => CEL.assertDeepEqual(
-    "lorem", new WeakSet(), "assertDeepEqual(); 23g - error"
-  )
-);
-CUT.isError("assertDeepEqual(); 23h - error",
-  () => CEL.assertDeepEqual(
-    Object("lorem"), new WeakSet(), "assertDeepEqual(); 23h - error"
-  )
-);
-CUT.isError("assertDeepEqual(); 23i - error",
-  () =>
-    CEL.assertDeepEqual(42n, new WeakSet(), "assertDeepEqual(); 23i - error")
-);
-CUT.isTrue("assertDeepEqual(); 23j - ok",
-  CEL.assertDeepEqual(Object(42n), new WeakSet())
-);
-/* objects / not same prototype - weakmap */
-CUT.isError("assertDeepEqual(); 24a - error",
-  () => CEL.assertDeepEqual(
-    new Error(), new WeakMap(), "assertDeepEqual(); 24a - error"
-  )
-);
-CUT.isError("assertDeepEqual(); 24b - error",
-  () => CEL.assertDeepEqual(42, new WeakMap(), "assertDeepEqual(); 24b - error")
-);
-CUT.isTrue("assertDeepEqual(); 24c - ok",
-  CEL.assertDeepEqual(Object(42), new WeakMap())
-);
-CUT.isError("assertDeepEqual(); 24d - error",
-  () =>
-    CEL.assertDeepEqual(true, new WeakMap(), "assertDeepEqual(); 24d - error")
-);
-CUT.isTrue("assertDeepEqual(); 24e - ok",
-  CEL.assertDeepEqual(Object(true), new WeakMap())
-);
-CUT.isError("assertDeepEqual(); 24f - error",
-  () => CEL.assertDeepEqual(
-    "lorem", new WeakMap(), "assertDeepEqual(); 24f - error"
-  )
-);
-CUT.isError("assertDeepEqual(); 24g - error",
-  () => CEL.assertDeepEqual(
-    Object("lorem"), new WeakMap(), "assertDeepEqual(); 24g - error"
-  )
-);
-CUT.isError("assertDeepEqual(); 24h - error",
-  () =>
-    CEL.assertDeepEqual(42n, new WeakMap(), "assertDeepEqual(); 24h - error")
-);
-CUT.isTrue("assertDeepEqual(); 24i - ok",
-  CEL.assertDeepEqual(Object(42n), new WeakMap())
-);
-/* objects / not same prototype - error */
-CUT.isError("assertDeepEqual(); 25a - error",
-  // @ts-ignore
-  () => CEL.assertDeepEqual(42, new Error(42), "assertDeepEqual(); 25a - error")
-);
-CUT.isError("assertDeepEqual(); 25b - error",
-  () => CEL.assertDeepEqual(
-    // @ts-ignore
-    Object(42), new Error(42), "assertDeepEqual(); 25b - error"
-  )
-);
-CUT.isError("assertDeepEqual(); 25c - error",
-  () => CEL.assertDeepEqual(
-    // @ts-ignore
-    true, new Error(true), "assertDeepEqual(); 25c - error"
-  )
-);
-CUT.isError("assertDeepEqual(); 25d - error",
-  () => CEL.assertDeepEqual(
-    // @ts-ignore
-    Object(true), new Error(true), "assertDeepEqual(); 25d - error"
-  )
-);
-CUT.isError("assertDeepEqual(); 25e - error",
-  () => CEL.assertDeepEqual(
-    "lorem", new Error("lorem"), "assertDeepEqual(); 25e - error"
-  )
-);
-CUT.isError("assertDeepEqual(); 25f - error",
-  () => CEL.assertDeepEqual(
-    Object("lorem"), new Error("lorem"), "assertDeepEqual(); 25f - error"
-  )
-);
-CUT.isError("assertDeepEqual(); 25g - error",
-  () => // @ts-ignore
-    CEL.assertDeepEqual(42n, new Error(42n), "assertDeepEqual(); 25g - error")
-);
-CUT.isError("assertDeepEqual(); 25h - error",
-  () => CEL.assertDeepEqual(
-    // @ts-ignore
-    Object(42n), new Error(42n), "assertDeepEqual(); 25h - error"
-  )
-);
-/* objects / not same prototype - number */
-CUT.isTrue("assertDeepEqual(); 26a - ok", CEL.assertDeepEqual(true, 1));
-CUT.isTrue("assertDeepEqual(); 26b - ok", CEL.assertDeepEqual(Object(true), 1));
-CUT.isTrue("assertDeepEqual(); 26c - ok", CEL.assertDeepEqual("1", 1));
-CUT.isTrue("assertDeepEqual(); 26d - ok", CEL.assertDeepEqual(Object("1"), 1));
-CUT.isTrue("assertDeepEqual(); 26e - ok", CEL.assertDeepEqual(42n, 42));
-CUT.isTrue("assertDeepEqual(); 26f - ok", CEL.assertDeepEqual(Object(42n), 42));
-/* objects / not same prototype - string */
-CUT.isError("assertDeepEqual(); 27a - error",
-  () => CEL.assertDeepEqual(true, "true", "assertDeepEqual(); 27a - error")
-);
-CUT.isError("assertDeepEqual(); 27b - error",
-  () => CEL.assertDeepEqual(42n, "42n", "assertDeepEqual(); 27b - error")
-);
-CUT.isTrue("assertDeepEqual(); 27c - ok",
-  CEL.assertDeepEqual(Object(42), "42")
-);
-CUT.isError("assertDeepEqual(); 27d - error",
-  () =>
-    CEL.assertDeepEqual(Object(42n), "42n", "assertDeepEqual(); 27d - error")
-);
-CUT.isError("assertDeepEqual(); 27e - error",
-  () =>
-    CEL.assertDeepEqual(Object(true), "true", "assertDeepEqual(); 27e - error")
-);
-/* objects / not same prototype - boolean */
-CUT.isTrue("assertDeepEqual(); 28a - ok", CEL.assertDeepEqual(1n, true));
-CUT.isTrue("assertDeepEqual(); 28b - ok",
-  CEL.assertDeepEqual(Object(1n), true)
-);
-CUT.isTrue( "assertDeepEqual(); 28c - ok",
-  CEL.assertDeepEqual(Object(1), true)
-);
-CUT.isError("assertDeepEqual(); 28d - error",
-  () => CEL.assertDeepEqual("true", true, "assertDeepEqual(); 28d - error")
-);
-/* objects / not same prototype - bigint */
-CUT.isTrue("assertDeepEqual(); 29a - ok",
-  CEL.assertDeepEqual(Object(42), 42n)
-);
-CUT.isTrue("assertDeepEqual(); 29b - ok",
-  CEL.assertDeepEqual(Object("42"), 42n)
-);
-/*
-Object(true) == 1n -> Firefox: false, Chrome: true
-CUT.isError("assertDeepEqual(); 29c - error",
-  () => CEL.assertDeepEqual(Object(true), 1n, "assertDeepEqual(); 29c - error")
-);
-*/
-/* objects / not same prototype - Object wrappers */
-CUT.isError("assertDeepEqual(); 30a - error",
-  () => CEL.assertDeepEqual(
-    Object(42), Object("42"), "assertDeepEqual(); 30a - error"
-  )
-);
-CUT.isTrue("assertDeepEqual(); 30b - ok",
-  CEL.assertDeepEqual(Object(1), Object(true))
-);
-CUT.isTrue("assertDeepEqual(); 30c - ok",
-  CEL.assertDeepEqual(Object(1), Object(1n))
-);
-CUT.isError("assertDeepEqual(); 30d - error",
-  () => CEL.assertDeepEqual(
-    Object("true"), Object(true), "assertDeepEqual(); 30d - error"
-  )
-);
-CUT.isError("assertDeepEqual(); 30e - error",
-  () => CEL.assertDeepEqual(
-    Object(42n), Object("42n"), "assertDeepEqual(); 30e - error"
-  )
-);
-CUT.isTrue("assertDeepEqual(); 30f - ok",
-  CEL.assertDeepEqual(Object(1n), Object(true), )
-);
-/* dataview + arraybuffer */
-token1 = new ArrayBuffer(2);
-token2 = new DataView(token1);
-// @ts-ignore
-token2.setInt8(0, 125, true);
-// @ts-ignore
-token2.setInt8(1, 100, true);
-token3 = new ArrayBuffer(2);
-token4 = new DataView(token3);
-// @ts-ignore
-token4.setInt8(0, 125, true);
-// @ts-ignore
-token4.setInt8(1, 100, true);
-token5 = new ArrayBuffer(2);
-token6 = new DataView(token5);
-// @ts-ignore
-token6.setInt8(0, 120, true);
-// @ts-ignore
-token6.setInt8(1, 100, true);
-token7 = new ArrayBuffer(3);
-token8 = new DataView(token7);
-// @ts-ignore
-token8.setInt8(0, 125, true);
-// @ts-ignore
-token8.setInt8(1, 100, true);
-CUT.isTrue("assertDeepEqual(); 31a",
-     CEL.assertDeepEqual([1, 2, token1, 3], [1, 2, token1, 3])
-  && CEL.assertDeepEqual([1, 2, token1, 3], [1, 2, token3, 3])
-  && CEL.assertDeepEqual([1, 2, token2, 3], [1, 2, token2, 3])
-  && CEL.assertDeepEqual([1, 2, token2, 3], [1, 2, token4, 3])
-);
-CUT.isError(
-  "assertDeepEqual(); 31b error",
-  () => CEL.assertDeepEqual(
-    [1, 2, token1, 3], [1, 2, token5, 3], "assertDeepEqual(); 31b error"
-  )
-);
-CUT.isError(
-  "assertDeepEqual(); 31c error",
-  () => CEL.assertDeepEqual(
-    [1, 2, token1, 3], [1, 2, token7, 3], "assertDeepEqual(); 31c error"
-  )
-);
-CUT.isError(
-  "assertDeepEqual(); 31d error",
-  () => CEL.assertDeepEqual(
-    [1, 2, token2, 3], [1, 2, token6, 3], "assertDeepEqual(); 31d error"
-  )
-);
-CUT.isError(
-  "assertDeepEqual(); 31e error",
-  () => CEL.assertDeepEqual(
-    [1, 2, token2, 3], [1, 2, token8, 3], "assertDeepEqual(); 31e error"
-  )
-);
-/* assertDeepEqual(); end */
-
-
-/* assertNotDeepStrictEqual begin */
-CUT.isError("assertNotDeepStrictEqual(); 00 - error parameter",
-  () => CEL.assertNotDeepStrictEqual(42, 42, new Error("lorem"))
-);
-/* primitives / number + Object wrappers */
-CUT.isError("assertNotDeepStrictEqual(); 01a - error",
-  () => CEL.assertNotDeepStrictEqual(
-    42, 42, "assertNotDeepStrictEqual(); 01a - error"
-  )
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 01b - ok",
-  CEL.assertNotDeepStrictEqual(42, 43)
-);
-CUT.isError("assertNotDeepStrictEqual(); 01c - error",
-  () => CEL.assertNotDeepStrictEqual(
-    42, Object(42), "assertNotDeepStrictEqual(); 01c - error"
-  )
-);
-CUT.isError("assertNotDeepStrictEqual(); 01d - error",
-  () => CEL.assertNotDeepStrictEqual(
-    Object(42), 42, "assertNotDeepStrictEqual(); 01d - error"
-  )
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 01e - ok",
-  CEL.assertNotDeepStrictEqual(42, Object(43))
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 01f - ok",
-  CEL.assertNotDeepStrictEqual(Object(42), 43)
-);
-CUT.isError("assertNotDeepStrictEqual(); 01g - error",
-  () => CEL.assertNotDeepStrictEqual(
-    Object(42), Object(42), "assertNotDeepStrictEqual(); 01g - error"
-  )
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 01h - ok",
-  CEL.assertNotDeepStrictEqual(Object(42), Object(43))
-);
-/* primitives / number: 0, -0, NaN, Infinity, -Infinity */
-CUT.isError("assertNotDeepStrictEqual(); 01i - error",
-  () => CEL.assertNotDeepStrictEqual(
-    0, 0, "assertNotDeepStrictEqual(); 01i - error"
-  )
-);
-CUT.isError("assertNotDeepStrictEqual(); 01j - error",
-  () => CEL.assertNotDeepStrictEqual(
-    -0, -0, "assertNotDeepStrictEqual(); 01j - error"
-  )
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 01k - ok",
-  CEL.assertNotDeepStrictEqual(-0, 0)
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 01l - ok",
-  CEL.assertNotDeepStrictEqual(-0, +0)
-);
-CUT.isError("assertNotDeepStrictEqual(); 01m - error",
-  () => CEL.assertNotDeepStrictEqual(
-    NaN, NaN, "assertNotDeepStrictEqual(); 01m - error"
-  )
-);
-CUT.isError("assertNotDeepStrictEqual(); 01n - error",
-  () => CEL.assertNotDeepStrictEqual(
-    Infinity, Infinity, "assertNotDeepStrictEqual(); 01n - error"
-  )
-);
-CUT.isError("assertNotDeepStrictEqual(); 01o - error",
-  () => CEL.assertNotDeepStrictEqual(
-    -Infinity, -Infinity, "assertNotDeepStrictEqual(); 01o - error"
-  )
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 01p - ok",
-  CEL.assertNotDeepStrictEqual(Infinity, -Infinity)
-);
-/* primitives / not same type */
-CUT.isTrue("assertNotDeepStrictEqual(); 01q - ok",
-  CEL.assertNotDeepStrictEqual(42, "42")
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 01r - ok",
-  CEL.assertNotDeepStrictEqual(1, true, )
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 01s - ok",
-  CEL.assertNotDeepStrictEqual(1n, true)
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 01t - ok",
-  CEL.assertNotDeepStrictEqual(1n, "1n")
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 01u - ok",
-  CEL.assertNotDeepStrictEqual(false, "")
-);
-/* primitives / bigint + Object wrappers */
-CUT.isError("assertNotDeepStrictEqual(); 02a - error",
-  () => CEL.assertNotDeepStrictEqual(
-    42n, 42n, "assertNotDeepStrictEqual(); 02a - error"
-  )
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 02b - ok",
-  CEL.assertNotDeepStrictEqual(42n, 43n)
-);
-CUT.isError("assertNotDeepStrictEqual(); 02c - error",
-  () => CEL.assertNotDeepStrictEqual(
-    42n, Object(42n), "assertNotDeepStrictEqual(); 02c - error"
-  )
-);
-CUT.isError("assertNotDeepStrictEqual(); 02d - error",
-  () => CEL.assertNotDeepStrictEqual(
-    Object(42n), 42n, "assertNotDeepStrictEqual(); 02d - error"
-  )
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 02e - ok",
-  CEL.assertNotDeepStrictEqual(42n, Object(43n), )
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 02f - ok",
-  CEL.assertNotDeepStrictEqual(Object(42n), 43n)
-);
-CUT.isError("assertNotDeepStrictEqual(); 02g - error",
-  () => CEL.assertNotDeepStrictEqual(
-    Object(42n), Object(42n),"assertNotDeepStrictEqual(); 02g - error"
-  )
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 02h - ok",
-  CEL.assertNotDeepStrictEqual(Object(42n), Object(43n))
-);
-/* primitives / string + Object wrappers */
-CUT.isError("assertNotDeepStrictEqual(); 03a - error",
-  () => CEL.assertNotDeepStrictEqual(
-    "lorem", "lorem", "assertNotDeepStrictEqual(); 03a - error"
-  )
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 03b - ok",
-  CEL.assertNotDeepStrictEqual("lorem", "ipsum")
-);
-CUT.isError("assertNotDeepStrictEqual(); 03c - error",
-  () => CEL.assertNotDeepStrictEqual(
-    "lorem", Object("lorem"), "assertNotDeepStrictEqual(); 03c - error"
-  )
-);
-CUT.isError("assertNotDeepStrictEqual(); 03d - error",
-  () => CEL.assertNotDeepStrictEqual(
-    Object("lorem"), "lorem", "assertNotDeepStrictEqual(); 03d - error"
-  )
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 03e - ok",
-  CEL.assertNotDeepStrictEqual("lorem", Object("ipsum"), )
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 03f - ok",
-  CEL.assertNotDeepStrictEqual(Object("lorem"), "ipsum")
-);
-CUT.isError("assertNotDeepStrictEqual(); 03g - error",
-  () => CEL.assertNotDeepStrictEqual(
-    Object("lorem"), Object("lorem"), "assertNotDeepStrictEqual(); 03g - error"
-  )
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 03h - ok",
-  CEL.assertNotDeepStrictEqual(Object("lorem"), Object("ipsum"))
-);
-/* primitives / boolean + Object wrappers */
-CUT.isError("assertNotDeepStrictEqual(); 04a - error",
-  () => CEL.assertNotDeepStrictEqual(
-    true, true, "assertNotDeepStrictEqual(); 04a - error"
-  )
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 04b - ok",
-  CEL.assertNotDeepStrictEqual(true, false)
-);
-CUT.isError("assertNotDeepStrictEqual(); 04c - error",
-  () => CEL.assertNotDeepStrictEqual(
-    true, Object(true), "assertNotDeepStrictEqual(); 04c - error"
-  )
-);
-CUT.isError("assertNotDeepStrictEqual(); 04d - error",
-  () => CEL.assertNotDeepStrictEqual(
-    Object(true), true, "assertNotDeepStrictEqual(); 04d - error"
-  )
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 04e - ok",
-  CEL.assertNotDeepStrictEqual(true, Object(false))
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 04f - ok",
-  CEL.assertNotDeepStrictEqual(Object(true), false)
-);
-CUT.isError("assertNotDeepStrictEqual(); 04g - error",
-  () => CEL.assertNotDeepStrictEqual(
-    Object(true), Object(true), "assertNotDeepStrictEqual(); 04g - error"
-  )
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 04h - ok",
-  CEL.assertNotDeepStrictEqual(Object(true), Object(false))
-);
-
-/* primitives / Symbol */
-token1 = Symbol("Agradzsag");
-token2 = Symbol("Agradzsag");
-token3 = Symbol("Trillian");
-CUT.isError("assertNotDeepStrictEqual(); 05a - error",
-  () => CEL.assertNotDeepStrictEqual(
-    token1, token1, "assertNotDeepStrictEqual(); 05a - error"
-  )
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 05b - ok",
-  CEL.assertNotDeepStrictEqual(token1, token2)
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 05c - ok",
-  CEL.assertNotDeepStrictEqual(token1, token3)
-);
-/* objects / Array */
-CUT.isError("assertNotDeepStrictEqual(); 06a - error",
-  () => CEL.assertNotDeepStrictEqual(
-    [1, 2], [1, 2], "assertNotDeepStrictEqual(); 06a - error"
-  )
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 06b - ok",
-  CEL.assertNotDeepStrictEqual([1, 2], [1, 3])
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 06c - ok",
-  CEL.assertNotDeepStrictEqual([1, 2], [1, "2"])
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 06d - ok",
-  CEL.assertNotDeepStrictEqual([1, 2], [1, 2, 3])
-);
-/* objects / Set */
-token1 = new Set([1, 2]);
-token2 = new Set([1, 2]);
-token3 = new Set([1, 3]);
-token4 = new Set([1, "2"]);
-token5 = new Set([1, 2, 3]);
-CUT.isError("assertNotDeepStrictEqual(); 07a - error",
-  () => CEL.assertNotDeepStrictEqual(
-    token1, token2, "assertNotDeepStrictEqual(); 07a - error"
-  )
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 07b - ok",
-  CEL.assertNotDeepStrictEqual(token1, token3)
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 07c - ok",
-  CEL.assertNotDeepStrictEqual(token1, token4)
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 07d - ok",
-  CEL.assertNotDeepStrictEqual(token1, token5)
-);
-/* objects / TypedArrays */
-token1 = Int16Array.from([34, 45]);
-token2 = Int16Array.from([34, 45]);
-token3 = Int16Array.from([34, 46]);
-token5 = Int16Array.from([34, 45, 56]);
-CUT.isError("assertNotDeepStrictEqual(); 08a - error",
-  () => CEL.assertNotDeepStrictEqual(
-    token1, token2, "assertNotDeepStrictEqual(); 08a - error"
-  )
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 08b - ok",
-  CEL.assertNotDeepStrictEqual(token1, token3)
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 08c - ok",
-  CEL.assertNotDeepStrictEqual(token1, token5)
-);
-/* objects / Object (other objects) */
-/* objects / same reference (same object) */
-token1 = {"a": 1, "b": 2};
-token2 = {"a": 1, "b": 2};
-token3 = {"a": 1, "b": 3};
-token4 = {"a": 1, "b": "2"};
-token5 = {"a": 1, "b": 2, "c": 3};
-token6 = {"a": 1, "b": 2, "c": 3, [Symbol()]: 4};
-token7 = {"a": 1, "b": 2, "c": 3, [Symbol()]: 4};
-token8 = {"a": 1, "b": 2, "c": 3, [Symbol()]: 5};
-CUT.isError("assertNotDeepStrictEqual(); 09a - error",
-  () => CEL.assertNotDeepStrictEqual(
-    token1, token2, "assertNotDeepStrictEqual(); 09a - error"
-  )
-);
-CUT.isError("assertNotDeepStrictEqual(); 09b - error",
-  () => CEL.assertNotDeepStrictEqual(
-    token6, token6, "assertNotDeepStrictEqual(); 09b - error"
-  )
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 09c - ok",
-  CEL.assertNotDeepStrictEqual(token1, token3)
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 09d - ok",
-  CEL.assertNotDeepStrictEqual(token1, token4)
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 09e - ok",
-  CEL.assertNotDeepStrictEqual(token1, token5)
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 09f - ok",
-  CEL.assertNotDeepStrictEqual(token6, token7)
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 09g - ok",
-  CEL.assertNotDeepStrictEqual(token6, token8)
-);
-/* objects / Map */
-token1 = new Map([["a", 1], ["b", 2]]);
-token2 = new Map([["a", 1], ["b", 2]]);
-token3 = new Map([["a", 1], ["b", 3]]);
-// @ts-ignore
-token4 = new Map([["a", 1], ["b", "2"]]);
-token5 = new Map([["a", 1], ["b", 2], ["c", 3]]);
-CUT.isError("assertNotDeepStrictEqual(); 10a - error",
-  () => CEL.assertNotDeepStrictEqual(
-    token1, token2, "assertNotDeepStrictEqual(); 10a - error"
-  )
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 10b - ok",
-  CEL.assertNotDeepStrictEqual(token1, token3)
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 10c - ok",
-  CEL.assertNotDeepStrictEqual(token1, token4)
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 10d - ok",
-  CEL.assertNotDeepStrictEqual(token1, token5)
-);
-/* objects / weakset + weakmap*/
-token1 = new WeakSet();
-token2 = new WeakSet();
-CUT.isError("assertNotDeepStrictEqual(); 11a - error",
-  () => CEL.assertNotDeepStrictEqual(
-    token1, token1, "assertNotDeepStrictEqual(); 11a - error"
-  )
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 11b - ok",
-  CEL.assertNotDeepStrictEqual(token1, token2)
-);
-token1 = new WeakMap();
-token2 = new WeakMap();
-CUT.isError("assertNotDeepStrictEqual(); 11c - error",
-  () => CEL.assertNotDeepStrictEqual(
-    token1, token1, "assertNotDeepStrictEqual(); 11c - error"
-  )
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 11d - ok",
-  CEL.assertNotDeepStrictEqual(token1, token2)
-);
-/* objects / Function */
-CUT.isError("assertNotDeepStrictEqual(); 12a - error",
-  () => CEL.assertNotDeepStrictEqual(
-    Array.from, Array.from, "assertNotDeepStrictEqual(); 12a - error"
-  )
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 12b - ok",
-  CEL.assertNotDeepStrictEqual(Array.from, Array.of)
-);
-/* objects / Date */
-token1 = new Date();
-token2 = new Date();
-if (token2.getMilliseconds() === 1) {
-  token2.setMilliseconds(2);
-} else {
-  token2.setMilliseconds(1);
-}
-token3 = {};
-Object.setPrototypeOf(token3, Date);
-CUT.isError("assertNotDeepStrictEqual(); 13a - error",
-  () => CEL.assertNotDeepStrictEqual(
-    token1, token1, "assertNotDeepStrictEqual(); 13a - error"
-  )
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 13b - ok",
-  CEL.assertNotDeepStrictEqual(token1, token2)
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 13c - ok",
-  CEL.assertNotDeepStrictEqual(token1, token3)
-);
-/* objects / Error */
-token1 = new Error("Agradzsag");
-token2 = new Error("Agradzsag");
-token3 = new TypeError("Agradzsag");
-token3 = new TypeError("Agradzsag");
-CUT.isError("assertNotDeepStrictEqual(); 14a - error",
-  () => CEL.assertNotDeepStrictEqual(
-    token1, token1, "assertNotDeepStrictEqual(); 14a - error"
-  )
-);
-CUT.isError("assertNotDeepStrictEqual(); 14b - error",
-  () => CEL.assertNotDeepStrictEqual(
-    token3, token3, "assertNotDeepStrictEqual(); 14b - error"
-  )
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 14c - ok",
-  CEL.assertNotDeepStrictEqual(token1, token2)
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 14d - ok",
-  CEL.assertNotDeepStrictEqual(token1, token3)
-);
-/* types: null, undefined */
-CUT.isError("assertNotDeepStrictEqual(); 15a - error",
-  () => CEL.assertNotDeepStrictEqual(
-    null, null, "assertNotDeepStrictEqual(); 15a - error"
-  )
-);
-CUT.isError("assertNotDeepStrictEqual(); 15b - error",
-  () => CEL.assertNotDeepStrictEqual(
-    undefined, undefined, "assertNotDeepStrictEqual(); 15b - error"
-  )
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 15c - ok",
-  CEL.assertNotDeepStrictEqual(null, undefined)
-);
-/* structures 1 */
-token1 = new Error("Agradzsag");
-// @ts-ignore
-token2 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1]]])}];
-// @ts-ignore
-token3 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1]]])}];
-// @ts-ignore
-token4 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, 42]]])}];
-// @ts-ignore
-token5 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1, 42]]])}];
-CUT.isError("assertNotDeepStrictEqual(); 16a - error",
-  () => CEL.assertNotDeepStrictEqual(
-    token2, token2, "assertNotDeepStrictEqual(); 16a - error"
-  )
-);
-CUT.isError("assertNotDeepStrictEqual(); 16b - error",
-  () => CEL.assertNotDeepStrictEqual(
-    token2, token3, "assertNotDeepStrictEqual(); 16b - error"
-  )
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 16c - ok",
-  CEL.assertNotDeepStrictEqual(token2, token4)
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 16d - ok",
-  CEL.assertNotDeepStrictEqual(token2, token5)
-);
-/* structures 2 */
-token1 = new Error("Agradzsag");
-// @ts-ignore
-token2 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
-// @ts-ignore
-token3 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
-// @ts-ignore
-token4 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", ["a", 10]], ["11", new Set([12, 13])]])}, token1];
-// @ts-ignore
-token5 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13, 14])]])}, token1];
-CUT.isError("assertNotDeepStrictEqual(); 17a - error",
-  () => CEL.assertNotDeepStrictEqual(
-    token2, token2, "assertNotDeepStrictEqual(); 17a - error"
-  )
-);
-CUT.isError("assertNotDeepStrictEqual(); 17b - error",
-  () => CEL.assertNotDeepStrictEqual(
-    token2, token3, "assertNotDeepStrictEqual(); 17b - error"
-  )
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 17c - ok",
-  CEL.assertNotDeepStrictEqual(token2, token4)
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 17d - ok",
-  CEL.assertNotDeepStrictEqual(token2, token5)
-);
-/* structures 3 */
-token1 = new Error("Agradzsag");
-// @ts-ignore
-token2 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
-// @ts-ignore
-token3 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
-// @ts-ignore
-token4 = [1, 2, {"3": 4, "5": new Map([["6", 8], ["8", [9, 10]], ["11", new Set([12, 14])]])}, token1];
-// @ts-ignore
-token5 = [1, 2, {"3": 4, "5": new Map([["6", 8], ["8", [9, 10, 15]], ["11", new Set([12, 13])]])}, token1];
-CUT.isError("assertNotDeepStrictEqual(); 18a - error",
-  () => CEL.assertNotDeepStrictEqual(
-    token2, token2, "assertNotDeepStrictEqual(); 18a - error"
-  )
-);
-CUT.isError("assertNotDeepStrictEqual(); 18b - error",
-  () => CEL.assertNotDeepStrictEqual(
-    token2, token3, "assertNotDeepStrictEqual(); 18b - error"
-  )
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 18c - ok",
-  CEL.assertNotDeepStrictEqual(token2, token4)
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 18d - ok",
-  CEL.assertNotDeepStrictEqual(token2, token5)
-);
-/* structures 4 */
-token1 = new Error("Agradzsag");
-// @ts-ignore
-token2 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
-// @ts-ignore
-token3 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
-// @ts-ignore
-token4 = [1,5,{"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
-// @ts-ignore
-token5 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13, 14])]])}, token1];
-CUT.isError("assertNotDeepStrictEqual(); 19a - error",
-  () => CEL.assertNotDeepStrictEqual(
-    token2, token2, "assertNotDeepStrictEqual(); 19a - error"
-  )
-);
-CUT.isError("assertNotDeepStrictEqual(); 19b - error",
-  () => CEL.assertNotDeepStrictEqual
-    (token2, token3, "assertNotDeepStrictEqual(); 19b - error"
-  )
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 19c - ok",
-  CEL.assertNotDeepStrictEqual(token2, token4)
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 19d - ok",
-  CEL.assertNotDeepStrictEqual(token2, token5)
-);
-/* objects / not same prototype - array */
-CUT.isTrue("assertNotDeepStrictEqual(); 20a - ok",
-  CEL.assertNotDeepStrictEqual({}, [])
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 20b - ok",
-  CEL.assertNotDeepStrictEqual(new Map(), [])
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 20c - ok",
-  CEL.assertNotDeepStrictEqual(new Set(), [])
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 20d - ok",
-  CEL.assertNotDeepStrictEqual(new WeakMap(), [])
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 20e - ok",
-  CEL.assertNotDeepStrictEqual(new WeakSet(), [])
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 20f - ok",
-  CEL.assertNotDeepStrictEqual(new Error(), [])
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 20g - ok",
-  CEL.assertNotDeepStrictEqual(42, [42])
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 20h - ok",
-  CEL.assertNotDeepStrictEqual(Object(42), [42])
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 20i - ok",
-  CEL.assertNotDeepStrictEqual(true, [true])
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 20j - ok",
-  CEL.assertNotDeepStrictEqual(Object(true), [true])
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 20k - ok",
-  CEL.assertNotDeepStrictEqual("lorem", ["lorem"])
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 20l - ok",
-  CEL.assertNotDeepStrictEqual(Object("lorem"), ["lorem"])
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 20m - ok",
-  CEL.assertNotDeepStrictEqual(42n, [42n])
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 20n - ok",
-  CEL.assertNotDeepStrictEqual(Object(42n), [42n])
-);
-/* objects / not same prototype - map */
-CUT.isTrue("assertNotDeepStrictEqual(); 21a - ok",
-  CEL.assertNotDeepStrictEqual(new Map(), new Set())
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 21b - ok",
-  CEL.assertNotDeepStrictEqual(new Map(), new WeakSet())
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 21c - ok",
-  CEL.assertNotDeepStrictEqual(new Map(), new WeakMap())
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 21d - ok",
-  CEL.assertNotDeepStrictEqual(new Error(), new Map())
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 21e - ok",
-  CEL.assertNotDeepStrictEqual(42, new Map())
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 21f - ok",
-  CEL.assertNotDeepStrictEqual(Object(42), new Map())
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 21g - ok",
-  CEL.assertNotDeepStrictEqual(true, new Map())
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 21h - ok",
-  CEL.assertNotDeepStrictEqual(Object(true), new Map())
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 21i - ok",
-  CEL.assertNotDeepStrictEqual("lorem", new Map())
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 21j - ok",
-  CEL.assertNotDeepStrictEqual(Object("lorem"), new Map())
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 21k - ok",
-  CEL.assertNotDeepStrictEqual(42n, new Map())
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 21l - ok",
-  CEL.assertNotDeepStrictEqual(Object(42n), new Map())
-);
-/* objects / not same prototype - set */
-CUT.isTrue("assertNotDeepStrictEqual(); 22a - ok",
-  CEL.assertNotDeepStrictEqual(new WeakMap(), new Set())
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 22b - ok",
-  CEL.assertNotDeepStrictEqual(new Error(), new Set())
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 22c - ok",
-  CEL.assertNotDeepStrictEqual(42, new Set())
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 22d - ok",
-  CEL.assertNotDeepStrictEqual(Object(42), new Set())
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 22e - ok",
-  CEL.assertNotDeepStrictEqual(true, new Set())
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 22f - ok",
-  CEL.assertNotDeepStrictEqual(Object(true), new Set())
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 22g - ok",
-  CEL.assertNotDeepStrictEqual("lorem", new Set())
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 22h - ok",
-  CEL.assertNotDeepStrictEqual(Object("lorem"), new Set())
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 22i - ok",
-  CEL.assertNotDeepStrictEqual(42n, new Set())
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 22j - ok",
-  CEL.assertNotDeepStrictEqual(Object(42n), new Set())
-);
-/* objects / not same prototype - weakset */
-CUT.isTrue("assertNotDeepStrictEqual(); 23a - ok",
-  CEL.assertNotDeepStrictEqual(new WeakMap(), new WeakSet())
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 23b - ok",
-  CEL.assertNotDeepStrictEqual(new Error(), new WeakSet())
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 23c - ok",
-  CEL.assertNotDeepStrictEqual(42, new WeakSet())
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 23d - ok",
-  CEL.assertNotDeepStrictEqual(Object(42), new WeakSet())
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 23e - ok",
-  CEL.assertNotDeepStrictEqual(true, new WeakSet())
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 23f - ok",
-  CEL.assertNotDeepStrictEqual(Object(true), new WeakSet())
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 23g - ok",
-  CEL.assertNotDeepStrictEqual("lorem", new WeakSet())
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 23h - ok",
-  CEL.assertNotDeepStrictEqual(Object("lorem"), new WeakSet())
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 23i - ok",
-  CEL.assertNotDeepStrictEqual(42n, new WeakSet())
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 23j - ok",
-  CEL.assertNotDeepStrictEqual(Object(42n), new WeakSet())
-);
-/* objects / not same prototype - weakmap */
-CUT.isTrue("assertNotDeepStrictEqual(); 24a - ok",
-  CEL.assertNotDeepStrictEqual(new Error(), new WeakMap())
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 24b - ok",
-  CEL.assertNotDeepStrictEqual(42, new WeakMap())
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 24c - ok",
-  CEL.assertNotDeepStrictEqual(Object(42), new WeakMap())
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 24d - ok",
-  CEL.assertNotDeepStrictEqual(true, new WeakMap())
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 24e - ok",
-  CEL.assertNotDeepStrictEqual(Object(true), new WeakMap())
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 24f - ok",
-  CEL.assertNotDeepStrictEqual("lorem", new WeakMap())
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 24g - ok",
-  CEL.assertNotDeepStrictEqual(Object("lorem"), new WeakMap())
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 24h - ok",
-  CEL.assertNotDeepStrictEqual(42n, new WeakMap())
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 24i - ok",
-  CEL.assertNotDeepStrictEqual(Object(42n), new WeakMap())
-);
-/* objects / not same prototype - ok */
-CUT.isTrue("assertNotDeepStrictEqual(); 25a - ok",
-  // @ts-ignore
-  CEL.assertNotDeepStrictEqual(42, new Error(42))
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 25b - ok",
-  // @ts-ignore
-  CEL.assertNotDeepStrictEqual(Object(42), new Error(42))
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 25c - ok",
-  // @ts-ignore
-  CEL.assertNotDeepStrictEqual(true, new Error(true))
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 25d - ok",
-  // @ts-ignore
-  CEL.assertNotDeepStrictEqual(Object(true), new Error(true))
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 25e - ok",
-  CEL.assertNotDeepStrictEqual("lorem", new Error("lorem"))
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 25f - ok",
-  CEL.assertNotDeepStrictEqual(Object("lorem"), new Error("lorem"))
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 25g - ok",
-  // @ts-ignore
-  CEL.assertNotDeepStrictEqual(42n, new Error(42n))
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 25h - ok",
-  // @ts-ignore
-  CEL.assertNotDeepStrictEqual(Object(42n), new Error(42n))
-);
-/* objects / not same prototype - number */
-CUT.isTrue("assertNotDeepStrictEqual(); 26a - ok",
-  CEL.assertNotDeepStrictEqual(true, 1)
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 26b - ok",
-  CEL.assertNotDeepStrictEqual(Object(true), 1)
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 26c - ok",
-  CEL.assertNotDeepStrictEqual("1", 1)
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 26d - ok",
-  CEL.assertNotDeepStrictEqual(Object("1"), 1)
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 26e - ok",
-  CEL.assertNotDeepStrictEqual(42n, 42)
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 26f - ok",
-  CEL.assertNotDeepStrictEqual(Object(42n), 42)
-);
-/* objects / not same prototype - string */
-CUT.isTrue("assertNotDeepStrictEqual(); 27a - ok",
-  CEL.assertNotDeepStrictEqual(true, "true")
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 27b - ok",
-  CEL.assertNotDeepStrictEqual(42n, "42n")
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 27c - ok",
-  CEL.assertNotDeepStrictEqual(Object(42), "42")
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 27d - ok",
-  CEL.assertNotDeepStrictEqual(Object(42n), "42n")
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 27e - ok",
-  CEL.assertNotDeepStrictEqual(Object(true), "true")
-);
-/* objects / not same prototype - boolean */
-CUT.isTrue("assertNotDeepStrictEqual(); 28a - ok",
-  CEL.assertNotDeepStrictEqual(1n, true)
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 28b - ok",
-  CEL.assertNotDeepStrictEqual(Object(1n), true)
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 28c - ok",
-  CEL.assertNotDeepStrictEqual(Object(1), true)
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 28d - ok",
-  CEL.assertNotDeepStrictEqual("true", true)
-);
-/* objects / not same prototype - bigint */
-CUT.isTrue("assertNotDeepStrictEqual(); 29a - ok",
-  CEL.assertNotDeepStrictEqual(Object(42), 42n)
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 29b - ok",
-  CEL.assertNotDeepStrictEqual(Object("42"), 42n)
-);
-/* Chrome - Firefox not the same result
-CUT.isTrue("assertNotDeepStrictEqual(); 29c - ok",
-  CEL.assertNotDeepStrictEqual(Object(true), 1n)
-);
-*/
-/* objects / not same prototype - Object wrappers */
-CUT.isTrue("assertNotDeepStrictEqual(); 30a - ok",
-  CEL.assertNotDeepStrictEqual(Object(42), Object("42"))
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 30b - ok",
-  CEL.assertNotDeepStrictEqual(Object(1), Object(true))
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 30c - ok",
-  CEL.assertNotDeepStrictEqual(Object(1), Object(1n))
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 30d - ok",
-  CEL.assertNotDeepStrictEqual(Object("true"), Object(true))
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 30e - ok",
-  CEL.assertNotDeepStrictEqual(Object(42n), Object("42n"))
-);
-CUT.isTrue("assertNotDeepStrictEqual(); 30f - ok",
-  CEL.assertNotDeepStrictEqual(Object(1n), Object(true))
-);
-/* dataview + arraybuffer */
-token1 = new ArrayBuffer(2);
-token2 = new DataView(token1);
-// @ts-ignore
-token2.setInt8(0, 125, true);
-// @ts-ignore
-token2.setInt8(1, 100, true);
-token3 = new ArrayBuffer(2);
-token4 = new DataView(token3);
-// @ts-ignore
-token4.setInt8(0, 125, true);
-// @ts-ignore
-token4.setInt8(1, 100, true);
-token5 = new ArrayBuffer(2);
-token6 = new DataView(token5);
-// @ts-ignore
-token6.setInt8(0, 120, true);
-// @ts-ignore
-token6.setInt8(1, 100, true);
-token7 = new ArrayBuffer(3);
-token8 = new DataView(token7);
-// @ts-ignore
-token8.setInt8(0, 125, true);
-// @ts-ignore
-token8.setInt8(1, 100, true);
-CUT.isTrue("assertNotDeepStrictEqual(); 31a",
-     CEL.assertNotDeepStrictEqual([1, 2, token1, 3], [1, 2, token5, 3])
-  && CEL.assertNotDeepStrictEqual([1, 2, token1, 3], [1, 2, token7, 3])
-  && CEL.assertNotDeepStrictEqual([1, 2, token2, 3], [1, 2, token6, 3])
-  && CEL.assertNotDeepStrictEqual([1, 2, token2, 3], [1, 2, token8, 3])
-);
-CUT.isError(
-  "assertNotDeepStrictEqual(); 31b",
-  () => CEL.assertNotDeepStrictEqual(
-    [1, 2, token1, 3], [1, 2, token1, 3], "assertNotDeepStrictEqual(); 31b"
-  )
-);
-CUT.isError(
-  "assertNotDeepStrictEqual(); 31c",
-  () => CEL.assertNotDeepStrictEqual(
-    [1, 2, token1, 3], [1, 2, token3, 3], "assertNotDeepStrictEqual(); 31c"
-  )
-);
-CUT.isError(
-  "assertNotDeepStrictEqual(); 31d",
-  () => CEL.assertNotDeepStrictEqual(
-    [1, 2, token2, 3], [1, 2, token2, 3], "assertNotDeepStrictEqual(); 31d"
-  )
-);
-CUT.isError(
-  "assertNotDeepStrictEqual(); 31e",
-  () => CEL.assertNotDeepStrictEqual(
-    [1, 2, token2, 3], [1, 2, token4, 3], "assertNotDeepStrictEqual(); 31e"
-  )
-);
-/* assertNotDeepStrictEqual end */
-
-
-/* assertNotDeepEqual begin */
-CUT.isError("assertNotDeepEqual(); 00 - error parameter",
-  () => CEL.assertNotDeepEqual(42, 42, new Error("lorem"))
-);
-/* primitives / number + Object wrappers */
-CUT.isError("assertNotDeepEqual(); 01a - error",
-  () => CEL.assertNotDeepEqual(42, 42, "assertNotDeepEqual(); 01a - error")
-);
-CUT.isTrue("assertNotDeepEqual(); 01b - ok", CEL.assertNotDeepEqual(42, 43));
-CUT.isError("assertNotDeepEqual(); 01c - error",
-  () =>
-    CEL.assertNotDeepEqual(42, Object(42), "assertNotDeepEqual(); 01c - error")
-);
-CUT.isError("assertNotDeepEqual(); 01d - error",
-  () =>
-    CEL.assertNotDeepEqual(Object(42), 42, "assertNotDeepEqual(); 01d - error")
-);
-CUT.isTrue("assertNotDeepEqual(); 01e - ok",
-  CEL.assertNotDeepEqual(42, Object(43))
-);
-CUT.isTrue("assertNotDeepEqual(); 01f - ok",
-  CEL.assertNotDeepEqual(Object(42), 43)
-);
-CUT.isError("assertNotDeepEqual(); 01g - error",
-  () => CEL.assertNotDeepEqual(
-    Object(42), Object(42), "assertNotDeepEqual(); 01g - error"
-  )
-);
-CUT.isTrue("assertNotDeepEqual(); 01h - ok",
-  CEL.assertNotDeepEqual(Object(42), Object(43))
-);
-/* primitives / number: 0, -0, NaN, Infinity, -Infinity */
-CUT.isError("assertNotDeepEqual(); 01i - error",
-  () => CEL.assertNotDeepEqual(0, 0, "assertNotDeepEqual(); 01i - error")
-);
-CUT.isError("assertNotDeepEqual(); 01j - error",
-  () => CEL.assertNotDeepEqual(-0, -0, "assertNotDeepEqual(); 01j - error")
-);
-CUT.isError("assertNotDeepEqual(); 01k - error",
-  () => CEL.assertNotDeepEqual(-0, 0, "assertNotDeepEqual(); 01k - error")
-);
-CUT.isError("assertNotDeepEqual(); 01l - error",
-  () => CEL.assertNotDeepEqual(-0, +0, "assertNotDeepEqual(); 01l - error")
-);
-CUT.isError("assertNotDeepEqual(); 01m - error",
-  () => CEL.assertNotDeepEqual(NaN, NaN, "assertNotDeepEqual(); 01m - error")
-);
-CUT.isError("assertNotDeepEqual(); 01n - error",
-  () => CEL.assertNotDeepEqual(
-    Infinity, Infinity, "assertNotDeepEqual(); 01n - error"
-  )
-);
-CUT.isError("assertNotDeepEqual(); 01o - error",
-  () => CEL.assertNotDeepEqual(
-    -Infinity, -Infinity, "assertNotDeepEqual(); 01o - error"
-  )
-);
-CUT.isTrue("assertNotDeepEqual(); 01p - ok",
-  CEL.assertNotDeepEqual(Infinity, -Infinity)
-);
-/* primitives / not same type */
-CUT.isError("assertNotDeepEqual(); 01q - error",
-  () => CEL.assertNotDeepEqual(42, "42", "assertNotDeepEqual(); 01q - error")
-);
-CUT.isError("assertNotDeepEqual(); 01r - error",
-  () => CEL.assertNotDeepEqual(1, true, "assertNotDeepEqual(); 01r - error")
-);
-CUT.isError("assertNotDeepEqual(); 01s - error",
-  () => CEL.assertNotDeepEqual(1n, true, "assertNotDeepEqual(); 01s - error")
-);
-CUT.isTrue("assertNotDeepEqual(); 01t - ok", CEL.assertNotDeepEqual(1n, "1n"));
-CUT.isError("assertNotDeepEqual(); 01u - error",
-  () => CEL.assertNotDeepEqual(false, "", "assertNotDeepEqual(); 01u - error")
-);
-/* primitives / bigint + Object wrappers */
-CUT.isError("assertNotDeepEqual(); 02a - error",
-  () => CEL.assertNotDeepEqual(42n, 42n, "assertNotDeepEqual(); 02a - error")
-);
-CUT.isTrue("assertNotDeepEqual(); 02b - ok", CEL.assertNotDeepEqual(42n, 43n));
-CUT.isError("assertNotDeepEqual(); 02c - error",
-  () => CEL.assertNotDeepEqual(
-    42n, Object(42n), "assertNotDeepEqual(); 02c - error"
-  )
-);
-CUT.isError("assertNotDeepEqual(); 02d - error",
-  () => CEL.assertNotDeepEqual(
-    Object(42n), 42n, "assertNotDeepEqual(); 02d - error"
-  )
-);
-CUT.isTrue("assertNotDeepEqual(); 02e - ok",
-  CEL.assertNotDeepEqual(42n, Object(43n))
-);
-CUT.isTrue("assertNotDeepEqual(); 02f - ok",
-  CEL.assertNotDeepEqual(Object(42n), 43n)
-);
-CUT.isError("assertNotDeepEqual(); 02g - error",
-  () => CEL.assertNotDeepEqual(
-    Object(42n), Object(42n), "assertNotDeepEqual(); 02g - error"
-  )
-);
-CUT.isTrue("assertNotDeepEqual(); 02h - ok",
-  CEL.assertNotDeepEqual(Object(42n), Object(43n))
-);
-/* primitives / string + Object wrappers */
-CUT.isError("assertNotDeepEqual(); 03a - error",
-  () => CEL.assertNotDeepEqual(
-    "lorem", "lorem", "assertNotDeepEqual(); 03a - error"
-  )
-);
-CUT.isTrue("assertNotDeepEqual(); 03b - ok",
-  CEL.assertNotDeepEqual("lorem", "ipsum")
-);
-CUT.isError("assertNotDeepEqual(); 03c - error",
-  () => CEL.assertNotDeepEqual(
-    "lorem", Object("lorem"), "assertNotDeepEqual(); 03c - error"
-  )
-);
-CUT.isError("assertNotDeepEqual(); 03d - error",
-  () => CEL.assertNotDeepEqual(
-    Object("lorem"), "lorem", "assertNotDeepEqual(); 03d - error"
-  )
-);
-CUT.isTrue("assertNotDeepEqual(); 03e - ok",
-  CEL.assertNotDeepEqual("lorem", Object("ipsum"))
-);
-CUT.isTrue("assertNotDeepEqual(); 03f - ok",
-  CEL.assertNotDeepEqual(Object("lorem"), "ipsum")
-);
-CUT.isError("assertNotDeepEqual(); 03g - error",
-  () => CEL.assertNotDeepEqual(
-    Object("lorem"), Object("lorem"), "assertNotDeepEqual(); 03g - error"
-  )
-);
-CUT.isTrue("assertNotDeepEqual(); 03h - ok",
-  CEL.assertNotDeepEqual(Object("lorem"), Object("ipsum"))
-);
-/* primitives / boolean + Object wrappers */
-CUT.isError("assertNotDeepEqual(); 04a - error",
-  () => CEL.assertNotDeepEqual(true, true, "assertNotDeepEqual(); 04a - error")
-);
-CUT.isTrue("assertNotDeepEqual(); 04b - ok",
-  CEL.assertNotDeepEqual(true, false)
-);
-CUT.isError("assertNotDeepEqual(); 04c - error",
-  () => CEL.assertNotDeepEqual(
-    true, Object(true), "assertNotDeepEqual(); 04c - error"
-  )
-);
-CUT.isError("assertNotDeepEqual(); 04d - error",
-  () => CEL.assertNotDeepEqual(
-    Object(true), true, "assertNotDeepEqual(); 04d - error"
-  )
-);
-CUT.isTrue("assertNotDeepEqual(); 04e - ok",
-  CEL.assertNotDeepEqual(true, Object(false))
-);
-CUT.isTrue("assertNotDeepEqual(); 04f - ok",
-  CEL.assertNotDeepEqual(Object(true), false)
-);
-CUT.isError("assertNotDeepEqual(); 04g - error",
-  () => CEL.assertNotDeepEqual(
-    Object(true), Object(true), "assertNotDeepEqual(); 04g - error"
-  )
-);
-CUT.isTrue("assertNotDeepEqual(); 04h - ok",
-  CEL.assertNotDeepEqual(Object(true), Object(false))
-);
-/* primitives / Symbol */
-token1 = Symbol("Agradzsag");
-token2 = Symbol("Agradzsag");
-token3 = Symbol("Trillian");
-CUT.isError("assertNotDeepEqual(); 05a - error",
-  () =>
-    CEL.assertNotDeepEqual(token1, token1, "assertNotDeepEqual(); 05a - error")
-);
-CUT.isTrue("assertNotDeepEqual(); 05b - ok",
-  CEL.assertNotDeepEqual(token1, token2)
-);
-CUT.isTrue("assertNotDeepEqual(); 06a - ok",
-  CEL.assertNotDeepEqual(token1, token3)
-);
-/* objects / Array */
-CUT.isError("assertNotDeepEqual(); 06a - error",
-  () =>
-    CEL.assertNotDeepEqual([1, 2], [1, 2], "assertNotDeepEqual(); 06a - error")
-);
-CUT.isTrue("assertNotDeepEqual(); 06b - ok",
-  CEL.assertNotDeepEqual([1, 2], [1, 3])
-);
-CUT.isError("assertNotDeepEqual(); 06c - error",
-  () => CEL.assertNotDeepEqual(
-    [1, 2], [1, "2"], "assertNotDeepEqual(); 06c - error"
-  )
-);
-CUT.isTrue("assertNotDeepEqual(); 06d - ok",
-  CEL.assertNotDeepEqual([1, 2], [1, 2, 3])
-);
-/* objects / Set */
-token1 = new Set([1, 2]);
-token2 = new Set([1, 2]);
-token3 = new Set([1, 3]);
-token4 = new Set([1, "2"]);
-token5 = new Set([1, 2, 3]);
-CUT.isError("assertNotDeepEqual(); 07a - error",
-  () =>
-    CEL.assertNotDeepEqual(token1, token2, "assertNotDeepEqual(); 07a - error")
-);
-CUT.isTrue("assertNotDeepEqual(); 07b - ok",
-  CEL.assertNotDeepEqual(token1, token3)
-);
-CUT.isTrue("assertNotDeepEqual(); 07c - ok",
-  CEL.assertNotDeepEqual(token1, token4)
-);
-CUT.isTrue("assertNotDeepEqual(); 07d - ok",
-  CEL.assertNotDeepEqual(token1, token5)
-);
-/* objects / TypedArrays */
-token1 = Int16Array.from([34, 45]);
-token2 = Int16Array.from([34, 45]);
-token3 = Int16Array.from([34, 46]);
-token5 = Int16Array.from([34, 45, 56]);
-CUT.isError("assertNotDeepEqual(); 08a - error",
-  () =>
-    CEL.assertNotDeepEqual(token1, token2, "assertNotDeepEqual(); 08a - error")
-);
-CUT.isTrue("assertNotDeepEqual(); 08b - ok",
-  CEL.assertNotDeepEqual(token1, token3)
-);
-CUT.isTrue("assertNotDeepEqual(); 08c - ok",
-  CEL.assertNotDeepEqual(token1, token5)
-);
-/* objects / Object (other objects) */
-/* objects / same reference (same object) */
-token1 = {"a": 1, "b": 2};
-token2 = {"a": 1, "b": 2};
-token3 = {"a": 1, "b": 3};
-token4 = {"a": 1, "b": "2"};
-token5 = {"a": 1, "b": 2, "c": 3};
-token6 = {"a": 1, "b": 2, "c": 3, [Symbol()]: 4};
-token7 = {"a": 1, "b": 2, "c": 3, [Symbol()]: 4};
-token8 = {"a": 1, "b": 2, "c": 3, [Symbol()]: 5};
-CUT.isError("assertNotDeepEqual(); 09a - error",
-  () =>
-    CEL.assertNotDeepEqual(token1, token2, "assertNotDeepEqual(); 09a - error")
-);
-CUT.isError("assertNotDeepEqual(); 09b - error",
-  () =>
-    CEL.assertNotDeepEqual(token6, token6, "assertNotDeepEqual(); 09b - error")
-);
-CUT.isTrue("assertNotDeepEqual(); 09c - ok",
-  CEL.assertNotDeepEqual(token1, token3)
-);
-CUT.isError("assertNotDeepEqual(); 09d - error",
-  () =>
-    CEL.assertNotDeepEqual(token1, token4, "assertNotDeepEqual(); 09d - error")
-);
-CUT.isTrue("assertNotDeepEqual(); 09e - ok",
-  CEL.assertNotDeepEqual(token1, token5)
-);
-CUT.isTrue("assertNotDeepEqual(); 09f - ok",
-  CEL.assertNotDeepEqual(token6, token7)
-);
-CUT.isTrue("assertNotDeepEqual(); 09g - ok",
-  CEL.assertNotDeepEqual(token6, token8)
-);
-/* objects / Map */
-token1 = new Map([["a", 1], ["b", 2]]);
-token2 = new Map([["a", 1], ["b", 2]]);
-token3 = new Map([["a", 1], ["b", 3]]);
-// @ts-ignore
-token4 = new Map([["a", 1], ["b", "2"]]);
-token5 = new Map([["a", 1], ["b", 2], ["c", 3]]);
-CUT.isError("assertNotDeepEqual(); 10a - error",
-  () =>
-    CEL.assertNotDeepEqual(token1, token2, "assertNotDeepEqual(); 10a - error")
-);
-CUT.isTrue("assertNotDeepEqual(); 10b - ok",
-  CEL.assertNotDeepEqual(token1, token3)
-);
-CUT.isError("assertNotDeepEqual(); 10c - error",
-  () =>
-    CEL.assertNotDeepEqual(token1, token4, "assertNotDeepEqual(); 10c - error")
-);
-CUT.isTrue("assertNotDeepEqual(); 10d - ok",
-  CEL.assertNotDeepEqual(token1, token5)
-);
-/* objects / weakset + weakmap*/
-token1 = new WeakSet();
-token2 = new WeakSet();
-CUT.isError("assertNotDeepEqual(); 11a - error",
-  () =>
-    CEL.assertNotDeepEqual(token1, token1, "assertNotDeepEqual(); 11a - error")
-);
-CUT.isTrue("assertNotDeepEqual(); 11b - ok",
-  CEL.assertNotDeepEqual(token1, token2)
-);
-token1 = new WeakMap();
-token2 = new WeakMap();
-CUT.isError("assertNotDeepEqual(); 11c - error",
-  () =>
-    CEL.assertNotDeepEqual(token1, token1, "assertNotDeepEqual(); 11c - error")
-);
-CUT.isTrue("assertNotDeepEqual(); 11d - ok",
-  CEL.assertNotDeepEqual(token1, token2)
-);
-/* objects / Function */
-CUT.isError("assertNotDeepEqual(); 12a - error",
-  () => CEL.assertNotDeepEqual(
-    Array.from, Array.from, "assertNotDeepEqual(); 12a - error"
-  )
-);
-CUT.isTrue("assertNotDeepEqual(); 12b - ok",
-  CEL.assertNotDeepEqual(Array.from, Array.of)
-);
-/* objects / Date */
-token1 = new Date();
-token2 = new Date();
-if (token2.getMilliseconds() === 1) {
-  token2.setMilliseconds(2);
-} else {
-  token2.setMilliseconds(1);
-}
-token3 = {};
-Object.setPrototypeOf(token3, Date);
-CUT.isError("assertNotDeepEqual(); 13a - error",
-  () =>
-    CEL.assertNotDeepEqual(token1, token1, "assertNotDeepEqual(); 13a - error")
-);
-CUT.isTrue("assertNotDeepEqual(); 13b - ok",
-  CEL.assertNotDeepEqual(token1, token2)
-);
-CUT.isError("assertNotDeepEqual(); 13c - error",
-  () =>
-    CEL.assertNotDeepEqual(token1, token3, "assertNotDeepEqual(); 13c - error")
-);
-/* objects / Error */
-token1 = new Error("Agradzsag");
-token2 = new Error("Agradzsag");
-token3 = new TypeError("Agradzsag");
-token3 = new TypeError("Agradzsag");
-CUT.isError("assertNotDeepEqual(); 14a - error",
-  () =>
-    CEL.assertNotDeepEqual(token1, token1, "assertNotDeepEqual(); 14a - error")
-);
-CUT.isError("assertNotDeepEqual(); 14b - error",
-  () =>
-    CEL.assertNotDeepEqual(token3, token3, "assertNotDeepEqual(); 14b - error")
-);
-CUT.isTrue("assertNotDeepEqual(); 14c - ok",
-  CEL.assertNotDeepEqual(token1, token2)
-);
-CUT.isTrue("assertNotDeepEqual(); 14d - ok",
-  CEL.assertNotDeepEqual(token1, token3)
-);
-/* types: null, undefined */
-CUT.isError("assertNotDeepEqual(); 15a - error",
-  () => CEL.assertNotDeepEqual(null, null, "assertNotDeepEqual(); 15a - error")
-);
-CUT.isError("assertNotDeepEqual(); 15b - error",
-  () => CEL.assertNotDeepEqual(
-    undefined, undefined, "assertNotDeepEqual(); 15b - error"
-  )
-);
-CUT.isError("assertNotDeepEqual(); 15c - error",
-  () =>
-    CEL.assertNotDeepEqual(null, undefined, "assertNotDeepEqual(); 15c - error")
-);
-/* structures 1 */
-token1 = new Error("Agradzsag");
-// @ts-ignore
-token2 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1]]])}];
-// @ts-ignore
-token3 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1]]])}];
-// @ts-ignore
-token4 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, 42]]])}];
-// @ts-ignore
-token5 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1, 42]]])}];
-// @ts-ignore
-token6 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1]]])}];
-CUT.isError("assertNotDeepEqual(); 16a - error",
-  () =>
-    CEL.assertNotDeepEqual(token2, token2, "assertNotDeepEqual(); 16a - error")
-);
-CUT.isError("assertNotDeepEqual(); 16b - error",
-  () =>
-    CEL.assertNotDeepEqual(token2, token3, "assertNotDeepEqual(); 16b - error")
-);
-CUT.isTrue("assertNotDeepEqual(); 16c - ok",
-  CEL.assertNotDeepEqual(token2, token4)
-);
-CUT.isTrue("assertNotDeepEqual(); 16d - ok",
-  CEL.assertNotDeepEqual(token2, token5)
-);
-CUT.isError("assertNotDeepEqual(); 16e - error",
-  () =>
-    CEL.assertNotDeepEqual(token2, token6, "assertNotDeepEqual(); 16e - error")
-);
-/* structures 2 */
-token1 = new Error("Agradzsag");
-// @ts-ignore
-token2 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
-// @ts-ignore
-token3 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
-// @ts-ignore
-token4 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", ["a", 10]], ["11", new Set([12, 13])]])}, token1];
-// @ts-ignore
-token5 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13, 14])]])}, token1];
-// @ts-ignore
-token6 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
-CUT.isError("assertNotDeepEqual(); 17a - error",
-  () =>
-    CEL.assertNotDeepEqual(token2, token2, "assertNotDeepEqual(); 17a - error")
-);
-CUT.isError("assertNotDeepEqual(); 17b - error",
-  () =>
-    CEL.assertNotDeepEqual(token2, token3, "assertNotDeepEqual(); 17b - error")
-);
-CUT.isTrue("assertNotDeepEqual(); 17c - ok",
-  CEL.assertNotDeepEqual(token2, token4)
-);
-CUT.isTrue("assertNotDeepEqual(); 17d - ok",
-  CEL.assertNotDeepEqual(token2, token5)
-);
-CUT.isError("assertNotDeepEqual(); 17d - error",
-  () =>
-    CEL.assertNotDeepEqual(token2, token6, "assertNotDeepEqual(); 17d - error")
-);
-/* structures 3 */
-token1 = new Error("Agradzsag");
-// @ts-ignore
-token2 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
-// @ts-ignore
-token3 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
-// @ts-ignore
-token4 = [1, 2, {"3": 4, "5": new Map([["6", 8], ["8", [9, 10]], ["11", new Set([12, 14])]])}, token1];
-// @ts-ignore
-token5 = [1, 2, {"3": 4, "5": new Map([["6", 8], ["8", [9, 10, 15]], ["11", new Set([12, 13])]])}, token1];
-// @ts-ignore
-token6 = [1, 2, {"3": 4, "5": new Map([["6", "7"], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
-CUT.isError("assertNotDeepEqual(); 18a - error",
-  () =>
-    CEL.assertNotDeepEqual(token2, token2, "assertNotDeepEqual(); 18a - error")
-);
-CUT.isError("assertNotDeepEqual(); 18b - error",
-  () =>
-    CEL.assertNotDeepEqual(token2, token3, "assertNotDeepEqual(); 18b - error")
-);
-CUT.isTrue("assertNotDeepEqual(); 18c - ok",
-  CEL.assertNotDeepEqual(token2, token4)
-);
-CUT.isTrue("assertNotDeepEqual(); 18d - ok",
-  CEL.assertNotDeepEqual(token2, token5)
-);
-CUT.isError("assertNotDeepEqual(); 18e - error",
-  () =>
-    CEL.assertNotDeepEqual(token2, token6, "assertNotDeepEqual(); 18e - error")
-);
-/* structures 4 */
-token1 = new Error("Agradzsag");
-// @ts-ignore
-token2 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
-// @ts-ignore
-token3 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
-// @ts-ignore
-token4 = [1,5,{"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
-// @ts-ignore
-token5 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13, 14])]])}, token1];
-CUT.isError("assertNotDeepEqual(); 19a - error",
-  () =>
-    CEL.assertNotDeepEqual(token2, token2, "assertNotDeepEqual(); 19a - error")
-);
-CUT.isError("assertNotDeepEqual(); 19b - error",
-  () =>
-    CEL.assertNotDeepEqual(token2, token3, "assertNotDeepEqual(); 19b - error")
-);
-CUT.isTrue("assertNotDeepEqual(); 19c - ok",
-  CEL.assertNotDeepEqual(token2, token4)
-);
-CUT.isTrue("assertNotDeepEqual(); 19d - ok",
-  CEL.assertNotDeepEqual(token2, token5)
-);
-/* objects / not same prototype - array */
-CUT.isTrue("assertNotDeepEqual(); 20a - ok", CEL.assertNotDeepEqual({}, []));
-CUT.isTrue("assertNotDeepEqual(); 20b - ok",
-  CEL.assertNotDeepEqual(new Map(), [])
-);
-CUT.isTrue("assertNotDeepEqual(); 20c - ok",
-  CEL.assertNotDeepEqual(new Set(), [])
-);
-CUT.isTrue("assertNotDeepEqual(); 20d - ok",
-  CEL.assertNotDeepEqual(new WeakMap(), [])
-);
-CUT.isTrue("assertNotDeepEqual(); 20e - ok",
-  CEL.assertNotDeepEqual(new WeakSet(), [])
-);
-CUT.isTrue("assertNotDeepEqual(); 20f - ok",
-  CEL.assertNotDeepEqual(new Error(), [])
-);
-CUT.isError("assertNotDeepEqual(); 20g - error",
-  () => CEL.assertNotDeepEqual(42, [42], "assertNotDeepEqual(); 20g - error")
-);
-CUT.isTrue("assertNotDeepEqual(); 20h - ok",
-  CEL.assertNotDeepEqual(Object(42), [42])
-);
-CUT.isTrue("assertNotDeepEqual(); 20i - ok",
-  CEL.assertNotDeepEqual(true, [true])
-);
-CUT.isTrue("assertNotDeepEqual(); 20j - ok",
-  CEL.assertNotDeepEqual(Object(true), [true])
-);
-CUT.isError("assertNotDeepEqual(); 20k - error",
-  () => CEL.assertNotDeepEqual(
-    "lorem", ["lorem"], "assertNotDeepEqual(); 20k - error"
-  )
-);
-CUT.isTrue("assertNotDeepEqual(); 20l - ok",
-  CEL.assertNotDeepEqual(Object("lorem"), ["lorem"])
-);
-CUT.isError("assertNotDeepEqual(); 20m - error",
-  () => CEL.assertNotDeepEqual(42n, [42n], "assertNotDeepEqual(); 20m - error")
-);
-CUT.isTrue("assertNotDeepEqual(); 20n - ok",
-  CEL.assertNotDeepEqual(Object(42n), [42n])
-);
-/* objects / not same prototype - map */
-CUT.isError("assertNotDeepEqual(); 21a - error",
-  () => CEL.assertNotDeepEqual(
-    new Map(), new Set(), "assertNotDeepEqual(); 21a - error"
-  )
-);
-CUT.isError("assertNotDeepEqual(); 21b - error",
-  () => CEL.assertNotDeepEqual(
-    new Map(), new WeakSet(), "assertNotDeepEqual(); 21b - error"
-  )
-);
-CUT.isError("assertNotDeepEqual(); 21c - error",
-  () => CEL.assertNotDeepEqual(
-    new Map(), new WeakMap(), "assertNotDeepEqual(); 21c - error"
-  )
-);
-CUT.isTrue("assertNotDeepEqual(); 21d - ok",
-  CEL.assertNotDeepEqual(new Error(), new Map())
-);
-CUT.isTrue("assertNotDeepEqual(); 21e - ok",
-  CEL.assertNotDeepEqual(42, new Map())
-);
-CUT.isError("assertNotDeepEqual(); 21f - error",
-  () => CEL.assertNotDeepEqual(
-    Object(42), new Map(), "assertNotDeepEqual(); 21f - error"
-  )
-);
-CUT.isTrue("assertNotDeepEqual(); 21g - ok",
-  CEL.assertNotDeepEqual(true, new Map())
-);
-CUT.isError("assertNotDeepEqual(); 21h - error",
-  () => CEL.assertNotDeepEqual(
-    Object(true), new Map(), "assertNotDeepEqual(); 21h - error"
-  )
-);
-CUT.isTrue("assertNotDeepEqual(); 21i - ok",
-  CEL.assertNotDeepEqual("lorem", new Map())
-);
-CUT.isTrue("assertNotDeepEqual(); 21j - ok",
-  CEL.assertNotDeepEqual(Object("lorem"), new Map())
-);
-CUT.isTrue("assertNotDeepEqual(); 21k - ok",
-  CEL.assertNotDeepEqual(42n, new Map())
-);
-CUT.isError("assertNotDeepEqual(); 21l - error",
-  () => CEL.assertNotDeepEqual(
-    Object(42n), new Map(), "assertNotDeepEqual(); 21l - error"
-  )
-);
-/* objects / not same prototype - set */
-CUT.isError("assertNotDeepEqual(); 22a - error",
-  () => CEL.assertNotDeepEqual(
-    new WeakMap(), new Set(), "assertNotDeepEqual(); 22a - error"
-  )
-);
-CUT.isTrue("assertNotDeepEqual(); 22b - ok",
-  CEL.assertNotDeepEqual(new Error(), new Set())
-);
-CUT.isTrue("assertNotDeepEqual(); 22c - ok",
-  CEL.assertNotDeepEqual(42, new Set())
-);
-CUT.isError("assertNotDeepEqual(); 22d - error",
-  () => CEL.assertNotDeepEqual(
-    Object(42), new Set(), "assertNotDeepEqual(); 22d - error"
-  )
-);
-CUT.isTrue("assertNotDeepEqual(); 22e - ok",
-  CEL.assertNotDeepEqual(true, new Set())
-);
-CUT.isError("assertNotDeepEqual(); 22f - error",
-  () => CEL.assertNotDeepEqual(
-    Object(true), new Set(), "assertNotDeepEqual(); 22f - error"
-  )
-);
-CUT.isTrue("assertNotDeepEqual(); 22g - ok",
-  CEL.assertNotDeepEqual("lorem", new Set())
-);
-CUT.isTrue("assertNotDeepEqual(); 22h - ok",
-  CEL.assertNotDeepEqual(Object("lorem"), new Set())
-);
-CUT.isTrue("assertNotDeepEqual(); 22i - ok",
-  CEL.assertNotDeepEqual(42n, new Set())
-);
-CUT.isError("assertNotDeepEqual(); 22j - error",
-  () => CEL.assertNotDeepEqual(
-    Object(42n), new Set(), "assertNotDeepEqual(); 22j - error"
-  )
-);
-/* objects / not same prototype - weakset */
-CUT.isError("assertNotDeepEqual(); 23a - error",
-  () => CEL.assertNotDeepEqual(
-    new WeakMap(), new WeakSet(), "assertNotDeepEqual(); 23a - error"
-  )
-);
-CUT.isTrue("assertNotDeepEqual(); 23b - ok",
-  CEL.assertNotDeepEqual(new Error(), new WeakSet())
-);
-CUT.isTrue("assertNotDeepEqual(); 23c - ok",
-  CEL.assertNotDeepEqual(42, new WeakSet())
-);
-CUT.isError("assertNotDeepEqual(); 23d - error",
-  () => CEL.assertNotDeepEqual(
-    Object(42), new WeakSet(), "assertNotDeepEqual(); 23d - error"
-  )
-);
-CUT.isTrue("assertNotDeepEqual(); 23e - ok",
-  CEL.assertNotDeepEqual(true, new WeakSet())
-);
-CUT.isError("assertNotDeepEqual(); 23f - error",
-  () => CEL.assertNotDeepEqual(
-    Object(true), new WeakSet(), "assertNotDeepEqual(); 23f - error"
-  )
-);
-CUT.isTrue("assertNotDeepEqual(); 23g - ok",
-  CEL.assertNotDeepEqual("lorem", new WeakSet())
-);
-CUT.isTrue("assertNotDeepEqual(); 23h - ok",
-  CEL.assertNotDeepEqual(Object("lorem"), new WeakSet())
-);
-CUT.isTrue("assertNotDeepEqual(); 23i - ok",
-  CEL.assertNotDeepEqual(42n, new WeakSet())
-);
-CUT.isError("assertNotDeepEqual(); 23j - error",
-  () => CEL.assertNotDeepEqual(
-    Object(42n), new WeakSet(), "assertNotDeepEqual(); 23j - error"
-  )
-);
-/* objects / not same prototype - weakmap */
-CUT.isTrue("assertNotDeepEqual(); 24a - ok",
-  CEL.assertNotDeepEqual(new Error(), new WeakMap())
-);
-CUT.isTrue("assertNotDeepEqual(); 24b - ok",
-  CEL.assertNotDeepEqual(42, new WeakMap())
-);
-CUT.isError("assertNotDeepEqual(); 24c - error",
-  () => CEL.assertNotDeepEqual(
-    Object(42), new WeakMap(), "assertNotDeepEqual(); 24c - error"
-  )
-);
-CUT.isTrue("assertNotDeepEqual(); 24d - ok",
-  CEL.assertNotDeepEqual(true, new WeakMap())
-);
-CUT.isError("assertNotDeepEqual(); 24e - error",
-  () => CEL.assertNotDeepEqual(
-    Object(true), new WeakMap(), "assertNotDeepEqual(); 24e - error"
-  )
-);
-CUT.isTrue("assertNotDeepEqual(); 24f - ok",
-  CEL.assertNotDeepEqual("lorem", new WeakMap())
-);
-CUT.isTrue("assertNotDeepEqual(); 24g - ok",
-  CEL.assertNotDeepEqual(Object("lorem"), new WeakMap())
-);
-CUT.isTrue("assertNotDeepEqual(); 24h - ok",
-  CEL.assertNotDeepEqual(42n, new WeakMap())
-);
-CUT.isError("assertNotDeepEqual(); 24i - error",
-  () => CEL.assertNotDeepEqual(
-    Object(42n), new WeakMap(), "assertNotDeepEqual(); 24i - error"
-  )
-);
-/* objects / not same prototype - ok */
-CUT.isTrue("assertNotDeepEqual(); 25a - ok",
-  // @ts-ignore
-  CEL.assertNotDeepEqual(42, new Error(42))
-);
-CUT.isTrue("assertNotDeepEqual(); 25b - ok",
-  // @ts-ignore
-  CEL.assertNotDeepEqual(Object(42), new Error(42))
-);
-CUT.isTrue("assertNotDeepEqual(); 25c - ok",
-  // @ts-ignore
-  CEL.assertNotDeepEqual(true, new Error(true))
-);
-CUT.isTrue("assertNotDeepEqual(); 25d - ok",
-  // @ts-ignore
-  CEL.assertNotDeepEqual(Object(true), new Error(true))
-);
-CUT.isTrue("assertNotDeepEqual(); 25e - ok",
-  CEL.assertNotDeepEqual("lorem", new Error("lorem"))
-);
-CUT.isTrue("assertNotDeepEqual(); 25f - ok",
-  CEL.assertNotDeepEqual(Object("lorem"), new Error("lorem"))
-);
-CUT.isTrue("assertNotDeepEqual(); 25g - ok",
-  // @ts-ignore
-  CEL.assertNotDeepEqual(42n, new Error(42n))
-);
-CUT.isTrue("assertNotDeepEqual(); 25h - ok",
-  // @ts-ignore
-  CEL.assertNotDeepEqual(Object(42n), new Error(42n))
-);
-/* objects / not same prototype - number */
-CUT.isError("assertNotDeepEqual(); 26a - error",
-  () => CEL.assertNotDeepEqual(true, 1, "assertNotDeepEqual(); 26a - error")
-);
-CUT.isError("assertNotDeepEqual(); 26b - error",
-  () =>
-    CEL.assertNotDeepEqual(Object(true), 1, "assertNotDeepEqual(); 26b - error")
-);
-CUT.isError("assertNotDeepEqual(); 26c - error",
-  () => CEL.assertNotDeepEqual("1", 1, "assertNotDeepEqual(); 26c - error")
-);
-CUT.isError("assertNotDeepEqual(); 26d - error",
-  () =>
-    CEL.assertNotDeepEqual(Object("1"), 1, "assertNotDeepEqual(); 26d - error")
-);
-CUT.isError("assertNotDeepEqual(); 26e - error",
-  () => CEL.assertNotDeepEqual(42n, 42, "assertNotDeepEqual(); 26e - error")
-);
-CUT.isError("assertNotDeepEqual(); 26f - error",
-  () =>
-    CEL.assertNotDeepEqual(Object(42n), 42, "assertNotDeepEqual(); 26f - error")
-);
-/* objects / not same prototype - string */
-CUT.isTrue("assertNotDeepEqual(); 27a - ok",
-  CEL.assertNotDeepEqual(true, "true")
-);
-CUT.isTrue("assertNotDeepEqual(); 27b - ok",
-  CEL.assertNotDeepEqual(42n, "42n")
-);
-CUT.isError("assertNotDeepEqual(); 27c - error",
-  () => CEL.assertNotDeepEqual(
-    Object(42), "42", "assertNotDeepEqual(); 27c - error"
-  )
-);
-CUT.isTrue("assertNotDeepEqual(); 27d - ok",
-  CEL.assertNotDeepEqual(Object(42n), "42n")
-);
-CUT.isTrue("assertNotDeepEqual(); 27e - ok",
-  CEL.assertNotDeepEqual(Object(true), "true")
-);
-/* objects / not same prototype - boolean */
-CUT.isError("assertNotDeepEqual(); 28a - error",
-  () => CEL.assertNotDeepEqual(1n, true, "assertNotDeepEqual(); 28a - error")
-);
-CUT.isError("assertNotDeepEqual(); 28b - error",
-  () =>
-    CEL.assertNotDeepEqual(Object(1n), true, "assertNotDeepEqual(); 28b - error")
-);
-CUT.isError("assertNotDeepEqual(); 28c - error",
-  () =>
-    CEL.assertNotDeepEqual(Object(1), true, "assertNotDeepEqual(); 28c - error")
-);
-CUT.isTrue("assertNotDeepEqual(); 28d - ok",
-  CEL.assertNotDeepEqual("true", true)
-);
-/* objects / not same prototype - bigint */
-CUT.isError("assertNotDeepEqual(); 29a - error",
-  () =>
-    CEL.assertNotDeepEqual(Object(42), 42n, "assertNotDeepEqual(); 29a - error")
-);
-CUT.isError("assertNotDeepEqual(); 29b - error",
-  () => CEL.assertNotDeepEqual(
-    Object("42"), 42n, "assertNotDeepEqual(); 29b - error"
-  )
-);
-/* Chrome - Firefox not the same result
-CUT.isTrue("assertNotDeepEqual(); 29c - error",
-  CEL.assertNotDeepEqual(
-    Object(true), 1n, "assertNotDeepEqual(); 29c - error"
-  )
-);
-*/
-/* objects / not same prototype - Object wrappers */
-CUT.isTrue("assertNotDeepEqual(); 30a - ok",
-  CEL.assertNotDeepEqual(Object(42), Object("42"))
-);
-CUT.isError("assertNotDeepEqual(); 30b - error",
-  () => CEL.assertNotDeepEqual(
-    Object(1), Object(true), "assertNotDeepEqual(); 30b - error"
-  )
-);
-CUT.isError("assertNotDeepEqual(); 30c - error",
-  () => CEL.assertNotDeepEqual(
-    Object(1), Object(1n), "assertNotDeepEqual(); 30c - error"
-  )
-);
-CUT.isTrue("assertNotDeepEqual(); 30d - ok",
-  CEL.assertNotDeepEqual(Object("true"), Object(true))
-);
-CUT.isTrue("assertNotDeepEqual(); 30e - ok",
-  CEL.assertNotDeepEqual(Object(42n), Object("42n"))
-);
-CUT.isError("assertNotDeepEqual(); 30f - error",
-  () => CEL.assertNotDeepEqual(
-    Object(1n), Object(true), "assertNotDeepEqual(); 30f - error"
-  )
-);
-/* dataview + arraybuffer */
-token1 = new ArrayBuffer(2);
-token2 = new DataView(token1);
-// @ts-ignore
-token2.setInt8(0, 125, true);
-// @ts-ignore
-token2.setInt8(1, 100, true);
-token3 = new ArrayBuffer(2);
-token4 = new DataView(token3);
-// @ts-ignore
-token4.setInt8(0, 125, true);
-// @ts-ignore
-token4.setInt8(1, 100, true);
-token5 = new ArrayBuffer(2);
-token6 = new DataView(token5);
-// @ts-ignore
-token6.setInt8(0, 120, true);
-// @ts-ignore
-token6.setInt8(1, 100, true);
-token7 = new ArrayBuffer(3);
-token8 = new DataView(token7);
-// @ts-ignore
-token8.setInt8(0, 125, true);
-// @ts-ignore
-token8.setInt8(1, 100, true);
-CUT.isTrue("assertNotDeepEqual(); 31a",
-     CEL.assertNotDeepEqual([1, 2, token1, 3], [1, 2, token5, 3])
-  && CEL.assertNotDeepEqual([1, 2, token1, 3], [1, 2, token7, 3])
-  && CEL.assertNotDeepEqual([1, 2, token2, 3], [1, 2, token6, 3])
-  && CEL.assertNotDeepEqual([1, 2, token2, 3], [1, 2, token8, 3])
-);
-CUT.isError(
-  "assertNotDeepEqual(); 31b",
-  () => CEL.assertNotDeepEqual(
-    [1, 2, token1, 3], [1, 2, token1, 3], "assertNotDeepEqual(); 31b"
-  )
-);
-CUT.isError(
-  "assertNotDeepEqual(); 31c",
-  () => CEL.assertNotDeepEqual(
-    [1, 2, token1, 3], [1, 2, token3, 3], "assertNotDeepEqual(); 31c"
-  )
-);
-CUT.isError(
-  "assertNotDeepEqual(); 31d",
-  () => CEL.assertNotDeepStrictEqual(
-    [1, 2, token2, 3], [1, 2, token2, 3], "assertNotDeepEqual(); 31d"
-  )
-);
-CUT.isError(
-  "assertNotDeepEqual(); 31e",
-  () => CEL.assertNotDeepStrictEqual(
-    [1, 2, token2, 3], [1, 2, token4, 3], "assertNotDeepEqual(); 31e"
-  )
-);
-/* assertNotDeepEqual end */
-
-
-/* assertDeepStrictEqual begin */
-CUT.isError("assertDeepStrictEqual(); 01b - error",
-  () => CEL.assertDeepStrictEqual(42, 43, new Error("lorem"))
-);
-/* primitives / number + Object wrappers */
-CUT.isTrue("assertDeepStrictEqual(); 01a - ok",
-  CEL.assertDeepStrictEqual(42, 42)
-);
-CUT.isError("assertDeepStrictEqual(); 01b - error",
-  () =>
-    CEL.assertDeepStrictEqual(42, 43, "assertDeepStrictEqual(); 01b - error")
-);
-CUT.isTrue("assertDeepStrictEqual(); 01c - ok",
-  CEL.assertDeepStrictEqual(42, Object(42))
-);
-CUT.isTrue("assertDeepStrictEqual(); 01d - ok",
-  CEL.assertDeepStrictEqual(Object(42), 42)
-);
-CUT.isError("assertDeepStrictEqual(); 01e - error",
-  () => CEL.assertDeepStrictEqual(
-    42, Object(43), "assertDeepStrictEqual(); 01e - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 01f - error",
-  () => CEL.assertDeepStrictEqual(
-    Object(42), 43, "assertDeepStrictEqual(); 01f - error"
-  )
-);
-CUT.isTrue("assertDeepStrictEqual(); 01g - ok",
-  CEL.assertDeepStrictEqual(Object(42), Object(42))
-);
-CUT.isError("assertDeepStrictEqual(); 01h - error",
-  () => CEL.assertDeepStrictEqual(
-    Object(42), Object(43), "assertDeepStrictEqual(); 01h - error"
-  )
-);
-/* primitives / number: 0, -0, NaN, Infinity, -Infinity */
-CUT.isTrue("assertDeepStrictEqual(); 01i - ok",
-  CEL.assertDeepStrictEqual(0, 0)
-);
-CUT.isTrue("assertDeepStrictEqual(); 01j - ok",
-  CEL.assertDeepStrictEqual(-0, -0)
-);
-CUT.isError("assertDeepStrictEqual(); 01k - error",
-  () => CEL.assertDeepStrictEqual(-0, 0, "assertDeepStrictEqual(); 01k - error")
-);
-CUT.isError("assertDeepStrictEqual(); 01l - error",
-  () =>
-    CEL.assertDeepStrictEqual(-0, +0, "assertDeepStrictEqual(); 01l - error")
-);
-CUT.isTrue("assertDeepStrictEqual(); 01m - ok",
-  CEL.assertDeepStrictEqual(NaN, NaN)
-);
-CUT.isTrue("assertDeepStrictEqual(); 01n - ok",
-  CEL.assertDeepStrictEqual(Infinity, Infinity)
-);
-CUT.isTrue("assertDeepStrictEqual(); 01o - ok",
-  CEL.assertDeepStrictEqual(-Infinity, -Infinity)
-);
-CUT.isError("assertDeepStrictEqual(); 01p - error",
-  () => CEL.assertDeepStrictEqual(
-    Infinity, -Infinity, "assertDeepStrictEqual(); 01p - error"
-  )
-);
-/* primitives / not same type */
-CUT.isError("assertDeepStrictEqual(); 01q - error",
-  () =>
-    CEL.assertDeepStrictEqual(42, "42", "assertDeepStrictEqual(); 01q - error")
-);
-CUT.isError("assertDeepStrictEqual(); 01r - error",
-  () =>
-    CEL.assertDeepStrictEqual(1, true, "assertDeepStrictEqual(); 01r - error")
-);
-CUT.isError("assertDeepStrictEqual(); 01s - error",
-  () =>
-    CEL.assertDeepStrictEqual(1n, true, "assertDeepStrictEqual(); 01s - error")
-);
-CUT.isError("assertDeepStrictEqual(); 01t - error",
-  () =>
-    CEL.assertDeepStrictEqual(1n, "1n", "assertDeepStrictEqual(); 01t - error")
-);
-CUT.isError("assertDeepStrictEqual(); 01u - error",
-  () =>
-    CEL.assertDeepStrictEqual(false, "", "assertDeepStrictEqual(); 01u - error")
-);
-/* primitives / bigint + Object wrappers */
-CUT.isTrue("assertDeepStrictEqual(); 02a - ok",
-  CEL.assertDeepStrictEqual(42n, 42n)
-);
-CUT.isError("assertDeepStrictEqual(); 02b - error",
-  () =>
-    CEL.assertDeepStrictEqual(42n, 43n, "assertDeepStrictEqual(); 02b - error")
-);
-CUT.isTrue("assertDeepStrictEqual(); 02c - ok",
-  CEL.assertDeepStrictEqual(42n, Object(42n))
-);
-CUT.isTrue("assertDeepStrictEqual(); 02d - ok",
-  CEL.assertDeepStrictEqual(Object(42n), 42n)
-);
-CUT.isError("assertDeepStrictEqual(); 02e - error",
-  () => CEL.assertDeepStrictEqual(
-    42n, Object(43n), "assertDeepStrictEqual(); 02e - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 02f - error",
-  () => CEL.assertDeepStrictEqual(
-    Object(42n), 43n, "assertDeepStrictEqual(); 02f - error"
-  )
-);
-CUT.isTrue("assertDeepStrictEqual(); 02g - ok",
-  CEL.assertDeepStrictEqual(Object(42n), Object(42n))
-);
-CUT.isError("assertDeepStrictEqual(); 02h - error",
-  () => CEL.assertDeepStrictEqual(
-    Object(42n), Object(43n), "assertDeepStrictEqual(); 02h - error"
-  )
-);
-/* primitives / string + Object wrappers */
-CUT.isTrue("assertDeepStrictEqual(); 02i - error",
-  CEL.assertDeepStrictEqual(
-    "lorem", "lorem", "assertDeepStrictEqual(); 03a - ok"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 03b - error",
-  () => CEL.assertDeepStrictEqual(
-    "lorem", "ipsum", "assertDeepStrictEqual(); 03b - error"
-  )
-);
-CUT.isTrue("assertDeepStrictEqual(); 03c - ok",
-  CEL.assertDeepStrictEqual("lorem", Object("lorem"))
-);
-CUT.isTrue("assertDeepStrictEqual(); 03d - ok",
-  CEL.assertDeepStrictEqual(Object("lorem"), "lorem")
-);
-CUT.isError("assertDeepStrictEqual(); 03e - error",
-  () => CEL.assertDeepStrictEqual(
-    "lorem", Object("ipsum"), "assertDeepStrictEqual(); 03e - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 03f - error",
-  () => CEL.assertDeepStrictEqual(
-    Object("lorem"), "ipsum", "assertDeepStrictEqual(); 03f - error"
-  )
-);
-CUT.isTrue("assertDeepStrictEqual(); 03g - ok",
-  CEL.assertDeepStrictEqual(Object("lorem"), Object("lorem"))
-);
-CUT.isError("assertDeepStrictEqual(); 03h - error",
-  () => CEL.assertDeepStrictEqual(
-    Object("lorem"), Object("ipsum"), "assertDeepStrictEqual(); 03h - error"
-  )
-);
-/* primitives / boolean + Object wrappers */
-CUT.isTrue("assertDeepStrictEqual(); 04a - ok",
-  CEL.assertDeepStrictEqual(true, true)
-);
-CUT.isError("assertDeepStrictEqual(); 04b - error",
-  () => CEL.assertDeepStrictEqual(
-    true, false, "assertDeepStrictEqual(); 04b - error"
-  )
-);
-CUT.isTrue("assertDeepStrictEqual(); 04c - ok",
-  CEL.assertDeepStrictEqual(true, Object(true))
-);
-CUT.isTrue("assertDeepStrictEqual(); 04d - ok",
-  CEL.assertDeepStrictEqual(Object(true), true)
-);
-CUT.isError("assertDeepStrictEqual(); 04e - error",
-  () => CEL.assertDeepStrictEqual(
-    true, Object(false), "assertDeepStrictEqual(); 04e - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 04f - error",
-  () => CEL.assertDeepStrictEqual(
-    Object(true), false, "assertDeepStrictEqual(); 04f - error"
-  )
-);
-CUT.isTrue("assertDeepStrictEqual(); 04g - ok",
-  CEL.assertDeepStrictEqual(Object(true), Object(true))
-);
-CUT.isError("assertDeepStrictEqual(); 04h - error",
-  () => CEL.assertDeepStrictEqual(
-    Object(true), Object(false), "assertDeepStrictEqual(); 04h - error"
-  )
-);
-/* primitives / Symbol */
-token1 = Symbol("Agradzsag");
-token2 = Symbol("Agradzsag");
-token3 = Symbol("Trillian");
-CUT.isTrue("assertDeepStrictEqual(); 05a - ok",
-  CEL.assertDeepStrictEqual(token1, token1)
-);
-CUT.isError("assertDeepStrictEqual(); 05b - error",
-  () => CEL.assertDeepStrictEqual(
-    token1, token2, "assertDeepStrictEqual(); 05b - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 05c - error",
-  () => CEL.assertDeepStrictEqual(
-    token1, token3, "assertDeepStrictEqual(); 05c - error"
-  )
-);
-/* objects / Array */
-CUT.isTrue("assertDeepStrictEqual(); 06a - ok",
-  CEL.assertDeepStrictEqual([1, 2], [1, 2])
-);
-CUT.isError("assertDeepStrictEqual(); 06b - error",
-  () => CEL.assertDeepStrictEqual(
-    [1, 2], [1, 3], "assertDeepStrictEqual(); 06b - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 06c - error",
-  () => CEL.assertDeepStrictEqual(
-    [1, 2], [1, "2"], "assertDeepStrictEqual(); 06c - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 06d - error",
-  () => CEL.assertDeepStrictEqual(
-    [1, 2], [1, 2, 3], "assertDeepStrictEqual(); 06d - error"
-  )
-);
-/* objects / Set */
-token1 = new Set([1, 2]);
-token2 = new Set([1, 2]);
-token3 = new Set([1, 3]);
-token4 = new Set([1, "2"]);
-token5 = new Set([1, 2, 3]);
-CUT.isTrue("assertDeepStrictEqual(); 07a - ok",
-  CEL.assertDeepStrictEqual(token1, token2)
-);
-CUT.isError("assertDeepStrictEqual(); 07b - error",
-  () => CEL.assertDeepStrictEqual(
-    token1, token3, "assertDeepStrictEqual(); 07b - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 07c - error",
-  () => CEL.assertDeepStrictEqual(
-    token1, token4, "assertDeepStrictEqual(); 07c - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 07d - error",
-  () => CEL.assertDeepStrictEqual(
-    token1, token5, "assertDeepStrictEqual(); 07d - error"
-  )
-);
-/* objects / TypedArrays */
-token1 = Int16Array.from([34, 45]);
-token2 = Int16Array.from([34, 45]);
-token3 = Int16Array.from([34, 46]);
-token5 = Int16Array.from([34, 45, 56]);
-CUT.isTrue("assertDeepStrictEqual(); 08a - ok",
-  CEL.assertDeepStrictEqual(token1, token2)
-);
-CUT.isError("assertDeepStrictEqual(); 08b - error",
-  () => CEL.assertDeepStrictEqual(
-    token1, token3, "assertDeepStrictEqual(); 08b - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 08c - error",
-  () => CEL.assertDeepStrictEqual(
-    token1, token5, "assertDeepStrictEqual(); 08c - error"
-  )
-);
-/* objects / Object (other objects) */
-/* objects / same reference (same object) */
-token1 = {"a": 1, "b": 2};
-token2 = {"a": 1, "b": 2};
-token3 = {"a": 1, "b": 3};
-token4 = {"a": 1, "b": "2"};
-token5 = {"a": 1, "b": 2, "c": 3};
-token6 = {"a": 1, "b": 2, "c": 3, [Symbol()]: 4};
-token7 = {"a": 1, "b": 2, "c": 3, [Symbol()]: 4};
-token8 = {"a": 1, "b": 2, "c": 3, [Symbol()]: 5};
-CUT.isTrue("assertDeepStrictEqual(); 09a - ok",
-  CEL.assertDeepStrictEqual(token1, token2)
-);
-CUT.isTrue("assertDeepStrictEqual(); 09b - ok",
-  CEL.assertDeepStrictEqual(token6, token6)
-);
-CUT.isError("assertDeepStrictEqual(); 09c - error",
-  () => CEL.assertDeepStrictEqual(
-    token1, token3, "assertDeepStrictEqual(); 09c - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 09d - error",
-  () => CEL.assertDeepStrictEqual(
-    token1, token4, "assertDeepStrictEqual(); 09d - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 09e - error",
-  () => CEL.assertDeepStrictEqual(
-    token1, token5, "assertDeepStrictEqual(); 09e - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 09f - error",
-  () => CEL.assertDeepStrictEqual(
-    token6, token7, "assertDeepStrictEqual(); 09f - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 09g - error",
-  () => CEL.assertDeepStrictEqual(
-    token6, token8, "assertDeepStrictEqual(); 09g - error"
-  )
-);
-/* objects / Map */
-token1 = new Map([["a", 1], ["b", 2]]);
-token2 = new Map([["a", 1], ["b", 2]]);
-token3 = new Map([["a", 1], ["b", 3]]);
-// @ts-ignore
-token4 = new Map([["a", 1], ["b", "2"]]);
-token5 = new Map([["a", 1], ["b", 2], ["c", 3]]);
-CUT.isTrue("assertDeepStrictEqual(); 10a - ok",
-  CEL.assertDeepStrictEqual(token1, token2)
-);
-CUT.isError("assertDeepStrictEqual(); 10b - error",
-  () => CEL.assertDeepStrictEqual(
-    token1, token3, "assertDeepStrictEqual(); 10b - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 10c - error",
-  () => CEL.assertDeepStrictEqual(
-    token1, token4, "assertDeepStrictEqual(); 10c - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 10d - error",
-  () => CEL.assertDeepStrictEqual(
-    token1, token5, "assertDeepStrictEqual(); 10d - error"
-  )
-);
-/* objects / weakset + weakmap*/
-token1 = new WeakSet();
-token2 = new WeakSet();
-CUT.isTrue("assertDeepStrictEqual(); 11a - ok",
-  CEL.assertDeepStrictEqual(token1, token1)
-);
-CUT.isError("assertDeepStrictEqual(); 11b - error",
-  () => CEL.assertDeepStrictEqual(
-    token1, token2, "assertDeepStrictEqual(); 11b - error"
-  )
-);
-token1 = new WeakMap();
-token2 = new WeakMap();
-CUT.isTrue("assertDeepStrictEqual(); 11c - ok",
-  CEL.assertDeepStrictEqual(token1, token1)
-);
-CUT.isError("assertDeepStrictEqual(); 11d - error",
-  () => CEL.assertDeepStrictEqual(
-    token1, token2, "assertDeepStrictEqual(); 11d - error"
-  )
-);
-/* objects / Function */
-CUT.isTrue("assertDeepStrictEqual(); 12a - ok",
-  CEL.assertDeepStrictEqual(Array.from, Array.from)
-);
-CUT.isError("assertDeepStrictEqual(); 12b - error",
-  () => CEL.assertDeepStrictEqual(
-    Array.from, Array.of, "assertDeepStrictEqual(); 12b - error"
-  )
-);
-/* objects / Date */
-token1 = new Date();
-token2 = new Date();
-if (token2.getMilliseconds() === 1) {
-  token2.setMilliseconds(2);
-} else {
-  token2.setMilliseconds(1);
-}
-token3 = {};
-Object.setPrototypeOf(token3, Date);
-CUT.isTrue("assertDeepStrictEqual(); 13a - ok",
-  CEL.assertDeepStrictEqual(token1, token1)
-);
-CUT.isError("assertDeepStrictEqual(); 13b - error",
-  () => CEL.assertDeepStrictEqual(
-    token1, token2, "assertDeepStrictEqual(); 13b - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 13c - error",
-  () => CEL.assertDeepStrictEqual(
-    token1, token3, "assertDeepStrictEqual(); 13c - error"
-  )
-);
-/* objects / Error */
-token1 = new Error("Agradzsag");
-token2 = new Error("Agradzsag");
-token3 = new TypeError("Agradzsag");
-token3 = new TypeError("Agradzsag");
-CUT.isTrue("assertDeepStrictEqual(); 14a - ok",
-  CEL.assertDeepStrictEqual(token1, token1)
-);
-CUT.isTrue("assertDeepStrictEqual(); 14b - ok",
-  CEL.assertDeepStrictEqual(token3, token3)
-);
-CUT.isError("assertDeepStrictEqual(); 14c - error",
-  () => CEL.assertDeepStrictEqual(
-    token1, token2, "assertDeepStrictEqual(); 14c - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 14d - error",
-  () => CEL.assertDeepStrictEqual(
-    token1, token3, "assertDeepStrictEqual(); 14d - error"
-  )
-);
-/* types: null, undefined */
-CUT.isTrue("assertDeepStrictEqual(); 15a - ok",
-  CEL.assertDeepStrictEqual(null, null)
-);
-CUT.isTrue("assertDeepStrictEqual(); 15b - ok",
-  CEL.assertDeepStrictEqual(undefined, undefined)
-);
-CUT.isError("assertDeepStrictEqual(); 15c - error",
-  () => CEL.assertDeepStrictEqual(
-    null, undefined, "assertDeepStrictEqual(); 15c - error"
-  )
-);
-/* structures 1 */
-token1 = new Error("Agradzsag");
-// @ts-ignore
-token2 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1]]])}];
-// @ts-ignore
-token3 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1]]])}];
-// @ts-ignore
-token4 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, 42]]])}];
-// @ts-ignore
-token5 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1, 42]]])}];
-CUT.isTrue("assertDeepStrictEqual(); 16a - ok",
-  CEL.assertDeepStrictEqual(token2, token2)
-);
-CUT.isTrue("assertDeepStrictEqual(); 16b - ok",
-  CEL.assertDeepStrictEqual(token2, token3)
-);
-CUT.isError("assertDeepStrictEqual(); 16c - error",
-  () => CEL.assertDeepStrictEqual(
-    token2, token4, "assertDeepStrictEqual(); 16c - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 16d - error",
-  () => CEL.assertDeepStrictEqual(
-    token2, token5, "assertDeepStrictEqual(); 16d - error"
-  )
-);
-/* structures 2 */
-token1 = new Error("Agradzsag");
-// @ts-ignore
-token2 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
-// @ts-ignore
-token3 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
-// @ts-ignore
-token4 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", ["a", 10]], ["11", new Set([12, 13])]])}, token1];
-// @ts-ignore
-token5 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13, 14])]])}, token1];
-CUT.isTrue("assertDeepStrictEqual(); 17a - ok",
-  CEL.assertDeepStrictEqual(token2, token2)
-);
-CUT.isTrue("assertDeepStrictEqual(); 17b - ok",
-  CEL.assertDeepStrictEqual(token2, token3)
-);
-CUT.isError("assertDeepStrictEqual(); 17c - error",
-  () => CEL.assertDeepStrictEqual(
-    token2, token4, "assertDeepStrictEqual(); 17c - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 17d - error",
-  () => CEL.assertDeepStrictEqual(
-    token2, token5, "assertDeepStrictEqual(); 17d - error"
-  )
-);
-/* structures 3 */
-token1 = new Error("Agradzsag");
-// @ts-ignore
-token2 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
-// @ts-ignore
-token3 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
-// @ts-ignore
-token4 = [1, 2, {"3": 4, "5": new Map([["6", 8], ["8", [9, 10]], ["11", new Set([12, 14])]])}, token1];
-// @ts-ignore
-token5 = [1, 2, {"3": 4, "5": new Map([["6", 8], ["8", [9, 10, 15]], ["11", new Set([12, 13])]])}, token1];
-CUT.isTrue("assertDeepStrictEqual(); 18a - ok",
-  CEL.assertDeepStrictEqual(token2, token2)
-);
-CUT.isTrue("assertDeepStrictEqual(); 18b - ok",
-  CEL.assertDeepStrictEqual(token2, token3)
-);
-CUT.isError("assertDeepStrictEqual(); 18c - error",
-  () => CEL.assertDeepStrictEqual(
-    token2, token4, "assertDeepStrictEqual(); 18c - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 18d - error",
-  () => CEL.assertDeepStrictEqual(
-    token2, token5, "assertDeepStrictEqual(); 18d - error"
-  )
-);
-/* structures 4 */
-token1 = new Error("Agradzsag");
-// @ts-ignore
-token2 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
-// @ts-ignore
-token3 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
-// @ts-ignore
-token4 = [1,5,{"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
-// @ts-ignore
-token5 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13, 14])]])}, token1];
-CUT.isTrue("assertDeepStrictEqual(); 19a - ok",
-  CEL.assertDeepStrictEqual(token2, token2)
-);
-CUT.isTrue("assertDeepStrictEqual(); 19b - ok",
-  CEL.assertDeepStrictEqual(token2, token3)
-);
-CUT.isError("assertDeepStrictEqual(); 19c - error",
-  () => CEL.assertDeepStrictEqual(
-    token2, token4, "assertDeepStrictEqual(); 19c - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 19d - error",
-  () => CEL.assertDeepStrictEqual(
-    token2, token5, "assertDeepStrictEqual(); 19d - error"
-  )
-);
-/* objects / not same prototype - array */
-CUT.isError("assertDeepStrictEqual(); 20a - error",
-  () => CEL.assertDeepStrictEqual(
-    {}, [], "assertDeepStrictEqual(); 20a - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 20b - error",
-  () => CEL.assertDeepStrictEqual(
-    new Map(), [], "assertDeepStrictEqual(); 20b - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 20c - error",
-  () => CEL.assertDeepStrictEqual(
-    new Set(), [], "assertDeepStrictEqual(); 20c - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 20d - error",
-  () => CEL.assertDeepStrictEqual(
-    new WeakMap(), [], "assertDeepStrictEqual(); 20d - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 20e - error",
-  () => CEL.assertDeepStrictEqual(
-    new WeakSet(), [], "assertDeepStrictEqual(); 20e - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 20f - error",
-  () => CEL.assertDeepStrictEqual(
-    new Error(), [], "assertDeepStrictEqual(); 20f - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 20g - error",
-  () => CEL.assertDeepStrictEqual(
-    42, [42], "assertDeepStrictEqual(); 20g - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 20h - error",
-  () => CEL.assertDeepStrictEqual(
-    Object(42), [42], "assertDeepStrictEqual(); 20h - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 20i - error",
-  () => CEL.assertDeepStrictEqual(
-    true, [true], "assertDeepStrictEqual(); 20i - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 20j - error",
-  () => CEL.assertDeepStrictEqual(Object(
-    true), [true], "assertDeepStrictEqual(); 20j - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 20k - error",
-  () => CEL.assertDeepStrictEqual(
-    "lorem", ["lorem"], "assertDeepStrictEqual(); 20k - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 20l - error",
-  () => CEL.assertDeepStrictEqual(
-    Object("lorem"), ["lorem"], "assertDeepStrictEqual(); 20l - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 20m - error",
-  () => CEL.assertDeepStrictEqual(
-    42n, [42n], "assertDeepStrictEqual(); 20m - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 20n - error",
-  () => CEL.assertDeepStrictEqual(
-    Object(42n), [42n], "assertDeepStrictEqual(); 20n - error"
-  )
-);
-/* objects / not same prototype - map */
-CUT.isError("assertDeepStrictEqual(); 21a - error",
-  () => CEL.assertDeepStrictEqual(
-    new Map(), new Set(), "assertDeepStrictEqual(); 21a - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 21b - error",
-  () => CEL.assertDeepStrictEqual(
-    new Map(), new WeakSet(), "assertDeepStrictEqual(); 21b - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 21c - error",
-  () => CEL.assertDeepStrictEqual(
-    new Map(), new WeakMap(), "assertDeepStrictEqual(); 21c - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 21d - error",
-  () => CEL.assertDeepStrictEqual(
-    new Error(), new Map(), "assertDeepStrictEqual(); 21d - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 21e - error",
-  () => CEL.assertDeepStrictEqual(
-    42, new Map(), "assertDeepStrictEqual(); 21e - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 21f - error",
-  () =>  CEL.assertDeepStrictEqual(
-    Object(42), new Map(), "assertDeepStrictEqual(); 21f - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 21g - error",
-  () => CEL.assertDeepStrictEqual(
-    true, new Map(), "assertDeepStrictEqual(); 21g - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 21h - error",
-  () => CEL.assertDeepStrictEqual(
-    Object(true), new Map(), "assertDeepStrictEqual(); 21h - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 21i - error",
-  () => CEL.assertDeepStrictEqual(
-    "lorem", new Map(), "assertDeepStrictEqual(); 21i - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 21j - error",
-  () => CEL.assertDeepStrictEqual(
-    Object("lorem"), new Map(), "assertDeepStrictEqual(); 21j - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 21k - error",
-  () => CEL.assertDeepStrictEqual(
-    42n, new Map(), "assertDeepStrictEqual(); 21k - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 21l - error",
-  () => CEL.assertDeepStrictEqual(
-    Object(42n), new Map(), "assertDeepStrictEqual(); 21l - error"
-  )
-);
-/* objects / not same prototype - set */
-CUT.isError("assertDeepStrictEqual(); 22a - error",
-  () => CEL.assertDeepStrictEqual(
-    new WeakMap(), new Set(), "assertDeepStrictEqual(); 22a - error"
-  )
-);
-CUT.isError( "assertDeepStrictEqual(); 22b - error",
-  () => CEL.assertDeepStrictEqual(
-    new Error(), new Set(), "assertDeepStrictEqual(); 22b - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 22c - error",
-  () => CEL.assertDeepStrictEqual(
-    42, new Set(), "assertDeepStrictEqual(); 22c - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 22d - error",
-  () => CEL.assertDeepStrictEqual(
-    Object(42), new Set(), "assertDeepStrictEqual(); 22d - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 22e - error",
-  () => CEL.assertDeepStrictEqual(
-    true, new Set(), "assertDeepStrictEqual(); 22e - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 22f - error",
-  () => CEL.assertDeepStrictEqual(
-    Object(true), new Set(), "assertDeepStrictEqual(); 22f - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 22g - error",
-  () => CEL.assertDeepStrictEqual(
-    "lorem", new Set(), "assertDeepStrictEqual(); 22g - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 22h - error",
-  () => CEL.assertDeepStrictEqual(
-    Object("lorem"), new Set(), "assertDeepStrictEqual(); 22h - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 22i - error",
-  () => CEL.assertDeepStrictEqual(
-    42n, new Set(), "assertDeepStrictEqual(); 22i - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 22j - error",
-  () => CEL.assertDeepStrictEqual(
-    Object(42n), new Set(), "assertDeepStrictEqual(); 22j - error"
-  )
-);
-/* objects / not same prototype - weakset */
-CUT.isError("assertDeepStrictEqual(); 23a - error",
-  () => CEL.assertDeepStrictEqual(
-    new WeakMap(), new WeakSet(), "assertDeepStrictEqual(); 23a - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 23b - error",
-  () => CEL.assertDeepStrictEqual(
-    new Error(), new WeakSet(), "assertDeepStrictEqual(); 23b - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 23c - error",
-  () => CEL.assertDeepStrictEqual(
-    42, new WeakSet(), "assertDeepStrictEqual(); 23c - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 23d - error",
-  () => CEL.assertDeepStrictEqual(
-    Object(42), new WeakSet(), "assertDeepStrictEqual(); 23d - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 23e - error",
-  () => CEL.assertDeepStrictEqual(
-    true, new WeakSet(), "assertDeepStrictEqual(); 23e - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 23f - error",
-  () => CEL.assertDeepStrictEqual(
-    Object(true), new WeakSet(), "assertDeepStrictEqual(); 23f - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 23g - error",
-  () => CEL.assertDeepStrictEqual(
-    "lorem", new WeakSet(), "assertDeepStrictEqual(); 23g - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 23h - error",
-  () => CEL.assertDeepStrictEqual(
-    Object("lorem"), new WeakSet(), "assertDeepStrictEqual(); 23h - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 23i - error",
-  () => CEL.assertDeepStrictEqual(
-    42n, new WeakSet(), "assertDeepStrictEqual(); 23i - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 23j - error",
-  () => CEL.assertDeepStrictEqual(
-    Object(42n), new WeakSet(), "assertDeepStrictEqual(); 23j - error"
-  )
-);
-/* objects / not same prototype - weakmap */
-CUT.isError("assertDeepStrictEqual(); 24a - error",
-  () => CEL.assertDeepStrictEqual(
-    new Error(), new WeakMap(), "assertDeepStrictEqual(); 24a - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 24b - error",
-  () => CEL.assertDeepStrictEqual(
-    42, new WeakMap(), "assertDeepStrictEqual(); 24b - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 24c - error",
-  () => CEL.assertDeepStrictEqual(
-    Object(42), new WeakMap(), "assertDeepStrictEqual(); 24c - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 24d - error",
-  () => CEL.assertDeepStrictEqual(
-    true, new WeakMap(), "assertDeepStrictEqual(); 24d - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 24e - error",
-  () => CEL.assertDeepStrictEqual(
-    Object(true), new WeakMap(), "assertDeepStrictEqual(); 24e - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 24f - error",
-  () => CEL.assertDeepStrictEqual(
-    "lorem", new WeakMap(), "assertDeepStrictEqual(); 24f - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 24g - error",
-  () => CEL.assertDeepStrictEqual(
-    Object("lorem"), new WeakMap(), "assertDeepStrictEqual(); 24g - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 24h - error",
-  () => CEL.assertDeepStrictEqual(
-    42n, new WeakMap(), "assertDeepStrictEqual(); 24h - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 24i - error",
-  () => CEL.assertDeepStrictEqual(
-    Object(42n), new WeakMap(), "assertDeepStrictEqual(); 24i - error"
-  )
-);
-/* objects / not same prototype - error */
-CUT.isError("assertDeepStrictEqual(); 25a - error",
-  () => CEL.assertDeepStrictEqual(
-    // @ts-ignore
-    42, new Error(42), "assertDeepStrictEqual(); 25a - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 25b - error",
-  () => CEL.assertDeepStrictEqual(
-    // @ts-ignore
-    Object(42), new Error(42), "assertDeepStrictEqual(); 25b - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 25c - error",
-  () => CEL.assertDeepStrictEqual(
-    // @ts-ignore
-    true, new Error(true), "assertDeepStrictEqual(); 25c - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 25d - error",
-  () => CEL.assertDeepStrictEqual(
-    // @ts-ignore
-    Object(true), new Error(true), "assertDeepStrictEqual(); 25d - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 25e - error",
-  () => CEL.assertDeepStrictEqual(
-    "lorem", new Error("lorem"), "assertDeepStrictEqual(); 25e - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 25f - error",
-  () => CEL.assertDeepStrictEqual(
-    Object("lorem"), new Error("lorem"), "assertDeepStrictEqual(); 25f - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 25g - error",
-  () => CEL.assertDeepStrictEqual(
-    // @ts-ignore
-    42n, new Error(42n), "assertDeepStrictEqual(); 25g - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 25h - error",
-  () => CEL.assertDeepStrictEqual(
-    // @ts-ignore
-    Object(42n), new Error(42n), "assertDeepStrictEqual(); 25h - error"
-  )
-);
-/* objects / not same prototype - number */
-CUT.isError("assertDeepStrictEqual(); 26a - error",
-  () =>
-    CEL.assertDeepStrictEqual(true, 1, "assertDeepStrictEqual(); 26a - error")
-);
-CUT.isError("assertDeepStrictEqual(); 26b - error",
-  () => CEL.assertDeepStrictEqual(
-    Object(true), 1, "assertDeepStrictEqual(); 26b - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 26c - error",
-  () =>
-    CEL.assertDeepStrictEqual("1", 1, "assertDeepStrictEqual(); 26c - error")
-);
-CUT.isError("assertDeepStrictEqual(); 26d - error",
-  () => CEL.assertDeepStrictEqual(
-    Object("1"), 1, "assertDeepStrictEqual(); 26d - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 26e - error",
-  () => CEL.assertDeepStrictEqual(
-    42n, 42, "assertDeepStrictEqual(); 26e - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 26f - error",
-  () => CEL.assertDeepStrictEqual(
-    Object(42n), 42, "assertDeepStrictEqual(); 26f - error"
-  )
-);
-/* objects / not same prototype - string */
-CUT.isError("assertDeepStrictEqual(); 27a - error",
-  () => CEL.assertDeepStrictEqual(
-    true, "true", "assertDeepStrictEqual(); 27a - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 27b - error",
-  () => CEL.assertDeepStrictEqual(
-    42n, "42n", "assertDeepStrictEqual(); 27b - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 27c - error",
-  () => CEL.assertDeepStrictEqual(
-    Object(42), "42", "assertDeepStrictEqual(); 27c - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 27d - error",
-  () => CEL.assertDeepStrictEqual(
-    Object(42n), "42n", "assertDeepStrictEqual(); 27d - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 27e - error",
-  () => CEL.assertDeepStrictEqual(
-    Object(true), "true", "assertDeepStrictEqual(); 27e - error"
-  )
-);
-/* objects / not same prototype - boolean */
-CUT.isError("assertDeepStrictEqual(); 28a - error",
-  () => CEL.assertDeepStrictEqual(
-    1n, true, "assertDeepStrictEqual(); 28a - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 28b - error",
-  () => CEL.assertDeepStrictEqual(
-    Object(1n), true, "assertDeepStrictEqual(); 28b - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 28c - error",
-  () => CEL.assertDeepStrictEqual(
-    Object(1), true, "assertDeepStrictEqual(); 28c - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 28d - error",
-  () => CEL.assertDeepStrictEqual(
-    "true", true, "assertDeepStrictEqual(); 28d - error"
-  )
-);
-/* objects / not same prototype - bigint */
-CUT.isError("assertDeepStrictEqual(); 29a - error",
-  () => CEL.assertDeepStrictEqual(
-    Object(42), 42n, "assertDeepStrictEqual(); 29a - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 29b - error",
-  () => CEL.assertDeepStrictEqual(
-    Object("42"), 42n, "assertDeepStrictEqual(); 29b - error"
-  )
-);
-/* Chrome - Firefox not the same result
-CUT.isError("assertDeepStrictEqual(); 29c - error",
-  () => CEL.assertDeepStrictEqual(
-    Object(true), 1n, "assertDeepStrictEqual(); 29c - error"
-  )
-);
-*/
-/* objects / not same prototype - Object wrappers */
-CUT.isError("assertDeepStrictEqual(); 30a - error",
-  () => CEL.assertDeepStrictEqual(
-    Object(42), Object("42"), "assertDeepStrictEqual(); 30a - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 30b - error",
-  () => CEL.assertDeepStrictEqual(
-    Object(1), Object(true), "assertDeepStrictEqual(); 30b - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 30c - error",
-  () => CEL.assertDeepStrictEqual(
-    Object(1), Object(1n), "assertDeepStrictEqual(); 30c - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 30d - error",
-  () => CEL.assertDeepStrictEqual(
-    Object("true"), Object(true), "assertDeepStrictEqual(); 30d - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 30e - error",
-  () => CEL.assertDeepStrictEqual(
-    Object(42n), Object("42n"), "assertDeepStrictEqual(); 30e - error"
-  )
-);
-CUT.isError("assertDeepStrictEqual(); 30f - error",
-  () => CEL.assertDeepStrictEqual(
-    Object(1n), Object(true), "assertDeepStrictEqual(); 30f - error"
-  )
-);
-/* dataview + arraybuffer */
-token1 = new ArrayBuffer(2);
-token2 = new DataView(token1);
-// @ts-ignore
-token2.setInt8(0, 125, true);
-// @ts-ignore
-token2.setInt8(1, 100, true);
-token3 = new ArrayBuffer(2);
-token4 = new DataView(token3);
-// @ts-ignore
-token4.setInt8(0, 125, true);
-// @ts-ignore
-token4.setInt8(1, 100, true);
-token5 = new ArrayBuffer(2);
-token6 = new DataView(token5);
-// @ts-ignore
-token6.setInt8(0, 120, true);
-// @ts-ignore
-token6.setInt8(1, 100, true);
-token7 = new ArrayBuffer(3);
-token8 = new DataView(token7);
-// @ts-ignore
-token8.setInt8(0, 125, true);
-// @ts-ignore
-token8.setInt8(1, 100, true);
-CUT.isTrue("assertDeepStrictEqual(); 31a",
-     CEL.assertDeepStrictEqual([1, 2, token1, 3], [1, 2, token1, 3])
-  && CEL.assertDeepStrictEqual([1, 2, token1, 3], [1, 2, token3, 3])
-  && CEL.assertDeepStrictEqual([1, 2, token2, 3], [1, 2, token2, 3])
-  && CEL.assertDeepStrictEqual([1, 2, token2, 3], [1, 2, token4, 3])
-);
-CUT.isError(
-  "assertDeepStrictEqual(); 31b",
-  () => CEL.assertDeepStrictEqual(
-    [1, 2, token1, 3], [1, 2, token5, 3], "assertDeepStrictEqual(); 31b"
-  )
-);
-CUT.isError(
-  "assertDeepStrictEqual(); 31c",
-  () => CEL.assertDeepStrictEqual(
-    [1, 2, token1, 3], [1, 2, token7, 3], "assertDeepStrictEqual(); 31c"
-  )
-);
-CUT.isError(
-  "assertDeepStrictEqual(); 31d",
-  () => CEL.assertDeepStrictEqual(
-    [1, 2, token2, 3], [1, 2, token6, 3], "assertDeepStrictEqual(); 31d"
-  )
-);
-CUT.isError(
-  "assertDeepStrictEqual(); 31e",
-  () => CEL.assertDeepStrictEqual(
-    [1, 2, token2, 3], [1, 2, token8, 3], "assertDeepStrictEqual(); 31e"
-  )
-);
-/* assertDeepStrictEqual end */
-
-
 /* unique(); */
 token1 = [
   { "name": "Picard", "rank": "captain" },
@@ -4965,11 +1259,11 @@ CUT.isEqual("unique(); 01", "[4,7,5,6]",
 );
 CUT.isEqual("unique(); 02",
   JSON.stringify(CEL.unique(token1, "rank")),
- "[{\"name\":\"Picard\",\"rank\":\"captain\"},{\"name\":\"Data\",\"rank\":\"commander\"}]"
+  "[{\"name\":\"Picard\",\"rank\":\"captain\"},{\"name\":\"Data\",\"rank\":\"commander\"}]"
 );
 CUT.isEqual("unique(); 03",
   JSON.stringify(CEL.unique(token1, (v) => v.rank)),
- "[{\"name\":\"Picard\",\"rank\":\"captain\"},{\"name\":\"Data\",\"rank\":\"commander\"}]"
+  "[{\"name\":\"Picard\",\"rank\":\"captain\"},{\"name\":\"Data\",\"rank\":\"commander\"}]"
 );
 
 
@@ -6206,8 +2500,500 @@ CUT.isFalse("isCoercedObject(); 05",
 );
 
 
-/* isDeepStrictEqual(); begin */
-/* only structures 1 copied */
+/* isDeepStrictEqual begin */
+CUT.isFalse("isDeepStrictEqual(); 01b", CEL.isDeepStrictEqual(42, 43));
+/* primitives / number + Object wrappers */
+CUT.isTrue("isDeepStrictEqual(); 01a", CEL.isDeepStrictEqual(42, 42));
+CUT.isFalse("isDeepStrictEqual(); 01b", CEL.isDeepStrictEqual(42, 43));
+CUT.isTrue("isDeepStrictEqual(); 01c", CEL.isDeepStrictEqual(42, Object(42)));
+CUT.isTrue("isDeepStrictEqual(); 01d", CEL.isDeepStrictEqual(Object(42), 42));
+CUT.isFalse("isDeepStrictEqual(); 01e", CEL.isDeepStrictEqual(42, Object(43)));
+CUT.isFalse("isDeepStrictEqual(); 01f", CEL.isDeepStrictEqual(Object(42), 43));
+CUT.isTrue("isDeepStrictEqual(); 01g",
+  CEL.isDeepStrictEqual(Object(42), Object(42))
+);
+CUT.isFalse("isDeepStrictEqual(); 01h",
+  CEL.isDeepStrictEqual(Object(42), Object(43))
+);
+/* primitives / number: 0, -0, NaN, Infinity, -Infinity */
+CUT.isTrue("isDeepStrictEqual(); 01i", CEL.isDeepStrictEqual(0, 0));
+CUT.isTrue("isDeepStrictEqual(); 01j", CEL.isDeepStrictEqual(-0, -0));
+CUT.isFalse("isDeepStrictEqual(); 01k", CEL.isDeepStrictEqual(-0, 0));
+CUT.isFalse("isDeepStrictEqual(); 01l", CEL.isDeepStrictEqual(-0, +0));
+CUT.isTrue("isDeepStrictEqual(); 01m", CEL.isDeepStrictEqual(NaN, NaN));
+CUT.isTrue("isDeepStrictEqual(); 01n",
+  CEL.isDeepStrictEqual(Infinity, Infinity)
+);
+CUT.isTrue("isDeepStrictEqual(); 01o",
+  CEL.isDeepStrictEqual(-Infinity, -Infinity)
+);
+CUT.isFalse("isDeepStrictEqual(); 01p",
+  CEL.isDeepStrictEqual(Infinity, -Infinity)
+);
+/* primitives / not same type */
+CUT.isFalse("isDeepStrictEqual(); 01q", CEL.isDeepStrictEqual(42, "42"));
+CUT.isFalse("isDeepStrictEqual(); 01r", CEL.isDeepStrictEqual(1, true));
+CUT.isFalse("isDeepStrictEqual(); 01s", CEL.isDeepStrictEqual(1n, true));
+CUT.isFalse("isDeepStrictEqual(); 01t", CEL.isDeepStrictEqual(1n, "1n"));
+CUT.isFalse("isDeepStrictEqual(); 01u", CEL.isDeepStrictEqual(false, ""));
+/* primitives / bigint + Object wrappers */
+CUT.isTrue("isDeepStrictEqual(); 02a", CEL.isDeepStrictEqual(42n, 42n));
+CUT.isFalse("isDeepStrictEqual(); 02b", CEL.isDeepStrictEqual(42n, 43n));
+CUT.isTrue("isDeepStrictEqual(); 02c", CEL.isDeepStrictEqual(42n, Object(42n)));
+CUT.isTrue("isDeepStrictEqual(); 02d", CEL.isDeepStrictEqual(Object(42n), 42n));
+CUT.isFalse("isDeepStrictEqual(); 02e",
+  CEL.isDeepStrictEqual(42n, Object(43n))
+);
+CUT.isFalse("isDeepStrictEqual(); 02f",
+  CEL.isDeepStrictEqual(Object(42n), 43n)
+);
+CUT.isTrue("isDeepStrictEqual(); 02g",
+  CEL.isDeepStrictEqual(Object(42n), Object(42n))
+);
+CUT.isFalse("isDeepStrictEqual(); 02h",
+  CEL.isDeepStrictEqual(Object(42n), Object(43n))
+);
+/* primitives / string + Object wrappers */
+CUT.isTrue("isDeepStrictEqual(); 02i", CEL.isDeepStrictEqual("lorem", "lorem"));
+CUT.isFalse("isDeepStrictEqual(); 03b",
+  CEL.isDeepStrictEqual("lorem", "ipsum")
+);
+CUT.isTrue("isDeepStrictEqual(); 03c",
+  CEL.isDeepStrictEqual("lorem", Object("lorem"))
+);
+CUT.isTrue("isDeepStrictEqual(); 03d",
+  CEL.isDeepStrictEqual(Object("lorem"), "lorem")
+);
+CUT.isFalse("isDeepStrictEqual(); 03e",
+  CEL.isDeepStrictEqual("lorem", Object("ipsum"))
+);
+CUT.isFalse("isDeepStrictEqual(); 03f",
+  CEL.isDeepStrictEqual(Object("lorem"), "ipsum")
+);
+CUT.isTrue("isDeepStrictEqual(); 03g",
+  CEL.isDeepStrictEqual(Object("lorem"), Object("lorem"))
+);
+CUT.isFalse("isDeepStrictEqual(); 03h",
+  CEL.isDeepStrictEqual(Object("lorem"), Object("ipsum"))
+);
+/* primitives / boolean + Object wrappers */
+CUT.isTrue("isDeepStrictEqual(); 04a", CEL.isDeepStrictEqual(true, true));
+CUT.isFalse("isDeepStrictEqual(); 04b", CEL.isDeepStrictEqual(true, false));
+CUT.isTrue("isDeepStrictEqual(); 04c",
+  CEL.isDeepStrictEqual(true, Object(true))
+);
+CUT.isTrue("isDeepStrictEqual(); 04d",
+  CEL.isDeepStrictEqual(Object(true), true)
+);
+CUT.isFalse("isDeepStrictEqual(); 04e",
+  CEL.isDeepStrictEqual(true, Object(false))
+);
+CUT.isFalse("isDeepStrictEqual(); 04f",
+  CEL.isDeepStrictEqual(Object(true), false)
+);
+CUT.isTrue("isDeepStrictEqual(); 04g",
+  CEL.isDeepStrictEqual(Object(true), Object(true))
+);
+CUT.isFalse("isDeepStrictEqual(); 04h",
+  CEL.isDeepStrictEqual(Object(true), Object(false))
+);
+/* primitives / Symbol */
+token1 = Symbol("Agradzsag");
+token2 = Symbol("Agradzsag");
+token3 = Symbol("Trillian");
+CUT.isTrue("isDeepStrictEqual(); 05a", CEL.isDeepStrictEqual(token1, token1));
+CUT.isFalse("isDeepStrictEqual(); 05b", CEL.isDeepStrictEqual(token1, token2));
+CUT.isFalse("isDeepStrictEqual(); 05c", CEL.isDeepStrictEqual(token1, token3));
+/* objects / Array */
+CUT.isTrue("isDeepStrictEqual(); 06a", CEL.isDeepStrictEqual([1, 2], [1, 2]));
+CUT.isFalse("isDeepStrictEqual(); 06b", CEL.isDeepStrictEqual([1, 2], [1, 3]));
+CUT.isFalse("isDeepStrictEqual(); 06c",
+  CEL.isDeepStrictEqual([1, 2], [1, "2"])
+);
+CUT.isFalse("isDeepStrictEqual(); 06d",
+  CEL.isDeepStrictEqual([1, 2], [1, 2, 3])
+);
+/* objects / Set */
+token1 = new Set([1, 2]);
+token2 = new Set([1, 2]);
+token3 = new Set([1, 3]);
+token4 = new Set([1, "2"]);
+token5 = new Set([1, 2, 3]);
+CUT.isTrue("isDeepStrictEqual(); 07a", CEL.isDeepStrictEqual(token1, token2));
+CUT.isFalse("isDeepStrictEqual(); 07b", CEL.isDeepStrictEqual(token1, token3));
+CUT.isFalse("isDeepStrictEqual(); 07c", CEL.isDeepStrictEqual(token1, token4));
+CUT.isFalse("isDeepStrictEqual(); 07d", CEL.isDeepStrictEqual(token1, token5));
+/* objects / TypedArrays */
+token1 = Int16Array.from([34, 45]);
+token2 = Int16Array.from([34, 45]);
+token3 = Int16Array.from([34, 46]);
+token5 = Int16Array.from([34, 45, 56]);
+CUT.isTrue("isDeepStrictEqual(); 08a", CEL.isDeepStrictEqual(token1, token2));
+CUT.isFalse("isDeepStrictEqual(); 08b", CEL.isDeepStrictEqual(token1, token3));
+CUT.isFalse("isDeepStrictEqual(); 08c", CEL.isDeepStrictEqual(token1, token5));
+/* objects / Object (other objects) */
+/* objects / same reference (same object) */
+token1 = {"a": 1, "b": 2};
+token2 = {"a": 1, "b": 2};
+token3 = {"a": 1, "b": 3};
+token4 = {"a": 1, "b": "2"};
+token5 = {"a": 1, "b": 2, "c": 3};
+token6 = {"a": 1, "b": 2, "c": 3, [Symbol()]: 4};
+token7 = {"a": 1, "b": 2, "c": 3, [Symbol()]: 4};
+token8 = {"a": 1, "b": 2, "c": 3, [Symbol()]: 5};
+CUT.isTrue("isDeepStrictEqual(); 09a", CEL.isDeepStrictEqual(token1, token2));
+CUT.isTrue("isDeepStrictEqual(); 09b", CEL.isDeepStrictEqual(token6, token6));
+CUT.isFalse("isDeepStrictEqual(); 09c", CEL.isDeepStrictEqual(token1, token3));
+CUT.isFalse("isDeepStrictEqual(); 09d", CEL.isDeepStrictEqual(token1, token4));
+CUT.isFalse("isDeepStrictEqual(); 09e", CEL.isDeepStrictEqual(token1, token5));
+CUT.isFalse("isDeepStrictEqual(); 09f", CEL.isDeepStrictEqual(token6, token7));
+CUT.isFalse("isDeepStrictEqual(); 09g", CEL.isDeepStrictEqual(token6, token8));
+/* objects / Map */
+token1 = new Map([["a", 1], ["b", 2]]);
+token2 = new Map([["a", 1], ["b", 2]]);
+token3 = new Map([["a", 1], ["b", 3]]);
+// @ts-ignore
+token4 = new Map([["a", 1], ["b", "2"]]);
+token5 = new Map([["a", 1], ["b", 2], ["c", 3]]);
+CUT.isTrue("isDeepStrictEqual(); 10a", CEL.isDeepStrictEqual(token1, token2));
+CUT.isFalse("isDeepStrictEqual(); 10b", CEL.isDeepStrictEqual(token1, token3));
+CUT.isFalse("isDeepStrictEqual(); 10c", CEL.isDeepStrictEqual(token1, token4));
+CUT.isFalse("isDeepStrictEqual(); 10d", CEL.isDeepStrictEqual(token1, token5));
+/* objects / weakset + weakmap*/
+token1 = new WeakSet();
+token2 = new WeakSet();
+CUT.isTrue("isDeepStrictEqual(); 11a", CEL.isDeepStrictEqual(token1, token1));
+CUT.isFalse("isDeepStrictEqual(); 11b", CEL.isDeepStrictEqual(token1, token2));
+token1 = new WeakMap();
+token2 = new WeakMap();
+CUT.isTrue("isDeepStrictEqual(); 11c", CEL.isDeepStrictEqual(token1, token1));
+CUT.isFalse("isDeepStrictEqual(); 11d", CEL.isDeepStrictEqual(token1, token2));
+/* objects / Function */
+CUT.isTrue("isDeepStrictEqual(); 12a",
+  CEL.isDeepStrictEqual(Array.from, Array.from)
+);
+CUT.isFalse("isDeepStrictEqual(); 12b",
+  CEL.isDeepStrictEqual(Array.from, Array.of)
+);
+/* objects / Date */
+token1 = new Date();
+token2 = new Date();
+if (token2.getMilliseconds() === 1) {
+  token2.setMilliseconds(2);
+} else {
+  token2.setMilliseconds(1);
+}
+token3 = {};
+Object.setPrototypeOf(token3, Date);
+CUT.isTrue("isDeepStrictEqual(); 13a", CEL.isDeepStrictEqual(token1, token1));
+CUT.isFalse("isDeepStrictEqual(); 13b", CEL.isDeepStrictEqual(token1, token2));
+CUT.isFalse("isDeepStrictEqual(); 13c", CEL.isDeepStrictEqual(token1, token3));
+/* objects / Error */
+token1 = new Error("Agradzsag");
+token2 = new Error("Agradzsag");
+token3 = new TypeError("Agradzsag");
+token3 = new TypeError("Agradzsag");
+CUT.isTrue("isDeepStrictEqual(); 14a", CEL.isDeepStrictEqual(token1, token1));
+CUT.isTrue("isDeepStrictEqual(); 14b", CEL.isDeepStrictEqual(token3, token3));
+CUT.isFalse("isDeepStrictEqual(); 14c", CEL.isDeepStrictEqual(token1, token2));
+CUT.isFalse("isDeepStrictEqual(); 14d", CEL.isDeepStrictEqual(token1, token3));
+/* types: null, undefined */
+CUT.isTrue("isDeepStrictEqual(); 15a",
+  CEL.isDeepStrictEqual(null, null)
+);
+CUT.isTrue("isDeepStrictEqual(); 15b",
+  CEL.isDeepStrictEqual(undefined, undefined)
+);
+CUT.isFalse("isDeepStrictEqual(); 15c", CEL.isDeepStrictEqual(null, undefined));
+/* structures 1 */
+token1 = new Error("Agradzsag");
+// @ts-ignore
+token2 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1]]])}];
+// @ts-ignore
+token3 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1]]])}];
+// @ts-ignore
+token4 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, 42]]])}];
+// @ts-ignore
+token5 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1, 42]]])}];
+CUT.isTrue("isDeepStrictEqual(); 16a", CEL.isDeepStrictEqual(token2, token2));
+CUT.isTrue("isDeepStrictEqual(); 16b", CEL.isDeepStrictEqual(token2, token3));
+CUT.isFalse("isDeepStrictEqual(); 16c", CEL.isDeepStrictEqual(token2, token4));
+CUT.isFalse("isDeepStrictEqual(); 16d", CEL.isDeepStrictEqual(token2, token5));
+/* structures 2 */
+token1 = new Error("Agradzsag");
+// @ts-ignore
+token2 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
+token3 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
+token4 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", ["a", 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
+token5 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13, 14])]])}, token1];
+CUT.isTrue("isDeepStrictEqual(); 17a", CEL.isDeepStrictEqual(token2, token2));
+CUT.isTrue("isDeepStrictEqual(); 17b", CEL.isDeepStrictEqual(token2, token3));
+CUT.isFalse("isDeepStrictEqual(); 17c", CEL.isDeepStrictEqual(token2, token4));
+CUT.isFalse("isDeepStrictEqual(); 17d", CEL.isDeepStrictEqual(token2, token5));
+/* structures 3 */
+token1 = new Error("Agradzsag");
+// @ts-ignore
+token2 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
+token3 = [1, 2, {"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
+token4 = [1, 2, {"3": 4, "5": new Map([["6", 8], ["8", [9, 10]], ["11", new Set([12, 14])]])}, token1];
+// @ts-ignore
+token5 = [1, 2, {"3": 4, "5": new Map([["6", 8], ["8", [9, 10, 15]], ["11", new Set([12, 13])]])}, token1];
+CUT.isTrue("isDeepStrictEqual(); 18a", CEL.isDeepStrictEqual(token2, token2));
+CUT.isTrue("isDeepStrictEqual(); 18b", CEL.isDeepStrictEqual(token2, token3));
+CUT.isFalse("isDeepStrictEqual(); 18c", CEL.isDeepStrictEqual(token2, token4));
+CUT.isFalse("isDeepStrictEqual(); 18d", CEL.isDeepStrictEqual(token2, token5));
+/* structures 4 */
+token1 = new Error("Agradzsag");
+// @ts-ignore
+token2 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
+token3 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
+token4 = [1,5,{"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13])]])}, token1];
+// @ts-ignore
+token5 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, 10]], ["11", new Set([12, 13, 14])]])}, token1];
+CUT.isTrue("isDeepStrictEqual(); 19a", CEL.isDeepStrictEqual(token2, token2));
+CUT.isTrue("isDeepStrictEqual(); 19b", CEL.isDeepStrictEqual(token2, token3));
+CUT.isFalse("isDeepStrictEqual(); 19c", CEL.isDeepStrictEqual(token2, token4));
+CUT.isFalse("isDeepStrictEqual(); 19d", CEL.isDeepStrictEqual(token2, token5));
+/* objects / not same prototype - array */
+CUT.isFalse("isDeepStrictEqual(); 20a", CEL.isDeepStrictEqual({}, []));
+CUT.isFalse("isDeepStrictEqual(); 20b", CEL.isDeepStrictEqual(new Map(), []));
+CUT.isFalse("isDeepStrictEqual(); 20c", CEL.isDeepStrictEqual(new Set(), []));
+CUT.isFalse("isDeepStrictEqual(); 20d",
+  CEL.isDeepStrictEqual(new WeakMap(), [])
+);
+CUT.isFalse("isDeepStrictEqual(); 20e",
+  CEL.isDeepStrictEqual(new WeakSet(), [])
+);
+CUT.isFalse("isDeepStrictEqual(); 20f", CEL.isDeepStrictEqual(new Error(), []));
+CUT.isFalse("isDeepStrictEqual(); 20g", CEL.isDeepStrictEqual(42, [42]));
+CUT.isFalse("isDeepStrictEqual(); 20h",
+  CEL.isDeepStrictEqual(Object(42), [42])
+);
+CUT.isFalse("isDeepStrictEqual(); 20i", CEL.isDeepStrictEqual(true, [true]));
+CUT.isFalse("isDeepStrictEqual(); 20j",
+  CEL.isDeepStrictEqual(Object(true), [true])
+);
+CUT.isFalse("isDeepStrictEqual(); 20k",
+  CEL.isDeepStrictEqual("lorem", ["lorem"])
+);
+CUT.isFalse("isDeepStrictEqual(); 20l",
+  CEL.isDeepStrictEqual(Object("lorem"), ["lorem"])
+);
+CUT.isFalse("isDeepStrictEqual(); 20m", CEL.isDeepStrictEqual(42n, [42n]));
+CUT.isFalse("isDeepStrictEqual(); 20n",
+  CEL.isDeepStrictEqual(Object(42n), [42n])
+);
+/* objects / not same prototype - map */
+CUT.isFalse("isDeepStrictEqual(); 21a",
+  CEL.isDeepStrictEqual(new Map(), new Set())
+);
+CUT.isFalse("isDeepStrictEqual(); 21b",
+  CEL.isDeepStrictEqual(new Map(), new WeakSet())
+);
+CUT.isFalse("isDeepStrictEqual(); 21c",
+  CEL.isDeepStrictEqual(new Map(), new WeakMap())
+);
+CUT.isFalse("isDeepStrictEqual(); 21d",
+  CEL.isDeepStrictEqual(new Error(), new Map())
+);
+CUT.isFalse("isDeepStrictEqual(); 21e", CEL.isDeepStrictEqual(42, new Map()));
+CUT.isFalse("isDeepStrictEqual(); 21f",
+  CEL.isDeepStrictEqual(Object(42), new Map())
+);
+CUT.isFalse("isDeepStrictEqual(); 21g", CEL.isDeepStrictEqual(true, new Map()));
+CUT.isFalse("isDeepStrictEqual(); 21h",
+  CEL.isDeepStrictEqual(Object(true), new Map())
+);
+CUT.isFalse("isDeepStrictEqual(); 21i",
+  CEL.isDeepStrictEqual("lorem", new Map())
+);
+CUT.isFalse("isDeepStrictEqual(); 21j",
+  CEL.isDeepStrictEqual(Object("lorem"), new Map())
+);
+CUT.isFalse("isDeepStrictEqual(); 21k", CEL.isDeepStrictEqual(42n, new Map()));
+CUT.isFalse("isDeepStrictEqual(); 21l",
+  CEL.isDeepStrictEqual(Object(42n), new Map())
+);
+/* objects / not same prototype - set */
+CUT.isFalse("isDeepStrictEqual(); 22a",
+  CEL.isDeepStrictEqual(new WeakMap(), new Set())
+);
+CUT.isFalse( "isDeepStrictEqual(); 22b",
+  CEL.isDeepStrictEqual(new Error(), new Set())
+);
+CUT.isFalse("isDeepStrictEqual(); 22c", CEL.isDeepStrictEqual(42, new Set()));
+CUT.isFalse("isDeepStrictEqual(); 22d",
+  CEL.isDeepStrictEqual(Object(42), new Set())
+);
+CUT.isFalse("isDeepStrictEqual(); 22e", CEL.isDeepStrictEqual(true, new Set()));
+CUT.isFalse("isDeepStrictEqual(); 22f",
+  CEL.isDeepStrictEqual(Object(true), new Set())
+);
+CUT.isFalse("isDeepStrictEqual(); 22g",
+  CEL.isDeepStrictEqual("lorem", new Set())
+);
+CUT.isFalse("isDeepStrictEqual(); 22h",
+  CEL.isDeepStrictEqual(Object("lorem"), new Set())
+);
+CUT.isFalse("isDeepStrictEqual(); 22i", CEL.isDeepStrictEqual(42n, new Set()));
+CUT.isFalse("isDeepStrictEqual(); 22j",
+  CEL.isDeepStrictEqual(Object(42n), new Set())
+);
+/* objects / not same prototype - weakset */
+CUT.isFalse("isDeepStrictEqual(); 23a",
+  CEL.isDeepStrictEqual(new WeakMap(), new WeakSet())
+);
+CUT.isFalse("isDeepStrictEqual(); 23b",
+  CEL.isDeepStrictEqual(new Error(), new WeakSet())
+);
+CUT.isFalse("isDeepStrictEqual(); 23c",
+  CEL.isDeepStrictEqual(42, new WeakSet())
+);
+CUT.isFalse("isDeepStrictEqual(); 23d",
+  CEL.isDeepStrictEqual(Object(42), new WeakSet())
+);
+CUT.isFalse("isDeepStrictEqual(); 23e",
+  CEL.isDeepStrictEqual(true, new WeakSet())
+);
+CUT.isFalse("isDeepStrictEqual(); 23f",
+  CEL.isDeepStrictEqual(Object(true), new WeakSet())
+);
+CUT.isFalse("isDeepStrictEqual(); 23g",
+  CEL.isDeepStrictEqual("lorem", new WeakSet())
+);
+CUT.isFalse("isDeepStrictEqual(); 23h",
+  CEL.isDeepStrictEqual(Object("lorem"), new WeakSet())
+);
+CUT.isFalse("isDeepStrictEqual(); 23i",
+  CEL.isDeepStrictEqual(42n, new WeakSet())
+);
+CUT.isFalse("isDeepStrictEqual(); 23j",
+  CEL.isDeepStrictEqual(Object(42n), new WeakSet())
+);
+/* objects / not same prototype - weakmap */
+CUT.isFalse("isDeepStrictEqual(); 24a",
+  CEL.isDeepStrictEqual(new Error(), new WeakMap())
+);
+CUT.isFalse("isDeepStrictEqual(); 24b",
+  CEL.isDeepStrictEqual(42, new WeakMap())
+);
+CUT.isFalse("isDeepStrictEqual(); 24c",
+  CEL.isDeepStrictEqual(Object(42), new WeakMap())
+);
+CUT.isFalse("isDeepStrictEqual(); 24d",
+  CEL.isDeepStrictEqual(true, new WeakMap())
+);
+CUT.isFalse("isDeepStrictEqual(); 24e",
+  CEL.isDeepStrictEqual(Object(true), new WeakMap())
+);
+CUT.isFalse("isDeepStrictEqual(); 24f",
+  CEL.isDeepStrictEqual("lorem", new WeakMap())
+);
+CUT.isFalse("isDeepStrictEqual(); 24g",
+  CEL.isDeepStrictEqual(Object("lorem"), new WeakMap())
+);
+CUT.isFalse("isDeepStrictEqual(); 24h",
+  CEL.isDeepStrictEqual(42n, new WeakMap())
+);
+CUT.isFalse("isDeepStrictEqual(); 24i",
+  CEL.isDeepStrictEqual(Object(42n), new WeakMap())
+);
+/* objects / not same prototype */
+CUT.isFalse("isDeepStrictEqual(); 25a",
+  // @ts-ignore
+  CEL.isDeepStrictEqual(42, new Error(42))
+);
+CUT.isFalse("isDeepStrictEqual(); 25b",
+  // @ts-ignore
+  CEL.isDeepStrictEqual(Object(42), new Error(42))
+);
+CUT.isFalse("isDeepStrictEqual(); 25c",
+  // @ts-ignore
+  CEL.isDeepStrictEqual(true, new Error(true))
+);
+CUT.isFalse("isDeepStrictEqual(); 25d",
+  // @ts-ignore
+  CEL.isDeepStrictEqual(Object(true), new Error(true))
+);
+CUT.isFalse("isDeepStrictEqual(); 25e",
+  CEL.isDeepStrictEqual("lorem", new Error("lorem"))
+);
+CUT.isFalse("isDeepStrictEqual(); 25f",
+  CEL.isDeepStrictEqual(Object("lorem"), new Error("lorem"))
+);
+CUT.isFalse("isDeepStrictEqual(); 25g",
+  // @ts-ignore
+  CEL.isDeepStrictEqual(42n, new Error(42n))
+);
+CUT.isFalse("isDeepStrictEqual(); 25h",
+  // @ts-ignore
+  CEL.isDeepStrictEqual(Object(42n), new Error(42n))
+);
+/* objects / not same prototype - number */
+CUT.isFalse("isDeepStrictEqual(); 26a", CEL.isDeepStrictEqual(true, 1));
+CUT.isFalse("isDeepStrictEqual(); 26b", CEL.isDeepStrictEqual(Object(true), 1));
+CUT.isFalse("isDeepStrictEqual(); 26c", CEL.isDeepStrictEqual("1", 1));
+CUT.isFalse("isDeepStrictEqual(); 26d", CEL.isDeepStrictEqual(Object("1"), 1));
+CUT.isFalse("isDeepStrictEqual(); 26e", CEL.isDeepStrictEqual(42n, 42));
+CUT.isFalse("isDeepStrictEqual(); 26f", CEL.isDeepStrictEqual(Object(42n), 42));
+/* objects / not same prototype - string */
+CUT.isFalse("isDeepStrictEqual(); 27a", CEL.isDeepStrictEqual(true, "true"));
+CUT.isFalse("isDeepStrictEqual(); 27b", CEL.isDeepStrictEqual(42n, "42n"));
+CUT.isFalse("isDeepStrictEqual(); 27c",
+  CEL.isDeepStrictEqual(Object(42), "42")
+);
+CUT.isFalse("isDeepStrictEqual(); 27d",
+  CEL.isDeepStrictEqual(Object(42n), "42n")
+);
+CUT.isFalse("isDeepStrictEqual(); 27e",
+  CEL.isDeepStrictEqual(Object(true), "true")
+);
+/* objects / not same prototype - boolean */
+CUT.isFalse("isDeepStrictEqual(); 28a", CEL.isDeepStrictEqual(1n, true));
+CUT.isFalse("isDeepStrictEqual(); 28b",
+  CEL.isDeepStrictEqual(Object(1n), true)
+);
+CUT.isFalse("isDeepStrictEqual(); 28c", CEL.isDeepStrictEqual(Object(1), true));
+CUT.isFalse("isDeepStrictEqual(); 28d", CEL.isDeepStrictEqual("true", true));
+/* objects / not same prototype - bigint */
+CUT.isFalse("isDeepStrictEqual(); 29a",
+  CEL.isDeepStrictEqual(Object(42), 42n)
+);
+CUT.isFalse("isDeepStrictEqual(); 29b",
+  CEL.isDeepStrictEqual(Object("42"), 42n)
+);
+/* Chrome - Firefox not the same result
+CUT.isFalse("isDeepStrictEqual(); 29c",
+  CEL.isDeepStrictEqual(Object(true), 1n, "isDeepStrictEqual(); 29c")
+);
+*/
+/* objects / not same prototype - Object wrappers */
+CUT.isFalse("isDeepStrictEqual(); 30a",
+  CEL.isDeepStrictEqual(Object(42), Object("42"))
+);
+CUT.isFalse("isDeepStrictEqual(); 30b",
+  CEL.isDeepStrictEqual(Object(1), Object(true))
+);
+CUT.isFalse("isDeepStrictEqual(); 30c",
+  CEL.isDeepStrictEqual(Object(1), Object(1n))
+);
+CUT.isFalse("isDeepStrictEqual(); 30d",
+  CEL.isDeepStrictEqual(Object("true"), Object(true))
+);
+CUT.isFalse("isDeepStrictEqual(); 30e",
+  CEL.isDeepStrictEqual(Object(42n), Object("42n"))
+);
+CUT.isFalse("isDeepStrictEqual(); 30f",
+  CEL.isDeepStrictEqual(Object(1n), Object(true))
+);
+/* dataview + arraybuffer */
 token1 = new ArrayBuffer(2);
 token2 = new DataView(token1);
 // @ts-ignore
@@ -6232,40 +3018,25 @@ token8 = new DataView(token7);
 token8.setInt8(0, 125, true);
 // @ts-ignore
 token8.setInt8(1, 100, true);
-CUT.isTrue("isDeepStrictEqual(); 01",
+CUT.isTrue("isDeepStrictEqual(); 31a",
      CEL.isDeepStrictEqual([1, 2, token1, 3], [1, 2, token1, 3])
   && CEL.isDeepStrictEqual([1, 2, token1, 3], [1, 2, token3, 3])
   && CEL.isDeepStrictEqual([1, 2, token2, 3], [1, 2, token2, 3])
   && CEL.isDeepStrictEqual([1, 2, token2, 3], [1, 2, token4, 3])
 );
-CUT.isFalse("isDeepStrictEqual(); 02",
-     CEL.isDeepStrictEqual([1, 2, token1, 3], [1, 2, token5, 3])
-  || CEL.isDeepStrictEqual([1, 2, token1, 3], [1, 2, token7, 3])
-  || CEL.isDeepStrictEqual([1, 2, token2, 3], [1, 2, token6, 3])
-  || CEL.isDeepStrictEqual([1, 2, token2, 3], [1, 2, token8, 3])
+CUT.isFalse("isDeepStrictEqual(); 31b",
+  CEL.isDeepStrictEqual([1, 2, token1, 3], [1, 2, token5, 3])
 );
-token1 = new Error("Agradzsag");
-// @ts-ignore
-token2 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1]]])}];
-// @ts-ignore
-token3 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1]]])}];
-// @ts-ignore
-token4 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, 42]]])}];
-// @ts-ignore
-token5 = [1,2,{"3": 4, "5": new Map([["6", 7], ["8", [9, token1, 42]]])}];
-CUT.isTrue("isDeepStrictEqual(); 16a - ok",
-  CEL.isDeepStrictEqual(token2, token2)
+CUT.isFalse("isDeepStrictEqual(); 31c",
+  CEL.isDeepStrictEqual([1, 2, token1, 3], [1, 2, token7, 3])
 );
-CUT.isTrue("isDeepStrictEqual(); 16b - ok",
-  CEL.isDeepStrictEqual(token2, token3)
+CUT.isFalse("isDeepStrictEqual(); 31d",
+  CEL.isDeepStrictEqual([1, 2, token2, 3], [1, 2, token6, 3])
 );
-CUT.isFalse("isDeepStrictEqual(); 16c - error",
-  CEL.isDeepStrictEqual(token2, token4)
+CUT.isFalse("isDeepStrictEqual(); 31e",
+  CEL.isDeepStrictEqual([1, 2, token2, 3], [1, 2, token8, 3])
 );
-CUT.isFalse("isDeepStrictEqual(); 16d - error",
-  CEL.isDeepStrictEqual(token2, token5)
-);
-/* isDeepStrictEqual(); end */
+/* isDeepStrictEqual end */
 
 
 CUT.isTrue("isEmptyValue(); 01",
@@ -7318,9 +4089,6 @@ CUT.addElement("ul", "<li>1x domReady(); is working</li>"
   + "<li>2x importScript(); (core api) - second script loaded</li>"
   + "<li>1x importScript(); (core api) - with more scripts"
   + "<li>1x importScript(); (core api) - with error</li>"
-  + "<li>1x getJson()</li>"
-  + "<li>1x getText()</li>"
-  + "<li>12x ajax()</li>"
   + "<li>8x Array.fromAsync()</li>"
   + "<li>1x asyncNoop(); is working</li>"
   + "<li>1x asyncT(); is working</li>"
@@ -7416,170 +4184,7 @@ Array.fromAsync({"0": 3, "1": 4, "2": 5, length: 3}, (x) => x * 2).then((res) =>
 );
 
 
-/* AJAX API */
-/*
-XML Parsing Error: not well-formed
-Location: unittest-data.json
-Line Number 1, Column 1:
--> MIME Content-Type: application/json can fix it
-*/
-
-
-token1 = "img/app-app-catalog/app-bricks.png";
-token2 = "<p><span class=\"big\">Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</span> Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. <small>In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.</small></p>";
-
-
-/* getText(); */
-// @ts-ignore
-CEL.getText("unittest-data.txt",
-  function(r){ CUT.isEqual("getText();", token2, r); }
-);
-
-
-/* getJson(); */
-// @ts-ignore
-CEL.getJson("unittest-data.json",
-  function (r) { CUT.isEqual("getJson();", token1, r.testArray[0].image); }
-);
-
-
-/* ajax begin */
-// @ts-ignore
-CEL.ajax({
-  queryType: "ajax", type: "get", url: "unittest-data.txt", format: "text",
-  success: function(r){ CUT.isEqual("ajax(); ajax get text", token2, r); },
-  error: function (e) {
-    CUT.isTrue("ajax(); ajax 1 get text: " + JSON.stringify(e), false);
-  }
-});
-// @ts-ignore
-CEL.ajax({
-  queryType: "ajax", type: "get", url: "unittest-data.json", format: "json",
-  success: function (r) {
-    CUT.isEqual("ajax(); ajax get json", token1, r.testArray[0].image);
-  },
-  error: function (e) {
-    CUT.isTrue("ajax(); ajax get json: " + JSON.stringify(e), false);
-  }
-});
-// @ts-ignore
-CEL.ajax({
-  queryType: "ajax", type: "get", url: "unittest-data.xml", format: "xml",
-  success: function (r) {
-    var xa = r.getElementsByTagName("picture");
-    var xb = xa[0].getElementsByTagName("title")[0].childNodes[0].nodeValue;
-    CUT.isEqual("ajax(); ajax get xml", "Vapelyfe", xb);
-  },
-  error: function (e) {
-    CUT.isTrue("ajax(); ajax get xml: " + JSON.stringify(e), false);
-  }
-});
-
-// @ts-ignore
-CEL.ajax({
-  queryType: "ajax", type: "post", url: "unittest-data.txt", format: "text",
-  data: "a=foo&b=bar baz",
-  success: function (r) { CUT.isEqual("ajax(); ajax post text", token2, r);},
-  error: function (e) {
-    CUT.isTrue("ajax(); ajax post text: " + JSON.stringify(e), false);
-  }
-});
-// @ts-ignore
-CEL.ajax({
-  queryType: "ajax", type: "post", url: "unittest-data.json", format: "json",
-  data: "a=foo&b=bar baz",
-  success: function (r) {
-    CUT.isEqual("ajax(); ajax post json", token1, r.testArray[0].image);
-  },
-  error: function (e) {
-    CUT.isTrue("ajax(); ajax post json: " + JSON.stringify(e), false);
-  }
-});
-// @ts-ignore
-CEL.ajax({
-  queryType: "ajax", type: "post", url: "unittest-data.xml", format: "xml",
-  data: "a=foo&b=bar baz",
-  success: function (r) {
-    var xa = r.getElementsByTagName("picture");
-    var xb = xa[0].getElementsByTagName("title")[0].childNodes[0].nodeValue;
-    CUT.isEqual("ajax(); ajax post xml", "Vapelyfe", xb);
-  },
-  error: function (e) {
-    CUT.isTrue("ajax(); ajax post xml: " + JSON.stringify(e), false);
-  }
-});
-
-// @ts-ignore
-CEL.ajax({
-  queryType: "cors", type: "get", url: "unittest-data.txt", format: "text",
-  success: function (r) { CUT.isEqual("ajax(); cors get text", token2, r);},
-  error: function (e) {
-    CUT.isTrue("ajax(); cors get text: " + JSON.stringify(e), false);
-  }
-});
-// @ts-ignore
-CEL.ajax({
-  queryType: "cors", type: "get", url: "unittest-data.json", format: "json",
-  success: function (r) {
-    CUT.isEqual("ajax(); cors get json", token1, r.testArray[0].image);
-  },
-  error: function (e) {
-    CUT.isTrue("ajax(); cors get json: " + JSON.stringify(e), false);
-  }
-});
-// @ts-ignore
-CEL.ajax({
-  queryType: "cors", type: "get", url: "unittest-data.xml", format: "xml",
-  success: function (r) {
-    var xa = r.getElementsByTagName("picture");
-    var xb = xa[0].getElementsByTagName("title")[0].childNodes[0].nodeValue;
-    CUT.isEqual("ajax(); cors get xml", "Vapelyfe", xb);
-  },
-  error: function (e) {
-    CUT.isTrue("ajax(); cors get xml: " + JSON.stringify(e), false);
-  }
-});
-
-// @ts-ignore
-CEL.ajax({
-  queryType: "cors", type: "post", url: "unittest-data.txt", format: "text",
-  data: "a=foo&b=bar baz",
-  success: function (r) {
-    CUT.isEqual("ajax(); cors post text", token2, r);
-  },
-  error: function (e) {
-    CUT.isTrue("ajax(); cors post text: " + JSON.stringify(e), false);
-  }
-});
-// @ts-ignore
-CEL.ajax({
-  queryType: "cors", type: "post", url: "unittest-data.json", format: "json",
-  data: "a=foo&b=bar baz",
-  success: function (r) {
-    CUT.isEqual("ajax(); cors post json", token1, r.testArray[0].image);
-  },
-  error: function (e) {
-    CUT.isTrue("ajax(); cors post json: " + JSON.stringify(e), false);
-  }
-});
-// @ts-ignore
-CEL.ajax({
-  queryType: "cors", type: "post", url: "unittest-data.xml", format: "xml",
-  data: "a=foo&b=bar baz",
-  success: function (r) {
-    var xa = r.getElementsByTagName("picture");
-    var xb = xa[0].getElementsByTagName("title")[0].childNodes[0].nodeValue;
-    CUT.isEqual("ajax(); cors post xml", "Vapelyfe", xb);
-  },
-  error: function (e) {
-    CUT.isTrue("ajax(); cors post xml: " + JSON.stringify(e), false);
-  }
-});
-/* ajax end */
-
-
 }());
-
 
 } catch (e) {
   CUT.isTrue("<span class=\"failed\">[CUT global try-catch]</span>"

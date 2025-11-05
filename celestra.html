@@ -172,28 +172,6 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <p><a href="#FN-strTruncate();">strTruncate();</a></p>
       <p><a href="#FN-strUpFirst();">strUpFirst();</a></p>
     </details>
-    <!-- Legacy Assertion API -->
-    <hr/>
-    <details open>
-      <summary><strong>Legacy Assertion API</strong></summary>
-      <p><a href="#FN-assertDeepEqual();">assertDeepEqual();</a></p>
-      <p><a href="#FN-assertDeepStrictEqual();">assertDeepStrictEqual();</a></p>
-      <p><a href="#FN-assertDoesNotMatch();">assertDoesNotMatch();</a></p>
-      <p><a href="#FN-assertEqual();">assertEqual();</a></p>
-      <p><a href="#FN-assertFail();">assertFail();</a></p>
-      <p><a href="#FN-assertFalse();">assertFalse();</a></p>
-      <p><a href="#FN-assertIs();">assertIs();</a></p>
-      <p><a href="#FN-assertIsNot();">assertIsNot();</a></p>
-      <p><a href="#FN-assertIsNotNullish();">assertIsNotNullish();</a></p>
-      <p><a href="#FN-assertIsNullish();">assertIsNullish();</a></p>
-      <p><a href="#FN-assertMatch();">assertMatch();</a></p>
-      <p><a href="#FN-assertNotDeepEqual();">assertNotDeepEqual();</a></p>
-      <p><a href="#FN-assertNotDeepStrictEqual();">assertNotDeepStrictEqual();</a></p>
-      <p><a href="#FN-assertNotStrictEqual();">assertNotStrictEqual();</a></p>
-      <p><a href="#FN-assertStrictEqual();">assertStrictEqual();</a></p>
-      <p><a href="#FN-assertTrue();">assertTrue();</a></p>
-      <p><a href="#FN-assertThrows();">assertThrows();</a></p>
-    </details>
     <!-- DOM API -->
     <hr/>
     <details open>
@@ -233,14 +211,6 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <p><a href="#FN-setFullscreenOn();">setFullscreenOn();</a></p>
       <p><a href="#FN-qs();">qs();</a></p>
       <p><a href="#FN-qsa();">qsa();</a></p>
-    </details>
-    <!-- Legacy AJAX API -->
-    <hr/>
-    <details open>
-      <summary><strong>Legacy AJAX API</strong></summary>
-      <p><a href="#FN-ajax();">ajax();</a></p>
-      <p><a href="#FN-getJson();">getJson();</a></p>
-      <p><a href="#FN-getText();">getText();</a></p>
     </details>
     <!-- Type API -->
     <hr/>
@@ -488,7 +458,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
 
 <p><strong>A helper JavaScript library with useful functions and polyfills and zero dependencies.</strong></p>
 
-<p>Latest version: 6.2.0</p>
+<p>Latest version: 6.3.0</p>
 <p>Date: 2025-11-04T18:25:47.121Z</p>
 
 <p><strong>Tested on these environments:</strong></p>
@@ -674,10 +644,6 @@ globalThis.CEL = celestra;
       <td><code>qsa();</code><br/><code>qs();</code><br/><code>domReady();</code><br/><code>domClear();</code><br/><code>domCreate();</code><br/><code>domToElement();</code><br/><code>domGetCSS();</code><br/><code>domSetCSS();</code><br/><code>domFadeIn();</code><br/><code>domFadeOut();</code><br/><code>domFadeToggle();</code><br/><code>domShow();</code><br/><code>domHide();</code><br/><code>domToggle();</code><br/><code>domIsHidden();</code><br/><code>domScrollToTop();</code><br/><code>domScrollToBottom();</code><br/><code>domScrollToElement();</code><br/><code>domSiblings();</code><br/><code>domSiblingsPrev();</code><br/><code>domSiblingsLeft();</code><br/><code>domSiblingsNext();</code><br/><code>domSiblingsRight();</code><br/><code>domGetCSSVar();</code><br/><code>domSetCSSVar();</code><br/><code>importScript();</code><br/><code>importStyle();</code><br/><code>setFullscreenOn();</code><br/><code>setFullscreenOn();</code><br/><code>setFullscreenOff();</code><br/><code>getFullscreen();</code><br/><code>form2array(form);</code><br/><code>form2string(form);</code><br/><code>getDoNotTrack();</code><br/><code>getLocation();</code><br/><code>createFile();</code></td>
     </tr>
     <tr>
-      <td style="width: auto;"><strong>Legacy AJAX API</strong></td>
-      <td><code>getText();</code><br/><code>getJson();</code><br/><code>ajax();</code></td>
-    </tr>
-    <tr>
       <td style="width: auto;"><strong>Cookie API</strong></td>
       <td><code>getCookie();</code><br/><code>hasCookie();</code><br/><code>setCookie();</code><br/><code>removeCookie();</code><br/><code>clearCookies();</code></td>
     </tr>
@@ -746,7 +712,6 @@ globalThis.CEL = celestra;
   <li>The Node.js and Deno support has been added.</li>
 </ul>
 
-
 <h3>Celestra v6.1.0 (Sulaco) changes</h3>
 
 <ul>
@@ -762,6 +727,12 @@ globalThis.CEL = celestra;
   <li>Some deprecated functions have been removed.</li>
 </ul>
 
+<h3>Celestra v6.3.0 (Bishop) changes</h3>
+
+<ul>
+  <li>The <strong>Legacy AJAX API</strong> has been removed.</li>
+  <li>The <strong>Legacy Assertion API (Assert API v3)</strong> has been removed.</li>
+</ul>
 
 <hr/>
 <h2 id="functions">Functions</h2>
@@ -1078,90 +1049,9 @@ CEL.delay(5000)
   </table>
 </div>
 
-
 <h3 id="FNassertionAPI">Legacy Assertion API</h3>
 
-<p><span class="info">These functions have been deprecated and will be removed, because the first stable version of <a href="https://github.com/Serrin/assert.js" target="_blank">assert.js</a> libraryhas been published.</span></p>
-
-<p>There are information about the equalities in the <a href="js-cheatsheet.pdf" target="_blank">js-cheatsheet.pdf</a>.</p>
-
-<div>
-  <table class="table-responsive table-striped">
-    <tr>
-      <td style="width: auto; min-width: 33%;"><strong>Name</strong></td>
-      <td><strong>Description</strong></td>
-    </tr>
-    <tr id="FN-assertDeepEqual();">
-      <td><code>assertDeepEqual(value1, value2 [, message | error]);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function throws an error with the message if the value1 and value2 aren't deep equals. (<em>Deep loose equality + NaN equality: primitives (loose equality + NaN equality), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer</em>) The message parameter is optional. The return value is <code>true</code>, when the test was success.<br/><span class="info">This function may give unexpected results. It is safer to use the <code>assertDeepStrictEqual();</code> function.</span></td>
-    </tr>
-    <tr id="FN-assertDeepStrictEqual();">
-      <td><code>assertDeepStrictEqual(value1, value2 [, message | error]);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function throws an error with the message if the value1 and value2 aren't deep equals. (<em>Deep strict equality + NaN equality: primitives (SameValue - Object.is()), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer</em>) The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
-    </tr>
-    <tr id="FN-assertDoesNotMatch();">
-      <td><code>assertDoesNotMatch(string, regexp [, message | error]);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function throws an error with the message if the string matches with the regexp. The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
-    </tr>
-    <tr id="FN-assertEqual();">
-      <td><code>assertEqual(value1, value2 [, message | error]);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function throws an error with the message if the value1 and value2 aren't equals. (<em>Loose equality + NaN equality</em>) The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
-    </tr>
-    <tr id="FN-assertFail();">
-      <td><code>assertFail(message | error);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function always throws an error. If the argument is an error, then this error will be thrown, else a new error with the message.</td>
-    </tr>
-    <tr id="FN-assertFalse();">
-      <td><code>assertFalse(condition [, message | error]);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function throws an error with the message if the condition is truthy. The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
-    </tr>
-    <tr id="FN-assertIs();">
-      <td><code>assertIs(value, expectedType [, message | error]);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided value type or class is the given expectedType. The expectedType can be a type string, constructor function or an array of the type strings and constructors. If the value is not matched with the expectedType, then a TypeError will be thrown with detailed error message. If these conditions are passed, then the given value is the return value.</td>
-    </tr>
-    <tr id="FN-assertIsNot();">
-      <td><code>assertIsNot(value, expectedType [, message | error]);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided value type or class is not the given expectedType. The expectedType can be a type string, constructor function or an array of the type strings and constructors. If the value is matched with the expectedType, then a TypeError will be thrown with detailed error message. If these conditions are passed, then the given value is the return value.</td>
-    </tr>
-    <tr id="FN-assertIsNotNullish();">
-      <td><code>assertIsNotNullish(value [, message | error]);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/><span class="info">Old name before v6.1.0: <code>assertIsNotNil();</code>.</span><br/>This function throws an error with the message if the value is null or undefined, else the given value is the return value. The message parameter is optional.</td>
-    </tr>
-    <tr id="FN-assertIsNullish();">
-      <td><code>assertIsNullish(value [, message | error]);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/><span class="info">Old name before v6.1.0: <code>assertIsNil();</code>.</span><br/>This function throws an error with the message if the value is not null or undefined, else the given value is the return value. The message parameter is optional.</td>
-    </tr>
-    <tr id="FN-assertMatch();">
-      <td><code>assertMatch(string, regexp [, message | error]);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function throws an error with the message if the string doesn't match with the regexp. The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
-    </tr>
-    <tr id="FN-assertNotDeepEqual();">
-      <td><code>assertNotDeepEqual(value1, value2, [, message | error]);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function throws an error with the message if the value1 and value2 are deep equals. (<em>Deep loose equality + NaN equality: primitives (loose equality + NaN equality), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer</em>) The message parameter is optional. The return value is <code>true</code>, when the test was success.<br/><span class="info">This function may give unexpected results. It is safer to use the <code>assertNotDeepStrictEqual();</code> function.</span></td>
-    </tr>
-    <tr id="FN-assertNotDeepStrictEqual();">
-      <td><code>assertNotDeepStrictEqual(value1, value2, [, message | error]);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function throws an error with the message if the value1 and value2 are deep equals. (<em>Deep strict equality + NaN equality: primitives (SameValue - Object.is()), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer</em>) The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
-    </tr>
-    <tr id="FN-assertNotStrictEqual();">
-      <td><code>assertNotStrictEqual(value1, value2 [, message | error]);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function throws an error with the message if the value1 and value2 are equals. (<em>SameValue equality</em>) The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
-    </tr>
-    <tr id="FN-assertStrictEqual();">
-      <td><code>assertStrictEqual(value1, value2 [, message | error]);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function throws an error with the message if the value1 and value2 aren't equals. (<em>SameValue equality</em>) The message parameter is optional. The return value is <code>true</code>, when the test was success.</td>
-    </tr>
-    <tr id="FN-assertTrue();">
-      <td><code>assertTrue(condition [, message | error]);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This is an alias of the <code>assert(condition [, message | error]);</code>.</td>
-    </tr>
-    <tr id="FN-assertThrows();">
-      <td><code>assertThrows(callback [, message | error]);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function catches and returns the error, if the callback throws an error. In other cases throws an error with the message. The message parameter is optional.</td>
-    </tr>
-  </table>
-</div>
-
+<p><span class="info">These functions have been removed in v6.3.0, because the first stable version of the <a href="https://github.com/Serrin/assert.js" target="_blank">assert.js</a> library has been published.</span></p>
 
 <h3 id="FNdomAPI">DOM API</h3>
 
@@ -1351,44 +1241,7 @@ CEL.delay(5000)
 
 <h3 id="FNajaxAPI">Legacy AJAX API</h3>
 
-<p class="info">
-  These functions are deprecated, and will be removed. It's recommend to use the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API" target="_blank">Fetch API</a>, because this is <a href="https://caniuse.com/?search=fetch" target="_blank">supported</a> in every modern browsers.
-</p>
-
-<div style="overflow-x:auto;">
-  <table class="table-responsive table-striped">
-    <tr">
-      <td style="width: auto; min-width: 42%;"><strong>Name</strong></td>
-      <td><strong>Description</strong></td>
-    </tr>
-    <tr id="FN-ajax();">
-      <td><code>ajax(Options object);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>Get content and send data via AJAX and CORS.</td>
-    </tr>
-    <tr id="FN-getJson();">
-      <td><code>getJson(url,success);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>Get JSON content via AJAX.</td>
-    </tr>
-    <tr id="FN-getText();">
-      <td><code>getText(url,success);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>Get TEXT content via AJAX.</td>
-    </tr>
-  </table>
-</div>
-
-<p><strong>Options object properties:</strong></p>
-<ul>
-  <li>The <strong>queryType</strong> is optional and can be a <strong>string</strong> with these values: <code>"ajax"</code> or <code>"cors"</code>. The default value is <code>"ajax"</code>.</li>
-  <li>The <strong>type</strong> is optional and can be a <strong>string</strong> with these values: <code>"get"</code> or <code>"post"</code>. The default value is <code>"get"</code>.</li>
-  <li>The <strong>url</strong> is mandatory and has to be a <strong>string</strong>.</li>
-  <li>The <strong>data</strong> is optional and has to be a <strong>string</strong> if the <code>type === "post"</code>.</li>
-  <li>The <strong>format</strong> is optional and can be a <strong>string</strong> with these values: <code>"text"</code> or <code>"json"</code> or <code>"xml"</code>. The default value is <code>"text"</code>.
-  <li>The <strong>success</strong> is mandatory and has to be a <strong>function</strong>.</li>
-  <li>The <strong>error</strong> is optional and can be a <strong>function</strong>.</li>
-  <li>The <strong>user</strong> is optional and can be a <strong>string</strong>.</li>
-  <li>The <strong>password</strong> is optional, but mandatory if the user is set. This parameter can be a <strong>string</strong>.</li>
-</ul>
-
+<p class="info">These functions have been removed in v6.3.0. It's recommend to use the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API" target="_blank">Fetch API</a>, because this is <a href="https://caniuse.com/?search=fetch" target="_blank">supported</a> in every modern browsers.</p>
 
 <h3 id="FNtypecheckingAPI">Type API</h3>
 

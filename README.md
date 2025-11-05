@@ -12,7 +12,7 @@
 
 __A helper JavaScript library with useful functions and polyfills and zero dependencies.__
 
-Latest version: 6.2.0
+Latest version: 6.3.0
 
 Date: 2025-11-04T18:25:47.121Z
 
@@ -122,7 +122,6 @@ globalThis.CEL = celestra;
 API|Function
 ----|-----------
 __DOM API__|`qsa();`<BR>`qs();`<BR>`domReady();`<BR>`domClear();`<BR>`domCreate();`<BR>`domToElement();`<BR>`domGetCSS();`<BR>`domSetCSS();`<BR>`domFadeIn();`<BR>`domFadeOut();`<BR>`domFadeToggle();`<BR>`domShow();`<BR>`domHide();`<BR>`domToggle();`<BR>`domIsHidden();`<BR>`domScrollToTop();`<BR>`domScrollToBottom();`<BR>`domScrollToElement();`<BR>`domSiblings();`<BR>`domSiblingsPrev();`<BR>`domSiblingsLeft();`<BR>`domSiblingsNext();`<BR>`domSiblingsRight();`<BR>`domGetCSSVar();`<BR>`domSetCSSVar();`<BR>`importScript();`<BR>`importStyle();`<BR>`setFullscreenOn();`<BR>`setFullscreenOn();`<BR>`setFullscreenOff();`<BR>`getFullscreen();`<BR>`form2array(form);`<BR>`form2string(form);`<BR>`getDoNotTrack();`<BR>`getLocation();`<BR>`createFile();`
-__Legacy AJAX API__|`getText();`<BR>`getJson();`<BR>`ajax();`
 __Cookie API__|`getCookie();`<BR>`hasCookie();`<BR>`setCookie();`<BR>`removeCookie();`<BR>`clearCookies();`
 
 ### Celestra v3.0.0 (Hera) changes
@@ -185,6 +184,11 @@ __Cookie API__|`getCookie();`<BR>`hasCookie();`<BR>`setCookie();`<BR>`removeCook
 - The `type();` function has been renamed to `typeOf();`.
 - The `celestra.noConflict();` function has been removed.
 - Some deprecated functions have been removed.
+
+### Celestra v6.3.0 (Bishop) changes
+
+- The __Legacy AJAX API__ has been removed.
+- The __Legacy Assertion API (Assert API v3)__ has been removed.
 
 -----
 
@@ -274,30 +278,7 @@ Name|Description
 
 ### Legacy Assertion API
 
-__These functions have been deprecated and will be removed, because the first stable version of the [assert.js](https://github.com/Serrin/assert.js) library has been published.__
-
-There are information about the equalities in the __js-cheatsheet.pdf__.
-
-Name|Description
-----|-----------
-`assertDeepEqual(value1, value2 [, message \| error]);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function throws an error with the message if the value1 and value2 aren't deep equals. (_Deep loose equality + NaN equality: primitives (loose equality + NaN equality), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer_) The message parameter is optional. The return value is `true`, when the test was success.<BR>__This function may give unexpected results. It is safer to use the `assertDeepStrictEqual();` function.__
-`assertDeepStrictEqual(value1, value2 [, message \| error]);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function throws an error with the message if the value1 and value2 aren't deep equals. (_Deep strict equality + NaN equality: primitives (SameValue - Object.is()), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer_) The message parameter is optional. The return value is `true`, when the test was success.
-`assertDoesNotMatch(string, regexp, [, message \| error]);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function throws an error with the message if the string matches with the regexp. The message parameter is optional. The return value is `true`, when the test was success.
-`assertEqual(value1, value2 [, message \| error]);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function throws an error with the message if the value1 and value2 aren't equals. (_Loose equality + NaN equality_) The message parameter is optional. The return value is `true`, when the test was success.
-`assertFail(message \| error);`|__Stability: 1 - Deprecated and will be removed.__<BR>his function always throws an error. If the argument is an error, then this error will be thrown, else a new error with the message.
-`assertFalse(condition [, message \| error]);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function throws an error with the message if the condition is truthy. The message parameter is optional. The return value is `true`, when the test was success.
-`assertIs(value, expectedType [, message \| error]);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value type or class is the given expectedType. The expectedType can be a type string, constructor function or an array of the type strings and constructors. If the value is not matched with the expectedType, then a TypeError will be thrown with detailed error message. If these conditions are passed, then the given value is the return value.
-`assertIsNot(value, expectedType [, message \| error]);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value type or class is not the given expectedType. The expectedType can be a type string, constructor function or an array of the type strings and constructors. If the value is matched with the expectedType, then a TypeError will be thrown with detailed error message. If these conditions are passed, then the given value is the return value.
-`assertIsNotNullish(value [, message \| error]);`|__Stability: 1 - Deprecated and will be removed.__<BR>__Old name before v6.1.0: `assertIsNotNil();`.__<BR>This function throws an error with the message if the value is null or undefined, else the given value is the return value. The message parameter is optional.
-`assertIsNullish(value [, message \| error]);`|__Stability: 1 - Deprecated and will be removed.__<BR>__Old name before v6.1.0: `assertIsNil();`.__<BR>This function throws an error with the message if the value is not null or undefined, else the given value is the return value. The message parameter is optional.
-`assertMatch(string, regexp [, message \| error]);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function throws an error with the message if the string doesn't match with the regexp. The message parameter is optional. The return value is `true`, when the test was success.
-`assertNotDeepEqual(value1, value2 [, message \| error]);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function throws an error with the message if the value1 and value2 are deep equals. (_Deep loose equality + NaN equality: primitives (loose equality + NaN equality), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer_) The message parameter is optional. The return value is `true`, when the test was success.<BR>__This function may give unexpected results. It is safer to use the `assertNotDeepStrictEqual();` function.__
-`assertNotDeepStrictEqual(value1, value2 [, message \| error]);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function throws an error with the message if the value1 and value2 are deep equals. (_Deep strict equality + NaN equality: primitives (SameValue - Object.is()), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer_) The message parameter is optional. The return value is `true`, when the test was success.
-`assertNotEqual(value1, value2 [, message \| error]);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function throws an error with the message if the value1 and value2 are equals. (_Loose equality + NaN equality_) The message parameter is optional. The return value is `true`, when the test was success.
-`assertNotStrictEqual(value1, value2 [, message \| error]);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function throws an error with the message if the value1 and value2 are equals. (_SameValue equality_) The message parameter is optional. The return value is `true`, when the test was success.
-`assertStrictEqual(value1, value2 [, message \| error]);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function throws an error with the message if the value1 and value2 aren't equals. (_SameValue equality_) The message parameter is optional. The return value is `true`, when the test was success.
-`assertTrue(condition [, message \| error]);`|__Stability: 1 - Deprecated and will be removed.__<BR>This is an alias of the `assert(condition [, message \| error]);`.
-`assertThrows(callback [, message \| error]);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function catches and returns the error, if the callback throws an error. In other cases throws an error with the message. The message parameter is optional.
+__These functions have been removed in v6.3.0, because the first stable version of the [assert.js](https://github.com/Serrin/assert.js) library has been published.__
 
 ### DOM API
 
@@ -343,25 +324,7 @@ Name|Description
 
 ### Legacy AJAX API
 
-__These functions are deprecated, and will be removed. It's recommend to use the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API), because this is [supported](https://caniuse.com/?search=fetch) in every modern browsers.__
-
-Name|Description
-----|-----------
-`ajax(Options object);`|__Stability: 1 - Deprecated and will be removed.__<BR>Get content and send data via AJAX and CORS.
-`getJson(url,success);`|__Stability: 1 - Deprecated and will be removed.__<BR>Get JSON content via AJAX.
-`getText(url,success);`|__Stability: 1 - Deprecated and will be removed.__<BR>Get TEXT content via AJAX.
-
-__Options object properties:__
-
-- The __queryType__ is optional and can be a __string__ with these values: `"ajax"` or `"cors"`. The default value is `"ajax"`.
-- The __type__ is optional and can be a __string__ with these values: `"get"` or `"post"`. The default value is `"get"`.
-- The __url__ is mandatory and has to be a __string__.
-- The __data__ is optional and has to be a __string__ if the `type === "post"`.
-- The __format__ is optional and can be a __string__ with these values: `"text"` or `"json"` or `"xml"`. The default value is `"text"`.
-- The __success__ is mandatory and has to be a __function__.
-- The __error__ is optional and can be a __function__.
-- The __user__ is optional and can be a __string__.
-- The __password__ is optional, but mandatory if the user is set. This parameter can be a __string__.
+__These functions have been removed in v6.3.0. It's recommend to use the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API), because this is [supported](https://caniuse.com/?search=fetch) in every modern browsers.__
 
 ### Type API
 
