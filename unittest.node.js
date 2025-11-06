@@ -2,7 +2,7 @@
 "use strict";
 
 console.log("\x1b[40m\x1b[37m"); /* black - white */
-// /* import method 1 - defaultExport */
+/* import method 1 - defaultExport */
 // /*
 console.log("import method 1 - defaultExport");
 import defaultExport from "./celestra.node.mjs";
