@@ -304,7 +304,7 @@ var /** @type any */ token12, /** @type any */ token13;
 var /** @type any */ token14, /** @type any */ token15;
 
 
-/* Celestra v6.3.0 testcases */
+/* Celestra v6.3.1 testcases */
 
 
 /** Not auto tested functions **/
@@ -1256,28 +1256,24 @@ CUT.isTrue("findLast();",
 
 
 /* every(); */
-CUT.isTrue("every();",
-      CEL.every([2, 9, 3, 5, 8], (v) => v > 1)
-  && !CEL.every([2, 9, 3, 5, 8], (v)=> v > 3)
-  && !CEL.every([2, 9, 3, 5, 8], (v) =>v < 0)
-  && !CEL.every([], (v) => v > 3)
-);
+/* every(); */
+CUT.isTrue("every(); 01", CEL.every([2, 9, 3, 5, 8], (v) => v > 1));
+CUT.isFalse("every(); 02", CEL.every([2, 9, 3, 5, 8], (v)=> v > 3));
+CUT.isFalse("every(); 03", CEL.every([2, 9, 3, 5, 8], (v) =>v < 0));
+CUT.isFalse("every(); 04", CEL.every([], (v) => v > 3));
+
 
 /* some(); */
-CUT.isTrue("some();",
-      CEL.some([2, 9, 3, 5, 8], (v) => v > 3)
-  && !CEL.some([2, 9, 3, 5, 8], (v) => v < 0)
-  && !CEL.some([], (v) => v < 0)
-);
+CUT.isTrue("some(); 01", CEL.some([2, 9, 3, 5, 8], (v) => v > 3));
+CUT.isFalse("some(); 02", CEL.some([2, 9, 3, 5, 8], (v) => v < 0));
+CUT.isFalse("some(); 03", CEL.some([], (v) => v < 0));
 
 
 /* none(); */
-CUT.isTrue("none();",
-      CEL.none([2, 9, 3, 5, 8], (v) => v < 0)
-  && !CEL.none([2, 9, 3, 5, 8], (v) => v > 1)
-  && !CEL.none([2, 9, 3, 5, 8], (v) => v > 3)
-  && !CEL.none([], (v) => v > 3)
-);
+CUT.isTrue("none(); 01", CEL.none([2, 9, 3, 5, 8], (v) => v < 0));
+CUT.isFalse("none(); 02", CEL.none([2, 9, 3, 5, 8], (v) => v > 1));
+CUT.isFalse("none(); 03", CEL.none([2, 9, 3, 5, 8], (v) => v > 3));
+CUT.isTrue("none(); 04", CEL.none([], (v) => v > 3));
 
 
 /* takeRight(); */

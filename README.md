@@ -12,7 +12,7 @@
 
 __A helper JavaScript library with useful functions and polyfills and zero dependencies.__
 
-Latest version: 6.3.0
+Latest version: 6.3.1
 
 Date: 2025-11-06T18:08:50.125Z
 
@@ -422,7 +422,7 @@ Name|Description
 `includes(iterator,value);`|__Stability: 4 - Stable.__<BR>This function determines whether a collection includes a certain value among its entries, returning true or false as appropriate. The collection and the value of the parameters are mandatory and the comparator is optional.<BR>The default comparasion is SameValueZero algorithm, but with the comparator (function) can be other solution. (e.g.: Object.is, which uses the SameValue algorithm).<BR>The collection can be: _String_ (uses the String#includes method), _String object_ (uses the String#includes method), _Map_, _Iterables_ (Array, Set, TypedArrays, other Iterables), _plain objects_, _functions_ (as object).<BR>The own keys, values, symbols are compared, example: `CEL.includes({"lorem": "ipsum","1": 0}, -0);` returns true.
 `initial(iterator);`|__Stability: 4 - Stable.__<BR>Returns an array with the values of the given iterator, but without the last value.<BR>__Example:__<BR>`CEL.initial([-5, 2, -9, 7, 34]);`<BR>-><BR>`[-5, 2, -9, 7]`
 `isSuperset(superCollection,subCollection);`|__Stability: 3 - Legacy and can get only fixes.__<BR>__Can be replaced with `Set.prototype.isSupersetOf();`.__<BR>This function determines whether the first provided iterator is superset of the second iterator. The parameters are mandatory. The return value is a boolean.
-`item(iterator,index);`|__Stability: 4 - Stable.__<BR>This function returns the item from the given iterator on the given index. the iterator parameter is mandatory. The index is mandatory and can be positive number (examples: 0 = the first item, 1 = the second item, 2 = the third item, etc.) Compatible with the Unicode strings.
+`item(iterator,index);`|__Stability: 4 - Stable.__<BR>TThis function returns the item from the given iterator on the given index. The iterator parameter is mandatory and has to be an iterator/iterable. The index is mandatory and can be a positive integer (examples: 0 = the first item, 1 = the second item, 2 = the third item, etc.) Compatible with the Unicode strings.
 `iterCycle(iter[,n=Infinity]);`|__Stability: 4 - Stable.__<BR>Yield the items of an iterator over and over. The iter parameter is mandatory and the n parameter is optional and can be an integer. Default parameter value: n = Infinity __Note: PLease don't use with infinite iterators!__
 `iterRange([start=0[,step=1[,end=Infinity]]]);`|__Stability: 4 - Stable.__<BR>Yield a range (counter) iterator. All of the parameters are optional. Default parameter values: start = 0, step = 1, end = Infinity.
 `iterRepeat(value[,n=Infinity]);`|__Stability: 4 - Stable.__<BR>Yield a value over and over. The value parameter is mandatory and the n parameter is optional and can be an integer. Default parameter value: n = Infinity

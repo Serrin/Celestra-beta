@@ -10,14 +10,14 @@
 
 /**
  * @name Celestra
- * @version 6.3.0 browser
+ * @version 6.3.1 browser
  * @author Ferenc Czigler
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
 
 
-const VERSION = "Celestra v6.3.0 browser";
+const VERSION = "Celestra v6.3.1 browser";
 
 
 /** TS types */
@@ -2520,7 +2520,6 @@ function clearCookies (
 /** Collections API **/
 
 
-
 /**
  * Returns an array wrapping the value, or the original array if already one.
  *
@@ -2589,11 +2588,11 @@ function arrayDeepClone ([...array]): any[] {
 
 
 /* initial(iterator: iterator): array */
-const initial = ([...array]): any[] => array.slice(0, -1);
+const initial = ([...array]): unknown[] => array.slice(0, -1);
 
 
 /* shuffle(iterator: iterator): array */
-function shuffle([...array]): any[] {
+function shuffle ([...array]): unknown[] {
   for (let index = array.length - 1; index > 0; index--) {
     let pos = Math.floor(Math.random() * (index + 1));
     [array[index], array[pos]] = [array[pos], array[index]];
@@ -2799,48 +2798,108 @@ function* iterRepeat (value: unknown, num: number = Infinity): IteratorReturn {
 
 
 /* takeWhile(iterator: iterator, callback: function): iterator */
-function* takeWhile (
-  iter: IterableAndIterator,
-  fn: Function): IteratorReturn {
-  for (let item of iter as Iterable<any>) {
-    if (!fn(item)) { break; }
-    yield item;
+/**
+ * Takes the elements from an iterable or iterator and returns a new iterator while the checking function returns true.
+ * @param iter - An iterable or iterator to take elements from.
+ * @param fn - Number of elements to take (default: 1).
+ */
+function* takeWhile <T>(iter: Iterable<T> | Iterator<T>, fn: Function): IterableIterator<T> {
+  let iterator: Iterator<T>;
+  // Normalize: if input is an iterator, use it directly; otherwise get an iterator
+  if (typeof (iter as Iterator<T>).next === 'function') {
+    iterator = iter as Iterator<T>;
+  } else {
+    iterator = (iter as Iterable<T>)[Symbol.iterator]();
+  }
+  /* Yield the elements */
+  while (true) {
+    const { value, done } = iterator.next();
+    if (done || !fn(value)) { break; }
+    yield value;
   }
 }
 
 
 /* dropWhile(iterator: iterator, callback: function): iterator */
-function* dropWhile (
-  iter: IterableAndIterator,
-  fn: Function): IteratorReturn {
-  let dropping: boolean = true;
-  for (let item of iter as Iterable<any>) {
-    if (dropping && !fn(item)) { dropping = false; }
-    if (!dropping) { yield item; }
+/**
+ * Take the elements from an iterable or iterator and returns a new iterator after the checking function returns false.
+ * @param iter - An iterable or iterator to take elements from.
+ * @param fn - Number of elements to take (default: 1).
+ */
+function* dropWhile <T>(iter: Iterable<T> | Iterator<T>, fn: Function): IterableIterator<T> {
+  let iterator: Iterator<T>;
+  // Normalize: if input is an iterator, use it directly; otherwise get an iterator
+  if (typeof (iter as Iterator<T>).next === 'function') {
+    iterator = iter as Iterator<T>;
+  } else {
+    iterator = (iter as Iterable<T>)[Symbol.iterator]();
+  }
+  /* Yield the elements */
+  let skip = true;
+  while (true) {
+    const { value, done } = iterator.next();
+    if (done) { break; }
+    if (skip) { skip = fn(value); }
+    if (!skip) { yield value; }
   }
 }
 
 
 /* take(iterator: iterator [, num: number = 1]): iterator */
-function* take (iter: IterableAndIterator, num: number = 1): IteratorReturn {
-  let index: number = num;
-  for (let item of iter as Iterable<any>) {
-    if (index <= 0) { break; }
-    yield item;
-    index--;
+/**
+ * Takes up to `num` elements from an iterable or iterator and returns a new iterator.
+ * @param iter - An iterable or iterator to take elements from.
+ * @param num - Number of elements to take (default: 1).
+ */
+function* take <T>(iter: Iterable<T> | Iterator<T>, num: number = 1): IterableIterator<T> {
+  if (num <= 0) return;
+  let iterator: Iterator<T>;
+  // Normalize: if input is an iterator, use it directly; otherwise get an iterator
+  if (typeof (iter as Iterator<T>).next === 'function') {
+    iterator = iter as Iterator<T>;
+  } else {
+    iterator = (iter as Iterable<T>)[Symbol.iterator]();
+  }
+  for (let i = 0; i < num; i++) {
+    const { value, done } = iterator.next();
+    if (done) { break; }
+    yield value;
   }
 }
 
 
+
 /* drop(iterator: iterator [, num: number =1 ]): iterator */
-function* drop (iter: IterableAndIterator, num: number = 1): IteratorReturn {
-  let index: number = num;
-  for (let item of iter as Iterable<any>) {
-    if (index < 1) {
-      yield item;
-    } else {
-      index--;
-    }
+/**
+ * Skips the first `num` elements from an iterable or iterator and yields the rest.
+ * @param iter - An iterable or iterator to drop elements from.
+ * @param num - Number of elements to skip (default: 1).
+ */
+function* drop <T>(iter: Iterable<T> | Iterator<T>, num: number = 1): IterableIterator<T> {
+  if (num <= 0) {
+    /* If nothing to drop, just yield everything */
+    yield* (typeof (iter as Iterator<T>).next === 'function'
+      ? { [Symbol.iterator]: () => iter as Iterator<T> }
+      : (iter as Iterable<T>));
+    return;
+  }
+  let iterator: Iterator<T>;
+  /* Normalize: if input is an iterator, use it directly; otherwise get an iterator */
+  if (typeof (iter as Iterator<T>).next === 'function') {
+    iterator = iter as Iterator<T>;
+  } else {
+    iterator = (iter as Iterable<T>)[Symbol.iterator]();
+  }
+  /* Drop the first `num` elements */
+  for (let i = 0; i < num; i++) {
+    const { done } = iterator.next();
+    if (done) { return; }
+  }
+  /* Yield the rest */
+  while (true) {
+    const { value, done } = iterator.next();
+    if (done) { break; }
+    yield value;
   }
 }
 
@@ -2886,49 +2945,112 @@ function* reject (iter: IterableAndIterator, fn: Function): IteratorReturn {
 
 /* slice(iterator: iterator [, begin: number = 0 [, end: number = Infinity]]):
   iterator */
-function* slice (
-  iter: IterableAndIterator,
+/**
+ * Yields elements from `begin` (inclusive) up to `end` (exclusive) from an iterable or iterator.
+ * Works similarly to Array.prototype.slice.
+ * @param iter - Iterable or iterator to slice.
+ * @param begin - Start index (inclusive, default: 0).
+ * @param end - End index (exclusive, default: Infinity).
+ */
+function* slice <T>(
+  iter: Iterable<T> | Iterator<T>,
   begin: number = 0,
-  end: number = Infinity): IteratorReturn {
-  let index: number = 0;
-  for (let item of iter as Iterable<any>) {
-    if (index >= begin && index <= end) {
-      yield item;
-    } else if (index > end) {
-      return;
-    }
+  end: number = Infinity
+): IterableIterator<T> {
+  if (begin < 0) begin = 0;
+  if (end <= begin) { return; }
+  let iterator: Iterator<T>;
+  /* Normalize input: use iterator directly, or get one from iterable */
+  if (typeof (iter as Iterator<T>).next === 'function') {
+    iterator = iter as Iterator<T>;
+  } else {
+    iterator = (iter as Iterable<T>)[Symbol.iterator]();
+  }
+  let index = 0;
+  while (true) {
+    const { value, done } = iterator.next();
+    if (done) { break };
+    if (index >= begin && index <= end) { yield value; }
+    if (index > end - 1) break;
     index++;
   }
 }
 
 
 /* tail(iterator: iterator): iterator */
-function* tail (iter: IterableAndIterator): IteratorReturn {
-  let first: boolean = true;
-  for (let item of iter as Iterable<any>) {
-    if (!first) {
-      yield item;
-    } else {
-      first = false;
-    }
+/**
+ * Yields all elements of an iterable or iterator except the first one.
+ * Similar to Array.prototype.slice(1).
+ * @param input - Iterable or iterator to process.
+ */
+function* tail <T>(input: Iterable<T> | Iterator<T>): IterableIterator<T> {
+  let iterator: Iterator<T>;
+  /* Normalize: if input is already an iterator, use it directly */
+  if (typeof (input as Iterator<T>).next === 'function') {
+    iterator = input as Iterator<T>;
+  } else {
+    iterator = (input as Iterable<T>)[Symbol.iterator]();
+  }
+  /* Skip the first element */
+  const first = iterator.next();
+  if (first.done) { return; }
+  /* Yield the rest */
+  while (true) {
+    const { value, done } = iterator.next();
+    if (done) { break; }
+    yield value;
   }
 }
 
 
 /* item(iterator: iterator, index: integer): any */
-function item (iter: IterableAndIterator, pos: number): any {
-  let i: number = 0;
-  for (let item of iter as Iterable<any>) {
-    if (i++ === pos) { return item; }
+/**
+ * Returns the element at a specific position from an iterable or iterator.
+ * If the position is out of range, returns undefined.
+ * @param iter - Iterable or iterator to extract from.
+ * @param pos - Zero-based index of the desired element.
+ */
+function item <T>(iter: Iterable<T> | Iterator<T>, pos: number): T | undefined {
+  if (pos < 0) { return undefined; }
+  let iterator: Iterator<T>;
+  /* Normalize input: use iterator directly or create one from iterable */
+  if (typeof (iter as Iterator<T>).next === "function") {
+    iterator = iter as Iterator<T>;
+  } else {
+    iterator = (iter as Iterable<T>)[Symbol.iterator]();
+  }
+  let index = 0;
+  while (true) {
+    const { value, done } = iterator.next();
+    if (done) { return undefined; }
+    if (index === pos) { return value; }
+    index++;
   }
 }
 
 
 /* nth(iterator: iterator, index: integer): any */
-function nth (iter: IterableAndIterator, pos: number): any {
-  let i: number = 0;
-  for (let item of iter as Iterable<any>) {
-    if (i++ === pos) { return item; }
+/**
+ * Returns the element at a specific position from an iterable or iterator.
+ * If the position is out of range, returns undefined.
+ * @param iter - Iterable or iterator to extract from.
+ * @param pos - Zero-based index of the desired element.
+ */
+function nth <T>(iter: Iterable<T> | Iterator<T>, pos: number): T | undefined {
+  if (pos < 0) { return undefined; }
+  let iterator: Iterator<T>;
+  /* Normalize input: use iterator directly or create one from iterable */
+  if (typeof (iter as Iterator<T>).next === "function") {
+    iterator = iter as Iterator<T>;
+  } else {
+    iterator = (iter as Iterable<T>)[Symbol.iterator]();
+  }
+  let index = 0;
+  while (true) {
+    const { value, done } = iterator.next();
+    if (done) { return undefined; }
+    if (index === pos) { return value; }
+    index++;
   }
 }
 
@@ -2941,27 +3063,62 @@ function nth (iter: IterableAndIterator, pos: number): any {
  * @returns {number} The size of the given value.
  */
 function size (value: any): number {
+  /* Check Array */
+  if (Array.isArray(value)) { return value.length; }
+  /* Check Map and Set */
+  if (value instanceof Map || value instanceof Set) { return value.size; }
+  /* Check ArrayBuffer and DataView */
+  if (value instanceof ArrayBuffer || value instanceof DataView) {
+    return value.byteLength;
+  }
+  /* Other objects with size property */
   if (typeof value.size === "number") { return value.size; }
+  /* Check Iterable objects */
+  let iterator: IterableAndIterator;
+  /* Normalize input: use iterator directly or create one from iterable */
+  if (typeof (value as Iterator<unknown>).next === "function") {
+    iterator = value as Iterator<unknown>;
+  } else {
+    iterator = (value as Iterable<unknown>)[Symbol.iterator]();
+  }
   let index: number = 0;
-  for (let _item of value as Iterable<any>) { index++; }
+  for (let _item of iterator as any) { index++; }
   return index;
 }
 
 
 /* first(iterator: iterator): any */
-function first (iter: IterableAndIterator): any {
-  for (let item of iter as Iterable<any>) { return item; }
+function first <T>(input: Iterable<T> | Iterator<T>): T | undefined {
+  let iterator: Iterator<T>;
+  /* If input is already an iterator, use it directly */
+  if (typeof (input as Iterator<T>).next === 'function') {
+    iterator = input as Iterator<T>;
+  } else {
+    /* Otherwise, get an iterator from the iterable */
+    iterator = (input as Iterable<T>)[Symbol.iterator]();
+  }
+  const result = iterator.next();
+  return result.done ? undefined : result.value;
 }
 
 
 /* head(iterator: iterator): any */
-function head (iter: IterableAndIterator): any {
-  for (let item of iter as Iterable<any>) { return item; }
+function head <T>(input: Iterable<T> | Iterator<T>): T | undefined {
+  let iterator: Iterator<T>;
+  /* If input is already an iterator, use it directly */
+  if (typeof (input as Iterator<T>).next === 'function') {
+    iterator = input as Iterator<T>;
+  } else {
+    /* Otherwise, get an iterator from the iterable */
+    iterator = (input as Iterable<T>)[Symbol.iterator]();
+  }
+  const result = iterator.next();
+  return result.done ? undefined : result.value;
 }
 
 
 /* last(iterator: iterator): any */
-const last = ([...array]): any => array[array.length - 1];
+const last = ([...array]): unknown => array[array.length - 1];
 
 
 /* reverse(iterator: iterator): iterator */
@@ -3054,57 +3211,30 @@ function includes (
 
 
 /* find(iterator: iterator, callback: function): any */
-function find (iter: IterableAndIterator, fn: Function): any {
-  let index: number = 0;
-  for (let item of iter as Iterable<any>) {
-    if (fn(item, index++)) { return item; }
-  }
-}
+const find = ([...array], fn: Function): unknown =>
+  array.find((value, index) => fn(value, index));
 
 
 /* findLast(iterator: iterator, callback: function): any */
-function findLast (
-  iter: IterableAndIterator,
-  fn: Function): any {
-  let index: number = 0;
-  let result: any;
-  for (let item of iter as Iterable<any>) {
-    if (fn(item, index++)) { result = item; }
-  }
-  return result;
-}
+const findLast = ([...array], fn: Function): unknown =>
+  array.findLast((value, index) => fn(value, index));
 
 
 /* every(iterator: iterator, callback: function): boolean */
-function every (iter: IterableAndIterator, fn: Function): boolean {
-  let index: number = 0;
-  for (let item of iter as Iterable<any>) {
-    if (!fn(item, index++)) { return false; }
-  }
-  if (index === 0) { return false; }
-  return true;
-}
+const every = ([...array], fn: Function): boolean => array.length
+  ? array.every((value, index) => fn(value, index))
+  : false;
 
 
 /* some(iterator: iterator, callback: function): boolean */
-function some (iter: IterableAndIterator, fn: Function): boolean {
-  let index: number = 0;
-  for (let item of iter as Iterable<any>) {
-    if (fn(item, index++)) { return true; }
-  }
-  return false;
-}
+const some = ([...array], fn: Function): boolean => array.length
+  ? array.some((value, index) => fn(value, index))
+  : false;
 
 
 /* none(iterator: iterator, callback: function): boolean */
-function none (iter: IterableAndIterator, fn: Function): boolean {
-  let index: number = 0;
-  for (let item of iter as Iterable<any>) {
-    if (fn(item, index++)) { return false; }
-  }
-  if (index === 0) { return false; }
-  return true;
-}
+const none = ([...array], fn: Function): boolean =>
+  !array.some((value, index) => fn(value, index));
 
 
 /* takeRight(iterator: iterator [, num: number = 1]): array */
@@ -3114,13 +3244,12 @@ const takeRight = ([...array], num: number = 1): any[] =>
 
 /* takeRightWhile(iterator: iterator, callback: function): iterator */
 function* takeRightWhile ([...array], fn: Function): IteratorReturn {
-  let index: number = 0;
-  for (let item of array.reverse()) {
-    if (fn(item, index++)) {
-      yield item;
-    } else {
-      break;
-    }
+  if (!array.length) { return; }
+  let index = array.length;
+  while (index--) {
+    let item = array[index];
+    if (!fn(item, index)) { break; }
+    yield item;
   }
 }
 
@@ -3132,11 +3261,13 @@ const dropRight = ([...array], num: number = 1): any[] =>
 
 /* dropRightWhile(iterator: iterator, callback: function): iterator */
 function* dropRightWhile ([...array], fn: Function): IteratorReturn {
-  let dropping: boolean = true;
-  let index: number = 0;
-  for (let item of array.reverse()) {
-    if (dropping && !fn(item, index++)) { dropping = false; }
-    if (!dropping) { yield item; }
+  if (!array.length) { return; }
+  let index = array.length;
+  let skip = true;
+  while (index--) {
+    let item = array[index];
+    if (skip) { skip = fn(item, index); }
+    if (!skip) { yield item; }
   }
 }
 

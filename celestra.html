@@ -458,7 +458,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
 
 <p><strong>A helper JavaScript library with useful functions and polyfills and zero dependencies.</strong></p>
 
-<p>Latest version: 6.3.0</p>
+<p>Latest version: 6.3.1</p>
 <p>Date: 2025-11-06T18:08:50.125Z</p>
 
 <p><strong>Tested on these environments:</strong></p>
@@ -1658,7 +1658,7 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-item();">
       <td><code>item(iterator,index);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns the item from the given iterator on the given index. the iterator parameter is mandatory and has to be  an iterator. The index is mandatory and can be positive number (examples: 0 = the first item, 1 = the second item, 2 = the third item, etc.) Compatible with the Unicode strings.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns the item from the given iterator on the given index. The iterator parameter is mandatory and has to be an iterator/iterable. The index is mandatory and can be a positive integer (examples: 0 = the first item, 1 = the second item, 2 = the third item, etc.) Compatible with the Unicode strings.</td>
     </tr>
     <tr id="FN-iterCycle();">
       <td><code>iterCycle(iter[,n=Infinity]);</code></td>
@@ -1714,10 +1714,10 @@ CEL.delay(5000)
         <span class="info">Stability: 4 - Stable.</span><br/>
         <p>Returns an array, with filtered and negative filtered groups of the elements of the original iterator. All of the parameters are mandatory.</p>
         <p>
-         <strong>Example:</strong>
-         <br/><code>CEL.partition([-5, 2, -9, 7, 34], (e) => (e > 0) );</code>
-         <br/>->
-         <br/><code>[[2, 7, 34], [-5, -9]]</code>
+          <strong>Example:</strong>
+          <br/><code>CEL.partition([-5, 2, -9, 7, 34], (e) => (e > 0) );</code>
+          <br/>->
+          <br/><code>[[2, 7, 34], [-5, -9]]</code>
         </p>
       </td>
     </tr>

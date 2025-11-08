@@ -293,7 +293,7 @@ var /** @type any */ token12, /** @type any */ token13;
 var /** @type any */ token14, /** @type any */ token15;
 
 
-/* Celestra v6.3.0 testcases */
+/* Celestra v6.3.1 testcases */
 
 
 /** Not auto tested functions **/
@@ -1475,13 +1475,13 @@ CUT.isEqual("takeWhile(); 03", token2, 72);
 /* dropWhile(); */
 token1 = [0, 2, 4, 6, 8, 10, 12, 14, 16];
 token2 = 0;
-for (let item of CEL.dropWhile(token1, (e) => (e<10))) { token2 += item; }
+for (let item of CEL.dropWhile(token1, (e) => e < 10)) { token2 += item; }
 CUT.isEqual("dropWhile(); 01", token2, 52);
 token2 = 0;
-for (let item of CEL.dropWhile(token1, (e) => (e<30))) { token2 += item; }
+for (let item of CEL.dropWhile(token1, (e) => e < 30)) { token2 += item; }
 CUT.isEqual("dropWhile(); 02", token2, 0);
 token2 = 0;
-for (let item of CEL.dropWhile(token1, (e) => (e< 0))) { token2 += item; }
+for (let item of CEL.dropWhile(token1, (e) => e < 0)) { token2 += item; }
 CUT.isEqual("dropWhile(); 03", token2, 72);
 
 
@@ -1635,28 +1635,23 @@ CUT.isTrue("findLast();",
 
 
 /* every(); */
-CUT.isTrue("every();",
-      CEL.every([2, 9, 3, 5, 8], (v) => v > 1)
-  && !CEL.every([2, 9, 3, 5, 8], (v)=> v > 3)
-  && !CEL.every([2, 9, 3, 5, 8], (v) =>v < 0)
-  && !CEL.every([], (v) => v > 3)
-);
+CUT.isTrue("every(); 01", CEL.every([2, 9, 3, 5, 8], (v) => v > 1));
+CUT.isFalse("every(); 02", CEL.every([2, 9, 3, 5, 8], (v)=> v > 3));
+CUT.isFalse("every(); 03", CEL.every([2, 9, 3, 5, 8], (v) =>v < 0));
+CUT.isFalse("every(); 04",CEL.every([], (v) => v > 3));
+
 
 /* some(); */
-CUT.isTrue("some();",
-      CEL.some([2, 9, 3, 5, 8], (v) => v > 3)
-  && !CEL.some([2, 9, 3, 5, 8], (v) => v < 0)
-  && !CEL.some([], (v) => v < 0)
-);
+CUT.isTrue("some(); 01", CEL.some([2, 9, 3, 5, 8], (v) => v > 3));
+CUT.isFalse("some(); 02", CEL.some([2, 9, 3, 5, 8], (v) => v < 0));
+CUT.isFalse("some(); 03", CEL.some([], (v) => v < 0));
 
 
 /* none(); */
-CUT.isTrue("none();",
-      CEL.none([2, 9, 3, 5, 8], (v) => v < 0)
-  && !CEL.none([2, 9, 3, 5, 8], (v) => v > 1)
-  && !CEL.none([2, 9, 3, 5, 8], (v) => v > 3)
-  && !CEL.none([], (v) => v > 3)
-);
+CUT.isTrue("none(); 01", CEL.none([2, 9, 3, 5, 8], (v) => v < 0));
+CUT.isFalse("none(); 02", CEL.none([2, 9, 3, 5, 8], (v) => v > 1));
+CUT.isFalse("none(); 03", CEL.none([2, 9, 3, 5, 8], (v) => v > 3));
+CUT.isTrue("none(); 04", CEL.none([], (v) => v > 3));
 
 
 /* takeRight(); */
