@@ -3177,31 +3177,32 @@ function includes (
   }
   /* Map */
   if (collection instanceof Map) {
-    for (const item of collection.keys()) {
-      if (_isEqual(item, value)) { return true; }
+    if ([...collection.keys()].findIndex((item) => _isEqual(item, value)) > -1) {
+      return true;
     }
-    for (const item of collection.values()) {
-      if (_isEqual(item, value)) { return true; }
+    if ([...collection.values()].findIndex((item) => _isEqual(item, value)) > -1) {
+      return true;
     }
     return false;
   }
   /* Iterator or Iterables (Array, Set, TypedArrays, other Iterables, etc.) */
   if (_isIterator(collection) || _isIterable(collection)) {
-    for (const item of collection) {
-      if (_isEqual(item, value)) { return true; }
+    if ([...collection].findIndex((item) => _isEqual(item, value)) > -1) {
+      return true;
     }
     return false;
   }
   /* Plain object or function */
   if (["object", "function"].includes(cType)) {
-    for (const item of Object.keys(collection)) {
-      if (_isEqual(item, value)) { return true; }
+    if (Object.keys(collection).findIndex((item) => _isEqual(item, value)) > -1) {
+      return true;
     }
-    for (const item of Object.values(collection)) {
-      if (_isEqual(item, value)) { return true; }
+    if (Object.values(collection).findIndex((item) => _isEqual(item, value)) > -1) {
+      return true;
     }
-    for (const item of Object.getOwnPropertySymbols(collection)) {
-      if (_isEqual(item, value)) { return true; }
+    if (Object.getOwnPropertySymbols(collection)
+      .findIndex((item) => _isEqual(item, value)) > -1) {
+      return true;
     }
     return false;
   }

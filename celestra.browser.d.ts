@@ -1,4 +1,4 @@
-declare const VERSION = "Celestra v6.3.0 browser";
+declare const VERSION = "Celestra v6.3.1 browser";
 type MapLike = {
     [key: string | symbol]: any;
 };

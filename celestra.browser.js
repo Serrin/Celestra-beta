@@ -1,5 +1,5 @@
 "use strict";
-const VERSION = "Celestra v6.3.0 browser";
+const VERSION = "Celestra v6.3.1 browser";
 (function (global) {
     if (!global.globalThis) {
         if (Object.defineProperty) {
@@ -1881,41 +1881,30 @@ function includes(collection, value, comparator) {
         return collection.includes(String(value));
     }
     if (collection instanceof Map) {
-        for (const item of collection.keys()) {
-            if (_isEqual(item, value)) {
-                return true;
-            }
+        if ([...collection.keys()].findIndex((item) => _isEqual(item, value)) > -1) {
+            return true;
         }
-        for (const item of collection.values()) {
-            if (_isEqual(item, value)) {
-                return true;
-            }
+        if ([...collection.values()].findIndex((item) => _isEqual(item, value)) > -1) {
+            return true;
         }
         return false;
     }
     if (_isIterator(collection) || _isIterable(collection)) {
-        for (const item of collection) {
-            if (_isEqual(item, value)) {
-                return true;
-            }
+        if ([...collection].findIndex((item) => _isEqual(item, value)) > -1) {
+            return true;
         }
         return false;
     }
     if (["object", "function"].includes(cType)) {
-        for (const item of Object.keys(collection)) {
-            if (_isEqual(item, value)) {
-                return true;
-            }
+        if (Object.keys(collection).findIndex((item) => _isEqual(item, value)) > -1) {
+            return true;
         }
-        for (const item of Object.values(collection)) {
-            if (_isEqual(item, value)) {
-                return true;
-            }
+        if (Object.values(collection).findIndex((item) => _isEqual(item, value)) > -1) {
+            return true;
         }
-        for (const item of Object.getOwnPropertySymbols(collection)) {
-            if (_isEqual(item, value)) {
-                return true;
-            }
+        if (Object.getOwnPropertySymbols(collection)
+            .findIndex((item) => _isEqual(item, value)) > -1) {
+            return true;
         }
         return false;
     }
