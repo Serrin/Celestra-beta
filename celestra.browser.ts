@@ -28,7 +28,7 @@ const VERSION = "Celestra v6.3.1 browser";
  *
  * @internal
  * */
-type MapLike = { [key: string | symbol]: any };
+type MapLike = { [key: string | number | symbol]: any };
 
 /**
  * @description Array-like object.
@@ -455,6 +455,7 @@ if (!globalThis.AsyncGeneratorFunction) {
 /** Core API **/
 
 
+/* Alphabet constans */
 const BASE16 = "0123456789ABCDEF";
 const BASE32 = "234567ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const BASE36 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -480,27 +481,6 @@ function assert (condition: unknown, message?: unknown): asserts condition {
     throw new Error(errorMessage, {cause: errorMessage});
   }
 }
-
-
-/**
- * @description Checks if the given value is NonNullable (not null or undefined).
- *
- * @param {unknown} value - The value to check.
- * @returns True if the value is a NonNullable, false otherwise.
- */
-const isNonNullable = (value: unknown): value is NonNullable<unknown> =>
-  value != null;
-
-
-/**
- * @description Checks if the given value is NonNullablePrimitive.
- *
- * @param {unknown} value - The value to check.
- * @returns True if the value is a NonNullable, false otherwise.
- */
-const isNonNullablePrimitive =
-  (value: unknown): value is NonNullablePrimitive =>
-    value != null && typeof value !== "object" && typeof value !== "function";
 
 
 /* eq (value1: any, value2: any): boolean */
@@ -640,8 +620,8 @@ const omit = (obj: MapLike, keys: string[]): MapLike =>
 
 
 /* assoc (object: object, key: string, value: unknown): object */
-const assoc = (obj: MapLike, property: string, value: unknown): MapLike =>
-  ({...obj, [property]: value});
+const assoc = (obj: MapLike, key: string, value: unknown): MapLike =>
+  ({...obj, [key]: value});
 
 
 /* asyncNoop (): Promise - do nothing */
@@ -758,38 +738,97 @@ const obj2string = (obj: object): string => Object.keys(obj).reduce(
 "").slice(0, -1);
 
 
-/* extend([deep: boolean,] target: object, source1: object[, sourceN]): object*/
-function extend (...args: Array<object | boolean>): object {
-  function _EXT (...args: Array<object | boolean>): object {
-    let targetObject: {};
-    let deep: boolean;
-    let start: number;
-    if (typeof args[0] === "boolean") {
-      targetObject = args[1], deep = args[0], start = 2;
-    } else {
-      targetObject = args[0], deep = false, start = 1;
-    }
-    for (let i: number = start, length: number = args.length,
-      sourceObject: object; i < length; i++) {
-      sourceObject = args[i] as object;
-      if (sourceObject != null) {
-        for (let key in sourceObject) {
-          if (Object.hasOwn(sourceObject, key)) {
-            // @ts-ignore
-            if (typeof sourceObject[key] === "object" && deep) {
-              // @ts-ignore
-              targetObject[key] = _EXT(true, {}, sourceObject[key]);
-            } else {
-              // @ts-ignore
-              targetObject[key] = sourceObject[key];
-            }
-          }
-        }
-      }
-    }
-    return targetObject;
+/* extend([deep: boolean,] target: any, source1: any[, sourceN]): object*/
+/**
+ * @description Deep assign of an object (Object, Array, etc.)
+ *
+ * @returns any
+ */
+function extend <T extends object, U extends object>(target: T, source: U): T & U;
+function extend <T extends object, U extends object, V extends object>(target: T, s1: U, s2: V): T & U & V;
+function extend <T extends object>(deep: true, target: T, ...sources: any[]): T;
+function extend <T extends object>(deep: false, target: T, ...sources: any[]): T;
+function extend (target: object, ...sources: any[]): object;
+function extend (...args: any[]): any {
+  /* Arguments checking */
+  let deep: boolean = false;
+  let target: any;
+  let i = 0;
+  if (args[0] === true) {
+    deep = true;
+    target = args[1] || {};
+    i = 2;
+  } else {
+    target = args[0] || {};
+    i = 1;
   }
-  return _EXT(...args);
+  /* Helper functions */
+  const _isPlainObject = (obj: any): obj is Record<string, any> =>
+    obj != null
+      && typeof obj === "object"
+      && (obj.constructor === Object || obj.constructor == null);
+  const _isDate = (value: any): value is Date => value instanceof Date;
+  const _isRegExp = (value: any): value is RegExp => value instanceof RegExp;
+  const _isMap = (value: any): value is Map<any, any> => value instanceof Map;
+  const _isSet = (value: any): value is Set<any> => value instanceof Set;
+  /*  */
+  function merge(target: any, source: any): any {
+    /* Identical or non-object -> direct assign */
+    if (Object.is(source, target) || source == null || typeof source !== "object") {
+      return source;
+    }
+    /* Date -> clone */
+    if (_isDate(source)) { return new Date(source.getTime()); }
+    /* RegExp -> clone */
+    if (_isRegExp(source)) { return new RegExp(source); }
+    /* Map -> deep merge entries */
+    if (_isMap(source)) {
+      if (!_isMap(target)) { target = new Map(); }
+      for (let [key, value] of source) {
+        const tv = target.get(key);
+        target.set(key, deep ? merge(tv, value) : value);
+      }
+      return target;
+    }
+    /* Set -> deep union */
+    if (_isSet(source)) {
+      if (!_isSet(target)) { target = new Set(); }
+      for (let item of source) {
+        if (deep) {
+          if (target.has(item)) { continue; }
+        }
+        target.add(item);
+      }
+      return target;
+    }
+    /* Array -> deep merge by index */
+    if (Array.isArray(source)) {
+      if (!Array.isArray(target)) { target = []; }
+      const srcLength = source.length;
+      for (let i = 0; i < srcLength; i++) {
+        let sv = source[i];
+        let tv = target[i];
+        target[i] = deep ? merge(tv, sv) : sv;
+      }
+      return target;
+    }
+    /* Plain object -> deep merge keys */
+    if (_isPlainObject(source)) {
+      if (!_isPlainObject(target)) { target = {}; }
+      for (let key in source) {
+        let sv = source[key];
+        let tv = target[key];
+        target[key] = deep ? merge(tv, sv) : sv;
+      }
+      return target;
+    }
+    /* Fallback: copy by reference */
+    return source;
+  }
+  /* Clone all sources */
+  const length = args.length;
+  for (; i < length; i++) { merge(target, args[i]); }
+  return target;
 }
 
 
@@ -1038,14 +1077,12 @@ const strHTMLUnEscape = (str: string): string =>
 
 
 /* qsa(selector: string [, context: element object]): array */
-const qsa =
-  (str: string, context: Document | HTMLElement = document): any[] =>
+const qsa = (str: string, context: Document | HTMLElement = document): any[] =>
     Array.from(context.querySelectorAll(str));
 
 
 /* qs(selector: string [, context: element object]): element object | null */
-const qs =
-  (str: string, context: Document | Element = document): HTMLElement | null =>
+const qs = (str: string, context: Document | Element = document): HTMLElement | null =>
     context.querySelector(str);
 
 
@@ -1490,179 +1527,28 @@ const domClear = (element: Element): void =>
   Array.from(element.children).forEach((item: Element): void => item.remove());
 
 
-/** Legacy AJAX API **/
-
-
-/* getText(url: string, success: function): undefined */
-/** @deprecated */
-function getText (url: string, successFn: Function): void {
-  if (typeof url !== "string") {
-    throw new TypeError(
-      "Celestra ajax error: The url parameter have to be a string."
-    );
-  }
-  if (typeof successFn !== "function") {
-    throw new TypeError(
-      "Celestra ajax error: The success parameter have to be a function."
-    );
-  }
-  let xhr: XMLHttpRequest = new XMLHttpRequest();
-  xhr.onerror = (error): void => console.log(
-    "Celestra ajax GET error: " + JSON.stringify(error)
-  );
-  xhr.open("GET", url, true);
-  xhr.onreadystatechange = function () {
-    if (this.readyState === 4 && this.status === 200) {
-      successFn(this.responseText);
-    }
-  };
-  xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-  xhr.send();
-}
-
-
-/* getJson(url: string, success: function): undefined */
-/** @deprecated */
-function getJson (url: string, successFn: Function): void {
-  if (typeof url !== "string") {
-    throw new TypeError(
-      "Celestra ajax error: The url parameter have to be a string."
-    );
-  }
-  if (typeof successFn !== "function") {
-    throw new TypeError(
-      "Celestra ajax error: The success parameter have to be a function."
-    );
-  }
-  let xhr: XMLHttpRequest = new XMLHttpRequest();
-  xhr.onerror = (error): void => console.log(
-    "Celestra ajax GET error: " + JSON.stringify(error)
-  );
-  xhr.open("GET", url, true);
-  xhr.onreadystatechange = function () {
-    if (this.readyState === 4 && this.status === 200) {
-      successFn(JSON.parse(this.responseText));
-    }
-  };
-  xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-  xhr.send();
-}
-
-
-/* ajax(Options object): undefined */
-/** @deprecated */
-function ajax (options: MapLike): void {
-  if (typeof options.url !== "string") {
-    throw new TypeError(
-      "Celestra ajax error: The url property has to be a string."
-    );
-  }
-  if (typeof options.success !== "function") {
-    throw new TypeError(
-      "Celestra ajax error: The success property has to be a function."
-    );
-  }
-  if (options.error === undefined) {
-    options.error = (error: Error): void => console.log(
-      "Celestra ajax GET error: " + JSON.stringify(error)
-    );
-  }
-  if (typeof options.error !== "function") {
-    throw new TypeError(
-      "Celestra ajax error: The error property has to be a function or undefined."
-    );
-  }
-  if (!options.queryType) {
-    options.queryType = "ajax";
-  } else {
-    options.queryType = options.queryType.toLowerCase();
-  }
-  if (!options.type) {
-    options.type = "get";
-  } else {
-    options.type = options.type.toLowerCase();
-  }
-  let typeStr: string;
-  if (options.type === "get") {
-    typeStr = "GET";
-  } else if (options.type === "post") {
-    typeStr = "POST";
-  } else {
-    throw new Error(
-      "Celestra ajax error: The type property has to be \"get\" or \"post\"."
-    );
-  }
-  if (!options.format) {
-    options.format = "text";
-  } else {
-    options.format = options.format.toLowerCase();
-    if (!(["text", "json", "xml"].includes(options.format))) {
-      throw new Error(
-        "Celestra ajax error: The format property has to be \"text\" or \"json\" or \"xml\"."
-      );
-    }
-  }
-  // @ts-ignore
-  let xhr: XMLHttpRequest | XDomainRequest;
-  if (options.queryType === "ajax") {
-    xhr = new XMLHttpRequest();
-  } else if (options.queryType === "cors") {
-    xhr = new XMLHttpRequest();
-    // @ts-ignore
-    if (!("withCredentials" in xhr)) { xhr = new XDomainRequest(); }
-  } else {
-    throw new Error(
-      "Celestra ajax error: The querytype property has to be \"ajax\" or \"cors\"."
-    );
-  }
-  if (typeof options.user === "string"
-      && typeof options.password === "string"
-  ) {
-    xhr.open(typeStr, options.url, true, options.user, options.password);
-  } else {
-    xhr.open(typeStr, options.url, true);
-  }
-  if (options.queryType === "ajax") {
-    xhr.onreadystatechange = function () {
-      if (this.readyState === 4 && this.status === 200) {
-        switch (options.format.toLowerCase()) {
-          case "text": options.success(this.responseText); break;
-          case "json": options.success(JSON.parse(this.responseText)); break;
-          case "xml": options.success(this.responseXML); break;
-          default: options.success(this.responseText);
-        }
-      }
-    };
-    xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-    if (options.typeStr === "POST") {
-      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    }
-  } else if (options.queryType === "cors") {
-    xhr.onload = function (request: any) {
-      switch (options.format.toLowerCase()) {
-        case "text": options.success(request.target.responseText
-          || request.currentTarget.response); break;
-        case "json": options.success(
-          JSON.parse(request.target.responseText
-          || request.currentTarget.response)
-        ); break;
-        case "xml": options.success(request.target.responseXML
-          || request.currentTarget.responseXML); break;
-        default: options.success(request.target.responseText
-          || request.currentTarget.response);
-      }
-    };
-  }
-  if (typeof options.error === "function") { xhr.onerror = options.error; }
-  if (typeStr === "GET") {
-    xhr.send();
-  } else if (typeStr === "POST") {
-    xhr.send(encodeURI(options.data));
-  }
-}
-
-
 /** Type API **/
+
+
+/**
+ * @description Checks if the given value is NonNullable (not null or undefined).
+ *
+ * @param {unknown} value - The value to check.
+ * @returns True if the value is a NonNullable, false otherwise.
+ */
+const isNonNullable = (value: unknown): value is NonNullable<unknown> =>
+  value != null;
+
+
+/**
+ * @description Checks if the given value is NonNullablePrimitive.
+ *
+ * @param {unknown} value - The value to check.
+ * @returns True if the value is a NonNullable, false otherwise.
+ */
+const isNonNullablePrimitive =
+  (value: unknown): value is NonNullablePrimitive =>
+    value != null && typeof value !== "object" && typeof value !== "function";
 
 
 /* isTypedCollection (
@@ -1824,7 +1710,7 @@ function toPrimitiveValue (value: unknown): any {
  */
 function toSafeString (value: unknown): string {
   const seen = new WeakSet<object>();
-  const replacer = (_key: string, value: unknown): any => {
+  function replacer (_key: string, value: unknown): any {
     if (typeof value === "function") {
       return `[Function: ${value.name || "anonymous"}]`;
     }
@@ -1838,7 +1724,7 @@ function toSafeString (value: unknown): string {
       seen.add(value);
     }
     return value;
-  };
+  }
   if (["undefined", "null", "string", "number", "boolean", "bigint"]
     .includes(value === null ? "null" : typeof value)) {
     return String(value);
@@ -1973,17 +1859,22 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
   const _classof = (value: any): string =>
     Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
     const _ownKeys = (value: object): any[] =>
-      [...Object.getOwnPropertyNames(value), ...Object.getOwnPropertySymbols(value)];
+      [...Object.getOwnPropertyNames(value),
+        ...Object.getOwnPropertySymbols(value)];
   /* strict equality helper function */
   const _isEqual = (value1: any, value2: any): boolean =>
     Object.is(value1, value2);
   /* primitives: Boolean, Number, BigInt, String + Function + Symbol */
   if (_isEqual(value1, value2)) { return true; }
   /* Object Wrappers (Boolean, Number, BigInt, String) */
-  if (_isObject(value1) && _isPrimitive(value2) && _classof(value1) === typeof value2) {
+  if (_isObject(value1)
+    && _isPrimitive(value2)
+    && _classof(value1) === typeof value2) {
     return _isEqual(value1.valueOf(), value2);
   }
-  if (_isPrimitive(value1) && _isObject(value2) && typeof value1 === _classof(value2)) {
+  if (_isPrimitive(value1)
+    && _isObject(value2)
+    && typeof value1 === _classof(value2)) {
     return _isEqual(value1, value2.valueOf());
   }
   /* type (primitives, object, null, NaN) */
@@ -1999,7 +1890,8 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
       return false;
     }
     /* objects / WeakMap + WeakSet */
-    if (_isSameInstance(value1, value2, WeakMap) || _isSameInstance(value1, value2, WeakSet)) {
+    if (_isSameInstance(value1, value2, WeakMap)
+      || _isSameInstance(value1, value2, WeakSet)) {
       return _isEqual(value1, value2);
     }
     /* objects / Wrapper objects: Number, Boolean, String, BigInt */
@@ -2036,7 +1928,9 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
     ) {
       if (value1.length !== value2.length) { return false; }
       if (value1.length === 0) { return true; }
-      return value1.every((value: unknown, index: any): boolean => _isEqual(value, value2[index]));
+      return value1.every(
+        (value: unknown, index: any): boolean => _isEqual(value, value2[index])
+      );
     }
     /* objects / ArrayBuffer */
     if (_isSameInstance(value1, value2, ArrayBuffer)) {
@@ -2051,7 +1945,9 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
       if (value1.byteLength !== value2.byteLength) { return false; }
       if (value1.byteLength === 0) { return true; }
       for (let index = 0; index < value1.byteLength; index++) {
-        if (!_isEqual(value1.getUint8(index), value2.getUint8(index))) { return false; }
+        if (!_isEqual(value1.getUint8(index), value2.getUint8(index))) {
+          return false;
+        }
       }
       return true;
     }
@@ -2066,7 +1962,9 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
     if (_isSameInstance(value1, value2, Set)) {
       if (value1.size !== value2.size) { return false; }
       if (value1.size === 0) { return true; }
-      return [...value1.keys()].every((value: unknown): boolean => value2.has(value));
+      return [...value1.keys()].every(
+        (value: unknown): boolean => value2.has(value)
+      );
     }
     /* objects / RegExp */
     if (_isSameInstance(value1, value2, RegExp)) {
@@ -2078,9 +1976,15 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
     if (_isSameInstance(value1, value2, Error)) {
       return isDeepStrictEqual(
         Object.getOwnPropertyNames(value1)
-          .reduce((acc: any, k: any): object => { acc[k] = value1[k]; return acc; }, {}),
+          .reduce(
+            (acc: any, k: any): object => { acc[k] = value1[k]; return acc; },
+            {}
+          ),
         Object.getOwnPropertyNames(value2)
-          .reduce((acc: any, k: any): object => { acc[k] = value2[k]; return acc; }, {})
+          .reduce(
+            (acc: any, k: any): object => { acc[k] = value2[k]; return acc; },
+            {}
+          )
       );
     }
     /* objects / Date */
@@ -2162,7 +2066,7 @@ function isEmptyValue (value: any): boolean {
       && typeof value.next === "function")) {
     try {
       /* Has at least one element */
-      for (const _ of value) { return false; }
+      for (let _ of value) { return false; }
       return true;
     } catch { /* Not iterable */ }
   }
@@ -2212,14 +2116,14 @@ const isPlainObject = (value: unknown): boolean =>
 
 /* isChar(value: unknown): boolean */
 const isChar = (value: unknown): boolean =>
-  typeof value === "string"
-    && (value.length === 1 || Array.from(value).length === 1);
+  typeof value === "string" && (value.length === 1 || [...value].length === 1);
 
 
 /* isNumeric(value: unknown): boolean */
 const isNumeric = (value: any): boolean =>
   ((typeof value === "number" || typeof value === "bigint") && value === value)
-    ? true : (!isNaN(parseFloat(value)) && isFinite(value));
+    ? true
+    : (!isNaN(parseFloat(value)) && isFinite(value));
 
 
 /* isObject(value: unknown): boolean */
@@ -2780,20 +2684,14 @@ function* iterRange (
 /* iterCycle(iterator: iterator [, n = Infinity]): iterator */
 function* iterCycle ([...array], num: number = Infinity): IteratorReturn {
   let index: number = 0;
-  while (index < num) {
-    yield* array;
-    index++;
-  }
+  while (index++ < num) { yield* array; }
 }
 
 
 /* iterRepeat(value: unknown [, num: number = Infinity]): iterator */
 function* iterRepeat (value: unknown, num: number = Infinity): IteratorReturn {
   let index: number = 0;
-  while (index < num) {
-    yield value;
-    index++;
-  }
+  while (index++ < num) { yield value; }
 }
 
 
@@ -3719,8 +3617,6 @@ export default {
   BASE62,
   WORDSAFEALPHABET,
   assert,
-  isNonNullable,
-  isNonNullablePrimitive,
   eq,
   gt,
   gte,
@@ -3811,11 +3707,9 @@ export default {
   domScrollToBottom,
   domScrollToElement,
   domClear,
-  /** Legacy AJAX API **/
-  getText,
-  getJson,
-  ajax,
   /** Type API **/
+  isNonNullable,
+  isNonNullablePrimitive,
   isTypedCollection,
   is,
   toObject,
@@ -3976,8 +3870,6 @@ export {
   BASE62,
   WORDSAFEALPHABET,
   assert,
-  isNonNullable,
-  isNonNullablePrimitive,
   eq,
   gt,
   gte,
@@ -4068,11 +3960,9 @@ export {
   domScrollToBottom,
   domScrollToElement,
   domClear,
-  /** Legacy AJAX API **/
-  getText,
-  getJson,
-  ajax,
   /** Type API **/
+  isNonNullable,
+  isNonNullablePrimitive,
   isTypedCollection,
   is,
   toObject,

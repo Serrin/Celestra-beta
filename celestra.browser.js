@@ -240,8 +240,6 @@ function assert(condition, message) {
         throw new Error(errorMessage, { cause: errorMessage });
     }
 }
-const isNonNullable = (value) => value != null;
-const isNonNullablePrimitive = (value) => value != null && typeof value !== "object" && typeof value !== "function";
 const eq = (value1, value2) => value1 === value2 || (value1 !== value1 && value2 !== value2);
 function gt(value1, value2) {
     const _typeOf = (value) => value === null ? "null" : typeof value;
@@ -299,7 +297,7 @@ const omit = (obj, keys) => Object.keys(obj).reduce(function (acc, key) {
     }
     return acc;
 }, {});
-const assoc = (obj, property, value) => ({ ...obj, [property]: value });
+const assoc = (obj, key, value) => ({ ...obj, [key]: value });
 function asyncNoop() {
     return new Promise(function (resolve) { resolve(); });
 }
@@ -358,34 +356,89 @@ const getUrlVars = (str = location.search) => [...new URLSearchParams(str).entri
 const obj2string = (obj) => Object.keys(obj).reduce((str, key) => str
     += encodeURIComponent(key) + "=" + encodeURIComponent(obj[key]) + "&", "").slice(0, -1);
 function extend(...args) {
-    function _EXT(...args) {
-        let targetObject;
-        let deep;
-        let start;
-        if (typeof args[0] === "boolean") {
-            targetObject = args[1], deep = args[0], start = 2;
+    let deep = false;
+    let target;
+    let i = 0;
+    if (args[0] === true) {
+        deep = true;
+        target = args[1] || {};
+        i = 2;
+    }
+    else {
+        target = args[0] || {};
+        i = 1;
+    }
+    const _isPlainObject = (obj) => obj != null
+        && typeof obj === "object"
+        && (obj.constructor === Object || obj.constructor == null);
+    const _isDate = (value) => value instanceof Date;
+    const _isRegExp = (value) => value instanceof RegExp;
+    const _isMap = (value) => value instanceof Map;
+    const _isSet = (value) => value instanceof Set;
+    function merge(target, source) {
+        if (Object.is(source, target) || source == null || typeof source !== "object") {
+            return source;
         }
-        else {
-            targetObject = args[0], deep = false, start = 1;
+        if (_isDate(source)) {
+            return new Date(source.getTime());
         }
-        for (let i = start, length = args.length, sourceObject; i < length; i++) {
-            sourceObject = args[i];
-            if (sourceObject != null) {
-                for (let key in sourceObject) {
-                    if (Object.hasOwn(sourceObject, key)) {
-                        if (typeof sourceObject[key] === "object" && deep) {
-                            targetObject[key] = _EXT(true, {}, sourceObject[key]);
-                        }
-                        else {
-                            targetObject[key] = sourceObject[key];
-                        }
+        if (_isRegExp(source)) {
+            return new RegExp(source);
+        }
+        if (_isMap(source)) {
+            if (!_isMap(target)) {
+                target = new Map();
+            }
+            for (let [key, value] of source) {
+                const tv = target.get(key);
+                target.set(key, deep ? merge(tv, value) : value);
+            }
+            return target;
+        }
+        if (_isSet(source)) {
+            if (!_isSet(target)) {
+                target = new Set();
+            }
+            for (let item of source) {
+                if (deep) {
+                    if (target.has(item)) {
+                        continue;
                     }
                 }
+                target.add(item);
             }
+            return target;
         }
-        return targetObject;
+        if (Array.isArray(source)) {
+            if (!Array.isArray(target)) {
+                target = [];
+            }
+            const srcLength = source.length;
+            for (let i = 0; i < srcLength; i++) {
+                let sv = source[i];
+                let tv = target[i];
+                target[i] = deep ? merge(tv, sv) : sv;
+            }
+            return target;
+        }
+        if (_isPlainObject(source)) {
+            if (!_isPlainObject(target)) {
+                target = {};
+            }
+            for (let key in source) {
+                let sv = source[key];
+                let tv = target[key];
+                target[key] = deep ? merge(tv, sv) : sv;
+            }
+            return target;
+        }
+        return source;
     }
-    return _EXT(...args);
+    const length = args.length;
+    for (; i < length; i++) {
+        merge(target, args[i]);
+    }
+    return target;
 }
 const sizeIn = (obj) => Object.getOwnPropertyNames(obj).length
     + Object.getOwnPropertySymbols(obj).length;
@@ -778,158 +831,8 @@ const domScrollToTop = () => globalThis.scrollTo(0, 0);
 const domScrollToBottom = () => globalThis.scrollTo(0, document.body.scrollHeight);
 const domScrollToElement = (element, top = true) => element.scrollIntoView(top);
 const domClear = (element) => Array.from(element.children).forEach((item) => item.remove());
-function getText(url, successFn) {
-    if (typeof url !== "string") {
-        throw new TypeError("Celestra ajax error: The url parameter have to be a string.");
-    }
-    if (typeof successFn !== "function") {
-        throw new TypeError("Celestra ajax error: The success parameter have to be a function.");
-    }
-    let xhr = new XMLHttpRequest();
-    xhr.onerror = (error) => console.log("Celestra ajax GET error: " + JSON.stringify(error));
-    xhr.open("GET", url, true);
-    xhr.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            successFn(this.responseText);
-        }
-    };
-    xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-    xhr.send();
-}
-function getJson(url, successFn) {
-    if (typeof url !== "string") {
-        throw new TypeError("Celestra ajax error: The url parameter have to be a string.");
-    }
-    if (typeof successFn !== "function") {
-        throw new TypeError("Celestra ajax error: The success parameter have to be a function.");
-    }
-    let xhr = new XMLHttpRequest();
-    xhr.onerror = (error) => console.log("Celestra ajax GET error: " + JSON.stringify(error));
-    xhr.open("GET", url, true);
-    xhr.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            successFn(JSON.parse(this.responseText));
-        }
-    };
-    xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-    xhr.send();
-}
-function ajax(options) {
-    if (typeof options.url !== "string") {
-        throw new TypeError("Celestra ajax error: The url property has to be a string.");
-    }
-    if (typeof options.success !== "function") {
-        throw new TypeError("Celestra ajax error: The success property has to be a function.");
-    }
-    if (options.error === undefined) {
-        options.error = (error) => console.log("Celestra ajax GET error: " + JSON.stringify(error));
-    }
-    if (typeof options.error !== "function") {
-        throw new TypeError("Celestra ajax error: The error property has to be a function or undefined.");
-    }
-    if (!options.queryType) {
-        options.queryType = "ajax";
-    }
-    else {
-        options.queryType = options.queryType.toLowerCase();
-    }
-    if (!options.type) {
-        options.type = "get";
-    }
-    else {
-        options.type = options.type.toLowerCase();
-    }
-    let typeStr;
-    if (options.type === "get") {
-        typeStr = "GET";
-    }
-    else if (options.type === "post") {
-        typeStr = "POST";
-    }
-    else {
-        throw new Error("Celestra ajax error: The type property has to be \"get\" or \"post\".");
-    }
-    if (!options.format) {
-        options.format = "text";
-    }
-    else {
-        options.format = options.format.toLowerCase();
-        if (!(["text", "json", "xml"].includes(options.format))) {
-            throw new Error("Celestra ajax error: The format property has to be \"text\" or \"json\" or \"xml\".");
-        }
-    }
-    let xhr;
-    if (options.queryType === "ajax") {
-        xhr = new XMLHttpRequest();
-    }
-    else if (options.queryType === "cors") {
-        xhr = new XMLHttpRequest();
-        if (!("withCredentials" in xhr)) {
-            xhr = new XDomainRequest();
-        }
-    }
-    else {
-        throw new Error("Celestra ajax error: The querytype property has to be \"ajax\" or \"cors\".");
-    }
-    if (typeof options.user === "string"
-        && typeof options.password === "string") {
-        xhr.open(typeStr, options.url, true, options.user, options.password);
-    }
-    else {
-        xhr.open(typeStr, options.url, true);
-    }
-    if (options.queryType === "ajax") {
-        xhr.onreadystatechange = function () {
-            if (this.readyState === 4 && this.status === 200) {
-                switch (options.format.toLowerCase()) {
-                    case "text":
-                        options.success(this.responseText);
-                        break;
-                    case "json":
-                        options.success(JSON.parse(this.responseText));
-                        break;
-                    case "xml":
-                        options.success(this.responseXML);
-                        break;
-                    default: options.success(this.responseText);
-                }
-            }
-        };
-        xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-        if (options.typeStr === "POST") {
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        }
-    }
-    else if (options.queryType === "cors") {
-        xhr.onload = function (request) {
-            switch (options.format.toLowerCase()) {
-                case "text":
-                    options.success(request.target.responseText
-                        || request.currentTarget.response);
-                    break;
-                case "json":
-                    options.success(JSON.parse(request.target.responseText
-                        || request.currentTarget.response));
-                    break;
-                case "xml":
-                    options.success(request.target.responseXML
-                        || request.currentTarget.responseXML);
-                    break;
-                default: options.success(request.target.responseText
-                    || request.currentTarget.response);
-            }
-        };
-    }
-    if (typeof options.error === "function") {
-        xhr.onerror = options.error;
-    }
-    if (typeStr === "GET") {
-        xhr.send();
-    }
-    else if (typeStr === "POST") {
-        xhr.send(encodeURI(options.data));
-    }
-}
+const isNonNullable = (value) => value != null;
+const isNonNullablePrimitive = (value) => value != null && typeof value !== "object" && typeof value !== "function";
 function isTypedCollection(iter, expectedType, Throw = false) {
     const _typeOf = (value) => value === null ? "null" : typeof value;
     const _isIterator = (value) => value != null && typeof value === "object"
@@ -1019,7 +922,7 @@ function toPrimitiveValue(value) {
 }
 function toSafeString(value) {
     const seen = new WeakSet();
-    const replacer = (_key, value) => {
+    function replacer(_key, value) {
         if (typeof value === "function") {
             return `[Function: ${value.name || "anonymous"}]`;
         }
@@ -1040,7 +943,7 @@ function toSafeString(value) {
             seen.add(value);
         }
         return value;
-    };
+    }
     if (["undefined", "null", "string", "number", "boolean", "bigint"]
         .includes(value === null ? "null" : typeof value)) {
         return String(value);
@@ -1114,15 +1017,20 @@ function isDeepStrictEqual(value1, value2) {
     const _isObject = (value) => value != null && typeof value === "object";
     const _isSameInstance = (value1, value2, Class) => value1 instanceof Class && value2 instanceof Class;
     const _classof = (value) => Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
-    const _ownKeys = (value) => [...Object.getOwnPropertyNames(value), ...Object.getOwnPropertySymbols(value)];
+    const _ownKeys = (value) => [...Object.getOwnPropertyNames(value),
+        ...Object.getOwnPropertySymbols(value)];
     const _isEqual = (value1, value2) => Object.is(value1, value2);
     if (_isEqual(value1, value2)) {
         return true;
     }
-    if (_isObject(value1) && _isPrimitive(value2) && _classof(value1) === typeof value2) {
+    if (_isObject(value1)
+        && _isPrimitive(value2)
+        && _classof(value1) === typeof value2) {
         return _isEqual(value1.valueOf(), value2);
     }
-    if (_isPrimitive(value1) && _isObject(value2) && typeof value1 === _classof(value2)) {
+    if (_isPrimitive(value1)
+        && _isObject(value2)
+        && typeof value1 === _classof(value2)) {
         return _isEqual(value1, value2.valueOf());
     }
     if (_deepType(value1) !== _deepType(value2)) {
@@ -1136,7 +1044,8 @@ function isDeepStrictEqual(value1, value2) {
             Object.getPrototypeOf(value2).constructor) {
             return false;
         }
-        if (_isSameInstance(value1, value2, WeakMap) || _isSameInstance(value1, value2, WeakSet)) {
+        if (_isSameInstance(value1, value2, WeakMap)
+            || _isSameInstance(value1, value2, WeakSet)) {
             return _isEqual(value1, value2);
         }
         if (_isSameInstance(value1, value2, Number)
@@ -1280,7 +1189,7 @@ function isEmptyValue(value) {
         : (value != null && typeof value === "object"
             && typeof value.next === "function")) {
         try {
-            for (const _ of value) {
+            for (let _ of value) {
                 return false;
             }
             return true;
@@ -1310,10 +1219,10 @@ const isPlainObject = (value) => value != null
     && typeof value === "object"
     && (Object.getPrototypeOf(value) === Object.prototype
         || Object.getPrototypeOf(value) === null);
-const isChar = (value) => typeof value === "string"
-    && (value.length === 1 || Array.from(value).length === 1);
+const isChar = (value) => typeof value === "string" && (value.length === 1 || [...value].length === 1);
 const isNumeric = (value) => ((typeof value === "number" || typeof value === "bigint") && value === value)
-    ? true : (!isNaN(parseFloat(value)) && isFinite(value));
+    ? true
+    : (!isNaN(parseFloat(value)) && isFinite(value));
 const isObject = (value) => value != null && (typeof value === "object" || typeof value === "function");
 const isFunction = (value) => typeof value === "function";
 const isCallable = (value) => (value != null && ["object", "function"].includes(typeof value))
@@ -1581,16 +1490,14 @@ function* iterRange(start = 0, step = 1, end = Infinity) {
 }
 function* iterCycle([...array], num = Infinity) {
     let index = 0;
-    while (index < num) {
+    while (index++ < num) {
         yield* array;
-        index++;
     }
 }
 function* iterRepeat(value, num = Infinity) {
     let index = 0;
-    while (index < num) {
+    while (index++ < num) {
         yield value;
-        index++;
     }
 }
 function* takeWhile(iter, fn) {
@@ -2182,8 +2089,6 @@ export default {
     BASE62,
     WORDSAFEALPHABET,
     assert,
-    isNonNullable,
-    isNonNullablePrimitive,
     eq,
     gt,
     gte,
@@ -2272,9 +2177,8 @@ export default {
     domScrollToBottom,
     domScrollToElement,
     domClear,
-    getText,
-    getJson,
-    ajax,
+    isNonNullable,
+    isNonNullablePrimitive,
     isTypedCollection,
     is,
     toObject,
@@ -2419,4 +2323,4 @@ export default {
     randomFloat,
     inRange
 };
-export { VERSION, BASE16, BASE32, BASE36, BASE58, BASE62, WORDSAFEALPHABET, assert, isNonNullable, isNonNullablePrimitive, eq, gt, gte, lt, lte, tap, once, curry, pipe, compose, pick, omit, assoc, asyncNoop, asyncT, asyncF, asyncConstant, asyncIdentity, deleteOwnProperty, createPolyfillMethod, createPolyfillProperty, randomUUIDv7, delay, randomBoolean, getUrlVars, obj2string, extend, sizeIn, unBind, bind, constant, identity, noop, T, F, nanoid, timestampID, b64Encode, b64Decode, strTruncate, strPropercase, strTitlecase, strCapitalize, strUpFirst, strDownFirst, strReverse, strCodePoints, strFromCodePoints, strAt, strSplice, strHTMLRemoveTags, strHTMLEscape, strHTMLUnEscape, qsa, qs, domReady, domCreate, domToElement, domGetCSS, domSetCSS, domFadeIn, domFadeOut, domFadeToggle, domHide, domShow, domToggle, domIsHidden, domSiblings, domSiblingsPrev, domSiblingsLeft, domSiblingsNext, domSiblingsRight, importScript, importStyle, form2array, form2string, getDoNotTrack, getLocation, createFile, getFullscreen, setFullscreenOn, setFullscreenOff, domGetCSSVar, domSetCSSVar, domScrollToTop, domScrollToBottom, domScrollToElement, domClear, getText, getJson, ajax, isTypedCollection, is, toObject, toPrimitiveValue, toSafeString, isPropertyKey, toPropertyKey, isIndex, isLength, toIndex, toLength, typeOf, isSameType, isSameInstance, isCoercedObject, isDeepStrictEqual, isEmptyValue, isProxy, isAsyncGeneratorFn, isClass, isPlainObject, isChar, isNumeric, isObject, isFunction, isCallable, isArraylike, isNull, isUndefined, isNullish, isPrimitive, isIterator, isRegexp, isElement, isIterable, isAsyncIterable, isTypedArray, isGeneratorFn, isAsyncFn, setCookie, getCookie, hasCookie, removeCookie, clearCookies, castArray, compact, unique, count, arrayDeepClone, initial, shuffle, partition, setUnion, setIntersection, setDifference, setSymmetricDifference, isSuperset, min, max, arrayRepeat, arrayCycle, arrayRange, zip, unzip, zipObj, arrayAdd, arrayClear, arrayRemove, arrayRemoveBy, arrayMerge, iterRange, iterCycle, iterRepeat, takeWhile, dropWhile, take, drop, forEach, forEachRight, map, filter, reject, slice, tail, item, nth, size, first, head, last, reverse, sort, includes, find, findLast, every, some, none, takeRight, takeRightWhile, dropRight, dropRightWhile, concat, reduce, enumerate, flat, join, withOut, mod, rem, isFloat, toInteger, toIntegerOrInfinity, sum, avg, product, clamp, minmax, isEven, isOdd, toInt8, toUInt8, toInt16, toUInt16, toInt32, toUInt32, toBigInt64, toBigUInt64, toFloat32, isInt8, isUInt8, isInt16, isUInt16, isInt32, isUInt32, isBigInt64, isBigUInt64, toFloat16, isFloat16, signbit, randomInt, randomFloat, inRange };
+export { VERSION, BASE16, BASE32, BASE36, BASE58, BASE62, WORDSAFEALPHABET, assert, eq, gt, gte, lt, lte, tap, once, curry, pipe, compose, pick, omit, assoc, asyncNoop, asyncT, asyncF, asyncConstant, asyncIdentity, deleteOwnProperty, createPolyfillMethod, createPolyfillProperty, randomUUIDv7, delay, randomBoolean, getUrlVars, obj2string, extend, sizeIn, unBind, bind, constant, identity, noop, T, F, nanoid, timestampID, b64Encode, b64Decode, strTruncate, strPropercase, strTitlecase, strCapitalize, strUpFirst, strDownFirst, strReverse, strCodePoints, strFromCodePoints, strAt, strSplice, strHTMLRemoveTags, strHTMLEscape, strHTMLUnEscape, qsa, qs, domReady, domCreate, domToElement, domGetCSS, domSetCSS, domFadeIn, domFadeOut, domFadeToggle, domHide, domShow, domToggle, domIsHidden, domSiblings, domSiblingsPrev, domSiblingsLeft, domSiblingsNext, domSiblingsRight, importScript, importStyle, form2array, form2string, getDoNotTrack, getLocation, createFile, getFullscreen, setFullscreenOn, setFullscreenOff, domGetCSSVar, domSetCSSVar, domScrollToTop, domScrollToBottom, domScrollToElement, domClear, isNonNullable, isNonNullablePrimitive, isTypedCollection, is, toObject, toPrimitiveValue, toSafeString, isPropertyKey, toPropertyKey, isIndex, isLength, toIndex, toLength, typeOf, isSameType, isSameInstance, isCoercedObject, isDeepStrictEqual, isEmptyValue, isProxy, isAsyncGeneratorFn, isClass, isPlainObject, isChar, isNumeric, isObject, isFunction, isCallable, isArraylike, isNull, isUndefined, isNullish, isPrimitive, isIterator, isRegexp, isElement, isIterable, isAsyncIterable, isTypedArray, isGeneratorFn, isAsyncFn, setCookie, getCookie, hasCookie, removeCookie, clearCookies, castArray, compact, unique, count, arrayDeepClone, initial, shuffle, partition, setUnion, setIntersection, setDifference, setSymmetricDifference, isSuperset, min, max, arrayRepeat, arrayCycle, arrayRange, zip, unzip, zipObj, arrayAdd, arrayClear, arrayRemove, arrayRemoveBy, arrayMerge, iterRange, iterCycle, iterRepeat, takeWhile, dropWhile, take, drop, forEach, forEachRight, map, filter, reject, slice, tail, item, nth, size, first, head, last, reverse, sort, includes, find, findLast, every, some, none, takeRight, takeRightWhile, dropRight, dropRightWhile, concat, reduce, enumerate, flat, join, withOut, mod, rem, isFloat, toInteger, toIntegerOrInfinity, sum, avg, product, clamp, minmax, isEven, isOdd, toInt8, toUInt8, toInt16, toUInt16, toInt32, toUInt32, toBigInt64, toBigUInt64, toFloat32, isInt8, isUInt8, isInt16, isUInt16, isInt32, isUInt32, isBigInt64, isBigUInt64, toFloat16, isFloat16, signbit, randomInt, randomFloat, inRange };

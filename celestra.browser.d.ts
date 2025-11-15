@@ -1,6 +1,6 @@
 declare const VERSION = "Celestra v6.3.1 browser";
 type MapLike = {
-    [key: string | symbol]: any;
+    [key: string | number | symbol]: any;
 };
 type ArrayLike = {
     length: number;
@@ -32,8 +32,6 @@ declare const BASE58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwx
 declare const BASE62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 declare const WORDSAFEALPHABET = "23456789CFGHJMPQRVWXcfghjmpqvwx";
 declare function assert(condition: unknown, message?: unknown): asserts condition;
-declare const isNonNullable: (value: unknown) => value is NonNullable<unknown>;
-declare const isNonNullablePrimitive: (value: unknown) => value is NonNullablePrimitive;
 declare const eq: (value1: unknown, value2: unknown) => boolean;
 declare function gt(value1: Comparable, value2: Comparable): boolean;
 declare function gte(value1: Comparable, value2: Comparable): boolean;
@@ -46,7 +44,7 @@ declare const pipe: (...functions: Function[]) => Function;
 declare const compose: (...functions: Function[]) => Function;
 declare const pick: (obj: MapLike, keys: string[]) => MapLike;
 declare const omit: (obj: MapLike, keys: string[]) => MapLike;
-declare const assoc: (obj: MapLike, property: string, value: unknown) => MapLike;
+declare const assoc: (obj: MapLike, key: string, value: unknown) => MapLike;
 declare function asyncNoop(): Promise<void>;
 declare function asyncT(): Promise<boolean>;
 declare function asyncF(): Promise<boolean>;
@@ -60,7 +58,11 @@ declare const delay: (milisec: number) => Promise<void>;
 declare const randomBoolean: () => boolean;
 declare const getUrlVars: (str?: string) => Object;
 declare const obj2string: (obj: object) => string;
-declare function extend(...args: Array<object | boolean>): object;
+declare function extend<T extends object, U extends object>(target: T, source: U): T & U;
+declare function extend<T extends object, U extends object, V extends object>(target: T, s1: U, s2: V): T & U & V;
+declare function extend<T extends object>(deep: true, target: T, ...sources: any[]): T;
+declare function extend<T extends object>(deep: false, target: T, ...sources: any[]): T;
+declare function extend(target: object, ...sources: any[]): object;
 declare const sizeIn: (obj: object) => number;
 declare const unBind: (fn: Function) => Function;
 declare const bind: (thisArg: any, ...argArray: any[]) => any;
@@ -122,9 +124,8 @@ declare const domScrollToTop: () => void;
 declare const domScrollToBottom: () => void;
 declare const domScrollToElement: (element: Element, top?: boolean) => void;
 declare const domClear: (element: Element) => void;
-declare function getText(url: string, successFn: Function): void;
-declare function getJson(url: string, successFn: Function): void;
-declare function ajax(options: MapLike): void;
+declare const isNonNullable: (value: unknown) => value is NonNullable<unknown>;
+declare const isNonNullablePrimitive: (value: unknown) => value is NonNullablePrimitive;
 declare function isTypedCollection(iter: IterableAndIterator, expectedType: string | Function | Array<string | Function>, Throw?: boolean): boolean;
 declare function is(value: any, expectedType?: string | Function | Array<string | Function> | undefined, Throw?: boolean): string | Function | boolean;
 declare function toObject(value: unknown): Object | symbol | Function;
@@ -281,8 +282,6 @@ declare const _default: {
     BASE62: string;
     WORDSAFEALPHABET: string;
     assert: typeof assert;
-    isNonNullable: (value: unknown) => value is NonNullable<unknown>;
-    isNonNullablePrimitive: (value: unknown) => value is NonNullablePrimitive;
     eq: (value1: unknown, value2: unknown) => boolean;
     gt: typeof gt;
     gte: typeof gte;
@@ -295,7 +294,7 @@ declare const _default: {
     compose: (...functions: Function[]) => Function;
     pick: (obj: MapLike, keys: string[]) => MapLike;
     omit: (obj: MapLike, keys: string[]) => MapLike;
-    assoc: (obj: MapLike, property: string, value: unknown) => MapLike;
+    assoc: (obj: MapLike, key: string, value: unknown) => MapLike;
     asyncNoop: typeof asyncNoop;
     asyncT: typeof asyncT;
     asyncF: typeof asyncF;
@@ -371,9 +370,8 @@ declare const _default: {
     domScrollToBottom: () => void;
     domScrollToElement: (element: Element, top?: boolean) => void;
     domClear: (element: Element) => void;
-    getText: typeof getText;
-    getJson: typeof getJson;
-    ajax: typeof ajax;
+    isNonNullable: (value: unknown) => value is NonNullable<unknown>;
+    isNonNullablePrimitive: (value: unknown) => value is NonNullablePrimitive;
     isTypedCollection: typeof isTypedCollection;
     is: typeof is;
     toObject: typeof toObject;
@@ -519,5 +517,5 @@ declare const _default: {
     inRange: (value: number, min: number, max: number) => boolean;
 };
 export default _default;
-export { VERSION, BASE16, BASE32, BASE36, BASE58, BASE62, WORDSAFEALPHABET, assert, isNonNullable, isNonNullablePrimitive, eq, gt, gte, lt, lte, tap, once, curry, pipe, compose, pick, omit, assoc, asyncNoop, asyncT, asyncF, asyncConstant, asyncIdentity, deleteOwnProperty, createPolyfillMethod, createPolyfillProperty, randomUUIDv7, delay, randomBoolean, getUrlVars, obj2string, extend, sizeIn, unBind, bind, constant, identity, noop, T, F, nanoid, timestampID, b64Encode, b64Decode, strTruncate, strPropercase, strTitlecase, strCapitalize, strUpFirst, strDownFirst, strReverse, strCodePoints, strFromCodePoints, strAt, strSplice, strHTMLRemoveTags, strHTMLEscape, strHTMLUnEscape, qsa, qs, domReady, domCreate, domToElement, domGetCSS, domSetCSS, domFadeIn, domFadeOut, domFadeToggle, domHide, domShow, domToggle, domIsHidden, domSiblings, domSiblingsPrev, domSiblingsLeft, domSiblingsNext, domSiblingsRight, importScript, importStyle, form2array, form2string, getDoNotTrack, getLocation, createFile, getFullscreen, setFullscreenOn, setFullscreenOff, domGetCSSVar, domSetCSSVar, domScrollToTop, domScrollToBottom, domScrollToElement, domClear, getText, getJson, ajax, isTypedCollection, is, toObject, toPrimitiveValue, toSafeString, isPropertyKey, toPropertyKey, isIndex, isLength, toIndex, toLength, typeOf, isSameType, isSameInstance, isCoercedObject, isDeepStrictEqual, isEmptyValue, isProxy, isAsyncGeneratorFn, isClass, isPlainObject, isChar, isNumeric, isObject, isFunction, isCallable, isArraylike, isNull, isUndefined, isNullish, isPrimitive, isIterator, isRegexp, isElement, isIterable, isAsyncIterable, isTypedArray, isGeneratorFn, isAsyncFn, setCookie, getCookie, hasCookie, removeCookie, clearCookies, castArray, compact, unique, count, arrayDeepClone, initial, shuffle, partition, setUnion, setIntersection, setDifference, setSymmetricDifference, isSuperset, min, max, arrayRepeat, arrayCycle, arrayRange, zip, unzip, zipObj, arrayAdd, arrayClear, arrayRemove, arrayRemoveBy, arrayMerge, iterRange, iterCycle, iterRepeat, takeWhile, dropWhile, take, drop, forEach, forEachRight, map, filter, reject, slice, tail, item, nth, size, first, head, last, reverse, sort, includes, find, findLast, every, some, none, takeRight, takeRightWhile, dropRight, dropRightWhile, concat, reduce, enumerate, flat, join, withOut, mod, rem, isFloat, toInteger, toIntegerOrInfinity, sum, avg, product, clamp, minmax, isEven, isOdd, toInt8, toUInt8, toInt16, toUInt16, toInt32, toUInt32, toBigInt64, toBigUInt64, toFloat32, isInt8, isUInt8, isInt16, isUInt16, isInt32, isUInt32, isBigInt64, isBigUInt64, toFloat16, isFloat16, signbit, randomInt, randomFloat, inRange };
+export { VERSION, BASE16, BASE32, BASE36, BASE58, BASE62, WORDSAFEALPHABET, assert, eq, gt, gte, lt, lte, tap, once, curry, pipe, compose, pick, omit, assoc, asyncNoop, asyncT, asyncF, asyncConstant, asyncIdentity, deleteOwnProperty, createPolyfillMethod, createPolyfillProperty, randomUUIDv7, delay, randomBoolean, getUrlVars, obj2string, extend, sizeIn, unBind, bind, constant, identity, noop, T, F, nanoid, timestampID, b64Encode, b64Decode, strTruncate, strPropercase, strTitlecase, strCapitalize, strUpFirst, strDownFirst, strReverse, strCodePoints, strFromCodePoints, strAt, strSplice, strHTMLRemoveTags, strHTMLEscape, strHTMLUnEscape, qsa, qs, domReady, domCreate, domToElement, domGetCSS, domSetCSS, domFadeIn, domFadeOut, domFadeToggle, domHide, domShow, domToggle, domIsHidden, domSiblings, domSiblingsPrev, domSiblingsLeft, domSiblingsNext, domSiblingsRight, importScript, importStyle, form2array, form2string, getDoNotTrack, getLocation, createFile, getFullscreen, setFullscreenOn, setFullscreenOff, domGetCSSVar, domSetCSSVar, domScrollToTop, domScrollToBottom, domScrollToElement, domClear, isNonNullable, isNonNullablePrimitive, isTypedCollection, is, toObject, toPrimitiveValue, toSafeString, isPropertyKey, toPropertyKey, isIndex, isLength, toIndex, toLength, typeOf, isSameType, isSameInstance, isCoercedObject, isDeepStrictEqual, isEmptyValue, isProxy, isAsyncGeneratorFn, isClass, isPlainObject, isChar, isNumeric, isObject, isFunction, isCallable, isArraylike, isNull, isUndefined, isNullish, isPrimitive, isIterator, isRegexp, isElement, isIterable, isAsyncIterable, isTypedArray, isGeneratorFn, isAsyncFn, setCookie, getCookie, hasCookie, removeCookie, clearCookies, castArray, compact, unique, count, arrayDeepClone, initial, shuffle, partition, setUnion, setIntersection, setDifference, setSymmetricDifference, isSuperset, min, max, arrayRepeat, arrayCycle, arrayRange, zip, unzip, zipObj, arrayAdd, arrayClear, arrayRemove, arrayRemoveBy, arrayMerge, iterRange, iterCycle, iterRepeat, takeWhile, dropWhile, take, drop, forEach, forEachRight, map, filter, reject, slice, tail, item, nth, size, first, head, last, reverse, sort, includes, find, findLast, every, some, none, takeRight, takeRightWhile, dropRight, dropRightWhile, concat, reduce, enumerate, flat, join, withOut, mod, rem, isFloat, toInteger, toIntegerOrInfinity, sum, avg, product, clamp, minmax, isEven, isOdd, toInt8, toUInt8, toInt16, toUInt16, toInt32, toUInt32, toBigInt64, toBigUInt64, toFloat32, isInt8, isUInt8, isInt16, isUInt16, isInt32, isUInt32, isBigInt64, isBigUInt64, toFloat16, isFloat16, signbit, randomInt, randomFloat, inRange };
 //# sourceMappingURL=celestra.browser.d.ts.map

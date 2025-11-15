@@ -299,7 +299,7 @@ const omit = (obj, keys) => Object.keys(obj).reduce(function (acc, key) {
     }
     return acc;
 }, {});
-const assoc = (obj, property, value) => ({ ...obj, [property]: value });
+const assoc = (obj, key, value) => ({ ...obj, [key]: value });
 function asyncNoop() {
     return new Promise(function (resolve) { resolve(); });
 }
@@ -358,34 +358,89 @@ const getUrlVars = (str = location.search) => [...new URLSearchParams(str).entri
 const obj2string = (obj) => Object.keys(obj).reduce((str, key) => str
     += encodeURIComponent(key) + "=" + encodeURIComponent(obj[key]) + "&", "").slice(0, -1);
 function extend(...args) {
-    function _EXT(...args) {
-        let targetObject;
-        let deep;
-        let start;
-        if (typeof args[0] === "boolean") {
-            targetObject = args[1], deep = args[0], start = 2;
+    let deep = false;
+    let target;
+    let i = 0;
+    if (args[0] === true) {
+        deep = true;
+        target = args[1] || {};
+        i = 2;
+    }
+    else {
+        target = args[0] || {};
+        i = 1;
+    }
+    const _isPlainObject = (obj) => obj != null
+        && typeof obj === "object"
+        && (obj.constructor === Object || obj.constructor == null);
+    const _isDate = (value) => value instanceof Date;
+    const _isRegExp = (value) => value instanceof RegExp;
+    const _isMap = (value) => value instanceof Map;
+    const _isSet = (value) => value instanceof Set;
+    function merge(target, source) {
+        if (Object.is(source, target) || source == null || typeof source !== "object") {
+            return source;
         }
-        else {
-            targetObject = args[0], deep = false, start = 1;
+        if (_isDate(source)) {
+            return new Date(source.getTime());
         }
-        for (let i = start, length = args.length, sourceObject; i < length; i++) {
-            sourceObject = args[i];
-            if (sourceObject != null) {
-                for (let key in sourceObject) {
-                    if (Object.hasOwn(sourceObject, key)) {
-                        if (typeof sourceObject[key] === "object" && deep) {
-                            targetObject[key] = _EXT(true, {}, sourceObject[key]);
-                        }
-                        else {
-                            targetObject[key] = sourceObject[key];
-                        }
+        if (_isRegExp(source)) {
+            return new RegExp(source);
+        }
+        if (_isMap(source)) {
+            if (!_isMap(target)) {
+                target = new Map();
+            }
+            for (let [key, value] of source) {
+                const tv = target.get(key);
+                target.set(key, deep ? merge(tv, value) : value);
+            }
+            return target;
+        }
+        if (_isSet(source)) {
+            if (!_isSet(target)) {
+                target = new Set();
+            }
+            for (let item of source) {
+                if (deep) {
+                    if (target.has(item)) {
+                        continue;
                     }
                 }
+                target.add(item);
             }
+            return target;
         }
-        return targetObject;
+        if (Array.isArray(source)) {
+            if (!Array.isArray(target)) {
+                target = [];
+            }
+            const srcLength = source.length;
+            for (let i = 0; i < srcLength; i++) {
+                let sv = source[i];
+                let tv = target[i];
+                target[i] = deep ? merge(tv, sv) : sv;
+            }
+            return target;
+        }
+        if (_isPlainObject(source)) {
+            if (!_isPlainObject(target)) {
+                target = {};
+            }
+            for (let key in source) {
+                let sv = source[key];
+                let tv = target[key];
+                target[key] = deep ? merge(tv, sv) : sv;
+            }
+            return target;
+        }
+        return source;
     }
-    return _EXT(...args);
+    const length = args.length;
+    for (; i < length; i++) {
+        merge(target, args[i]);
+    }
+    return target;
 }
 const sizeIn = (obj) => Object.getOwnPropertyNames(obj).length
     + Object.getOwnPropertySymbols(obj).length;
@@ -595,7 +650,7 @@ function toPrimitiveValue(value) {
 }
 function toSafeString(value) {
     const seen = new WeakSet();
-    const replacer = (_key, value) => {
+    function replacer(_key, value) {
         if (typeof value === "function") {
             return `[Function: ${value.name || "anonymous"}]`;
         }
@@ -616,7 +671,7 @@ function toSafeString(value) {
             seen.add(value);
         }
         return value;
-    };
+    }
     if (["undefined", "null", "string", "number", "boolean", "bigint"]
         .includes(value === null ? "null" : typeof value)) {
         return String(value);
@@ -690,15 +745,20 @@ function isDeepStrictEqual(value1, value2) {
     const _isObject = (value) => value != null && typeof value === "object";
     const _isSameInstance = (value1, value2, Class) => value1 instanceof Class && value2 instanceof Class;
     const _classof = (value) => Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
-    const _ownKeys = (value) => [...Object.getOwnPropertyNames(value), ...Object.getOwnPropertySymbols(value)];
+    const _ownKeys = (value) => [...Object.getOwnPropertyNames(value),
+        ...Object.getOwnPropertySymbols(value)];
     const _isEqual = (value1, value2) => Object.is(value1, value2);
     if (_isEqual(value1, value2)) {
         return true;
     }
-    if (_isObject(value1) && _isPrimitive(value2) && _classof(value1) === typeof value2) {
+    if (_isObject(value1)
+        && _isPrimitive(value2)
+        && _classof(value1) === typeof value2) {
         return _isEqual(value1.valueOf(), value2);
     }
-    if (_isPrimitive(value1) && _isObject(value2) && typeof value1 === _classof(value2)) {
+    if (_isPrimitive(value1)
+        && _isObject(value2)
+        && typeof value1 === _classof(value2)) {
         return _isEqual(value1, value2.valueOf());
     }
     if (_deepType(value1) !== _deepType(value2)) {
@@ -857,7 +917,7 @@ function isEmptyValue(value) {
         : (value != null && typeof value === "object"
             && typeof value.next === "function")) {
         try {
-            for (const _ of value) {
+            for (let _ of value) {
                 return false;
             }
             return true;
@@ -887,10 +947,10 @@ const isPlainObject = (value) => value != null
     && typeof value === "object"
     && (Object.getPrototypeOf(value) === Object.prototype
         || Object.getPrototypeOf(value) === null);
-const isChar = (value) => typeof value === "string"
-    && (value.length === 1 || Array.from(value).length === 1);
+const isChar = (value) => typeof value === "string" && (value.length === 1 || [...value].length === 1);
 const isNumeric = (value) => ((typeof value === "number" || typeof value === "bigint") && value === value)
-    ? true : (!isNaN(parseFloat(value)) && isFinite(value));
+    ? true
+    : (!isNaN(parseFloat(value)) && isFinite(value));
 const isObject = (value) => value != null && (typeof value === "object" || typeof value === "function");
 const isFunction = (value) => typeof value === "function";
 const isCallable = (value) => (value != null && ["object", "function"].includes(typeof value))
@@ -1075,16 +1135,14 @@ function* iterRange(start = 0, step = 1, end = Infinity) {
 }
 function* iterCycle([...array], num = Infinity) {
     let index = 0;
-    while (index < num) {
+    while (index++ < num) {
         yield* array;
-        index++;
     }
 }
 function* iterRepeat(value, num = Infinity) {
     let index = 0;
-    while (index < num) {
+    while (index++ < num) {
         yield value;
-        index++;
     }
 }
 function* takeWhile(iter, fn) {
@@ -1679,8 +1737,6 @@ export default {
     BASE62,
     WORDSAFEALPHABET,
     assert,
-    isNonNullable,
-    isNonNullablePrimitive,
     eq,
     gt,
     gte,
@@ -1734,6 +1790,8 @@ export default {
     strHTMLRemoveTags,
     strHTMLEscape,
     strHTMLUnEscape,
+    isNonNullable,
+    isNonNullablePrimitive,
     isTypedCollection,
     is,
     toObject,
@@ -1873,4 +1931,4 @@ export default {
     randomFloat,
     inRange
 };
-export { VERSION, BASE16, BASE32, BASE36, BASE58, BASE62, WORDSAFEALPHABET, assert, isNonNullable, isNonNullablePrimitive, eq, gt, gte, lt, lte, tap, once, curry, pipe, compose, pick, omit, assoc, asyncNoop, asyncT, asyncF, asyncConstant, asyncIdentity, deleteOwnProperty, createPolyfillMethod, createPolyfillProperty, randomUUIDv7, delay, randomBoolean, getUrlVars, obj2string, extend, sizeIn, unBind, bind, constant, identity, noop, T, F, nanoid, timestampID, b64Encode, b64Decode, strTruncate, strPropercase, strTitlecase, strCapitalize, strUpFirst, strDownFirst, strReverse, strCodePoints, strFromCodePoints, strAt, strSplice, strHTMLRemoveTags, strHTMLEscape, strHTMLUnEscape, isTypedCollection, is, toObject, toPrimitiveValue, toSafeString, isPropertyKey, toPropertyKey, isIndex, isLength, toIndex, toLength, typeOf, isSameType, isSameInstance, isCoercedObject, isDeepStrictEqual, isEmptyValue, isProxy, isAsyncGeneratorFn, isClass, isPlainObject, isChar, isNumeric, isObject, isFunction, isCallable, isArraylike, isNull, isUndefined, isNullish, isPrimitive, isIterator, isRegexp, isElement, isIterable, isAsyncIterable, isTypedArray, isGeneratorFn, isAsyncFn, castArray, compact, unique, count, arrayDeepClone, initial, shuffle, partition, setUnion, setIntersection, setDifference, setSymmetricDifference, isSuperset, min, max, arrayRepeat, arrayCycle, arrayRange, zip, unzip, zipObj, arrayAdd, arrayClear, arrayRemove, arrayRemoveBy, arrayMerge, iterRange, iterCycle, iterRepeat, takeWhile, dropWhile, take, drop, forEach, forEachRight, map, filter, reject, slice, tail, item, nth, size, first, head, last, reverse, sort, includes, find, findLast, every, some, none, takeRight, takeRightWhile, dropRight, dropRightWhile, concat, reduce, enumerate, flat, join, withOut, mod, rem, isFloat, toInteger, toIntegerOrInfinity, sum, avg, product, clamp, minmax, isEven, isOdd, toInt8, toUInt8, toInt16, toUInt16, toInt32, toUInt32, toBigInt64, toBigUInt64, toFloat32, isInt8, isUInt8, isInt16, isUInt16, isInt32, isUInt32, isBigInt64, isBigUInt64, toFloat16, isFloat16, signbit, randomInt, randomFloat, inRange };
+export { VERSION, BASE16, BASE32, BASE36, BASE58, BASE62, WORDSAFEALPHABET, assert, eq, gt, gte, lt, lte, tap, once, curry, pipe, compose, pick, omit, assoc, asyncNoop, asyncT, asyncF, asyncConstant, asyncIdentity, deleteOwnProperty, createPolyfillMethod, createPolyfillProperty, randomUUIDv7, delay, randomBoolean, getUrlVars, obj2string, extend, sizeIn, unBind, bind, constant, identity, noop, T, F, nanoid, timestampID, b64Encode, b64Decode, strTruncate, strPropercase, strTitlecase, strCapitalize, strUpFirst, strDownFirst, strReverse, strCodePoints, strFromCodePoints, strAt, strSplice, strHTMLRemoveTags, strHTMLEscape, strHTMLUnEscape, isNonNullable, isNonNullablePrimitive, isTypedCollection, is, toObject, toPrimitiveValue, toSafeString, isPropertyKey, toPropertyKey, isIndex, isLength, toIndex, toLength, typeOf, isSameType, isSameInstance, isCoercedObject, isDeepStrictEqual, isEmptyValue, isProxy, isAsyncGeneratorFn, isClass, isPlainObject, isChar, isNumeric, isObject, isFunction, isCallable, isArraylike, isNull, isUndefined, isNullish, isPrimitive, isIterator, isRegexp, isElement, isIterable, isAsyncIterable, isTypedArray, isGeneratorFn, isAsyncFn, castArray, compact, unique, count, arrayDeepClone, initial, shuffle, partition, setUnion, setIntersection, setDifference, setSymmetricDifference, isSuperset, min, max, arrayRepeat, arrayCycle, arrayRange, zip, unzip, zipObj, arrayAdd, arrayClear, arrayRemove, arrayRemoveBy, arrayMerge, iterRange, iterCycle, iterRepeat, takeWhile, dropWhile, take, drop, forEach, forEachRight, map, filter, reject, slice, tail, item, nth, size, first, head, last, reverse, sort, includes, find, findLast, every, some, none, takeRight, takeRightWhile, dropRight, dropRightWhile, concat, reduce, enumerate, flat, join, withOut, mod, rem, isFloat, toInteger, toIntegerOrInfinity, sum, avg, product, clamp, minmax, isEven, isOdd, toInt8, toUInt8, toInt16, toUInt16, toInt32, toUInt32, toBigInt64, toBigUInt64, toFloat32, isInt8, isUInt8, isInt16, isUInt16, isInt32, isUInt32, isBigInt64, isBigUInt64, toFloat16, isFloat16, signbit, randomInt, randomFloat, inRange };

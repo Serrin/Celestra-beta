@@ -28,7 +28,7 @@ const VERSION = "Celestra v6.3.1 node";
  *
  * @internal
  * */
-type MapLike = { [key: string | symbol]: any };
+type MapLike = { [key: string | number | symbol]: any };
 
 /**
  * @description Array-like object.
@@ -442,6 +442,7 @@ if (!globalThis.AsyncGeneratorFunction) {
 /** Core API **/
 
 
+/* Alphabet constans */
 const BASE16 = "0123456789ABCDEF";
 const BASE32 = "234567ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const BASE36 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -629,8 +630,8 @@ const omit = (obj: MapLike, keys: string[]): MapLike =>
 
 
 /* assoc (object: object, key: string, value: unknown): object */
-const assoc = (obj: MapLike, property: string, value: unknown): MapLike =>
-  ({...obj, [property]: value});
+const assoc = (obj: MapLike, key: string, value: unknown): MapLike =>
+  ({...obj, [key]: value});
 
 
 /* asyncNoop (): Promise - do nothing */
@@ -748,37 +749,96 @@ const obj2string = (obj: object): string => Object.keys(obj).reduce(
 
 
 /* extend([deep: boolean,] target: object, source1: object[, sourceN]): object*/
-function extend (...args: Array<object | boolean>): object {
-  function _EXT (...args: Array<object | boolean>): object {
-    let targetObject: {};
-    let deep: boolean;
-    let start: number;
-    if (typeof args[0] === "boolean") {
-      targetObject = args[1], deep = args[0], start = 2;
-    } else {
-      targetObject = args[0], deep = false, start = 1;
-    }
-    for (let i: number = start, length: number = args.length,
-      sourceObject: object; i < length; i++) {
-      sourceObject = args[i] as object;
-      if (sourceObject != null) {
-        for (let key in sourceObject) {
-          if (Object.hasOwn(sourceObject, key)) {
-            // @ts-ignore
-            if (typeof sourceObject[key] === "object" && deep) {
-              // @ts-ignore
-              targetObject[key] = _EXT(true, {}, sourceObject[key]);
-            } else {
-              // @ts-ignore
-              targetObject[key] = sourceObject[key];
-            }
-          }
-        }
-      }
-    }
-    return targetObject;
+/**
+ * @description Deep assign of an object (Object, Array, etc.)
+ *
+ * @returns any
+ */
+function extend <T extends object, U extends object>(target: T, source: U): T & U;
+function extend <T extends object, U extends object, V extends object>(target: T, s1: U, s2: V): T & U & V;
+function extend <T extends object>(deep: true, target: T, ...sources: any[]): T;
+function extend <T extends object>(deep: false, target: T, ...sources: any[]): T;
+function extend (target: object, ...sources: any[]): object;
+function extend (...args: any[]): any {
+  /* Arguments checking */
+  let deep: boolean = false;
+  let target: any;
+  let i = 0;
+  if (args[0] === true) {
+    deep = true;
+    target = args[1] || {};
+    i = 2;
+  } else {
+    target = args[0] || {};
+    i = 1;
   }
-  return _EXT(...args);
+  /* Helper functions */
+  const _isPlainObject = (obj: any): obj is Record<string, any> =>
+    obj != null
+      && typeof obj === "object"
+      && (obj.constructor === Object || obj.constructor == null);
+  const _isDate = (value: any): value is Date => value instanceof Date;
+  const _isRegExp = (value: any): value is RegExp => value instanceof RegExp;
+  const _isMap = (value: any): value is Map<any, any> => value instanceof Map;
+  const _isSet = (value: any): value is Set<any> => value instanceof Set;
+  /*  */
+  function merge(target: any, source: any): any {
+    /* Identical or non-object -> direct assign */
+    if (Object.is(source, target) || source == null || typeof source !== "object") {
+      return source;
+    }
+    /* Date -> clone */
+    if (_isDate(source)) { return new Date(source.getTime()); }
+    /* RegExp -> clone */
+    if (_isRegExp(source)) { return new RegExp(source); }
+    /* Map -> deep merge entries */
+    if (_isMap(source)) {
+      if (!_isMap(target)) { target = new Map(); }
+      for (let [key, value] of source) {
+        const tv = target.get(key);
+        target.set(key, deep ? merge(tv, value) : value);
+      }
+      return target;
+    }
+    /* Set -> deep union */
+    if (_isSet(source)) {
+      if (!_isSet(target)) { target = new Set(); }
+      for (let item of source) {
+        if (deep) {
+          if (target.has(item)) { continue; }
+        }
+        target.add(item);
+      }
+      return target;
+    }
+    /* Array -> deep merge by index */
+    if (Array.isArray(source)) {
+      if (!Array.isArray(target)) { target = []; }
+      const srcLength = source.length;
+      for (let i = 0; i < srcLength; i++) {
+        let sv = source[i];
+        let tv = target[i];
+        target[i] = deep ? merge(tv, sv) : sv;
+      }
+      return target;
+    }
+    /* Plain object -> deep merge keys */
+    if (_isPlainObject(source)) {
+      if (!_isPlainObject(target)) { target = {}; }
+      for (let key in source) {
+        let sv = source[key];
+        let tv = target[key];
+        target[key] = deep ? merge(tv, sv) : sv;
+      }
+      return target;
+    }
+    /* Fallback: copy by reference */
+    return source;
+  }
+  /* Clone all sources */
+  const length = args.length;
+  for (; i < length; i++) { merge(target, args[i]); }
+  return target;
 }
 
 
@@ -1185,7 +1245,7 @@ function toPrimitiveValue (value: unknown): any {
  */
 function toSafeString (value: unknown): string {
   const seen = new WeakSet<object>();
-  const replacer = (_key: string, value: unknown): any => {
+  function replacer (_key: string, value: unknown): any {
     if (typeof value === "function") {
       return `[Function: ${value.name || "anonymous"}]`;
     }
@@ -1199,7 +1259,7 @@ function toSafeString (value: unknown): string {
       seen.add(value);
     }
     return value;
-  };
+  }
   if (["undefined", "null", "string", "number", "boolean", "bigint"]
     .includes(value === null ? "null" : typeof value)) {
     return String(value);
@@ -1334,7 +1394,8 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
   const _classof = (value: any): string =>
     Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
     const _ownKeys = (value: object): any[] =>
-      [...Object.getOwnPropertyNames(value), ...Object.getOwnPropertySymbols(value)];
+      [...Object.getOwnPropertyNames(value),
+        ...Object.getOwnPropertySymbols(value)];
   /* strict equality helper function */
   const _isEqual = (value1: any, value2: any): boolean =>
     Object.is(value1, value2);
@@ -1344,10 +1405,14 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
   /* primitives: Boolean, Number, BigInt, String + Function + Symbol */
   if (_isEqual(value1, value2)) { return true; }
   /* Object Wrappers (Boolean, Number, BigInt, String) */
-  if (_isObject(value1) && _isPrimitive(value2) && _classof(value1) === typeof value2) {
+  if (_isObject(value1)
+    && _isPrimitive(value2)
+    && _classof(value1) === typeof value2) {
     return _isEqual(value1.valueOf(), value2);
   }
-  if (_isPrimitive(value1) && _isObject(value2) && typeof value1 === _classof(value2)) {
+  if (_isPrimitive(value1)
+    && _isObject(value2)
+    && typeof value1 === _classof(value2)) {
     return _isEqual(value1, value2.valueOf());
   }
   /* type (primitives, object, null, NaN) */
@@ -1447,9 +1512,15 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
     if (_isSameInstance(value1, value2, Error)) {
       return isDeepStrictEqual(
         Object.getOwnPropertyNames(value1)
-          .reduce((acc: any, k: any): object => { acc[k] = value1[k]; return acc; }, {}),
+          .reduce(
+            (acc: any, k: any): object => { acc[k] = value1[k]; return acc; },
+            {}
+          ),
         Object.getOwnPropertyNames(value2)
-          .reduce((acc: any, k: any): object => { acc[k] = value2[k]; return acc; }, {})
+          .reduce(
+            (acc: any, k: any): object => { acc[k] = value2[k]; return acc; },
+            {}
+          )
       );
     }
     /* objects / Date */
@@ -1532,7 +1603,7 @@ function isEmptyValue (value: any): boolean {
       && typeof value.next === "function")) {
     try {
       /* Has at least one element */
-      for (const _ of value) { return false; }
+      for (let _ of value) { return false; }
       return true;
     } catch { /* Not iterable */ }
   }
@@ -1582,14 +1653,14 @@ const isPlainObject = (value: unknown): boolean =>
 
 /* isChar(value: unknown): boolean */
 const isChar = (value: unknown): boolean =>
-  typeof value === "string"
-    && (value.length === 1 || Array.from(value).length === 1);
+  typeof value === "string" && (value.length === 1 || [...value].length === 1);
 
 
 /* isNumeric(value: unknown): boolean */
 const isNumeric = (value: any): boolean =>
   ((typeof value === "number" || typeof value === "bigint") && value === value)
-    ? true : (!isNaN(parseFloat(value)) && isFinite(value));
+    ? true
+    : (!isNaN(parseFloat(value)) && isFinite(value));
 
 
 /* isObject(value: unknown): boolean */
@@ -2021,20 +2092,14 @@ function* iterRange (
 /* iterCycle(iterator: iterator [, num = Infinity]): iterator */
 function* iterCycle ([...array], num: number = Infinity): IteratorReturn {
   let index: number = 0;
-  while (index < num) {
-    yield* array;
-    index++;
-  }
+  while (index++ < num) { yield* array; }
 }
 
 
 /* iterRepeat(value: unknown [, num: number = Infinity]): iterator */
 function* iterRepeat (value: unknown, num: number = Infinity): IteratorReturn {
   let index: number = 0;
-  while (index < num) {
-    yield value;
-    index++;
-  }
+  while (index++ < num) { yield value; }
 }
 
 
@@ -2965,8 +3030,6 @@ export default {
   BASE62,
   WORDSAFEALPHABET,
   assert,
-  isNonNullable,
-  isNonNullablePrimitive,
   eq,
   gt,
   gte,
@@ -3022,6 +3085,8 @@ export default {
   strHTMLEscape,
   strHTMLUnEscape,
   /** Type API **/
+  isNonNullable,
+  isNonNullablePrimitive,
   isTypedCollection,
   is,
   toObject,
@@ -3176,8 +3241,6 @@ export {
   BASE62,
   WORDSAFEALPHABET,
   assert,
-  isNonNullable,
-  isNonNullablePrimitive,
   eq,
   gt,
   gte,
@@ -3233,6 +3296,8 @@ export {
   strHTMLEscape,
   strHTMLUnEscape,
   /** Type API **/
+  isNonNullable,
+  isNonNullablePrimitive,
   isTypedCollection,
   is,
   toObject,
