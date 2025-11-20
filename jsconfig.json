@@ -51,7 +51,7 @@
     "outDir": "."
   },
   "files": ["./unittest.js", "./unittest.node.js"],
-  // //"include": ["src/**/*"],
+  // "include": ["src/**/*"],
   "include": ["./*.js", "./*.mjs", "./*.cjs"],
   "exclude": [
     "./celestra-assert-plugin.dev.js",

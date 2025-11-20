@@ -1,5 +1,4 @@
 @echo off
-rem version 2025-09-13
 echo.
 date /t
 time /t

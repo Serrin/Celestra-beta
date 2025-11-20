@@ -1,5 +1,5 @@
 "use strict";
-const VERSION = "Celestra v6.3.1 node";
+const VERSION = "Celestra v6.4.0 node";
 (function (global) {
     if (!global.globalThis) {
         if (Object.defineProperty) {
@@ -1557,37 +1557,74 @@ function join(iter, separator = ",") {
     return result.slice(separator.length);
 }
 const withOut = ([...array], [...filterValues]) => array.filter((value) => !filterValues.includes(value));
-function mod(dividend, divisor) {
-    const dividendType = typeof dividend;
-    if (dividendType !== typeof divisor) {
-        throw new TypeError("[mod] divisor and dividend must be the same type (both number or both bigint)");
+function add(value1, value2) {
+    if (typeof value1 !== typeof value2
+        || (typeof value1 !== "number" && typeof value1 !== "bigint")) {
+        throw new TypeError(`[add] Value1 and Value2 must be of the same type and either number or bigint. Got: ${typeof value1} and ${typeof value2}`);
     }
-    if (dividendType !== "number" && dividendType !== "bigint") {
-        throw new TypeError("[mod] divisor and dividend must be either both number or both bigint");
+    if (typeof value1 === "number" && typeof value2 === "number") {
+        return Math.sumPrecise([value1, value2]);
     }
-    if ((dividendType === "number" && divisor === 0)
-        || (dividendType === "bigint" && divisor === 0n)) {
-        throw new RangeError("[mod] divisor must not be zero");
-    }
-    return dividendType === "number"
-        ? Math.trunc(dividend / divisor)
-        : dividend / divisor;
+    return value1 + value2;
 }
-function rem(dividend, divisor) {
-    const dividendType = typeof dividend;
-    if (dividendType !== typeof divisor) {
-        throw new TypeError("[rem] divisor and dividend must be the same type (both number or both bigint)");
+function sub(value1, value2) {
+    if (typeof value1 !== typeof value2
+        || (typeof value1 !== "number" && typeof value1 !== "bigint")) {
+        throw new TypeError(`[sub] Value1 and Value2 must be of the same type and either number or bigint. Got: ${typeof value1} and ${typeof value2}`);
     }
-    if (dividendType !== "number" && dividendType !== "bigint") {
-        throw new TypeError("[rem] divisor and dividend must be either both number or both bigint");
+    if (typeof value1 === "number" && typeof value2 === "number") {
+        Math.sumPrecise([value1, -value2]);
     }
-    if ((dividendType === "number" && divisor === 0)
-        || (dividendType === "bigint" && divisor === 0n)) {
-        throw new RangeError("[rem] divisor must not be zero");
+    return value1 - value2;
+}
+function mul(value1, value2) {
+    if (typeof value1 !== typeof value2
+        || (typeof value1 !== "number" && typeof value1 !== "bigint")) {
+        throw new TypeError(`[mul] Value1 and Value2 must be of the same type and either number or bigint. Got: ${typeof value1} and ${typeof value2}`);
     }
-    return dividendType === "number"
-        ? dividend % divisor
-        : dividend % divisor;
+    if (typeof value1 === "number" && typeof value2 === "number") {
+        return value1 * value2;
+    }
+    return value1 * value2;
+}
+function div(value1, value2) {
+    if (typeof value1 !== typeof value2
+        || (typeof value1 !== "number" && typeof value1 !== "bigint")) {
+        throw new TypeError(`[div] Value1 and Value2 must be of the same type and either number or bigint. Got: ${typeof value1} and ${typeof value2}`);
+    }
+    if (value2 === 0 || value2 === 0n) {
+        throw new RangeError("[div] Cannot divide by zero");
+    }
+    if (typeof value1 === "number" && typeof value2 === "number") {
+        return value1 / value2;
+    }
+    return value1 / value2;
+}
+function divMod(value1, value2) {
+    if (typeof value1 !== typeof value2
+        || (typeof value1 !== "number" && typeof value1 !== "bigint")) {
+        throw new TypeError(`[divMod] Value1 and Value2 must be of the same type and either number or bigint. Got: ${typeof value1} and ${typeof value2}`);
+    }
+    if (value2 === 0 || value2 === 0n) {
+        throw new RangeError("[divMod] Cannot divide by zero");
+    }
+    if (typeof value1 === "number" && typeof value2 === "number") {
+        return Math.trunc(value1 / value2);
+    }
+    return value1 / value2;
+}
+function mod(value1, value2) {
+    if (typeof value1 !== typeof value2
+        || (typeof value1 !== "number" && typeof value1 !== "bigint")) {
+        throw new TypeError(`[mod] Value1 and Value2 must be of the same type and either number or bigint. Got: ${typeof value1} and ${typeof value2}`);
+    }
+    if (value2 === 0 || value2 === 0n) {
+        throw new RangeError("[mod] Cannot divide by zero");
+    }
+    if (typeof value1 === "number" && typeof value2 === "number") {
+        return Math.trunc(value1 % value2);
+    }
+    return value1 % value2;
 }
 const isFloat = (value) => typeof value === "number" && value === value && Boolean(value % 1);
 function toInteger(value) {
@@ -1895,8 +1932,12 @@ export default {
     flat,
     join,
     withOut,
+    add,
+    sub,
+    mul,
+    div,
+    divMod,
     mod,
-    rem,
     isFloat,
     toInteger,
     toIntegerOrInfinity,
@@ -1931,4 +1972,4 @@ export default {
     randomFloat,
     inRange
 };
-export { VERSION, BASE16, BASE32, BASE36, BASE58, BASE62, WORDSAFEALPHABET, assert, eq, gt, gte, lt, lte, tap, once, curry, pipe, compose, pick, omit, assoc, asyncNoop, asyncT, asyncF, asyncConstant, asyncIdentity, deleteOwnProperty, createPolyfillMethod, createPolyfillProperty, randomUUIDv7, delay, randomBoolean, getUrlVars, obj2string, extend, sizeIn, unBind, bind, constant, identity, noop, T, F, nanoid, timestampID, b64Encode, b64Decode, strTruncate, strPropercase, strTitlecase, strCapitalize, strUpFirst, strDownFirst, strReverse, strCodePoints, strFromCodePoints, strAt, strSplice, strHTMLRemoveTags, strHTMLEscape, strHTMLUnEscape, isNonNullable, isNonNullablePrimitive, isTypedCollection, is, toObject, toPrimitiveValue, toSafeString, isPropertyKey, toPropertyKey, isIndex, isLength, toIndex, toLength, typeOf, isSameType, isSameInstance, isCoercedObject, isDeepStrictEqual, isEmptyValue, isProxy, isAsyncGeneratorFn, isClass, isPlainObject, isChar, isNumeric, isObject, isFunction, isCallable, isArraylike, isNull, isUndefined, isNullish, isPrimitive, isIterator, isRegexp, isElement, isIterable, isAsyncIterable, isTypedArray, isGeneratorFn, isAsyncFn, castArray, compact, unique, count, arrayDeepClone, initial, shuffle, partition, setUnion, setIntersection, setDifference, setSymmetricDifference, isSuperset, min, max, arrayRepeat, arrayCycle, arrayRange, zip, unzip, zipObj, arrayAdd, arrayClear, arrayRemove, arrayRemoveBy, arrayMerge, iterRange, iterCycle, iterRepeat, takeWhile, dropWhile, take, drop, forEach, forEachRight, map, filter, reject, slice, tail, item, nth, size, first, head, last, reverse, sort, includes, find, findLast, every, some, none, takeRight, takeRightWhile, dropRight, dropRightWhile, concat, reduce, enumerate, flat, join, withOut, mod, rem, isFloat, toInteger, toIntegerOrInfinity, sum, avg, product, clamp, minmax, isEven, isOdd, toInt8, toUInt8, toInt16, toUInt16, toInt32, toUInt32, toBigInt64, toBigUInt64, toFloat32, isInt8, isUInt8, isInt16, isUInt16, isInt32, isUInt32, isBigInt64, isBigUInt64, toFloat16, isFloat16, signbit, randomInt, randomFloat, inRange };
+export { VERSION, BASE16, BASE32, BASE36, BASE58, BASE62, WORDSAFEALPHABET, assert, eq, gt, gte, lt, lte, tap, once, curry, pipe, compose, pick, omit, assoc, asyncNoop, asyncT, asyncF, asyncConstant, asyncIdentity, deleteOwnProperty, createPolyfillMethod, createPolyfillProperty, randomUUIDv7, delay, randomBoolean, getUrlVars, obj2string, extend, sizeIn, unBind, bind, constant, identity, noop, T, F, nanoid, timestampID, b64Encode, b64Decode, strTruncate, strPropercase, strTitlecase, strCapitalize, strUpFirst, strDownFirst, strReverse, strCodePoints, strFromCodePoints, strAt, strSplice, strHTMLRemoveTags, strHTMLEscape, strHTMLUnEscape, isNonNullable, isNonNullablePrimitive, isTypedCollection, is, toObject, toPrimitiveValue, toSafeString, isPropertyKey, toPropertyKey, isIndex, isLength, toIndex, toLength, typeOf, isSameType, isSameInstance, isCoercedObject, isDeepStrictEqual, isEmptyValue, isProxy, isAsyncGeneratorFn, isClass, isPlainObject, isChar, isNumeric, isObject, isFunction, isCallable, isArraylike, isNull, isUndefined, isNullish, isPrimitive, isIterator, isRegexp, isElement, isIterable, isAsyncIterable, isTypedArray, isGeneratorFn, isAsyncFn, castArray, compact, unique, count, arrayDeepClone, initial, shuffle, partition, setUnion, setIntersection, setDifference, setSymmetricDifference, isSuperset, min, max, arrayRepeat, arrayCycle, arrayRange, zip, unzip, zipObj, arrayAdd, arrayClear, arrayRemove, arrayRemoveBy, arrayMerge, iterRange, iterCycle, iterRepeat, takeWhile, dropWhile, take, drop, forEach, forEachRight, map, filter, reject, slice, tail, item, nth, size, first, head, last, reverse, sort, includes, find, findLast, every, some, none, takeRight, takeRightWhile, dropRight, dropRightWhile, concat, reduce, enumerate, flat, join, withOut, add, sub, mul, div, divMod, mod, isFloat, toInteger, toIntegerOrInfinity, sum, avg, product, clamp, minmax, isEven, isOdd, toInt8, toUInt8, toInt16, toUInt16, toInt32, toUInt32, toBigInt64, toBigUInt64, toFloat32, isInt8, isUInt8, isInt16, isUInt16, isInt32, isUInt32, isBigInt64, isBigUInt64, toFloat16, isFloat16, signbit, randomInt, randomFloat, inRange };

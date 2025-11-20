@@ -339,8 +339,11 @@ nav a, nav a:visited, nav a:active, nav a:hover {
     <hr/>
     <details open>
       <summary><strong>Math API</strong></summary>
+      <p><a href="#FN-add();">add();</a></p>
       <p><a href="#FN-avg();">avg();</a></p>
       <p><a href="#FN-clamp();">clamp();</a></p>
+      <p><a href="#FN-div();">div();</a></p>
+      <p><a href="#FN-divMod();">divMod();</a></p>
       <p><a href="#FN-inRange();">inRange();</a></p>
       <p><a href="#FN-isEven();">isEven();</a></p>
       <p><a href="#FN-isBigInt64();">isBigInt64();</a></p>
@@ -356,12 +359,13 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <p><a href="#FN-isFloat16();">isFloat16();</a></p>
       <p><a href="#FN-minmax();">minmax();</a></p>
       <p><a href="#FN-mod();">mod();</a></p>
+      <p><a href="#FN-mul();">mul();</a></p>
       <p><a href="#FN-product();">product();</a></p>
       <p><a href="#FN-randomFloat();">randomFloat();</a></p>
       <p><a href="#FN-randomInt();">randomInt();</a></p>
-      <p><a href="#FN-rem();">rem();</a></p>
       <p><a href="#FN-signbit();">signbit();</a></p>
       <p><a href="#FN-sum();">sum();</a></p>
+      <p><a href="#FN-sub();">sub();</a></p>
       <p><a href="#FN-toBigInt64();">toBigInt64();</a></p>
       <p><a href="#FN-toBigUInt64();">toBigUInt64();</a></p>
       <p><a href="#FN-toFloat16();">toFloat16();</a></p>
@@ -458,7 +462,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
 
 <p><strong>A helper JavaScript library with useful functions and polyfills and zero dependencies.</strong></p>
 
-<p>Latest version: 6.3.1</p>
+<p>Latest version: 6.4.0</p>
 <p>Date: 2025-11-06T18:08:50.125Z</p>
 
 <p><strong>Tested on these environments:</strong></p>
@@ -1867,9 +1871,13 @@ JSON.stringify( CEL.unique(array, (v) => v.rank) );
 
 <div>
   <table class="table-responsive table-striped">
-    <tr">
+    <tr>
       <td style="width: auto; min-width: 33%;"><strong>Name</strong></td>
       <td><strong>Description</strong></td>
+    </tr>
+    <tr id="FN-add();">
+      <td><code>add(value1,value2);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Performs addition type safely. Works for both <code>number</code> and <code>bigint</code> values. All of the parameter is mandatory and can be both number or both bigint. The return value is <code>number</code> or <code>bigint</code>. </td>
     </tr>
     <tr id="FN-avg();">
       <td><code>avg(value1[,valueN]);</code></td>
@@ -1877,7 +1885,15 @@ JSON.stringify( CEL.unique(array, (v) => v.rank) );
     </tr>
     <tr id="FN-clamp();">
       <td><code>clamp(value,min,max);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>If the given value is between the min and max values, then this function returns the value. If smaller then the min value, then the return value is the min. If greater then the max value, then the return value is the max. All of the parameters are mandatory and can be number or bigint and if not these types, then will be converted to number. The return value is number or bigint or throw a rangeerror, if the parameters are invalid.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>If the given value is between the min and max values, then this function returns the value. If smaller then the min value, then the return value is the min. If greater then the max value, then the return value is the max. All of the parameters are mandatory and can be <code>number</code> or <code>bigint</code> and if not these types, then will be converted to number. The return value is <code>number</code> or <code>bigint</code> or throw a rangeerror, if the parameters are invalid.</td>
+    </tr>
+    <tr id="FN-div();">
+      <td><code>div(value1,value2);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Performs integer division type safely. Works for both <code>number</code> and <code>bigint</code> values. All of the parameter is mandatory and can be both number or both bigint. The return value is <code>number</code> or <code>bigint</code>.</td>
+    </tr>
+    <tr id="FN-divMod();">
+      <td><code>divMod(value1,value2);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Performs integer division type safely. Works for both <code>number</code> and <code>bigint</code> values. All of the parameter is mandatory and can be both number or both bigint. The return value is <code>number</code> or <code>bigint</code>.</td>
     </tr>
     <tr id="FN-inRange();">
       <td><code>inRange(value,min,max);</code></td>
@@ -1937,8 +1953,12 @@ JSON.stringify( CEL.unique(array, (v) => v.rank) );
     </tr>
     <tr id="FN-mod();">
       <td><code>mod(value1,value2);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Performs integer division type safely. Works for both number and bigint values. All fof the parameter is mandatory and can be both number or both bigint. The return value is number or bigint.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Computes the integer remainder (modulus) type safely. Works for both <code>number</code> and <code>bigint</code> values. All of the parameter is mandatory and can be both number or both bigint. The return value is <code>number</code> or <code>bigint</code>.</td>
     </tr>
+    <tr id="FN-mul();">
+      <td><code>mul(value1,value2);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Performs multiplication type safely. Works for both <code>number</code> and <code>bigint</code> values. All of the parameter is mandatory and can be both number or both bigint. The return value is <code>number</code> or <code>bigint</code>.</td>
+    </tr>    
     <tr id="FN-product();">
       <td><code>product(value1[,valueN]);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns the product value from the parameter values.</td>
@@ -1959,10 +1979,6 @@ JSON.stringify( CEL.unique(array, (v) => v.rank) );
       <td><code>randomInt(min,max);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>Get a random integer number value within min and max value.</td>
     </tr>
-    <tr id="FN-rem();">
-      <td><code>rem(value1,value2);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Computes the integer remainder (modulus) type safely. Works for both number and bigint values. All fof the parameter is mandatory and can be both number or both bigint. The return value is number or bigint.</td>
-    </tr>
     <tr id="FN-signbit();">
       <td><code>signbit(value);</code></td>
       <td>
@@ -1981,6 +1997,10 @@ Otherwise, the result is false.</pre>
     <tr id="FN-sum();">
       <td><code>sum(value1[,valueN]);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns the sum value from the parameter values.</td>
+    </tr>
+    <tr id="FN-sub();">
+      <td><code>sub(value1,value2);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Performs subtraction type safely. Works for both <code>number</code> and <code>bigint</code> values. All of the parameter is mandatory and can be both number or both bigint. The return value is <code>number</code> or <code>bigint</code>.</td>
     </tr>
     <tr id="FN-toBigInt64();">
       <td><code>toBigInt64(value);</code></td>

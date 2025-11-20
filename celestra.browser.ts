@@ -10,14 +10,14 @@
 
 /**
  * @name Celestra
- * @version 6.3.1 browser
+ * @version 6.4.0 browser
  * @author Ferenc Czigler
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
 
 
-const VERSION = "Celestra v6.3.1 browser";
+const VERSION = "Celestra v6.4.0 browser";
 
 
 /** TS types */
@@ -28,7 +28,7 @@ const VERSION = "Celestra v6.3.1 browser";
  *
  * @internal
  * */
-type MapLike = { [key: string | number | symbol]: any };
+type MapLike = {[key: string]: any; [key: number]: any; [key: symbol]: any; };
 
 /**
  * @description Array-like object.
@@ -3249,80 +3249,165 @@ const withOut = ([...array], [...filterValues]): any[] =>
 /** Math API **/
 
 
-/* function mod(dividend: number | bigint, divisor: number | bigint): number | bigint; */
 /**
- * @description Performs integer division type safely. Works for both `number` and `bigint` values.
- * `dividend / divisor = quotient + remainder`
+ * @description Adds two numbers or bigints.
  *
- * @throws {TypeError} If types mismatch.
- * @throws {TypeError} If arguments are not both `number` or both `bigint`.
- * @throws {RangeError} If divisor is zero.
- * @returns {number | bigint} The result of the integer division.
+ * @param {number | bigint} value1
+ * @param {number | bigint} value2
+ * @returns {number | bigint} The result of the operation.
+ * @throws {TypeError} If x and y are of mixed types.
  */
-function mod(dividend: number, divisor: number): number;
-function mod(dividend: bigint, divisor: bigint): bigint;
-function mod(dividend: NumberLike, divisor: NumberLike): NumberLike {
-  const dividendType = typeof dividend;
-  /* Ensure both are the same primitive type */
-  if (dividendType !== typeof divisor) {
+function add(value1: number, value2: number): number;
+function add(value1: bigint, value2: bigint): bigint;
+function add(value1: NumberLike, value2: NumberLike): NumberLike {
+  if (typeof value1 !== typeof value2
+    || (typeof value1 !== "number" && typeof value1 !== "bigint")) {
     throw new TypeError(
-      "[mod] divisor and dividend must be the same type (both number or both bigint)"
+      `[add] Value1 and Value2 must be of the same type and either number or bigint. Got: ${typeof value1} and ${typeof value2}`
     );
   }
-  /* Ensure both are number or bigint */
-  if (dividendType !== "number" && dividendType !== "bigint") {
-    throw new TypeError(
-      "[mod] divisor and dividend must be either both number or both bigint"
-    );
+  if (typeof value1 === "number" && typeof value2 === "number") {
+    // @ts-ignore
+    return Math.sumPrecise([value1, value2]);
   }
-  // Handle division by zero safely
-  if ((dividendType === "number" && divisor === 0)
-    || (dividendType === "bigint" && divisor === 0n)) {
-    throw new RangeError("[mod] divisor must not be zero");
-  }
-  /* Perform integer division depending on type */
-  return dividendType === "number"
-    ? Math.trunc((dividend as number) / (divisor as number))
-    /* bigint division automatically truncates */
-    : (dividend as bigint) / (divisor as bigint);
+  return (value1 as bigint) + (value2 as bigint);
 }
 
 
-/* function rem(dividend: number | bigint, divisor: number | bigint): number | bigint; */
 /**
- * @description Computes the integer remainder (modulus) type safely. Works for both `number` and `bigint` values.
- * `dividend = divisor * quotient + remainder`
+ * @description Subtract two numbers or bigints.
  *
- * @throws {TypeError} If types mismatch.
- * @throws {TypeError} If arguments are not both `number` or both `bigint`.
- * @throws {RangeError} If divisor is zero.
- * @returns {number | bigint} The remainder of the integer division.
+ * @param {number | bigint} value1
+ * @param {number | bigint} value2
+ * @returns {number | bigint} The result of the operation.
+ * @throws {TypeError} If x and y are of mixed types.
  */
-function rem(dividend: number, divisor: number): number;
-function rem(dividend: bigint, divisor: bigint): bigint;
-function rem(dividend: NumberLike, divisor: NumberLike): NumberLike {
-  const dividendType = typeof dividend;
-  /* Ensure both are the same primitive type */
-  if (dividendType !== typeof divisor) {
+function sub(value1: number, value2: number): number;
+function sub(value1: bigint, value2: bigint): bigint;
+function sub(value1: NumberLike, value2: NumberLike): NumberLike {
+  if (typeof value1 !== typeof value2
+    || (typeof value1 !== "number" && typeof value1 !== "bigint")) {
     throw new TypeError(
-      "[rem] divisor and dividend must be the same type (both number or both bigint)"
+      `[sub] Value1 and Value2 must be of the same type and either number or bigint. Got: ${typeof value1} and ${typeof value2}`
     );
   }
-  /* Ensure both are number or bigint */
-  if (dividendType !== "number" && dividendType !== "bigint") {
+  if (typeof value1 === "number" && typeof value2 === "number") {
+    // @ts-ignore
+    Math.sumPrecise([value1, -value2]);
+  }
+  return (value1 as bigint) - (value2 as bigint);
+}
+
+
+/**
+ * @description Multiply two numbers or bigints.
+ *
+ * @param {number | bigint} value1
+ * @param {number | bigint} value2
+ * @returns {number | bigint} The result of the operation.
+ * @throws {TypeError} If x and y are of mixed types.
+ */
+function mul(value1: number, value2: number): number;
+function mul(value1: bigint, value2: bigint): bigint;
+function mul(value1: NumberLike, value2: NumberLike): NumberLike {
+  if (typeof value1 !== typeof value2
+    || (typeof value1 !== "number" && typeof value1 !== "bigint")) {
     throw new TypeError(
-      "[rem] divisor and dividend must be either both number or both bigint"
+      `[mul] Value1 and Value2 must be of the same type and either number or bigint. Got: ${typeof value1} and ${typeof value2}`
     );
   }
-  // Handle division by zero safely
-  if ((dividendType === "number" && divisor === 0)
-    || (dividendType === "bigint" && divisor === 0n)) {
-    throw new RangeError("[rem] divisor must not be zero");
+  if (typeof value1 === "number" && typeof value2 === "number") {
+    return value1 * value2;
   }
-  /* Perform remainder operation depending on type */
-  return dividendType === "number"
-    ? (dividend as number) % (divisor as number)
-    : (dividend as bigint) % (divisor as bigint);
+  return (value1 as bigint) * (value2 as bigint);
+}
+
+
+/**
+ * @description Divide two numbers or bigints.
+ *
+ * @param {number | bigint} value1
+ * @param {number | bigint} y
+ * @returns {number | bigint} The result of the operation.
+ * @throws {RangeError} If y is zero.
+ * @throws {TypeError} If x and y are of mixed types.
+ */
+function div(value1: number, value2: number): number;
+function div(value1: bigint, value2: bigint): bigint;
+function div(value1: NumberLike, value2: NumberLike): NumberLike {
+  if (typeof value1 !== typeof value2
+    || (typeof value1 !== "number" && typeof value1 !== "bigint")) {
+    throw new TypeError(
+      `[div] Value1 and Value2 must be of the same type and either number or bigint. Got: ${typeof value1} and ${typeof value2}`
+    );
+  }
+  if (value2 === 0 || value2 === 0n) {
+    throw new RangeError("[div] Cannot divide by zero");
+  }
+  if (typeof value1 === "number" && typeof value2 === "number") {
+    return value1 / value2;
+  }
+  return (value1 as bigint) / (value2 as bigint);
+}
+
+
+/**
+ * @description Performs integer division of two numbers or bigints.
+ *
+ * @param {number | bigint} value1
+ * @param {number | bigint} value2
+ * @returns {number | bigint} The result of the operation.
+ * @throws {RangeError} If y is zero.
+ * @throws {TypeError} If x and y are of mixed types.
+ */
+function divMod(value1: number, value2: number): number;
+function divMod(value1: bigint, value2: bigint): bigint;
+function divMod(value1: NumberLike, value2: NumberLike): NumberLike {
+  if (typeof value1 !== typeof value2
+    || (typeof value1 !== "number" && typeof value1 !== "bigint")) {
+    throw new TypeError(
+      `[divMod] Value1 and Value2 must be of the same type and either number or bigint. Got: ${typeof value1} and ${typeof value2}`
+    );
+  }
+  if (value2 === 0 || value2 === 0n) {
+    throw new RangeError("[divMod] Cannot divide by zero");
+  }
+  if (typeof value1 === "number" && typeof value2 === "number") {
+    return Math.trunc(value1 / value2);
+  }
+  return (value1 as bigint) / (value2 as bigint);
+}
+
+
+/*
+https://www.w3schools.com/js/js_arithmetic.asp
+% -> Modulus (Remainder)
+*/
+/**
+ * @description Remainder of division (modulus) of two numbers or bigints.
+ *
+ * @param {number | bigint} value1
+ * @param {number | bigint} value2
+ * @returns {number | bigint} The result of the operation.
+ * @throws {RangeError} If y is zero.
+ * @throws {TypeError} If x and y are of mixed types.
+ */
+function mod(value1: number, value2: number): number;
+function mod(value1: bigint, value2: bigint): bigint;
+function mod(value1: NumberLike, value2: NumberLike): NumberLike {
+  if (typeof value1 !== typeof value2
+    || (typeof value1 !== "number" && typeof value1 !== "bigint")) {
+    throw new TypeError(
+      `[mod] Value1 and Value2 must be of the same type and either number or bigint. Got: ${typeof value1} and ${typeof value2}`
+    );
+  }
+  if (value2 === 0 || value2 === 0n) {
+    throw new RangeError("[mod] Cannot divide by zero");
+  }
+  if (typeof value1 === "number" && typeof value2 === "number") {
+    return Math.trunc(value1 % value2);
+  }
+  return (value1 as bigint) % (value2 as bigint);
 }
 
 
@@ -3821,8 +3906,12 @@ export default {
   join,
   withOut,
   /** Math API **/
+  add,
+  sub,
+  mul,
+  div,
+  divMod,
   mod,
-  rem,
   isFloat,
   toInteger,
   toIntegerOrInfinity,
@@ -4074,8 +4163,12 @@ export {
   join,
   withOut,
   /** Math API **/
+  add,
+  sub,
+  mul,
+  div,
+  divMod,
   mod,
-  rem,
   isFloat,
   toInteger,
   toIntegerOrInfinity,
