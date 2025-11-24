@@ -1,6 +1,16 @@
 
 # Celestra version history
 
+## Celestra v6.4.0
+
+1. Documentation, pdf and code fixes.
+2. Many fixes in the __Collections API__
+3. __Math API__ changes:
+
+- Add these functions: `add();`, `sub();`, `mul();`, `div();`, `divMod();`
+- Fix the function `mod();`
+- Remove the function `rem();`
+
 ## Celestra v6.3.0
 
 1. Documentation, pdf and code fixes.

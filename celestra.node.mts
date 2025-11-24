@@ -24,7 +24,7 @@ const VERSION = "Celestra v6.4.0 node";
 
 
 /**
- * @description Map-like object with string or symbol keys.
+ * @description Map-like object with string or number or symbol keys.
  *
  * @internal
  * */
