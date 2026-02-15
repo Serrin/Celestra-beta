@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Celestra Unit Tester (CUT)</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+<meta name="Author" content="Czigler Ferenc"/>
+<meta name="Copyright" content="(C) Copyright Czigler Ferenc"/>
+<link rel="stylesheet" href="u87.css" type="text/css"/>
+<link rel="stylesheet" href="u87-blue.css" type="text/css"/>
+<style>
+html, body { font-family: consolas, monospace !important; }
+.passed, .failed {
+  display: inline-block;
+  padding: 4px !important;
+  border-radius: 4px !important;
+}
+.passed { background-color: #3d9970 !important; color: white !important; }
+.failed { background-color: #ff4136 !important; color: white !important; }
+#results, #resultsFailed
+ { /* almost the same as the pre in u87.css v0.9.5 */
+  padding: 4px 5px 4px 5px;
+  /*font-size: 0.9rem;*/
+  font-family: consolas, monospace;
+  -ms-word-break: break-all;
+  word-break: break-all;
+  word-break: break-word;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+}
+#manual {
+  /*font-size: 0.9rem !important;*/
+  font-family: consolas, monospace;
+}
+@media (max-width: 575.98px) { td { display: block; width: 100% !important; } }
+#toplink, #bottomlink {
+  border-radius: 50%;
+  font-size: 30px;
+  position: fixed;
+  width: 45px;
+  height: 45px;
+  padding: 0px 10px; /*10px;*/
+  background-color: #eee;
+  color: black;
+}
+#toplink { right: 20px; top: 20px; }
+#bottomlink { right: 20px; bottom: 20px; }
+button {
+  /*font-size: 0.9rem;*/
+  /*font-family: consolas, monospace;*/
+  text-align: center !important;
+  border: 2px outset ThreeDLightShadow;
+  border-radius: 4px;
+  color: black;
+}
+textarea, #preCelLog { border-radius: 4px; }
+
+</style>
+</head>
+<body class="container">
+
+<!--
+<div><a href="#top"><button id="toplink">&Uparrow;</button></a></div>
+<div><a href="#bottom"><button id="bottomlink">&Downarrow;</button></a></div>
+-->
+
+<header class="center" id="top" name="top">
+  <h1>Celestra Unit Tester (CUT)</h1>
+  <nav><b>
+     <a href="#license">License</a>
+    &nbsp;//&nbsp;
+    <a href="#footer">Contact</a>
+    &nbsp;//&nbsp;
+    <a href="#" onclick=" CEL.importStyle('u87-dark.css'); "><i>Dark</i></a>
+    &nbsp;/&nbsp;
+    <a href="#" onclick=" CEL.importStyle('u87-blue.css'); "><i>Blue</i></a>
+    &nbsp;/&nbsp;
+    <a href="#" onclick=" CEL.importStyle('u87-light.css'); "><i>Light</i></a>
+  </b></nav>
+</header>
+
+<hr/>
+<h2>Control panel</h2>
+<table class="table-responsive noborder">
+  <tr>
+    <td class="noborder">
+      <p><button onclick=" _preCel.importESM1(); preCelLog('load <b>celestra.browser.js</b> 1'); ">
+        load celestra.browser.js 1
+      </button></p>
+      <p><button onclick=" _preCel.importESM2(); preCelLog('load <b>celestra.browser.js</b> 2'); ">
+        load celestra.browser.js 2
+      </button></p>
+    </td>
+    <td class="noborder">
+      <p><button onclick=" CEL.importScript('unittest.js'); preCelLog('load <b>unittest.js</b>'); ">load unittest.js</button></p>
+      <p><button onclick=" globalThis.location.reload(true); ">reset</button></p>
+      <p><button onclick=" saveResults(); ">save result in HTML</button></p>
+    </td>
+    <td class="noborder">
+      <div id="preCelLog" class="padding bg-black font-monospace border" style="min-height: 150px; min-width: 300px;"></div>
+    </td>
+  </tr>
+</table>
+
+<hr/>
+<div>
+  <h2>Debug Console</h2>
+  <p><textarea id="consolejs" class="padding bg-black font-monospace border" style="max-width: 650px; width: 100%; height:100px;" placeholder="type here your code"></textarea></p>
+  <p>
+    <button onclick=" runConsoleJS(); ">run</button>
+    &nbsp;
+    <button onclick=" consoleJSElement.value = ''; ">clear</button>
+    &nbsp;
+    <button onclick=" saveConsoleJS(); ">save code</button>
+  </p>
+</div>
+
+<hr/>
+<div class="font-monospace">
+  <h2>Failed steps</h2>
+  <div id="resultsFailed"></div>
+</div>
+
+<hr/>
+
+<p><button onclick="CEL.domScrollToBottom();">
+  CEL.domScrollToBottom();
+</button></p>
+<p><button onclick="CEL.domScrollToElement(CEL.qs('#results'));">
+  CEL.domScrollToElement(CEL.qs('#results'));
+</button></p>
+<p><button onclick="CEL.domScrollToElement(CEL.qs('#results'),true);">
+  CEL.domScrollToElement(CEL.qs('#results'),true);
+ </button></p>
+<p><button onclick="CEL.domScrollToElement(CEL.qs('#results'),false);">
+  CEL.domScrollToElement(CEL.qs('#results'),false);
+</button></p>
+
+results
+
+<hr/>
+<div id="manual">
+<h2>Manual testcases</h2>
+
+<table class="table-responsive">
+  <tr>
+    <td><button onclick=" CEL.delay(5000).then(() => alert('5 seconds')).catch(console.log.bind(console)) .finally(() => alert('finally')); ">delay();</button></td>
+    <td>2x alert (5s + finally)</td>
+  </tr>
+  <tr>
+    <td><button onclick=" CEL.sleep(5000).then(() => alert('5 seconds')).catch(console.log.bind(console)) .finally(() => alert('finally')); ">sleep();</button></td>
+    <td>2x alert (5s + finally)</td>
+  </tr>
+  <tr>
+    <td><button onclick=" try { CEL.toObject(null); } catch(e) { alert(e); } try { CEL.toObject(undefined); } catch(e) { alert(e); }">toObject(); throw</button></td>
+    <td>2x alert "TypeError" - null and undefined</td>
+  </tr>
+  <tr>
+    <td><button onclick=" try { CEL.classof(42,'string', true); } catch (e) { alert(e); } ">classof(); throw</button></td>
+    <td><code>CEL.classof(42,'string', true);</code></td>
+  </tr>
+  <tr>
+    <td><button onclick=" try { CEL.getType(42,'string', true); } catch (e) { alert(e); } ">getType(); throw</button></td>
+    <td><code>CEL.getType(42,'string', true);</code></td>
+  </tr>
+  <tr>
+    <td><button onclick="var arrayCreateErrorStr = ''; try { CEL.arrayCreate(4.5); } catch (e) { arrayCreateErrorStr += 'arrayCreate(); error 4.5 - ' + e + '\n'; } try { CEL.arrayCreate(-4.5); } catch (e) { arrayCreateErrorStr += 'arrayCreate(); error -4.5 - ' + e + '\n'; } try { CEL.arrayCreate('-5'); } catch (e) { arrayCreateErrorStr += 'arrayCreate(); error \'-5\' - ' + e + '\n'; } try { CEL.arrayCreate('4.5'); } catch (e) { arrayCreateErrorStr += 'arrayCreate(); error \'4.5\' - ' + e + '\n'; } try { CEL.arrayCreate('-4.5'); } catch (e) { arrayCreateErrorStr += 'arrayCreate(); error \'-4.5\' - ' + e + '\n'; } try { CEL.arrayCreate(Infinity); } catch (e) { arrayCreateErrorStr += 'arrayCreate(); error Infinity - ' + e + '\n'; } try { CEL.arrayCreate(-Infinity); } catch (e) { arrayCreateErrorStr += 'arrayCreate(); error -Infinity - ' + e + '\n'; } try { CEL.arrayCreate(4294967296); } catch (e) { arrayCreateErrorStr += 'arrayCreate(); error 4294967296 - ' + e + '\n'; } alert(arrayCreateErrorStr);">arrayCreate(); errors</button></td>
+    <td>
+      <p>1x alert, 8x cases</p>
+      <pre>var arrayCreateErrorStr = '';
+try {
+  CEL.arrayCreate(4.5);
+} catch (e) { arrayCreateErrorStr += 'arrayCreate(); error 4.5 - ' + e + '\n'; }
+try {
+  CEL.arrayCreate(-4.5);
+} catch (e) { arrayCreateErrorStr += 'arrayCreate(); error -4.5 - ' + e + '\n'; }
+try {
+  CEL.arrayCreate('-5');
+} catch (e) { arrayCreateErrorStr += 'arrayCreate(); error \'-5\' - ' + e + '\n'; }
+try {
+  CEL.arrayCreate('4.5');
+} catch (e) { arrayCreateErrorStr += 'arrayCreate(); error \'4.5\' - ' + e + '\n'; }
+try {
+  CEL.arrayCreate('-4.5');
+} catch (e) { arrayCreateErrorStr += 'arrayCreate(); error \'-4.5\' - ' + e + '\n'; }
+try {
+  CEL.arrayCreate(Infinity);
+} catch (e) { arrayCreateErrorStr += 'arrayCreate(); error Infinity - ' + e + '\n'; }
+try {
+  CEL.arrayCreate(-Infinity);
+} catch (e) { arrayCreateErrorStr += 'arrayCreate(); error -Infinity - ' + e + '\n'; }
+try {
+  CEL.arrayCreate(4294967296);
+} catch (e) { arrayCreateErrorStr += 'arrayCreate(); error 4294967296 - ' + e + '\n'; }
+alert(arrayCreateErrorStr);</pre>
+    </td>
+  </tr>
+  <tr>
+    <td><button onclick=" CEL.importStyle('u87-dark.css','u87-light.css'); ">importStyle 1</button></td>
+    <td>Have to be light ('u87-dark.css' then 'u87-light.css').</td>
+  </tr>
+  <tr>
+    <td><button onclick=" CEL.importStyle('u87-blue.css'); ">importStyle 2</button></td>
+    <td>Have to be blue.</td>
+  </tr>
+  <tr>
+    <td><button onclick=" globalThis['_cel'] = CEL.noConflict(); alert(_cel.VERSION+'\n'+CEL.VERSION); "> noConflict();</button></td>
+    <td>1x alert</td>
+  </tr>
+</table>
+</div>
+
+<hr/>
+<h2>Results</h2>
+<div id="results"></div>
+
+<hr>
+<h2 id="license">License</h2>
+
+<div>
+  <p><a href="https://opensource.org/licenses/MIT" target="_blank">https://opensource.org/licenses/MIT</a></p>
+
+  <h3>MIT License</h3>
+
+  <p><b>SPDX short identifier: MIT</b></p>
+
+  <p>Copyright (c) 2018 Ferenc Czigler</p>
+
+  <p>Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:</p>
+
+  <p>The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.</p>
+
+  <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.</p>
+</div>
+
+<hr/>
+
+<p><button onclick="CEL.domScrollToTop();">CEL.domScrollToTop();</button></p>
+<p><button onclick="CEL.domScrollToElement(CEL.qs('#results'));">CEL.domScrollToElement(CEL.qs('#results'));</button></p>
+<p><button onclick="CEL.domScrollToElement(CEL.qs('#results'),true);">CEL.domScrollToElement(CEL.qs('#results'),true);</button></p>
+<p><button onclick="CEL.domScrollToElement(CEL.qs('#results'),false);">CEL.domScrollToElement(CEL.qs('#results'),false);</button></p>
+
+<hr/>
+
+<footer id="footer" class="center"><small>
+  <p>
+    <a href="#license">License</a>
+    &nbsp;//&nbsp;
+    <a href="http://github.com/Serrin" target="_blank">Github</a>
+    &nbsp;//&nbsp;
+    <a href="#" onclick=" CEL.importStyle('u87-dark.css'); "><i>Dark</i></a>
+    &nbsp;/&nbsp;
+    <a href="#" onclick=" CEL.importStyle('u87-blue.css'); "><i>Blue</i></a>
+    &nbsp;/&nbsp;
+    <a href="#" onclick=" CEL.importStyle('u87-light.css'); "><i>Light</i></a>
+  </p>
+  <p id="bottom" name="bottom">&copy; Copyright 2018 Ferenc Czigler</p>
+</small></footer>
+
+<!--script src="unittest.js"></script-->
+
+
+<!--script src="celestra.dev.js"></script-->
+<!--script src="celestra.min.js"></script-->
+
+<!--
+<script type="module">
+
+/*
+// ok, dynamic imports - async loading too
+// FF 67, Chrome 63, Safari 11.1, Opera 50, no old EDGE
+// Android Webvies 63, Android Chrome 63, Android FF 67, iOS Safari 11.1, no in Samsung browser
+
+import("./celestra.dev.js")
+  .then((module) => {
+    globalThis.celestra = module.celestra;
+    globalThis.CEL = module.celestra;
+  });
+*/
+
+var importStr = "";
+
+// default loading method in v3.0.2
+// import the celestra object
+import { celestra } from "./celestra.esm.js";
+globalThis.celestra = celestra;
+globalThis.CEL = celestra;
+
+importStr += "\nimport the celestra object - "
+  + (typeof celestra.getType === "function");
+
+// import with default with name
+import { default as celestra2 } from "./celestra.esm.js";
+//globalThis.celestra = celestra;
+//globalThis.CEL = celestra;
+importStr += "\nimport with default with name - "
+  + (typeof celestra2.getType === "function");
+
+// import all functions in an object
+import * as celestra3 from "./celestra.esm.js";
+//globalThis.celestra = celestra;
+//globalThis.CEL = celestra;
+importStr += "\nimport all functions in an object - "
+  + (typeof celestra3.getType === "function");
+
+// import with defaultExport
+import defaultExport from "./celestra.esm.js";
+//globalThis.celestra = defaultExport;
+//globalThis.CEL = defaultExport;
+importStr += "\nimport with defaultExport - "
+  + (typeof defaultExport.getType === "function");
+
+// import only functions
+import { identity, getType } from "./celestra.esm.js";
+importStr += "\nimport only functions - "
+  + (getType(identity) === "function");
+
+alert(importStr);
+
+/*
+// to test the loading of the module:
+console.log(`celestra.VERSION - ${ globalThis.celestra.VERSION }
+CEL.VERSION - ${ CEL.VERSION }
+true - ${ CEL.isString("ggg") }
+isString false - ${ CEL.isString(42) }
+isChar true - ${ CEL.isChar("g") }
+isChar false - ${ CEL.isChar("ggg") }
+isBoolean true - ${ CEL.isBoolean(false) }
+isBoolean false - ${ CEL.isBoolean("ggg") }
+`);
+*/
+
+</script>
+-->
+
+<script>
+const _preCel = {
+  // from v5.7.0
+  importScript: function importScript (...a) {
+    for (let item of a) {
+      let scr = document.createElement("script");
+      scr.type = "text\/javascript";
+      scr.src = item;
+      scr.onerror = function (e) {
+        throw new URIError(
+          "Loading failed for the script with source " + e.target.src
+        );
+      };
+      (document.head||document.getElementsByTagName("head")[0]).appendChild(scr);
+    }
+  },
+
+  importESM1: function importESM1 () {
+    let scrTag = document.createElement("script");
+    scrTag.type = "module";
+    scrTag.innerHTML = `
+      var importStr = "";
+      import defaultExport from "./celestra.browser.js";
+      //globalThis.celestra = defaultExport;
+      //globalThis.CEL = defaultExport;
+      importStr += "\\nimport with defaultExport - "
+        + (typeof defaultExport.qsa === "function");
+
+      // import with default with name
+      import { default as celestra } from "./celestra.browser.js";
+      globalThis.celestra = celestra;
+      globalThis.CEL = celestra;
+      importStr += "\\nimport with default with name - "
+        + (typeof celestra.qsa === "function");
+
+      alert(importStr);
+    `;
+    console.log(scrTag);
+    document.body.append(scrTag);
+  },
+
+  importESM2: function importESM2 () {
+    let scrTag = document.createElement("script");
+    scrTag.type = "module";
+    scrTag.innerHTML = `
+      var importStr = "";
+
+      // import 2 functions
+      import { assert, map } from "./celestra.browser.js";
+      importStr += "\\nimport 2 functions - "
+        + (typeof assert === "function" && typeof map === "function");
+
+      // import all into a new celestra object
+      import * as celestra from "./celestra.browser.js";
+      globalThis.celestra = celestra;
+      globalThis.CEL = celestra;
+      importStr += "\\nimport all into a new celestra object - "
+        + (typeof celestra.qsa === "function");
+
+      alert(importStr);
+    `;
+    console.log(scrTag);
+    document.body.append(scrTag);
+  }
+};
+
+const preCelLogElement = document.querySelector("#preCelLog");
+const preCelLog = (str) => {
+  let pElement = document.createElement("p");
+  pElement.innerHTML = str;
+  preCelLogElement.appendChild(pElement);
+};
+
+const consoleJSElement = document.querySelector("#consolejs");
+function runConsoleJS () {
+  var scr = document.createElement("script");
+  scr.innerHTML = consoleJSElement.value;
+  document.body.appendChild(scr);
+}
+function saveConsoleJS () {
+  CEL.createFile(
+    "cut-"+Date.now().toString(36)+".js",
+    consoleJSElement.value,
+    "text/javascript"
+  );
+}
+
+</script>
+
+<script>
+//if (navigator.userAgent.toLowerCase().includes("chrome")) {
+  document.body.style["zoom"] = "90%";
+//}
+</script>
+
+</body>
+</html>
