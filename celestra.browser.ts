@@ -10,14 +10,14 @@
 
 /**
  * @name Celestra
- * @version 6.4.1 browser
+ * @version 6.4.2 browser
  * @author Ferenc Czigler
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
 
 
-const VERSION = "Celestra v6.4.1 browser";
+const VERSION = "Celestra v6.4.2 browser";
 
 
 /** TS types */
