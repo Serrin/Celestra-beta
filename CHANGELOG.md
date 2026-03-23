@@ -1,6 +1,14 @@
 
 # Celestra version history
 
+## Celestra v6.4.1
+
+1. Documentation, pdf and code fixes.
+2. Replace `isTypedArray();` functions with a smaller function.
+3. Add JSDOC where this is missing.
+4. Add new Iterator methods in the __js-cheatsheet.odt__ and __js-cheatsheet.pdf__.
+5. Update the __tsconfig.json__ and __jsconfig.json__ files with TS6 changes.
+
 ## Celestra v6.4.0
 
 1. Documentation, pdf and code fixes.
