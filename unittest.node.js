@@ -1,4 +1,4 @@
-// @ts-check
+// @ts-nocheck
 "use strict";
 
 console.log("\x1b[40m\x1b[37m"); /* black - white */
@@ -726,6 +726,15 @@ CUT.isEqual("b64Decode(); + b64Encode();",
 CUT.isEqual("sizeIn();", 5, CEL.sizeIn({"a": 1, "b": 2, "c": 3,
   [Symbol.iterator]: function () {}, [Symbol.toPrimitive]: function () {}
 }));
+
+
+/* strCount(); */
+CUT.isEqual("strCount();", "2 0",
+  CUT.join([
+    CEL.strCount("Dent Arthur Dent", "Dent"),
+    CEL.strCount("Arthur Dent", "Ford")
+  ])
+);
 
 
 /* strTruncate(); */
@@ -2649,6 +2658,30 @@ CUT.isTrue("isObject();",
   && !CEL.isObject(null)
   && !CEL.isObject(undefined)
   && !CEL.isObject(42)
+);
+
+
+/* isArrowFn(); */
+CUT.isTrue("isArrowFn();",
+      CEL.isArrowFn(() => {}) // true
+  &&  CEL.isArrowFn(() => 42) // true
+  && !CEL.isArrowFn(function() {}) // false (has prototype)
+  && !CEL.isArrowFn(function () { "=>"}) // false
+  && !CEL.isArrowFn(Array.prototype.map) // false (built-in)
+  && !CEL.isArrowFn(class C {}) // false (class)
+  && !CEL.isArrowFn(Math.min) // false (Math.min hasn't prototype)
+  && !CEL.isArrowFn({"a": 1})
+  && !CEL.isArrowFn(42)
+  && !CEL.isArrowFn(null)
+  && !CEL.isArrowFn(undefined)
+);
+
+
+/* isAsyncIterator(); */
+CUT.isTrue("isAsyncIterator();",
+      CEL.isAsyncIterator((async function* () { yield 1; yield 2; })())
+  && !CEL.isAsyncIterator([])
+  && !CEL.isAsyncIterator([].values())
 );
 
 

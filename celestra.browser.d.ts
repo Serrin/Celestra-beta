@@ -1,4 +1,4 @@
-declare const VERSION = "Celestra v6.4.1 browser";
+declare const VERSION = "Celestra v6.4.2 browser";
 type MapLike = Record<PropertyKey, any>;
 type IterableLike = Iterable<any> | Iterator<any> | IterableIterator<any>;
 type IterableLikeAndArrayLike = Iterable<any> | Iterator<any> | IterableIterator<any> | ArrayLike<any>;
@@ -68,6 +68,7 @@ declare function nanoid(size?: number, alphabet?: string): string;
 declare function timestampID(size?: number, alphabet?: string): string;
 declare function b64Encode(str: any): string;
 declare function b64Decode(str: any): string;
+declare function strCount(str: unknown, substr: unknown): number;
 declare function strTruncate(str: any, newLength: number, omission?: string): string;
 declare const strPropercase: (str: any) => string;
 declare const strTitlecase: (str: any) => string;
@@ -119,6 +120,7 @@ declare const domScrollToElement: (element: Element, top?: boolean) => void;
 declare const domClear: (element: Element) => void;
 declare const isNonNullable: (value: unknown) => value is NonNullable<unknown>;
 declare const isNonNullablePrimitive: (value: unknown) => value is NonNullablePrimitive;
+declare function isArrowFn(value: unknown): value is Function;
 declare function isTypedCollection(iter: IterableLike, expectedType: string | Function | Array<string | Function>, Throw?: boolean): boolean;
 declare function is(value: any, expectedType?: string | Function | Array<string | Function> | undefined, Throw?: boolean): string | Function | boolean;
 declare function toObject(value: unknown): Object | symbol | Function;
@@ -321,6 +323,7 @@ declare const _default: {
     timestampID: typeof timestampID;
     b64Encode: typeof b64Encode;
     b64Decode: typeof b64Decode;
+    strCount: typeof strCount;
     strTruncate: typeof strTruncate;
     strPropercase: (str: any) => string;
     strTitlecase: (str: any) => string;
@@ -372,6 +375,8 @@ declare const _default: {
     domClear: (element: Element) => void;
     isNonNullable: (value: unknown) => value is NonNullable<unknown>;
     isNonNullablePrimitive: (value: unknown) => value is NonNullablePrimitive;
+    isArrowFn: typeof isArrowFn;
+    isAsyncIterator: (value: unknown) => value is AsyncIterator<unknown>;
     isTypedCollection: typeof isTypedCollection;
     is: typeof is;
     toObject: typeof toObject;

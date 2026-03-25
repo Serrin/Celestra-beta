@@ -1076,6 +1076,19 @@ function b64Decode (str: any): string {
 
 
 /**
+ * @description Counts the occurrences of a substring in a string.
+ *
+ * @param {unknown} str - The string to search in.
+ * @param {unknown} substr - The substring to search for.
+ * @returns {number} The number of occurrences of the substring.
+ */
+function strCount (str: unknown, substr: unknown): number {
+  let count = (String(str)?.split(String(substr)) ?? []).length - 1;
+  return count < 0 ? 0 : count;
+}
+
+
+/**
  * @description Truncates a string to a specified length, optionally adding an omission string.
  *
  * @param {string} str - The string to truncate.
@@ -1930,6 +1943,41 @@ const isNonNullable = (value: unknown): value is NonNullable<unknown> =>
 const isNonNullablePrimitive =
   (value: unknown): value is NonNullablePrimitive =>
     value != null && typeof value !== "object" && typeof value !== "function";
+
+
+/**
+ * @description Checks if a value is an arrow function.
+ *
+ * @param {unknown} value
+ * @returns {boolean} true if the value is an arrow function, false otherwise.
+ */
+function isArrowFn (value: unknown): value is Function {
+  if (typeof value !== "function"
+    || ("prototype" in value && value.prototype !== undefined)
+    || !(value.toString().includes("=>"))
+  ) { return false; }
+  // Arrow functions cannot be used as constructors,
+  // so this will throw an error if it's an arrow function
+  try {
+    // @ts-expect-error
+    new value();
+    return false;
+  } catch (error) {
+    return true;
+  }
+}
+
+
+/**
+ * @description Checks if a value is an async iterator.
+ *
+ * @param {unknown} value
+ * @returns {boolean} true if the value is an async iterator, false otherwise.
+ */
+const isAsyncIterator = (value: unknown): value is AsyncIterator<unknown> =>
+  value != null
+    && typeof (value as any).next === "function"
+    && typeof (value as any)[Symbol.asyncIterator] === "function";
 
 
 /**
@@ -4715,6 +4763,7 @@ export default {
   /** String API **/
   b64Encode,
   b64Decode,
+  strCount,
   strTruncate,
   strPropercase,
   strTitlecase,
@@ -4768,6 +4817,8 @@ export default {
   /** Type API **/
   isNonNullable,
   isNonNullablePrimitive,
+  isArrowFn,
+  isAsyncIterator,
   isTypedCollection,
   is,
   toObject,

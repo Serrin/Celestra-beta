@@ -160,6 +160,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <p><a href="#FN-strAt();">strAt();</a></p>
       <p><a href="#FN-strCapitalize();">strCapitalize();</a></p>
       <p><a href="#FN-strCodePoints();">strCodePoints();</a></p>
+      <p><a href="#FN-strCount();">strCount();</a></p>
       <p><a href="#FN-strDownFirst();">strDownFirst();</a></p>
       <p><a href="#FN-strFromCodePoints();">strFromCodePoints();</a></p>
       <p><a href="#FN-strHTMLEscape();">strHTMLEscape();</a></p>
@@ -219,7 +220,9 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <p><a href="#FN-is();">is();</a></p>
       <p><a href="#FN-isTypedCollection();">isTypedCollection();</a></p>
       <p><a href="#FN-isArraylike();">isArraylike();</a></p>
+      <p><a href="#FN-isArrowFn();">isArrowFn();</a></p>
       <p><a href="#FN-isAsyncIterable();">isAsyncIterable();</a></p>
+      <p><a href="#FN-isAsyncIterator();">isAsyncIterator();</a></p>
       <p><a href="#FN-isAsyncFn();">isAsyncFn();</a></p>
       <p><a href="#FN-isAsyncGeneratorFn();">isAsyncGeneratorFn();</a></p>
       <p><a href="#FN-isCallable();">isCallable();</a></p>
@@ -999,9 +1002,13 @@ CEL.delay(5000)
       <td><code>strCodePoints(string);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>Returns the array of the unicode codepoints of characters of the given string. The string parameter is mandatory.</td>
     </tr>
+    <tr id="FN-strCount();">
+      <td><code>strCount(string, substring);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Counts the occurrences of a substring in a string. All of the parameters are mandatory and have to be string.</td>
+    </tr>
     <tr id="FN-strDownFirst();">
       <td><code>strDownFirst(string);</code></td>
-      <td>This function is unicode compatible and converts the first character to lowercase. The string parameter is mandatory. The return value is a string.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function is unicode compatible and converts the first character to lowercase. The string parameter is mandatory. The return value is a string.</td>
     </tr>
     <tr id="FN-strFromCodePoints();">
       <td><code>strFromCodePoints(iterator);</code></td>
@@ -1267,9 +1274,17 @@ CEL.delay(5000)
       <td><code>isArraylike(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an arraylike object. The return value is boolean.</td>
     </tr>
+    <tr id="FN-isArrowFn();">
+      <td><code>isArrowFn(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an arrow function. The return value is boolean.</td>
+    </tr>
     <tr id="FN-isAsyncIterable();">
       <td><code>isAsyncIterable(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an async iterable object. The return value is boolean.</td>
+    </tr>
+    <tr id="FN-isAsyncIterator();">
+      <td><code>isAsyncIterator(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an async iterator object. The return value is boolean.</td>
     </tr>
     <tr id="FN-isAsyncFn();">
       <td><code>isAsyncFn(value);</td>
