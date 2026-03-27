@@ -1,6 +1,13 @@
 
 # Celestra version history
 
+## Celestra v6.4.2
+
+1. Documentation, pdf and code fixes.
+2. Add Windows Samsung Browser to the testing enviroments.
+3. Many TS6 small changes in the code files.
+4. Add these functions: `isAsyncIterator();`, `isArrowFn();`, `strCount();`
+
 ## Celestra v6.4.1
 
 1. Documentation, pdf and code fixes.

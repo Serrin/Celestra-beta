@@ -14,21 +14,22 @@ __A helper JavaScript library with useful functions and polyfills and zero depen
 
 Latest version: 6.4.2
 
-Date: 2026-03-23T18:53:35.707Z
+Date: 2026-03-27T21:19:40.741Z
 
 __Tested on these environments:__
 
 - Windows Firefox
 - Windows Chrome
 - Windows Edge
+- Windows Samsung Browser
 - iOS Safari
 - iOS Firefox
 - iOS Chrome
 - iOS Edge
 - Android Firefox
 - Android Chrome
-- Android Samsung Internet
 - Android Edge
+- Android Samsung Browser
 - Node.js (latest current, not LTS)
 - Deno (latest current, not LTS)
 
