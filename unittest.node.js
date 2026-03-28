@@ -1,4 +1,10 @@
 // @ts-nocheck
+/// <reference lib="esnext" />
+/// <reference lib="esnext.iterator" />
+/// <reference lib="dom" />
+/// <reference lib="dom.iterable" />
+/// <reference lib="dom.asynciterable" />
+/// <reference lib="webworker.importscripts" />
 "use strict";
 
 console.log("\x1b[40m\x1b[37m"); /* black - white */

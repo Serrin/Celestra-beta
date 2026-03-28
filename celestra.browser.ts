@@ -5022,6 +5022,7 @@ export {
   /** String API **/
   b64Encode,
   b64Decode,
+  strCount,
   strTruncate,
   strPropercase,
   strTitlecase,
@@ -5075,6 +5076,8 @@ export {
   /** Type API **/
   isNonNullable,
   isNonNullablePrimitive,
+  isArrowFn,
+  isAsyncIterator,
   isTypedCollection,
   is,
   toObject,
