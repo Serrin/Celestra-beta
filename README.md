@@ -12,7 +12,7 @@
 
 __A helper JavaScript library with useful functions and polyfills and zero dependencies.__
 
-Latest version: 6.4.2
+Latest version: 6.5.0
 
 Date: 2026-03-29T15:18:23.853Z
 
@@ -190,6 +190,13 @@ __Cookie API__|`getCookie();`<BR>`hasCookie();`<BR>`setCookie();`<BR>`removeCook
 
 - The __Legacy AJAX API__ has been removed.
 - The __Legacy Assertion API (Assert API v3)__ has been removed.
+
+### Celestra v6.5.0 (Andromeda) changes
+
+1. Documentation, pdf and code fixes.
+2. From this version the version of the CUT is same as the Celestra version.
+3. Firefox 115 (Windows 7 and 8.1) and iOS 16 support has been removed.
+4. Many polyfills have been moved to __celestra-polyfills.dev.js__ and __celestra-polyfills.min.js__.
 
 -----
 
@@ -514,23 +521,13 @@ Name|Description
 
 ### Polyfills
 
+
 Name|Description
 ----|-----------
-`Array.fromAsync();`|The Array.fromAsync() static method creates a new, shallow-copied Array instance from an async iterable, iterable, or array-like object. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/fromAsync)!
-`Array.prototype.toReversed();`|The toReversed() method of an Array instance is the copying counterpart of the reverse() method. It returns a new array with the elements in reversed order. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toReversed)!
-`Array.prototype.toSorted();`|The toSorted() method of an Array instance is the copying version of the sort() method. It returns a new array with the elements sorted in ascending order. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toSorted)!
-`Array.prototype.toSpliced();`|The toSpliced() method of an Array instance is the copying version of the splice() method. It returns a new array with some elements removed and/or replaced at a given index. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toSpliced)!
-`Array.prototype.with();`|The with() method of an Array instance is the copying version of using the bracket notation to change the value of a given index. It returns a new array with the element at the given index replaced with the given value. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/with)!
 `crypto.randomUUID();`|The randomUUID() method of the Crypto interface is used to generate a v4 UUID using a cryptographically secure random number generator. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/API/Crypto/randomUUID)!
 `Error.isError();`|The Error.isError() static method determines whether the passed value is an Error or DOMException. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/isError)!
 `globalThis;`|The globalThis global property contains the global `this`</code>` value, which is usually akin to the global object. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/globalThis)!
-`Map.groupBy();`|The Map.groupBy() static method groups the elements of a given iterable using the values returned by a provided callback function. The final returned Map uses the unique values from the test function as keys, which can be used to get the array of elements in each group. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/groupBy)!
 `Math.sumPrecise();`|The Math.sumPrecise() static method takes an iterable of numbers and returns the sum of them. It is more precise than summing them up in a loop, because it avoids floating point precision loss in intermediate results. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/sumPrecise)!
-`Object.groupBy();`|The Object.groupBy() static method groups the elements of a given iterable according to the string values returned by a provided callback function. The returned object has separate properties for each group, containing arrays with the elements in the group. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/groupBy)!
-`Object.hasOwn();`|The Object.hasOwn() static method returns true if the specified object has the indicated property as its own property. If the property is inherited, or does not exist, the method returns false. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwn)!
-`TypedArray.prototype.toReversed();`|The toReversed() method is the copying counterpart of the reverse() method. It returns a new array with the elements in reversed order. This method has the same algorithm as Array.prototype.reverse(). For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/toReversed)!
-`TypedArray.prototype.toSorted();`|The toSorted() method is the copying version of the sort() method. It returns a new array with the elements sorted in ascending order. This method has the same algorithm as Array.prototype.toSorted(), except that it sorts the values numerically instead of as strings by default. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/toSorted)!
-`TypedArray.prototype.with();`|The with() method is the copying version of using the bracket notation to change the value of a given index. It returns a new array with the element at the given index replaced with the given value. This method has the same algorithm as Array.prototype.with(). For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/with)!
 `globalThis.AsyncFunction();`|The AsyncFunction constructor creates a new async function object. In JavaScript, every asynchronous function is actually an AsyncFunction object. Note that AsyncFunction is not a global object, but in the Celestra this is available in the `globalThis` object. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncFunction)!
 `globalthis.AsyncGeneratorFunction();`|The AsyncGeneratorFunction() constructor creates AsyncGeneratorFunction objects. Note that AsyncGeneratorFunction is not a global object, but in the Celestra this is available in the `globalThis` object. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncGeneratorFunction/AsyncGeneratorFunction)!
 `globalThis.GeneratorFunction();`|The GeneratorFunction constructor creates a new generator function object. In JavaScript every generator function is actually a GeneratorFunction object. Note that GeneratorFunction is not a global object, but in the Celestra this is available in the `globalThis` object. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction)!
@@ -538,6 +535,7 @@ REMOVED polyfills in v3.1.0|`Array.from();`<BR>`Array.of();`<BR>`Array.prototype
 REMOVED polyfills in v3.8.0|`Array.prototype.values();`<BR>`Array.prototype.includes();`<BR>`String.prototype.includes();`<BR>`String.prototype.repeat();`<BR>`String.prototype[Symbol.iterator]();`<BR>`Object.assign();`<BR>`Object.entries();`<BR>`Object.values();`<BR>`Object.getOwnPropertyDescriptors();`<BR>`RegExp.prototype.flags;`<BR>`NodeList.prototype.forEach();`<BR>`ChildNode.after();`<BR>`ChildNode.before();`<BR>`ChildNode.remove();`<BR>`ChildNode.replaceWith();`<BR>`ParentNode.append();`<BR>`ParentNode.prepend();`<BR>`Element.prototype.matches();`<BR>`Element.prototype.closest();`<BR>`Element.prototype.toggleAttribute();`<BR>`Element.prototype.getAttributeNames();`<BR>`window.screenLeft;`<BR>`window.screenTop;`
 REMOVED polyfills in v5.6.0|`Array.prototype.at();`<BR>`Array.prototype.findLast();`<BR>`Array.prototype.findLastIndex();`<BR>`Array.prototype.flat();`<BR>`Array.prototype.flatMap();`<BR>`Number.MIN_SAFE_INTEGER;`<BR>`Number.MAX_SAFE_INTEGER;`<BR>`Object.fromEntries();`<BR>`Object.is();`<BR>`String.prototype.at();`<BR>`String.prototype.matchAll();`<BR>`String.prototype.padStart();`<BR>`String.prototype.padEnd();`<BR>`String.prototype.replaceAll();`<BR>`String.prototype.trimStart();`<BR>`String.prototype.trimLeft();`<BR>`String.prototype.trimEnd();`<BR>`String.prototype.trimRight();`<BR>`Typedarray.prototype.at();`<BR>`TypedArray.prototype.findLast();`<BR>`TypedArray.prototype.findLastIndex();`
 REMOVED polyfills in v5.9.0|`BigInt.prototype.toJSON();`
+REMOVED polyfills in v6.5.0|`Array.fromAsync();`<BR>`Array.prototype.toReversed();`<BR>`Array.prototype.toSorted();`<BR>`Array.prototype.toSpliced();`<BR>`Array.prototype.with();`<BR>`Map.groupBy();`<BR>`Object.groupBy();`<BR>`Object.hasOwn();`<BR>`TypedArray.prototype.toReversed();`<BR>`TypedArray.prototype.toSorted();`<BR>`TypedArray.prototype.with();`
 
 -----
 

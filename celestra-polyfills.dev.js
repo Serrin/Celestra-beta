@@ -3,7 +3,7 @@
 
 /**
  * @name Celestra Removed Polyfills
- * @version 6.3.1 dev
+ * @version 6.5.0 dev
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
@@ -103,10 +103,26 @@ TypedArray.prototype.findLast();
 TypedArray.prototype.findLastIndex();
 */
 
-/* 
+/*
 Removed in v5.9.0
 
 BigInt.prototype.toJSON();
+*/
+
+/*
+Removed in v6.5.0
+
+Array.fromAsync();
+Array.prototype.toReversed();
+Array.prototype.toSorted();
+Array.prototype.toSpliced();
+Array.prototype.with();
+Map.groupBy();
+Object.groupBy();
+Object.hasOwn();
+TypedArray.prototype.toReversed();
+TypedArray.prototype.toSorted();
+TypedArray.prototype.with();
 */
 
 
@@ -904,6 +920,172 @@ if (!!globalThis.BigInt && !("toJSON" in BigInt.prototype)) {
   Object.defineProperty(BigInt.prototype, "toJSON", {
     writable: true, enumerable: false, configurable: true,
     value: function toJSON () { return this.toString(); }
+  });
+}
+
+/* Removed in v6.5.0 */
+
+/* Array.fromAsync(); */
+if (!Array.fromAsync) {
+  // @ts-ignore
+  Array.fromAsync = async function fromAsync (arrayLike, mapfn, thisArg) {
+    const isConstructor = (value) =>
+      (typeof value === "function" && typeof value.prototype === "object");
+    const errorMsg = "Input length exceed the Number.MAX_SAFE_INTEGER.";
+    if (Symbol.asyncIterator in arrayLike || Symbol.iterator in arrayLike) {
+      let result = isConstructor(this) ? new this : Array(0);
+      let index = 0;
+      for await (const item of arrayLike) {
+        if (index > Number.MAX_SAFE_INTEGER) {
+          throw TypeError(errorMsg);
+        } else {
+          if (!mapfn) {
+            result[index] = item;
+          } else {
+            result[index] = await mapfn.call(thisArg,item,index);
+          }
+        }
+        index++;
+      }
+      result.length = index;
+      return result;
+    } else {
+      let length = arrayLike.length;
+      let result = isConstructor(this) ? new this(length) : Array(length);
+      let index = 0;
+      while (index < length) {
+        if (index > Number.MAX_SAFE_INTEGER) { throw TypeError(errorMsg); }
+        let item = await arrayLike[index];
+        if (!mapfn) {
+          result[index] = item;
+        } else {
+          result[index] = await mapfn.call(thisArg,item,index);
+        }
+        index++;
+      }
+      result.length = index;
+      return result;
+    }
+  };
+}
+
+/* Array.prototype.toReversed(); */
+if (!("toReversed" in Array.prototype)) {
+  Object.defineProperty(Array.prototype, "toReversed", {
+    "configurable": true, "writable": true, "enumerable": false,
+    "value": function () { return this.slice().reverse(); }
+  });
+}
+
+/* Array.prototype.toSorted(); */
+if (!("toSorted" in Array.prototype)) {
+  Object.defineProperty(Array.prototype, "toSorted", {
+    "configurable": true, "writable": true, "enumerable": false,
+    "value": function (fn) { return this.slice().sort(fn); }
+  });
+}
+
+/* Array.prototype.toSpliced(); */
+if (!("toSpliced" in Array.prototype)) {
+  Object.defineProperty(Array.prototype, "toSpliced", {
+    "configurable": true, "writable": true, "enumerable": false,
+    "value": function (start, deleteCount, ...items) {
+      let result = this.slice();
+      result.splice(start, deleteCount, ...items);
+      return result;
+    }
+  });
+}
+
+/* Array.prototype.with(); */
+if (!("with" in Array.prototype)) {
+  Object.defineProperty(Array.prototype, "with", {
+    "configurable": true, "writable": true, "enumerable": false,
+    "value": function (index, value) {
+      let result = this.slice();
+      result[index] = value;
+      return result;
+    }
+  });
+}
+
+/* Map.groupBy(); */
+if (!("groupBy" in Map)) {
+  Object.defineProperty(Map, "groupBy", {
+    "configurable": true, "writable": true, "enumerable": true,
+    "value": function (items, callbackFn) {
+      if (!(typeof callbackFn === "function")) { throw new TypeError(); }
+      let result = new Map();
+      let index = 0;
+      for (let item of items) {
+        let key = callbackFn(item, index++);
+        if (!(result.has(key))) { result.set(key, []); }
+        result.get(key).push(item);
+      }
+      return result;
+    }
+  });
+}
+
+/* Object.groupBy(); */
+if (!("groupBy" in Object)) {
+  // @ts-ignore
+  Object.defineProperty(Object, "groupBy", {
+    "configurable": true, "writable": true, "enumerable": true,
+    "value": function (items, callbackFn) {
+      if (!(typeof callbackFn === "function")) { throw new TypeError(); }
+      let result = Object.create(null);
+      let index = 0;
+      for (let item of items) {
+        let key = callbackFn(item, index++);
+        if (!(Object.prototype.hasOwnProperty.call(result, key))) {
+          result[key] = [];
+        }
+        result[key].push(item);
+      }
+      return result;
+    }
+  });
+}
+
+/* Object.hasOwn(); */
+if (!Object.hasOwn) {
+  Object.defineProperty(Object, "hasOwn", {
+    configurable: true, enumerable: false, writable: true,
+    value: function (object, property) {
+      if (object == null) {
+        throw new TypeError("Cannot convert undefined or null to object");
+      }
+      return Object.prototype.hasOwnProperty.call(Object(object), property);
+    }
+  });
+}
+
+/* TypedArray.prototype.toReversed(); */
+if (!("toReversed" in Uint8Array.prototype)) {
+  Object.defineProperty(Uint8Array.prototype, "toReversed", {
+    "configurable": true, "writable": true, "enumerable": false,
+    "value": function () { return this.slice().reverse(); }
+  });
+}
+
+/* TypedArray.prototype.toSorted(); */
+if (!("toSorted" in Uint8Array.prototype)) {
+  Object.defineProperty(Uint8Array.prototype, "toSorted", {
+    "configurable": true, "writable": true, "enumerable": false,
+    "value": function (fn) { return this.slice().sort(fn); }
+  });
+}
+
+/* TypedArray.prototype.with(); */
+if (!("with" in Uint8Array.prototype)) {
+  Object.defineProperty(Uint8Array.prototype, "with", {
+    "configurable": true, "writable": true, "enumerable": false,
+    "value": function (index, value) {
+      let result = this.slice();
+      result[index] = value;
+      return result;
+    }
   });
 }
 

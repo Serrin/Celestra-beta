@@ -385,23 +385,13 @@ nav a, nav a:visited, nav a:active, nav a:hover {
     <hr/>
     <details open>
       <summary><strong>Polyfills</strong></summary>
-      <p><a href="#FN-Array.fromAsync();">Array.fromAsync();</a></p>
-      <p><a href="#FN-Array.prototype.toReversed();">Array.prototype.toReversed();</a></p>
-      <p><a href="#FN-Array.prototype.toSorted();">Array.prototype.toSorted();</a></p>
-      <p><a href="#FN-Array.prototype.toSpliced();">Array.prototype.toSpliced();</a></p>
-      <p><a href="#FN-Array.prototype.with();">Array.prototype.with();</a></p>
       <p><a href="#FN-crypto.randomUUID();">crypto.randomUUID();</a></p>
       <p><a href="#FN-Error.isError();">Error.isError();</a></p>
       <p><a href="#FN-globalThis;();">globalThis;();</a></p>
-      <p><a href="#FN-Map.groupBy();">Map.groupBy();</a></p>
       <p><a href="#FN-Math.sumPrecise();">Math.sumPrecise();</a></p>
-      <p><a href="#FN-Object.groupBy();">Object.groupBy();</a></p>
-      <p><a href="#FN-Object.hasOwn();">Object.hasOwn();</a></p>
-      <p><a href="#FN-TypedArray.prototype.toReversed();">TypedArray.prototype.toReversed();</a></p>
-      <p><a href="#FN-TypedArray.prototype.toSorted();">TypedArray.prototype.toSorted();</a></p>
-      <p><a href="#FN-TypedArray.prototype.with();">TypedArray.prototype.with();</a></p>
       <p><a href="#FN-globalThis.AsyncFunction();">globalThis.AsyncFunction();</a></p>
       <p><a href="#FN-globalthis.AsyncGeneratorFunction();">globalthis.AsyncGeneratorFunction();</a></p>
+      <p><a href="#FN-globalThis.GeneratorFunction();">globalthis.GeneratorFunction();</a></p>
     </details>
   </div>
 </div>
@@ -465,7 +455,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
 
 <p><strong>A helper JavaScript library with useful functions and polyfills and zero dependencies.</strong></p>
 
-<p>Latest version: 6.4.2</p>
+<p>Latest version: 6.5.0</p>
 <p>Date: 2026-03-29T15:18:23.853Z</p>
 
 <p><strong>Tested on these environments:</strong></p>
@@ -740,6 +730,15 @@ globalThis.CEL = celestra;
 <ul>
   <li>The <strong>Legacy AJAX API</strong> has been removed.</li>
   <li>The <strong>Legacy Assertion API (Assert API v3)</strong> has been removed.</li>
+</ul>
+
+<h3>Celestra v6.5.0 (Andromeda) changes</h3>
+
+<ul>
+  <li>Documentation, pdf and code fixes.</li>
+  <li>From this version the version of the CUT is same as the Celestra version.</li>
+  <li>Firefox 115 (Windows 7 and 8.1) and iOS 16 support has been removed.</li>
+  <li>Many polyfills have been moved to <strong>celestra-polyfills.dev.js</strong> and <strong>celestra-polyfills.min.js</strong>.</li>
 </ul>
 
 <hr/>
@@ -2074,26 +2073,6 @@ Otherwise, the result is false.</pre>
       <td style="width: auto; min-width: 33%;"><strong>Name</strong></td>
       <td><strong>Description</strong></td>
     </tr>
-    <tr id="FN-Array.fromAsync();">
-      <td><code>Array.fromAsync();</code></td>
-      <td>The Array.fromAsync() static method creates a new, shallow-copied Array instance from an async iterable, iterable, or array-like object. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/fromAsync" target="_blank">MDN Article</a>!</td>
-    </tr>
-    <tr id="FN-Array.prototype.toReversed();">
-      <td><code>Array.prototype.toReversed();</code></td>
-      <td>The toReversed() method of an Array instance is the copying counterpart of the reverse() method. It returns a new array with the elements in reversed order. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toReversed" target="_blank">MDN Article</a>!</td>
-    </tr>
-    <tr id="FN-Array.prototype.toSorted();">
-      <td><code>Array.prototype.toSorted();</code></td>
-      <td>The toSorted() method of an Array instance is the copying version of the sort() method. It returns a new array with the elements sorted in ascending order. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toSorted" target="_blank">MDN Article</a>!</td>
-    </tr>
-    <tr id="FN-Array.prototype.toSpliced();">
-      <td><code>Array.prototype.toSpliced();</code></td>
-      <td>The toSpliced() method of an Array instance is the copying version of the splice() method. It returns a new array with some elements removed and/or replaced at a given index. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toSpliced" target="_blank">MDN Article</a>!</td>
-    </tr>
-    <tr id="FN-Array.prototype.with();">
-      <td><code>Array.prototype.with();</code></td>
-      <td>The with() method of an Array instance is the copying version of using the bracket notation to change the value of a given index. It returns a new array with the element at the given index replaced with the given value. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/with" target="_blank">MDN Article</a>!</td>
-    </tr>
     <tr id="FN-crypto.randomUUID();">
       <td><code>crypto.randomUUID();</code></td>
       <td>
@@ -2110,33 +2089,9 @@ Otherwise, the result is false.</pre>
       <td><code>globalThis;</code></td>
       <td>The "global" property of the global object, a writable, configurable, non-enumerable alias of <code>window</code>/<code>self</code>. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/globalThis" target="_blank">MDN Article</a>!</td>
     </tr>
-    <tr id="FN-Map.groupBy();">
-      <td><code>Map.groupBy();</code></td>
-      <td>The Map.groupBy() static method groups the elements of a given iterable using the values returned by a provided callback function. The final returned Map uses the unique values from the test function as keys, which can be used to get the array of elements in each group. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/groupBy" target="_blank">MDN Article</a>!</td>
-    </tr>
     <tr id="FN-Math.sumPrecise();">
       <td><code>Math.sumPrecise();</code></td>
       <td>The Math.sumPrecise() static method takes an iterable of numbers and returns the sum of them. It is more precise than summing them up in a loop, because it avoids floating point precision loss in intermediate results. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/sumPrecise" target="_blank">MDN Article</a>!</td>
-    </tr>
-    <tr id="FN-Object.groupBy();">
-      <td><code>Object.groupBy();</code></td>
-      <td>The Object.groupBy() static method groups the elements of a given iterable according to the string values returned by a provided callback function. The returned object has separate properties for each group, containing arrays with the elements in the group. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/groupBy" target="_blank">MDN Article</a>!</td>
-    </tr>
-    <tr id="FN-Object.hasOwn();">
-      <td><code>Object.hasOwn();</code></td>
-      <td>The Object.hasOwn() static method returns true if the specified object has the indicated property as its own property. If the property is inherited, or does not exist, the method returns false. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwn" target="_blank">MDN Article</a>!      </td>
-    </tr>
-    <tr id="FN-TypedArray.prototype.toReversed();">
-      <td><code>TypedArray.prototype.toReversed();</code></td>
-      <td>The toReversed() method is the copying counterpart of the reverse() method. It returns a new array with the elements in reversed order. This method has the same algorithm as Array.prototype.reverse(). For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/toReversed" target="_blank">MDN Article</a>!</td>
-    </tr>
-    <tr id="FN-TypedArray.prototype.toSorted();">
-      <td><code>TypedArray.prototype.toSorted();</code></td>
-      <td>The toSorted() method is the copying version of the sort() method. It returns a new array with the elements sorted in ascending order. This method has the same algorithm as Array.prototype.toSorted(), except that it sorts the values numerically instead of as strings by default. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/toSorted" target="_blank">MDN Article</a>!</td>
-    </tr>
-    <tr id="FN-TypedArray.prototype.with();">
-      <td><code>TypedArray.prototype.with();</code></td>
-      <td>The with() method is the copying version of using the bracket notation to change the value of a given index. It returns a new array with the element at the given index replaced with the given value. This method has the same algorithm as Array.prototype.with(). For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/with" target="_blank">MDN Article</a>!</td>
     </tr>
     <tr id="FN-globalThis.AsyncFunction();">
       <td><code>globalThis.AsyncFunction();</code></td>
@@ -2165,6 +2120,10 @@ Otherwise, the result is false.</pre>
     <tr>
       <td>REMOVED polyfills in v5.9.0</td>
       <td><code>BigInt.prototype.toJSON();</code></td>
+    </tr>
+    <tr>
+      <td>REMOVED polyfills in v6.5.0</td>
+      <td><code>Array.fromAsync();</code><br/><code>Array.prototype.toReversed();</code><br/><code>Array.prototype.toSorted();</code><br/><code>Array.prototype.toSpliced();</code><br/><code>Array.prototype.with();</code><br/><code>Map.groupBy();</code><br/><code>Object.groupBy();</code><br/><code>Object.hasOwn();</code><br/><code>TypedArray.prototype.toReversed();</code><br/><code>TypedArray.prototype.toSorted();</code><br/><code>TypedArray.prototype.with();</code></td>
     </tr>
   </table>
 </div>

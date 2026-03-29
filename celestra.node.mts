@@ -10,14 +10,14 @@
 
 /**
  * @name Celestra
- * @version 6.4.2 node
+ * @version 6.5.0 node
  * @author Ferenc Czigler
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
 
 
-const VERSION = "Celestra v6.4.2 node";
+const VERSION = "Celestra v6.5.0 node";
 
 
 /** TS types */
@@ -209,92 +209,6 @@ if (!("isError" in Error)) {
 }
 
 
-/* Object.groupBy(); */
-if (!("groupBy" in Object)) {
-  // @ts-ignore
-  Object.defineProperty(Object, "groupBy", {
-    "configurable": true, "writable": true, "enumerable": true,
-    "value": function (items: IterableLike, callbackFn: Function) {
-      if (!(typeof callbackFn === "function")) { throw new TypeError(); }
-      let result = Object.create(null);
-      let index: number = 0;
-      for (let item of items as Iterable<any>) {
-        let key = callbackFn(item, index++);
-        if (!(Object.prototype.hasOwnProperty.call(result, key))) {
-          result[key] = [];
-        }
-        result[key].push(item);
-      }
-      return result;
-    }
-  });
-}
-
-
-/* Map.groupBy(); */
-if (!("groupBy" in Map)) {
-  Object.defineProperty(Map, "groupBy", {
-    "configurable": true, "writable": true, "enumerable": true,
-    "value": function (items: IterableLike, callbackFn: Function) {
-      if (!(typeof callbackFn === "function")) { throw new TypeError(); }
-      let result = new Map();
-      let index: number = 0;
-      for (let item of items as Iterable<any>) {
-        let key = callbackFn(item, index++);
-        if (!(result.has(key))) { result.set(key, []); }
-        result.get(key).push(item);
-      }
-      return result;
-    }
-  });
-}
-
-
-/* Array.fromAsync(); */
-if (!Array.fromAsync) {
-  // @ts-ignore
-  Array.fromAsync = async function fromAsync (arrayLike, mapfn, thisArg) {
-    const isConstructor = (value: unknown): boolean =>
-      (typeof value === "function" && typeof value.prototype === "object");
-    const errorMsg = "Input length exceed the Number.MAX_SAFE_INTEGER.";
-    if (Symbol.asyncIterator in arrayLike || Symbol.iterator in arrayLike) {
-      let result: any[] = isConstructor(this) ? new this : Array(0);
-      let index: number = 0;
-      for await (const item of arrayLike) {
-        if (index > Number.MAX_SAFE_INTEGER) {
-          throw TypeError(errorMsg);
-        } else {
-          if (!mapfn) {
-            result[index] = item;
-          } else {
-            result[index] = await mapfn.call(thisArg,item,index);
-          }
-        }
-        index++;
-      }
-      result.length = index;
-      return result;
-    } else {
-      let length: number = arrayLike.length;
-      let result: any[] = isConstructor(this) ? new this(length) : Array(length);
-      let index: number = 0;
-      while (index < length) {
-        if (index > Number.MAX_SAFE_INTEGER) { throw TypeError(errorMsg); }
-        let item: any = await arrayLike[index];
-        if (!mapfn) {
-          result[index] = item;
-        } else {
-          result[index] = await mapfn.call(thisArg,item,index);
-        }
-        index++;
-      }
-      result.length = index;
-      return result;
-    }
-  };
-}
-
-
 /* crypto.randomUUID(); */
 if (("crypto" in globalThis) && !("randomUUID" in globalThis.crypto)) {
   // @ts-ignore
@@ -305,98 +219,6 @@ if (("crypto" in globalThis) && !("randomUUID" in globalThis.crypto)) {
         (c^crypto.getRandomValues(new Uint8Array(1))[0]&15 >> c/4).toString(16)
     );
   };
-}
-
-
-/* Object.hasOwn(); */
-if (!Object.hasOwn) {
-  Object.defineProperty(Object, "hasOwn", {
-    configurable: true, enumerable: false, writable: true,
-    value: function (object: object, property: string): boolean {
-      if (object == null) {
-        throw new TypeError("Cannot convert undefined or null to object");
-      }
-      return Object.prototype.hasOwnProperty.call(Object(object), property);
-    }
-  });
-}
-
-
-/* Array.prototype.toReversed(); */
-if (!("toReversed" in Array.prototype)) {
-  Object.defineProperty(Array.prototype, "toReversed", {
-    "configurable": true, "writable": true, "enumerable": false,
-    "value": function () { return this.slice().reverse(); }
-  });
-}
-
-
-/* Array.prototype.toSorted(); */
-if (!("toSorted" in Array.prototype)) {
-  Object.defineProperty(Array.prototype, "toSorted", {
-    "configurable": true, "writable": true, "enumerable": false,
-    "value": function (fn: Function) { return this.slice().sort(fn); }
-  });
-}
-
-
-/* Array.prototype.toSpliced(); */
-if (!("toSpliced" in Array.prototype)) {
-  Object.defineProperty(Array.prototype, "toSpliced", {
-    "configurable": true, "writable": true, "enumerable": false,
-    "value": function (
-      start: number,
-      deleteCount: number,
-      ...items: any[]): any[] {
-      let result: any[] = this.slice();
-      result.splice(start, deleteCount, ...items);
-      return result;
-    }
-  });
-}
-
-
-/* Array.prototype.with(); */
-if (!("with" in Array.prototype)) {
-  Object.defineProperty(Array.prototype, "with", {
-    "configurable": true, "writable": true, "enumerable": false,
-    "value": function (index: string | number, value: unknown): any[] {
-      let result = this.slice();
-      result[index] = value;
-      return result;
-    }
-  });
-}
-
-
-/* TypedArray.prototype.toReversed(); */
-if (!("toReversed" in Uint8Array.prototype)) {
-  Object.defineProperty(Uint8Array.prototype, "toReversed", {
-    "configurable": true, "writable": true, "enumerable": false,
-    "value": function () { return this.slice().reverse(); }
-  });
-}
-
-
-/* TypedArray.prototype.toSorted(); */
-if (!("toSorted" in Uint8Array.prototype)) {
-  Object.defineProperty(Uint8Array.prototype, "toSorted", {
-    "configurable": true, "writable": true, "enumerable": false,
-    "value": function (fn: Function) { return this.slice().sort(fn); }
-  });
-}
-
-
-/* TypedArray.prototype.with(); */
-if (!("with" in Uint8Array.prototype)) {
-  Object.defineProperty(Uint8Array.prototype, "with", {
-    "configurable": true, "writable": true, "enumerable": false,
-    "value": function (index: string | number, value: unknown) {
-      let result = this.slice();
-      result[index] = value;
-      return result;
-    }
-  });
 }
 
 
