@@ -1,4 +1,4 @@
-declare const VERSION = "Celestra v6.4.2 browser";
+declare const VERSION = "Celestra v6.5.0 browser";
 type MapLike = Record<PropertyKey, any>;
 type IterableLike = Iterable<any> | Iterator<any> | IterableIterator<any>;
 type IterableLikeAndArrayLike = Iterable<any> | Iterator<any> | IterableIterator<any> | ArrayLike<any>;
