@@ -20,5 +20,5 @@ echo.
 pause
 
 rem from https://www.typescriptlang.org/tsconfig/
-rem es5, es6/es2015, es2016, es2017, es2018, es2019,
-rem es2020, es2021, es2022, es2023, es2024, es2025 (default), esnext
+rem es2015, es2016, es2017, es2018, es2019, es2020, es2021, es2022, es2023, 
+rem es2024, es2025 (default), esnext

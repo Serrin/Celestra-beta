@@ -353,29 +353,29 @@ function lte (value1: Comparable, value2: Comparable): boolean {
 
 
 /**
- * @description Calls `fn` with the given `value` and then returns `value`.
+ * @description Calls `callback` with the given `value` and then returns `value`.
  *
- * @param {Function} fn
+ * @param {Function} callback
  * @returns {Function}
  */
-function tap (fn: Function): any {
-  return function (value: unknown): any { fn(value); return value; };
+function tap (callback: Function): any {
+  return function (value: unknown): any { callback(value); return value; };
 }
 
 
 /**
- * @description Creates a function that is restricted to invoking `fn` once.
+ * @description Creates a function that is restricted to invoking `callback` once.
  *
- * @param {Function} fn
+ * @param {Function} callback
  * @returns {Function}
  */
-function once (fn: Function): Function {
+function once (callback: Function): Function {
   let called: boolean = false;
   let result: any;
   return function (...args: any[]): any {
     if (!called) {
       called = true;
-      result = fn(...args);
+      result = callback(...args);
     }
     return result;
   };
@@ -385,13 +385,13 @@ function once (fn: Function): Function {
 /**
  * @description Transforms a function of N arguments into N functions of one argument.
  *
- * @param {Function} fn
+ * @param {Function} callback
  * @returns {Function}
  */
-function curry (fn: Function): Function {
+function curry (callback: Function): Function {
   const curried = (...args: any[]): any =>
-    args.length >= fn.length
-      ? fn(...args)
+    args.length >= callback.length
+      ? callback(...args)
       : (...rest: any[]): any => curried(...args, ...rest);
   return curried;
 }
@@ -405,7 +405,8 @@ function curry (fn: Function): Function {
  */
 const pipe = (...functions: Function[]): Function =>
   (first: any): any =>
-    functions.reduce((value: unknown, fn: Function): any => fn(value), first);
+    functions.reduce((value: unknown, callback: Function): any =>
+      callback(value), first);
 
 
 /**
@@ -415,7 +416,8 @@ const pipe = (...functions: Function[]): Function =>
  * @returns {Function}
  */
 const compose = (...functions: Function[]): Function =>
-  (first: any): any => functions.reduceRight((value, fn): any => fn(value), first);
+  (first: any): any => functions.reduceRight((value, callback): any =>
+    callback(value), first);
 
 
 /**
@@ -744,18 +746,19 @@ const sizeIn = (obj: object): number =>
 
 
 /**
- * @description Creates a function that invokes `fn` with its `this` binding removed.
+ * @description Creates a function that invokes `callback` with its `this` binding removed.
  *
- * @param {Function} fn
+ * @param {Function} callback
  * @returns {Function}
  */
-const unBind = (fn: Function): Function => Function.prototype.call.bind(fn);
+const unBind = (callback: Function): Function =>
+  Function.prototype.call.bind(callback);
 
 
 /**
- * @description Creates a function that invokes `fn` with its `this` binding set to the provided context.
+ * @description Creates a function that invokes `callback` with its `this` binding set to the provided context.
  *
- * @param {Function} fn
+ * @param {Function} callback
  * @param {Function} context
  */
 const bind = Function.prototype.call.bind(Function.prototype.bind);
@@ -2018,14 +2021,14 @@ function unique (
  * @description Counts the number of elements in an iterable that satisfy a given condition.
  *
  * @param {IterableLike} iter - The iterable to process.
- * @param {Function} fn - The callback function that tests each element.
+ * @param {Function} callback - The callback function that tests each element.
  * @returns {number} The count of elements that satisfy the condition.
  */
-function count (iter: IterableLike, fn: Function): number {
+function count (iter: IterableLike, callback: Function): number {
   let index: number = 0;
   let result: number = 0;
   for (let item of iter as Iterable<any>) {
-    if (fn(item, index++)) { result++; }
+    if (callback(item, index++)) { result++; }
   }
   return result;
 }
@@ -2072,12 +2075,12 @@ function shuffle ([...array]): unknown[] {
  * @description Splits an iterable into two arrays based on a predicate function.
  *
  * @param {IterableLike} iter - The iterable to partition.
- * @param {Function} fn - The predicate function to test each element.
+ * @param {Function} callback - The predicate function to test each element.
  * @returns {any[][]} An array containing two arrays: the first with elements that satisfy the predicate, and the second with elements that do not.
  */
-const partition = ([...array], fn: Function): any[] =>
+const partition = ([...array], callback: Function): any[] =>
    // @ts-ignore
-  [array.filter(fn), array.filter((value, index, a): boolean => !(fn(value, index, a)))];
+  [array.filter(callback), array.filter((value, index, a): boolean => !(callback(value, index, a)))];
 
 
 /**
@@ -2301,24 +2304,24 @@ function arrayRemove (
  * @description Removes elements from an array that satisfy a given condition. If `all` is true, removes all occurrences that satisfy the condition.
  *
  * @param {any[]} array - The array to remove elements from.
- * @param {Function} fn - The callback function that tests each element.
+ * @param {Function} callback - The callback function that tests each element.
  * @param {boolean} [all=false] - Whether to remove all occurrences that satisfy the condition.
  * @returns {boolean} True if any elements were removed, false otherwise.
  */
 function arrayRemoveBy (
   array: any[],
-  fn: Function,
+  callback: Function,
   all: boolean = false): boolean {
 // @ts-ignore
-  let found: boolean = array.findIndex(fn) > -1;
+  let found: boolean = array.findIndex(callback) > -1;
   if (!all) {
      // @ts-ignore
-    let pos = array.findIndex(fn);
+    let pos = array.findIndex(callback);
     if (pos > -1) { array.splice(pos, 1); }
   } else {
     let pos = -1;
      // @ts-ignore
-    while ((pos = array.findIndex(fn)) > -1) { array.splice(pos, 1); }
+    while ((pos = array.findIndex(callback)) > -1) { array.splice(pos, 1); }
   }
   return found;
 }
@@ -2387,13 +2390,13 @@ function* iterRepeat (value: unknown, num: number = Infinity): IteratorReturn {
  * Takes the elements from an iterable or iterator and returns a new iterator while the checking function returns true.
  *
  * @param {IterableLike} iter - An iterable or iterator to take elements from.
- * @param fn - Number of elements to take (default: 1).
+ * @param callback - Number of elements to take (default: 1).
  * @yields The next element in the taken iterator.
  */
-function* takeWhile <T>(iter: Iterable<T> | Iterator<T>, fn: Function): IterableIterator<T> {
+function* takeWhile <T>(iter: Iterable<T> | Iterator<T>, callback: Function): IterableIterator<T> {
   let iterator: Iterator<T>;
   // Normalize: if input is an iterator, use it directly; otherwise get an iterator
-  if (typeof (iter as Iterator<T>).next === 'function') {
+  if (typeof (iter as Iterator<T>).next === "function") {
     iterator = iter as Iterator<T>;
   } else {
     iterator = (iter as Iterable<T>)[Symbol.iterator]();
@@ -2401,7 +2404,7 @@ function* takeWhile <T>(iter: Iterable<T> | Iterator<T>, fn: Function): Iterable
   /* Yield the elements */
   while (true) {
     const { value, done } = iterator.next();
-    if (done || !fn(value)) { break; }
+    if (done || !callback(value)) { break; }
     yield value;
   }
 }
@@ -2411,13 +2414,13 @@ function* takeWhile <T>(iter: Iterable<T> | Iterator<T>, fn: Function): Iterable
  * Take the elements from an iterable or iterator and returns a new iterator after the checking function returns false.
  *
  * @param {IterableLike} iter - An iterable or iterator to take elements from.
- * @param fn - Number of elements to take (default: 1).
+ * @param callback - Number of elements to take (default: 1).
  * @yields The next element in the dropped iterator.
  */
-function* dropWhile <T>(iter: Iterable<T> | Iterator<T>, fn: Function): IterableIterator<T> {
+function* dropWhile <T>(iter: Iterable<T> | Iterator<T>, callback: Function): IterableIterator<T> {
   let iterator: Iterator<T>;
   // Normalize: if input is an iterator, use it directly; otherwise get an iterator
-  if (typeof (iter as Iterator<T>).next === 'function') {
+  if (typeof (iter as Iterator<T>).next === "function") {
     iterator = iter as Iterator<T>;
   } else {
     iterator = (iter as Iterable<T>)[Symbol.iterator]();
@@ -2427,7 +2430,7 @@ function* dropWhile <T>(iter: Iterable<T> | Iterator<T>, fn: Function): Iterable
   while (true) {
     const { value, done } = iterator.next();
     if (done) { break; }
-    if (skip) { skip = fn(value); }
+    if (skip) { skip = callback(value); }
     if (!skip) { yield value; }
   }
 }
@@ -2444,7 +2447,7 @@ function* take <T>(iter: Iterable<T> | Iterator<T>, num: number = 1): IterableIt
   if (num <= 0) return;
   let iterator: Iterator<T>;
   // Normalize: if input is an iterator, use it directly; otherwise get an iterator
-  if (typeof (iter as Iterator<T>).next === 'function') {
+  if (typeof (iter as Iterator<T>).next === "function") {
     iterator = iter as Iterator<T>;
   } else {
     iterator = (iter as Iterable<T>)[Symbol.iterator]();
@@ -2467,14 +2470,14 @@ function* take <T>(iter: Iterable<T> | Iterator<T>, num: number = 1): IterableIt
 function* drop <T>(iter: Iterable<T> | Iterator<T>, num: number = 1): IterableIterator<T> {
   if (num <= 0) {
     /* If nothing to drop, just yield everything */
-    yield* (typeof (iter as Iterator<T>).next === 'function'
+    yield* (typeof (iter as Iterator<T>).next === "function"
       ? { [Symbol.iterator]: () => iter as Iterator<T> }
       : (iter as Iterable<T>));
     return;
   }
   let iterator: Iterator<T>;
   /* Normalize: if input is an iterator, use it directly; otherwise get an iterator */
-  if (typeof (iter as Iterator<T>).next === 'function') {
+  if (typeof (iter as Iterator<T>).next === "function") {
     iterator = iter as Iterator<T>;
   } else {
     iterator = (iter as Iterable<T>)[Symbol.iterator]();
@@ -2497,12 +2500,12 @@ function* drop <T>(iter: Iterable<T> | Iterator<T>, num: number = 1): IterableIt
  * @description Executes a provided function once for each element in an iterable.
  *
  * @param {IterableLike} iter - The iterable to iterate over.
- * @param {Function} fn - The function to call for each element.
+ * @param {Function} callback - The function to call for each element.
  * @returns {void}
  */
-function forEach (iter: IterableLike, fn: Function): void {
+function forEach (iter: IterableLike, callback: Function): void {
   let index: number = 0;
-  for (let item of iter as Iterable<any>) { fn(item, index++); }
+  for (let item of iter as Iterable<any>) { callback(item, index++); }
 }
 
 
@@ -2510,12 +2513,12 @@ function forEach (iter: IterableLike, fn: Function): void {
  * @description Executes a provided function once for each element in an iterable, in reverse order.
  *
  * @param {IterableLike} iter - The iterable to iterate over.
- * @param {Function} fn - The function to call for each element.
+ * @param {Function} callback - The function to call for each element.
  * @returns {void}
  */
-function forEachRight ([...array], fn: Function): void {
+function forEachRight ([...array], callback: Function): void {
   let index: number = array.length;
-  while (index--) { fn(array[index], index); }
+  while (index--) { callback(array[index], index); }
 }
 
 
@@ -2523,12 +2526,12 @@ function forEachRight ([...array], fn: Function): void {
  * @description Creates a new iterator with the results of calling a provided function on every element in the given iterable.
  *
  * @param {IterableLike} iter - The iterable to map over.
- * @param {Function} fn - The function to call for each element.
+ * @param {Function} callback - The function to call for each element.
  * @returns {Iterator} A new iterator with the mapped values.
  */
-function* map (iter: IterableLike, fn: Function): IteratorReturn {
+function* map (iter: IterableLike, callback: Function): IteratorReturn {
   let index: number = 0;
-  for (let item of iter as Iterable<any>) { yield fn(item, index++); }
+  for (let item of iter as Iterable<any>) { yield callback(item, index++); }
 }
 
 
@@ -2536,13 +2539,13 @@ function* map (iter: IterableLike, fn: Function): IteratorReturn {
  * @description Creates a new iterator with all elements that pass the test implemented by the provided function.
  *
  * @param {IterableLike} iter - The iterable to filter.
- * @param {Function} fn - The function to test each element.
+ * @param {Function} callback - The function to test each element.
  * @returns {Iterator} A new iterator with the filtered values.
  */
-function* filter (iter: IterableLike, fn: Function): IteratorReturn {
+function* filter (iter: IterableLike, callback: Function): IteratorReturn {
   let index: number = 0;
   for (let item of iter as Iterable<any>) {
-    if (fn(item, index++)) { yield item; }
+    if (callback(item, index++)) { yield item; }
   }
 }
 
@@ -2551,13 +2554,13 @@ function* filter (iter: IterableLike, fn: Function): IteratorReturn {
  * @description Creates a new iterator with all elements that do not pass the test implemented by the provided function.
  *
  * @param {IterableLike} iter - The iterable to reject from.
- * @param {Function} fn - The function to test each element.
+ * @param {Function} callback - The function to test each element.
  * @returns {Iterator} A new iterator with the rejected values.
  */
-function* reject (iter: IterableLike, fn: Function): IteratorReturn {
+function* reject (iter: IterableLike, callback: Function): IteratorReturn {
   let index: number = 0;
   for (let item of iter as Iterable<any>) {
-    if (!fn(item, index++)) { yield item; }
+    if (!callback(item, index++)) { yield item; }
   }
 }
 
@@ -2579,7 +2582,7 @@ function* slice <T>(
   if (end <= begin) { return; }
   let iterator: Iterator<T>;
   /* Normalize input: use iterator directly, or get one from iterable */
-  if (typeof (iter as Iterator<T>).next === 'function') {
+  if (typeof (iter as Iterator<T>).next === "function") {
     iterator = iter as Iterator<T>;
   } else {
     iterator = (iter as Iterable<T>)[Symbol.iterator]();
@@ -2604,7 +2607,7 @@ function* slice <T>(
 function* tail <T>(input: Iterable<T> | Iterator<T>): IterableIterator<T> {
   let iterator: Iterator<T>;
   /* Normalize: if input is already an iterator, use it directly */
-  if (typeof (input as Iterator<T>).next === 'function') {
+  if (typeof (input as Iterator<T>).next === "function") {
     iterator = input as Iterator<T>;
   } else {
     iterator = (input as Iterable<T>)[Symbol.iterator]();
@@ -2712,7 +2715,7 @@ function size (value: any): number {
 function first <T>(input: Iterable<T> | Iterator<T>): T | undefined {
   let iterator: Iterator<T>;
   /* If input is already an iterator, use it directly */
-  if (typeof (input as Iterator<T>).next === 'function') {
+  if (typeof (input as Iterator<T>).next === "function") {
     iterator = input as Iterator<T>;
   } else {
     /* Otherwise, get an iterator from the iterable */
@@ -2732,13 +2735,13 @@ function first <T>(input: Iterable<T> | Iterator<T>): T | undefined {
 function head <T>(input: Iterable<T> | Iterator<T>): T | undefined {
   let iterator: Iterator<T>;
   /* If input is already an iterator, use it directly */
-  if (typeof (input as Iterator<T>).next === 'function') {
+  if (typeof (input as Iterator<T>).next === "function") {
     iterator = input as Iterator<T>;
   } else {
     /* Otherwise, get an iterator from the iterable */
     iterator = (input as Iterable<T>)[Symbol.iterator]();
   }
-  const result = iterator.next();
+  const result = iterator?.next() ?? {value: undefined, done: true };
   return result.done ? undefined : result.value;
 }
 
@@ -2856,33 +2859,33 @@ function includes (
  * @description Returns the first element in an iterable that satisfies the provided testing function.
  *
  * @param {IterableLike} iter - The iterable to search through.
- * @param {Function} fn - The function to test each element.
+ * @param {Function} callback - The function to test each element.
  * @returns {any} The first element that satisfies the testing function, or undefined if none do.
  */
-const find = ([...array], fn: Function): unknown =>
-  array.find((value, index) => fn(value, index));
+const find = ([...array], callback: Function): unknown =>
+  array.find((value, index) => callback(value, index));
 
 
 /**
  * @description Returns the last element in an iterable that satisfies the provided testing function.
  *
  * @param {IterableLike} iter - The iterable to search through.
- * @param {Function} fn - The function to test each element.
+ * @param {Function} callback - The function to test each element.
  * @returns {any} The last element that satisfies the testing function, or undefined if none do.
  */
-const findLast = ([...array], fn: Function): unknown =>
-  array.findLast((value, index) => fn(value, index));
+const findLast = ([...array], callback: Function): unknown =>
+  array.findLast((value, index) => callback(value, index));
 
 
 /**
  * @description Tests whether all elements in the iterable pass the test implemented by the provided function.
  *
  * @param {IterableLike} iter - The iterable to test.
- * @param {Function} fn - The function to test each element.
+ * @param {Function} callback - The function to test each element.
  * @returns {boolean} True if all elements pass the test, false otherwise.
  */
-const every = ([...array], fn: Function): boolean => array.length
-  ? array.every((value, index) => fn(value, index))
+const every = ([...array], callback: Function): boolean => array.length
+  ? array.every((value, index) => callback(value, index))
   : false;
 
 
@@ -2890,11 +2893,11 @@ const every = ([...array], fn: Function): boolean => array.length
  * @description Tests whether at least one element in the iterable passes the test implemented by the provided function.
  *
  * @param {IterableLike} iter - The iterable to test.
- * @param {Function} fn - The function to test each element.
+ * @param {Function} callback - The function to test each element.
  * @returns {boolean} True if at least one element passes the test, false otherwise.
  */
-const some = ([...array], fn: Function): boolean => array.length
-  ? array.some((value, index) => fn(value, index))
+const some = ([...array], callback: Function): boolean => array.length
+  ? array.some((value, index) => callback(value, index))
   : false;
 
 
@@ -2902,11 +2905,11 @@ const some = ([...array], fn: Function): boolean => array.length
  * @description Tests whether no elements in the iterable pass the test implemented by the provided function.
  *
  * @param {IterableLike} iter - The iterable to test.
- * @param {Function} fn - The function to test each element.
+ * @param {Function} callback - The function to test each element.
  * @returns {boolean} True if no elements pass the test, false otherwise.
  */
-const none = ([...array], fn: Function): boolean =>
-  !array.some((value, index) => fn(value, index));
+const none = ([...array], callback: Function): boolean =>
+  !array.some((value, index) => callback(value, index));
 
 
 /**
@@ -2924,15 +2927,15 @@ const takeRight = ([...array], num: number = 1): any[] =>
  * @description Yields elements from the end of an iterable while the provided function returns true.
  *
  * @param {IterableLike} iter - The iterable to take elements from.
- * @param {Function} fn - The function to test each element.
+ * @param {Function} callback - The function to test each element.
  * @yields The elements from the end of the iterable that satisfy the testing function.
  */
-function* takeRightWhile ([...array], fn: Function): IteratorReturn {
+function* takeRightWhile ([...array], callback: Function): IteratorReturn {
   if (!array.length) { return; }
   let index = array.length;
   while (index--) {
     let item = array[index];
-    if (!fn(item, index)) { break; }
+    if (!callback(item, index)) { break; }
     yield item;
   }
 }
@@ -2953,16 +2956,16 @@ const dropRight = ([...array], num: number = 1): any[] =>
  * @description Yields elements from the end of an iterable after the provided function returns false.
  *
  * @param {IterableLike} iter - The iterable to drop elements from.
- * @param {Function} fn - The function to test each element.
+ * @param {Function} callback - The function to test each element.
  * @yields The elements from the end of the iterable after the testing function returns false.
  */
-function* dropRightWhile ([...array], fn: Function): IteratorReturn {
+function* dropRightWhile ([...array], callback: Function): IteratorReturn {
   if (!array.length) { return; }
   let index = array.length;
   let skip = true;
   while (index--) {
     let item = array[index];
-    if (skip) { skip = fn(item, index); }
+    if (skip) { skip = callback(item, index); }
     if (!skip) { yield item; }
   }
 }
@@ -2993,13 +2996,13 @@ function* concat (...args: any[]): IteratorReturn {
  * @description Reduces an iterable to a single value by applying a function to each element and an accumulator.
  *
  * @param {IterableLike} iter - The iterable to reduce.
- * @param {Function} fn - The function to apply to each element and the accumulator.
+ * @param {Function} callback - The function to apply to each element and the accumulator.
  * @param {any} [initialvalue] - The initial value for the accumulator.
  * @returns {any} The reduced value.
  */
 function reduce (
   iter: IterableLike,
-  fn: Function,
+  callback: Function,
   initialvalue?: any): any {
   let acc: any = initialvalue;
   let index: number = 0;
@@ -3007,7 +3010,7 @@ function reduce (
     if (index === 0 && acc === undefined) {
       acc = item;
     } else {
-      acc = fn(acc, item, index++);
+      acc = callback(acc, item, index++);
     }
   }
   return acc;
@@ -3057,9 +3060,7 @@ function* flat (iter: IterableLike): IteratorReturn {
  * @param {string} [separator=","] - The separator to use between elements.
  * @returns {string} The joined string.
  */
-function join (
-  iter: IterableLike,
-  separator: string = ","): string {
+function join (iter: IterableLike, separator: string = ","): string {
   separator = String(separator);
   let result: string = "";
   for (let item of iter as Iterable<any>) { result += separator + item; }
