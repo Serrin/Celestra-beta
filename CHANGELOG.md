@@ -1,7 +1,7 @@
 
 # Celestra version history
 
-## Celestra v6.5.0
+## Celestra v6.5.0 Andromeda
 
 1. Documentation, pdf and code fixes.
 2. From this version the version of the CUT is same as the Celestra version.
@@ -53,7 +53,7 @@
 - Fix the function `mod();`
 - Remove the function `rem();`
 
-## Celestra v6.3.0
+## Celestra v6.3.0 Bishop
 
 1. Documentation, pdf and code fixes.
 2. Remove the __Legacy AJAX API__

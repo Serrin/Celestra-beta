@@ -125,6 +125,28 @@ textarea, #preCelLog { border-radius: 4px; }
 
 <hr/>
 
+<div id="manual">
+
+<h2>Manual testcases</h2>
+
+<table class="table-responsive">
+  <tr>
+    <td><button onclick=" CEL.importStyle('u87-dark.css','u87-light.css'); ">importStyle 1</button></td>
+    <td>Have to be light ('u87-dark.css' then 'u87-light.css').</td>
+  </tr>
+  <tr>
+    <td><button onclick=" CEL.importStyle('u87-blue.css'); ">importStyle 2</button></td>
+    <td>Have to be blue.</td>
+  </tr>
+  <tr>
+    <td><button onclick=" CEL.delay(3000).then(() => alert('delay 3 seconds')).catch(console.log.bind(console)).finally(() => alert('delay finally')); ">delay();</button></td>
+    <td>2x alert ("delay 3 seconds" + "delay finally")</td>
+  </tr>
+</table>
+</div>
+
+<hr/>
+
 <p><button onclick="CEL.domScrollToBottom();">
   CEL.domScrollToBottom();
 </button></p>
@@ -137,32 +159,6 @@ textarea, #preCelLog { border-radius: 4px; }
 <p><button onclick="CEL.domScrollToElement(CEL.qs('#results'),false);">
   CEL.domScrollToElement(CEL.qs('#results'),false);
 </button></p>
-
-results
-
-<hr/>
-<div id="manual">
-<h2>Manual testcases</h2>
-
-<table class="table-responsive">
-  <tr>
-    <td><button onclick=" CEL.delay(5000).then(() => alert('5 seconds')).catch(console.log.bind(console)) .finally(() => alert('finally')); ">delay();</button></td>
-    <td>2x alert (5s + finally)</td>
-  </tr>
-  <tr>
-    <td><button onclick=" CEL.sleep(5000).then(() => alert('5 seconds')).catch(console.log.bind(console)) .finally(() => alert('finally')); ">sleep();</button></td>
-    <td>2x alert (5s + finally)</td>
-  </tr>
-  <tr>
-    <td><button onclick=" CEL.importStyle('u87-dark.css','u87-light.css'); ">importStyle 1</button></td>
-    <td>Have to be light ('u87-dark.css' then 'u87-light.css').</td>
-  </tr>
-  <tr>
-    <td><button onclick=" CEL.importStyle('u87-blue.css'); ">importStyle 2</button></td>
-    <td>Have to be blue.</td>
-  </tr>
-</table>
-</div>
 
 <hr/>
 <h2>Results</h2>

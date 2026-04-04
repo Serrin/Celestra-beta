@@ -14,7 +14,7 @@ __A helper JavaScript library with useful functions and polyfills and zero depen
 
 Latest version: 6.5.0
 
-Date: 2026-03-29T15:18:23.853Z
+Date: 2026-04-04T14:40:12.862Z
 
 __Tested on these environments:__
 
