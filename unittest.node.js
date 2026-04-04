@@ -35,7 +35,7 @@ globalThis.CEL = celestra;
 
 const CUT = {};
 
-CUT.VERSION = "Celestra Unit Tester (CUT) v6.5.0 for Node.js";
+CUT.VERSION = "Celestra Unit Tester (CUT) v6.5.1 for Node.js";
 
 /* __addTest__(<step: string>, <expected>, <expression>); */
 /* __addTest__(<step: string>, <expected>, <expression>[, strict: boolean]); */
@@ -310,7 +310,7 @@ var /** @type any */ token12, /** @type any */ token13;
 var /** @type any */ token14, /** @type any */ token15;
 
 
-/* Celestra v6.5.0 testcases */
+/* Celestra v6.5.1 testcases */
 
 
 /** Not auto tested functions **/

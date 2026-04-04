@@ -10,14 +10,14 @@
 
 /**
  * @name Celestra
- * @version 6.5.0 node
+ * @version 6.5.1 node
  * @author Ferenc Czigler
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
 
 
-const VERSION = "Celestra v6.5.0 node";
+const VERSION = "Celestra v6.5.1 node";
 
 
 /** TS types */

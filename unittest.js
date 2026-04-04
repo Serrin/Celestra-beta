@@ -15,7 +15,7 @@ try {
 
 /* Celestra unit tester */
 
-CUT.VERSION = "Celestra Unit Tester (CUT) v6.5.0 for browser (ESM)";
+CUT.VERSION = "Celestra Unit Tester (CUT) v6.5.1 for browser (ESM)";
 
 CUT.__results__ = document.querySelector("#results");
 CUT.__resultsFailed__ = document.querySelector("#resultsFailed");
@@ -299,7 +299,7 @@ var /** @type any */ token12, /** @type any */ token13;
 var /** @type any */ token14, /** @type any */ token15;
 
 
-/* Celestra v6.5.0 testcases */
+/* Celestra v6.5.1 testcases */
 
 
 /** Not auto tested functions **/

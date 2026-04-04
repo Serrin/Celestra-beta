@@ -455,7 +455,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
 
 <p><strong>A helper JavaScript library with useful functions and polyfills and zero dependencies.</strong></p>
 
-<p>Latest version: 6.5.0</p>
+<p>Latest version: 6.5.1</p>
 <p>Date: 2026-04-04T14:40:12.862Z</p>
 
 <p><strong>Tested on these environments:</strong></p>
@@ -1665,16 +1665,16 @@ CEL.delay(5000)
         <span class="info">Stability: 4 - Stable.</span><br/>
         <p>Returns an array with the values of the given iterator, but without the last value.</p>
         <p>
-         <strong>Example:</strong>
-         <br/><code>CEL.initial([-5, 2, -9, 7, 34]);</code>
-         <br/>->
-         <br/><code>[-5, 2, -9, 7]</code>
+          <strong>Example:</strong>
+          <br/><code>CEL.initial([-5, 2, -9, 7, 34]);</code>
+          <br/>->
+          <br/><code>[-5, 2, -9, 7]</code>
         </p>
       </td>
     </tr>
     <tr id="FN-isSuperset();">
       <td><code>isSuperset(superCollection,subCollection);</code></td>
-      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Set.prototype.isSupersetOf();</code>.</span><br/>This function determines whether the first provided iterator is superset of the second iterator. The parameters are mandatory and all parameters can be  an iterator. The return value is a boolean.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/><span class="info">Can be replaced with <code>Set.prototype.isSupersetOf();</code>.</span><br/>This function determines whether the first provided iterator is superset of the second iterator. The parameters are mandatory and all parameters can be  an iterator. The return value is a boolean.</td>
     </tr>
     <tr id="FN-item();">
       <td><code>item(iterator,index);</code></td>
@@ -1755,19 +1755,19 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-setDifference();">
       <td><code>setDifference(set1,set2);</code></td>
-      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Set.prototype.difference();</code>.</span><br/>Returns the set of unique values that are in the iterator1, excluding the values that are also in the iterator2. All of the parameters are mandatory and have to be a Set. The return value is a Set.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/><span class="info">Can be replaced with <code>Set.prototype.difference();</code>.</span><br/>Returns the set of unique values that are in the iterator1, excluding the values that are also in the iterator2. All of the parameters are mandatory and have to be a Set. The return value is a Set.</td>
     </tr>
     <tr id="FN-setIntersection();">
       <td><code>setIntersection(set1,set2);</code></td>
-      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Set.prototype.intersection();</code>.</span><br/>Returns the set of unique values that are in both of the given iterators. All of the parameters are mandatory and have to be a Set. The return value is a Set.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/><span class="info">Can be replaced with <code>Set.prototype.intersection();</code>.</span><br/>Returns the set of unique values that are in both of the given iterators. All of the parameters are mandatory and have to be a Set. The return value is a Set.</td>
     </tr>
     <tr id="FN-setSymmetricDifference();">
       <td><code>setSymmetricDifference(set1,set2);</code></td>
-      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Set.prototype.symmetricDifference();</code>.</span><br/>Returns the set of unique values that are only in one of given iterators. All of the parameters are mandatory and have to be a Set. The return value is a Set.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/><span class="info">Can be replaced with <code>Set.prototype.symmetricDifference();</code>.</span><br/>Returns the set of unique values that are only in one of given iterators. All of the parameters are mandatory and have to be a Set. The return value is a Set.</td>
     </tr>
     <tr id="FN-setUnion();">
       <td><code>setUnion(iterator1[,iteratorN]);</code></td>
-      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Set.prototype.union();</code>.</span><br/>Returns the set of unique values including all values from the given iterators. The first parameter is mandatory. The return value is a Set.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/><span class="info">Can be replaced with <code>Set.prototype.union();</code>.</span><br/>Returns the set of unique values including all values from the given iterators. The first parameter is mandatory. The return value is a Set.</td>
     </tr>
     <tr id="FN-size();">
       <td><code>size(iterator);</code></td>
