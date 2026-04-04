@@ -1778,7 +1778,7 @@ const isNonNullablePrimitive =
  * @param {unknown} value
  * @returns {boolean} true if the value is an arrow function, false otherwise.
  */
-function isArrowFn (value: unknown): value is Function {
+function isArrowFunction (value: unknown): value is Function {
   if (typeof value !== "function"
     || ("prototype" in value && value.prototype !== undefined)
     || !(value.toString().includes("=>"))
@@ -1960,14 +1960,14 @@ function toObject (value: unknown): Object | symbol | Function {
 }
 
 
-/* toPrimitiveValue(value: unknown): primitive | object | symbol | Function */
+/* toPrimitive(value: unknown): primitive | object | symbol | Function */
 /**
  * @description Converts wrapper objects to their corresponding primitive values.
  *
  * @param {unknown} value - The value to convert.
  * @returns {any} The primitive value or the original object if not a wrapper.
  */
-function toPrimitiveValue (value: unknown): any {
+function toPrimitive (value: unknown): any {
   if (value == null || typeof value !== "object") { return value; }
   const vType = Object.prototype.toString.call(value).slice(8, -1);
   if (["Boolean", "BigInt", "Number", "String", "Symbol"].includes(vType)) {
@@ -2403,7 +2403,7 @@ const isProxy = (value: any): boolean =>
  * @param {unknown} value - The value to check.
  * @returns True if the value is an Async Generator Function, false otherwise.
  */
-const isAsyncGeneratorFn = (value: unknown): boolean =>
+const isAsyncGeneratorFunction = (value: unknown): boolean =>
   Object.getPrototypeOf(value).constructor ===
     Object.getPrototypeOf(async function*() {}).constructor;
 
@@ -2600,7 +2600,7 @@ const isTypedArray = (value: unknown): value is TypedArray =>
  * @param {unknown} value - The value to check.
  * @returns True if the value is a Generator Function, false otherwise.
  */
-const isGeneratorFn = (value: unknown): boolean =>
+const isGeneratorFunction = (value: unknown): boolean =>
   Object.getPrototypeOf(value).constructor ===
     Object.getPrototypeOf(function*(){}).constructor;
 
@@ -2611,7 +2611,7 @@ const isGeneratorFn = (value: unknown): boolean =>
  * @param {unknown} value - The value to check.
  * @returns True if the value is an Async Function, false otherwise.
  */
-const isAsyncFn = (value: unknown): value is AsyncFunction =>
+const isAsyncFunction = (value: unknown): value is AsyncFunction =>
   Object.getPrototypeOf(value).constructor ===
     Object.getPrototypeOf(async function(){}).constructor;
 
@@ -2815,7 +2815,7 @@ function castArray <T>(...args: [T] | []): T[] {
  */
 const compact = (iter: IterableLikeAndArrayLike): any[] =>
   Array.from(iter as Iterable<any> | ArrayLike<any>).filter(
-    (value: unknown): boolean => Boolean(value) || value === 0
+    (value: unknown): boolean => Boolean(value) || value === 0 || value === 0n
   );
 
 
@@ -4438,7 +4438,7 @@ const isUInt32 = (value: unknown | number): boolean =>
  */
 const isBigInt64 = (value: unknown): boolean =>
   typeof value === "bigint"
-    && value >= Math.pow(-2, 63) && value <= Math.pow(2, 63)-1;
+    && value >= Math.pow(-2, 63) && value <= Math.pow(2, 63) - 1;
 
 
 /**
@@ -4642,12 +4642,12 @@ export default {
   /** Type API **/
   isNonNullable,
   isNonNullablePrimitive,
-  isArrowFn,
+  isArrowFunction,
   isAsyncIterator,
   isTypedCollection,
   is,
   toObject,
-  toPrimitiveValue,
+  toPrimitive,
   toSafeString,
   isPropertyKey,
   toPropertyKey,
@@ -4662,7 +4662,7 @@ export default {
   isDeepStrictEqual,
   isEmptyValue,
   isProxy,
-  isAsyncGeneratorFn,
+  isAsyncGeneratorFunction,
   isPlainObject,
   isChar,
   isNumeric,
@@ -4680,8 +4680,8 @@ export default {
   isIterable,
   isAsyncIterable,
   isTypedArray,
-  isGeneratorFn,
-  isAsyncFn,
+  isGeneratorFunction,
+  isAsyncFunction,
   /** Cookie API **/
   setCookie,
   getCookie,
@@ -4901,12 +4901,12 @@ export {
   /** Type API **/
   isNonNullable,
   isNonNullablePrimitive,
-  isArrowFn,
+  isArrowFunction,
   isAsyncIterator,
   isTypedCollection,
   is,
   toObject,
-  toPrimitiveValue,
+  toPrimitive,
   toSafeString,
   isPropertyKey,
   toPropertyKey,
@@ -4921,7 +4921,7 @@ export {
   isDeepStrictEqual,
   isEmptyValue,
   isProxy,
-  isAsyncGeneratorFn,
+  isAsyncGeneratorFunction,
   isPlainObject,
   isChar,
   isNumeric,
@@ -4939,8 +4939,8 @@ export {
   isIterable,
   isAsyncIterable,
   isTypedArray,
-  isGeneratorFn,
-  isAsyncFn,
+  isGeneratorFunction,
+  isAsyncFunction,
   /** Cookie API **/
   setCookie,
   getCookie,

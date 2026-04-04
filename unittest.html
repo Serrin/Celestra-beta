@@ -154,60 +154,12 @@ results
     <td>2x alert (5s + finally)</td>
   </tr>
   <tr>
-    <td><button onclick=" try { CEL.toObject(null); } catch(e) { alert(e); } try { CEL.toObject(undefined); } catch(e) { alert(e); }">toObject(); throw</button></td>
-    <td>2x alert "TypeError" - null and undefined</td>
-  </tr>
-  <tr>
-    <td><button onclick=" try { CEL.classof(42,'string', true); } catch (e) { alert(e); } ">classof(); throw</button></td>
-    <td><code>CEL.classof(42,'string', true);</code></td>
-  </tr>
-  <tr>
-    <td><button onclick=" try { CEL.getType(42,'string', true); } catch (e) { alert(e); } ">getType(); throw</button></td>
-    <td><code>CEL.getType(42,'string', true);</code></td>
-  </tr>
-  <tr>
-    <td><button onclick="var arrayCreateErrorStr = ''; try { CEL.arrayCreate(4.5); } catch (e) { arrayCreateErrorStr += 'arrayCreate(); error 4.5 - ' + e + '\n'; } try { CEL.arrayCreate(-4.5); } catch (e) { arrayCreateErrorStr += 'arrayCreate(); error -4.5 - ' + e + '\n'; } try { CEL.arrayCreate('-5'); } catch (e) { arrayCreateErrorStr += 'arrayCreate(); error \'-5\' - ' + e + '\n'; } try { CEL.arrayCreate('4.5'); } catch (e) { arrayCreateErrorStr += 'arrayCreate(); error \'4.5\' - ' + e + '\n'; } try { CEL.arrayCreate('-4.5'); } catch (e) { arrayCreateErrorStr += 'arrayCreate(); error \'-4.5\' - ' + e + '\n'; } try { CEL.arrayCreate(Infinity); } catch (e) { arrayCreateErrorStr += 'arrayCreate(); error Infinity - ' + e + '\n'; } try { CEL.arrayCreate(-Infinity); } catch (e) { arrayCreateErrorStr += 'arrayCreate(); error -Infinity - ' + e + '\n'; } try { CEL.arrayCreate(4294967296); } catch (e) { arrayCreateErrorStr += 'arrayCreate(); error 4294967296 - ' + e + '\n'; } alert(arrayCreateErrorStr);">arrayCreate(); errors</button></td>
-    <td>
-      <p>1x alert, 8x cases</p>
-      <pre>var arrayCreateErrorStr = '';
-try {
-  CEL.arrayCreate(4.5);
-} catch (e) { arrayCreateErrorStr += 'arrayCreate(); error 4.5 - ' + e + '\n'; }
-try {
-  CEL.arrayCreate(-4.5);
-} catch (e) { arrayCreateErrorStr += 'arrayCreate(); error -4.5 - ' + e + '\n'; }
-try {
-  CEL.arrayCreate('-5');
-} catch (e) { arrayCreateErrorStr += 'arrayCreate(); error \'-5\' - ' + e + '\n'; }
-try {
-  CEL.arrayCreate('4.5');
-} catch (e) { arrayCreateErrorStr += 'arrayCreate(); error \'4.5\' - ' + e + '\n'; }
-try {
-  CEL.arrayCreate('-4.5');
-} catch (e) { arrayCreateErrorStr += 'arrayCreate(); error \'-4.5\' - ' + e + '\n'; }
-try {
-  CEL.arrayCreate(Infinity);
-} catch (e) { arrayCreateErrorStr += 'arrayCreate(); error Infinity - ' + e + '\n'; }
-try {
-  CEL.arrayCreate(-Infinity);
-} catch (e) { arrayCreateErrorStr += 'arrayCreate(); error -Infinity - ' + e + '\n'; }
-try {
-  CEL.arrayCreate(4294967296);
-} catch (e) { arrayCreateErrorStr += 'arrayCreate(); error 4294967296 - ' + e + '\n'; }
-alert(arrayCreateErrorStr);</pre>
-    </td>
-  </tr>
-  <tr>
     <td><button onclick=" CEL.importStyle('u87-dark.css','u87-light.css'); ">importStyle 1</button></td>
     <td>Have to be light ('u87-dark.css' then 'u87-light.css').</td>
   </tr>
   <tr>
     <td><button onclick=" CEL.importStyle('u87-blue.css'); ">importStyle 2</button></td>
     <td>Have to be blue.</td>
-  </tr>
-  <tr>
-    <td><button onclick=" globalThis['_cel'] = CEL.noConflict(); alert(_cel.VERSION+'\n'+CEL.VERSION); "> noConflict();</button></td>
-    <td>1x alert</td>
   </tr>
 </table>
 </div>

@@ -40,7 +40,6 @@
     "libReplacement": false,
     "esModuleInterop": true,
     "sourceMap": true,
-    "downlevelIteration": false,
     "newLine": "CRLF", // "CRLF", "LF",
     "allowSyntheticDefaultImports": true,
     // from https://www.typescriptlang.org/docs/handbook/declaration-files/dts-from-js.html

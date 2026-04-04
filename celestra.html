@@ -220,11 +220,11 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <p><a href="#FN-is();">is();</a></p>
       <p><a href="#FN-isTypedCollection();">isTypedCollection();</a></p>
       <p><a href="#FN-isArraylike();">isArraylike();</a></p>
-      <p><a href="#FN-isArrowFn();">isArrowFn();</a></p>
+      <p><a href="#FN-isArrowFunction();">isArrowFunction();</a></p>
       <p><a href="#FN-isAsyncIterable();">isAsyncIterable();</a></p>
       <p><a href="#FN-isAsyncIterator();">isAsyncIterator();</a></p>
-      <p><a href="#FN-isAsyncFn();">isAsyncFn();</a></p>
-      <p><a href="#FN-isAsyncGeneratorFn();">isAsyncGeneratorFn();</a></p>
+      <p><a href="#FN-isAsyncFunction();">isAsyncFunction();</a></p>
+      <p><a href="#FN-isAsyncGeneratorFunction();">isAsyncGeneratorFunction();</a></p>
       <p><a href="#FN-isCallable();">isCallable();</a></p>
       <p><a href="#FN-isChar();">isChar();</a></p>
       <p><a href="#FN-isCoercedObject();">isCoercedObject();</a></p>
@@ -232,7 +232,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <p><a href="#FN-isElement();">isElement();</a></p>
       <p><a href="#FN-isEmptyValue();">isEmptyValue();</a></p>
       <p><a href="#FN-isFunction();">isFunction();</a></p>
-      <p><a href="#FN-isGeneratorFn();">isGeneratorFn();</a></p>
+      <p><a href="#FN-isGeneratorFunction();">isGeneratorFunction();</a></p>
       <p><a href="#FN-isIndex();">isIndex();</a></p>
       <p><a href="#FN-isIterable();">isIterable();</a></p>
       <p><a href="#FN-isIterator();">isIterator();</a></p>
@@ -255,7 +255,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <p><a href="#FN-toIndex();">toIndex();</a></p>
       <p><a href="#FN-toLength();">toLength();</a></p>
       <p><a href="#FN-toObject();">toObject();</a></p>
-      <p><a href="#FN-toPrimitiveValue();">toPrimitiveValue();</a></p>
+      <p><a href="#FN-toPrimitive();">toPrimitive();</a></p>
       <p><a href="#FN-toPropertyKey();">toPropertyKey();</a></p>
       <p><a href="#FN-toSafeString();">toSafeString();</a></p>
       <p><a href="#FN-typeOf();">typeOf();</a></p>
@@ -738,6 +738,7 @@ globalThis.CEL = celestra;
   <li>Documentation, pdf and code fixes.</li>
   <li>From this version the version of the CUT is same as the Celestra version.</li>
   <li>Firefox 115 (Windows 7 and 8.1) and iOS 16 support has been removed.</li>
+  <li>Many functions have been renamed.</li>
   <li>Many polyfills have been moved to <strong>celestra-polyfills.dev.js</strong> and <strong>celestra-polyfills.min.js</strong>.</li>
 </ul>
 
@@ -1274,9 +1275,9 @@ CEL.delay(5000)
       <td><code>isArraylike(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an arraylike object. The return value is boolean.</td>
     </tr>
-    <tr id="FN-isArrowFn();">
-      <td><code>isArrowFn(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an arrow function. The return value is boolean.</td>
+    <tr id="FN-isArrowFunction();">
+      <td><code>isArrowFunction(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v6.5.0: <code>isArrowFn();</code></span><br/>This function determines whether the provided value is an arrow function. The return value is boolean.</td>
     </tr>
     <tr id="FN-isAsyncIterable();">
       <td><code>isAsyncIterable(value);</code></td>
@@ -1286,13 +1287,13 @@ CEL.delay(5000)
       <td><code>isAsyncIterator(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an async iterator object. The return value is boolean.</td>
     </tr>
-    <tr id="FN-isAsyncFn();">
-      <td><code>isAsyncFn(value);</td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an async function. The return value is boolean.</td>
+    <tr id="FN-isAsyncFunction();">
+      <td><code>isAsyncFunction(value);</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v6.5.0: <code>isAsyncFn();</code></span><br/>This function determines whether the provided value is an async function. The return value is boolean.</td>
     </tr>
-    <tr id="FN-isAsyncGeneratorFn();">
-      <td><code>isAsyncGeneratorFn(value);</td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an async generator function. The return value is boolean.</td>
+    <tr id="FN-isAsyncGeneratorFunction();">
+      <td><code>isAsyncGeneratorFunction(value);</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v6.5.0: <code>isAsyncGeneratorFn();</code></span><br/>This function determines whether the provided value is an async generator function. The return value is boolean.</td>
     </tr>
     <tr id="FN-isCallable();">
       <td><code>isCallable(value);</code></td>
@@ -1329,9 +1330,9 @@ CEL.delay(5000)
       <td><code>isFunction(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a function. The return value is boolean.</td>
     </tr>
-    <tr id="FN-isGeneratorFn();">
-      <td><code>isGeneratorFn(value);</td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a generator function. The return value is boolean.</td>
+    <tr id="FN-isGeneratorFunction();">
+      <td><code>isGeneratorFunction(value);</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v6.5.0: <code>isGeneratorFn();</code></span><br/>This function determines whether the provided value is a generator function. The return value is boolean.</td>
     </tr>
     <tr id="FN-isIndex();">
       <td><code>isIndex(value);</code></td>
@@ -1421,10 +1422,10 @@ CEL.delay(5000)
       <td><code>toObject(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>If the given value is not null or undefined, then the return value is an object, which has been converted from the value, else a <code>TypeError()</code> will be throwned.<br/>If the given value is an object, function or symbol, then the original value will return.</td>
     </tr>
-    <tr id="FN-toPrimitiveValue();">
-      <td><code>toPrimitiveValue(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>
-        If the given value is null or undefined, then a <code>TypeError()</code> will be throwned.<br/>
+    <tr id="FN-toPrimitive();">
+      <td><code>toPrimitive(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v6.5.0: <code>toPrimitiveValue();</code></span><br/>
+        If the given value is a primitive value (null, undefined, string, number, bigint, boolean, symbol), then the original value will return.<br/>
         If the given value is an object, which can be converted to a primitive variable, then the return value is a primitive variable.<br/>
         If the given value is a not convertable object (array, map, set, etc.), function or symbol, then the original value will return.
       </td>
@@ -1592,7 +1593,7 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-compact();">
       <td><code>compact(iterator);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This Returns an array with truthy values (but keeps <code>0</code>) from the given Iterable or ArrayLike object. The iterator parameter is mandatory.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This Returns an array with truthy values (but keeps <code>0</code> and <code>0n</code>) from the given Iterable or ArrayLike object. The iterator parameter is mandatory.</td>
     </tr>
     <tr id="FN-count();">
       <td><code>count((iterator,callback););</code></td>

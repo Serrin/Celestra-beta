@@ -1440,10 +1440,11 @@ CUT.isEqual("compact(); 01", JSON.stringify(CEL.compact([])), "[]");
 CUT.isEqual("compact(); 02",
   JSON.stringify(
     CEL.compact(
-      [0, 1, false, 2, "", 3, null, 4, undefined, 5, NaN, "dsfsd", true]
-    )
+      [0, 1, false, 2, "", 3, null, 4, undefined, 5, NaN, "dsfsd", true, 0n]
+    ),
+    (_, v) => typeof v === "bigint" ? v.toString()+"n" : v
   ),
-  "[0,1,2,3,4,5,\"dsfsd\",true]"
+  "[0,1,2,3,4,5,\"dsfsd\",true,\"0n\"]"
 );
 
 
@@ -2589,13 +2590,13 @@ CUT.isTrue("isProxy();",
 );
 
 
-/* isAsyncGeneratorFn(); */
-CUT.isTrue("isAsyncGeneratorFn();",
-  CEL.isAsyncGeneratorFn(async function*(){})
-    && !CEL.isAsyncGeneratorFn(function*(){})
-    && !CEL.isAsyncGeneratorFn(Array)
-    && !CEL.isAsyncGeneratorFn(Array.from)
-    && !CEL.isAsyncGeneratorFn(0)
+/* isAsyncGeneratorFunction(); */
+CUT.isTrue("isAsyncGeneratorFunction();",
+  CEL.isAsyncGeneratorFunction(async function*(){})
+    && !CEL.isAsyncGeneratorFunction(function*(){})
+    && !CEL.isAsyncGeneratorFunction(Array)
+    && !CEL.isAsyncGeneratorFunction(Array.from)
+    && !CEL.isAsyncGeneratorFunction(0)
 );
 
 
@@ -2611,31 +2612,32 @@ CUT.isTrue("isPlainObject();",
 );
 
 
-/* isGeneratorFn(); */
-CUT.isTrue("isGeneratorFn();",
-      CEL.isGeneratorFn(function* fn42g () { yield 42; })
-  && !CEL.isGeneratorFn(function fn42 () { return 42; })
-  && !CEL.isGeneratorFn(42)
-  && !CEL.isGeneratorFn(
-       // @ts-ignore
-       new AsyncFunction("a", "b",
-         "return await resolveAfter2Seconds(a) + await resolveAfter2Seconds(b);"
-       ))
+/* isGeneratorFunction(); */
+CUT.isTrue("isGeneratorFunction();",
+      CEL.isGeneratorFunction(function* fn42g () { yield 42; })
+  && !CEL.isGeneratorFunction(function fn42 () { return 42; })
+  && !CEL.isGeneratorFunction(42)
+  && !CEL.isGeneratorFunction(
+        // @ts-ignore
+        new AsyncFunction("a", "b",
+          "return await resolveAfter2Seconds(a) + await resolveAfter2Seconds(b);"
+        )
+      )
 );
 
 
-/* isAsyncFn(); */
-CUT.isTrue("isAsyncFn();",
-  CEL.isAsyncFn(
+/* isAsyncFunction(); */
+CUT.isTrue("isAsyncFunction();",
+  CEL.isAsyncFunction(
     // @ts-ignore
     new AsyncFunction("a", "b",
       // @ts-ignore
       "return await resolveAfter2Seconds(a) + await resolveAfter2Seconds(b);"
     )
   )
-  && !CEL.isAsyncFn(function fn42 () { return 42; })
-  && !CEL.isAsyncFn(function* fn42g () { yield 42; })
-  && !CEL.isAsyncFn(42)
+  && !CEL.isAsyncFunction(function fn42 () { return 42; })
+  && !CEL.isAsyncFunction(function* fn42g () { yield 42; })
+  && !CEL.isAsyncFunction(42)
 );
 
 
@@ -2667,19 +2669,19 @@ CUT.isTrue("isObject();",
 );
 
 
-/* isArrowFn(); */
-CUT.isTrue("isArrowFn();",
-      CEL.isArrowFn(() => {}) // true
-  &&  CEL.isArrowFn(() => 42) // true
-  && !CEL.isArrowFn(function() {}) // false (has prototype)
-  && !CEL.isArrowFn(function () { "=>"}) // false
-  && !CEL.isArrowFn(Array.prototype.map) // false (built-in)
-  && !CEL.isArrowFn(class C {}) // false (class)
-  && !CEL.isArrowFn(Math.min) // false (Math.min hasn't prototype)
-  && !CEL.isArrowFn({"a": 1})
-  && !CEL.isArrowFn(42)
-  && !CEL.isArrowFn(null)
-  && !CEL.isArrowFn(undefined)
+/* isArrowFunction(); */
+CUT.isTrue("isArrowFunction();",
+      CEL.isArrowFunction(() => {}) // true
+  &&  CEL.isArrowFunction(() => 42) // true
+  && !CEL.isArrowFunction(function() {}) // false (has prototype)
+  && !CEL.isArrowFunction(function () { "=>"}) // false
+  && !CEL.isArrowFunction(Array.prototype.map) // false (built-in)
+  && !CEL.isArrowFunction(class C {}) // false (class)
+  && !CEL.isArrowFunction(Math.min) // false (Math.min hasn't prototype)
+  && !CEL.isArrowFunction({"a": 1})
+  && !CEL.isArrowFunction(42)
+  && !CEL.isArrowFunction(null)
+  && !CEL.isArrowFunction(undefined)
 );
 
 
@@ -2884,23 +2886,23 @@ CUT.isTrue("toPropertyKey();",
 CUT.isTrue("toObject();", typeof CEL.toObject("str") === "object");
 
 
-/* toPrimitiveValue(); */
-CUT.isTrue("toPrimitiveValue();",
-  typeof CEL.toPrimitiveValue(null) === "object"
-    && typeof CEL.toPrimitiveValue(undefined) === "undefined"
-    && typeof CEL.toPrimitiveValue(true) === "boolean"
-    && typeof CEL.toPrimitiveValue(42n) === "bigint"
-    && typeof CEL.toPrimitiveValue(Object(42n)) === "bigint"
-    && typeof CEL.toPrimitiveValue(42) === "number"
-    && typeof CEL.toPrimitiveValue("lorem ipsum") === "string"
-    && typeof CEL.toPrimitiveValue(Symbol(42)) === "symbol"
-    && typeof CEL.toPrimitiveValue(new Boolean(true)) === "boolean"
-    && typeof CEL.toPrimitiveValue(new Number(42)) === "number"
-    && typeof CEL.toPrimitiveValue(new String("lorem ipsum")) === "string"
-    && typeof CEL.toPrimitiveValue({"a":1}) === "object"
-    && Array.isArray(CEL.toPrimitiveValue([]))
-    && CEL.toPrimitiveValue(new Map()) instanceof Map
-    && CEL.toPrimitiveValue(new Set()) instanceof Set
+/* toPrimitive(); */
+CUT.isTrue("toPrimitive();",
+  typeof CEL.toPrimitive(null) === "object"
+    && typeof CEL.toPrimitive(undefined) === "undefined"
+    && typeof CEL.toPrimitive(true) === "boolean"
+    && typeof CEL.toPrimitive(42n) === "bigint"
+    && typeof CEL.toPrimitive(Object(42n)) === "bigint"
+    && typeof CEL.toPrimitive(42) === "number"
+    && typeof CEL.toPrimitive("lorem ipsum") === "string"
+    && typeof CEL.toPrimitive(Symbol(42)) === "symbol"
+    && typeof CEL.toPrimitive(new Boolean(true)) === "boolean"
+    && typeof CEL.toPrimitive(new Number(42)) === "number"
+    && typeof CEL.toPrimitive(new String("lorem ipsum")) === "string"
+    && typeof CEL.toPrimitive({"a":1}) === "object"
+    && Array.isArray(CEL.toPrimitive([]))
+    && CEL.toPrimitive(new Map()) instanceof Map
+    && CEL.toPrimitive(new Set()) instanceof Set
 );
 
 

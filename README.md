@@ -196,7 +196,8 @@ __Cookie API__|`getCookie();`<BR>`hasCookie();`<BR>`setCookie();`<BR>`removeCook
 1. Documentation, pdf and code fixes.
 2. From this version the version of the CUT is same as the Celestra version.
 3. Firefox 115 (Windows 7 and 8.1) and iOS 16 support has been removed.
-4. Many polyfills have been moved to __celestra-polyfills.dev.js__ and __celestra-polyfills.min.js__.
+4. Many functions have been renamed.
+5. Many polyfills have been moved to __celestra-polyfills.dev.js__ and __celestra-polyfills.min.js__.
 
 -----
 
@@ -342,11 +343,11 @@ Name|Description
 `is(value[,expectedType[,Throw=false]];`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value type or class is the given expectedType. The expectedType can be a type string, constructor function or an array of the type strings and constructors. If the Throw is true and the value is not matched with the expectedType, then a TypeError will be thrown with detailed error message. The return value is boolean or the type or constructor of the value.
 `isTypedCollection(iter, expectedType, Throw = false);`|__Stability: 4 - Stable.__<BR>This function determines whether values of the provided iterable or iterator are the given expectedType. The expectedType is mandatory and can be a type string, constructor function or an array of the type strings and constructors. If the Throw is true and the values are not matched with the expectedType, then a TypeError will be thrown with detailed error message. The return value is boolean.
 `isArraylike(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is an arraylike object. The return value is boolean.
-`isArrowFn(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is an arrow function. The return value is boolean.
+`isArrowFunction(value);`|__Stability: 4 - Stable.__<BR>__Old name before v6.5.0: `isArrowFn();`.__<BR>This function determines whether the provided value is an arrow function. The return value is boolean.
 `isAsyncIterable(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is an async iterable object. The return value is boolean.
 `isAsyncIterator(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is an async iterator object. The return value is boolean.
-`isAsyncFn(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is an async function. The return value is boolean.
-`isAsyncGeneratorFn(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is an async generator function. The return value is boolean.
+`isAsyncFunction(value);`|__Stability: 4 - Stable.__<BR>__Old name before v6.5.0: `isAsyncFn();`.__<BR>This function determines whether the provided value is an async function. The return value is boolean.
+`isAsyncGeneratorFunction(value);`|__Stability: 4 - Stable.__<BR>__Old name before v6.5.0: `isAsyncGeneratorFn();`.__<BR>This function determines whether the provided value is an async generator function. The return value is boolean.
 `isCallable(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided object has a call method. The return value is boolean.
 `isChar(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is a string with length 1 character. This function is unicode compatible. The return value is boolean.
 `isCoercedObject(object);`|__Stability: 4 - Stable.__<BR>If the given object is a coerced object (Number, BigInt, String, Boolean), then the return value is the constructor function. In any other cases retuns false. The object parameter is mandatory.
@@ -354,7 +355,7 @@ Name|Description
 `isElement(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is a HTML element. The return value is boolean.
 `isEmptyValue(value1, value2);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is an empty value. Returns true in these cases: null, undefined, NaN, array, typedarray, arraybuffer, dataview, object, arraylike object, map, set, iterator, iterable. The return value is boolean.
 `isFunction(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is a function. The return value is boolean.
-`isGeneratorFn(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is a generator function. The return value is boolean.
+`isGeneratorFunction(value);`|__Stability: 4 - Stable.__<BR>__Old name before v6.5.0: `isGeneratorFn();`.__<BR>This function determines whether the provided value is a generator function. The return value is boolean.
 `isIndex(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is a valid arraylike index number. The return value is boolean.
 `isIterable(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is an iterable object. The return value is boolean.
 `isIterator(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is an iterator. The return value is boolean.
@@ -377,7 +378,7 @@ Name|Description
 `toIndex(value);`|__Stability: 4 - Stable.__<BR>This function converts the provided value to a valid arraylike index number. The return value is an unsigned integer (number). If the value is out of integer range, then a RangeError will be thrown.
 `toLength(value);`|__Stability: 4 - Stable.__<BR>This function converts the provided value to a valid arraylike length number. The return value is an unsigned integer (number).
 `toObject(value);`|__Stability: 4 - Stable.__<BR>If the given value is not null or undefined, then the return value is an object, which has been converted from the value, else a `TypeError()` will be throwned.<BR>If the given value is an object, function or symbol, then the original value will return.
-`toPrimitiveValue(value);`|__Stability: 4 - Stable.__<BR>If the given value is null or undefined, then a `TypeError()` will be throwned.<BR>If the given value is an object, which can be converted to a primitive variable, then the return value is a primitive variable.<BR>If the given value is a not convertable object (array, map, set, etc.), function or symbol, then the original value will return.
+`toPrimitive(value);`|__Stability: 4 - Stable.__<BR>__Old name before v6.5.0: `toPrimitiveValue();`.__<BR>If the given value is a primitive value (null, undefined, string, number, bigint, boolean, symbol), then the original value will return.<BR>If the given value is an object, which can be converted to a primitive variable, then the return value is a primitive variable.<BR>If the given value is a not convertable object (array, map, set, etc.), function or symbol, then the original value will return.
 `toPropertyKey(value);`|__Stability: 4 - Stable.__<BR>This function convert the given value to a valid property key. If the value is not symbol, then will be converted to string, else the symbol will be returned.
 `toSafeString(value);`|__Stability: 4 - Stable.__<BR>This function is a general purpose, type safe, predictable stringifier. The value parameter is mandatory and can be any type. The return value is a string.
 `typeOf(value);`|__Stability: 4 - Stable.__<BR>__Old name before v6.1.0: `type();`.__<BR>This function returns the typeof operator result of the given value, except the null object (`"null"` instead of `"object"`).
@@ -414,7 +415,7 @@ Name|Description
 `arrayRemoveBy(array,callback[,all=false]);`|__Stability: 4 - Stable.__<BR>Remove the first or all values from the array with which the given function returns true. Returns true, when the value was found and false when not found. The array and value parameters are mandatory. The all parameter is optional and has to be a boolean.
 `arrayRepeat(value);`|__Stability: 4 - Stable.__<BR>Returns an array with same repeatedly elements. The value parameter is mandatory and the n parameter is optional and can be an integer. Default parameter value: n = 100.
 `castArray([value]);`|__Stability: 4 - Stable.__<BR>This function returns the original value if this is an array or value a new array. If there is no given value, then the return value is an empty array.
-`compact(iterator);`|__Stability: 4 - Stable.__<BR>This function merges the iterators and yields the elements of the merged iterator. At least one iterator has to been given.
+`compact(iterator);`|__Stability: 4 - Stable.__<BR>This Returns an array with truthy values (but keeps `0` and `0n`) from the given Iterable or ArrayLike object. The iterator parameter is mandatory.
 `concat(iterator1[,iteratorN]);`|__Stability: 4 - Stable.__<BR>This function merges the iterators and yields the elements of the merged iterator. At least one iterator has to been given.
 `count(iterator,callback);`|__Stability: 4 - Stable.__<BR>This function executes a counter function (that you provide) on each element of the iterator, returning in a single output value. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function.
 `drop(iterator[,n=1]);`|__Stability: 3 - Legacy and can get only fixes.__<BR>__Can be replaced with `Iterator.from(iterable/iterator).drop();`__<BR>Drop the first N elements of an iterator and yield the remained elements. The iterator parameter is mandatory. The n parameter is optional and can be an integer. Default parameter value: n = 1
