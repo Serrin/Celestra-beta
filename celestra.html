@@ -872,7 +872,7 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-deleteOwnProperty();">
       <td><code>deleteOwnProperty(object, property[,Throw = false]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function deletes an own property in the given object. If Throw is true and the deleting was unsuccessful, then an error will be thrown.<br/><strong>Return values:</strong><br/>1 - The property was own and the delete was successful.<BR>0 - The property is own and the delete was unsuccessful.<br/>-1 - The property is not own or not exists.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function deletes an own property in the given object. If Throw is true and the deleting was unsuccessful, then an error will be thrown.<br/><strong>Return values:</strong><br/>1 - The property was own and the delete was successful.<BR>0 - The property is own and the delete was unsuccessful.<br/>-1 - The property is not own or not exists.</td>
     </tr>
     <tr id="FN-extend();">
       <td><code>extend([deep,]target,source1[,sourceN]);</code></td>
@@ -1297,15 +1297,15 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-isCallable();">
       <td><code>isCallable(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided object has a call method. The return value is boolean.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided object has a call method. The return value is boolean.</td>
     </tr>
     <tr id="FN-isChar();">
       <td><code>isChar(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a string with length 1 character. This function is unicode compatible. The return value is boolean.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided value is a string with length 1 character. This function is unicode compatible. The return value is boolean.</td>
     </tr>
     <tr id="FN-isCoercedObject();">
       <td><code>isCoercedObject(object);</td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>If the given object is a coerced object (Number, BigInt, String, Boolean), then the return value is the constructor function. In any other cases retuns false. The object parameter is mandatory.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>If the given object is a coerced object (Number, BigInt, String, Boolean, Symbol objects), then the return value is the constructor function. In any other cases retuns false. The object parameter is mandatory.</td>
     </tr>
     <tr id="FN-isDeepStrictEqual();">
       <td><code>isDeepStrictEqual(value1, value2);</code></td>
@@ -1917,7 +1917,7 @@ JSON.stringify( CEL.unique(array, (v) => v.rank) );
     </tr>
     <tr id="FN-isEven();">
       <td><code>isEven(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an even number. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Checks if a number is a safe integer and even. Supports number and bigint types. The return value is boolean.</td>
     </tr>
     <tr id="FN-isBigInt64();">
       <td><code>isBigInt64(value);</code></td>
@@ -1945,7 +1945,7 @@ JSON.stringify( CEL.unique(array, (v) => v.rank) );
     </tr>
     <tr id="FN-isOdd();">
       <td><code>isOdd(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an odd number. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Checks if a number is a safe integer and odd. Supports number and bigint types. The return value is boolean.</td>
     </tr>
     <tr id="FN-isUInt8();">
       <td><code>isUInt8(value);</code></td>

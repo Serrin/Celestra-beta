@@ -1415,8 +1415,8 @@ const isLength = (value: unknown): value is number =>
  */
 function toIndex (value: any): number {
   value = ((value = Math.trunc(+value)) !== value || value === 0) ? 0 : value;
-  if (value < 0 || value > (Math.pow(2, 53) - 1)) {
-    throw new RangeError("toIndex(); RangeError: " + value);
+  if (value < 0 || value > Number.MAX_SAFE_INTEGER) {
+    throw new RangeError("[toIndex] RangeError: " + value);
   }
   return value;
 }
@@ -1430,7 +1430,7 @@ function toIndex (value: any): number {
  */
 function toLength (value: any): number {
   value = ((value = Math.trunc(+value)) !== value || value === 0) ? 0 : value;
-  return Math.min(Math.max(value, 0), Math.pow(2, 53) - 1);
+  return Math.min(Math.max(value, 0), Number.MAX_SAFE_INTEGER);
 }
 
 
@@ -3262,7 +3262,10 @@ const isFloat = (value: unknown): boolean =>
  */
 function toInteger (value: any): number {
   value = ((value = Math.trunc(Number(value))) !== value || value === 0) ? 0 : value;
-  return Math.min(Math.max(value, -(Math.pow(2, 53) - 1)), Math.pow(2, 53) - 1);
+  return Math.min(
+    Math.max(value, Number.MIN_SAFE_INTEGER), 
+      Number.MAX_SAFE_INTEGER
+    );
 }
 
 
@@ -3326,7 +3329,7 @@ function clamp(
   min: number | bigint = Number.MIN_SAFE_INTEGER,
   max: number | bigint = Number.MAX_SAFE_INTEGER): number | bigint {
   /* normalize */
-  function _normalize (value: any): number | bigint {
+  function _numberNormalize (value: any): number | bigint {
     if (typeof value !== "bigint" && typeof value !== "number") {
       value = Number(value);
     }
@@ -3335,9 +3338,13 @@ function clamp(
     if (value === 0) { return 0; }
     return value;
   }
-  value = _normalize(value);
-  min = _normalize(min);
-  max = _normalize(max);
+  if (typeof value !== "bigint"
+    && typeof min !== "bigint"
+    && typeof min !== "bigint") {
+    value = _numberNormalize(value);
+    min = _numberNormalize(min);
+    max = _numberNormalize(max);
+  }
   /* NaN: val, min, max */
   if (value !== value) { return value; }
   if (min !== min || max !== max) {
@@ -3369,7 +3376,7 @@ function minmax(
   min: number | bigint = Number.MIN_SAFE_INTEGER,
   max: number | bigint = Number.MAX_SAFE_INTEGER): number | bigint {
   /* normalize */
-  function _normalize (value: any): number | bigint {
+  function _numberNormalize (value: any): number | bigint {
     if (typeof value !== "bigint" && typeof value !== "number") {
       value = Number(value);
     }
@@ -3378,9 +3385,13 @@ function minmax(
     if (value === 0) { return 0; }
     return value;
   }
-  value = _normalize(value);
-  min = _normalize(min);
-  max = _normalize(max);
+  if (typeof value !== "bigint"
+    && typeof min !== "bigint"
+    && typeof min !== "bigint") {
+    value = _numberNormalize(value);
+    min = _numberNormalize(min);
+    max = _numberNormalize(max);
+  }
   /* NaN: val, min, max */
   if (value !== value) { return value; }
   if (min !== min || max !== max) {
@@ -3400,27 +3411,31 @@ function minmax(
 
 
 /**
- * @description Checks if a number is even.
+ * @description Checks if a number is safe integer and even.
  *
- * @param {number} value - The number to check.
+ * @param {unknown} value - The number to check.
  * @returns {boolean} True if the number is even, false otherwise.
  */
-function isEven (value: number): boolean {
-  let result: number = value % 2;
-  if (result === result) { return result === 0; }
+function isEven (value: unknown): boolean {
+  if (typeof value === "number" && Number.isSafeInteger(value)) {
+    return value % 2 === 0;
+  }
+  if (typeof value === "bigint") { return value % 2n === 0n; }
   return false;
 }
 
 
 /**
- * @description Checks if a number is odd.
+ * @description Checks if a number is safe integer and odd.
  *
- * @param {number} value - The number to check.
+ * @param {unknown} value - The number to check.
  * @returns {boolean} True if the number is odd, false otherwise.
  */
-function isOdd (value: number): boolean {
-  let result: number = value % 2;
-  if (result === result) { return result !== 0; }
+function isOdd (value: unknown): boolean {
+  if (typeof value === "number" && Number.isSafeInteger(value)) {
+    return value % 2 !== 0;
+  }
+  if (typeof value === "bigint") { return value % 2n !== 0n; }
   return false;
 }
 
@@ -3616,7 +3631,7 @@ const isBigInt64 = (value: unknown): boolean =>
  * @returns {boolean} True if the value is a 64-bit unsigned integer, false otherwise.
  */
 const isBigUInt64 = (value: unknown | number | bigint): boolean =>
-  typeof value === "bigint" && value >= 0 && value <= Math.pow(2,64) - 1;
+  typeof value === "bigint" && value >= 0 && value <= Math.pow(2, 64) - 1;
 
 
 /**

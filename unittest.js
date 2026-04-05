@@ -3883,14 +3883,24 @@ CUT.isEqual("avg(); 05", String(CEL.avg()), "NaN");
 /* isEven(); */
 CUT.isTrue("isEven();",
   // @ts-ignore
-  CEL.isEven(8) && !CEL.isEven(9) && !CEL.isEven(8.5) && !CEL.isEven("lorem")
+  CEL.isEven(8)
+    && !CEL.isEven(9)
+    && !CEL.isEven(8.5)
+    && !CEL.isEven("foo")
+    &&  CEL.isEven(8n)
+    && !CEL.isEven(9n)
 );
 
 
 /* isOdd(); */
 CUT.isTrue("isOdd();",
   // @ts-ignore
-  CEL.isOdd(9) && CEL.isOdd(8.5) && !CEL.isOdd(8) && !CEL.isOdd("lorem")
+  !CEL.isOdd(8)
+    &&  CEL.isOdd(9)
+    && !CEL.isOdd(8.5)
+    && !CEL.isOdd("foo")
+    && !CEL.isOdd(8n)
+    &&  CEL.isOdd(9n)
 );
 
 

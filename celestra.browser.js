@@ -848,14 +848,14 @@ const isLength = (value) => Number.isSafeInteger(value)
     && 1 / value !== 1 / -0;
 function toIndex(value) {
     value = ((value = Math.trunc(+value)) !== value || value === 0) ? 0 : value;
-    if (value < 0 || value > (Math.pow(2, 53) - 1)) {
-        throw new RangeError("toIndex(); RangeError: " + value);
+    if (value < 0 || value > Number.MAX_SAFE_INTEGER) {
+        throw new RangeError("[toIndex] RangeError: " + value);
     }
     return value;
 }
 function toLength(value) {
     value = ((value = Math.trunc(+value)) !== value || value === 0) ? 0 : value;
-    return Math.min(Math.max(value, 0), Math.pow(2, 53) - 1);
+    return Math.min(Math.max(value, 0), Number.MAX_SAFE_INTEGER);
 }
 const typeOf = (value) => value === null ? "null" : typeof value;
 const isSameType = (value1, value2) => (value1 == null || value2 == null)
@@ -1829,7 +1829,7 @@ function mod(value1, value2) {
 const isFloat = (value) => typeof value === "number" && value === value && Boolean(value % 1);
 function toInteger(value) {
     value = ((value = Math.trunc(Number(value))) !== value || value === 0) ? 0 : value;
-    return Math.min(Math.max(value, -(Math.pow(2, 53) - 1)), Math.pow(2, 53) - 1);
+    return Math.min(Math.max(value, Number.MIN_SAFE_INTEGER), Number.MAX_SAFE_INTEGER);
 }
 const toIntegerOrInfinity = (value) => ((value = Math.trunc(Number(value))) !== value || value === 0) ? 0 : value;
 const sum = (...args) => args.every((value) => typeof value === "number") ?
@@ -1837,7 +1837,7 @@ const sum = (...args) => args.every((value) => typeof value === "number") ?
 const avg = (...args) => Math.sumPrecise(args) / args.length;
 const product = (first, ...args) => args.reduce((acc, v) => acc * v, first);
 function clamp(value, min = Number.MIN_SAFE_INTEGER, max = Number.MAX_SAFE_INTEGER) {
-    function _normalize(value) {
+    function _numberNormalize(value) {
         if (typeof value !== "bigint" && typeof value !== "number") {
             value = Number(value);
         }
@@ -1852,9 +1852,13 @@ function clamp(value, min = Number.MIN_SAFE_INTEGER, max = Number.MAX_SAFE_INTEG
         }
         return value;
     }
-    value = _normalize(value);
-    min = _normalize(min);
-    max = _normalize(max);
+    if (typeof value !== "bigint"
+        && typeof min !== "bigint"
+        && typeof min !== "bigint") {
+        value = _numberNormalize(value);
+        min = _numberNormalize(min);
+        max = _numberNormalize(max);
+    }
     if (value !== value) {
         return value;
     }
@@ -1867,7 +1871,7 @@ function clamp(value, min = Number.MIN_SAFE_INTEGER, max = Number.MAX_SAFE_INTEG
     return (value < min) ? min : ((value > max) ? max : value);
 }
 function minmax(value, min = Number.MIN_SAFE_INTEGER, max = Number.MAX_SAFE_INTEGER) {
-    function _normalize(value) {
+    function _numberNormalize(value) {
         if (typeof value !== "bigint" && typeof value !== "number") {
             value = Number(value);
         }
@@ -1882,9 +1886,13 @@ function minmax(value, min = Number.MIN_SAFE_INTEGER, max = Number.MAX_SAFE_INTE
         }
         return value;
     }
-    value = _normalize(value);
-    min = _normalize(min);
-    max = _normalize(max);
+    if (typeof value !== "bigint"
+        && typeof min !== "bigint"
+        && typeof min !== "bigint") {
+        value = _numberNormalize(value);
+        min = _numberNormalize(min);
+        max = _numberNormalize(max);
+    }
     if (value !== value) {
         return value;
     }
@@ -1897,16 +1905,20 @@ function minmax(value, min = Number.MIN_SAFE_INTEGER, max = Number.MAX_SAFE_INTE
     return (value < min) ? min : ((value > max) ? max : value);
 }
 function isEven(value) {
-    let result = value % 2;
-    if (result === result) {
-        return result === 0;
+    if (typeof value === "number" && Number.isSafeInteger(value)) {
+        return value % 2 === 0;
+    }
+    if (typeof value === "bigint") {
+        return value % 2n === 0n;
     }
     return false;
 }
 function isOdd(value) {
-    let result = value % 2;
-    if (result === result) {
-        return result !== 0;
+    if (typeof value === "number" && Number.isSafeInteger(value)) {
+        return value % 2 !== 0;
+    }
+    if (typeof value === "bigint") {
+        return value % 2n !== 0n;
     }
     return false;
 }

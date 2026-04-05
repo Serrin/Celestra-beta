@@ -1,6 +1,21 @@
 
 # Celestra version history
 
+## Celestra v6.5.1
+
+1. Documentation, pdf and code fixes.
+2. Fix `bigint` support in these functions: `isEven();`, `isOdd();`, `clamp();`, `minmax();` 
+3. Deprecate _(stability 1)_ these functions:
+ 
+- `deleteOwnProperty();`
+- `isCallable();`
+- `isChar();`
+- `isSuperset();`
+- `setDifference();`
+- `setIntersection();`
+- `setSymmetricDifference();`
+- `setUnion();`
+
 ## Celestra v6.5.0 Andromeda
 
 1. Documentation, pdf and code fixes.
