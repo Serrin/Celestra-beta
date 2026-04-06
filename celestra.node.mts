@@ -34,7 +34,7 @@ type MapLike = Record<PropertyKey, any>;
  * @description Set-like object.
  *
  * @internal
- * */
+*/
 /*
 type SetLike<T> ={
   readonly size: number;
@@ -50,12 +50,16 @@ type SetLike<T> ={
 type NumberLike = number | bigint;
 
 /**
- * @description Any iterable or iterator. Includes: `Iterable<any>`, `Iterator<any>`, `IterableIterator<any>``
+ * @description Any iterable or iterator. Includes: `Iterable<any>`, `Iterator<any>`, `IterableIterator<any>`
+ *
+ * @internal
  */
 type IterableLike = Iterable<any> | Iterator<any> | IterableIterator<any>;
 
 /**
  * @description Any iterable, iterator, or array-like structure for type `T`. Broadly useful for generic functions that accept "sequence-like" inputs.
+ *
+ * @internal
  */
 type IterableLikeAndArrayLike =
   | Iterable<any>
@@ -112,8 +116,18 @@ type PropertyKey = string | symbol;
 
 /**
  * @description Type AsyncFunction.
+ *
+ * @internal
  */
-type AsyncFunction = (...args: any[]) => Promise<any>;
+type AsyncFunction<T> = (...args: ReadonlyArray<any>) => Promise<T>;
+
+/**
+ * @description Type ArrowFunction.
+ *
+ * @internal
+ */
+type ArrowFunction<Args extends any[] = any[], R = any> =
+  (this: void, ...args: Args) => R;
 
 /**
  * @description Primitive types.
@@ -1114,17 +1128,17 @@ const isNonNullablePrimitive =
 
 /**
  * @description Checks if a value is an arrow function.
+ * @note There is no built-in type for ArrowFunction.
  *
  * @param {unknown} value
  * @returns {boolean} true if the value is an arrow function, false otherwise.
  */
-function isArrowFunction (value: unknown): value is Function {
+function isArrowFunction (value: unknown): value is ArrowFunction {
   if (typeof value !== "function"
     || ("prototype" in value && value.prototype !== undefined)
     || !(value.toString().includes("=>"))
   ) { return false; }
-  // Arrow functions cannot be used as constructors,
-  // so this will throw an error if it's an arrow function
+  /* Arrow functions cannot be used as constructors, so this will throw an error if it's an arrow function */
   try {
     // @ts-expect-error
     new value();
@@ -1741,11 +1755,12 @@ const isProxy = (value: any): boolean =>
 
 /**
  * @description Checks if the given value is an Async Generator Function.
+ * @note AsyncGeneratorFunction -> builtin TS type in lib.es2018.asyncgenerator.ts
  *
  * @param {unknown} value - The value to check.
  * @returns True if the value is an Async Generator Function, false otherwise.
  */
-const isAsyncGeneratorFunction = (value: unknown): boolean =>
+const isAsyncGeneratorFunction = (value: unknown): value is AsyncGeneratorFunction =>
   Object.getPrototypeOf(value).constructor ===
     Object.getPrototypeOf(async function*() {}).constructor;
 
@@ -1797,6 +1812,7 @@ const isObject = (value: unknown): value is object =>
 
 /**
  * @description Checks if the given value is a Function.
+ * @note type Function -> built-in TS type in lib.es5.d.ts
  *
  * @param {unknown} value - The value to check.
  * @returns True if the value is a function, false otherwise.
@@ -1940,11 +1956,12 @@ const isTypedArray = (value: unknown): value is TypedArray =>
 
 /**
  * @description Checks if the given value is a Generator Function.
+ * @note GeneratorFunction -> built-in TS type in lib.es2015.generator.d.ts
  *
  * @param {unknown} value - The value to check.
  * @returns True if the value is a Generator Function, false otherwise.
  */
-const isGeneratorFunction = (value: unknown): boolean =>
+const isGeneratorFunction = (value: unknown): value is GeneratorFunction =>
   Object.getPrototypeOf(value).constructor ===
     Object.getPrototypeOf(function*(){}).constructor;
 
@@ -1955,7 +1972,7 @@ const isGeneratorFunction = (value: unknown): boolean =>
  * @param {unknown} value - The value to check.
  * @returns True if the value is an Async Function, false otherwise.
  */
-const isAsyncFunction = (value: unknown): value is AsyncFunction =>
+const isAsyncFunction = <T,>(value: unknown): value is AsyncFunction<T> =>
   Object.getPrototypeOf(value).constructor ===
     Object.getPrototypeOf(async function(){}).constructor;
 
@@ -3263,7 +3280,7 @@ const isFloat = (value: unknown): boolean =>
 function toInteger (value: any): number {
   value = ((value = Math.trunc(Number(value))) !== value || value === 0) ? 0 : value;
   return Math.min(
-    Math.max(value, Number.MIN_SAFE_INTEGER), 
+    Math.max(value, Number.MIN_SAFE_INTEGER),
       Number.MAX_SAFE_INTEGER
     );
 }
