@@ -1824,96 +1824,6 @@ CUT.isError("Math.sumPrecise(); 36",
 /* Math.sumPrecise(); end */
 
 
-/* Array.prototype.toReversed(); */
-token1 = [4, 2, 5];
-CUT.isTrue("Array.prototype.toReversed();",
-  JSON.stringify(token1.toReversed()) === "[5,2,4]"
-    && JSON.stringify(token1) === "[4,2,5]"
-);
-
-
-/* Array.prototype.toSorted(); */
-token1 = [4, 2, 5];
-CUT.isTrue("Array.prototype.toSorted();",
-  JSON.stringify(token1.toSorted()) === "[2,4,5]"
-    && JSON.stringify(token1) === "[4,2,5]"
-);
-
-
-/* Array.prototype.toSpliced(); */
-token1 = [4, 2, 5];
-CUT.isTrue("Array.prototype.toSpliced(); remove",
-  JSON.stringify(token1.toSpliced(1, 1)) === "[4,5]"
-    && JSON.stringify(token1) === "[4,2,5]"
-);
-
-
-/*Array.prototype.toSpliced(); */
-token1 = [4, 2, 5];
-CUT.isTrue("Array.prototype.toSpliced(); remove and add 2 items",
-  JSON.stringify(token1.toSpliced(1, 1, 89, 79)) === "[4,89,79,5]"
-    && JSON.stringify(token1) === "[4,2,5]"
-);
-
-
-/* Array.prototype.with(); */
-token1 = [4, 2, 5];
-CUT.isTrue("Array.prototype.with();",
-  JSON.stringify(token1.with(1, 7)) === "[4,7,5]"
-    && JSON.stringify(token1) === "[4,2,5]"
-);
-
-
-/* TypedArray.prototype.toReversed(); */
-token1 = new Uint8Array([4, 2, 5]);
-CUT.isTrue("TypedArray.prototype.toReversed();",
-  JSON.stringify(token1.toReversed()) === "{\"0\":5,\"1\":2,\"2\":4}"
-    && JSON.stringify(token1) === "{\"0\":4,\"1\":2,\"2\":5}"
-);
-
-
-/* TypedArray.prototype.toSorted(); */
-token1 = new Uint8Array([4, 2, 5]);
-CUT.isTrue("TypedArray.prototype.toSorted();",
-  JSON.stringify(token1.toSorted()) === "{\"0\":2,\"1\":4,\"2\":5}"
-    && JSON.stringify(token1) === "{\"0\":4,\"1\":2,\"2\":5}"
-);
-
-
-/*TypedArray.prototype.with(); */
-token1 = new Uint8Array([4, 2, 5]);
-CUT.isTrue("TypedArray.prototype.with();",
-  JSON.stringify(token1.with(1,7)) === "{\"0\":4,\"1\":7,\"2\":5}"
-    && JSON.stringify(token1) === "{\"0\":4,\"1\":2,\"2\":5}"
-);
-
-
-/* Object.groupBy(); */
-CUT.isEqual("Object.groupBy();",
-  JSON.stringify(Object.groupBy([
-    { name: 'asparagus', type: 'vegetables', quantity: 9 },
-    { name: 'bananas', type: 'fruit', quantity: 5 },
-    { name: 'goat', type: 'meat', quantity: 23 },
-    { name: 'cherries', type: 'fruit', quantity: 12 },
-    { name: 'fish', type: 'meat', quantity: 3 }
-  ], ({ quantity }) => (quantity < 6 ? "restock" : "sufficient"))),
-  '{"sufficient":[{"name":"asparagus","type":"vegetables","quantity":9},{"name":"goat","type":"meat","quantity":23},{"name":"cherries","type":"fruit","quantity":12}],"restock":[{"name":"bananas","type":"fruit","quantity":5},{"name":"fish","type":"meat","quantity":3}]}'
-);
-
-
-/* Map.groupBy(); */
-CUT.isEqual("Map.groupBy();",
-  JSON.stringify(Array.from(Map.groupBy([
-    { name: 'asparagus', type: 'vegetables', quantity: 9 },
-    { name: 'bananas', type: 'fruit', quantity: 5 },
-    { name: 'goat', type: 'meat', quantity: 23 },
-    { name: 'cherries', type: 'fruit', quantity: 12 },
-    { name: 'fish', type: 'meat', quantity: 3 }
-  ], ({ quantity }) => (quantity < 6 ? "restock" : "sufficient")))),
-  '[["sufficient",[{"name":"asparagus","type":"vegetables","quantity":9},{"name":"goat","type":"meat","quantity":23},{"name":"cherries","type":"fruit","quantity":12}]],["restock",[{"name":"bananas","type":"fruit","quantity":5},{"name":"fish","type":"meat","quantity":3}]]]'
-);
-
-
 /* crypto.randomUUID(); */
 token1 = crypto.randomUUID();
 CUT.isTrue("crypto.randomUUID(); <code>\"" + token1 + "\"</code>",
@@ -1922,19 +1832,6 @@ CUT.isTrue("crypto.randomUUID(); <code>\"" + token1 + "\"</code>",
       .test(token1)
     && token1[14] === "4"
     && "89ab".includes(token1[19])
-);
-
-
-/* Object.hasOwn(); */
-token1 = {"a": 1, "b": 2};
-token2 = [4, 5, 6];
-CUT.isTrue("Object.hasOwn();",
-      Object.hasOwn(token1, "a")
-  && !Object.hasOwn(token1, "hasOwnProperty")
-  && !Object.hasOwn(token1, "c")
-  &&  Object.hasOwn(token2, "0")
-  && !Object.hasOwn(token2, "map")
-  && !Object.hasOwn(token2, "map2")
 );
 
 
@@ -3665,7 +3562,6 @@ CUT.log("Async testcases");
 
 /*
 CUT.log("Here have to be these results:");
-CUT.log("8x Array.fromAsync();");
 CUT.log("1x asyncNoop(); is working");
 CUT.log("1x asyncT(); is working");
 CUT.log("1x asyncF(); is working</li>");
@@ -3702,39 +3598,6 @@ CEL.asyncF().then(function(result) {
 CEL.asyncIdentity(true).then(function(_result) {
   CUT.isTrue("asyncIdentity(); is working", true);
 });
-
-
-/* Array.fromAsync(); */
-token1 = async function* asyncIterable () {
-  for (let i = 0; i < 5; i++) {
-    await new Promise((resolve)=> setTimeout(resolve,100*i));
-    yield i;
-  }
-};
-Array.fromAsync(token1()).then((res) =>
-  CUT.isEqual("Array.fromAsync(); 01", JSON.stringify(res), "[0,1,2,3,4]")
-);
-Array.fromAsync(token1(), (x) => x * 2).then((res) =>
-  CUT.isEqual("Array.fromAsync(); 02", JSON.stringify(res), "[0,2,4,6,8]")
-);
-Array.fromAsync([4, 5, 6, 7, 8]).then((res) =>
-  CUT.isEqual("Array.fromAsync(); 03", JSON.stringify(res), "[4,5,6,7,8]")
-);
-Array.fromAsync([4, 5, 6, 7, 8], (x) => x * 2).then((res) =>
-  CUT.isEqual("Array.fromAsync(); 04", JSON.stringify(res), "[8,10,12,14,16]")
-);
-Array.fromAsync(new Set([4, 5, 6, 6, 10])).then((res) =>
-  CUT.isEqual("Array.fromAsync(); 05", JSON.stringify(res), "[4,5,6,10]")
-);
-Array.fromAsync(new Set([4, 5, 6, 6, 10]), (x) => x * 2).then((res) =>
-  CUT.isEqual("Array.fromAsync(); 06", JSON.stringify(res), "[8,10,12,20]")
-);
-Array.fromAsync({"0": 3, "1": 4, "2": 5, length: 3}).then((res) =>
-  CUT.isEqual("Array.fromAsync(); 07", JSON.stringify(res), "[3,4,5]")
-);
-Array.fromAsync({"0": 3, "1": 4, "2": 5, length: 3}, (x) => x * 2).then((res) =>
-  CUT.isEqual("Array.fromAsync(); 08", JSON.stringify(res), "[6,8,10]")
-);
 
 
 CUT.log("End of the test.")

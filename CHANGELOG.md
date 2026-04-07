@@ -4,12 +4,13 @@
 ## Celestra v6.5.1
 
 1. Documentation, pdf and code fixes.
-2. Fix `bigint` support in these functions: `isEven();`, `isOdd();`, `clamp();`, `minmax();` 
+2. Fix `bigint` support in these functions: `isEven();`, `isOdd();`, `clamp();`, `minmax();`
 3. Deprecate _(stability 1)_ these functions:
- 
+
 - `deleteOwnProperty();`
 - `isCallable();`
 - `isChar();`
+- `isNumeric();`
 - `isSuperset();`
 - `setDifference();`
 - `setIntersection();`

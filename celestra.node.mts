@@ -26,40 +26,28 @@ const VERSION = "Celestra v6.5.1 node";
 /**
  * @description Map-like object with string or number or symbol keys.
  *
- * @internal
+ * @private
  * */
 type MapLike = Record<PropertyKey, any>;
 
 /**
- * @description Set-like object.
- *
- * @internal
-*/
-/*
-type SetLike<T> ={
-  readonly size: number;
-  has(value: T): boolean;
-};
-*/
-
-/**
  * @description Number-like object.
  *
- * @internal
+ * @private
  * */
 type NumberLike = number | bigint;
 
 /**
  * @description Any iterable or iterator. Includes: `Iterable<any>`, `Iterator<any>`, `IterableIterator<any>`
  *
- * @internal
+ * @private
  */
 type IterableLike = Iterable<any> | Iterator<any> | IterableIterator<any>;
 
 /**
  * @description Any iterable, iterator, or array-like structure for type `T`. Broadly useful for generic functions that accept "sequence-like" inputs.
  *
- * @internal
+ * @private
  */
 type IterableLikeAndArrayLike =
   | Iterable<any>
@@ -70,14 +58,14 @@ type IterableLikeAndArrayLike =
 /**
  * @description Iterable and Iterator and Generator types.
  *
- * @internal
+ * @private
  */
-type IteratorReturn = Iterable<any> | Generator<number, void, unknown>;
+type IteratorReturn = Iterable<any> | Generator<any, void, unknown>;
 
 /**
  * @description Type for undefined and null values.
  *
- * @internal
+ * @private
  */
 type Nullish = undefined | null;
 
@@ -89,42 +77,42 @@ type NonNullable = number | boolean | string | symbol | object | Function;
 /**
  * @description Not null or undefined or object or function.
  *
- * @internal
+ * @private
  */
 type NonNullablePrimitive = number | bigint | boolean | string | symbol;
 
 /**
  * @description Not object or function.
  *
- * @internal
+ * @private
  */
 type Primitive = null | undefined | number | bigint | boolean | string | symbol;
 
 /**
  * Generic comparable types.
  *
- * @internal
+ * @private
  */
 type Comparable = number | bigint | string | boolean | Date;
 
 /**
  * @description Object key type.
  *
- * @internal
+ * @private
  */
 type PropertyKey = string | symbol;
 
 /**
  * @description Type AsyncFunction.
  *
- * @internal
+ * @private
  */
 type AsyncFunction<T> = (...args: ReadonlyArray<any>) => Promise<T>;
 
 /**
  * @description Type ArrowFunction.
  *
- * @internal
+ * @private
  */
 type ArrowFunction<Args extends any[] = any[], R = any> =
   (this: void, ...args: Args) => R;
@@ -132,7 +120,7 @@ type ArrowFunction<Args extends any[] = any[], R = any> =
 /**
  * @description Primitive types.
  *
- * @internal
+ * @private
  */
 type TypeOfTag =
   | "null" | "undefined"
@@ -142,7 +130,7 @@ type TypeOfTag =
 /**
  * @description TypedArray types.
  *
- * @internal
+ * @private
  */
 type TypedArray = Exclude<ArrayBufferView, DataView>;
 
@@ -1712,7 +1700,7 @@ function isEmptyValue (value: any): boolean {
   /* Check Iterable objects */
   if (typeof value[Symbol.iterator] === "function") {
     const it = value[Symbol.iterator]();
-    return it.next().done; // avoids consuming entire iterator
+    return it.next().done; /* avoids consuming entire iterator */
   }
   /* Check Iterator objects */
   if ("Iterator" in globalThis ? (value instanceof Iterator)
@@ -1895,7 +1883,7 @@ const isPrimitive = (value: unknown): value is Primitive =>
  *
  * @param {unknown} value The value to check.
  * @returns {boolean} Return true if value is an Iterator, false if not.
- * @internal
+ * @private
  */
 const isIterator = (value: unknown): value is Iterator<any> =>
   "Iterator" in globalThis
@@ -1928,7 +1916,7 @@ const isElement = (value: any): boolean =>
  *
  * @param {unknown} value The value to check.
  * @returns {boolean} Return true if value is an Iterable, false if not.
- * @internal
+ * @private
  */
 const isIterable = (value: unknown): value is Iterable<any> =>
   value != null && typeof (value as any)[Symbol.iterator] === "function";
@@ -2412,7 +2400,7 @@ function* iterRepeat (value: unknown, num: number = Infinity): IteratorReturn {
  */
 function* takeWhile <T>(iter: Iterable<T> | Iterator<T>, callback: Function): IterableIterator<T> {
   let iterator: Iterator<T>;
-  // Normalize: if input is an iterator, use it directly; otherwise get an iterator
+  /* Normalize: if input is an iterator, use it directly; otherwise get an iterator */
   if (typeof (iter as Iterator<T>).next === "function") {
     iterator = iter as Iterator<T>;
   } else {
@@ -2436,7 +2424,7 @@ function* takeWhile <T>(iter: Iterable<T> | Iterator<T>, callback: Function): It
  */
 function* dropWhile <T>(iter: Iterable<T> | Iterator<T>, callback: Function): IterableIterator<T> {
   let iterator: Iterator<T>;
-  // Normalize: if input is an iterator, use it directly; otherwise get an iterator
+  /* Normalize: if input is an iterator, use it directly; otherwise get an iterator */
   if (typeof (iter as Iterator<T>).next === "function") {
     iterator = iter as Iterator<T>;
   } else {
@@ -2463,7 +2451,7 @@ function* dropWhile <T>(iter: Iterable<T> | Iterator<T>, callback: Function): It
 function* take <T>(iter: Iterable<T> | Iterator<T>, num: number = 1): IterableIterator<T> {
   if (num <= 0) return;
   let iterator: Iterator<T>;
-  // Normalize: if input is an iterator, use it directly; otherwise get an iterator
+  /* Normalize: if input is an iterator, use it directly; otherwise get an iterator */
   if (typeof (iter as Iterator<T>).next === "function") {
     iterator = iter as Iterator<T>;
   } else {
@@ -2823,7 +2811,7 @@ function includes (
   const _isEqual = comparator ||
     ((value1: any, value2: any): boolean =>
       value1 === value2 || (value1 !== value1 && value2 !== value2));
-    // SameValueZero
+    /* SameValueZero */
   /* Collection: Primitives, WeakMap, WeakSet */
   const cType = (collection === null ? "null" : typeof collection);
   if (collection == null
@@ -3229,10 +3217,6 @@ function divMod(value1: NumberLike, value2: NumberLike): NumberLike {
 }
 
 
-/*
-https://www.w3schools.com/js/js_arithmetic.asp
-% -> Modulus (Remainder)
-*/
 /**
  * @description Remainder of division (modulus) of two numbers or bigints.
  *
