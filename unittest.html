@@ -14,7 +14,7 @@ html, body { font-family: consolas, monospace !important; }
 .passed, .failed {
   display: inline-block;
   padding: 4px !important;
-  border-radius: 4px !important;
+  border-radius: 0px !important;
 }
 .passed { background-color: #3d9970 !important; color: white !important; }
 .failed { background-color: #ff4136 !important; color: white !important; }
@@ -52,10 +52,10 @@ button {
   /*font-family: consolas, monospace;*/
   text-align: center !important;
   border: 2px outset ThreeDLightShadow;
-  border-radius: 4px;
+  border-radius: 0px;
   color: black;
 }
-textarea, #preCelLog { border-radius: 4px; }
+textarea, #preCelLog { border-radius: 0px; }
 
 </style>
 </head>
@@ -69,7 +69,7 @@ textarea, #preCelLog { border-radius: 4px; }
 <header class="center" id="top" name="top">
   <h1>Celestra Unit Tester (CUT)</h1>
   <nav><b>
-     <a href="#license">License</a>
+    <a href="#license">License</a>
     &nbsp;//&nbsp;
     <a href="#footer">Contact</a>
     &nbsp;//&nbsp;
@@ -99,7 +99,7 @@ textarea, #preCelLog { border-radius: 4px; }
       <p><button onclick=" saveResults(); ">save result in HTML</button></p>
     </td>
     <td class="noborder">
-      <div id="preCelLog" class="padding bg-black font-monospace border" style="min-height: 150px; min-width: 300px;"></div>
+      <div id="preCelLog" class="padding bg-black font-monospace border" style="min-height: 150px; min-width: 450px;"></div>
     </td>
   </tr>
 </table>
@@ -219,82 +219,6 @@ textarea, #preCelLog { border-radius: 4px; }
   <p id="bottom" name="bottom">&copy; Copyright 2018 Ferenc Czigler</p>
 </small></footer>
 
-<!--script src="unittest.js"></script-->
-
-
-<!--script src="celestra.dev.js"></script-->
-<!--script src="celestra.min.js"></script-->
-
-<!--
-<script type="module">
-
-/*
-// ok, dynamic imports - async loading too
-// FF 67, Chrome 63, Safari 11.1, Opera 50, no old EDGE
-// Android Webvies 63, Android Chrome 63, Android FF 67, iOS Safari 11.1, no in Samsung browser
-
-import("./celestra.dev.js")
-  .then((module) => {
-    globalThis.celestra = module.celestra;
-    globalThis.CEL = module.celestra;
-  });
-*/
-
-var importStr = "";
-
-// default loading method in v3.0.2
-// import the celestra object
-import { celestra } from "./celestra.esm.js";
-globalThis.celestra = celestra;
-globalThis.CEL = celestra;
-
-importStr += "\nimport the celestra object - "
-  + (typeof celestra.getType === "function");
-
-// import with default with name
-import { default as celestra2 } from "./celestra.esm.js";
-//globalThis.celestra = celestra;
-//globalThis.CEL = celestra;
-importStr += "\nimport with default with name - "
-  + (typeof celestra2.getType === "function");
-
-// import all functions in an object
-import * as celestra3 from "./celestra.esm.js";
-//globalThis.celestra = celestra;
-//globalThis.CEL = celestra;
-importStr += "\nimport all functions in an object - "
-  + (typeof celestra3.getType === "function");
-
-// import with defaultExport
-import defaultExport from "./celestra.esm.js";
-//globalThis.celestra = defaultExport;
-//globalThis.CEL = defaultExport;
-importStr += "\nimport with defaultExport - "
-  + (typeof defaultExport.getType === "function");
-
-// import only functions
-import { identity, getType } from "./celestra.esm.js";
-importStr += "\nimport only functions - "
-  + (getType(identity) === "function");
-
-alert(importStr);
-
-/*
-// to test the loading of the module:
-console.log(`celestra.VERSION - ${ globalThis.celestra.VERSION }
-CEL.VERSION - ${ CEL.VERSION }
-true - ${ CEL.isString("ggg") }
-isString false - ${ CEL.isString(42) }
-isChar true - ${ CEL.isChar("g") }
-isChar false - ${ CEL.isChar("ggg") }
-isBoolean true - ${ CEL.isBoolean(false) }
-isBoolean false - ${ CEL.isBoolean("ggg") }
-`);
-*/
-
-</script>
--->
-
 <script>
 const _preCel = {
   // from v5.7.0
@@ -316,21 +240,19 @@ const _preCel = {
     let scrTag = document.createElement("script");
     scrTag.type = "module";
     scrTag.innerHTML = `
-      var importStr = "";
       import defaultExport from "./celestra.browser.js";
       //globalThis.celestra = defaultExport;
       //globalThis.CEL = defaultExport;
-      importStr += "\\nimport with defaultExport - "
-        + (typeof defaultExport.qsa === "function");
-
+      preCelLog("\\nimport with defaultExport - "
+        + (typeof defaultExport.qsa === "function" ? "passed" : "failed")
+      );
       // import with default with name
       import { default as celestra } from "./celestra.browser.js";
       globalThis.celestra = celestra;
       globalThis.CEL = celestra;
-      importStr += "\\nimport with default with name - "
-        + (typeof celestra.qsa === "function");
-
-      alert(importStr);
+      preCelLog("import with default with name - "
+        + (typeof celestra.qsa === "function" ? "passed" : "failed")
+      );
     `;
     console.log(scrTag);
     document.body.append(scrTag);
@@ -340,21 +262,19 @@ const _preCel = {
     let scrTag = document.createElement("script");
     scrTag.type = "module";
     scrTag.innerHTML = `
-      var importStr = "";
-
       // import 2 functions
       import { assert, map } from "./celestra.browser.js";
-      importStr += "\\nimport 2 functions - "
-        + (typeof assert === "function" && typeof map === "function");
+      preCelLog("import 2 functions - "
+        + (typeof assert === "function" && typeof map === "function" ? "passed" : "failed")
+      );
 
       // import all into a new celestra object
       import * as celestra from "./celestra.browser.js";
       globalThis.celestra = celestra;
       globalThis.CEL = celestra;
-      importStr += "\\nimport all into a new celestra object - "
-        + (typeof celestra.qsa === "function");
-
-      alert(importStr);
+      preCelLog("import all into a new celestra object - "
+        + (typeof celestra.qsa === "function" ? "passed" : "failed")
+      );
     `;
     console.log(scrTag);
     document.body.append(scrTag);

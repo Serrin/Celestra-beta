@@ -230,7 +230,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <p><a href="#FN-isCoercedObject();">isCoercedObject();</a></p>
       <p><a href="#FN-isDeepStrictEqual();">isDeepStrictEqual();</a></p>
       <p><a href="#FN-isElement();">isElement();</a></p>
-      <p><a href="#FN-isEmptyValue();">isEmptyValue();</a></p>
+      <p><a href="#FN-isEmpty();">isEmpty();</a></p>
       <p><a href="#FN-isFunction();">isFunction();</a></p>
       <p><a href="#FN-isGeneratorFunction();">isGeneratorFunction();</a></p>
       <p><a href="#FN-isIndex();">isIndex();</a></p>
@@ -455,7 +455,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
 
 <p><strong>A helper JavaScript library with useful functions and polyfills and zero dependencies.</strong></p>
 
-<p>Latest version: 6.5.1</p>
+<p>Latest version: 6.6.0</p>
 <p>Date: 2026-04-07T17:52:10.583Z</p>
 
 <p><strong>Tested on these environments:</strong></p>
@@ -872,7 +872,7 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-deleteOwnProperty();">
       <td><code>deleteOwnProperty(object, property[,Throw = false]);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function deletes an own property in the given object. If Throw is true and the deleting was unsuccessful, then an error will be thrown.<br/><strong>Return values:</strong><br/>1 - The property was own and the delete was successful.<BR>0 - The property is own and the delete was unsuccessful.<br/>-1 - The property is not own or not exists.</td>
+      <td><span class="removed">Stability: 0 - Removed in v6.6.0</span><br/>This function deletes an own property in the given object. If Throw is true and the deleting was unsuccessful, then an error will be thrown.<br/><strong>Return values:</strong><br/>1 - The property was own and the delete was successful.<BR>0 - The property is own and the delete was unsuccessful.<br/>-1 - The property is not own or not exists.</td>
     </tr>
     <tr id="FN-extend();">
       <td><code>extend([deep,]target,source1[,sourceN]);</code></td>
@@ -1297,11 +1297,11 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-isCallable();">
       <td><code>isCallable(value);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided object has a call method. The return value is boolean.</td>
+      <td><span class="removed">Stability: 0 - Removed in v6.6.0</span><br/>This function determines whether the provided object has a call method. The return value is boolean.</td>
     </tr>
     <tr id="FN-isChar();">
       <td><code>isChar(value);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided value is a string with length 1 character. This function is unicode compatible. The return value is boolean.</td>
+      <td><span class="removed">Stability: 0 - Removed in v6.6.0</span><br/>This function determines whether the provided value is a string with length 1 character. This function is unicode compatible. The return value is boolean.</td>
     </tr>
     <tr id="FN-isCoercedObject();">
       <td><code>isCoercedObject(object);</td>
@@ -1322,9 +1322,9 @@ CEL.delay(5000)
         </p>
       </td>
     </tr>
-    <tr id="FN-isEmptyValue();">
-      <td><code>isEmptyValue(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an empty value. Returns true in these cases: null, undefined, NaN, array, typedarray, arraybuffer, dataview, object, arraylike object, map, set, iterator, iterable. The return value is boolean.</td>
+    <tr id="FN-isEmpty();">
+      <td><code>isEmpty(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v6.6.0: <code>isEmptyValue();</code></span><br/>This function determines whether the provided value is an empty value. Returns true in these cases: null, undefined, NaN, array, typedarray, arraybuffer, dataview, object, arraylike object, map, set, iterator, iterable. The return value is boolean.</td>
     </tr>
     <tr id="FN-isFunction();">
       <td><code>isFunction(value);</code></td>
@@ -1368,7 +1368,7 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-isNumeric();">
       <td><code>isNumeric(value);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided value is a number or can be converted to number. The return value is boolean.</td>
+      <td><span class="removed">Stability: 0 - Removed in v6.6.0</span><br/>This function determines whether the provided value is a number or can be converted to number. The return value is boolean.</td>
     </tr>
     <tr id="FN-isObject();">
       <td><code>isObject(value);</code></td>
@@ -1674,7 +1674,7 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-isSuperset();">
       <td><code>isSuperset(superCollection,subCollection);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/><span class="info">Can be replaced with <code>Set.prototype.isSupersetOf();</code>.</span><br/>This function determines whether the first provided iterator is superset of the second iterator. The parameters are mandatory and all parameters can be  an iterator. The return value is a boolean.</td>
+      <td><span class="removed">Stability: 0 - Removed in v6.6.0</span><br/><span class="info">Can be replaced with <code>Set.prototype.isSupersetOf();</code>.</span><br/>This function determines whether the first provided iterator is superset of the second iterator. The parameters are mandatory and all parameters can be  an iterator. The return value is a boolean.</td>
     </tr>
     <tr id="FN-item();">
       <td><code>item(iterator,index);</code></td>
@@ -1755,19 +1755,19 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-setDifference();">
       <td><code>setDifference(set1,set2);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/><span class="info">Can be replaced with <code>Set.prototype.difference();</code>.</span><br/>Returns the set of unique values that are in the iterator1, excluding the values that are also in the iterator2. All of the parameters are mandatory and have to be a Set. The return value is a Set.</td>
+      <td><span class="removed">Stability: 0 - Removed in v6.6.0</span><br/><span class="info">Can be replaced with <code>Set.prototype.difference();</code>.</span><br/>Returns the set of unique values that are in the iterator1, excluding the values that are also in the iterator2. All of the parameters are mandatory and have to be a Set. The return value is a Set.</td>
     </tr>
     <tr id="FN-setIntersection();">
       <td><code>setIntersection(set1,set2);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/><span class="info">Can be replaced with <code>Set.prototype.intersection();</code>.</span><br/>Returns the set of unique values that are in both of the given iterators. All of the parameters are mandatory and have to be a Set. The return value is a Set.</td>
+      <td><span class="removed">Stability: 0 - Removed in v6.6.0</span><br/><span class="info">Can be replaced with <code>Set.prototype.intersection();</code>.</span><br/>Returns the set of unique values that are in both of the given iterators. All of the parameters are mandatory and have to be a Set. The return value is a Set.</td>
     </tr>
     <tr id="FN-setSymmetricDifference();">
       <td><code>setSymmetricDifference(set1,set2);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/><span class="info">Can be replaced with <code>Set.prototype.symmetricDifference();</code>.</span><br/>Returns the set of unique values that are only in one of given iterators. All of the parameters are mandatory and have to be a Set. The return value is a Set.</td>
+      <td><span class="removed">Stability: 0 - Removed in v6.6.0</span><br/><span class="info">Can be replaced with <code>Set.prototype.symmetricDifference();</code>.</span><br/>Returns the set of unique values that are only in one of given iterators. All of the parameters are mandatory and have to be a Set. The return value is a Set.</td>
     </tr>
     <tr id="FN-setUnion();">
       <td><code>setUnion(iterator1[,iteratorN]);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/><span class="info">Can be replaced with <code>Set.prototype.union();</code>.</span><br/>Returns the set of unique values including all values from the given iterators. The first parameter is mandatory. The return value is a Set.</td>
+      <td><span class="removed">Stability: 0 - Removed in v6.6.0</span><br/><span class="info">Can be replaced with <code>Set.prototype.union();</code>.</span><br/>Returns the set of unique values including all values from the given iterators. The first parameter is mandatory. The return value is a Set.</td>
     </tr>
     <tr id="FN-size();">
       <td><code>size(iterator);</code></td>

@@ -10,14 +10,14 @@
 
 /**
  * @name Celestra
- * @version 6.5.1 node
+ * @version 6.6.0 node
  * @author Ferenc Czigler
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
 
 
-const VERSION = "Celestra v6.5.1 node";
+const VERSION = "Celestra v6.6.0 node";
 
 
 /** TS types */
@@ -506,30 +506,6 @@ function asyncConstant (value: unknown): Function {
  * @returns {Promise<any>}
  */
 async function asyncIdentity (value: unknown): Promise<any> { return value; }
-
-
-/* deleteOwnProperty(object, property [,Throw = false]): number | thrown error*/
-/**
- * @description Deletes an own property from an object.
- *
- * @param {Object} obj - The object from which to delete the property.
- * @param {string} property - The name of the property to delete.
- * @param {boolean} [Throw=false] - If true, throws an error if deletion fails.
- * @returns {number} - Returns 1 if the property was deleted, 0 if it was not found, -1 if it did not exist.
- */
-function deleteOwnProperty (
-  obj: Object,
-  property: string,
-  Throw: boolean = false): number {
-  if (Object.hasOwn(obj, property)) {
-    // @ts-ignore
-    delete obj[property];
-    let result = Object.hasOwn(obj, property);
-    if (result && Throw) { throw new Error("[deleteOwnProperty] error"); }
-    return +!result;
-  }
-  return -1;
-}
 
 
 /**
@@ -1671,7 +1647,7 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
  * @param {any} value The value to check.
  * @returns boolean
  */
-function isEmptyValue (value: any): boolean {
+function isEmpty (value: any): boolean {
   const _isObject = (value: unknown): value is object =>
     value != null && (typeof value === "object" || typeof value === "function");
   /**
@@ -1767,28 +1743,6 @@ const isPlainObject = (value: unknown): boolean =>
 
 
 /**
- * @description Checks if the given value is a single character string.
- *
- * @param {unknown} value - The value to check.
- * @returns True if the value is a single character string, false otherwise.
- */
-const isChar = (value: unknown): boolean =>
-  typeof value === "string" && (value.length === 1 || [...value].length === 1);
-
-
-/**
- * @description Checks if the given value is numeric (number or bigint).
- *
- * @param {unknown} value - The value to check.
- * @returns True if the value is a numeric value, false otherwise.
- */
-const isNumeric = (value: any): boolean =>
-  ((typeof value === "number" || typeof value === "bigint") && value === value)
-    ? true
-    : (!isNaN(parseFloat(value)) && isFinite(value));
-
-
-/**
  * @description Checks if the given value is an object.
  *
  * @param {unknown} value - The value to check.
@@ -1807,18 +1761,6 @@ const isObject = (value: unknown): value is object =>
  */
 const isFunction = (value: unknown): value is Function =>
   typeof value === "function";
-
-
-/**
- * @description Checks if the give value is a callable object or function.
- *
- * @param {unknown} value - The value to check.
- * @returns True is the value is a callable object of function, false otherwise.
- */
-const isCallable = (value: any): boolean =>
-  (value != null && ["object", "function"].includes(typeof value))
-    ? (typeof value.call === "function")
-    : false;
 
 
 /**
@@ -2086,64 +2028,6 @@ function shuffle ([...array]): unknown[] {
 const partition = ([...array], callback: Function): any[] =>
    // @ts-ignore
   [array.filter(callback), array.filter((value, index, a): boolean => !(callback(value, index, a)))];
-
-
-/**
- * @description Returns a new Set containing the union of all provided iterables.
- *
- * @param {...IterableLike} args - The iterables to unite.
- * @returns {Set<any>} A new Set containing the union of all provided iterables.
- */
-const setUnion = (...args: any[]): Set<any> =>
-  new Set(args.map(([...item]): any => item).flat());
-
-
-/**
- * @description Returns a new Set containing the intersection of two Sets.
- *
- * @param {Set<any>} a - The first Set.
- * @param {Set<any>} b - The second Set.
- * @returns {Set<any>} A new Set containing the intersection of the two Sets.
- */
-const setIntersection = ([...array], b: Set<any>): Set<any> =>
-  new Set(array.filter((value: unknown): boolean => b.has(value)));
-
-
-/**
- * @description Returns a new Set containing the difference of two Sets.
- *
- * @param {Set<any>} a - The first Set.
- * @param {Set<any>} b - The second Set.
- * @returns {Set<any>} A new Set containing the difference of the two Sets.
- */
-const setDifference = ([...array], b: Set<any>): Set<any> =>
-  new Set(array.filter((value: unknown): boolean => !(b.has(value))));
-
-
-/**
- * @description Returns a new Set containing the symmetric difference of two Sets.
- *
- * @param {Set<any>} a - The first Set.
- * @param {Set<any>} b - The second Set.
- * @returns {Set<any>} A new Set containing the symmetric difference of the two Sets.
- */
-const setSymmetricDifference = (array: Set<any>, b: Set<any>): Set<any> =>
-  new Set(
-    [...array].filter((value: unknown): boolean =>
-      !(b.has(value))).concat([...b]
-        .filter((value: unknown): boolean => !(array.has(value))))
-  );
-
-
-/**
- * @description Checks if one iterable is a superset of another.
- *
- * @param {IterableLike} superCollection - The potential superset iterable.
- * @param {IterableLike} subCollection - The potential subset iterable.
- * @returns {boolean} True if superCollection is a superset of subCollection, false otherwise.
- */
-const isSuperset = ([...superSet], [...subSet]): boolean =>
-  subSet.every((value: unknown): boolean => superSet.includes(value));
 
 
 /**
@@ -3750,7 +3634,6 @@ export default {
   asyncF,
   asyncConstant,
   asyncIdentity,
-  deleteOwnProperty,
   createPolyfillMethod,
   createPolyfillProperty,
   randomUUIDv7,
@@ -3808,15 +3691,12 @@ export default {
   isSameInstance,
   isCoercedObject,
   isDeepStrictEqual,
-  isEmptyValue,
+  isEmpty,
   isProxy,
   isAsyncGeneratorFunction,
   isPlainObject,
-  isChar,
-  isNumeric,
   isObject,
   isFunction,
-  isCallable,
   isArraylike,
   isNull,
   isUndefined,
@@ -3839,11 +3719,6 @@ export default {
   initial,
   shuffle,
   partition,
-  setUnion,
-  setIntersection,
-  setDifference,
-  setSymmetricDifference,
-  isSuperset,
   min,
   max,
   arrayRepeat,
@@ -3967,7 +3842,6 @@ export {
   asyncF,
   asyncConstant,
   asyncIdentity,
-  deleteOwnProperty,
   createPolyfillMethod,
   createPolyfillProperty,
   randomUUIDv7,
@@ -4025,15 +3899,12 @@ export {
   isSameInstance,
   isCoercedObject,
   isDeepStrictEqual,
-  isEmptyValue,
+  isEmpty,
   isProxy,
   isAsyncGeneratorFunction,
   isPlainObject,
-  isChar,
-  isNumeric,
   isObject,
   isFunction,
-  isCallable,
   isArraylike,
   isNull,
   isUndefined,
@@ -4056,11 +3927,6 @@ export {
   initial,
   shuffle,
   partition,
-  setUnion,
-  setIntersection,
-  setDifference,
-  setSymmetricDifference,
-  isSuperset,
   min,
   max,
   arrayRepeat,

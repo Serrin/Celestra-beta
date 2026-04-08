@@ -15,7 +15,7 @@ try {
 
 /* Celestra unit tester */
 
-CUT.VERSION = "Celestra Unit Tester (CUT) v6.5.1 for browser (ESM)";
+CUT.VERSION = "Celestra Unit Tester (CUT) v6.6.0 for browser (ESM)";
 
 CUT.__results__ = document.querySelector("#results");
 CUT.__resultsFailed__ = document.querySelector("#resultsFailed");
@@ -299,7 +299,7 @@ var /** @type any */ token12, /** @type any */ token13;
 var /** @type any */ token14, /** @type any */ token15;
 
 
-/* Celestra v6.5.1 testcases */
+/* Celestra v6.6.0 testcases */
 
 
 /** Not auto tested functions **/
@@ -1925,60 +1925,10 @@ CUT.isEqual("max(); 02", 51, CEL.max(...new Set([21, 51, 31]).keys()));
 CUT.isEqual("max(); 03", CEL.max(5, 10, 3), 10);
 
 
-/* isSuperset(); */
-CUT.isTrue("isSuperset();",
-      CEL.isSuperset([3,58,95,88], [88,95])
-  &&  CEL.isSuperset(new Set([3, 11, 58, 95, 88]), [88, 95, 11].values())
-  && !CEL.isSuperset([84,95], [3,58,95])
-  && !CEL.isSuperset(new Set([88, 95, 11, 84]).keys(), [3, 11, 58,95,88].keys())
-);
-
-
 /* Set helper function */
 const __setEquals__ = (s1, s2) =>
   ((s1 instanceof Set) && (s2 instanceof Set) && (s1.size === s2.size)
     && (JSON.stringify([...s1]) === JSON.stringify([...s2])));
-
-
-/* setUnion(); */
-CUT.isTrue("setUnion();",
-  __setEquals__(
-    CEL.setUnion(
-      new Map([[2, 1], [3, 2], [4, 3], [5, 4]]).values(),
-      new Set([3, 4, 5, 6]), [5 , 6, 7, 8]
-    ),
-    CEL.setUnion(
-      [1, 2, 3, 4],
-      new Map([[2,3], [3, 4], [4, 5], [5, 6]]).values(),
-      new Set([5, 6, 7, 8]).values()
-    )
-  )
-);
-
-
-/* setIntersection(); */
-CUT.isTrue("setIntersection();",
-  __setEquals__(
-    new Set([2, 3]), CEL.setIntersection(new Set([1, 2, 3]), new Set([2, 3, 4]))
-  )
-);
-
-
-/* setDifference(); */
-CUT.isTrue("setDifference();",
-  __setEquals__(
-    new Set([1, 2]),
-    CEL.setDifference(new Set([1, 2, 3, 4]), new Set([3, 4, 5, 6]))
-  )
-);
-
-
-/* setSymmetricDifference(); */
-CUT.isTrue("setSymmetricDifference();",
-  __setEquals__(
-    new Set([1, 3]), CEL.setSymmetricDifference(new Set([1, 2]), new Set([2, 3]))
-  )
-);
 
 
 /* arrayClear(); */
@@ -2947,36 +2897,36 @@ CUT.isFalse("isDeepStrictEqual(); 31e",
 /* isDeepStrictEqual end */
 
 
-CUT.isTrue("isEmptyValue(); 01",
-  CEL.isEmptyValue(null)
-  && CEL.isEmptyValue(NaN)
-  && CEL.isEmptyValue(undefined)
-  && CEL.isEmptyValue("")
-  && CEL.isEmptyValue([])
-  && CEL.isEmptyValue(new Int32Array())
-  && CEL.isEmptyValue(new Map())
-  && CEL.isEmptyValue(new Set())
-  && CEL.isEmptyValue(new ArrayBuffer(0))
-  && CEL.isEmptyValue(new DataView(new ArrayBuffer(0)))
-  && CEL.isEmptyValue([].values())
-  && CEL.isEmptyValue({length: 0})
-  && CEL.isEmptyValue({})
+CUT.isTrue("isEmpty(); 01",
+  CEL.isEmpty(null)
+  && CEL.isEmpty(NaN)
+  && CEL.isEmpty(undefined)
+  && CEL.isEmpty("")
+  && CEL.isEmpty([])
+  && CEL.isEmpty(new Int32Array())
+  && CEL.isEmpty(new Map())
+  && CEL.isEmpty(new Set())
+  && CEL.isEmpty(new ArrayBuffer(0))
+  && CEL.isEmpty(new DataView(new ArrayBuffer(0)))
+  && CEL.isEmpty([].values())
+  && CEL.isEmpty({length: 0})
+  && CEL.isEmpty({})
 );
-CUT.isFalse("isEmptyValue(); 02",
-  CEL.isEmptyValue(3)
-  || CEL.isEmptyValue(true)
-  || CEL.isEmptyValue("Arthur Dent")
-  || CEL.isEmptyValue(Symbol(42))
-  || CEL.isEmptyValue(Array.from)
-  || CEL.isEmptyValue([42])
-  || CEL.isEmptyValue(new Int32Array([42]))
-  || CEL.isEmptyValue(new ArrayBuffer(1))
-  || CEL.isEmptyValue(new DataView(new ArrayBuffer(1)))
-  || CEL.isEmptyValue(new Map([[42, 2]]))
-  || CEL.isEmptyValue(new Set([42, 2]))
-  || CEL.isEmptyValue([4, 5, 6].values())
-  || CEL.isEmptyValue({length: 1, 0: 3.14})
-  || CEL.isEmptyValue({a: 1})
+CUT.isFalse("isEmpty(); 02",
+  CEL.isEmpty(3)
+  || CEL.isEmpty(true)
+  || CEL.isEmpty("Arthur Dent")
+  || CEL.isEmpty(Symbol(42))
+  || CEL.isEmpty(Array.from)
+  || CEL.isEmpty([42])
+  || CEL.isEmpty(new Int32Array([42]))
+  || CEL.isEmpty(new ArrayBuffer(1))
+  || CEL.isEmpty(new DataView(new ArrayBuffer(1)))
+  || CEL.isEmpty(new Map([[42, 2]]))
+  || CEL.isEmpty(new Set([42, 2]))
+  || CEL.isEmpty([4, 5, 6].values())
+  || CEL.isEmpty({length: 1, 0: 3.14})
+  || CEL.isEmpty({a: 1})
 );
 
 
@@ -3038,16 +2988,6 @@ CUT.isTrue("isAsyncFunction();",
 );
 
 
-/* isChar(); */
-CUT.isTrue("isChar();",
-      CEL.isChar("s")
-  &&  CEL.isChar("\uD834\uDF06")
-  && !CEL.isChar("str")
-  && !CEL.isChar(533)
-  && !CEL.isChar("s \uD834\uDF06 tr")
-);
-
-
 /* isFloat(); */
 CUT.isTrue("isFloat();",
   CEL.isFloat(3.14) && !CEL.isFloat(98) && !CEL.isFloat("str")
@@ -3095,14 +3035,6 @@ CUT.isTrue("isFunction();",
       CEL.isFunction(function () {})
   &&  CEL.isFunction(new Function())
   && !CEL.isFunction({"a": 1})
-);
-
-
-/* isCallable(); */
-CUT.isTrue("isCallable();",
-      CEL.isCallable(function () {})
-  &&  CEL.isCallable(new Function())
-  && !CEL.isCallable({"a": 1})
 );
 
 
@@ -3163,56 +3095,6 @@ CUT.isTrue("isElement();",
   && !CEL.isElement(document.createComment("sample comment"))
   && !CEL.isElement([])
 );
-
-
-/* isNumeric(); begin */
-CUT.isTrue("isNumeric(); true",
-  CEL.isNumeric(-42)
-    && CEL.isNumeric(-1.42)
-    && CEL.isNumeric(-0.42)
-    && CEL.isNumeric(0)
-    && CEL.isNumeric(0.42)
-    && CEL.isNumeric(.42)
-    && CEL.isNumeric(1.42)
-    && CEL.isNumeric(42)
-    && CEL.isNumeric(8e5)
-    && CEL.isNumeric(-8e5)
-    && CEL.isNumeric(0x89f)
-    && CEL.isNumeric(-0x89f)
-    && CEL.isNumeric("-42")
-    && CEL.isNumeric("-1.42")
-    && CEL.isNumeric("-0.42")
-    && CEL.isNumeric("0")
-    && CEL.isNumeric("0.42")
-    && CEL.isNumeric(".42")
-    && CEL.isNumeric("1.42")
-    && CEL.isNumeric("42")
-    && CEL.isNumeric("8e5")
-    && CEL.isNumeric("-8e5")
-    && CEL.isNumeric("0x89f")
-    && CEL.isNumeric(42n)
-    && CEL.isNumeric(0n)
-);
-CUT.isFalse("isNumeric(); false",
-  CEL.isNumeric(null)
-    || CEL.isNumeric(undefined)
-    || CEL.isNumeric(NaN)
-    || CEL.isNumeric("NaN")
-    || CEL.isNumeric("1,42")
-    || CEL.isNumeric("#foo")
-    || CEL.isNumeric("1.2.3")
-    || CEL.isNumeric("")
-    || CEL.isNumeric("bar")
-    || CEL.isNumeric(" ")
-    || CEL.isNumeric("\r\n")
-    || CEL.isNumeric("true")
-    || CEL.isNumeric("false")
-    || CEL.isNumeric("1<10")
-    || CEL.isNumeric([])
-    || CEL.isNumeric({})
-    || CEL.isNumeric("-0x89f")
-);
-/* isNumeric(); end */
 
 
 /* isTypedArray(); begin */
@@ -3326,19 +3208,6 @@ CUT.isTrue(
   "createPolyfillProperty(); - <code>" + JSON.stringify(token1) + "</code>",
   CEL.createPolyfillProperty(token1, "c", 3)
     && Object.keys(token1).includes("c") && ("c" in token1)
-);
-
-
-/* deleteOwnProperty(); */
-token1 = {"a": 1, "b": 2};
-token2 = "" + CEL.deleteOwnProperty(token1, "a");
-token2 += " " + CEL.deleteOwnProperty(token1, "a");
-token2 += " " + CEL.deleteOwnProperty(token1, "a");
-token1 = {"a": 1, "b": 2};
-token2 += " " + CEL.deleteOwnProperty(token1, "a", true);
-token2 += " " + CEL.deleteOwnProperty(token1, "a", true);
-CUT.isEqual("deleteOwnProperty(); - <code>\"" + token2 + "\"</code>", token2,
-  "1 -1 -1 1 -1"
 );
 
 
