@@ -483,7 +483,7 @@ Name|Description
 `clamp(value,min,max);`|__Stability: 4 - Stable.__<BR>If the given value is between the min and max values, then this function returns the value. If smaller then the min value, then the return value is the min. If greater then the max value, then the return value is the max. All of the parameters are mandatory and can be `number` or `bigint` and if not these types, then will be converted to number. The return value is `number` or `bigint` or throw a rangeerror, if the parameters are invalid.
 `div(value1,value2);`|__Stability: 4 - Stable.__<BR>Performs integer division type safely. Works for both `number` and `bigint` values. All of the parameter is mandatory and can be both number or both bigint. The return value is `number` or `bigint`.
 `divMod(value1,value2);`|__Stability: 4 - Stable.__<BR>Performs integer division type safely. Works for both `number` and `bigint` values. All of the parameter is mandatory and can be both number or both bigint. The return value is `number` or `bigint`.
-`inRange(value,min,max);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is between the min and max values. All of the parameters are mandatory and have to be number. The return value is boolean.
+`inRange(value,min,max);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is between the min and max values. All of the parameters are mandatory and have to be number or bigint. The return value is boolean.
 `isEven(value);`|__Stability: 4 - Stable.__<BR>Checks if a number is a safe integer and even. Supports number and bigint types. The return value is boolean.
 `isBigInt64(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is a BigInt (Int64) value between -2^63 and 2^63 - 1. The return value is boolean.
 `isBigUInt64(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is a BigInt (Int64) value between 0 and 2^64 - 1. The return value is boolean.
@@ -499,7 +499,7 @@ Name|Description
 `minmax(value,min,max);`|__Stability: 4 - Stable.__<BR>This is an alias of the `clamp(value,min,max);`.
 `mod(value1,value2);`|__Stability: 4 - Stable.__<BR>Computes the integer remainder (modulus) type safely. Works for both `number` and `bigint` values. All of the parameter is mandatory and can be both number or both bigint. The return value is `number` or `bigint`.
 `mul(value1,value2);`|__Stability: 4 - Stable.__<BR>Performs multiplication type safely. Works for both `number` and `bigint` values. All of the parameter is mandatory and can be both number or both bigint. The return value is `number` or `bigint`.
-`product(value1[,valueN]);`|__Stability: 4 - Stable.__<BR>This function returns the product value from the parameter values.
+`product(value1[,valueN]);`|__Stability: 4 - Stable.__<BR>This function returns the product value from the parameter values (numbers and bigints).
 `randomFloat([max]);`|__Stability: 4 - Stable.__<BR>Get a random float number value within 0 and max value. Without parameter the maximum value is 100.
 `randomFloat(min,max);`|__Stability: 4 - Stable.__<BR>Get a random float number value within min and max value.
 `randomInt([max]);`|__Stability: 4 - Stable.__<BR>Get a random integer number value within 0 and max value. Without parameter the maximum value is 100.

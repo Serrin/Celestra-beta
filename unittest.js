@@ -1781,10 +1781,7 @@ CUT.isEqual("castArray(); 01",
   JSON.stringify(CEL.castArray("abc")),
   "[\"abc\"]"
 );
-CUT.isEqual("castArray(); 02",
-  JSON.stringify(CEL.castArray(3)),
-  "[3]"
-);
+CUT.isEqual("castArray(); 02", JSON.stringify(CEL.castArray(3)), "[3]");
 CUT.isEqual("castArray(); 03",
   JSON.stringify(CEL.castArray([3, 4, 5])),
   "[3,4,5]"
