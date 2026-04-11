@@ -363,11 +363,12 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <p><a href="#FN-minmax();">minmax();</a></p>
       <p><a href="#FN-mod();">mod();</a></p>
       <p><a href="#FN-mul();">mul();</a></p>
+      <p><a href="#FN-pow();">pow();</a></p>
       <p><a href="#FN-product();">product();</a></p>
       <p><a href="#FN-randomFloat();">randomFloat();</a></p>
       <p><a href="#FN-randomInt();">randomInt();</a></p>
       <p><a href="#FN-signbit();">signbit();</a></p>
-      <p><a href="#FN-sum();">sum();</a></p>
+      <p><a href="#FN-pow();">pow();</a></p>
       <p><a href="#FN-sub();">sub();</a></p>
       <p><a href="#FN-toBigInt64();">toBigInt64();</a></p>
       <p><a href="#FN-toBigUInt64();">toBigUInt64();</a></p>
@@ -833,7 +834,7 @@ globalThis.CEL = celestra;
     </tr>
     <tr id="FN-bind();">
       <td><code>bind(function,context);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Returns a function that is bound to a context. Both of the parameters are mandatory.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Returns a <code>function</code> that is bound to a context. Both of the parameters are mandatory.</td>
     </tr>
     <tr id="FN-compose();">
       <td><code>compose(function1 [, functionN]);</code></td>
@@ -841,26 +842,26 @@ globalThis.CEL = celestra;
     </tr>
     <tr id="FN-constant();">
       <td><code>constant(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>A one time assignment function to create a constant value in ES5. This returns a function, which returns the given value. (In math: <code>f(x)=x</code>)</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>A one time assignment function to create a constant value in ES5. This returns a <code>function</code>, which returns the given value. (In math: <code>f(x)=x</code>)</td>
     </tr>
     <tr id="FN-createPolyfillMethod();">
       <td><code>createPolyfillMethod(object, property, value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function creates a writable, configurable and non-enumerable property with the given value in the object if the property doesn't exist in the object. The return value boolean and checks that the creating of the method was successful.<br/><strong>Example:</strong><br/><pre>CEL.createPolyfillMethod(Array.prototype, "at", function(...){...});</pre>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function creates a writable, configurable and non-enumerable property with the given value in the object if the property doesn't exist in the object. The return value <code>boolean</code> and checks that the creating of the method was successful.<br/><strong>Example:</strong><br/><pre>CEL.createPolyfillMethod(Array.prototype, "at", function(...){...});</pre>
     </td>
     </tr>
     <tr id="FN-createPolyfillProperty();">
       <td><code>createPolyfillProperty(object, property,value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function creates a writable, configurable and enumerable property with the given value in the object if the property doesn't exist in the object. The return value boolean and checks that the creating of the property was successful.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function creates a writable, configurable and enumerable property with the given value in the object if the property doesn't exist in the object. The return value <code>boolean</code> and checks that the creating of the property was successful.</td>
     </tr>
     <tr id="FN-curry();">
       <td><code>curry(function);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Curries a function, allowing it to be called with a single argument at a time and returning a new function that takes the next argument. The function parameter is mandatory.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Curries a <code>function</code>, allowing it to be called with a single argument at a time and returning a new function that takes the next argument. The function parameter is mandatory.</td>
     </tr>
     <tr id="FN-delay();">
       <td><code>delay(ms).then(callback);</code></td>
       <td>
         <span class="info">Stability: 4 - Stable.</span><br/>
-			  <p>A promise based delay function. The ms parameter is mandatory and have to be an integer (milliseconds).</p>
+        <p>A promise based delay function. The ms parameter is mandatory and have to be an integer (milliseconds).</p>
         <p><strong>Sample:</strong></p>
         <p><button onclick="CEL.delay(5000).then(() => alert('5 seconds')).catch(console.log.bind(console))	.finally(() => alert('done'));">try</button></p>
         <pre>
@@ -880,7 +881,7 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-eq();">
       <td><code>eq(value1, value2);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>SameValueZero equality (like <code>Object.is();</code>, but <code>+0 === -0</code>). All of the parameters are mandatory and can be any type. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>SameValueZero equality (like <code>Object.is();</code>, but <code>+0 === -0</code>). All of the parameters are mandatory and can be any type. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-F();">
       <td><code>F();</code></td>
@@ -888,16 +889,16 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-getUrlVars();">
       <td><code>getUrlVars([str=location.search]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Get the values of the url variables in an object from the <code>location.search</code> <strong>(default value)</strong> or another given url. The str parameter name is optional and can be a string.
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Get the values of the url variables in an <code>object</code> from the <code>location.search</code> <strong>(default value)</strong> or another given url. The str parameter name is optional and can be a <code>string</code>.
       <br/>Example: <code>"?showall=true&amp;order_by=updated&amp;o=asc"</code> -> <code>Object { showall: "true", order_by: "updated", o: "asc" }</code></td>
     </tr>
     <tr id="FN-gt();">
       <td><code>gt(value1, value2);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Strict type greater than. All of the parameters are mandatory and can be number, bigint, string or boolean, but the values have to be same type. If the type of the values are not the same, then return value is false. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Strict type greater than. All of the parameters are mandatory and can be <code>number</code>, <code>bigint</code>, <code>string</code> or <code>boolean<code>, but the values have to be same type. If the type of the values are not the same, then return value is false. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-gte();">
       <td><code>gte(value1, value2);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Strict type greater than or equal (SameValueZero). All of the parameters are mandatory and can be number, bigint, string or boolean, but the values have to be same type. If the type of the values are not the same, then return value is false. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Strict type greater than or equal (SameValueZero). All of the parameters are mandatory and can be <code>number</code>, <code>bigint</code>, <code>string</code> or <code>boolean</code>, but the values have to be same type. If the type of the values are not the same, then return value is false. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-identity();">
       <td><code>identity(value);</code></td>
@@ -905,35 +906,35 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-lt();">
       <td><code>lt(value1, value2);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Strict type less than. All of the parameters are mandatory and can be number, bigint, string or boolean, but the values have to be same type. If the type of the values are not the same, then return value is false. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Strict type less than. All of the parameters are mandatory and can be <code>number</code>, <code>bigint</code>, <code>string</code> or <code>boolean</code>, but the values have to be same type. If the type of the values are not the same, then return value is false. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-lte();">
       <td><code>lte(value1, value2);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Strict type less than or equal (SameValueZero). All of the parameters are mandatory and can be number, bigint, string or boolean, but the values have to be same type. If the type of the values are not the same, then return value is false. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Strict type less than or equal (SameValueZero). All of the parameters are mandatory and can be <code>number</code>, <code>bigint</code>, <code>string</code> or <code>boolean</code>, but the values have to be same type. If the type of the values are not the same, then return value is false. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-nanoid();">
       <td><code>nanoid([size=21[, alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"]]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Generate a nanoid. The size parameter is optional and the default value is 21. The alphabet parameter is optional and the default value is "A-Za-z0-9_-". The return value is the generated nanoid (string).<br>Example ID: <code>"QsZA2VVTgFIF3D-qFk5oc"</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Generate a nanoid. The size parameter is optional and the default value is 21. The alphabet parameter is optional and the default value is "A-Za-z0-9_-". The return value is the generated nanoid (<code>string</td>code>).<br>Example ID: <code>"QsZA2VVTgFIF3D-qFk5oc"</code></td>
     </tr>
     <tr id="FN-noop();">
       <td><code>noop();</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>It's an empty function (no operation) that returns undefined and usable for optional callback arguments.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>It's an empty function (no operation) that returns <code>undefined</code> and usable for optional callback arguments.</td>
     </tr>
     <tr id="FN-obj2string();">
       <td><code>obj2string(object);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Convert object to a querystring. The return value is the string. The object parameter is mandatory.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Convert object to a querystring. The return value is the <code>string</code>. The object parameter is mandatory.</td>
     </tr>
     <tr id="FN-omit();">
       <td><code>omit(object, keys);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Exclude (filter) keys from an object and return these keys and values in a new object (immutably). All of the parameters are mandatory and the keys has to be an array.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Exclude (filter) keys from an <code>object</code> and return these keys and values in a new object (immutably). All of the parameters are mandatory and the keys has to be an array.</td>
     </tr>
     <tr id="FN-once();">
       <td><code>once(function);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Ensures a function is only called once. The return value is a new function. The function parameter is mandatory.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Ensures a <code>function</code> is only called once. The return value is a new function. The function parameter is mandatory.</td>
     </tr>
     <tr id="FN-pick();">
       <td><code>pick(object, keys);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Select (filter) keys from an object and return these keys and values in a new object (immutably). All of the parameters are mandatory and the keys has to be an array.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Select (filter) keys from an <code>object</code> and return these keys and values in a new object (immutably). All of the parameters are mandatory and the keys has to be an array.</td>
     </tr>
     <tr id="FN-pipe();">
       <td><code>pipe(function1 [, functionN]);</code></td>
@@ -941,11 +942,11 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-randomBoolean();">
       <td><code>randomBoolean();</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Get a random boolean value. The return value is <code>true</code> or <code>false</code>.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Get a random <code>boolean</code> value. The return value is <code>true</code> or <code>false</code>.</td>
     </tr>
     <tr id="FN-randomUUIDv7();">
       <td><code>randomUUIDv7(v4 = false);</td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns a UUID v7, which cointains a timestamp too. For more information please read the <a href="https://www.rfc-editor.org/rfc/rfc9562.html#name-uuid-version-7" target="_blank">this page</a>!<br/>Example result: <code>"0195d74b-b8c8-7302-a7d3-919df45087f3"</code><br/>If the v4 parameter (optional) is <code>true</code>, then the version in the string will be 4.<br/>Example result: <code>"0195d74b-b8c8-4302-a7d3-919df45087f3"</code>.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns a UUID v7, which cointains a timestamp too. For more information please read the <a href="https://www.rfc-editor.org/rfc/rfc9562.html#name-uuid-version-7" target="_blank">this page</a>!<br/>Example result: <code>"0195d74b-b8c8-7302-a7d3-919df45087f3"</code><br/>If the v4 parameter (optional) is <code>true</code>, then the version in the <code>string</code> will be 4.<br/>Example result: <code>"0195d74b-b8c8-4302-a7d3-919df45087f3"</code>.</td>
     </tr>
     <tr id="FN-sizeIn();">
       <td><code>sizeIn(object);</code></td>
@@ -961,11 +962,11 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-timestampID();">
       <td><code>timestampID([size=21[,alphabet="123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"]]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Generate a timestamp based sortable ID. The size parameter is optional and the default value is 21, but if the given value smaller than 12, then the value will be 12. The alphabet parameter is optional and the default value is <code>"123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"</code>, same as BASE58. The return value is the generated id (string).<br/>Example ID: <code>"00lirtqi4e-wgGn8vGPyY"</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Generate a timestamp based sortable ID. The size parameter is optional and the default value is 21, but if the given value smaller than 12, then the value will be 12. The alphabet parameter is optional and the default value is <code>"123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"</code>, same as BASE58. The return value is the generated id (<code>string</code>).<br/>Example ID: <code>"00lirtqi4e-wgGn8vGPyY"</code></td>
     </tr>
     <tr id="FN-unBind();">
       <td><code>unBind(function);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v5.4.1: <code>toFunction</code>.</span><br/>Returns an unbinded function from an object method. The function parameter is mandatory.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v5.4.1: <code>toFunction</code>.</span><br/>Returns an unbinded function from an <code>object</code> method. The function parameter is mandatory.</td>
     </tr>
   </table>
 </div>
@@ -981,63 +982,63 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-b64Decode();">
       <td><code>b64Decode(string);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Unicode compatible base64 to string converter. Return the original string.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Unicode compatible base64 to <code>string</code> converter. Return the original <code>string</code>.</td>
     </tr>
     <tr id="FN-b64Encode();">
       <td><code>b64Encode(string);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Unicode compatible string to base64 converter. Return the encoded string.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Unicode compatible <code>string</code> to base64 converter. Return the encoded <code>string</code>.</td>
     </tr>
     <tr id="FN-strAt();">
       <td><code>strAt(string,index[,newChar]);</code></td>
       <td>
         <span class="info">Stability: 4 - Stable.</span><br/>
-        <p>If the newchar is undefined, then returns the unicode character, which has to be on the given index in the string. The index can be negative value (<code>-1 -> last</code>). If the index is out of the string length, then the return value is an empty string. All of the parameters are mandatory and index has to be an integer.</p>
-        <p>If the newChar is not undefined, then the indexed character will be replaced with the newChar and returns the modified string.</p>
+        <p>If the newchar is <code>undefined</code>, then returns the unicode character, which has to be on the given index in the <code>string</code>. The index can be negative value (<code>-1 -> last</code>). If the index is out of the <code>string</code> length, then the return value is an empty <code>string</code>. All of the parameters are mandatory and index has to be an integer.</p>
+        <p>If the newChar is not <code>undefined</code>, then the indexed character will be replaced with the newChar and returns the modified <code>string</code>.</p>
       </td>
     </tr>
     <tr id="FN-strCapitalize();">
       <td><code>strCapitalize(string);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function is unicode compatible and converts the first character to uppercase and the other characters to lowercase. The string parameter is mandatory. The return value is a string.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function is unicode compatible and converts the first character to uppercase and the other characters to lowercase. The <code>string</code> parameter is mandatory. The return value is a <code>string</code>.</td>
     </tr>
     <tr id="FN-strCodePoints();">
       <td><code>strCodePoints(string);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Returns the array of the unicode codepoints of characters of the given string. The string parameter is mandatory.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Returns the array of the unicode codepoints of characters of the given <code>string</code>. The <code>string</code> parameter is mandatory.</td>
     </tr>
     <tr id="FN-strCount();">
       <td><code>strCount(string, substring);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Counts the occurrences of a substring in a string. All of the parameters are mandatory and have to be string.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Counts the occurrences of a substring in a <code>string</code>. All of the parameters are mandatory and have to be <code>string</code>.</td>
     </tr>
     <tr id="FN-strDownFirst();">
       <td><code>strDownFirst(string);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function is unicode compatible and converts the first character to lowercase. The string parameter is mandatory. The return value is a string.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function is unicode compatible and converts the first character to lowercase. The <code>string</code> parameter is mandatory. The return value is a <code>string</code>.</td>
     </tr>
     <tr id="FN-strFromCodePoints();">
       <td><code>strFromCodePoints(iterator);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Returns the joined string of the given unicode codepoints. The iterator parameter is mandatory.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Returns the joined <code>string</code> of the given unicode codepoints. The iterator parameter is mandatory.</td>
     </tr>
     <tr id="FN-strHTMLEscape();">
       <td><code>strHTMLEscape(string);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function escapes these characters: <code>&#60;</code>, <code>&#62;</code>, <code>&amp;</code>, <code>"</code>, <code>'</code>. The String parameter is mandatory. The return value is the escaped string.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function escapes these characters: <code>&#60;</code>, <code>&#62;</code>, <code>&amp;</code>, <code>"</code>, <code>'</code>. The <code>string</code> parameter is mandatory. The return value is the escaped <code>string</code>.</td>
     </tr>
     <tr id="FN-strHTMLRemoveTags();">
       <td><code>strHTMLRemoveTags(string);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Remove HTML tags from the given string. The string parameter is mandatory. The return value is the new string.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Remove HTML tags from the given <code>string</code>. The <code>string</code> parameter is mandatory. The return value is the new <code>string</code>.</td>
     </tr>
     <tr id="FN-strUnHTMLEscape();">
       <td><code>strUnHTMLEscape(string);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function unescapes these characters: <code>&#60;</code>, <code>&#62;</code>, <code>&amp;</code>, <code>"</code>, <code>'</code>. The String parameter is mandatory. The return value is the unescaped string.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function unescapes these characters: <code>&#60;</code>, <code>&#62;</code>, <code>&amp;</code>, <code>"</code>, <code>'</code>. The <code>string</code> parameter is mandatory. The return value is the unescaped <code>string</code>.</td>
     </tr>
     <tr id="FN-strReverse();">
       <td><code>strReverse(string);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Returns the reversed variant of the given string. In the ES6 compatible browsers the result will be unicode compatible. The string parameter is mandatory.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Returns the reversed variant of the given <code>string</code>. In the ES6 compatible browsers the result will be unicode compatible. The <code>string</code> parameter is mandatory.</td>
     </tr>
     <tr id="FN-strPropercase();">
       <td><code>strPropercase(string);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function is unicode compatible and capitalizes every word of the given string. The string parameter is mandatory. The return value is a string.<br/><strong>Example:</strong><br/><code>CEL.strPropercase("arthur conan doyle");</code><br/>-><br/><code>"Arthur Conan Doyle"</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function is unicode compatible and capitalizes every word of the given <code>string</code>. The <code>string</code> parameter is mandatory. The return value is a <code>string</code>.<br/><strong>Example:</strong><br/><code>CEL.strPropercase("arthur conan doyle");</code><br/>-><br/><code>"Arthur Conan Doyle"</code></td>
     </tr>
     <tr id="FN-strSplice();">
       <td><code>strSplice(strin,index,count[,add]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function works like the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice" target="_blank">Array.prototype.splice();</a> and can remove characters on the index or replace with other string. The return value is the modified string.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function works like the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice" target="_blank">Array.prototype.splice();</a> and can remove characters on the index or replace with other <code>string</code>. The return value is the modified <code>string</code>.</td>
     </tr>
     <tr id="FN-strTitlecase();">
       <td><code>strTitlecase(string);</code></td>
@@ -1047,7 +1048,7 @@ CEL.delay(5000)
       <td><code>strTruncate(string, newLength[,omission = ""]);</code></td>
       <td>
         <span class="info">Stability: 4 - Stable.</span>
-        <br/>This function truncats the given string to the new length. If the new length is bigger than the original length, then the return value is the original string. The omission parameter is optional.
+        <br/>This function truncats the given <code>string</code> to the new length. If the new length is bigger than the original length, then the return value is the original <code>string</code>. The omission parameter is optional.
         <BR><strong>Samples:</strong>
         <br/><code>CEL.strTruncate("Arthur Dent", 6);</code> -> <code>"Arthur"</code>
         <br/><code>CEL.strTruncate("Arthur Dent", 6, "...");</code> -> <code>"Art..."</code>
@@ -1056,7 +1057,7 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-strUpFirst();">
       <td><code>strUpFirst(string);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function is unicode compatible and converts the first character to uppercase. The string parameter is mandatory. The return value is a string.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function is unicode compatible and converts the first character to uppercase. The <code>string</code> parameter is mandatory. The return value is a <code>string</code>.</td>
     </tr>
   </table>
 </div>
@@ -1076,7 +1077,7 @@ CEL.delay(5000)
     <tr id="FN-createFile();">
       <td><code>createFile(filename,content[,dataType]);</code></td>
       <td>
-        <p><span class="info">Stability: 4 - Stable.</span><br/>Create and save file without a server. The filename and content parameters are mandatory and have to be a string. The dataType parameter is optional and can be a string.  The default value of the dataType parameter is <code>text/plain</code>.</p>
+        <p><span class="info">Stability: 4 - Stable.</span><br/>Create and save file without a server. The filename and content parameters are mandatory and have to be a <code>string</code>. The dataType parameter is optional and can be a <code>string</code>.  The default value of the dataType parameter is <code>text/plain</code>.</p>
         <p><span class="info">Doesn't work in iOS browsers (Safari, Firefox and Chrome) and W10M Edge 14.</span></p>
       </td>
     </tr>
@@ -1088,13 +1089,13 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-domCreate();">
       <td><code>domCreate(type[,properties[,innerHTML]]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Create a new HTML element. The type is mandatory and has to be a string. The properties object is optional and sets the element properties. (class, style object/string, data-*, etc.) The innerHTML is optional and can be a string.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Create a new HTML element. The type is mandatory and has to be a <code>string</code>. The properties object is optional and sets the element properties. (class, style object/string, data-*, etc.) The innerHTML is optional and can be a <code>string</code>.</td>
     </tr>
     <tr id="FN-domCreate();">
       <td><code>domCreate(element descriptive object);</code></td>
       <td>
         <span class="info">Stability: 4 - Stable.</span><br/>
-        <p>Since v2.0.5, a new element can be created with an object. In this case the element descriptive object is mandatory. The <code>style</code> can be a subobject or a string.</p>
+        <p>Since v2.0.5, a new element can be created with an <code>object</code>. In this case the element descriptive object is mandatory. The <code>style</code> can be a subobject or a <code>string</code>.</p>
         <p><strong>Sample code:</strong></p>
         <pre>CEL.domCreate({
   elementType: "a",
@@ -1110,7 +1111,7 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-domFadeIn();">
       <td><code>domFadeIn(element [,duration [,display]]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Fade in and show animation for an element. The element is mandatory and has to be a HTML element. The duration parameter is optional and sets the animation time in milisec (the default is 500ms). The display is optional and can be a string (CSS display property values).</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Fade in and show animation for an element. The element is mandatory and has to be a HTML element. The duration parameter is optional and sets the animation time in milisec (the default is 500ms). The display is optional and can be a <code>string</code> (CSS display property values).</td>
     </tr>
     <tr id="FN-domFadeOut();">
       <td><code>domFadeOut(element [,duration]);</code></td>
@@ -1118,15 +1119,15 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-domFadeToggle();">
       <td><code>domFadeToggle(element [,duration [,display]]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Fade in or fade out animation which depends on the state of the element. The element is mandatory and has to be a HTML element. The duration parameter is optional and sets the animation time in millisecond (the default is 500ms). The display is optional and can be a string (CSS display property values).</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Fade in or fade out animation which depends on the state of the element. The element is mandatory and has to be a HTML element. The duration parameter is optional and sets the animation time in millisecond (the default is 500ms). The display is optional and can be a <code>string</code> (CSS display property values).</td>
     </tr>
     <tr id="FN-domGetCSS();">
       <td><code>domGetCSS(element [,property]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Get a CSS property value of an element or all of the css properties in an object. The element is mandatory and has to be a HTML element. The property is optional and can be a string.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Get a CSS property value of an element or all of the css properties in an <code>object</code>. The element is mandatory and has to be a HTML element. The property is optional and can be a <code>string</code>.</td>
     </tr>
     <tr id="FN-domGetCSSVar();">
       <td><code>domGetCSSVar(name);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns a value of a CSS variable or an empty string, if the variable is unset. The name parameter is mandatory and has to be a string. If the "--" characters are missing at the begin of the variable name, then the function will add these.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns a value of a CSS variable or an empty <code>string</code>, if the variable is unset. The name parameter is mandatory and has to be a <code>string</code>. If the "--" characters are missing at the begin of the variable name, then the function will add these.</td>
     </tr>
     <tr id="FN-domHide();">
       <td><code>domHide(element);</code></td>
@@ -1134,7 +1135,7 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-domIsHidden();">
       <td><code>domIsHidden(element);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the element is hidden. The element is mandatory and has to be a HTML element. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the element is hidden. The element is mandatory and has to be a HTML element. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-domReady();">
       <td><code>domReady(callback);</code></td>
@@ -1142,7 +1143,7 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-domSetCSS();">
       <td><code>domSetCSS(element, property,value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Set a CSS property value of an element. The element is mandatory and has to be a HTML element. The property is mandatory and has to be a string. The value is mandatory and has to be a string.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Set a CSS property value of an element. The element is mandatory and has to be a HTML element. The property is mandatory and has to be a <code>string</code>. The value is mandatory and has to be a <code>string</code>.</td>
     </tr>
     <tr>
       <td><code>domSetCSS(element, properties);</code></td>
@@ -1150,11 +1151,11 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-domSetCSSVar();">
       <td><code>domSetCSSVar(name,value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function set a value of a CSS variable. Both of the parameters are mandatory and have to be a string. If the "--" characters are missing at the begin of the variable name, then the function will add these.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function set a value of a CSS variable. Both of the parameters are mandatory and have to be a <code>string</code>. If the "--" characters are missing at the begin of the variable name, then the function will add these.</td>
     </tr>
     <tr id="FN-domShow();">
       <td><code>domShow(element [,display]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Show an element. The element is mandatory and has to be a HTML element. The display is optional and can be a string (CSS display values).</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Show an element. The element is mandatory and has to be a HTML element. The display is optional and can be a <code>string</code> (CSS display values).</td>
     </tr>
     <tr id="FN-domScrollToBottom();">
       <td><code>domScrollToBottom();</code></td>
@@ -1162,7 +1163,7 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-domScrollToElement();">
       <td><code>domScrollToElement(element [,top=true]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function is scrolling to top or the bottom of element. The element parameter is mandatory and the top parameter is optional and can be boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function is scrolling to top or the bottom of element. The element parameter is mandatory and the top parameter is optional and can be <code>boolean</code>.</td>
     </tr>
     <tr id="FN-domScrollToTop();">
       <td><code>domScrollToTop();</code></td>
@@ -1190,23 +1191,23 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-domToElement();">
       <td><code>domToElement(htmlString);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns a HTML element which is created from the htmlString parameter. The htmlString parameter is mandatory and has to be a string.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns a HTML element which is created from the htmlString parameter. The htmlString parameter is mandatory and has to be a <code>string</code>.</td>
     </tr>
     <tr id="FN-domToggle();">
       <td><code>domToggle(element [,display]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Show or hide an element. The element is mandatory and has to be a HTML element. The display is optional and can be a string (CSS display values).</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Show or hide an element. The element is mandatory and has to be a HTML element. The display is optional and can be a <code>string</code> (CSS display values).</td>
     </tr>
     <tr id="FN-importScript();">
       <td><code>importScript(script1[,scriptN]);</code></td>
       <td>
         <span class="info">Stability: 4 - Stable.</span><br/>
-        <p>Load JavaScript files. The first parameter is mandatory and has to be a string. The other parameters are optional and can be a string.</p>
+        <p>Load JavaScript files. The first parameter is mandatory and has to be a <code>string</code>. The other parameters are optional and can be a <code>string</code>.</p>
         <p><strong>Tip:</strong><br/>To prevent the caching of a js/css file use versioning in the file url. Example: <code>mylib.js?version=1.10.0</code></p>
       </td>
     </tr>
     <tr id="FN-importStyle();">
       <td><code>importStyle(style1[,styleN]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Load CSS files. The first parameter is mandatory and has to be a string. The other parameters are optional and can be a string.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Load CSS files. The first parameter is mandatory and has to be a <code>string</code>. The other parameters are optional and can be a <code>string</code>.</td>
     </tr>
     <tr id="FN-form2array();">
       <td><code>form2array(form);</code></td>
@@ -1214,7 +1215,7 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-form2string();">
       <td><code>form2string(form);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Convert (serialize) form input tag names and values to a query string. The return value is the string. The form parameter is mandatory and has to be a html form element.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Convert (serialize) form input tag names and values to a query <code>string</code>. The return value is the <code>string</code>. The form parameter is mandatory and has to be a html form element.</td>
     </tr>
     <tr id="FN-getDoNotTrack();">
       <td><code>getDoNotTrack();</code></td>
@@ -1224,13 +1225,13 @@ CEL.delay(5000)
       <td><code>getFullscreen();</code></td>
       <td>
         <span class="info">Stability: 4 - Stable.</span><br/>
-        Get the fullscreen element. If this isn't set, then the return value is undefined.
+        Get the fullscreen element. If this isn't set, then the return value is <code>undefined</code>.
         <br/>Please check the incompatibility issues on the <a href="http://caniuse.com/#search=fullscreen" target="_blank">http://caniuse.com/#search=fullscreen</a> page.
       </td>
     </tr>
     <tr id="FN-getLocation();">
       <td><code>getLocation(success[,error]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Get the current location as an object with the coordinates. The success is mandatory and has to be a function. The error is optional and can be a function.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Get the current location as an <code>object</code> with the coordinates. The success is mandatory and has to be a <code>function</code>. The error is optional and can be a <code>function</code>.</td>
     </tr>
     <tr id="FN-setFullscreenOff();">
       <td><code>setFullscreenOff();</code></td>
@@ -1238,7 +1239,7 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-setFullscreenOn();">
       <td><code>setFullscreenOn(selector);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Set the fullscreen element. The selector can be a css selector string or an element.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Set the fullscreen element. The selector can be a css selector <code>string</code> or an element.</td>
     </tr>
     <tr id="FN-qs();">
       <td><code>qs(selector[,context]);</code></td>
@@ -1265,57 +1266,57 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-is();">
       <td><code>is(value[,expectedType[,Throw=false]];</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value type or class is the given expectedType. The expectedType can be a type string, constructor function or an array of the type strings and constructors. If the Throw is true and the value is not matched with the expectedType, then a TypeError will be thrown with detailed error message. The return value is boolean or the type or constructor of the value.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value type or class is the given expectedType. The expectedType can be a type <code>string</code>, constructor function or an array of the type strings and constructors. If the Throw is true and the value is not matched with the expectedType, then a TypeError will be thrown with detailed error message. The return value is <code>boolean</code> or the type or constructor of the value.</td>
     </tr>
     <tr id="FN-isTypedCollection();">
       <td><code>isTypedCollection(iter, expectedType, Throw = false);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether values of the provided iterable or iterator are the given expectedType. The expectedType is mandatory and can be a type string, constructor function or an array of the type strings and constructors. If the Throw is true and the values are not matched with the expectedType, then a TypeError will be thrown with detailed error message. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether values of the provided iterable or iterator are the given expectedType. The expectedType is mandatory and can be a type <code>string</code>, constructor function or an array of the type strings and constructors. If the Throw is true and the values are not matched with the expectedType, then a TypeError will be thrown with detailed error message. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isArraylike();">
       <td><code>isArraylike(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an arraylike object. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an arraylike object. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isArrowFunction();">
       <td><code>isArrowFunction(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v6.5.0: <code>isArrowFn();</code></span><br/>This function determines whether the provided value is an arrow function. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v6.5.0: <code>isArrowFn();</code></span><br/>This function determines whether the provided value is an arrow function. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isAsyncIterable();">
       <td><code>isAsyncIterable(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an async iterable object. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an async iterable object. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isAsyncIterator();">
       <td><code>isAsyncIterator(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an async iterator object. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an async iterator object. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isAsyncFunction();">
       <td><code>isAsyncFunction(value);</td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v6.5.0: <code>isAsyncFn();</code></span><br/>This function determines whether the provided value is an async function. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v6.5.0: <code>isAsyncFn();</code></span><br/>This function determines whether the provided value is an async function. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isAsyncGeneratorFunction();">
       <td><code>isAsyncGeneratorFunction(value);</td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v6.5.0: <code>isAsyncGeneratorFn();</code></span><br/>This function determines whether the provided value is an async generator function. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v6.5.0: <code>isAsyncGeneratorFn();</code></span><br/>This function determines whether the provided value is an async generator function. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isCallable();">
       <td><code>isCallable(value);</code></td>
-      <td><span class="removed">Stability: 0 - Removed in v6.6.0</span><br/>This function determines whether the provided object has a call method. The return value is boolean.</td>
+      <td><span class="removed">Stability: 0 - Removed in v6.6.0</span><br/>This function determines whether the provided object has a call method. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isChar();">
       <td><code>isChar(value);</code></td>
-      <td><span class="removed">Stability: 0 - Removed in v6.6.0</span><br/>This function determines whether the provided value is a string with length 1 character. This function is unicode compatible. The return value is boolean.</td>
+      <td><span class="removed">Stability: 0 - Removed in v6.6.0</span><br/>This function determines whether the provided value is a <code>string</code> with length 1 character. This function is unicode compatible. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isCoercedObject();">
       <td><code>isCoercedObject(object);</td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>If the given object is a coerced object (Number, BigInt, String, Boolean, Symbol objects), then the return value is the constructor function. In any other cases retuns false. The object parameter is mandatory.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>If the given object is a coerced object (<code>Number</code>, <code>BigInt</code>, <code>String</code>, <code>Boolean</code>, <code>Symbol</code> objects), then the return value is the constructor function. In any other cases retuns false. The object parameter is mandatory.</td>
     </tr>
     <tr id="FN-isDeepStrictEqual();">
       <td><code>isDeepStrictEqual(value1, value2);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided values are deep equals. (<em>Deep strict equality + NaN equality: primitives (SameValue - Object.is()), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer</em>) The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided values are deep equals. (<em>Deep strict equality + NaN equality: primitives (SameValue - Object.is()), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer</em>) The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isElement();">
       <td><code>isElement(value);</code></td>
       <td>
         <span class="info">Stability: 4 - Stable.</span><br/>
-        This function determines whether the provided value is a HTML element. The return value is boolean.
+        This function determines whether the provided value is a HTML element. The return value is <code>boolean</code>.
         <p>
           For other node types (document, text, comment, etc.) checking please read this MDN page:
           <br/><a href=" https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType" target="_blank"> https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType</a>
@@ -1324,27 +1325,27 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-isEmpty();">
       <td><code>isEmpty(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v6.6.0: <code>isEmptyValue();</code></span><br/>This function determines whether the provided value is an empty value. Returns true in these cases: null, undefined, NaN, array, typedarray, arraybuffer, dataview, object, arraylike object, map, set, iterator, iterable. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v6.6.0: <code>isEmptyValue();</code></span><br/>This function determines whether the provided value is an empty value. Returns true in these cases: <code>null</code>, <code>undefined</code>, <code>NaN</code>, <code>array</code>, <code>typedarray</code>, <code>arraybuffer</code>, <code>dataview</code>, <code>object</code>, arraylike object, <code>map</code>, <code>set</code>, <code>iterator</code>, <code>iterable</code>. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isFunction();">
       <td><code>isFunction(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a function. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a <code>function</code>. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isGeneratorFunction();">
       <td><code>isGeneratorFunction(value);</td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v6.5.0: <code>isGeneratorFn();</code></span><br/>This function determines whether the provided value is a generator function. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v6.5.0: <code>isGeneratorFn();</code></span><br/>This function determines whether the provided value is a generator function. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isIndex();">
       <td><code>isIndex(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a valid arraylike index number. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a valid arraylike index <code>number</code>. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isIterable();">
       <td><code>isIterable(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an iterable object. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an iterable object. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isIterator();">
       <td><code>isIterator(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an iterator. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an iterator. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isLength();">
       <td><code>isLength(value);</code></td>
@@ -1352,95 +1353,95 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-isNonNullable();">
       <td><code>isNonNullable(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Checks if the given value is NonNullable (not null or undefined). The value parameter is mandatory and can be any type. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Checks if the given value is NonNullable (not <code>null</code> or <code>undefined</code>). The value parameter is mandatory and can be any type. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isNonNullablePrimitive();">
       <td><code>isNonNullablePrimitive(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Checks if the given value is NonNullable (not null, undefined, object or function). The value parameter is mandatory and can be any type. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Checks if the given value is NonNullable (not <code>null</code>, <code>undefined</code>, object or function). The value parameter is mandatory and can be any type. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isNull();">
       <td><code>isNull(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is null. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is <code>null</code>. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isNullish();">
       <td><code>isNullish(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v6.1.0: <code>isNil();</code>.</span><br/>This function determines whether the provided value is null or undefined. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v6.1.0: <code>isNil();</code>.</span><br/>This function determines whether the provided value is <code>null</code> or <code>undefined</code>. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isNumeric();">
       <td><code>isNumeric(value);</code></td>
-      <td><span class="removed">Stability: 0 - Removed in v6.6.0</span><br/>This function determines whether the provided value is a number or can be converted to number. The return value is boolean.</td>
+      <td><span class="removed">Stability: 0 - Removed in v6.6.0</span><br/>This function determines whether the provided value is a <code>number</code> or can be converted to <code>number</code>. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isObject();">
       <td><code>isObject(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an object or function and not null. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an <code>object</code> or function and not <code>null</code>. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isPlainObject();">
       <td><code>isPlainObject(value);</td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an object, which own prototype is the Object.prototype or null. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an <code>object</code>, which own prototype is the Object.prototype or <code>null</code>. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isPrimitive();">
       <td><code>isPrimitive(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is not null, not object and not function. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is not <code>null</code>, not object and not function. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isPropertyKey();">
       <td><code>isPropertyKey(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a valid propertx key (string or symbol). The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a valid propertx key (<code>string</code> or <code>symbol</code>). The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isProxy();">
       <td><code>isProxy(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a proxy. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a proxy. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isRegexp();">
       <td><code>isRegexp(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a regexp. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a regexp. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isSameInstance();">
       <td><code>isSameInstance(value1, value2,Contructor);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns true if the values are same class and uses the <code>instanceof</code> operator. The parameters are mandatory. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns true if the values are same class and uses the <code>instanceof</code> operator. The parameters are mandatory. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isSameType();">
       <td><code>isSameType(value1, value2);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns true if the values are same type or both are null or both are undefined. The parameters are mandatory. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns true if the values are same type or both are <code>null</code> or both are <code>undefined</code>. The parameters are mandatory. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isTypedArray();">
       <td><code>isTypedArray(value);</td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a typedarray. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a typedarray. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isUndefined();">
       <td><code>isUndefined(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is undefined. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is <code>undefined</code>. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-toIndex();">
       <td><code>toIndex(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function converts the provided value to a valid arraylike index number. The return value is an unsigned integer (number). If the value is out of integer range, then a RangeError will be thrown.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function converts the provided value to a valid arraylike index <code>number</code>. The return value is an unsigned integer (number). If the value is out of integer range, then a RangeError will be thrown.</td>
     </tr>
     <tr id="FN-toLength();">
       <td><code>toLength(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function converts the provided value to a valid arraylike length number. The return value is an unsigned integer (number).</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function converts the provided value to a valid arraylike length <code>number</code>. The return value is an unsigned integer (number).</td>
     </tr>
     <tr id="FN-toObject();">
       <td><code>toObject(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>If the given value is not null or undefined, then the return value is an object, which has been converted from the value, else a <code>TypeError()</code> will be throwned.<br/>If the given value is an object, function or symbol, then the original value will return.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>If the given value is not <code>null</code> or <code>undefined</code>, then the return value is an <code>object</code>, which has been converted from the value, else a <code>TypeError()</code> will be throwned.<br/>If the given value is an <code>object</code>, <code>function</code> or <code>symbol</code>, then the original value will return.</td>
     </tr>
     <tr id="FN-toPrimitive();">
       <td><code>toPrimitive(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v6.5.0: <code>toPrimitiveValue();</code></span><br/>
-        If the given value is a primitive value (null, undefined, string, number, bigint, boolean, symbol), then the original value will return.<br/>
-        If the given value is an object, which can be converted to a primitive variable, then the return value is a primitive variable.<br/>
-        If the given value is a not convertable object (array, map, set, etc.), function or symbol, then the original value will return.
+        If the given value is a primitive value (null, <code>undefined</code>, <code>string</code>, <code>number</code>, <code>bigint</code>, <code>boolean</code>, <code>symbol</code>), then the original value will return.<br/>
+        If the given value is an <code>object</code>, which can be converted to a primitive variable, then the return value is a primitive variable.<br/>
+        If the given value is a not convertable <code>object<code> (<code>array</code>, <code>map</code>, <code>set</code>, etc.), <code>function<code> or <code>symbol</code>, then the original value will return.
       </td>
     </tr>
     <tr id="FN-toPropertyKey();">
       <td><code>toPropertyKey(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function convert the given value to a valid property key. If the value is not symbol, then will be converted to string, else the symbol will be returned.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function convert the given value to a valid property key. If the value is not <code>symbol</code>, then will be converted to <code>string</code>, else the <code>symbol</code> will be returned.</td>
     </tr>
     <tr id="FN-toSafeString();">
       <td><code>toSafeString(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function is a general purpose, type safe, predictable stringifier. The value parameter is mandatory and can be any type. The return value is a string.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function is a general purpose, type safe, predictable stringifier. The value parameter is mandatory and can be any type. The return value is a <code>string</code>.</td>
     </tr>
     <tr id="FN-typeOf();">
       <td><code>typeOf(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v6.1.0: <code>type();</code>.</span><br/>This function returns the typeof operator result of the given value, except the null object (<code>"null"</code> instead of <code>"object"</code>).</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v6.1.0: <code>type();</code>.</span><br/>This function returns the typeof operator result of the given value, except the <code>null</code> object (<code>"null"</code> instead of <code>"object"</code>).</td>
     </tr>
   </table>
 </div>
@@ -1466,11 +1467,11 @@ CEL.delay(5000)
         <p>Clear all of the cookies. The return value (boolean) is determines whether the cookie was set with the name before the removing.</p>
         <p><strong>Function parameters:</strong></p>
         <ul>
-          <li>The path is optional and can be a string. <em>(Default value: "/")</em> To the local path set the <code>""</code> value!</li>
-          <li>The domain is optional and can be a string.</li>
-          <li>The secure is optional and can be a boolean.</li>
-          <li>The SameSite is optional and can be a string. <em>("Lax", "Strict", "None", default value: "Lax")</em></li>
-          <li>The HttpOnly is optional and can be a boolean.</li>
+          <li>The path is optional and can be a <code>string</code>. <em>(Default value: "/")</em> To the local path set the <code>""</code> value!</li>
+          <li>The domain is optional and can be a <code>string</code>.</li>
+          <li>The secure is optional and can be a <code>boolean</code>.</li>
+          <li>The SameSite is optional and can be a <code>string</code>. <em>("Lax", "Strict", "None", default value: "Lax")</em></li>
+          <li>The HttpOnly is optional and can be a <code>boolean</code>.</li>
         </ul>
       </td>
     </tr>
@@ -1482,13 +1483,13 @@ CEL.delay(5000)
       <td><code>getCookie([name]);</code></td>
       <td>
         <span class="info">Stability: 4 - Stable.</span><br/>
-        Get the value of a cookie or all cookies in an object.
-        <br/>With the name parameter (string) the return value is the current cookie value or null. <br/>Without the parameter the return value is an object with the values or an empty object.
+        Get the value of a cookie or all cookies in an <code>object</code>.
+        <br/>With the name parameter (string) the return value is the current cookie value or <code>null</code>. <br/>Without the parameter the return value is an <code>object</code> with the values or an empty object.
       </td>
     </tr>
     <tr id="FN-hasCookie();">
       <td><code>hasCookie(name);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the cookie is set with the name parameter. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the cookie is set with the name parameter. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-removeCookie();">
       <td><code>removeCookie(name[, path="/"[, domain[, secure[, SameSite="Lax"[, HttpOnly]]]]]);</code></td>
@@ -1497,12 +1498,12 @@ CEL.delay(5000)
         <p>Remove a cookie. The return value (boolean) is determines whether the cookie was set with the name before the removing.</p>
         <p><strong>Function parameters:</strong></p>
         <ul>
-          <li>The name is mandatory and has to be a string.</li>
-          <li>The path is optional and can be a string. <em>(Default value: "/")</em> To the local path set the <code>""</code> value!</li>
-          <li>The domain is optional and can be a string.</li>
-          <li>The secure is optional and can be a boolean.</li>
-          <li>The SameSite is optional and can be a string. <em>("Lax", "Strict", "None", default value: "Lax")</em></li>
-          <li>The HttpOnly is optional and can be a boolean.</li>
+          <li>The name is mandatory and has to be a <code>string</code>.</li>
+          <li>The path is optional and can be a <code>string</code>. <em>(Default value: "/")</em> To the local path set the <code>""</code> value!</li>
+          <li>The domain is optional and can be a <code>string</code>.</li>
+          <li>The secure is optional and can be a <code>boolean</code>.</li>
+          <li>The SameSite is optional and can be a <code>string</code>. <em>("Lax", "Strict", "None", default value: "Lax")</em></li>
+          <li>The HttpOnly is optional and can be a <code>boolean</code>.</li>
         </ul>
         <p>The return value (boolean) is determines whether the cookie was set with the name before the removing.</p>
       </td>
@@ -1518,14 +1519,14 @@ CEL.delay(5000)
         <p>Set a cookie.</p>
         <p><strong>Function parameters:</strong></p>
         <ul>
-          <li>The name is mandatory and has to be a string.</li>
-          <li>The value is mandatory and has to be a string.</li>
-          <li>The hours is the expire value and optional and can be a number. <em>(Default value: 8760 = 1 year)</em></li>
-          <li>The path is optional and can be a string. <em>(Default value: "/")</em> To the local path set the <code>""</code> value!</li>
-          <li>The domain is optional and can be a string.</li>
-          <li>The secure is optional and can be a boolean.</li>
-          <li>The SameSite is optional and can be a string. <em>("Lax", "Strict", "None", default value: "Lax")</em></li>
-          <li>The HttpOnly is optional and can be a boolean.</li>
+          <li>The name is mandatory and has to be a <code>string</code>.</li>
+          <li>The value is mandatory and has to be a <code>string</code>.</li>
+          <li>The hours is the expire value and optional and can be a <code>number</code>. <em>(Default value: 8760 = 1 year)</em></li>
+          <li>The path is optional and can be a <code>string</code>. <em>(Default value: "/")</em> To the local path set the <code>""</code> value!</li>
+          <li>The domain is optional and can be a <code>string</code>.</li>
+          <li>The secure is optional and can be a <code>boolean</code>.</li>
+          <li>The SameSite is optional and can be a <code>string</code>. <em>("Lax", "Strict", "None", default value: "Lax")</em></li>
+          <li>The HttpOnly is optional and can be a <code>boolean</code>.</li>
         </ul>
       </td>
     </tr>
@@ -1567,17 +1568,17 @@ CEL.delay(5000)
     <tr id="FN-arrayRange();">
       <td><code>arrayRange([start=0[,end=99[,step=1]]]);</code></td>
       <td>
-        <span class="info">Stability: 4 - Stable.</span><br/>Returns the array of values between the start and end parameters. All of the parameters are mandatory and have to be a number. Default parameter values: start = 0, end = 99, step = 1.
+        <span class="info">Stability: 4 - Stable.</span><br/>Returns the array of values between the start and end parameters. All of the parameters are mandatory and have to be a <code>number</code>. Default parameter values: start = 0, end = 99, step = 1.
         <br/><strong>Example:</strong><br/><code>CEL.arrayRange("A".codePointAt(0),"Z".codePointAt(0)).map((v)=>String.fromCodePoint(v));</code><br/>-><br/><code>code>Array(26) [ "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" ]</code>
       </td>
     </tr>
     <tr id="FN-arrayRemove();">
       <td><code>arrayRemove(array,value[,all=false]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Remove the first or all equivalent values from the array. Returns true, when the value was found and false when not found. The array and value parameters are mandatory. The all parameter is optional and has to be a boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Remove the first or all equivalent values from the array. Returns true, when the value was found and false when not found. The array and value parameters are mandatory. The all parameter is optional and has to be a <code>boolean</code>.</td>
     </tr>
     <tr id="FN-arrayRemoveBy();">
       <td><code>arrayRemoveBy(array,callback[,all=false]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Remove the first or all values from the array with which the given function returns true. Returns true, when the value was found and false when not found. The array and callback parameters are mandatory. The all parameter is optional and has to be a boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Remove the first or all values from the array with which the given function returns true. Returns true, when the value was found and false when not found. The array and callback parameters are mandatory. The all parameter is optional and has to be a <code>boolean</code>.</td>
     </tr>
     <tr id="FN-arrayRepeat();">
       <td><code>arrayRepeat(value[,step=100]);</code></td>
@@ -1597,7 +1598,7 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-count();">
       <td><code>count((iterator,callback););</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function executes a counter function (that you provide) on each element of the iterator, returning in a single output value. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function executes a counter function (that you provide) on each element of the iterator, returning in a single output value. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a <code>function</code>.</td>
     </tr>
     <tr id="FN-drop();">
       <td><code>drop(iterator[,n=1]);</code></td>
@@ -1609,11 +1610,11 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-dropRightWhile();">
       <td><code>dropRightWhile(iterator,callback);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Drop the elements from the end of an iterator while the callback (filter) function returns true and yield the remained elements. The callback function will be called with the actual element of the iterator. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Drop the elements from the end of an iterator while the callback (filter) function returns true and yield the remained elements. The callback function will be called with the actual element of the iterator. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a <code>function</code>.</td>
     </tr>
     <tr id="FN-dropWhile();">
       <td><code>dropWhile(iterator,callback);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Drop the elements of an iterator while the callback (filter) function returns true and yield the remained elements. The callback function will be called with the actual element of the iterator. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Drop the elements of an iterator while the callback (filter) function returns true and yield the remained elements. The callback function will be called with the actual element of the iterator. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a <code>function</code>.</td>
     </tr>
     <tr id="FN-enumerate();">
       <td><code>enumerate(iterator[,offset=0]);</code></td>
@@ -1625,19 +1626,19 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-every();">
       <td><code>every(iterator,callback);</code></td>
-      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Iterator.from(iterable/iterator).every();</code></span><br/>This function whether all elements in the iterator pass the test implemented by the provided function. It returns a Boolean value and all of the parameters are mandatory. If the iterator is empty, then the return value is false.</td>
+      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Iterator.from(iterable/iterator).every();</code></span><br/>This function whether all elements in the iterator pass the test implemented by the provided function. It returns a <code>boolean</code> value and all of the parameters are mandatory. If the iterator is empty, then the return value is false.</td>
     </tr>
     <tr id="FN-filter();">
       <td><code>filter(iterator,callback);</code></td>
-      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Iterator.from(iterable/iterator).filter();</code></span><br/>Filter and yield elements of an iterator. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function and called with two parameters: the item and the index of the item (only a counter).</td>
+      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Iterator.from(iterable/iterator).filter();</code></span><br/>Filter and yield elements of an iterator. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a <code>function</code> and called with two parameters: the item and the index of the item (only a counter).</td>
     </tr>
     <tr id="FN-find();">
       <td><code>find(iterator,callback);</code></td>
-      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Iterator.from(iterable/iterator).find();</code></span><br/>This function returns the value of the first element in the iterator that satisfies the provided testing function. Otherwise undefined is returned. All of the parameters are mandatory.</td>
+      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Iterator.from(iterable/iterator).find();</code></span><br/>This function returns the value of the first element in the iterator that satisfies the provided testing function. Otherwise <code>undefined</code> is returned. All of the parameters are mandatory.</td>
     </tr>
     <tr id="FN-findLast();">
       <td><code>findLast(iterator,callback);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns the value of the last element in the iterator that satisfies the provided testing function. Otherwise undefined is returned. All of the parameters are mandatory.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns the value of the last element in the iterator that satisfies the provided testing function. Otherwise <code>undefined</code> is returned. All of the parameters are mandatory.</td>
     </tr>
     <tr id="FN-first();">
       <td><code>first(iterator);</code></td>
@@ -1645,11 +1646,11 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-forEach();">
       <td><code>forEach(iterator,callback);</code></td>
-      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Iterator.from(iterable/iterator).forEach();</code></span><br/>This function executes a provided function once for each iterator items. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function and called with two parameters: the item and the index of the item (only a counter).</td>
+      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Iterator.from(iterable/iterator).forEach();</code></span><br/>This function executes a provided function once for each iterator items. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a <code>function</code> and called with two parameters: the item and the index of the item (only a counter).</td>
     </tr>
     <tr id="FN-forEachRight();">
       <td><code>forEachRight(iterator,callback);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function executes a provided function once for each iterator items in reversed order. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function and called with two parameters: the item and the index of the item (only a reversed counter).</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function executes a provided function once for each iterator items in reversed order. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a <code>function</code> and called with two parameters: the item and the index of the item (only a reversed counter).</td>
     </tr>
     <tr id="FN-head();">
       <td><code>head(iterator);</code></td>
@@ -1674,7 +1675,7 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-isSuperset();">
       <td><code>isSuperset(superCollection,subCollection);</code></td>
-      <td><span class="removed">Stability: 0 - Removed in v6.6.0</span><br/><span class="info">Can be replaced with <code>Set.prototype.isSupersetOf();</code>.</span><br/>This function determines whether the first provided iterator is superset of the second iterator. The parameters are mandatory and all parameters can be  an iterator. The return value is a boolean.</td>
+      <td><span class="removed">Stability: 0 - Removed in v6.6.0</span><br/><span class="info">Can be replaced with <code>Set.prototype.isSupersetOf();</code>.</span><br/>This function determines whether the first provided iterator is superset of the second iterator. The parameters are mandatory and all parameters can be  an iterator. The return value is a <code>boolean</code>.</td>
     </tr>
     <tr id="FN-item();">
       <td><code>item(iterator,index);</code></td>
@@ -1698,7 +1699,7 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-join();">
       <td><code>join(iterator[,separator=","]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function creates and returns a new string by concatenating all of the elements in an iterator, separated by commas or a specified separator string. The separator is converted to a string if necessary. If the iterator has only one item, then that item will be returned without using the separator. The iterator parameter is mandatory.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function creates and returns a new <code>string</code> by concatenating all of the elements in an iterator, separated by commas or a specified separator <code>string</code>. The separator is converted to a <code>string</code> if necessary. If the iterator has only one item, then that item will be returned without using the separator. The iterator parameter is mandatory.</td>
     </tr>
     <tr id="FN-flat();">
       <td><code>flat(iterator);</code></td>
@@ -1710,7 +1711,7 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-map();">
       <td><code>map(iterator,callback);</code></td>
-      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Iterator.from(iterable/iterator).map();</code></span><br/>This function creates a new iterator with the results of calling a provided function on every element. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function and called with two parameters: the item and the index of the item (only a counter).</td>
+      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Iterator.from(iterable/iterator).map();</code></span><br/>This function creates a new iterator with the results of calling a provided function on every element. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a <code>function</code> and called with two parameters: the item and the index of the item (only a counter).</td>
     </tr>
     <tr id="FN-max();">
       <td><code>max(value1[,valueN]);</code></td>
@@ -1722,7 +1723,7 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-none();">
       <td><code>none(iterator,callback);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function whether all elements in the iterator do not pass the test implemented by the provided function. It returns a Boolean value and all of the parameters are mandatory. If the iterator is empty, then the return value is false.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function whether all elements in the iterator do not pass the test implemented by the provided function. It returns a <code>boolean</code> value and all of the parameters are mandatory. If the iterator is empty, then the return value is false.</td>
     </tr>
     <tr id="FN-nth();">
       <td><code>nth(iterator,index);</code></td>
@@ -1743,11 +1744,11 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-reduce();">
       <td><code>reduce(iterator,callback[,initialvalue]);</code></td>
-      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Iterator.from(iterable/iterator).reduce();</code></span><br/>This function executes a reducer function (that you provide) on each element of the iterator, returning in a single output value. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function. The initialvalue parameter is optional and can be any variable type of the Javascript.</td>
+      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Iterator.from(iterable/iterator).reduce();</code></span><br/>This function executes a reducer function (that you provide) on each element of the iterator, returning in a single output value. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a <code>function</code>. The initialvalue parameter is optional and can be any variable type of the Javascript.</td>
     </tr>
     <tr id="FN-reject();">
       <td><code>reject(iterator,callback);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This is the opposite of the function <code>filter(iterator,callback);</code>. The elements to which the given callback gives a false will be yield. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function and called with two parameters: the item and the index of the item (only a counter).</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This is the opposite of the function <code>filter(iterator,callback);</code>. The elements to which the given callback gives a false will be yield. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a <code>function</code> and called with two parameters: the item and the index of the item (only a counter).</td>
     </tr>
     <tr id="FN-reverse();">
       <td><code>reverse(iterator);</code></td>
@@ -1788,11 +1789,11 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-slice();">
       <td><code>slice(iterator[,begin=0[,end=Infinity]]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Take a slice of an iterator and yield the elements. The iterator parameter is mandatory. The begin parameter is optional and can be a number and the default value is 0. The end parameter is optional and can be a number and the default value is Infinity.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Take a slice of an iterator and yield the elements. The iterator parameter is mandatory. The begin parameter is optional and can be a <code>number</code> and the default value is 0. The end parameter is optional and can be a <code>number</code> and the default value is Infinity.</td>
     </tr>
     <tr id="FN-some();">
       <td><code>some(iterator,callback);</code></td>
-      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Iterator.from(iterable/iterator).some();</code></span><br/>This function tests whether at least one element in the array passes the test implemented by the provided function. It returns a Boolean value and all of the parameters are mandatory. If the iterator is empty, then the return value is false.</td>
+      <td><span class="info">Stability: 3 - Legacy and can get only fixes.</span><br/><span class="info">Can be replaced with <code>Iterator.from(iterable/iterator).some();</code></span><br/>This function tests whether at least one element in the array passes the test implemented by the provided function. It returns a <code>boolean</code> value and all of the parameters are mandatory. If the iterator is empty, then the return value is false.</td>
     </tr>
     <tr id="FN-sort();">
       <td><code>sort(iterator[,numbers=false]);</code></td>
@@ -1812,18 +1813,18 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-takeRightWhile();">
       <td><code>takeRightWhile(iterator,callback);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Yield the elements from the end of an iterator while the callback (filter) function returns true. The callback function will be called with the actual element of the iterator. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Yield the elements from the end of an iterator while the callback (filter) function returns true. The callback function will be called with the actual element of the iterator. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a <code>function</code>.</td>
     </tr>
     <tr id="FN-takeWhile();">
       <td><code>takeWhile(iterator,callback);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Yield the elements of an iterator while the callback (filter) function returns true. The callback function will be called with the actual element of the iterator. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Yield the elements of an iterator while the callback (filter) function returns true. The callback function will be called with the actual element of the iterator. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a <code>function</code>.</td>
     </tr>
     <tr id="FN-unique();">
       <td><code>unique(iterator[, resolver]);</code></td>
       <td>
         <p><span class="info">Stability: 4 - Stable.</span></p>
         <p>This function returns a new iterator with unique values. The iterator parameter is mandatory.</p>
-        <p>The resolver parameter can be an object field name or function.</p>
+        <p>The resolver parameter can be an <code>object</code> field name or function.</p>
         <p><strong>Examples</strong></p>
         <p>Without resolver:</p>
         <pre>
@@ -1872,7 +1873,7 @@ JSON.stringify( CEL.unique(array, (v) => v.rank) );
     </tr>
     <tr id="FN-zipObj();">
       <td><code>zipObj(iterator1, iterator2);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Returns an object, whose properties are from the first iterator and its values are from the second iterator. The two iterators must be the same size. In the modern browsers compatible with finite iterators.<br/><strong>Example:</strong><br/><code>zipObj(["a","b","c"],[1,2,3])</code><br/>-><br/><code>{"a":1,"b":2,"c":3}</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Returns an <code>object</code>, whose properties are from the first iterator and its values are from the second iterator. The two iterators must be the same size. In the modern browsers compatible with finite iterators.<br/><strong>Example:</strong><br/><code>zipObj(["a","b","c"],[1,2,3])</code><br/>-><br/><code>{"a":1,"b":2,"c":3}</code></td>
     </tr>
   </table>
 </div>
@@ -1893,7 +1894,7 @@ JSON.stringify( CEL.unique(array, (v) => v.rank) );
     </tr>
     <tr id="FN-add();">
       <td><code>add(value1,value2);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Performs addition type safely. Works for both <code>number</code> and <code>bigint</code> values. All of the parameter is mandatory and can be both number or both bigint. The return value is <code>number</code> or <code>bigint</code>. </td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Performs addition type safely. Works for both <code>number</code> and <code>bigint</code> values. All of the parameter is mandatory and can be both <code>number</code> or both <code>bigint</code>. The return value is <code>number</code> or <code>bigint</code>. </td>
     </tr>
     <tr id="FN-avg();">
       <td><code>avg(value1[,valueN]);</code></td>
@@ -1901,67 +1902,67 @@ JSON.stringify( CEL.unique(array, (v) => v.rank) );
     </tr>
     <tr id="FN-clamp();">
       <td><code>clamp(value,min,max);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>If the given value is between the min and max values, then this function returns the value. If smaller then the min value, then the return value is the min. If greater then the max value, then the return value is the max. All of the parameters are mandatory and can be <code>number</code> or <code>bigint</code> and if not these types, then will be converted to number. The return value is <code>number</code> or <code>bigint</code> or throw a rangeerror, if the parameters are invalid.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>If the given value is between the min and max values, then this function returns the value. If smaller then the min value, then the return value is the min. If greater then the max value, then the return value is the max. All of the parameters are mandatory and can be <code>number</code> or <code>bigint</code> and if not these types, then will be converted to <code>number</code>. The return value is <code>number</code> or <code>bigint</code> or throw a rangeerror, if the parameters are invalid.</td>
     </tr>
     <tr id="FN-div();">
       <td><code>div(value1,value2);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Performs integer division type safely. Works for both <code>number</code> and <code>bigint</code> values. All of the parameter is mandatory and can be both number or both bigint. The return value is <code>number</code> or <code>bigint</code>.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Performs integer division type safely. Works for both <code>number</code> and <code>bigint</code> values. All of the parameter is mandatory and can be both <code>number</code> or both <code>bigint</code>. The return value is <code>number</code> or <code>bigint</code>.</td>
     </tr>
     <tr id="FN-divMod();">
       <td><code>divMod(value1,value2);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Performs integer division type safely. Works for both <code>number</code> and <code>bigint</code> values. All of the parameter is mandatory and can be both number or both bigint. The return value is <code>number</code> or <code>bigint</code>.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Performs integer division type safely. Works for both <code>number</code> and <code>bigint</code> values. All of the parameter is mandatory and can be both <code>number</code> or both <code>bigint</code>. The return value is <code>number</code> or <code>bigint</code>.</td>
     </tr>
     <tr id="FN-inRange();">
       <td><code>inRange(value,min,max);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is between the min and max values. All of the parameters are mandatory and have to be number or bigint. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is between the min and max values. All of the parameters are mandatory and have to be <code>number</code> or <code>bigint</code>. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isEven();">
       <td><code>isEven(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Checks if a number is a safe integer and even. Supports number and bigint types. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Checks if a <code>number</code> is a safe integer and even. Supports <code>number</code> and <code>bigint</code> types. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isBigInt64();">
       <td><code>isBigInt64(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a BigInt (Int64) value between -2^63 and 2^63 - 1. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a <code>BigInt</code> (Int64) value between -2^63 and 2^63 - 1. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isBigUInt64();">
       <td><code>isBigUInt64(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a BigInt (Int64) value between 0 and 2^64 - 1. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a <code>BigInt</code> (Int64) value between 0 and 2^64 - 1. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isFloat();">
       <td><code>isFloat(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a float number. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a float <code>number</code>. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isInt8();">
       <td><code>isInt8(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an integer between -128 and 127. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an integer between -128 and 127. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isUInt16();">
       <td><code>isUInt16(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an integer between 0 and 65535. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an integer between 0 and 65535. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isInt32();">
       <td><code>isInt32(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an integer between -2147483648 and 2147483647. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an integer between -2147483648 and 2147483647. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isOdd();">
       <td><code>isOdd(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Checks if a number is a safe integer and odd. Supports number and bigint types. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Checks if a <code>number</code> is a safe integer and odd. Supports <code>number</code> and <code>bigint</code> types. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isUInt8();">
       <td><code>isUInt8(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an integer between 0 and 255. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an integer between 0 and 255. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isInt16();">
       <td><code>isInt16(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an integer between -32768 and 32767. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an integer between -32768 and 32767. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isUInt32();">
       <td><code>isUInt32(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an integer between 0 and 4294967295. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an integer between 0 and 4294967295. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isFloat16();">
       <td><code>isFloat16(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a number between -65504 and 65504. The return value is boolean.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a <code>number</code> between -65504 and 65504. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-minmax();">
       <td><code>minmax(value,min,max);</code></td>
@@ -1969,31 +1970,35 @@ JSON.stringify( CEL.unique(array, (v) => v.rank) );
     </tr>
     <tr id="FN-mod();">
       <td><code>mod(value1,value2);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Computes the integer remainder (modulus) type safely. Works for both <code>number</code> and <code>bigint</code> values. All of the parameter is mandatory and can be both number or both bigint. The return value is <code>number</code> or <code>bigint</code>.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Computes the integer remainder (modulus) type safely. Works for both <code>number</code> and <code>bigint</code> values. All of the parameter is mandatory and can be both <code>number</code> or both <code>bigint</code>. The return value is <code>number</code> or <code>bigint</code>.</td>
     </tr>
     <tr id="FN-mul();">
       <td><code>mul(value1,value2);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Performs multiplication type safely. Works for both <code>number</code> and <code>bigint</code> values. All of the parameter is mandatory and can be both number or both bigint. The return value is <code>number</code> or <code>bigint</code>.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Performs multiplication type safely. Works for both <code>number</code> and <code>bigint</code> values. All of the parameter is mandatory and can be both <code>number</code> or both <code>bigint</code>. The return value is <code>number</code> or <code>bigint</code>.</td>
+    </tr>
+    <tr id="FN-pow();">
+      <td><code>pow(base,power);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns the value of a base raised to a power. All of the parameters are mandatory and can be both <code>number</code> or <code>bigint</code>. The return value is <code>number</code> or <code>bigint</code>.</td>
     </tr>
     <tr id="FN-product();">
       <td><code>product(value1[,valueN]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns the product value from the parameter values (numbers and bigints).</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Performs multiplication type safely. Works for both <code>number</code> and <code>bigint</code> values. All of the parameter is mandatory and can be both <code>number</code> or both <code>bigint</code>. The return value is <code>number</code> or <code>bigint</code>.</td>
     </tr>
     <tr id="FN-randomFloat();">
       <td><code>randomFloat([max]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Get a random float number value within 0 and max value. Without parameter the maximum value is 100.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Get a random float <code>number</code> value within 0 and max value. Without parameter the maximum value is 100.</td>
     </tr>
     <tr>
       <td><code>randomFloat(min,max);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Get a random float number value within min and max value.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Get a random float <code>number</code> value within min and max value.</td>
     </tr>
     <tr id="FN-randomInt();">
       <td><code>randomInt([max]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Get a random integer number value within 0 and max value. Without parameter the maximum value is 100.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Get a random integer <code>number</code> value within 0 and max value. Without parameter the maximum value is 100.</td>
     </tr>
     <tr>
       <td><code>randomInt(min,max);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Get a random integer number value within min and max value.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Get a random integer <code>number</code> value within min and max value.</td>
     </tr>
     <tr id="FN-signbit();">
       <td><code>signbit(value);</code></td>
@@ -2003,7 +2008,7 @@ JSON.stringify( CEL.unique(array, (v) => v.rank) );
           <br/><a href="https://github.com/tc39/proposal-Math.signbit" target="_blank">https://github.com/tc39/proposal-Math.signbit</a>
         </p>
         <pre>Returns whether the sign bit of x is set.
-If n is NaN, the result is false.
+If n is <code>NaN</code>, the result is false.
 If n is -0, the result is true.
 If n is negative, the result is true.
 Otherwise, the result is false.</pre>
@@ -2012,19 +2017,19 @@ Otherwise, the result is false.</pre>
     </tr>
     <tr id="FN-sum();">
       <td><code>sum(value1[,valueN]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns the sum value from the parameter values.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Performs summary type safely. Works for both <code>number</code> and <code>bigint</code> values. All of the parameter is mandatory and can be both <code>number</code> or both <code>bigint</code>. The return value is <code>number</code> or <code>bigint</code>.</td>
     </tr>
     <tr id="FN-sub();">
       <td><code>sub(value1,value2);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Performs subtraction type safely. Works for both <code>number</code> and <code>bigint</code> values. All of the parameter is mandatory and can be both number or both bigint. The return value is <code>number</code> or <code>bigint</code>.</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Performs subtraction type safely. Works for both <code>number</code> and <code>bigint</code> values. All of the parameter is mandatory and can be both <code>number</code> or both <code>bigint</code>. The return value is <code>number</code> or <code>bigint</code>.</td>
     </tr>
     <tr id="FN-toBigInt64();">
       <td><code>toBigInt64(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function clamps ("minmax") the given value to BigInt (Int64) value (-2^63 to 2^63 - 1).</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function clamps ("minmax") the given value to <code>bigint</code> (Int64) value (-2^63 to 2^63 - 1).</td>
     </tr>
     <tr id="FN-toBigUInt64();">
       <td><code>toBigUInt64(value);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function clamps ("minmax") the given value to unsigned BigInt (Int64) value (0 to 2^64 - 1).</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function clamps ("minmax") the given value to unsigned <code>BigInt</code> (Int64) value (0 to 2^64 - 1).</td>
     </tr>
     <tr id="FN-toFloat16();">
       <td><code>toFloat16(value);</code></td>
@@ -2077,7 +2082,7 @@ Otherwise, the result is false.</pre>
     <tr id="FN-crypto.randomUUID();">
       <td><code>crypto.randomUUID();</code></td>
       <td>
-        The randomUUID() method of the Crypto interface is used to generate a v4 UUID using a cryptographically secure random number generator. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Crypto/randomUUID" target="_blank">MDN Article</a>!
+        The randomUUID() method of the Crypto interface is used to generate a v4 UUID using a cryptographically secure random <code>number</code> generator. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Crypto/randomUUID" target="_blank">MDN Article</a>!
       </td>
     </tr>
     <tr id="FN-Error.isError();">
@@ -2204,7 +2209,7 @@ el2.append(el4);
 CEL.qs("#div2").append(el2);</pre></td>
     </tr>
     <tr>
-      <td><strong>domCreate(type,properties,innerHTML); with style string</strong></td>
+      <td><strong>domCreate(type,properties,innerHTML); with style <code>string</code></strong></td>
       <td><button onclick='var el1 = CEL.domCreate("h3", {style: {"background-color": "lightblue", "font-weight": "bold"}}, "H3 Lorem ipsum with style string");  var el2 = CEL.domCreate("p", {}, "Sample created paragraph"); var el3 = CEL.domCreate("br");  var el4 = CEL.domCreate("a", {href: "https://developer.mozilla.org/en-US/", target: "_blank", style: "background-color: red; color: white;"}, "MDN Sample url"); CEL.qs("#div2").append(el1); el2.append(el3); el2.append(el4); CEL.qs("#div2").append(el2);'>Try</button></td>
       <td><pre>var el1 = CEL.domCreate("h3", {style: {"background-color": "lightblue", "font-weight": "bold"}}, "H3 Lorem ipsum with style string");
 var el2 = CEL.domCreate("p", {}, "Sample created paragraph");
@@ -2228,7 +2233,7 @@ el2.append(el4);
 CEL.qs("#div2").append(el2);</pre></td>
     </tr>
     <tr>
-      <td><strong>domCreate(object); with styles string</strong></td>
+      <td><strong>domCreate(object); with styles <code>string</code></strong></td>
       <td><button onclick='var el1 = CEL.domCreate({elementType: "h3", style: {"background-color": "lightblue", "font-weight": "bold"}, innerHTML: "H3 Lorem ipsum from object with style string"}); var el2 = CEL.domCreate({elementType: "p", innerHTML: "Sample created paragraph"}); var el3 = CEL.domCreate("br"); var el4 = CEL.domCreate({elementType: "a", href: "https://developer.mozilla.org/en-US/", target: "_blank", style: "background-color: red; color: white;", innerHTML: "MDN Sample url"}); CEL.qs("#div2").append(el1); el2.append(el3); el2.append(el4); CEL.qs("#div2").append(el2);'>Try</button></td>
       <td><pre>var el1 = CEL.domCreate({elementType: "h3", style: {"background-color": "lightblue", "font-weight": "bold"}, innerHTML: "H3 Lorem ipsum from object with style string"});
 var el2 = CEL.domCreate({elementType: "p", innerHTML: "Sample created paragraph"});
@@ -2325,7 +2330,7 @@ var txt = "✓ à \r\n\t árvíztűrő tükörfúrógép ÁRVÍZTŰRŐ TÜKÖRF�
             <br/><code>alert( CEL.getFullscreen() );</code>
           </p>
           <p>
-            <button onclick='CEL.setFullscreenOn("#fsdiv");'>setFullscreen fsdiv string</button>
+            <button onclick='CEL.setFullscreenOn("#fsdiv");'>setFullscreen fsdiv <code>string</code></button>
             <br/><code>CEL.setFullscreenOn("#fsdiv");</code>
           </p>
           <p>

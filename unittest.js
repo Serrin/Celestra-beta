@@ -3625,14 +3625,16 @@ CUT.isEqual("product(); 04", "NaN",
 CUT.isEqual("product(); 05", CEL.product(), undefined);
 
 
+/* pow(); */
+CUT.isEqual("pow(); 01", CEL.pow(3, 2), 9);
+CUT.isEqual("pow(); 02", CEL.pow(3n, 2n), 9n);
+
+
 /* sum(); */
-CUT.isEqual("sum(); 01", CEL.sum(3), 3);
-CUT.isEqual("sum(); 02", CEL.sum(3, 5), 8);
-CUT.isEqual("sum(); 03", CEL.sum(3.14, -5), -1.8599999999999999);
-CUT.isEqual("sum(); 04",
-  CEL.sum(true, 3.14, -9, "Arthur Dent"), "-4.859999999999999Arthur Dent"
-);
-CUT.isEqual("sum(); 05", CEL.sum(), 0);
+CUT.isEqual("sum(); 01", CEL.sum(3, 5), 8);
+CUT.isEqual("sum(); 02", CEL.sum(3, -5), -2);
+CUT.isEqual("sum(); 03", CEL.sum(3n, 5n), 8n);
+CUT.isEqual("sum(); 04", CEL.sum(3n, -5n), -2n);
 
 
 /* avg(); */

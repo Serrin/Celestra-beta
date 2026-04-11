@@ -2968,9 +2968,9 @@ const withOut = ([...array], [...filterValues]): any[] =>
  * @returns {NumberLike} The result of the operation.
  * @throws {TypeError} If x and y are of mixed types.
  */
-function add(value1: number, value2: number): number;
-function add(value1: bigint, value2: bigint): bigint;
-function add(value1: NumberLike, value2: NumberLike): NumberLike {
+function add (value1: number, value2: number): number;
+function add (value1: bigint, value2: bigint): bigint;
+function add (value1: NumberLike, value2: NumberLike): NumberLike {
   if (typeof value1 !== typeof value2
     || (typeof value1 !== "number" && typeof value1 !== "bigint")) {
     throw new TypeError(
@@ -2993,9 +2993,9 @@ function add(value1: NumberLike, value2: NumberLike): NumberLike {
  * @returns {NumberLike} The result of the operation.
  * @throws {TypeError} If x and y are of mixed types.
  */
-function sub(value1: number, value2: number): number;
-function sub(value1: bigint, value2: bigint): bigint;
-function sub(value1: NumberLike, value2: NumberLike): NumberLike {
+function sub (value1: number, value2: number): number;
+function sub (value1: bigint, value2: bigint): bigint;
+function sub (value1: NumberLike, value2: NumberLike): NumberLike {
   if (typeof value1 !== typeof value2
     || (typeof value1 !== "number" && typeof value1 !== "bigint")) {
     throw new TypeError(
@@ -3018,9 +3018,9 @@ function sub(value1: NumberLike, value2: NumberLike): NumberLike {
  * @returns {NumberLike} The result of the operation.
  * @throws {TypeError} If x and y are of mixed types.
  */
-function mul(value1: number, value2: number): number;
-function mul(value1: bigint, value2: bigint): bigint;
-function mul(value1: NumberLike, value2: NumberLike): NumberLike {
+function mul (value1: number, value2: number): number;
+function mul (value1: bigint, value2: bigint): bigint;
+function mul (value1: NumberLike, value2: NumberLike): NumberLike {
   if (typeof value1 !== typeof value2
     || (typeof value1 !== "number" && typeof value1 !== "bigint")) {
     throw new TypeError(
@@ -3043,9 +3043,9 @@ function mul(value1: NumberLike, value2: NumberLike): NumberLike {
  * @throws {RangeError} If y is zero.
  * @throws {TypeError} If x and y are of mixed types.
  */
-function div(value1: number, value2: number): number;
-function div(value1: bigint, value2: bigint): bigint;
-function div(value1: NumberLike, value2: NumberLike): NumberLike {
+function div (value1: number, value2: number): number;
+function div (value1: bigint, value2: bigint): bigint;
+function div (value1: NumberLike, value2: NumberLike): NumberLike {
   if (typeof value1 !== typeof value2
     || (typeof value1 !== "number" && typeof value1 !== "bigint")) {
     throw new TypeError(
@@ -3071,9 +3071,9 @@ function div(value1: NumberLike, value2: NumberLike): NumberLike {
  * @throws {RangeError} If y is zero.
  * @throws {TypeError} If x and y are of mixed types.
  */
-function divMod(value1: number, value2: number): number;
-function divMod(value1: bigint, value2: bigint): bigint;
-function divMod(value1: NumberLike, value2: NumberLike): NumberLike {
+function divMod (value1: number, value2: number): number;
+function divMod (value1: bigint, value2: bigint): bigint;
+function divMod (value1: NumberLike, value2: NumberLike): NumberLike {
   if (typeof value1 !== typeof value2
     || (typeof value1 !== "number" && typeof value1 !== "bigint")) {
     throw new TypeError(
@@ -3099,9 +3099,9 @@ function divMod(value1: NumberLike, value2: NumberLike): NumberLike {
  * @throws {RangeError} If y is zero.
  * @throws {TypeError} If x and y are of mixed types.
  */
-function mod(value1: number, value2: number): number;
-function mod(value1: bigint, value2: bigint): bigint;
-function mod(value1: NumberLike, value2: NumberLike): NumberLike {
+function mod (value1: number, value2: number): number;
+function mod (value1: bigint, value2: bigint): bigint;
+function mod (value1: NumberLike, value2: NumberLike): NumberLike {
   if (typeof value1 !== typeof value2
     || (typeof value1 !== "number" && typeof value1 !== "bigint")) {
     throw new TypeError(
@@ -3162,12 +3162,21 @@ const toIntegerOrInfinity = (value: unknown): number =>
  *
  * @param {...any} args - The values to sum.
  * @returns {any} The sum of the values.
+ * @throws {TypeError} If all parameter are not number or bigint.
  */
-const sum = (...args: any[]): any =>
-  args.every((value: unknown): boolean => typeof value === "number")
+function sum (...args: any[]): any {
+  if (!args.every((value: unknown): boolean => typeof value === "number")
+    && !args.every((value: unknown): boolean => typeof value === "bigint")
+  ) {
+    throw new TypeError(
+      `[sum] all arguments must be of the same type and either number or bigint. Got: ${args.map((v) => typeof v).join(", ")}`
+    );
+  }
+  return args.every((value: unknown): boolean => typeof value === "number")
     // @ts-ignore
     ? Math.sumPrecise(args)
     : args.slice(1).reduce((acc: any, value: any): any => acc + value, args[0]);
+}
 
 
 /**
@@ -3186,9 +3195,9 @@ const avg = (...args: number[]): number => Math.sumPrecise(args) / args.length;
  * @param {...NumberLike} args - The numbers to multiply.
  * @returns {NumberLike} The product of the numbers.
  */
-function product(first: number, ...args: number[]): number;
-function product(first: bigint, ...args: bigint[]): bigint;
-function product(first: NumberLike, ...args: NumberLike[]): NumberLike {
+function product (first: number, ...args: number[]): number;
+function product (first: bigint, ...args: bigint[]): bigint;
+function product (first: NumberLike, ...args: NumberLike[]): NumberLike {
   if (typeof first === "bigint") {
     return (args as bigint[]).reduce((acc: bigint, v: bigint): bigint => acc * v, first as bigint);
   }
@@ -3197,17 +3206,42 @@ function product(first: NumberLike, ...args: NumberLike[]): NumberLike {
 
 
 /**
+ * @description Returns the value of a base raised to a power.
+ *
+ * @param {NumberLike} base - The base value.
+ * @param {NumberLike} power - The power value.
+ * @returns {NumberLike} The product of the numbers.
+ * @throws {TypeError} if base and power are of mixed types or not number or bigint.
+ */
+function pow (base: number, power: number): number;
+function pow (base: bigint, power: bigint): bigint;
+function pow (base: NumberLike, power: NumberLike): NumberLike {
+  if (typeof base !== typeof power
+    || (typeof base !== "number" && typeof base !== "bigint")
+  ) {
+    throw new TypeError(
+      `[pow] base and power must be of the same type and either number or bigint. Got: ${typeof base} and ${typeof power}`
+    );
+  }
+  if (typeof base === "bigint" && typeof power === "bigint") {
+    return (base as bigint) ** (power as bigint);
+  }
+  return Math.pow(base as number, power as number);
+}
+
+
+/**
  * @description Clamps a value between a minimum and maximum.
  *
- * @param {any} value - The value to clamp.
- * @param {any} min - The minimum value.
- * @param {any} max - The maximum value.
- * @returns {number} The clamped value.
+ * @param {NumberLike} value - The value to clamp.
+ * @param {NumberLike} min - The minimum value.
+ * @param {NumberLike} max - The maximum value.
+ * @returns {NumberLike} The clamped value.
  */
 function clamp (value: number, min: number, max: number): number;
 function clamp (value: bigint, min: bigint, max: bigint): bigint;
 function clamp (
-  value: any,
+  value: NumberLike,
   min: NumberLike = Number.MIN_SAFE_INTEGER,
   max: NumberLike = Number.MAX_SAFE_INTEGER): NumberLike {
   /* normalize */
@@ -3248,13 +3282,13 @@ function clamp (
 /**
  * @description Clamps a value between a minimum and maximum.
  *
- * @param {any} value - The value to clamp.
- * @param {any} min - The minimum value.
- * @param {any} max - The maximum value.
- * @returns {number} The clamped value.
+ * @param {NumberLike} value - The value to clamp.
+ * @param {NumberLike} min - The minimum value.
+ * @param {NumberLike} max - The maximum value.
+ * @returns {NumberLike} The clamped value.
  */
 function minmax(
-  value: any,
+  value: NumberLike,
   min: NumberLike = Number.MIN_SAFE_INTEGER,
   max: NumberLike = Number.MAX_SAFE_INTEGER): NumberLike {
   /* normalize */
@@ -3798,6 +3832,7 @@ export default {
   sum,
   avg,
   product,
+  pow,
   clamp,
   minmax,
   isEven,
@@ -4006,6 +4041,7 @@ export {
   sum,
   avg,
   product,
+  pow,
   clamp,
   minmax,
   isEven,

@@ -6,7 +6,8 @@
 1. Documentation, pdf and code fixes.
 2. CUT design changes in the __unittest.html__.
 3. Rename the function `isEmptyValue();` to `isEmpty();`
-4. Remove these functions:
+4. Fix `bigint` support in this function: `inRange();`
+5. Remove these functions:
 
 - `deleteOwnProperty();`
 - `isCallable();`
