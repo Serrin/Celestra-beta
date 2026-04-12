@@ -14,7 +14,7 @@ __A helper JavaScript library with useful functions and polyfills and zero depen
 
 Latest version: 6.6.0
 
-Date: 2026-04-07T17:52:10.583Z
+Date: 2026-04-12T17:53:15.967Z
 
 __Tested on these environments:__
 
@@ -235,8 +235,8 @@ Name|Description
 `bind(function,context);`|__Stability: 4 - Stable.__<BR>Returns a function that is bound to a context. Both of the parameters are mandatory.
 `compose(function1 [, functionN]);`|__Stability: 4 - Stable.__<BR>Compose functions right to left. At least one function parameter is mandatory.
 `constant(value);`|__Stability: 4 - Stable.__<BR>A one time assignment function to create a constant value in ES5. This returns a function, which returns the given value. (In math: `f(x)=x`)
-`createPolyfillMethod(object,property,value);`|__Stability: 4 - Stable.__<BR>This function creates a writable, configurable and non-enumerable property with the given value in the object if the property doesn't exist in the object. The return value boolean and checks that the creating of the method was successful.<BR>__Example:__<BR>`CEL.createPolyfillMethod(Array.prototype, "at", function(...){...});`
-`createPolyfillProperty(object,property, value);`|__Stability: 4 - Stable.__<BR>This function creates a writable, configurable and enumerable property with the given value in the object if the property doesn't exist in the object. The return value boolean and checks that the creating of the property was successful.
+`createPolyfillMethod(object,property,value);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function creates a writable, configurable and non-enumerable property with the given value in the object if the property doesn't exist in the object. The return value boolean and checks that the creating of the method was successful.<BR>__Example:__<BR>`CEL.createPolyfillMethod(Array.prototype, "at", function(...){...});`
+`createPolyfillProperty(object,property, value);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function creates a writable, configurable and enumerable property with the given value in the object if the property doesn't exist in the object. The return value boolean and checks that the creating of the property was successful.
 `curry(function);`|__Stability: 4 - Stable.__<BR>Curries a function, allowing it to be called with a single argument at a time and returning a new function that takes the next argument. The function parameter is mandatory.
 `delay(ms).then(callback);`|__Stability: 4 - Stable.__<BR>A promise based delay function. The ms (milliseconds) parameter is mandatory and have to be an integer.<BR>__Sample:__<BR>`CEL.sleep(5000).then(() => alert("5 seconds")).catch(console.log.bind(console)).finally(() => alert("done"));`
 `deleteOwnProperty(object,property[,Throw = false]);`|__Stability: 0 - Removed in v6.6.0__<BR>This function deletes an own property in the given object. If Throw is true and the deleting was unsuccessful, then an error will be thrown.<BR>__Return values:__<BR>1 - The property was own and the delete was successful.<BR>0 - The property is own and the delete was unsuccessful.<BR>-1 - The property is not own or not exists.

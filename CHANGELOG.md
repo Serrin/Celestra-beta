@@ -5,9 +5,11 @@
 
 1. Documentation, pdf and code fixes.
 2. CUT design changes in the __unittest.html__.
-3. Rename the function `isEmptyValue();` to `isEmpty();`
-4. Fix `bigint` support in this function: `inRange();`
-5. Remove these functions:
+3. Many fixes in the __Math API__.
+4. Deprecate _(stability 1)_ these functions: `createPolyfillMethod();`, `createPolyfillProperty();`
+5. Add a new function: `pow();`
+6. Rename the function `isEmptyValue();` to `isEmpty();`
+7. Remove these functions:
 
 - `deleteOwnProperty();`
 - `isCallable();`
