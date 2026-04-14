@@ -1,6 +1,23 @@
 
 # Celestra version history
 
+## Celestra v6.7.0
+
+1. Documentation, pdf and code fixes.
+2. Remove these functions: `createPolyfillMethod();`, `createPolyfillProperty();`
+3. Remove the documentation of these functions:
+
+- `deleteOwnProperty();`
+- `isCallable();`
+- `isChar();`
+- `isNumeric();`
+- `isSuperset();`
+- `noConflict();`
+- `setDifference();`
+- `setIntersection();`
+- `setSymmetricDifference();`
+- `setUnion();`
+
 ## Celestra v6.6.0 Angelo
 
 1. Documentation, pdf and code fixes.

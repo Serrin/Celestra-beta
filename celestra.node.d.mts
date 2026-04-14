@@ -1,4 +1,4 @@
-declare const VERSION = "Celestra v6.6.0 node";
+declare const VERSION = "Celestra v6.7.0 node";
 type MapLike = Record<PropertyKey, any>;
 type NumberLike = number | bigint;
 type IterableLike = Iterable<any> | Iterator<any> | IterableIterator<any>;
@@ -37,8 +37,6 @@ declare function asyncT(): Promise<boolean>;
 declare function asyncF(): Promise<boolean>;
 declare function asyncConstant(value: unknown): Function;
 declare function asyncIdentity(value: unknown): Promise<any>;
-declare function createPolyfillMethod(obj: Object, property: string, value: Function): boolean;
-declare function createPolyfillProperty(obj: object, property: string, value: unknown): boolean;
 declare function randomUUIDv7(v4?: boolean): string;
 declare const delay: (milisec: number) => Promise<void>;
 declare const randomBoolean: () => boolean;
@@ -251,8 +249,6 @@ declare const _default: {
     asyncF: typeof asyncF;
     asyncConstant: typeof asyncConstant;
     asyncIdentity: typeof asyncIdentity;
-    createPolyfillMethod: typeof createPolyfillMethod;
-    createPolyfillProperty: typeof createPolyfillProperty;
     randomUUIDv7: typeof randomUUIDv7;
     delay: (milisec: number) => Promise<void>;
     randomBoolean: () => boolean;
@@ -426,5 +422,5 @@ declare const _default: {
     inRange: typeof inRange;
 };
 export default _default;
-export { VERSION, BASE16, BASE32, BASE36, BASE58, BASE62, WORDSAFEALPHABET, assert, eq, gt, gte, lt, lte, tap, once, curry, pipe, compose, pick, omit, assoc, asyncNoop, asyncT, asyncF, asyncConstant, asyncIdentity, createPolyfillMethod, createPolyfillProperty, randomUUIDv7, delay, randomBoolean, getUrlVars, obj2string, extend, sizeIn, unBind, bind, constant, identity, noop, T, F, nanoid, timestampID, b64Encode, b64Decode, strCount, strTruncate, strPropercase, strTitlecase, strCapitalize, strUpFirst, strDownFirst, strReverse, strCodePoints, strFromCodePoints, strAt, strSplice, strHTMLRemoveTags, strHTMLEscape, strHTMLUnEscape, isNonNullable, isNonNullablePrimitive, isArrowFunction, isAsyncIterator, isTypedCollection, is, toObject, toPrimitive, toSafeString, isPropertyKey, toPropertyKey, isIndex, isLength, toIndex, toLength, typeOf, isSameType, isSameInstance, isCoercedObject, isDeepStrictEqual, isEmpty, isProxy, isAsyncGeneratorFunction, isPlainObject, isObject, isFunction, isArraylike, isNull, isUndefined, isNullish, isPrimitive, isIterator, isRegexp, isElement, isIterable, isAsyncIterable, isTypedArray, isGeneratorFunction, isAsyncFunction, castArray, compact, unique, count, arrayDeepClone, initial, shuffle, partition, min, max, arrayRepeat, arrayCycle, arrayRange, zip, unzip, zipObj, arrayAdd, arrayClear, arrayRemove, arrayRemoveBy, arrayMerge, iterRange, iterCycle, iterRepeat, takeWhile, dropWhile, take, drop, forEach, forEachRight, map, filter, reject, slice, tail, item, nth, size, first, head, last, reverse, sort, includes, find, findLast, every, some, none, takeRight, takeRightWhile, dropRight, dropRightWhile, concat, reduce, enumerate, flat, join, withOut, add, sub, mul, div, divMod, mod, isFloat, toInteger, toIntegerOrInfinity, sum, avg, product, pow, clamp, minmax, isEven, isOdd, toInt8, toUInt8, toInt16, toUInt16, toInt32, toUInt32, toBigInt64, toBigUInt64, toFloat32, isInt8, isUInt8, isInt16, isUInt16, isInt32, isUInt32, isBigInt64, isBigUInt64, toFloat16, isFloat16, signbit, randomInt, randomFloat, inRange };
+export { VERSION, BASE16, BASE32, BASE36, BASE58, BASE62, WORDSAFEALPHABET, assert, eq, gt, gte, lt, lte, tap, once, curry, pipe, compose, pick, omit, assoc, asyncNoop, asyncT, asyncF, asyncConstant, asyncIdentity, randomUUIDv7, delay, randomBoolean, getUrlVars, obj2string, extend, sizeIn, unBind, bind, constant, identity, noop, T, F, nanoid, timestampID, b64Encode, b64Decode, strCount, strTruncate, strPropercase, strTitlecase, strCapitalize, strUpFirst, strDownFirst, strReverse, strCodePoints, strFromCodePoints, strAt, strSplice, strHTMLRemoveTags, strHTMLEscape, strHTMLUnEscape, isNonNullable, isNonNullablePrimitive, isArrowFunction, isAsyncIterator, isTypedCollection, is, toObject, toPrimitive, toSafeString, isPropertyKey, toPropertyKey, isIndex, isLength, toIndex, toLength, typeOf, isSameType, isSameInstance, isCoercedObject, isDeepStrictEqual, isEmpty, isProxy, isAsyncGeneratorFunction, isPlainObject, isObject, isFunction, isArraylike, isNull, isUndefined, isNullish, isPrimitive, isIterator, isRegexp, isElement, isIterable, isAsyncIterable, isTypedArray, isGeneratorFunction, isAsyncFunction, castArray, compact, unique, count, arrayDeepClone, initial, shuffle, partition, min, max, arrayRepeat, arrayCycle, arrayRange, zip, unzip, zipObj, arrayAdd, arrayClear, arrayRemove, arrayRemoveBy, arrayMerge, iterRange, iterCycle, iterRepeat, takeWhile, dropWhile, take, drop, forEach, forEachRight, map, filter, reject, slice, tail, item, nth, size, first, head, last, reverse, sort, includes, find, findLast, every, some, none, takeRight, takeRightWhile, dropRight, dropRightWhile, concat, reduce, enumerate, flat, join, withOut, add, sub, mul, div, divMod, mod, isFloat, toInteger, toIntegerOrInfinity, sum, avg, product, pow, clamp, minmax, isEven, isOdd, toInt8, toUInt8, toInt16, toUInt16, toInt32, toUInt32, toBigInt64, toBigUInt64, toFloat32, isInt8, isUInt8, isInt16, isUInt16, isInt32, isUInt32, isBigInt64, isBigUInt64, toFloat16, isFloat16, signbit, randomInt, randomFloat, inRange };
 //# sourceMappingURL=celestra.node.d.mts.map

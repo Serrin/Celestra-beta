@@ -10,14 +10,14 @@
 
 /**
  * @name Celestra
- * @version 6.6.0 browser
+ * @version 6.7.0 browser
  * @author Ferenc Czigler
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
 
 
-const VERSION = "Celestra v6.6.0 browser";
+const VERSION = "Celestra v6.7.0 browser";
 
 
 /** TS types */
@@ -514,50 +514,6 @@ function asyncConstant (value: unknown): Function {
  * @returns {Promise<any>}
  */
 async function asyncIdentity (value: unknown): Promise<any> { return value; }
-
-
-/**
- * @description Creates a polyfill method on an object if it does not already exist.
- *
- * @param {Object} obj - The object on which to create the method.
- * @param {string} property - The name of the method to create.
- * @param {Function} value - The function to assign as the method.
- * @returns {boolean} - Returns true if the method was created or already exists with the same value.
- */
-function createPolyfillMethod (
-  obj: Object,
-  property: string,
-  value: Function): boolean {
-  if (!(Object.hasOwn(obj, property))) {
-    Object.defineProperty(obj, property, {
-      writable: true, enumerable: false, configurable: true, value: value
-    });
-  }
-  // @ts-ignore
-  return (obj[property] === value);
-}
-
-
-/**
- * @description Creates a polyfill property on an object if it does not already exist.
- *
- * @param {Object} obj - The object on which to create the property.
- * @param {string} property - The name of the property to create.
- * @param {unknown} value - The value to assign to the property.
- * @returns {boolean} - Returns true if the property was created or already exists with the same value.
- */
-function createPolyfillProperty (
-  obj: object,
-  property: string,
-  value: unknown): boolean {
-  if (!(Object.hasOwn(obj, property))) {
-    Object.defineProperty(obj, property, {
-      writable: true, enumerable: true, configurable: true, value: value
-    });
-  }
-  // @ts-ignore
-  return (obj[property] === value);
-}
 
 
 /**
@@ -4516,8 +4472,6 @@ export default {
   asyncF,
   asyncConstant,
   asyncIdentity,
-  createPolyfillMethod,
-  createPolyfillProperty,
   randomUUIDv7,
   delay,
   randomBoolean,
@@ -4767,8 +4721,6 @@ export {
   asyncF,
   asyncConstant,
   asyncIdentity,
-  createPolyfillMethod,
-  createPolyfillProperty,
   randomUUIDv7,
   delay,
   randomBoolean,

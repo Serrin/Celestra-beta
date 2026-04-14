@@ -35,7 +35,7 @@ globalThis.CEL = celestra;
 
 const CUT = {};
 
-CUT.VERSION = "Celestra Unit Tester (CUT) v6.6.0 for Node.js";
+CUT.VERSION = "Celestra Unit Tester (CUT) v6.7.0 for Node.js";
 
 /* __addTest__(<step: string>, <expected>, <expression>); */
 /* __addTest__(<step: string>, <expected>, <expression>[, strict: boolean]); */
@@ -310,7 +310,7 @@ var /** @type any */ token12, /** @type any */ token13;
 var /** @type any */ token14, /** @type any */ token15;
 
 
-/* Celestra v6.6.0 testcases */
+/* Celestra v6.7.0 testcases */
 
 
 /** Not auto tested functions **/
@@ -2673,24 +2673,6 @@ CUT.isTrue("toPrimitive();",
     && Array.isArray(CEL.toPrimitive([]))
     && CEL.toPrimitive(new Map()) instanceof Map
     && CEL.toPrimitive(new Set()) instanceof Set
-);
-
-
-/* createPolyfillMethod(); */
-token1 = {"a": 1, "b": 2};
-CUT.isTrue("createPolyfillMethod(); - <code>"
-    + JSON.stringify(token1) + "</code>",
-  CEL.createPolyfillMethod(token1, "c", () => {}) &&
-  !(Object.keys(token1).includes("c")) && ("c" in token1)
-);
-
-
-/* createPolyfillProperty(); */
-token1 = {"a": 1, "b": 2};
-CUT.isTrue(
-  "createPolyfillProperty(); - <code>" + JSON.stringify(token1) + "</code>",
-  CEL.createPolyfillProperty(token1, "c", 3)
-    && Object.keys(token1).includes("c") && ("c" in token1)
 );
 
 

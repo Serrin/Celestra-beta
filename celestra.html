@@ -104,7 +104,6 @@ nav a, nav a:visited, nav a:active, nav a:hover {
     <hr/>
     <details open>
       <summary><strong>Core API</strong></summary>
-      <p><a href="#FN-noConflict">celestra.noConflict();</a></p>
       <p><a href="#FN-VERSION">VERSION</a></p>
       <p><a href="#FN-BASE16;">BASE16;</a></p>
       <p><a href="#FN-BASE32;">BASE32;</a></p>
@@ -126,7 +125,6 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <p><a href="#FN-createPolyfillProperty();">createPolyfillProperty();</a></p>
       <p><a href="#FN-curry();">curry();</a></p>
       <p><a href="#FN-delay();">delay();</a></p>
-      <p><a href="#FN-deleteOwnProperty();">deleteOwnProperty();</a></p>
       <p><a href="#FN-extend();">extend();</a></p>
       <p><a href="#FN-eq();">eq();</a></p>
       <p><a href="#FN-F();">F();</a></p>
@@ -225,8 +223,6 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <p><a href="#FN-isAsyncIterator();">isAsyncIterator();</a></p>
       <p><a href="#FN-isAsyncFunction();">isAsyncFunction();</a></p>
       <p><a href="#FN-isAsyncGeneratorFunction();">isAsyncGeneratorFunction();</a></p>
-      <p><a href="#FN-isCallable();">isCallable();</a></p>
-      <p><a href="#FN-isChar();">isChar();</a></p>
       <p><a href="#FN-isCoercedObject();">isCoercedObject();</a></p>
       <p><a href="#FN-isDeepStrictEqual();">isDeepStrictEqual();</a></p>
       <p><a href="#FN-isElement();">isElement();</a></p>
@@ -241,7 +237,6 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <p><a href="#FN-isNonNullablePrimitive();">isNonNullablePrimitive();();</a></p>
       <p><a href="#FN-isNull();">isNull();</a></p>
       <p><a href="#FN-isNullish();">isNullish();</a></p>
-      <p><a href="#FN-isNumeric();">isNumeric();</a></p>
       <p><a href="#FN-isObject();">isObject();</a></p>
       <p><a href="#FN-isPlainObject();">isPlainObject();</a></p>
       <p><a href="#FN-isPrimitive();">isPrimitive();</a></p>
@@ -301,7 +296,6 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <p><a href="#FN-head();">head();</a></p>
       <p><a href="#FN-includes();">includes();</a></p>
       <p><a href="#FN-initial();">initial();</a></p>
-      <p><a href="#FN-isSuperset();">isSuperset();</a></p>
       <p><a href="#FN-item();">item();</a></p>
       <p><a href="#FN-iterCycle();">iterCycle();</a></p>
       <p><a href="#FN-iterRange();">iterRange();</a></p>
@@ -318,10 +312,6 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <p><a href="#FN-reduce();">reduce();</a></p>
       <p><a href="#FN-reject();">reject();</a></p>
       <p><a href="#FN-reverse();">reverse();</a></p>
-      <p><a href="#FN-setDifference();">setDifference();</a></p>
-      <p><a href="#FN-setIntersection();">setIntersection();</a></p>
-      <p><a href="#FN-setSymmetricDifference();">setSymmetricDifference();</a></p>
-      <p><a href="#FN-setUnion();">setUnion();</a></p>
       <p><a href="#FN-size();">size();</a></p>
       <p><a href="#FN-shuffle();">shuffle();</a></p>
       <p><a href="#FN-slice();">slice();</a></p>
@@ -456,7 +446,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
 
 <p><strong>A helper JavaScript library with useful functions and polyfills and zero dependencies.</strong></p>
 
-<p>Latest version: 6.6.0</p>
+<p>Latest version: 6.7.0</p>
 <p>Date: 2026-04-12T17:53:15.967Z</p>
 
 <p><strong>Tested on these environments:</strong></p>
@@ -767,15 +757,6 @@ globalThis.CEL = celestra;
       <td style="width: auto; min-width: 33%;"><strong>Name</strong></td>
       <td><strong>Description</strong></td>
     </tr>
-    <tr id="FN-noConflict">
-      <td><code>noConflict();</code></td>
-      <td>
-        <span class="removed">Stability: 0 - Removed in v6.1.0</span><br/>
-        <p>Restore the previous <code>CEL</code> object value and return the <code>celestra</code> object to create a new alias.</p>
-        <p><span class="info">Tip: You can make a new alias without this function too. Example: <code>globalThis._cel = globalThis.celestra;</code></span></p>
-        <p><span class="info">In the ESM edition only returns the celestra object.</code></span></p>
-      </td>
-    </tr>
     <tr id="FN-VERSION">
       <td><code>VERSION;</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>The library version.</td>
@@ -846,12 +827,12 @@ globalThis.CEL = celestra;
     </tr>
     <tr id="FN-createPolyfillMethod();">
       <td><code>createPolyfillMethod(object, property, value);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function creates a writable, configurable and non-enumerable property with the given value in the object if the property doesn't exist in the object. The return value <code>boolean</code> and checks that the creating of the method was successful.<br/><strong>Example:</strong><br/><pre>CEL.createPolyfillMethod(Array.prototype, "at", function(...){...});</pre>
+      <td><span class="removed">Stability: 0 - Removed.</span><br/>This function creates a writable, configurable and non-enumerable property with the given value in the object if the property doesn't exist in the object. The return value <code>boolean</code> and checks that the creating of the method was successful.<br/><strong>Example:</strong><br/><pre>CEL.createPolyfillMethod(Array.prototype, "at", function(...){...});</pre>
     </td>
     </tr>
     <tr id="FN-createPolyfillProperty();">
       <td><code>createPolyfillProperty(object, property,value);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function creates a writable, configurable and enumerable property with the given value in the object if the property doesn't exist in the object. The return value <code>boolean</code> and checks that the creating of the property was successful.</td>
+      <td><span class="removed">Stability: 0 - Removed.</span><br/>This function creates a writable, configurable and enumerable property with the given value in the object if the property doesn't exist in the object. The return value <code>boolean</code> and checks that the creating of the property was successful.</td>
     </tr>
     <tr id="FN-curry();">
       <td><code>curry(function);</code></td>
@@ -870,10 +851,6 @@ CEL.delay(5000)
   .catch(console.log.bind(console))
   .finally(() => alert("done"));</pre>
 	    </td>
-    </tr>
-    <tr id="FN-deleteOwnProperty();">
-      <td><code>deleteOwnProperty(object, property[,Throw = false]);</code></td>
-      <td><span class="removed">Stability: 0 - Removed in v6.6.0</span><br/>This function deletes an own property in the given object. If Throw is true and the deleting was unsuccessful, then an error will be thrown.<br/><strong>Return values:</strong><br/>1 - The property was own and the delete was successful.<BR>0 - The property is own and the delete was unsuccessful.<br/>-1 - The property is not own or not exists.</td>
     </tr>
     <tr id="FN-extend();">
       <td><code>extend([deep,]target,source1[,sourceN]);</code></td>
@@ -1296,14 +1273,6 @@ CEL.delay(5000)
       <td><code>isAsyncGeneratorFunction(value);</td>
       <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v6.5.0: <code>isAsyncGeneratorFn();</code></span><br/>This function determines whether the provided value is an async generator function. The return value is <code>boolean</code>.</td>
     </tr>
-    <tr id="FN-isCallable();">
-      <td><code>isCallable(value);</code></td>
-      <td><span class="removed">Stability: 0 - Removed in v6.6.0</span><br/>This function determines whether the provided object has a call method. The return value is <code>boolean</code>.</td>
-    </tr>
-    <tr id="FN-isChar();">
-      <td><code>isChar(value);</code></td>
-      <td><span class="removed">Stability: 0 - Removed in v6.6.0</span><br/>This function determines whether the provided value is a <code>string</code> with length 1 character. This function is unicode compatible. The return value is <code>boolean</code>.</td>
-    </tr>
     <tr id="FN-isCoercedObject();">
       <td><code>isCoercedObject(object);</td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>If the given object is a coerced object (<code>Number</code>, <code>BigInt</code>, <code>String</code>, <code>Boolean</code>, <code>Symbol</code> objects), then the return value is the constructor function. In any other cases retuns false. The object parameter is mandatory.</td>
@@ -1366,10 +1335,6 @@ CEL.delay(5000)
     <tr id="FN-isNullish();">
       <td><code>isNullish(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v6.1.0: <code>isNil();</code>.</span><br/>This function determines whether the provided value is <code>null</code> or <code>undefined</code>. The return value is <code>boolean</code>.</td>
-    </tr>
-    <tr id="FN-isNumeric();">
-      <td><code>isNumeric(value);</code></td>
-      <td><span class="removed">Stability: 0 - Removed in v6.6.0</span><br/>This function determines whether the provided value is a <code>number</code> or can be converted to <code>number</code>. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isObject();">
       <td><code>isObject(value);</code></td>
@@ -1673,10 +1638,6 @@ CEL.delay(5000)
         </p>
       </td>
     </tr>
-    <tr id="FN-isSuperset();">
-      <td><code>isSuperset(superCollection,subCollection);</code></td>
-      <td><span class="removed">Stability: 0 - Removed in v6.6.0</span><br/><span class="info">Can be replaced with <code>Set.prototype.isSupersetOf();</code>.</span><br/>This function determines whether the first provided iterator is superset of the second iterator. The parameters are mandatory and all parameters can be  an iterator. The return value is a <code>boolean</code>.</td>
-    </tr>
     <tr id="FN-item();">
       <td><code>item(iterator,index);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns the item from the given iterator on the given index. The iterator parameter is mandatory and has to be an iterator/iterable. The index is mandatory and can be a positive integer (examples: 0 = the first item, 1 = the second item, 2 = the third item, etc.) Compatible with the Unicode strings.</td>
@@ -1754,22 +1715,6 @@ CEL.delay(5000)
       <td><code>reverse(iterator);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns an iterator with values of the given iterator in reverse order. The iterator parameter is mandatory.</td>
     </tr>
-    <tr id="FN-setDifference();">
-      <td><code>setDifference(set1,set2);</code></td>
-      <td><span class="removed">Stability: 0 - Removed in v6.6.0</span><br/><span class="info">Can be replaced with <code>Set.prototype.difference();</code>.</span><br/>Returns the set of unique values that are in the iterator1, excluding the values that are also in the iterator2. All of the parameters are mandatory and have to be a Set. The return value is a Set.</td>
-    </tr>
-    <tr id="FN-setIntersection();">
-      <td><code>setIntersection(set1,set2);</code></td>
-      <td><span class="removed">Stability: 0 - Removed in v6.6.0</span><br/><span class="info">Can be replaced with <code>Set.prototype.intersection();</code>.</span><br/>Returns the set of unique values that are in both of the given iterators. All of the parameters are mandatory and have to be a Set. The return value is a Set.</td>
-    </tr>
-    <tr id="FN-setSymmetricDifference();">
-      <td><code>setSymmetricDifference(set1,set2);</code></td>
-      <td><span class="removed">Stability: 0 - Removed in v6.6.0</span><br/><span class="info">Can be replaced with <code>Set.prototype.symmetricDifference();</code>.</span><br/>Returns the set of unique values that are only in one of given iterators. All of the parameters are mandatory and have to be a Set. The return value is a Set.</td>
-    </tr>
-    <tr id="FN-setUnion();">
-      <td><code>setUnion(iterator1[,iteratorN]);</code></td>
-      <td><span class="removed">Stability: 0 - Removed in v6.6.0</span><br/><span class="info">Can be replaced with <code>Set.prototype.union();</code>.</span><br/>Returns the set of unique values including all values from the given iterators. The first parameter is mandatory. The return value is a Set.</td>
-    </tr>
     <tr id="FN-size();">
       <td><code>size(iterator);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns the count of the elements in the given iterator. The iterator parameter is mandatory. The return value is an integer.</td>
@@ -1780,10 +1725,10 @@ CEL.delay(5000)
         <span class="info">Stability: 4 - Stable.</span><br/>
         <p>Returns an array with the values of the given iterator, but in shuffled order.</p>
         <p>
-         <strong>Example:</strong>
-         <br/><code>CEL.shuffle(["first",4,5,6,7,8,9,"last"]);</code>
-         <br/>->
-         <br/><code>[4,8,5,6,"last",9,7,"first"]</code>
+          <strong>Example:</strong>
+          <br/><code>CEL.shuffle(["first",4,5,6,7,8,9,"last"]);</code>
+          <br/>->
+          <br/><code>[4,8,5,6,"last",9,7,"first"]</code>
         </p>
       </td>
     </tr>
