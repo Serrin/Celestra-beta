@@ -4,8 +4,9 @@
 ## Celestra v6.7.0
 
 1. Documentation, pdf and code fixes.
-2. Remove these functions: `createPolyfillMethod();`, `createPolyfillProperty();`
-3. Remove the documentation of these functions:
+2. Add 2 new pages about the JS data types in the __js-cheatsheet.odt__ and __js-cheatsheet.pdf__.
+3. Remove these functions: `createPolyfillMethod();`, `createPolyfillProperty();`
+4. Remove the documentation of these functions:
 
 - `deleteOwnProperty();`
 - `isCallable();`

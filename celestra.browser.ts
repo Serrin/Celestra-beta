@@ -1907,6 +1907,8 @@ function toPrimitive (value: unknown): any {
  * @returns {string}
  */
 function toSafeString (value: unknown): string {
+  const _isTypedArray = (value: unknown): value is TypedArray =>
+  ArrayBuffer.isView(value) && !(value instanceof DataView);
   const seen = new WeakSet<object>();
   function replacer (_key: string, value: unknown): any {
     if (typeof value === "function") {
@@ -1929,6 +1931,9 @@ function toSafeString (value: unknown): string {
   }
   if (Array.isArray(value)) {
     return `[${value.map(v => toSafeString(v)).join(", ")}]`;
+  }
+  if (_isTypedArray(value)) {
+    return `[${[...(value as any)].map(v => toSafeString(v)).join(", ")}]`;
   }
   if (value instanceof Map) {
     return `Map(${value.size}){${Array.from(value.entries()).map(([k, v]): string => `${toSafeString(k)} => ${toSafeString(v)}`).join(", ")}}`;
