@@ -20,118 +20,113 @@
 const VERSION = "Celestra v6.7.0 browser";
 
 
-/** TS types */
+/** TS browser and NodeJS common types **/
 
 
 /**
- * @description Map-like object with string or number or symbol keys.
- *
- * @private
- * */
-type MapLike = Record<PropertyKey, any>;
-
-/**
- * @description Number-like object.
- *
- * @private
- * */
-type NumberLike = number | bigint;
-
-/**
- * @description Any iterable or iterator.
+ * @description False like values.
+ * @see https://developer.mozilla.org/en-US/docs/Glossary/Falsy
+ * @note Missing values: NaN and document.all
  *
  * @private
  */
+/* @ts-ignore */
+type Falsy = null | undefined | false | 0 | -0 | 0n | "";
+/* @ts-ignore */
+type Truthy<T> = Exclude<T, Falsy>;
+
+/** * @description Object key type. Built-in type. * @private */
+/* type PropertyKey = string | number | symbol; */
+
+/** * @description Object with string, number or symbol keys. * @private */
+type MapLike = Record<string | number | symbol, unknown>;
+
+/** * @description Number-like object. * @private */
+/* @ts-ignore */
+type Numeric = number | bigint;
+
+/** * @description Number-like object. * @private */
+/* @ts-ignore */
+type NumberLike = number | Number;
+
+/** * @description BigInt-like object. * @private */
+/* @ts-ignore */
+type BigIntLike = bigint | BigInt;
+
+/** * @description Number and BigInt-like object. * @private */
+/* @ts-ignore */
+type NumberAndBigIntLike = number | Number | bigint | BigInt;
+
+/** * @description String-like object. * @private */
+/* @ts-ignore */
+type StringLike = string | String;
+
+/** * @description String-like object. * @private */
+/* @ts-ignore */
+type BooleanLike = boolean | Boolean;
+
+/** * @description String-like object. * @private */
+/* @ts-ignore */
+type SymbolLike = symbol | Symbol;
+
+/** * @description Any iterable or iterator. * @private */
 type IterableLike = Iterable<any> | Iterator<any> | IterableIterator<any>;
 
-/**
- * @description Any iterable, iterator, or array-like structure.
- *
- * @private
- */
+/** * @description Any iterable, iterator or array-like objects. * @private */
 type IterableLikeAndArrayLike =
-  | Iterable<any>
-  | Iterator<any>
-  | IterableIterator<any>
-  | ArrayLike<any>;
+  Iterable<any> | Iterator<any> | IterableIterator<any> | ArrayLike<any>;
 
-/**
- * @description Iterable and Iterator and Generator types.
- *
- * @private
- */
-type IteratorReturn =
-  | Iterable<any>
-  | Iterator<any>
-  | Generator<any, void, unknown>;
+/** * @description Iterable and Iterator and Generator types. * @private */
+type GeneratorLike =
+  Iterable<any> | Iterator<any> | Generator<any, void, unknown>;
 
-/**
- * @description Type for undefined and null values.
- *
- * @private
- */
+/** * @description Type for undefined and null values. * @private */
 type Nullish = undefined | null;
 
-/*
-built-in type:
-type NonNullable = number | boolean | string | symbol | object | Function;
-*/
+/** * @description Not null or undefined. Built-in type. * @private */
+/* type NonNullable = number | boolean | string | symbol | object | Function; */
 
-/**
- * @description Not null or undefined or object or function.
- *
- * @private
- */
+/** * @description Not null or undefined or object or function. * @private */
 type NonNullablePrimitive = number | bigint | boolean | string | symbol;
 
-/**
- * @description Not object or function.
- *
- * @private
- */
+/** * @description NonNullablePrimitiveLike object. * @private */
+/* @ts-ignore */
+type NonNullablePrimitiveLike =
+  | number | bigint | string | boolean | symbol
+  | Number | BigInt | String | Boolean | Symbol;
+
+/** * @description Not object or function. * @private */
 type Primitive = null | undefined | number | bigint | boolean | string | symbol;
 
-/**
- * Generic comparable types.
- *
- * @private
- */
+/** * @description Primitive-like object. * @private */
+/* @ts-ignore */
+type PrimitiveLike =
+  | null | undefined
+  | number | bigint | string | boolean | symbol
+  | Number | BigInt | String | Boolean | Symbol;
+
+/** * @description Object or function. * @private */
+/* @ts-ignore */
+type NonPrimitive = object | Function;
+
+/** * @description Generic comparable types. * @private */
 type Comparable = number | bigint | string | boolean | Date;
 
-/**
- * @description Object key type.
- *
- * @private
- */
-type PropertyKey = string | symbol;
-
-/**
- * @description Type AsyncFunction.
- *
- * @private
- */
+/** * @description AsyncFunction. * @private */
 type AsyncFunction<T> = (...args: ReadonlyArray<any>) => Promise<T>;
 
-/**
- * @description Type ArrowFunction.
- *
- * @private
- */
+/** * @description ArrowFunction. * @private */
 type ArrowFunction<Args extends any[] = any[], R = any> =
   (this: void, ...args: Args) => R;
 
-/**
- * @description TypedArray types.
- *
- * @private
- */
+/** * @description TypedArray types. * @private */
 type TypedArray = Exclude<ArrayBufferView, DataView>;
 
-/**
- * @description ClearCookiesOptions object type.
- *
- * @private
- */
+
+/** TS browser only types **/
+
+
+/** * @description ClearCookiesOptions object type. * @private */
 type ClearCookiesOptions = {
   path?: string | undefined;
   domain?: string | undefined;
@@ -1083,7 +1078,7 @@ function domCreate (
   innerHTML: string): HTMLElement {
   if (arguments.length === 1 && typeof elementType === "object") {
     let obj = elementType;
-    elementType = obj.elementType;
+    elementType = obj.elementType as string;
     properties = {};
     for (let key in obj) {
       // @ts-ignore
@@ -2544,16 +2539,16 @@ function setCookie (
   secure: boolean,
   SameSite: string = "Lax",
   HttpOnly: boolean): void {
-  if (typeof name === "object") {
+  if (name !== null && typeof name === "object") {
     let settings = name;
-    name = settings.name;
-    value = settings.value;
-    hours = settings.hours || 8760;
-    path = settings.path || "/";
-    domain = settings.domain;
-    secure = settings.secure;
-    SameSite = settings.SameSite || "Lax";
-    HttpOnly = settings.HttpOnly;
+    name = settings.name as string;
+    value = settings.value as string;
+    hours = settings.hours as number || 8760 as number;
+    path = settings.path as string || "/" as string;
+    domain = settings.domain as string;
+    secure = settings.secure as boolean;
+    SameSite = settings.SameSite as string || "Lax" as string;
+    HttpOnly = settings.HttpOnly as boolean;
   }
   let expire = new Date();
   expire.setTime(expire.getTime() + (Math.round(hours * 60 * 60 * 1000)));
@@ -2625,12 +2620,12 @@ function removeCookie (
   HttpOnly: boolean): boolean {
   if (typeof name === "object") {
     let settings = name;
-    name = settings.name;
-    path = settings.path || "/";
-    domain = settings.domain;
-    secure = settings.secure;
-    SameSite = settings.SameSite || "Lax";
-    HttpOnly = settings.HttpOnly;
+    name = settings.name as string;
+    path = settings.path as string || "/" as string;
+    domain = settings.domain as string;
+    secure = settings.secure as boolean;
+    SameSite = settings.SameSite as string || "Lax" as string;
+    HttpOnly = settings.HttpOnly as boolean;
   }
   let result =
     (document.cookie.includes(encodeURIComponent(name as string) + "="));
@@ -2705,14 +2700,14 @@ const castArray = (value: unknown): any[] =>
 
 
 /**
- * @description Returns an array with truthy values (but keeps `0`) from the given Iterable or ArrayLike object.
+ * @description Returns an array with not `null` and `undefined` values from the given Iterable or ArrayLike object.
  *
  * @param {IterableAndIteratorAndArrayLike} iter
  * @returns any[]
  */
 const compact = (iter: IterableLikeAndArrayLike): any[] =>
   Array.from(iter as Iterable<any> | ArrayLike<any>).filter(
-    (value: unknown): boolean => Boolean(value) || value === 0 || value === 0n
+    (value: unknown): boolean => value != null
   );
 
 
@@ -3037,7 +3032,7 @@ function* iterRange (
  * @param {number} [num=Infinity] - The number of times to cycle through the iterable.
  * @yields The next element in the cycled iterable.
  */
-function* iterCycle ([...array]: any[], num: number = Infinity): IteratorReturn {
+function* iterCycle ([...array]: any[], num: number = Infinity): GeneratorLike {
   let index: number = 0;
   while (index++ < num) { yield* array; }
 }
@@ -3050,7 +3045,7 @@ function* iterCycle ([...array]: any[], num: number = Infinity): IteratorReturn 
  * @param {number} [num=Infinity] - The number of times to repeat the value.
  * @yields The next repeated value.
  */
-function* iterRepeat (value: unknown, num: number = Infinity): IteratorReturn {
+function* iterRepeat (value: unknown, num: number = Infinity): GeneratorLike {
   let index: number = 0;
   while (index++ < num) { yield value; }
 }
@@ -3063,7 +3058,7 @@ function* iterRepeat (value: unknown, num: number = Infinity): IteratorReturn {
  * @param callback - Number of elements to take (default: 1).
  * @yields The next element in the taken iterator.
  */
-function* takeWhile <T>(iter: IterableLike, callback: Function): IteratorReturn {
+function* takeWhile <T>(iter: IterableLike, callback: Function): GeneratorLike {
   let iterator: Iterator<T>;
   /* Normalize: if input is an iterator, use it directly; otherwise get an iterator */
   if (typeof (iter as Iterator<T>).next === "function") {
@@ -3087,7 +3082,7 @@ function* takeWhile <T>(iter: IterableLike, callback: Function): IteratorReturn 
  * @param callback - Number of elements to take (default: 1).
  * @yields The next element in the dropped iterator.
  */
-function* dropWhile <T>(iter: IterableLike, callback: Function): IteratorReturn {
+function* dropWhile <T>(iter: IterableLike, callback: Function): GeneratorLike {
   let iterator: Iterator<T>;
   /* Normalize: if input is an iterator, use it directly; otherwise get an iterator */
   if (typeof (iter as Iterator<T>).next === "function") {
@@ -3113,7 +3108,7 @@ function* dropWhile <T>(iter: IterableLike, callback: Function): IteratorReturn 
  * @param num - Number of elements to take (default: 1).
  * @yields The next element in the taken iterator.
  */
-function* take <T>(iter: IterableLike, num: number = 1): IteratorReturn {
+function* take <T>(iter: IterableLike, num: number = 1): GeneratorLike {
   if (num <= 0) { return; }
   let iterator: Iterator<T>;
   /* Normalize: if input is an iterator, use it directly; otherwise get an iterator */
@@ -3137,7 +3132,7 @@ function* take <T>(iter: IterableLike, num: number = 1): IteratorReturn {
  * @param num - Number of elements to skip (default: 1).
  * @yields The next element in the dropped iterator.
  */
-function* drop <T>(iter: IterableLike, num: number = 1): IteratorReturn {
+function* drop <T>(iter: IterableLike, num: number = 1): GeneratorLike {
   if (num <= 0) {
     /* If nothing to drop, just yield everything */
     yield* (typeof (iter as Iterator<T>).next === "function"
@@ -3199,7 +3194,7 @@ function forEachRight ([...array]: any[], callback: Function): void {
  * @param {Function} callback - The function to call for each element.
  * @returns {Iterator} A new iterator with the mapped values.
  */
-function* map (iter: IterableLike, callback: Function): IteratorReturn {
+function* map (iter: IterableLike, callback: Function): GeneratorLike {
   let index: number = 0;
   for (let item of iter as Iterable<any>) { yield callback(item, index++); }
 }
@@ -3212,7 +3207,7 @@ function* map (iter: IterableLike, callback: Function): IteratorReturn {
  * @param {Function} callback - The function to test each element.
  * @returns {Iterator} A new iterator with the filtered values.
  */
-function* filter (iter: IterableLike, callback: Function): IteratorReturn {
+function* filter (iter: IterableLike, callback: Function): GeneratorLike {
   let index: number = 0;
   for (let item of iter as Iterable<any>) {
     if (callback(item, index++)) { yield item; }
@@ -3227,7 +3222,7 @@ function* filter (iter: IterableLike, callback: Function): IteratorReturn {
  * @param {Function} callback - The function to test each element.
  * @returns {Iterator} A new iterator with the rejected values.
  */
-function* reject (iter: IterableLike, callback: Function): IteratorReturn {
+function* reject (iter: IterableLike, callback: Function): GeneratorLike {
   let index: number = 0;
   for (let item of iter as Iterable<any>) {
     if (!callback(item, index++)) { yield item; }
@@ -3246,7 +3241,7 @@ function* reject (iter: IterableLike, callback: Function): IteratorReturn {
 function* slice <T>(
   iter: IterableLike,
   begin: number = 0,
-  end: number = Infinity): IteratorReturn {
+  end: number = Infinity): GeneratorLike {
   if (begin < 0) { begin = 0; }
   if (end <= begin) { return; }
   let iterator: Iterator<T>;
@@ -3273,7 +3268,7 @@ function* slice <T>(
  * @param input - Iterable or iterator to process.
  * @yields The elements of the input iterable or iterator, excluding the first one.
  */
-function* tail <T>(input: IterableLike): IteratorReturn {
+function* tail <T>(input: IterableLike): GeneratorLike {
   let iterator: Iterator<T>;
   /* Normalize: if input is already an iterator, use it directly */
   if (typeof (input as Iterator<T>).next === "function") {
@@ -3431,7 +3426,7 @@ const last = ([...array]: any[]): any => array[array.length - 1];
  * @param {any[]} array - Iterable or iterator to reverse.
  * @yields The elements of the input iterable or iterator in reverse order.
  */
-function* reverse ([...array]: any[]): IteratorReturn {
+function* reverse ([...array]: any[]): GeneratorLike {
   let index: number = array.length;
   while (index--) { yield array[index]; }
 }
@@ -3599,7 +3594,7 @@ const takeRight = ([...array]: any[], num: number = 1): any[] =>
  * @param {Function} callback - The function to test each element.
  * @yields The elements from the end of the iterable that satisfy the testing function.
  */
-function* takeRightWhile ([...array]: any[], callback: Function): IteratorReturn {
+function* takeRightWhile ([...array]: any[], callback: Function): GeneratorLike {
   if (!array.length) { return; }
   let index = array.length;
   while (index--) {
@@ -3628,7 +3623,7 @@ const dropRight = ([...array]: any[], num: number = 1): any[] =>
  * @param {Function} callback - The function to test each element.
  * @yields The elements from the end of the iterable after the testing function returns false.
  */
-function* dropRightWhile ([...array]: any[], callback: Function): IteratorReturn {
+function* dropRightWhile ([...array]: any[], callback: Function): GeneratorLike {
   if (!array.length) { return; }
   let index = array.length;
   let skip = true;
@@ -3646,7 +3641,7 @@ function* dropRightWhile ([...array]: any[], callback: Function): IteratorReturn
  * @param {any[]} args - The iterables or values to concatenate.
  * @yields The elements from the concatenated iterables or values.
  */
-function* concat (...args: any[]): IteratorReturn {
+function* concat (...args: any[]): GeneratorLike {
   for (let item of args) {
     if (typeof item[Symbol.iterator] === "function" ||
       ("Iterator" in globalThis ? (item instanceof Iterator)
@@ -3695,7 +3690,7 @@ function reduce (
  */
 function* enumerate (
   iter: IterableLike,
-  offset: number = 0): IteratorReturn {
+  offset: number = 0): GeneratorLike {
   let index: number = offset;
   for (let item of iter as Iterable<any>) { yield [index++, item]; }
 }
@@ -3707,7 +3702,7 @@ function* enumerate (
  * @param {IterableLike} iter - The nested iterable to flatten.
  * @yields The elements from the flattened iterable.
  */
-function* flat (iter: IterableLike): IteratorReturn {
+function* flat (iter: IterableLike): GeneratorLike {
   for (let item of iter as Iterable<any>) {
     if (typeof item[Symbol.iterator] === "function" ||
       ("Iterator" in globalThis
@@ -3755,14 +3750,14 @@ const withOut = ([...array]: any[], [...filterValues]: any[]): any[] =>
 /**
  * @description Adds two numbers or bigints.
  *
- * @param {NumberLike} value1
- * @param {NumberLike} value2
- * @returns {NumberLike} The result of the operation.
+ * @param {Numeric} value1
+ * @param {Numeric} value2
+ * @returns {Numeric} The result of the operation.
  * @throws {TypeError} If x and y are of mixed types.
  */
 function add (value1: number, value2: number): number;
 function add (value1: bigint, value2: bigint): bigint;
-function add (value1: NumberLike, value2: NumberLike): NumberLike {
+function add (value1: Numeric, value2: Numeric): Numeric {
   if (typeof value1 !== typeof value2
     || (typeof value1 !== "number" && typeof value1 !== "bigint")) {
     throw new TypeError(
@@ -3780,14 +3775,14 @@ function add (value1: NumberLike, value2: NumberLike): NumberLike {
 /**
  * @description Subtract two numbers or bigints.
  *
- * @param {NumberLike} value1
- * @param {NumberLike} value2
- * @returns {NumberLike} The result of the operation.
+ * @param {Numeric} value1
+ * @param {Numeric} value2
+ * @returns {Numeric} The result of the operation.
  * @throws {TypeError} If x and y are of mixed types.
  */
 function sub (value1: number, value2: number): number;
 function sub (value1: bigint, value2: bigint): bigint;
-function sub (value1: NumberLike, value2: NumberLike): NumberLike {
+function sub (value1: Numeric, value2: Numeric): Numeric {
   if (typeof value1 !== typeof value2
     || (typeof value1 !== "number" && typeof value1 !== "bigint")) {
     throw new TypeError(
@@ -3805,14 +3800,14 @@ function sub (value1: NumberLike, value2: NumberLike): NumberLike {
 /**
  * @description Multiply two numbers or bigints.
  *
- * @param {NumberLike} value1
- * @param {NumberLike} value2
- * @returns {NumberLike} The result of the operation.
+ * @param {Numeric} value1
+ * @param {Numeric} value2
+ * @returns {Numeric} The result of the operation.
  * @throws {TypeError} If x and y are of mixed types.
  */
 function mul (value1: number, value2: number): number;
 function mul (value1: bigint, value2: bigint): bigint;
-function mul(value1: NumberLike, value2: NumberLike): NumberLike {
+function mul(value1: Numeric, value2: Numeric): Numeric {
   if (typeof value1 !== typeof value2
     || (typeof value1 !== "number" && typeof value1 !== "bigint")) {
     throw new TypeError(
@@ -3829,15 +3824,15 @@ function mul(value1: NumberLike, value2: NumberLike): NumberLike {
 /**
  * @description Divide two numbers or bigints.
  *
- * @param {NumberLike} value1
- * @param {NumberLike} value2
- * @returns {NumberLike} The result of the operation.
+ * @param {Numeric} value1
+ * @param {Numeric} value2
+ * @returns {Numeric} The result of the operation.
  * @throws {RangeError} If y is zero.
  * @throws {TypeError} If x and y are of mixed types.
  */
 function div (value1: number, value2: number): number;
 function div (value1: bigint, value2: bigint): bigint;
-function div (value1: NumberLike, value2: NumberLike): NumberLike {
+function div (value1: Numeric, value2: Numeric): Numeric {
   if (typeof value1 !== typeof value2
     || (typeof value1 !== "number" && typeof value1 !== "bigint")) {
     throw new TypeError(
@@ -3857,15 +3852,15 @@ function div (value1: NumberLike, value2: NumberLike): NumberLike {
 /**
  * @description Performs integer division of two numbers or bigints.
  *
- * @param {NumberLike} value1
- * @param {NumberLike} value2
- * @returns {NumberLike} The result of the operation.
+ * @param {Numeric} value1
+ * @param {Numeric} value2
+ * @returns {Numeric} The result of the operation.
  * @throws {RangeError} If y is zero.
  * @throws {TypeError} If x and y are of mixed types.
  */
 function divMod (value1: number, value2: number): number;
 function divMod (value1: bigint, value2: bigint): bigint;
-function divMod (value1: NumberLike, value2: NumberLike): NumberLike {
+function divMod (value1: Numeric, value2: Numeric): Numeric {
   if (typeof value1 !== typeof value2
     || (typeof value1 !== "number" && typeof value1 !== "bigint")) {
     throw new TypeError(
@@ -3885,15 +3880,15 @@ function divMod (value1: NumberLike, value2: NumberLike): NumberLike {
 /**
  * @description Remainder of division (modulus) of two numbers or bigints.
  *
- * @param {NumberLike} value1
- * @param {NumberLike} value2
- * @returns {NumberLike} The result of the operation.
+ * @param {Numeric} value1
+ * @param {Numeric} value2
+ * @returns {Numeric} The result of the operation.
  * @throws {RangeError} If y is zero.
  * @throws {TypeError} If x and y are of mixed types.
  */
 function mod (value1: number, value2: number): number;
 function mod (value1: bigint, value2: bigint): bigint;
-function mod (value1: NumberLike, value2: NumberLike): NumberLike {
+function mod (value1: Numeric, value2: Numeric): Numeric {
   if (typeof value1 !== typeof value2
     || (typeof value1 !== "number" && typeof value1 !== "bigint")) {
     throw new TypeError(
@@ -3983,12 +3978,12 @@ const avg = (...args: number[]): number => Math.sumPrecise(args) / args.length;
 /**
  * @description Calculates the product of multiple numbers and bigints.
  *
- * @param {...NumberLike} args - The numbers to multiply.
- * @returns {NumberLike} The product of the numbers.
+ * @param {...Numeric} args - The numbers to multiply.
+ * @returns {Numeric} The product of the numbers.
  */
 function product (first: number, ...args: number[]): number;
 function product (first: bigint, ...args: bigint[]): bigint;
-function product (first: NumberLike, ...args: NumberLike[]): NumberLike {
+function product (first: Numeric, ...args: Numeric[]): Numeric {
   if (typeof first === "bigint") {
     return (args as bigint[]).reduce((acc: bigint, v: bigint): bigint => acc * v, first as bigint);
   }
@@ -3999,14 +3994,14 @@ function product (first: NumberLike, ...args: NumberLike[]): NumberLike {
 /**
  * @description Returns the value of a base raised to a power.
  *
- * @param {NumberLike} base - The base value.
- * @param {NumberLike} power - The power value.
- * @returns {NumberLike} The product of the numbers.
+ * @param {Numeric} base - The base value.
+ * @param {Numeric} power - The power value.
+ * @returns {Numeric} The product of the numbers.
  * @throws {TypeError} if base and power are of mixed types or not number or bigint.
  */
 function pow (base: number, power: number): number;
 function pow (base: bigint, power: bigint): bigint;
-function pow (base: NumberLike, power: NumberLike): NumberLike {
+function pow (base: Numeric, power: Numeric): Numeric {
   if (typeof base !== typeof power
     || (typeof base !== "number" && typeof base !== "bigint")
   ) {
@@ -4024,19 +4019,19 @@ function pow (base: NumberLike, power: NumberLike): NumberLike {
 /**
  * @description Clamps a value between a minimum and maximum.
  *
- * @param {NumberLike} value - The value to clamp.
- * @param {NumberLike} min - The minimum value.
- * @param {NumberLike} max - The maximum value.
- * @returns {NumberLike} The clamped value.
+ * @param {Numeric} value - The value to clamp.
+ * @param {Numeric} min - The minimum value.
+ * @param {Numeric} max - The maximum value.
+ * @returns {Numeric} The clamped value.
  */
 function clamp (value: number, min: number, max: number): number;
 function clamp (value: bigint, min: bigint, max: bigint): bigint;
 function clamp (
-  value: NumberLike,
-  min: NumberLike = Number.MIN_SAFE_INTEGER,
-  max: NumberLike = Number.MAX_SAFE_INTEGER): NumberLike {
+  value: Numeric,
+  min: Numeric = Number.MIN_SAFE_INTEGER,
+  max: Numeric = Number.MAX_SAFE_INTEGER): Numeric {
   /* normalize */
-  function _numberNormalize (value: any): NumberLike {
+  function _numberNormalize (value: any): Numeric {
     if (typeof value !== "bigint" && typeof value !== "number") {
       value = Number(value);
     }
@@ -4074,19 +4069,19 @@ function clamp (
 /**
  * @description Clamps a value between a minimum and maximum.
  *
- * @param {NumberLike} value - The value to clamp.
- * @param {NumberLike} min - The minimum value.
- * @param {NumberLike} max - The maximum value.
- * @returns {NumberLike} The clamped value.
+ * @param {Numeric} value - The value to clamp.
+ * @param {Numeric} min - The minimum value.
+ * @param {Numeric} max - The maximum value.
+ * @returns {Numeric} The clamped value.
  */
 function minmax (value: number, min: number, max: number): number;
 function minmax (value: bigint, min: bigint, max: bigint): bigint;
 function minmax (
-  value: NumberLike,
-  min: NumberLike = Number.MIN_SAFE_INTEGER,
-  max: NumberLike = Number.MAX_SAFE_INTEGER): NumberLike {
+  value: Numeric,
+  min: Numeric = Number.MIN_SAFE_INTEGER,
+  max: Numeric = Number.MAX_SAFE_INTEGER): Numeric {
   /* normalize */
-  function _numberNormalize (value: any): NumberLike {
+  function _numberNormalize (value: any): Numeric {
     if (typeof value !== "bigint" && typeof value !== "number") {
       value = Number(value);
     }
@@ -4340,7 +4335,7 @@ const isBigInt64 = (value: unknown): boolean =>
  * @param {unknown} value - The value to check.
  * @returns {boolean} True if the value is a 64-bit unsigned integer, false otherwise.
  */
-const isBigUInt64 = (value: unknown | NumberLike): boolean =>
+const isBigUInt64 = (value: unknown | Numeric): boolean =>
   typeof value === "bigint" && value >= 0 && value <= Math.pow(2, 64) - 1;
 
 
@@ -4360,7 +4355,7 @@ const toFloat16 = (value: unknown): number =>
  * @param {unknown} value - The value to check.
  * @returns {boolean} True if the value is a 16-bit floating-point number, false otherwise.
  */
-const isFloat16 = (value: unknown | NumberLike): boolean =>
+const isFloat16 = (value: unknown | Numeric): boolean =>
   typeof value === "number" && value === value && value >= -65504
     && value <= 65504;
 
@@ -4368,10 +4363,10 @@ const isFloat16 = (value: unknown | NumberLike): boolean =>
 /**
  * @description Checks if the sign bit of a number or bigint is set (i.e., if the value is negative).
  *
- * @param {unknown | NumberLike} value - The value to check.
+ * @param {unknown | Numeric} value - The value to check.
  * @returns {boolean} True if the sign bit is set, false otherwise.
  */
-const signbit = (value: unknown | NumberLike): boolean =>
+const signbit = (value: unknown | Numeric): boolean =>
   ((value = Number(value)) !== value)
     ? false
     : (Object.is(value, -0) || (
@@ -4426,14 +4421,14 @@ function randomFloat (
 /**
  * @description Checks if a number is within a specified range (inclusive).
  *
- * @param {NumberLike} value - The number to check.
- * @param {NumberLike} min - The minimum value of the range.
- * @param {NumberLike} max - The maximum value of the range.
+ * @param {Numeric} value - The number to check.
+ * @param {Numeric} min - The minimum value of the range.
+ * @param {Numeric} max - The maximum value of the range.
  * @returns {boolean} True if the number is within the range, false otherwise.
  */
 function inRange (value: number, min: number, max: number): boolean;
 function inRange (value: bigint, min: bigint, max: number): boolean;
-function inRange (value: NumberLike, min: NumberLike, max: NumberLike): boolean {
+function inRange (value: Numeric, min: Numeric, max: Numeric): boolean {
   if (
     (typeof value === "number"
       && typeof min === "number"

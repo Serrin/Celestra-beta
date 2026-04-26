@@ -121,8 +121,6 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <p><a href="#FN-bind();">bind();</a></p>
       <p><a href="#FN-compose();">compose();</a></p>
       <p><a href="#FN-constant();">constant();</a></p>
-      <p><a href="#FN-createPolyfillMethod();">createPolyfillMethod();</a></p>
-      <p><a href="#FN-createPolyfillProperty();">createPolyfillProperty();</a></p>
       <p><a href="#FN-curry();">curry();</a></p>
       <p><a href="#FN-delay();">delay();</a></p>
       <p><a href="#FN-extend();">extend();</a></p>
@@ -825,15 +823,6 @@ globalThis.CEL = celestra;
       <td><code>constant(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>A one time assignment function to create a constant value in ES5. This returns a <code>function</code>, which returns the given value. (In math: <code>f(x)=x</code>)</td>
     </tr>
-    <tr id="FN-createPolyfillMethod();">
-      <td><code>createPolyfillMethod(object, property, value);</code></td>
-      <td><span class="removed">Stability: 0 - Removed.</span><br/>This function creates a writable, configurable and non-enumerable property with the given value in the object if the property doesn't exist in the object. The return value <code>boolean</code> and checks that the creating of the method was successful.<br/><strong>Example:</strong><br/><pre>CEL.createPolyfillMethod(Array.prototype, "at", function(...){...});</pre>
-    </td>
-    </tr>
-    <tr id="FN-createPolyfillProperty();">
-      <td><code>createPolyfillProperty(object, property,value);</code></td>
-      <td><span class="removed">Stability: 0 - Removed.</span><br/>This function creates a writable, configurable and enumerable property with the given value in the object if the property doesn't exist in the object. The return value <code>boolean</code> and checks that the creating of the property was successful.</td>
-    </tr>
     <tr id="FN-curry();">
       <td><code>curry(function);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>Curries a <code>function</code>, allowing it to be called with a single argument at a time and returning a new function that takes the next argument. The function parameter is mandatory.</td>
@@ -866,7 +855,7 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-getUrlVars();">
       <td><code>getUrlVars([str=location.search]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Get the values of the url variables in an <code>object</code> from the <code>location.search</code> <strong>(default value)</strong> or another given url. The str parameter name is optional and can be a <code>string</code>.
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>Get the values of the url variables in an <code>object</code> from the <code>location.search</code> <strong>(default value)</strong> or another given url. The str parameter name is optional and can be a <code>string</code>.
       <br/>Example: <code>"?showall=true&amp;order_by=updated&amp;o=asc"</code> -> <code>Object { showall: "true", order_by: "updated", o: "asc" }</code></td>
     </tr>
     <tr id="FN-gt();">
@@ -899,7 +888,7 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-obj2string();">
       <td><code>obj2string(object);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Convert object to a querystring. The return value is the <code>string</code>. The object parameter is mandatory.</td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>Convert object to a querystring. The return value is the <code>string</code>. The object parameter is mandatory.</td>
     </tr>
     <tr id="FN-omit();">
       <td><code>omit(object, keys);</code></td>
@@ -1558,8 +1547,8 @@ CEL.delay(5000)
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function merges the iterators and yields the elements of the merged iterator. The given iterators will be not changed. At least one iterator has to been given.</td>
     </tr>
     <tr id="FN-compact();">
-      <td><code>compact(iterator);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This Returns an array with truthy values (but keeps <code>0</code> and <code>0n</code>) from the given Iterable or ArrayLike object. The iterator parameter is mandatory.</td>
+      <td><code>compact(collection);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function filters out <code>null</code> and <code>undefined</code> values (but keeps other falsy values) from the given Iterable or ArrayLike object. The collection parameter is mandatory.</td>
     </tr>
     <tr id="FN-count();">
       <td><code>count((iterator,callback););</code></td>
@@ -2195,36 +2184,6 @@ CEL.qs("#div2").append(el2);</pre></td>
       <td>
         <p><a href="?foo=fooValue%20Lorem%20Ipsum%202017%20%C3%A9%C3%A1%C5%B1%C5%91%C3%BA%C3%B6%C3%BC%C3%B3%C3%AD%20%C3%89%C3%81%C5%B0%C5%90%C3%9A%C3%96%C3%9C%C3%93%C3%8D&bar=barValue#url">Test page</a></p>
       </td>
-    </tr>
-    <tr>
-      <td><strong>getUrlVars()</strong></td>
-      <td><button onclick='var params = CEL.getUrlVars(); for ( var name in params ) { alert(name+" = "+params[name]); }'>Try</button></td>
-      <td><code>var params = CEL.getUrlVars();<br/>for ( var name in params ) { alert(name+" = "+params[name]); }</code></td>
-    </tr>
-    <tr>
-      <td><strong>getUrlVars() found</strong></td>
-      <td><button onclick='alert( CEL.getUrlVars()["foo"] );'>Try</button></td>
-      <td><code>alert( CEL.getUrlVars()["foo"] );</code></td>
-    </tr>
-    <tr>
-      <td><strong>getUrlVars() not found</strong></td>
-      <td><button onclick='alert( CEL.getUrlVars()["foobarbaznotfound"] );'>Try</button></td>
-      <td><code>alert( CEL.getUrlVars()["foobarbaznotfound"] );</code></td>
-    </tr>
-    <tr>
-      <td><strong>getUrlVars() with "?showall=true&amp;order_by=updated&amp;o=asc"</strong></td>
-      <td><button onclick='var params = CEL.getUrlVars("?showall=true&order_by=updated&o=asc"); for ( var name in params ) { alert(name+" = "+params[name]); }'>Try</button></td>
-      <td><code>var params = CEL.getUrlVars();<br/>for ( var name in params ) { alert(name+" = "+params[name]); }</code></td>
-    </tr>
-    <tr>
-      <td><strong>getUrlVars() found with "?testa=a1&amp;testb=b2"</strong></td>
-      <td><button onclick='alert( CEL.getUrlVars("?showall=true&order_by=updated&o=asc")["order_by"] );'>Try</button></td>
-      <td><code>alert( CEL.getUrlVars("?showall=true&amp;order_by=updated&amp;o=asc")["order_by"] );</code></td>
-    </tr>
-    <tr>
-      <td><strong>getUrlVars() not found with "?testa=a1&amp;testb=b2"</strong></td>
-      <td><button onclick='alert( CEL.getUrlVars("?showall=true&order_by=updated&o=asc")["notfound"] );'>Try</button></td>
-      <td><code>alert( CEL.getUrlVars("?showall=true&amp;order_by=updated&amp;o=asc")["notfound"] );</code></td>
     </tr>
     <tr>
       <td><strong>getDoNotTrack()</strong></td>

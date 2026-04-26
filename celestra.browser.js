@@ -1083,7 +1083,7 @@ const isGeneratorFunction = (value) => Object.getPrototypeOf(value).constructor 
 const isAsyncFunction = (value) => Object.getPrototypeOf(value).constructor ===
     Object.getPrototypeOf(async function () { }).constructor;
 function setCookie(name, value, hours = 8760, path = "/", domain, secure, SameSite = "Lax", HttpOnly) {
-    if (typeof name === "object") {
+    if (name !== null && typeof name === "object") {
         let settings = name;
         name = settings.name;
         value = settings.value;
@@ -1166,7 +1166,7 @@ function clearCookies(path = "/", domain, secure, SameSite = "Lax", HttpOnly) {
     }
 }
 const castArray = (value) => typeof value === "undefined" ? [] : (Array.isArray(value) ? value : [value]);
-const compact = (iter) => Array.from(iter).filter((value) => Boolean(value) || value === 0 || value === 0n);
+const compact = (iter) => Array.from(iter).filter((value) => value != null);
 function unique(iter, resolver) {
     if (resolver == null) {
         return [...new Set(iter)];

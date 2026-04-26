@@ -306,8 +306,7 @@ var /** @type any */ token14, /** @type any */ token15;
 CUT.addElement("hr");
 CUT.addElement("h3", "Not auto tested functions");
 CUT.addElement("ul",
-  "<li>getUrlVars(); no str parameter</li>"
-    +"<li>getLocation(&#60;success&#62;[,error]);</li>"
+  "<li>getLocation(&#60;success&#62;[,error]);</li>"
     +"<li>getFullscreen();</li>"
     +"<li>setFullscreenOn(&#60;selector&#62; or &#60;element&#62;);</li>"
     +"<li>setFullscreenOff();</li>"
@@ -774,15 +773,14 @@ CUT.isEqual("extend(); 3", "12345121",
 );
 
 
-/* obj2string(); */
+/* obj2string(); deprecated */
 CUT.isEqual("obj2string();",
   CEL.obj2string({str:"éáűőúöüóíÉÁŰŐÚÖÜÓÍ", bool:true, pi:3.141592653589793}),
   "str=%C3%A9%C3%A1%C5%B1%C5%91%C3%BA%C3%B6%C3%BC%C3%B3%C3%AD%C3%89%C3%81%C5%B0%C5%90%C3%9A%C3%96%C3%9C%C3%93%C3%8D&bool=true&pi=3.141592653589793"
 );
 
 
-
-/*getUrlVars(); */
+/* getUrlVars(); deprecated */
 CUT.isEqual(
   'getUrlVars(); prop order_by from <code>"?showall=true&order_by=updated&o=asc"</code>',
   "updated", CEL.getUrlVars("?showall=true&order_by=updated&o=asc")["order_by"]
@@ -1799,9 +1797,8 @@ CUT.isEqual("compact(); 02",
     ),
     (_, v) => typeof v === "bigint" ? v.toString()+"n" : v
   ),
-  "[0,1,2,3,4,5,\"dsfsd\",true,\"0n\"]"
+  "[0,1,false,2,\"\",3,4,5,null,\"dsfsd\",true,\"0n\"]"
 );
-
 
 
 /* arrayCycle(); begin */

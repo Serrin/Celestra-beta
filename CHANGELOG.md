@@ -5,19 +5,9 @@
 
 1. Documentation, pdf and code fixes.
 2. Add 2 new pages about the JS data types in the __js-cheatsheet.odt__ and __js-cheatsheet.pdf__.
-3. Remove these functions: `createPolyfillMethod();`, `createPolyfillProperty();`
-4. Remove the documentation of these functions:
-
-- `deleteOwnProperty();`
-- `isCallable();`
-- `isChar();`
-- `isNumeric();`
-- `isSuperset();`
-- `noConflict();`
-- `setDifference();`
-- `setIntersection();`
-- `setSymmetricDifference();`
-- `setUnion();`
+3. Fix this function: `compact();`
+4. Deprecate _(stability 1)_ these functions: `getUrlVars();`, `obj2string();`
+5. Remove these functions: `createPolyfillMethod();`, `createPolyfillProperty();`
 
 ## Celestra v6.6.0 Angelo
 
