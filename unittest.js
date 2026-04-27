@@ -2992,8 +2992,8 @@ CUT.isTrue("isFloat();",
 CUT.isTrue("isObject();",
       CEL.isObject({"a": 1})
   &&  CEL.isObject(Object(42))
-  &&  CEL.isObject(function () {})
   &&  CEL.isObject([])
+  && !CEL.isObject(function () {})
   && !CEL.isObject(null)
   && !CEL.isObject(undefined)
   && !CEL.isObject(42)

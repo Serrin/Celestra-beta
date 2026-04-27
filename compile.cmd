@@ -1,4 +1,5 @@
 @echo off
+rem color 0F
 echo.
 date /t
 time /t

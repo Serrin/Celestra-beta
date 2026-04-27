@@ -90,31 +90,19 @@ function assert(condition, message) {
     }
 }
 const eq = (value1, value2) => value1 === value2 || (value1 !== value1 && value2 !== value2);
-function gt(value1, value2) {
-    const _typeOf = (value) => value === null ? "null" : typeof value;
-    return _typeOf(value1) === _typeOf(value2) && value1 > value2;
-}
-function gte(value1, value2) {
-    const _typeOf = (value) => value === null ? "null" : typeof value;
-    return _typeOf(value1) === _typeOf(value2)
-        && (value1 > value2
-            || value1 === value2
-            || (value1 !== value1 && value2 !== value2));
-}
-function lt(value1, value2) {
-    const _typeOf = (value) => value === null ? "null" : typeof value;
-    return _typeOf(value1) === _typeOf(value2) && value1 < value2;
-}
-function lte(value1, value2) {
-    const _typeOf = (value) => value === null ? "null" : typeof value;
-    return _typeOf(value1) === _typeOf(value2)
-        && (value1 < value2
-            || value1 === value2
-            || (value1 !== value1 && value2 !== value2));
-}
-function tap(callback) {
-    return function (value) { callback(value); return value; };
-}
+const gt = (value1, value2) => (value1 === null ? "null" : typeof value1) ===
+    (value2 === null ? "null" : typeof value2)
+    && value1 > value2;
+const gte = (value1, value2) => (value1 === null ? "null" : typeof value1) ===
+    (value2 === null ? "null" : typeof value2)
+    && (value1 >= value2 || (value1 !== value1 && value2 !== value2));
+const lt = (value1, value2) => (value1 === null ? "null" : typeof value1) ===
+    (value2 === null ? "null" : typeof value2)
+    && value1 < value2;
+const lte = (value1, value2) => (value1 === null ? "null" : typeof value1) ===
+    (value2 === null ? "null" : typeof value2)
+    && (value1 <= value2 || (value1 !== value1 && value2 !== value2));
+const tap = (callback) => function (value) { callback(value); return value; };
 function once(callback) {
     let called = false;
     let result;
@@ -686,7 +674,7 @@ function isTypedCollection(iter, expectedType, Throw = false) {
         throw new TypeError(`[isTypedCollection] TypeError: expectedType must be string, function, array. Got ${_typeOf(expectedType)}`);
     }
     if (typeof Throw !== "boolean") {
-        throw new TypeError(`[isTypedCollection] TypeError: Throw has to be a boolean. Got ${typeof Throw}`);
+        throw new TypeError(`[isTypedCollection] TypeError: Throw has to be a boolean. Got ${_typeOf(Throw)}`);
     }
     let expectedArray = Array.isArray(expectedType) ? expectedType : [expectedType];
     let matched = true;
@@ -712,14 +700,15 @@ function isTypedCollection(iter, expectedType, Throw = false) {
     return matched;
 }
 function is(value, expectedType, Throw = false) {
+    const _typeOf = (value) => value === null ? "null" : typeof value;
     if (!(["string", "function", "undefined"].includes(typeof expectedType))
         && !Array.isArray(expectedType)) {
-        throw new TypeError(`[is] TypeError: expectedType must be string, function, array or undefined. Got ${typeof expectedType}`);
+        throw new TypeError(`[is] TypeError: expectedType must be string, function, array or undefined. Got ${_typeOf(expectedType)}`);
     }
     if (typeof Throw !== "boolean") {
-        throw new TypeError(`[is] TypeError: Throw has to be a boolean. Got ${typeof Throw}`);
+        throw new TypeError(`[is] TypeError: Throw has to be a boolean. Got ${_typeOf(Throw)}`);
     }
-    const vType = (value === null ? "null" : typeof value);
+    const vType = _typeOf(value);
     if (expectedType == null) {
         return vType === "object"
             ? Object.getPrototypeOf(value)?.constructor ?? "object"
@@ -733,12 +722,12 @@ function is(value, expectedType, Throw = false) {
         if (typeof item === "function") {
             return value != null && value instanceof item;
         }
-        throw new TypeError(`[is] TypeError: expectedType array elements have to be a string or function. Got ${typeof item}`);
+        throw new TypeError(`[is] TypeError: expectedType array elements have to be a string or function. Got ${_typeOf(item)}`);
     });
     if (Throw && !matched) {
         let vName = value.toString ? value.toString() : Object.prototype.toString.call(value);
         let eNames = expectedArray.map((item) => (typeof item === "string" ? item.toString() : item.name ?? "anonymous")).join(", ");
-        throw new TypeError(`[is] TypeError: ${vName} is not a ${eNames}`);
+        throw new TypeError(`[is] TypeError: ${vName} is not one of these: ${eNames}`);
     }
     return matched;
 }
@@ -761,7 +750,6 @@ function toPrimitive(value) {
     return value;
 }
 function toSafeString(value) {
-    const _isTypedArray = (value) => ArrayBuffer.isView(value) && !(value instanceof DataView);
     const seen = new WeakSet();
     function replacer(_key, value) {
         if (typeof value === "function") {
@@ -792,7 +780,7 @@ function toSafeString(value) {
     if (Array.isArray(value)) {
         return `[${value.map(v => toSafeString(v)).join(", ")}]`;
     }
-    if (_isTypedArray(value)) {
+    if (ArrayBuffer.isView(value) && !(value instanceof DataView)) {
         return `[${[...value].map(v => toSafeString(v)).join(", ")}]`;
     }
     if (value instanceof Map) {
@@ -855,33 +843,29 @@ function isCoercedObject(value) {
     return false;
 }
 function isDeepStrictEqual(value1, value2) {
-    const _deepType = (value) => (value === null) ? "null" : (value !== value) ? "NaN" : (typeof value);
+    const _deepTypeOf = (value) => (value === null) ? "null" : (value !== value) ? "NaN" : (typeof value);
     const _isPrimitive = (value) => value == null
         || (typeof value !== "object" && typeof value !== "function");
-    const _isObject = (value) => value != null && typeof value === "object";
     const _isSameInstance = (value1, value2, Class) => value1 instanceof Class && value2 instanceof Class;
-    const _classof = (value) => Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
-    const _ownKeys = (value) => [...Object.getOwnPropertyNames(value),
-        ...Object.getOwnPropertySymbols(value)];
-    const _isEqual = (value1, value2) => Object.is(value1, value2);
-    if (_isEqual(value1, value2)) {
+    const _classOf = (value) => Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
+    if (Object.is(value1, value2)) {
         return true;
     }
-    if (_isObject(value1)
+    if (_deepTypeOf(value1) === "object"
         && _isPrimitive(value2)
-        && _classof(value1) === typeof value2) {
-        return _isEqual(value1.valueOf(), value2);
+        && _classOf(value1) === typeof value2) {
+        return Object.is(value1.valueOf(), value2);
     }
     if (_isPrimitive(value1)
-        && _isObject(value2)
-        && typeof value1 === _classof(value2)) {
-        return _isEqual(value1, value2.valueOf());
+        && _deepTypeOf(value2) === "object"
+        && typeof value1 === _classOf(value2)) {
+        return Object.is(value1, value2.valueOf());
     }
-    if (_deepType(value1) !== _deepType(value2)) {
+    if (_deepTypeOf(value1) !== _deepTypeOf(value2)) {
         return false;
     }
-    if (_isObject(value1) && _isObject(value2)) {
-        if (_isEqual(value1, value2)) {
+    if (_deepTypeOf(value1) === "object" && _deepTypeOf(value2) === "object") {
+        if (Object.is(value1, value2)) {
             return true;
         }
         if (Object.getPrototypeOf(value1).constructor !==
@@ -890,13 +874,13 @@ function isDeepStrictEqual(value1, value2) {
         }
         if (_isSameInstance(value1, value2, WeakMap)
             || _isSameInstance(value1, value2, WeakSet)) {
-            return _isEqual(value1, value2);
+            return Object.is(value1, value2);
         }
         if (_isSameInstance(value1, value2, Number)
             || _isSameInstance(value1, value2, Boolean)
             || _isSameInstance(value1, value2, String)
             || _isSameInstance(value1, value2, BigInt)) {
-            return _isEqual(value1.valueOf(), value2.valueOf());
+            return Object.is(value1.valueOf(), value2.valueOf());
         }
         if (Array.isArray(value1) && Array.isArray(value2)) {
             if (value1.length !== value2.length) {
@@ -907,26 +891,16 @@ function isDeepStrictEqual(value1, value2) {
             }
             return value1.every((value, index) => isDeepStrictEqual(value, value2[index]));
         }
-        if (_isSameInstance(value1, value2, Int8Array)
-            || _isSameInstance(value1, value2, Uint8Array)
-            || _isSameInstance(value1, value2, Uint8ClampedArray)
-            || _isSameInstance(value1, value2, Int16Array)
-            || _isSameInstance(value1, value2, Uint16Array)
-            || _isSameInstance(value1, value2, Int32Array)
-            || _isSameInstance(value1, value2, Uint32Array)
-            || ("Float16Array" in globalThis ?
-                _isSameInstance(value1, value2, Float16Array) : false)
-            || _isSameInstance(value1, value2, Float32Array)
-            || _isSameInstance(value1, value2, Float64Array)
-            || _isSameInstance(value1, value2, BigInt64Array)
-            || _isSameInstance(value1, value2, BigUint64Array)) {
+        if ((ArrayBuffer.isView(value1) && !(value1 instanceof DataView))
+            && (ArrayBuffer.isView(value2) && !(value2 instanceof DataView))
+            && _classOf(value1) === _classOf(value2)) {
             if (value1.length !== value2.length) {
                 return false;
             }
             if (value1.length === 0) {
                 return true;
             }
-            return value1.every((value, index) => _isEqual(value, value2[index]));
+            return value1.every((value, index) => Object.is(value, value2[index]));
         }
         if (_isSameInstance(value1, value2, ArrayBuffer)) {
             if (value1.byteLength !== value2.byteLength) {
@@ -936,7 +910,7 @@ function isDeepStrictEqual(value1, value2) {
                 return true;
             }
             let xTA = new Int8Array(value1), yTA = new Int8Array(value2);
-            return xTA.every((value, index) => _isEqual(value, yTA[index]));
+            return xTA.every((value, index) => Object.is(value, yTA[index]));
         }
         if (_isSameInstance(value1, value2, DataView)) {
             if (value1.byteLength !== value2.byteLength) {
@@ -946,7 +920,7 @@ function isDeepStrictEqual(value1, value2) {
                 return true;
             }
             for (let index = 0; index < value1.byteLength; index++) {
-                if (!_isEqual(value1.getUint8(index), value2.getUint8(index))) {
+                if (!Object.is(value1.getUint8(index), value2.getUint8(index))) {
                     return false;
                 }
             }
@@ -971,20 +945,26 @@ function isDeepStrictEqual(value1, value2) {
             return [...value1.keys()].every((value) => value2.has(value));
         }
         if (_isSameInstance(value1, value2, RegExp)) {
-            return _isEqual(value1.lastIndex, value2.lastIndex)
-                && _isEqual(value1.flags, value2.flags)
-                && _isEqual(value1.source, value2.source);
+            return Object.is(value1.lastIndex, value2.lastIndex)
+                && Object.is(value1.flags, value2.flags)
+                && Object.is(value1.source, value2.source);
         }
         if (_isSameInstance(value1, value2, Error)) {
             return isDeepStrictEqual(Object.getOwnPropertyNames(value1)
-                .reduce(function (acc, k) { acc[k] = value1[k]; return acc; }, {}), Object.getOwnPropertyNames(value2)
-                .reduce(function (acc, k) { acc[k] = value2[k]; return acc; }, {}));
+                .reduce(function (acc, k) {
+                acc[k] = value1[k];
+                return acc;
+            }, {}), Object.getOwnPropertyNames(value2)
+                .reduce(function (acc, k) {
+                acc[k] = value2[k];
+                return acc;
+            }, {}));
         }
         if (_isSameInstance(value1, value2, Date)) {
-            return _isEqual(+value1, +value2);
+            return Object.is(+value1, +value2);
         }
-        let value1Keys = _ownKeys(value1);
-        let value2Keys = _ownKeys(value2);
+        let value1Keys = Reflect.ownKeys(value1);
+        let value2Keys = Reflect.ownKeys(value2);
         if (value1Keys.length !== value2Keys.length) {
             return false;
         }
@@ -996,13 +976,11 @@ function isDeepStrictEqual(value1, value2) {
     return false;
 }
 function isEmpty(value) {
-    const _isObject = (value) => value != null && (typeof value === "object" || typeof value === "function");
-    const _isTypedArray = (value) => ArrayBuffer.isView(value) && !(value instanceof DataView);
     if (value == null || Number.isNaN(value)) {
         return true;
     }
     if (Array.isArray(value)
-        || _isTypedArray(value)
+        || (ArrayBuffer.isView(value) && !(value instanceof DataView))
         || typeof value === "string"
         || value instanceof String) {
         return value.length === 0;
@@ -1028,11 +1006,8 @@ function isEmpty(value) {
         }
         catch { }
     }
-    if (_isObject(value)) {
-        const keys = [
-            ...Object.getOwnPropertyNames(value),
-            ...Object.getOwnPropertySymbols(value)
-        ];
+    if (value != null && typeof value === "object") {
+        const keys = Reflect.ownKeys(value);
         if (keys.length === 0) {
             return true;
         }
@@ -1051,7 +1026,7 @@ const isPlainObject = (value) => value != null
     && typeof value === "object"
     && (Object.getPrototypeOf(value) === Object.prototype
         || Object.getPrototypeOf(value) === null);
-const isObject = (value) => value != null && (typeof value === "object" || typeof value === "function");
+const isObject = (value) => value != null && typeof value === "object";
 const isFunction = (value) => typeof value === "function";
 function isArraylike(value) {
     if (value == null
@@ -1578,7 +1553,7 @@ function includes(collection, value, comparator) {
     const _isIterator = (value) => value != null && typeof value === "object"
         && typeof value.next === "function";
     const _isIterable = (value) => value != null && typeof value[Symbol.iterator] === "function";
-    const _isEqual = comparator ||
+    const _isEqual = comparator ??
         ((value1, value2) => value1 === value2 || (value1 !== value1 && value2 !== value2));
     const cType = (collection === null ? "null" : typeof collection);
     if (collection == null
@@ -1784,7 +1759,9 @@ function mod(value1, value2) {
 }
 const isFloat = (value) => typeof value === "number" && value === value && Boolean(value % 1);
 function toInteger(value) {
-    value = ((value = Math.trunc(Number(value))) !== value || value === 0) ? 0 : value;
+    value = ((value = Math.trunc(Number(value))) !== value || value === 0)
+        ? 0
+        : value;
     return Math.min(Math.max(value, Number.MIN_SAFE_INTEGER), Number.MAX_SAFE_INTEGER);
 }
 const toIntegerOrInfinity = (value) => ((value = Math.trunc(Number(value))) !== value || value === 0)
@@ -1802,9 +1779,11 @@ function sum(...args) {
 const avg = (...args) => Math.sumPrecise(args) / args.length;
 function product(first, ...args) {
     if (typeof first === "bigint") {
-        return args.reduce((acc, v) => acc * v, first);
+        return args
+            .reduce((acc, v) => acc * v, first);
     }
-    return args.reduce((acc, v) => acc * v, first);
+    return args
+        .reduce((acc, v) => acc * v, first);
 }
 function pow(base, power) {
     if (typeof base !== typeof power
@@ -1924,19 +1903,25 @@ const toFloat32 = (value) => ((value = Math.min(Math.max(-3.4e38, Number(value))
     ? value : 0;
 const isInt8 = (value) => Number.isInteger(value) && value >= -128 && value <= 127;
 const isUInt8 = (value) => Number.isInteger(value) && value >= 0 && value <= 255;
-const isInt16 = (value) => Number.isInteger(value) && value >= -32768
+const isInt16 = (value) => Number.isInteger(value)
+    && value >= -32768
     && value <= 32767;
 const isUInt16 = (value) => Number.isInteger(value) && value >= 0 && value <= 65535;
-const isInt32 = (value) => Number.isInteger(value) && value >= -2147483648
+const isInt32 = (value) => Number.isInteger(value)
+    && value >= -2147483648
     && value <= 2147483647;
-const isUInt32 = (value) => Number.isInteger(value) && value >= 0
+const isUInt32 = (value) => Number.isInteger(value)
+    && value >= 0
     && value <= 4294967295;
 const isBigInt64 = (value) => typeof value === "bigint"
-    && value >= Math.pow(-2, 63) && value <= Math.pow(2, 63) - 1;
+    && value >= Math.pow(-2, 63)
+    && value <= Math.pow(2, 63) - 1;
 const isBigUInt64 = (value) => typeof value === "bigint" && value >= 0 && value <= Math.pow(2, 64) - 1;
 const toFloat16 = (value) => ((value = Math.min(Math.max(-65504, Number(value)), 65504)) === value)
     ? value : 0;
-const isFloat16 = (value) => typeof value === "number" && value === value && value >= -65504
+const isFloat16 = (value) => typeof value === "number"
+    && value === value
+    && value >= -65504
     && value <= 65504;
 const signbit = (value) => ((value = Number(value)) !== value)
     ? false

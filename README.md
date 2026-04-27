@@ -358,7 +358,7 @@ Name|Description
 `isNonNullablePrimitive(value);`|__Stability: 4 - Stable.__<BR>Checks if the given value is NonNullable (not null, undefined, object or function). The value parameter is mandatory and can be any type. The return value is boolean.
 `isNull(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is null. The return value is boolean.
 `isNullish(value);`|__Stability: 4 - Stable.__<BR>__Old name before v6.1.0: `isNil();`.__<BR>This function determines whether the provided value is null or undefined. The return value is boolean.
-`isObject(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is an object or function and not null. The return value is boolean.
+`isObject(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is an `object` and not `null`. The return value is boolean.
 `isPlainObject(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is an object, which own prototype is the Object.prototype or null. The return value is boolean.
 `isPrimitive(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is not null, not object and not function. The return value is boolean.
 `isPropertyKey(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is a valid propertx key (string or symbol). The return value is boolean.

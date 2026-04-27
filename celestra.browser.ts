@@ -155,7 +155,7 @@ type ClearCookiesOptions = {
 
 /* Math.sumPrecise(); */
 if (!("sumPrecise" in Math)) {
-  // @ts-ignore
+  /* @ts-ignore */
   Math.sumPrecise = function sumPrecise ([...array]): number {
     /* empty iterator */
     if (array.length === 0) { return -0; }
@@ -203,7 +203,7 @@ if (!("sumPrecise" in Math)) {
 
 /* Error.isError(); */
 if (!("isError" in Error)) {
-  // @ts-ignore
+  /* @ts-ignore */
   Error.isError = function isError (value: unknown) {
     let className =
       Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
@@ -214,9 +214,9 @@ if (!("isError" in Error)) {
 
 /* crypto.randomUUID(); */
 if (("crypto" in globalThis) && !("randomUUID" in globalThis.crypto)) {
-  // @ts-ignore
+  /* @ts-ignore */
   globalThis.crypto.randomUUID = function randomUUID () {
-    // @ts-ignore
+    /* @ts-ignore */
     return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,
       (c: any): any =>
         (c^crypto.getRandomValues(new Uint8Array(1))[0]&15 >> c/4).toString(16)
@@ -226,27 +226,27 @@ if (("crypto" in globalThis) && !("randomUUID" in globalThis.crypto)) {
 
 
 /* globalThis.GeneratorFunction; */
-// @ts-ignore
+/* @ts-ignore */
 if (!globalThis.GeneratorFunction) {
-  // @ts-ignore
+  /* @ts-ignore */
   globalThis.GeneratorFunction =
     Object.getPrototypeOf(function*(){}).constructor;
 }
 
 
 /* globalThis.AsyncFunction; */
-// @ts-ignore
+/* @ts-ignore */
 if (!globalThis.AsyncFunction) {
-  // @ts-ignore
+  /* @ts-ignore */
   globalThis.AsyncFunction =
     Object.getPrototypeOf(async function(){}).constructor;
 }
 
 
 /* globalThis.AsyncGeneratorFunction; */
-// @ts-ignore
+/* @ts-ignore */
 if (!globalThis.AsyncGeneratorFunction) {
-  // @ts-ignore
+  /* @ts-ignore */
   globalThis.AsyncGeneratorFunction =
     Object.getPrototypeOf(async function* () {}).constructor;
 }
@@ -273,7 +273,6 @@ const WORDSAFEALPHABET = "23456789CFGHJMPQRVWXcfghjmpqvwx"; /* 31 characters */
  */
 function assert (condition: unknown, message?: unknown): asserts condition {
   if (!condition) {
-    // @ts-ignore
     if (Error.isError(message)) { throw message; }
     let errorMessage =
       `[assert] Assertion failed: ${condition} should be truly${message ? ` - ${message}` : ""}`;
@@ -296,63 +295,53 @@ const eq = (value1: unknown, value2: unknown): boolean =>
 /**
  * @description Greater than.
  *
- * @param {any} value1
- * @param {any} value2
+ * @param {unknown} value1
+ * @param {unknown} value2
  * @returns {boolean}
  */
-function gt (value1: Comparable, value2: Comparable): boolean {
-  const _typeOf = (value: unknown): string =>
-    value === null ? "null" : typeof value;
-  return _typeOf(value1) === _typeOf(value2) && value1 > value2;
-}
+const gt = (value1: Comparable, value2: Comparable): boolean =>
+  (value1 === null ? "null" : typeof value1) ===
+    (value2 === null ? "null" : typeof value2)
+    && value1 > value2;
 
 
 /**
  * @description Greater than or equal (SameValueZero).
  *
- * @param {any} value1
- * @param {any} value2
+ * @param {unknown} value1
+ * @param {unknown} value2
  * @returns {boolean}
  */
-function gte (value1: Comparable, value2: Comparable): boolean {
-  const _typeOf = (value: unknown): string =>
-    value === null ? "null" : typeof value;
-  return _typeOf(value1) === _typeOf(value2)
-    && (value1 > value2
-      || value1 === value2
-      || (value1 !== value1 && value2 !== value2));
-}
+const gte = (value1: Comparable, value2: Comparable): boolean =>
+  (value1 === null ? "null" : typeof value1) ===
+    (value2 === null ? "null" : typeof value2)
+    && (value1 >= value2 || (value1 !== value1 && value2 !== value2));
 
 
 /**
  * @description Less than.
  *
- * @param {any} value1
- * @param {any} value2
+ * @param {unknown} value1
+ * @param {unknown} value2
  * @returns {boolean}
  */
-function lt (value1: Comparable, value2: Comparable): boolean {
-  const _typeOf = (value: unknown): string =>
-    value === null ? "null" : typeof value;
-  return _typeOf(value1) === _typeOf(value2) && value1 < value2;
-}
+const lt = (value1: Comparable, value2: Comparable): boolean =>
+  (value1 === null ? "null" : typeof value1) ===
+    (value2 === null ? "null" : typeof value2)
+    && value1 < value2;
 
 
 /**
  * @description Less than or equal (SameValueZero).
  *
- * @param {any} value1
- * @param {any} value2
+ * @param {unknown} value1
+ * @param {unknown} value2
  * @returns {boolean}
  */
-function lte (value1: Comparable, value2: Comparable): boolean {
-  const _typeOf = (value: unknown): string =>
-    value === null ? "null" : typeof value;
-  return _typeOf(value1) === _typeOf(value2)
-    && (value1 < value2
-      || value1 === value2
-      || (value1 !== value1 && value2 !== value2));
-}
+const lte = (value1: Comparable, value2: Comparable): boolean =>
+  (value1 === null ? "null" : typeof value1) ===
+    (value2 === null ? "null" : typeof value2)
+    && (value1 <= value2 || (value1 !== value1 && value2 !== value2));
 
 
 /**
@@ -361,9 +350,8 @@ function lte (value1: Comparable, value2: Comparable): boolean {
  * @param {Function} callback
  * @returns {Function}
  */
-function tap (callback: Function): any {
-  return function (value: unknown): any { callback(value); return value; };
-}
+const tap = (callback: Function): any =>
+  function (value: unknown): any { callback(value); return value; };
 
 
 /**
@@ -392,10 +380,9 @@ function once (callback: Function): Function {
  * @returns {Function}
  */
 function curry (callback: Function): Function {
-  const curried = (...args: any[]): any =>
-    args.length >= callback.length
-      ? callback(...args)
-      : (...rest: any[]): any => curried(...args, ...rest);
+  const curried = (...args: any[]): any => args.length >= callback.length
+    ? callback(...args)
+    : (...rest: any[]): any => curried(...args, ...rest);
   return curried;
 }
 
@@ -447,7 +434,7 @@ const pick = (obj: MapLike, keys: string[]): MapLike =>
  */
 const omit = (obj: MapLike, keys: string[]): MapLike =>
   Object.keys(obj).reduce(function (acc: MapLike, key: string) {
-    // @ts-ignore
+    /* @ts-ignore */
     if (!keys.includes(key)) { acc[key] = obj[key]; }
     return acc;
   }, {});
@@ -469,7 +456,7 @@ const assoc = (obj: MapLike, key: string, value: unknown): MapLike =>
  *
  * @returns {Promise<void>}
  */
-// @ts-ignore
+/* @ts-ignore */
 function asyncNoop (): Promise<void> {
   return new Promise(function (resolve: Function) { resolve(); });
 }
@@ -519,7 +506,7 @@ async function asyncIdentity (value: unknown): Promise<any> { return value; }
  */
 function randomUUIDv7 (v4: boolean = false): string {
   let ts = Date.now().toString(16).padStart(12,"0") + (v4 ? "4" : "7");
-  // @ts-ignore
+  /* @ts-ignore */
   let uuid = Array.from(([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,
     (c: number): any =>
       (c^crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
@@ -562,7 +549,7 @@ const randomBoolean = (): boolean => !Math.round(Math.random());
  */
 const getUrlVars = (str: string = location.search): Object =>
   [...new URLSearchParams(str).entries()]
-    // @ts-ignore
+    /* @ts-ignore */
     .reduce(function (obj, item) { obj[item[0]] = item[1]; return obj; }, {});
 
 
@@ -800,7 +787,7 @@ function timestampID (
 function b64Encode (str: any): string {
   return btoa(encodeURIComponent(String(str)).replace(/%([0-9A-F]{2})/g,
     function toSolidBytes (_match, p1): string {
-       // @ts-ignore
+      /* @ts-ignore */
       return String.fromCharCode("0x" + p1);
     }
   ));
@@ -1081,19 +1068,19 @@ function domCreate (
     elementType = obj.elementType as string;
     properties = {};
     for (let key in obj) {
-      // @ts-ignore
+      /* @ts-ignore */
       if (key !== "elementType") { properties[key] = obj[key]; }
     }
   }
   let element: HTMLElement = document.createElement(elementType as string);
   if (properties) {
     for (let key in properties) {
-      // @ts-ignore
+      /* @ts-ignore */
       if (key !== "style" || typeof properties[key] === "string") {
-        // @ts-ignore
+        /* @ts-ignore */
         element[key] = properties[key];
       } else {
-        // @ts-ignore
+        /* @ts-ignore */
         Object.assign(element.style, properties[key]);
       }
     }
@@ -1124,7 +1111,7 @@ function domToElement (str: string): Element | null {
  * @returns {string | CSSStyleDeclaration} The computed CSS property value or the full CSSStyleDeclaration.
  */
 const domGetCSS = (element: Element, property: string | number): string | CSSStyleDeclaration =>
-  // @ts-ignore
+  /* @ts-ignore */
   (property ? globalThis.getComputedStyle(element, null)[property] :
     globalThis.getComputedStyle(element, null));
 
@@ -1144,11 +1131,11 @@ function domSetCSS (
   property: string | object,
   value: string): void {
   if (typeof property === "string") {
-    // @ts-ignore
+    /* @ts-ignore */
     element.style[property] = value;
   } else if (typeof property === "object") {
     Object.keys(property).forEach((key: string): void =>
-      // @ts-ignore
+      /* @ts-ignore */
       element.style[key] = property[key]
     );
   }
@@ -1172,7 +1159,7 @@ function domFadeIn (
   s.opacity = (s.opacity ?? 0);
   s.display = (display || "");
   (function fade () {
-    // @ts-ignore
+    /* @ts-ignore */
     (s.opacity=parseFloat(s.opacity)+step)>1 ? s.opacity=1 :setTimeout(fade,25);
   })();
 }
@@ -1189,10 +1176,10 @@ function domFadeOut (
   element: HTMLElement, duration: number): void {
   let style = element.style;
   let step: number = 25/(duration || 500);
-  // @ts-ignore
+  /* @ts-ignore */
   style.opacity = (style.opacity || 1);
   (function fade () {
-     // @ts-ignore
+     /* @ts-ignore */
     (style.opacity -= step) < 0 ? style.display = "none" : setTimeout(fade, 25);
   })();
 }
@@ -1215,7 +1202,7 @@ function domFadeToggle (
     style.opacity = (style.opacity ?? 0);
     style.display = (display || "");
     (function fade () {
-      // @ts-ignore
+      /* @ts-ignore */
       (style.opacity = parseFloat(style.opacity) + step) > 1 ? style.opacity = 1 :
         setTimeout(fade, 25);
     })();
@@ -1225,7 +1212,7 @@ function domFadeToggle (
     let step: number = 25/(duration || 500);
     style.opacity = (style.opacity ?? 1);
     (function fade () {
-      // @ts-ignore
+      /* @ts-ignore */
       (style.opacity -= step) < 0 ? style.display = "none" : setTimeout(fade, 25);
     })();
   }
@@ -1285,7 +1272,7 @@ const domIsHidden = (element: Element): boolean =>
  * @returns {Element[]} An array of sibling elements.
  */
 const domSiblings = (element: Element): Element[] =>
-  // @ts-ignore
+  /* @ts-ignore */
   Array.prototype.filter.call(element.parentNode.children,
     (item: Element): boolean => (item !== element)
   );
@@ -1299,10 +1286,10 @@ const domSiblings = (element: Element): Element[] =>
  */
 const domSiblingsPrev = (element: Element): Element[] =>
   Array.prototype.slice.call(
-    // @ts-ignore
+    /* @ts-ignore */
     element.parentNode.children,
     0,
-    // @ts-ignore
+    /* @ts-ignore */
     Array.prototype.indexOf.call(element.parentNode.children, element)
   );
 
@@ -1315,10 +1302,10 @@ const domSiblingsPrev = (element: Element): Element[] =>
  */
 const domSiblingsLeft = (element: Element): Element[] =>
   Array.prototype.slice.call(
-    // @ts-ignore
+    /* @ts-ignore */
     element.parentNode.children,
     0,
-    // @ts-ignore
+    /* @ts-ignore */
     Array.prototype.indexOf.call(element.parentNode.children, element)
   );
 
@@ -1331,11 +1318,11 @@ const domSiblingsLeft = (element: Element): Element[] =>
  */
 const domSiblingsNext = (element: Element): Element[] =>
   Array.prototype.slice.call(
-    // @ts-ignore
+    /* @ts-ignore */
     element.parentNode.children,
-    // @ts-ignore
+    /* @ts-ignore */
     Array.prototype.indexOf.call(element.parentNode.children, element) + 1,
-    // @ts-ignore
+    /* @ts-ignore */
     element.parentNode.children.length
   );
 
@@ -1348,11 +1335,11 @@ const domSiblingsNext = (element: Element): Element[] =>
  */
 const domSiblingsRight = (element: HTMLElement): Element[] =>
   Array.prototype.slice.call(
-    // @ts-ignore
+    /* @ts-ignore */
     element.parentNode.children,
-    // @ts-ignore
+    /* @ts-ignore */
     Array.prototype.indexOf.call(element.parentNode.children, element) + 1,
-    // @ts-ignore
+    /* @ts-ignore */
     element.parentNode.children.length
   );
 
@@ -1368,10 +1355,10 @@ function importScript (...scripts: string[]): void {
     let element: HTMLScriptElement = document.createElement("script");
     element.type = "text\/javascript";
     element.src = item;
-    // @ts-ignore
+    /* @ts-ignore */
     element.onerror = function (error: Error): void {
       throw new URIError(
-        // @ts-ignore
+        /* @ts-ignore */
         `Loading failed for the script with source ${error.target.src}`
       );
     };
@@ -1395,7 +1382,7 @@ function importStyle (...styles: string[]): void {
     element.href = item;
     element.onerror = function (error) {
       throw new URIError(
-        // @ts-ignore
+        /* @ts-ignore */
         `Loading failed for the style with source ${error.target.href}`
       );
     };
@@ -1423,7 +1410,7 @@ function form2array (form: HTMLFormElement): object[] {
         && field.type !== "submit"
         && field.type !== "button") {
         if (field.type === "select-multiple") {
-          // @ts-ignore
+          /* @ts-ignore */
           for (let j = 0, l = form.elements[i].options.length; j < l; j++) {
             if(field.options[j].selected) {
               result.push({
@@ -1465,7 +1452,7 @@ function form2string (form: HTMLFormElement): string {
         && field.type !== "submit"
         && field.type !== "button") {
         if (field.type === "select-multiple") {
-          // @ts-ignore
+          /* @ts-ignore */
           for (let j = 0, l = form.elements[i].options.length; j < l; j++) {
             if(field.options[j].selected) {
               result.push(encodeURIComponent(field.name)
@@ -1491,7 +1478,7 @@ function form2string (form: HTMLFormElement): string {
  * @returns {boolean} True if Do Not Track is enabled, false otherwise.
  */
 const getDoNotTrack = (): boolean =>
-   // @ts-ignore
+  /* @ts-ignore */
   [navigator.doNotTrack, globalThis.doNotTrack, navigator.msDoNotTrack]
     .some((item: any): boolean => item === true || item === 1 || item === "1");
 
@@ -1511,7 +1498,7 @@ function getLocation (
     errorCallback(`ERROR(${error.code}): ${error.message}`);
   }
   if (navigator.geolocation) {
-     // @ts-ignore
+    /* @ts-ignore */
     navigator.geolocation.getCurrentPosition(successCallback, getE);
   } else {
     getE("Geolocation is not supported in this browser.");
@@ -1555,11 +1542,11 @@ function createFile (
  */
 const getFullscreen = (): Document | HTMLElement | undefined => (
   document.fullscreenElement
-   // @ts-ignore
+  /* @ts-ignore */
   || document.mozFullScreenElement
-   // @ts-ignore
+  /* @ts-ignore */
   || document.webkitFullscreenElement
-   // @ts-ignore
+  /* @ts-ignore */
   || document.msFullscreenElement
   || undefined
 );
@@ -1575,13 +1562,13 @@ function setFullscreenOn (element: HTMLElement | string): void {
   let elem: HTMLElement | null;
   if (typeof element === "string") { elem = document.querySelector(element); }
     else if (typeof element === "object") { elem = element; }
-  // @ts-ignore
+  /* @ts-ignore */
   if (elem.requestFullscreen) { elem.requestFullscreen(); }
-    // @ts-ignore
+    /* @ts-ignore */
     else if (elem.mozRequestFullScreen) { elem.mozRequestFullScreen(); }
-    // @ts-ignore
+    /* @ts-ignore */
     else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); }
-    // @ts-ignore
+    /* @ts-ignore */
     else if (elem.msRequestFullscreen) { elem.msRequestFullscreen(); }
 }
 
@@ -1593,11 +1580,11 @@ function setFullscreenOn (element: HTMLElement | string): void {
  */
 function setFullscreenOff (): void {
   if (document.exitFullscreen) { document.exitFullscreen(); }
-   // @ts-ignore
+    /* @ts-ignore */
     else if (document.mozCancelFullScreen) { document.mozCancelFullScreen(); }
-    // @ts-ignore
+    /* @ts-ignore */
     else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); }
-    // @ts-ignore
+    /* @ts-ignore */
     else if (document.msExitFullscreen) { document.msExitFullscreen(); }
 }
 
@@ -1661,7 +1648,7 @@ const domScrollToElement = (element: Element, top: boolean = true): void =>
  * @param {Element} element - The DOM element to clear.
  * @returns {void}
  */
-// @ts-ignore
+/* @ts-ignore */
 const domClear = (element: Element): void =>
   Array.from(element.children).forEach((item: Element): void => item.remove());
 
@@ -1762,7 +1749,7 @@ function isTypedCollection (
   /* Validate `Throw` */
   if (typeof Throw !== "boolean") {
     throw new TypeError(
-      `[isTypedCollection] TypeError: Throw has to be a boolean. Got ${typeof Throw}`
+      `[isTypedCollection] TypeError: Throw has to be a boolean. Got ${_typeOf(Throw)}`
     );
   }
   /* Normalize expected to an array */
@@ -1811,21 +1798,24 @@ function is (
   value: any,
   expectedType?: string | Function | Array<string | Function> | undefined,
   Throw: boolean = false): string | Function | boolean {
+  /* helper functions */
+  const _typeOf = (value: any): string =>
+    value === null ? "null" : typeof value;
   /* Validate `expected` */
   if (!(["string", "function", "undefined"].includes(typeof expectedType))
     && !Array.isArray(expectedType)) {
     throw new TypeError(
-      `[is] TypeError: expectedType must be string, function, array or undefined. Got ${typeof expectedType}`
+      `[is] TypeError: expectedType must be string, function, array or undefined. Got ${_typeOf(expectedType)}`
     );
   }
   /* Validate `Throw` */
   if (typeof Throw !== "boolean") {
     throw new TypeError(
-      `[is] TypeError: Throw has to be a boolean. Got ${typeof Throw}`
+      `[is] TypeError: Throw has to be a boolean. Got ${_typeOf(Throw)}`
     );
   }
   /* Determine the type of `value` */
-  const vType: string = (value === null ? "null" : typeof value);
+  const vType: string = _typeOf(value);
   /* If no expected type provided, return type or constructor */
   if (expectedType == null) {
     return vType === "object"
@@ -1844,7 +1834,7 @@ function is (
       }
       /* validate expected array elements */
       throw new TypeError(
-        `[is] TypeError: expectedType array elements have to be a string or function. Got ${typeof item}`
+        `[is] TypeError: expectedType array elements have to be a string or function. Got ${_typeOf(item)}`
       );
     }
   );
@@ -1855,7 +1845,9 @@ function is (
     let eNames: string = expectedArray.map((item: any): string =>
       (typeof item === "string" ? item.toString() : item.name ?? "anonymous")
     ).join(", ");
-    throw new TypeError(`[is] TypeError: ${vName} is not a ${eNames}`);
+    throw new TypeError(
+      `[is] TypeError: ${vName} is not one of these: ${eNames}`
+    );
   }
   return matched;
 }
@@ -1902,8 +1894,6 @@ function toPrimitive (value: unknown): any {
  * @returns {string}
  */
 function toSafeString (value: unknown): string {
-  const _isTypedArray = (value: unknown): value is TypedArray =>
-  ArrayBuffer.isView(value) && !(value instanceof DataView);
   const seen = new WeakSet<object>();
   function replacer (_key: string, value: unknown): any {
     if (typeof value === "function") {
@@ -1927,7 +1917,7 @@ function toSafeString (value: unknown): string {
   if (Array.isArray(value)) {
     return `[${value.map(v => toSafeString(v)).join(", ")}]`;
   }
-  if (_isTypedArray(value)) {
+  if (ArrayBuffer.isView(value) && !(value instanceof DataView)) {
     return `[${[...(value as any)].map(v => toSafeString(v)).join(", ")}]`;
   }
   if (value instanceof Map) {
@@ -2023,10 +2013,7 @@ function toLength (value: any): number {
  * @param {unknown} value
  * @returns string
  */
-const typeOf = (value: unknown):
-  | "null" | "undefined"
-  | "number" | "bigint" | "boolean" | "string" | "symbol"
-  | "object" | "function" =>
+const typeOf = (value: unknown): string =>
   value === null ? "null" : typeof value;
 
 
@@ -2082,42 +2069,33 @@ function isCoercedObject (value: unknown): Function | boolean {
  */
 function isDeepStrictEqual (value1: any, value2: any): boolean {
   /* helper functions */
-  const _deepType = (value: any): string =>
+  const _deepTypeOf = (value: any): string =>
     (value === null) ? "null" : (value !== value) ? "NaN" : (typeof value);
-  const _isPrimitive = (value: any): boolean =>
-    value == null
-      || (typeof value !== "object" && typeof value !== "function");
-  const _isObject = (value: any): boolean =>
-    value != null && typeof value === "object";
+  const _isPrimitive = (value: any): boolean => value == null
+    || (typeof value !== "object" && typeof value !== "function");
   const _isSameInstance = (value1: any, value2: any, Class: Function): boolean =>
     value1 instanceof Class && value2 instanceof Class;
-  const _classof = (value: any): string =>
+  const _classOf = (value: any): string =>
     Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
-    const _ownKeys = (value: object): any[] =>
-      [...Object.getOwnPropertyNames(value),
-        ...Object.getOwnPropertySymbols(value)];
-  /* strict equality helper function */
-  const _isEqual = (value1: any, value2: any): boolean =>
-    Object.is(value1, value2);
   /* primitives: Boolean, Number, BigInt, String + Function + Symbol */
-  if (_isEqual(value1, value2)) { return true; }
+  if (Object.is(value1, value2)) { return true; }
   /* Object Wrappers (Boolean, Number, BigInt, String) */
-  if (_isObject(value1)
+  if (_deepTypeOf(value1) === "object"
     && _isPrimitive(value2)
-    && _classof(value1) === typeof value2) {
-    return _isEqual(value1.valueOf(), value2);
+    && _classOf(value1) === typeof value2) {
+    return Object.is(value1.valueOf(), value2);
   }
   if (_isPrimitive(value1)
-    && _isObject(value2)
-    && typeof value1 === _classof(value2)) {
-    return _isEqual(value1, value2.valueOf());
+    && _deepTypeOf(value2) === "object"
+    && typeof value1 === _classOf(value2)) {
+    return Object.is(value1, value2.valueOf());
   }
   /* type (primitives, object, null, NaN) */
-  if (_deepType(value1) !== _deepType(value2)) { return false; }
+  if (_deepTypeOf(value1) !== _deepTypeOf(value2)) { return false; }
   /* objects */
-  if (_isObject(value1) && _isObject(value2)) {
+  if (_deepTypeOf(value1) === "object" && _deepTypeOf(value2) === "object") {
     /* objects / same memory adress */
-    if (_isEqual(value1, value2)) { return true; }
+    if (Object.is(value1, value2)) { return true; }
     /* objects / not same constructor */
     if (Object.getPrototypeOf(value1).constructor !==
       Object.getPrototypeOf(value2).constructor
@@ -2127,7 +2105,7 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
     /* objects / WeakMap + WeakSet */
     if (_isSameInstance(value1, value2, WeakMap)
       || _isSameInstance(value1, value2, WeakSet)) {
-      return _isEqual(value1, value2);
+      return Object.is(value1, value2);
     }
     /* objects / Wrapper objects: Number, Boolean, String, BigInt */
     if (_isSameInstance(value1, value2, Number)
@@ -2135,7 +2113,7 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
       || _isSameInstance(value1, value2, String)
       || _isSameInstance(value1, value2, BigInt)
     ) {
-      return _isEqual(value1.valueOf(), value2.valueOf());
+      return Object.is(value1.valueOf(), value2.valueOf());
     }
     /* objects / Array */
     if (Array.isArray(value1) && Array.isArray(value2)) {
@@ -2146,25 +2124,14 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
       );
     }
     /* objects / TypedArrays */
-    if ( _isSameInstance(value1, value2, Int8Array)
-      || _isSameInstance(value1, value2, Uint8Array)
-      || _isSameInstance(value1, value2, Uint8ClampedArray)
-      || _isSameInstance(value1, value2, Int16Array)
-      || _isSameInstance(value1, value2, Uint16Array)
-      || _isSameInstance(value1, value2, Int32Array)
-      || _isSameInstance(value1, value2, Uint32Array)
-      || ("Float16Array" in globalThis ?
-          _isSameInstance(value1, value2, Float16Array) : false
-        )
-      || _isSameInstance(value1, value2, Float32Array)
-      || _isSameInstance(value1, value2, Float64Array)
-      || _isSameInstance(value1, value2, BigInt64Array)
-      || _isSameInstance(value1, value2, BigUint64Array)
+    if ((ArrayBuffer.isView(value1) && !(value1 instanceof DataView))
+      && (ArrayBuffer.isView(value2) && !(value2 instanceof DataView))
+      && _classOf(value1) === _classOf(value2)
     ) {
-      if (value1.length !== value2.length) { return false; }
-      if (value1.length === 0) { return true; }
-      return value1.every(
-        (value: unknown, index: any): boolean => _isEqual(value, value2[index])
+      if ((value1 as any).length !== (value2 as any).length) { return false; }
+      if ((value1 as any).length === 0) { return true; }
+      return (value1 as any).every((value: unknown, index: any): boolean =>
+        Object.is(value, (value2 as any)[index])
       );
     }
     /* objects / ArrayBuffer */
@@ -2173,14 +2140,14 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
       if (value1.byteLength === 0) { return true; }
       let xTA = new Int8Array(value1), yTA = new Int8Array(value2);
       return xTA.every((value: unknown, index: any): boolean =>
-        _isEqual(value, yTA[index]));
+        Object.is(value, yTA[index]));
     }
     /* objects / DataView */
     if (_isSameInstance(value1, value2, DataView)) {
       if (value1.byteLength !== value2.byteLength) { return false; }
       if (value1.byteLength === 0) { return true; }
       for (let index = 0; index < value1.byteLength; index++) {
-        if (!_isEqual(value1.getUint8(index), value2.getUint8(index))) {
+        if (!Object.is(value1.getUint8(index), value2.getUint8(index))) {
           return false;
         }
       }
@@ -2203,37 +2170,43 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
     }
     /* objects / RegExp */
     if (_isSameInstance(value1, value2, RegExp)) {
-      return _isEqual(value1.lastIndex, value2.lastIndex)
-        && _isEqual(value1.flags, value2.flags)
-        && _isEqual(value1.source, value2.source);
+      return Object.is(value1.lastIndex, value2.lastIndex)
+        && Object.is(value1.flags, value2.flags)
+        && Object.is(value1.source, value2.source);
     }
     /* objects / Error */
     if (_isSameInstance(value1, value2, Error)) {
       return isDeepStrictEqual(
         Object.getOwnPropertyNames(value1)
           .reduce(
-            function (acc: any, k: any): object { acc[k] = value1[k]; return acc; },
+            function (acc: any, k: any): object {
+              acc[k] = value1[k];
+              return acc;
+            },
             {}
           ),
         Object.getOwnPropertyNames(value2)
           .reduce(
-            function (acc: any, k: any): object { acc[k] = value2[k]; return acc; },
+            function (acc: any, k: any): object {
+              acc[k] = value2[k];
+              return acc; },
             {}
           )
       );
     }
     /* objects / Date */
     if (_isSameInstance(value1, value2, Date)) {
-      return _isEqual(+value1, +value2);
+      return Object.is(+value1, +value2);
     }
     /* objects / Proxy -> not detectable */
     /* objects / Objects */
-    let value1Keys: any[] = _ownKeys(value1);
-    let value2Keys: any[] = _ownKeys(value2);
+    let value1Keys: any[] = Reflect.ownKeys(value1);
+    let value2Keys: any[] = Reflect.ownKeys(value2);
     if (value1Keys.length !== value2Keys.length) { return false; }
     if (value1Keys.length === 0) { return true; }
     return value1Keys.every((key: any): boolean =>
-      isDeepStrictEqual(value1[key], value2[key]));
+      isDeepStrictEqual(value1[key], value2[key])
+    );
   }
   /* default return false */
   return false;
@@ -2254,21 +2227,11 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
  * @returns boolean
  */
 function isEmpty (value: any): boolean {
-  const _isObject = (value: unknown): value is object =>
-    value != null && (typeof value === "object" || typeof value === "function");
-  /**
-   * Checks if a value is a TypedArray (Int8Array, etc.).
-   *
-   * @param {any} value The value to check.
-   * @returns boolean
-   */
-  const _isTypedArray = (value: unknown): value is TypedArray =>
-    ArrayBuffer.isView(value) && !(value instanceof DataView);
   /* Check undefined, null, NaN */
   if (value == null || Number.isNaN(value)) { return true; }
   /* Check Array, TypedArrays, string, String */
   if (Array.isArray(value)
-    || _isTypedArray(value)
+    || (ArrayBuffer.isView(value) && !(value instanceof DataView))
     || typeof value === "string"
     || value instanceof String) {
     return (value as any).length === 0;
@@ -2295,11 +2258,8 @@ function isEmpty (value: any): boolean {
     } catch { /* Not iterable */ }
   }
   /* Other objects - check own properties (including symbols) */
-  if (_isObject(value)) {
-    const keys: any[] = [
-      ...Object.getOwnPropertyNames(value),
-      ...Object.getOwnPropertySymbols(value)
-    ];
+  if (value != null && typeof value === "object") {
+    const keys: any[] = Reflect.ownKeys(value);
     if (keys.length === 0) { return true; }
     /* Special case: object with single "length" property that is 0 */
     if (keys.length === 1
@@ -2355,7 +2315,7 @@ const isPlainObject = (value: unknown): boolean =>
  * @returns True if the value is a object, false otherwise.
  */
 const isObject = (value: unknown): value is object =>
-  value != null && (typeof value === "object" || typeof value === "function");
+  value != null && typeof value === "object";
 
 
 /**
@@ -2802,7 +2762,7 @@ function shuffle ([...array]: any[]): unknown[] {
  * @returns {any[][]} An array containing two arrays: the first with elements that satisfy the predicate, and the second with elements that do not.
  */
 const partition = ([...array]: any[], callback: Function): any[] =>
-   // @ts-ignore
+  /* @ts-ignore */
   [array.filter(callback), array.filter((value, index, a): boolean => !(callback(value, index, a)))];
 
 
@@ -2826,8 +2786,8 @@ const min = (...args: any[]): any =>
  * @returns {any} The maximum value among the provided arguments.
  */
 const max = (...args: any[]): any =>
-  args.reduce((acc: any, value: any): any =>
-    (value > acc ? value : acc),
+  args.reduce(
+    (acc: any, value: any): any => (value > acc ? value : acc),
     args[0]
   );
 
@@ -2977,15 +2937,15 @@ function arrayRemoveBy (
   array: any[],
   callback: Function,
   all: boolean = false): boolean {
-  // @ts-ignore
+  /* @ts-ignore */
   let found: boolean = array.findIndex(callback) > -1;
   if (!all) {
-    // @ts-ignore
+    /* @ts-ignore */
     let pos = array.findIndex(callback);
     if (pos > -1) { array.splice(pos, 1); }
   } else {
     let pos = -1;
-    // @ts-ignore
+    /* @ts-ignore */
     while ((pos = array.findIndex(callback)) > -1) { array.splice(pos, 1); }
   }
   return found;
@@ -3467,7 +3427,7 @@ function includes (
       && typeof value.next === "function";
   const _isIterable = (value: unknown): boolean =>
     value != null && typeof (value as any)[Symbol.iterator] === "function";
-  const _isEqual = comparator ||
+  const _isEqual = comparator ??
     ((value1: unknown, value2: unknown): boolean =>
       value1 === value2 || (value1 !== value1 && value2 !== value2));
     /* SameValueZero */
@@ -3502,10 +3462,12 @@ function includes (
   }
   /* Plain object or function */
   if (["object", "function"].includes(cType)) {
-    if (Object.keys(collection).findIndex((item) => _isEqual(item, value)) > -1) {
+    if (Object.keys(collection).findIndex((item) =>
+      _isEqual(item, value)) > -1) {
       return true;
     }
-    if (Object.values(collection).findIndex((item) => _isEqual(item, value)) > -1) {
+    if (Object.values(collection).findIndex((item) =>
+      _isEqual(item, value)) > -1) {
       return true;
     }
     if (Object.getOwnPropertySymbols(collection)
@@ -3594,7 +3556,9 @@ const takeRight = ([...array]: any[], num: number = 1): any[] =>
  * @param {Function} callback - The function to test each element.
  * @yields The elements from the end of the iterable that satisfy the testing function.
  */
-function* takeRightWhile ([...array]: any[], callback: Function): GeneratorLike {
+function* takeRightWhile (
+  [...array]: any[],
+  callback: Function): GeneratorLike {
   if (!array.length) { return; }
   let index = array.length;
   while (index--) {
@@ -3623,7 +3587,9 @@ const dropRight = ([...array]: any[], num: number = 1): any[] =>
  * @param {Function} callback - The function to test each element.
  * @yields The elements from the end of the iterable after the testing function returns false.
  */
-function* dropRightWhile ([...array]: any[], callback: Function): GeneratorLike {
+function* dropRightWhile (
+  [...array]: any[],
+  callback: Function): GeneratorLike {
   if (!array.length) { return; }
   let index = array.length;
   let skip = true;
@@ -3688,9 +3654,7 @@ function reduce (
  * @param {number} [offset=0] - The starting index for enumeration.
  * @yields {[number, any]} Pairs of index and element from the iterable.
  */
-function* enumerate (
-  iter: IterableLike,
-  offset: number = 0): GeneratorLike {
+function* enumerate (iter: IterableLike, offset: number = 0): GeneratorLike {
   let index: number = offset;
   for (let item of iter as Iterable<any>) { yield [index++, item]; }
 }
@@ -3765,7 +3729,7 @@ function add (value1: Numeric, value2: Numeric): Numeric {
     );
   }
   if (typeof value1 === "number" && typeof value2 === "number") {
-    // @ts-ignore
+    /* @ts-ignore */
     return Math.sumPrecise([value1, value2]);
   }
   return (value1 as bigint) + (value2 as bigint);
@@ -3790,7 +3754,7 @@ function sub (value1: Numeric, value2: Numeric): Numeric {
     );
   }
   if (typeof value1 === "number" && typeof value2 === "number") {
-    // @ts-ignore
+    /* @ts-ignore */
     Math.sumPrecise([value1, -value2]);
   }
   return (value1 as bigint) - (value2 as bigint);
@@ -3922,7 +3886,9 @@ const isFloat = (value: unknown): boolean =>
  * @returns {number} The converted integer.
  */
 function toInteger (value: any): number {
-  value = ((value = Math.trunc(Number(value))) !== value || value === 0) ? 0 : value;
+  value = ((value = Math.trunc(Number(value))) !== value || value === 0)
+    ? 0
+    : value;
   return Math.min(
     Math.max(value, Number.MIN_SAFE_INTEGER),
     Number.MAX_SAFE_INTEGER
@@ -3959,7 +3925,7 @@ function sum (...args: any[]): any {
     );
   }
   return args.every((value: unknown): boolean => typeof value === "number")
-    // @ts-ignore
+    /* @ts-ignore */
     ? Math.sumPrecise(args)
     : args.slice(1).reduce((acc: any, value: any): any => acc + value, args[0]);
 }
@@ -3971,7 +3937,7 @@ function sum (...args: any[]): any {
  * @param {...number} args - The numbers to average.
  * @returns {number} The average of the numbers.
  */
-// @ts-ignore
+/* @ts-ignore */
 const avg = (...args: number[]): number => Math.sumPrecise(args) / args.length;
 
 
@@ -3985,9 +3951,11 @@ function product (first: number, ...args: number[]): number;
 function product (first: bigint, ...args: bigint[]): bigint;
 function product (first: Numeric, ...args: Numeric[]): Numeric {
   if (typeof first === "bigint") {
-    return (args as bigint[]).reduce((acc: bigint, v: bigint): bigint => acc * v, first as bigint);
+    return (args as bigint[])
+      .reduce((acc: bigint, v: bigint): bigint => acc * v, first as bigint);
   }
-  return (args as number[]).reduce((acc: number, v: number): number => acc * v, first as number);
+  return (args as number[])
+    .reduce((acc: number, v: number): number => acc * v, first as number);
 }
 
 
@@ -4281,9 +4249,9 @@ const isUInt8 = (value: unknown | number): boolean =>
  * @param {unknown} value - The value to check.
  * @returns {boolean} True if the value is a 16-bit signed integer, false otherwise.
  */
-const isInt16 = (value: unknown): boolean =>
-  Number.isInteger(value) && value as number >= -32768
-    && value as number <= 32767;
+const isInt16 = (value: unknown): boolean => Number.isInteger(value)
+  && value as number >= -32768
+  && value as number <= 32767;
 
 
 /**
@@ -4302,9 +4270,9 @@ const isUInt16 = (value: unknown): boolean =>
  * @param {unknown} value - The value to check.
  * @returns {boolean} True if the value is a 32-bit signed integer, false otherwise.
  */
-const isInt32 = (value: unknown): boolean =>
-  Number.isInteger(value) && value as number >= -2147483648
-    && value as number <= 2147483647;
+const isInt32 = (value: unknown): boolean => Number.isInteger(value)
+  && value as number >= -2147483648
+  && value as number <= 2147483647;
 
 
 /**
@@ -4313,9 +4281,9 @@ const isInt32 = (value: unknown): boolean =>
  * @param {unknown} value - The value to check.
  * @returns {boolean} True if the value is a 32-bit unsigned integer, false otherwise.
  */
-const isUInt32 = (value: unknown | number): boolean =>
-  Number.isInteger(value) && value as number >= 0
-    && value as number <= 4294967295;
+const isUInt32 = (value: unknown | number): boolean => Number.isInteger(value)
+  && value as number >= 0
+  && value as number <= 4294967295;
 
 
 /**
@@ -4324,9 +4292,9 @@ const isUInt32 = (value: unknown | number): boolean =>
  * @param {unknown} value - The value to check.
  * @returns {boolean} True if the value is a 64-bit signed integer, false otherwise.
  */
-const isBigInt64 = (value: unknown): boolean =>
-  typeof value === "bigint"
-    && value >= Math.pow(-2, 63) && value <= Math.pow(2, 63) - 1;
+const isBigInt64 = (value: unknown): boolean => typeof value === "bigint"
+  && value >= Math.pow(-2, 63)
+  && value <= Math.pow(2, 63) - 1;
 
 
 /**
@@ -4356,7 +4324,9 @@ const toFloat16 = (value: unknown): number =>
  * @returns {boolean} True if the value is a 16-bit floating-point number, false otherwise.
  */
 const isFloat16 = (value: unknown | Numeric): boolean =>
-  typeof value === "number" && value === value && value >= -65504
+  typeof value === "number"
+    && value === value
+    && value >= -65504
     && value <= 65504;
 
 
