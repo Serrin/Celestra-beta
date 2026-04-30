@@ -6,9 +6,10 @@
 1. Documentation, pdf and code fixes.
 2. Add 2 new pages about the JS data types in the __js-cheatsheet.odt__ and __js-cheatsheet.pdf__.
 3. Add 3 new files: __js-data-types.odt__, __js-data-types.pdf__, __js-data-types.png__
-4. Fix this function: `compact();`
-5. Deprecate _(stability 1)_ these functions: `getUrlVars();`, `obj2string();`
-6. Remove these functions: `createPolyfillMethod();`, `createPolyfillProperty();`
+4. Rewrite the __Cookie API__ without breaking changes.
+5. Fix these functions: `compact();`, `isObject();`
+6. Deprecate _(stability 1)_ these functions: `getUrlVars();`, `obj2string();`
+7. Remove these functions: `createPolyfillMethod();`, `createPolyfillProperty();`
 
 ## Celestra v6.6.0 Angelo
 

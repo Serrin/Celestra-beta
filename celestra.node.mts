@@ -30,8 +30,9 @@ const VERSION = "Celestra v6.7.0 node";
  *
  * @private
  */
-/* @ts-ignore */
 type Falsy = null | undefined | false | 0 | -0 | 0n | "";
+
+/** * @description Truthy like values. * @private */
 /* @ts-ignore */
 type Truthy<T> = Exclude<T, Falsy>;
 
@@ -39,34 +40,27 @@ type Truthy<T> = Exclude<T, Falsy>;
 /* type PropertyKey = string | number | symbol; */
 
 /** * @description Object with string, number or symbol keys. * @private */
-type MapLike = Record<string | number | symbol, unknown>;
+type ObjectLike = Record<PropertyKey, any>;
+
+/** * @description String-like object. * @private */
+type BooleanLike = boolean | Boolean;
 
 /** * @description Number-like object. * @private */
-/* @ts-ignore */
-type Numeric = number | bigint;
-
-/** * @description Number-like object. * @private */
-/* @ts-ignore */
 type NumberLike = number | Number;
 
 /** * @description BigInt-like object. * @private */
-/* @ts-ignore */
 type BigIntLike = bigint | BigInt;
 
+/** * @description Number-like object. * @private */
+type Numeric = number | bigint;
+
 /** * @description Number and BigInt-like object. * @private */
-/* @ts-ignore */
-type NumberAndBigIntLike = number | Number | bigint | BigInt;
+type NumericLike = NumberLike | BigIntLike;
 
 /** * @description String-like object. * @private */
-/* @ts-ignore */
 type StringLike = string | String;
 
 /** * @description String-like object. * @private */
-/* @ts-ignore */
-type BooleanLike = boolean | Boolean;
-
-/** * @description String-like object. * @private */
-/* @ts-ignore */
 type SymbolLike = symbol | Symbol;
 
 /** * @description Any iterable or iterator. * @private */
@@ -87,23 +81,18 @@ type Nullish = undefined | null;
 /* type NonNullable = number | boolean | string | symbol | object | Function; */
 
 /** * @description Not null or undefined or object or function. * @private */
-type NonNullablePrimitive = number | bigint | boolean | string | symbol;
+type NonNullablePrimitive = boolean | number | bigint | string | symbol;
 
 /** * @description NonNullablePrimitiveLike object. * @private */
-/* @ts-ignore */
 type NonNullablePrimitiveLike =
-  | number | bigint | string | boolean | symbol
-  | Number | BigInt | String | Boolean | Symbol;
+  BooleanLike | NumericLike | StringLike | SymbolLike;
 
 /** * @description Not object or function. * @private */
-type Primitive = null | undefined | number | bigint | boolean | string | symbol;
+type Primitive = Nullish | NonNullablePrimitive;
 
 /** * @description Primitive-like object. * @private */
 /* @ts-ignore */
-type PrimitiveLike =
-  | null | undefined
-  | number | bigint | string | boolean | symbol
-  | Number | BigInt | String | Boolean | Symbol;
+type PrimitiveLike = Nullish | NonNullablePrimitiveLike;
 
 /** * @description Object or function. * @private */
 /* @ts-ignore */
@@ -121,6 +110,11 @@ type ArrowFunction<Args extends any[] = any[], R = any> =
 
 /** * @description TypedArray types. * @private */
 type TypedArray = Exclude<ArrayBufferView, DataView>;
+
+
+/* Standard library shorthands */
+const { isArray, from } = Array;
+const { getPrototypeOf } = Object;
 
 
 /** polyfills **/
@@ -217,7 +211,7 @@ if (("crypto" in globalThis) && !("randomUUID" in globalThis.crypto)) {
 if (!globalThis.GeneratorFunction) {
   /* @ts-ignore */
   globalThis.GeneratorFunction =
-    Object.getPrototypeOf(function*(){}).constructor;
+    getPrototypeOf(function*(){}).constructor;
 }
 
 
@@ -226,7 +220,7 @@ if (!globalThis.GeneratorFunction) {
 if (!globalThis.AsyncFunction) {
   /* @ts-ignore */
   globalThis.AsyncFunction =
-    Object.getPrototypeOf(async function(){}).constructor;
+    getPrototypeOf(async function(){}).constructor;
 }
 
 
@@ -235,7 +229,7 @@ if (!globalThis.AsyncFunction) {
 if (!globalThis.AsyncGeneratorFunction) {
   /* @ts-ignore */
   globalThis.AsyncGeneratorFunction =
-    Object.getPrototypeOf(async function* () {}).constructor;
+    getPrototypeOf(async function* () {}).constructor;
 }
 
 
@@ -282,53 +276,45 @@ const eq = (value1: unknown, value2: unknown): boolean =>
 /**
  * @description Greater than.
  *
- * @param {unknown} value1
- * @param {unknown} value2
+ * @param {any} value1
+ * @param {any} value2
  * @returns {boolean}
  */
 const gt = (value1: Comparable, value2: Comparable): boolean =>
-  (value1 === null ? "null" : typeof value1) ===
-    (value2 === null ? "null" : typeof value2)
-    && value1 > value2;
+  typeOf(value1) === typeOf(value2) && value1 > value2;
 
 
 /**
  * @description Greater than or equal (SameValueZero).
  *
- * @param {unknown} value1
- * @param {unknown} value2
+ * @param {any} value1
+ * @param {any} value2
  * @returns {boolean}
  */
 const gte = (value1: Comparable, value2: Comparable): boolean =>
-  (value1 === null ? "null" : typeof value1) ===
-    (value2 === null ? "null" : typeof value2)
-    && (value1 >= value2 || (value1 !== value1 && value2 !== value2));
+  typeOf(value1) === typeOf(value2) && (value1 > value2 || eq(value1, value2));
 
 
 /**
  * @description Less than.
  *
- * @param {unknown} value1
- * @param {unknown} value2
+ * @param {any} value1
+ * @param {any} value2
  * @returns {boolean}
  */
 const lt = (value1: Comparable, value2: Comparable): boolean =>
-  (value1 === null ? "null" : typeof value1) ===
-    (value2 === null ? "null" : typeof value2)
-    && value1 < value2;
+  typeOf(value1) === typeOf(value2) && value1 < value2;
 
 
 /**
  * @description Less than or equal (SameValueZero).
  *
- * @param {unknown} value1
- * @param {unknown} value2
+ * @param {any} value1
+ * @param {any} value2
  * @returns {boolean}
  */
 const lte = (value1: Comparable, value2: Comparable): boolean =>
-  (value1 === null ? "null" : typeof value1) ===
-    (value2 === null ? "null" : typeof value2)
-    && (value1 <= value2 || (value1 !== value1 && value2 !== value2));
+  typeOf(value1) === typeOf(value2) && (value1 < value2 || eq(value1, value2));
 
 
 /**
@@ -403,8 +389,8 @@ const compose = (...functions: Function[]): Function =>
  * @param {object} obj
  * @param {string[]} keys
  */
-const pick = (obj: MapLike, keys: string[]): MapLike =>
-  keys.reduce(function (acc: MapLike, key: string) {
+const pick = (obj: ObjectLike, keys: string[]): ObjectLike =>
+  keys.reduce(function (acc: ObjectLike, key: string) {
     if (key in obj) { acc[key] = obj[key]; }
     return acc;
   }, {});
@@ -417,8 +403,8 @@ const pick = (obj: MapLike, keys: string[]): MapLike =>
  * @param {string[]} keys
  * @returns {object}
  */
-const omit = (obj: MapLike, keys: string[]): MapLike =>
-  Object.keys(obj).reduce(function (acc: MapLike, key: string) {
+const omit = (obj: ObjectLike, keys: string[]): ObjectLike =>
+  Object.keys(obj).reduce(function (acc: ObjectLike, key: string) {
     /* @ts-ignore */
     if (!keys.includes(key)) { acc[key] = obj[key]; }
     return acc;
@@ -432,7 +418,7 @@ const omit = (obj: MapLike, keys: string[]): MapLike =>
  * @param {string} key
  * @param {object} value
  */
-const assoc = (obj: MapLike, key: string, value: unknown): MapLike =>
+const assoc = (obj: ObjectLike, key: string, value: unknown): ObjectLike =>
   ({...obj, [key]: value});
 
 
@@ -442,7 +428,7 @@ const assoc = (obj: MapLike, key: string, value: unknown): MapLike =>
  * @returns {Promise<void>}
  */
 /* @ts-ignore */
-function asyncNoop (): Promise<void> {
+async function asyncNoop (): Promise<void> {
   return new Promise(function (resolve: Function) { resolve(); });
 }
 
@@ -469,8 +455,8 @@ async function asyncF (): Promise<boolean> { return false; }
  * @param {unknown} value
  * @returns {Function}
  */
-function asyncConstant (value: unknown): Function {
-  return async function() { return value; };
+function asyncConstant <T>(value: T): AsyncFunction<T> {
+  return async function () { return value; };
 }
 
 
@@ -492,7 +478,7 @@ async function asyncIdentity (value: unknown): Promise<any> { return value; }
 function randomUUIDv7 (v4: boolean = false): string {
   let ts = Date.now().toString(16).padStart(12,"0") + (v4 ? "4" : "7");
   /* @ts-ignore */
-  let uuid = Array.from(([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,
+  let uuid = from(([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,
     (c: number): any =>
       (c^crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
   ));
@@ -575,10 +561,6 @@ function extend (...args: any[]): any {
     i = 1;
   }
   /* Helper functions */
-  const _isPlainObject = (obj: any): obj is Record<string, any> =>
-    obj != null
-      && typeof obj === "object"
-      && (obj.constructor === Object || obj.constructor == null);
   function merge(target: any, source: any): any {
     /* Identical or non-object -> direct assign */
     if (Object.is(source, target) || source == null || typeof source !== "object") {
@@ -609,19 +591,19 @@ function extend (...args: any[]): any {
       return target;
     }
     /* Array -> deep merge by index */
-    if (Array.isArray(source)) {
-      if (!Array.isArray(target)) { target = []; }
+    if (isArray(source)) {
+      if (!isArray(target)) { target = []; }
       const srcLength = source.length;
-      for (let i = 0; i < srcLength; i++) {
-        let sv = source[i];
-        let tv = target[i];
-        target[i] = deep ? merge(tv, sv) : sv;
+      for (let index = 0; index < srcLength; index++) {
+        let sv = source[index];
+        let tv = target[index];
+        target[index] = deep ? merge(tv, sv) : sv;
       }
       return target;
     }
     /* Plain object -> deep merge keys */
-    if (_isPlainObject(source)) {
-      if (!_isPlainObject(target)) { target = {}; }
+    if (isPlainObject(source)) {
+      if (!isPlainObject(target)) { target = {}; }
       for (let key in source) {
         let sv = source[key];
         let tv = target[key];
@@ -819,9 +801,9 @@ function strTruncate (
   omission: string = ""): string {
   str = String(str);
   omission = String(omission);
-  let strUC = Array.from(str);
+  let strUC = from(str);
   if (newLength >= strUC.length) { return str; }
-  return strUC.slice(0, newLength-Array.from(omission).length).join("")
+  return strUC.slice(0, newLength-from(omission).length).join("")
     + omission;
 }
 
@@ -834,7 +816,7 @@ function strTruncate (
  */
 const strPropercase = (str: any): string =>
   String(str).trim().split(" ").map(function (value: string) {
-    let chars = Array.from(value).map( (c: string): string => c.toLowerCase() );
+    let chars = from(value).map( (c: string): string => c.toLowerCase() );
     if (chars.length) { chars[0] = chars[0].toUpperCase(); }
     return chars.join("");
   }).join(" ");
@@ -848,7 +830,7 @@ const strPropercase = (str: any): string =>
  */
 const strTitlecase = (str: any): string =>
   String(str).trim().split(" ").map(function (value: string) {
-    let chars = Array.from(value).map( (c: string): string => c.toLowerCase() );
+    let chars = from(value).map( (c: string): string => c.toLowerCase() );
     if (chars.length) { chars[0] = chars[0].toUpperCase(); }
     return chars.join("");
   }).join(" ");
@@ -900,7 +882,7 @@ function strDownFirst (str: any): string {
  * @returns {string} The reversed string.
  */
 const strReverse = (str: any): string =>
-  Array.from(String(str)).reverse().join("");
+  from(String(str)).reverse().join("");
 
 
 /**
@@ -910,7 +892,7 @@ const strReverse = (str: any): string =>
  * @returns {number[]} An array of Unicode code points.
  */
 const strCodePoints = (str: any): any[] =>
-  Array.from(String(str), (value: string): number | undefined =>
+  from(String(str), (value: string): number | undefined =>
     value.codePointAt(0));
 
 
@@ -931,7 +913,7 @@ const strFromCodePoints = ([...array]): string =>
  * @param {number} index - The index of the character to get or set.
  */
 function strAt (str: string, index: number, newChar?: string): string {
-  let chars: string[] = Array.from(String(str));
+  let chars: string[] = from(String(str));
   if (newChar == null) { return chars.at(index) || ""; }
   index = index < 0 ? chars.length + index : index;
   if (index > chars.length) { return chars.join(""); }
@@ -950,7 +932,7 @@ function strAt (str: string, index: number, newChar?: string): string {
  * @returns {string} The spliced string.
  */
 const strSplice = (str: string, index: number,count: number, ...add: any[]): string =>
-  Array.from(str).toSpliced(index, count, add.join("")).join("");
+  from(str).toSpliced(index, count, add.join("")).join("");
 
 
 /**
@@ -1065,40 +1047,32 @@ function isTypedCollection (
   iter: IterableLike,
   expectedType: string | Function | Array<string | Function>,
   Throw: boolean = false): boolean {
-  /* helper functions */
-  const _typeOf = (value: any): string =>
-    value === null ? "null" : typeof value;
-  const _isIterator = (value: any): boolean =>
-    value != null && typeof value === "object"
-      && typeof value.next === "function";
-  const _isIterable = (value: any): boolean =>
-    value != null && typeof value[Symbol.iterator] === "function";
   /* Validate `iter` */
-  if (!_isIterator(iter) && !_isIterable(iter)) {
+  if (!isIterator(iter) && !isIterable(iter)) {
     throw new TypeError(
-      `[isTypedCollection] TypeError: iter must be iterable or iterator. Got ${_typeOf(iter)}`
+      `[isTypedCollection] TypeError: iter must be iterable or iterator. Got ${typeOf(iter)}`
     );
   }
   /* Validate `expected` */
   if (!(["string", "function"].includes(typeof expectedType))
-    && !Array.isArray(expectedType)) {
+    && !isArray(expectedType)) {
     throw new TypeError(
-      `[isTypedCollection] TypeError: expectedType must be string, function, array. Got ${_typeOf(expectedType)}`
+      `[isTypedCollection] TypeError: expectedType must be string, function, array. Got ${typeOf(expectedType)}`
     );
   }
   /* Validate `Throw` */
   if (typeof Throw !== "boolean") {
     throw new TypeError(
-      `[isTypedCollection] TypeError: Throw has to be a boolean. Got ${_typeOf(Throw)}`
+      `[isTypedCollection] TypeError: Throw has to be a boolean. Got ${typeOf(Throw)}`
     );
   }
   /* Normalize expected to an array */
   let expectedArray: any[] =
-    Array.isArray(expectedType) ? expectedType : [expectedType];
+    isArray(expectedType) ? expectedType : [expectedType];
   /* Check values of iter against expected types or constructors */
   let matched: boolean = true;
   for (let value of iter as Iterable<any>) {
-    const valueType: string = _typeOf(value);
+    const valueType: string = typeOf(value);
     matched = expectedArray.some(
       function (item: string | Function): boolean {
         if (typeof item === "string") { return valueType === item; }
@@ -1138,33 +1112,30 @@ function is (
   value: any,
   expectedType?: string | Function | Array<string | Function> | undefined,
   Throw: boolean = false): string | Function | boolean {
-  /* helper functions */
-  const _typeOf = (value: any): string =>
-    value === null ? "null" : typeof value;
   /* Validate `expected` */
   if (!(["string", "function", "undefined"].includes(typeof expectedType))
-    && !Array.isArray(expectedType)) {
+    && !isArray(expectedType)) {
     throw new TypeError(
-      `[is] TypeError: expectedType must be string, function, array or undefined. Got ${_typeOf(expectedType)}`
+      `[is] TypeError: expectedType must be string, function, array or undefined. Got ${typeOf(expectedType)}`
     );
   }
   /* Validate `Throw` */
   if (typeof Throw !== "boolean") {
     throw new TypeError(
-      `[is] TypeError: Throw has to be a boolean. Got ${_typeOf(Throw)}`
+      `[is] TypeError: Throw has to be a boolean. Got ${typeOf(Throw)}`
     );
   }
   /* Determine the type of `value` */
-  const vType: string = _typeOf(value);
+  const vType: string = typeOf(value);
   /* If no expected type provided, return type or constructor */
   if (expectedType == null) {
     return vType === "object"
-      ? Object.getPrototypeOf(value)?.constructor ?? "object"
+      ? getPrototypeOf(value)?.constructor ?? "object"
       : vType;
   }
   /* Normalize expected to an array */
   let expectedArray: Array<string | Function> =
-    Array.isArray(expectedType) ? expectedType : [expectedType];
+    isArray(expectedType) ? expectedType : [expectedType];
   /* Check against expected types or constructors */
   let matched: boolean = expectedArray.some(
     function (item: string | Function) {
@@ -1174,7 +1145,7 @@ function is (
       }
       /* validate expected array elements */
       throw new TypeError(
-        `[is] TypeError: expectedType array elements have to be a string or function. Got ${_typeOf(item)}`
+        `[is] TypeError: expectedType array elements have to be a string or function. Got ${typeOf(item)}`
       );
     }
   );
@@ -1251,17 +1222,17 @@ function toSafeString (value: unknown): string {
     return value;
   }
   if (["undefined", "null", "string", "number", "boolean", "bigint"]
-    .includes(value === null ? "null" : typeof value)) {
+    .includes(typeOf(value))) {
     return String(value);
   }
-  if (Array.isArray(value)) {
+  if (isArray(value)) {
     return `[${value.map(v => toSafeString(v)).join(", ")}]`;
   }
   if (value instanceof Map) {
-    return `Map(${value.size}){${Array.from(value.entries()).map(([k, v]): string => `${toSafeString(k)} => ${toSafeString(v)}`).join(", ")}}`;
+    return `Map(${value.size}){${from(value.entries()).map(([k, v]): string => `${toSafeString(k)} => ${toSafeString(v)}`).join(", ")}}`;
   }
   if (value instanceof Set) {
-    return `Set(${value.size}){${Array.from(value.values()).map(v => toSafeString(v)).join(", ")}}`;
+    return `Set(${value.size}){${from(value.values()).map(v => toSafeString(v)).join(", ")}}`;
   }
   try {
     return JSON.stringify(value, replacer) ?? String(value);
@@ -1355,16 +1326,14 @@ const typeOf = (value: unknown): string =>
 
 
 /**
- * @description Checks if two values are of the same type.
+ * @description Checks if two values are the same type.
  *
  * @param {any} value1 - The first value to compare.
  * @param {any} value2 - The second value to compare.
  * @returns {boolean} True if both values are of the same type, false otherwise.
  */
 const isSameType = (value1: any, value2: any): boolean =>
-  (value1 == null || value2 == null)
-    ? (value1 === value2)
-    : (typeof value1 === typeof value2);
+  typeOf(value1) === typeOf(value2);
 
 
 /**
@@ -1386,12 +1355,12 @@ const isSameInstance = (value1: any, value2: any, Contructor: Function): boolean
  * @returns False if the value is not a coerced object, otherwise the constructor function.
  */
 function isCoercedObject (value: unknown): Function | boolean {
-  if (value != null && typeof value === "object") {
+  if (typeOf(value) === "object") {
     if (value instanceof Number) { return Number; }
     if (value instanceof String) { return String; }
     if (value instanceof Boolean) { return Boolean; }
     if (value instanceof BigInt) { return BigInt; }
-    if (typeof value.valueOf?.() === "symbol") { return Symbol; }
+    if (typeof (value as symbol).valueOf?.() === "symbol") { return Symbol; }
   }
   return false;
 }
@@ -1408,21 +1377,17 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
   /* helper functions */
   const _deepTypeOf = (value: any): string =>
     (value === null) ? "null" : (value !== value) ? "NaN" : (typeof value);
-  const _isPrimitive = (value: any): boolean => value == null
-    || (typeof value !== "object" && typeof value !== "function");
-  const _isSameInstance = (value1: any, value2: any, Class: Function): boolean =>
-    value1 instanceof Class && value2 instanceof Class;
   const _classOf = (value: any): string =>
     Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
   /* primitives: Boolean, Number, BigInt, String + Function + Symbol */
   if (Object.is(value1, value2)) { return true; }
   /* Object Wrappers (Boolean, Number, BigInt, String) */
   if (_deepTypeOf(value1) === "object"
-    && _isPrimitive(value2)
+    && isPrimitive(value2)
     && _classOf(value1) === typeof value2) {
     return Object.is(value1.valueOf(), value2);
   }
-  if (_isPrimitive(value1)
+  if (isPrimitive(value1)
     && _deepTypeOf(value2) === "object"
     && typeof value1 === _classOf(value2)) {
     return Object.is(value1, value2.valueOf());
@@ -1434,26 +1399,26 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
     /* objects / same memory adress */
     if (Object.is(value1, value2)) { return true; }
     /* objects / not same constructor */
-    if (Object.getPrototypeOf(value1).constructor !==
-      Object.getPrototypeOf(value2).constructor
+    if (getPrototypeOf(value1).constructor !==
+      getPrototypeOf(value2).constructor
     ) {
       return false;
     }
     /* objects / WeakMap + WeakSet */
-    if (_isSameInstance(value1, value2, WeakMap)
-      || _isSameInstance(value1, value2, WeakSet)) {
+    if (isSameInstance(value1, value2, WeakMap)
+      || isSameInstance(value1, value2, WeakSet)) {
       return Object.is(value1, value2);
     }
     /* objects / Wrapper objects: Number, Boolean, String, BigInt */
-    if (_isSameInstance(value1, value2, Number)
-      || _isSameInstance(value1, value2, Boolean)
-      || _isSameInstance(value1, value2, String)
-      || _isSameInstance(value1, value2, BigInt)
+    if (isSameInstance(value1, value2, Number)
+      || isSameInstance(value1, value2, Boolean)
+      || isSameInstance(value1, value2, String)
+      || isSameInstance(value1, value2, BigInt)
     ) {
       return Object.is(value1.valueOf(), value2.valueOf());
     }
     /* objects / Array */
-    if (Array.isArray(value1) && Array.isArray(value2)) {
+    if (isArray(value1) && isArray(value2)) {
       if (value1.length !== value2.length) { return false; }
       if (value1.length === 0) { return true; }
       return value1.every((value: unknown, index: any): boolean =>
@@ -1471,7 +1436,7 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
         Object.is(value, (value2 as any)[index]));
     }
     /* objects / ArrayBuffer */
-    if (_isSameInstance(value1, value2, ArrayBuffer)) {
+    if (isSameInstance(value1, value2, ArrayBuffer)) {
       if (value1.byteLength !== value2.byteLength) { return false; }
       if (value1.byteLength === 0) { return true; }
       let xTA = new Int8Array(value1), yTA = new Int8Array(value2);
@@ -1479,7 +1444,7 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
         Object.is(value, yTA[index]));
     }
     /* objects / DataView */
-    if (_isSameInstance(value1, value2, DataView)) {
+    if (isSameInstance(value1, value2, DataView)) {
       if (value1.byteLength !== value2.byteLength) { return false; }
       if (value1.byteLength === 0) { return true; }
       for (let index = 0; index < value1.byteLength; index++) {
@@ -1490,27 +1455,27 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
       return true;
     }
     /* objects / Map */
-    if (_isSameInstance(value1, value2, Map)) {
+    if (isSameInstance(value1, value2, Map)) {
       if (value1.size !== value2.size) { return false; }
       if (value1.size === 0) { return true; }
       return [...value1.keys()].every((value: unknown): boolean =>
         isDeepStrictEqual(value1.get(value), value2.get(value)));
     }
     /* objects / Set */
-    if (_isSameInstance(value1, value2, Set)) {
+    if (isSameInstance(value1, value2, Set)) {
       if (value1.size !== value2.size) { return false; }
       if (value1.size === 0) { return true; }
       return [...value1.keys()].every((value: unknown): boolean =>
         value2.has(value));
     }
     /* objects / RegExp */
-    if (_isSameInstance(value1, value2, RegExp)) {
+    if (isSameInstance(value1, value2, RegExp)) {
       return Object.is(value1.lastIndex, value2.lastIndex)
         && Object.is(value1.flags, value2.flags)
         && Object.is(value1.source, value2.source);
     }
     /* objects / Error */
-    if (_isSameInstance(value1, value2, Error)) {
+    if (isSameInstance(value1, value2, Error)) {
       return isDeepStrictEqual(
         Object.getOwnPropertyNames(value1)
           .reduce(
@@ -1531,7 +1496,7 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
       );
     }
     /* objects / Date */
-    if (_isSameInstance(value1, value2, Date)) {
+    if (isSameInstance(value1, value2, Date)) {
       return Object.is(+value1, +value2);
     }
     /* objects / Proxy -> not detectable */
@@ -1566,7 +1531,7 @@ function isEmpty (value: any): boolean {
   /* Check undefined, null, NaN */
   if (value == null || Number.isNaN(value)) { return true; }
   /* Check Array, TypedArrays, string, String */
-  if (Array.isArray(value)
+  if (isArray(value)
     || (ArrayBuffer.isView(value) && !(value instanceof DataView))
     || typeof value === "string"
     || value instanceof String) {
@@ -1585,8 +1550,7 @@ function isEmpty (value: any): boolean {
   }
   /* Check Iterator objects */
   if ("Iterator" in globalThis ? (value instanceof Iterator)
-    : (value != null && typeof value === "object"
-      && typeof value.next === "function")) {
+    : (typeOf(value) === "object" && typeof value.next === "function")) {
     try {
       /* Has at least one element */
       for (let _item of value) { return false; }
@@ -1594,7 +1558,7 @@ function isEmpty (value: any): boolean {
     } catch { /* Not iterable */ }
   }
   /* Other objects - check own properties (including symbols) */
-  if (value != null && typeof value === "object") {
+  if (typeOf(value) === "object") {
     const keys: any[] = Reflect.ownKeys(value);
     if (keys.length === 0) { return true; }
     /* Special case: object with single "length" property that is 0 */
@@ -1627,8 +1591,8 @@ const isProxy = (value: any): boolean =>
  * @returns True if the value is an Async Generator Function, false otherwise.
  */
 const isAsyncGeneratorFunction = (value: unknown): value is AsyncGeneratorFunction =>
-  Object.getPrototypeOf(value).constructor ===
-    Object.getPrototypeOf(async function*() {}).constructor;
+  getPrototypeOf(value).constructor ===
+    getPrototypeOf(async function*() {}).constructor;
 
 
 /**
@@ -1638,10 +1602,9 @@ const isAsyncGeneratorFunction = (value: unknown): value is AsyncGeneratorFuncti
  * @returns True if the value is a plain object, false otherwise.
  */
 const isPlainObject = (value: unknown): boolean =>
-  value != null
-    && typeof value === "object"
-    && (Object.getPrototypeOf(value) === Object.prototype
-      || Object.getPrototypeOf(value) === null);
+  typeOf(value) === "object"
+    && (getPrototypeOf(value) === Object.prototype
+      || getPrototypeOf(value) === null);
 
 
 /**
@@ -1732,8 +1695,7 @@ const isPrimitive = (value: unknown): value is Primitive =>
 const isIterator = (value: unknown): value is Iterator<any> =>
   "Iterator" in globalThis
     ? value instanceof Iterator
-    : (value != null && typeof value === "object"
-        && typeof (value as any).next === "function");
+    : (typeOf(value) === "object" && typeof (value as any).next === "function");
 
 
 /**
@@ -1752,7 +1714,7 @@ const isRegexp = (value: unknown): value is RegExp => value instanceof RegExp;
  * @returns {boolean} Return true if value is a HTML element, false if not.
  */
 const isElement = (value: any): boolean =>
-  value != null && typeof value === "object" && value.nodeType === 1;
+ typeOf(value) === "object" && value.nodeType === 1;
 
 
 /**
@@ -1794,8 +1756,8 @@ const isTypedArray = (value: unknown): value is TypedArray =>
  * @returns True if the value is a Generator Function, false otherwise.
  */
 const isGeneratorFunction = (value: unknown): value is GeneratorFunction =>
-  Object.getPrototypeOf(value).constructor ===
-    Object.getPrototypeOf(function*(){}).constructor;
+  getPrototypeOf(value).constructor ===
+    getPrototypeOf(function*(){}).constructor;
 
 
 /**
@@ -1805,8 +1767,8 @@ const isGeneratorFunction = (value: unknown): value is GeneratorFunction =>
  * @returns True if the value is an Async Function, false otherwise.
  */
 const isAsyncFunction = <T,>(value: unknown): value is AsyncFunction<T> =>
-  Object.getPrototypeOf(value).constructor ===
-    Object.getPrototypeOf(async function(){}).constructor;
+  getPrototypeOf(value).constructor ===
+    getPrototypeOf(async function(){}).constructor;
 
 
 /** Collections API **/
@@ -1819,7 +1781,7 @@ const isAsyncFunction = <T,>(value: unknown): value is AsyncFunction<T> =>
  * @returns {any[]} An array wrapping the value, or the original array if already one.
  */
 const castArray = (value: unknown): any[] =>
-  typeof value === "undefined" ? [] : (Array.isArray(value) ? value : [value]);
+  typeof value === "undefined" ? [] : (isArray(value) ? value : [value]);
 
 
 /**
@@ -1829,7 +1791,7 @@ const castArray = (value: unknown): any[] =>
  * @returns any[]
  */
 const compact = (iter: IterableLikeAndArrayLike): any[] =>
-  Array.from(iter as Iterable<any> | ArrayLike<any>).filter(
+  from(iter as Iterable<any> | ArrayLike<any>).filter(
     (value: unknown): boolean => value != null
   );
 
@@ -1846,7 +1808,7 @@ function unique (
   resolver?: string | Function | null | undefined): any[] | void {
   if (resolver == null) { return [...new Set(iter as Iterable<any>)]; }
   if (typeof resolver === "string") {
-    return Array.from(iter as Iterable<any>).reduce(function (acc: any[], item: any) {
+    return from(iter as Iterable<any>).reduce(function (acc: any[], item: any) {
       if (acc.every((item2: any): boolean =>
         item2[resolver] !== item[resolver])) { acc.push(item); }
       return acc;
@@ -1888,7 +1850,7 @@ function count (iter: IterableLike, callback: Function): number {
  */
 function arrayDeepClone ([...array]: any[]): any[] {
   const _ADC = (value: unknown): any =>
-    Array.isArray(value) ? Array.from(value, _ADC) : value;
+    isArray(value) ? from(value, _ADC) : value;
   return _ADC(array);
 }
 
@@ -1988,7 +1950,7 @@ const arrayRange = (
   start: number = 0,
   end: number = 99,
   step: number = 1): any[] =>
-  Array.from(
+  from(
     {length: (end - start) / step + 1},
     (_v, i: number): number => start + (i * step)
   );
@@ -2002,8 +1964,8 @@ const arrayRange = (
  */
 function zip (...args: any[]): any[] {
   args = args.map((value: IterableLike): any =>
-    Array.from(value as Iterable<any>));
-  return Array.from({length: Math.min(...args.map(v => v.length))})
+    from(value as Iterable<any>));
+  return from({length: Math.min(...args.map(v => v.length))})
     .map((_, i: number): any[] => args.map(v => v[i]));
 }
 
@@ -2015,10 +1977,10 @@ function zip (...args: any[]): any[] {
  * @returns {any[][]} An array of arrays containing elements from the input tuples.
  */
 const unzip = ([...array]: any[]): any[] =>
-  array.map((iter: IterableLike): any[] => Array.from(iter as Iterable<any>))
+  array.map((iter: IterableLike): any[] => from(iter as Iterable<any>))
     .reduce(function (acc, value): any[] {
       value.forEach(function (item, index): void {
-        if (!Array.isArray(acc[index])) { acc[index] = []; }
+        if (!isArray(acc[index])) { acc[index] = []; }
         acc[index].push(item);
       });
       return acc;
@@ -2032,8 +1994,8 @@ const unzip = ([...array]: any[]): any[] =>
  * @param {IterableLike} array2 - The iterable to use as values.
  * @returns {object} An object containing key-value pairs from the input iterables.
  */
-function zipObj ([...array1]: any[], [...array2]: any[]): MapLike {
-  let result: MapLike = {};
+function zipObj ([...array1]: any[], [...array2]: any[]): ObjectLike {
+  let result: ObjectLike = {};
   let length: number = Math.min(array1.length, array2.length);
   for (let index = 0; index < length; index++) {
     result[array1[index]] = array2[index];
@@ -2240,7 +2202,7 @@ function* take <T>(iter: IterableLike, num: number = 1): GeneratorLike {
   } else {
     iterator = (iter as Iterable<T>)[Symbol.iterator]();
   }
-  for (let i = 0; i < num; i++) {
+  for (let index = 0; index < num; index++) {
     const { value, done } = iterator.next();
     if (done) { break };
     yield value;
@@ -2271,7 +2233,7 @@ function* drop <T>(iter: IterableLike, num: number = 1): GeneratorLike {
     iterator = (iter as Iterable<T>)[Symbol.iterator]();
   }
   /* Drop the first `num` elements */
-  for (let i = 0; i < num; i++) {
+  for (let index = 0; index < num; index++) {
     const { done } = iterator.next();
     if (done) { return };
   }
@@ -2470,7 +2432,7 @@ function nth <T>(iter: IterableLike, pos: number): T | undefined {
  */
 function size (value: any): number {
   /* Check Array */
-  if (Array.isArray(value)) { return value.length; }
+  if (isArray(value)) { return value.length; }
   /* Check Map and Set */
   if (value instanceof Map || value instanceof Set) { return value.size; }
   /* Check ArrayBuffer and DataView */
@@ -2585,17 +2547,12 @@ function includes (
     );
   }
   /* helper functions */
-  const _isIterator = (value: any): boolean =>
-    value != null && typeof value === "object"
-      && typeof value.next === "function";
-  const _isIterable = (value: unknown): boolean =>
-    value != null && typeof (value as any)[Symbol.iterator] === "function";
   const _isEqual = comparator ??
     ((value1: unknown, value2: unknown): boolean =>
       value1 === value2 || (value1 !== value1 && value2 !== value2));
     /* SameValueZero */
   /* Collection: Primitives, WeakMap, WeakSet */
-  const cType = (collection === null ? "null" : typeof collection);
+  const cType = (typeOf(collection));
   if (collection == null
     || !(["object", "function", "string"].includes(cType))
     || collection instanceof WeakMap
@@ -2617,8 +2574,8 @@ function includes (
     return false;
   }
   /* Iterator or Iterables (Array, Set, TypedArrays, other Iterables, etc.) */
-  if (_isIterator(collection) || _isIterable(collection)) {
-    if ([...collection].findIndex((item) => _isEqual(item, value)) > -1) {
+  if (isIterator(collection) || isIterable(collection)) {
+    if ([...collection as any].findIndex((item) => _isEqual(item, value)) > -1) {
       return true;
     }
     return false;
@@ -2774,7 +2731,7 @@ function* concat (...args: any[]): GeneratorLike {
   for (let item of args) {
     if (typeof item[Symbol.iterator] === "function" ||
       ("Iterator" in globalThis ? (item instanceof Iterator)
-        : (typeof item === "object" && typeof item.next === "function")
+        : (typeOf(item) === "object" && typeof item.next === "function")
       )
     ) {
       yield* item;
@@ -3085,7 +3042,7 @@ function sum (...args: any[]): any {
     && !args.every((value: unknown): boolean => typeof value === "bigint")
   ) {
     throw new TypeError(
-      `[sum] all arguments must be of the same type and either number or bigint. Got: ${args.map((v) => typeof v).join(", ")}`
+      `[sum] all arguments must be of the same type and either number or bigint. Got: ${args.map((v) => typeOf(v)).join(", ")}`
     );
   }
   return args.every((value: unknown): boolean => typeof value === "number")
@@ -3134,11 +3091,11 @@ function product (first: Numeric, ...args: Numeric[]): Numeric {
 function pow (base: number, power: number): number;
 function pow (base: bigint, power: bigint): bigint;
 function pow (base: Numeric, power: Numeric): Numeric {
-  if (typeof base !== typeof power
+  if (typeOf(base) !== typeOf(power)
     || (typeof base !== "number" && typeof base !== "bigint")
   ) {
     throw new TypeError(
-      `[pow] base and power must be of the same type and either number or bigint. Got: ${typeof base} and ${typeof power}`
+      `[pow] base and power must be of the same type and either number or bigint. Got: ${typeOf(base)} and ${typeOf(power)}`
     );
   }
   if (typeof base === "bigint" && typeof power === "bigint") {
