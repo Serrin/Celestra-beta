@@ -756,21 +756,50 @@ CUT.isTrue("qsa(); 04",
 );
 
 
-/* extend(); */
+/* deepAssign(); begin */
 token1 = {a: "1", b: "2"};
 token2 = {c: "3", d: "4", baz: {e: 5, fn: function (n) {return n * n; }}};
-token3 = CEL.extend(true, {} , token1, token2);
-CUT.isEqual("extend(); 01", "12345121",
+token3 = CEL.deepAssign({} , token1, token2);
+CUT.isEqual("deepAssign(); 01", "12345121",
   token3.a + token3.b + token3.c + token3.d + token3.baz.e + token3.baz.fn(11)
 );
-token3 = CEL.extend(false, {}, token1, token2);
-CUT.isEqual("extend(); 2", "12345121",
-  token3.a + token3.b + token3.c + token3.d + token3.baz.e + token3.baz.fn(11)
-);
-token3 = CEL.extend({}, token1, token2);
-CUT.isEqual("extend(); 3", "12345121",
-  token3.a + token3.b + token3.c + token3.d + token3.baz.e + token3.baz.fn(11)
-);
+token1 = { a: 2, b: { c: [new Set([3, 4]), { d: 4 }] } };
+token2 = CEL.deepAssign({}, token1, {e: 42});
+CUT.isFalse("deepAssign(); 02", token1.b === token2.b);
+CUT.isFalse("deepAssign(); 03", token1 === token2);
+CUT.isTrue("deepAssign(); 04", token1.a === token2.a);
+CUT.isFalse("deepAssign(); 05", token1.b === token2.b);
+CUT.isTrue("deepAssign(); 06", Array.isArray(token2.b.c));
+CUT.isFalse("deepAssign(); 07", token1.b.c === token2.b.c);
+CUT.isTrue("deepAssign(); 08", token2.b.c[0] instanceof Set);
+CUT.isFalse("deepAssign(); 09", token1.b.c[0] === token2.b.c[0]);
+CUT.isTrue("deepAssign(); 10a", token2.b.c[0].has(3));
+CUT.isTrue("deepAssign(); 11b", token2.b.c[0].has(4));
+CUT.isTrue("deepAssign(); 11", token2.b.c[0].size === 2);
+CUT.isFalse("deepAssign(); 12", token1.b.c[1] === token2.b.c[1]);
+CUT.isTrue("deepAssign(); 13", token1.b.c[1].d === token2.b.c[1].d);
+CUT.isTrue("deepAssign(); 14", token2.e === 42);
+token1 = [ {a: 2, b: { c: [new Set([3, 4]), { d: 4 }] } }, 5 ];
+token2 = CEL.deepAssign([], token1);
+CUT.isTrue("deepAssign(); 15", Array.isArray(token1));
+CUT.isTrue("deepAssign(); 16", Array.isArray(token2));
+CUT.isFalse("deepAssign(); 17", token1 === token2);
+CUT.isFalse("deepAssign(); 18", token1[0] === token2[1]);
+CUT.isTrue("deepAssign(); 19", token1[1] === token2[1]);
+CUT.isFalse("deepAssign(); 20", token1[0].b === token2[0].b);
+CUT.isFalse("deepAssign(); 21", token1[0] === token2[0]);
+CUT.isTrue("deepAssign(); 22", token1[0].a === token2[0].a);
+CUT.isFalse("deepAssign(); 23", token1[0].b === token2[0].b);
+CUT.isTrue("deepAssign(); 24", Array.isArray(token2[0].b.c));
+CUT.isFalse("deepAssign(); 25", token1[0].b.c === token2[0].b.c);
+CUT.isTrue("deepAssign(); 26", token2[0].b.c[0] instanceof Set);
+CUT.isFalse("deepAssign(); 27", token1[0].b.c[0] === token2[0].b.c[0]);
+CUT.isTrue("deepAssign(); 28", token2[0].b.c[0].has(3));
+CUT.isTrue("deepAssign(); 29", token2[0].b.c[0].has(4));
+CUT.isTrue("deepAssign(); 30", token2[0].b.c[0].size === 2);
+CUT.isFalse("deepAssign(); 31", token1[0].b.c[1] === token2[0].b.c[1]);
+CUT.isTrue("deepAssign(); 32", token1[0].b.c[1].d === token2[0].b.c[1].d);
+/* deepAssign(); end */
 
 
 /* obj2string(); deprecated */

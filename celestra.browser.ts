@@ -125,14 +125,6 @@ type ClearCookiesOptions = {
 };
 
 
-/* Helper functions */
-
-
-/* Standard library shorthands */
-const { isArray, from } = Array;
-const { getPrototypeOf } = Object;
-
-
 /** polyfills **/
 
 
@@ -227,7 +219,7 @@ if (("crypto" in globalThis) && !("randomUUID" in globalThis.crypto)) {
 if (!globalThis.GeneratorFunction) {
   /* @ts-ignore */
   globalThis.GeneratorFunction =
-    getPrototypeOf(function*(){}).constructor;
+    Object.getPrototypeOf(function*(){}).constructor;
 }
 
 
@@ -236,7 +228,7 @@ if (!globalThis.GeneratorFunction) {
 if (!globalThis.AsyncFunction) {
   /* @ts-ignore */
   globalThis.AsyncFunction =
-    getPrototypeOf(async function(){}).constructor;
+    Object.getPrototypeOf(async function(){}).constructor;
 }
 
 
@@ -245,7 +237,7 @@ if (!globalThis.AsyncFunction) {
 if (!globalThis.AsyncGeneratorFunction) {
   /* @ts-ignore */
   globalThis.AsyncGeneratorFunction =
-    getPrototypeOf(async function* () {}).constructor;
+    Object.getPrototypeOf(async function* () {}).constructor;
 }
 
 
@@ -308,7 +300,7 @@ const gt = (value1: Comparable, value2: Comparable): boolean =>
  * @returns {boolean}
  */
 const gte = (value1: Comparable, value2: Comparable): boolean =>
-  typeOf(value1) === typeOf(value2) && (value1 > value2 || eq(value1, value2));
+  gt(value1, value2) || eq(value1, value2);
 
 
 /**
@@ -330,7 +322,7 @@ const lt = (value1: Comparable, value2: Comparable): boolean =>
  * @returns {boolean}
  */
 const lte = (value1: Comparable, value2: Comparable): boolean =>
-  typeOf(value1) === typeOf(value2) && (value1 < value2 || eq(value1, value2));
+  lt(value1, value2) || eq(value1, value2);
 
 
 /**
@@ -496,7 +488,7 @@ async function asyncIdentity (value: unknown): Promise<any> { return value; }
 function randomUUIDv7 (v4: boolean = false): string {
   let ts = Date.now().toString(16).padStart(12,"0") + (v4 ? "4" : "7");
   /* @ts-ignore */
-  let uuid = from(([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,
+  let uuid = Array.from(([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,
     (c: number): any =>
       (c^crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
   ));
@@ -555,86 +547,21 @@ const obj2string = (obj: any): string => Object.keys(obj).reduce(
   ).slice(0, -1);
 
 
-/**
- * @description Deep assign of an object (Object, Array, etc.)
- *
- * @returns any
- */
-function extend <T extends object, U extends object>(target: T, source: U): T & U;
-function extend <T extends object, U extends object, V extends object>(target: T, s1: U, s2: V): T & U & V;
-function extend <T extends object>(deep: true, target: T, ...sources: any[]): T;
-function extend <T extends object>(deep: false, target: T, ...sources: any[]): T;
-function extend (target: object, ...sources: any[]): object;
-function extend (...args: any[]): any {
-  /* Arguments checking */
-  let deep: boolean = false;
-  let target: any;
-  let i = 0;
-  if (args[0] === true) {
-    deep = true;
-    target = args[1] || {};
-    i = 2;
-  } else {
-    target = args[0] || {};
-    i = 1;
+function deepAssign <T extends object, U extends object>(target: T, source: U): T & U;
+function deepAssign <T extends object, U extends object, V extends object>(target: T, s1: U, s2: V): T & U & V;
+function deepAssign <T extends object>(target: T, ...sources: any[]): T;
+function deepAssign <T extends object>(target: T, ...sources: any[]): T;
+function deepAssign (target: object, ...sources: any[]): object;
+function deepAssign(target: any, ...sources: any): any {
+  function _deepClone(value: any) {
+    try { return structuredClone(value); } catch { return value; }
   }
-  /* Helper functions */
-  function merge(target: any, source: any): any {
-    /* Identical or non-object -> direct assign */
-    if (Object.is(source, target) || source == null || typeof source !== "object") {
-      return source;
-    }
-    /* Date -> clone */
-    if (source instanceof Date) { return new Date(source.getTime()); }
-    /* RegExp -> clone */
-    if (source instanceof RegExp) { return new RegExp(source); }
-    /* Map -> deep merge entries */
-    if (source instanceof Map) {
-      if (target instanceof Map) { target = new Map(); }
-      for (let [key, value] of source) {
-        const tv = target.get(key);
-        target.set(key, deep ? merge(tv, value) : value);
-      }
-      return target;
-    }
-    /* Set -> deep union */
-    if (source instanceof Set) {
-      if (target instanceof Set) { target = new Set(); }
-      for (let item of source) {
-        if (deep) {
-          if (target.has(item)) { continue; }
-        }
-        target.add(item);
-      }
-      return target;
-    }
-    /* Array -> deep merge by index */
-    if (isArray(source)) {
-      if (!isArray(target)) { target = []; }
-      const srcLength = source.length;
-      for (let index = 0; index < srcLength; index++) {
-        let sv = source[index];
-        let tv = target[index];
-        target[index] = deep ? merge(tv, sv) : sv;
-      }
-      return target;
-    }
-    /* Plain object -> deep merge keys */
-    if (isPlainObject(source)) {
-      if (!isPlainObject(target)) { target = {}; }
-      for (let key in source) {
-        let sv = source[key];
-        let tv = target[key];
-        target[key] = deep ? merge(tv, sv) : sv;
-      }
-      return target;
-    }
-    /* Fallback: copy by reference */
-    return source;
+  if (!sources.length) {
+    return target == null ? target : _deepClone(target);
   }
-  /* Clone all sources */
-  const length = args.length;
-  for (; i < length; i++) { merge(target, args[i]); }
+  for (let source of sources) {
+    Object.assign(target, _deepClone(source));
+  }
   return target;
 }
 
@@ -819,9 +746,9 @@ function strTruncate (
   omission: string = ""): string {
   str = String(str);
   omission = String(omission);
-  let strUC = from(str);
+  let strUC = Array.from(str);
   if (newLength >= strUC.length) { return str; }
-  return strUC.slice(0, newLength-from(omission).length).join("")
+  return strUC.slice(0, newLength - Array.from(omission).length).join("")
     + omission;
 }
 
@@ -834,7 +761,7 @@ function strTruncate (
  */
 const strPropercase = (str: any): string =>
   String(str).trim().split(" ").map(function (value: string) {
-    let chars = from(value).map( (c: string): string => c.toLowerCase() );
+    let chars = Array.from(value).map( (c: string): string => c.toLowerCase() );
     if (chars.length) { chars[0] = chars[0].toUpperCase(); }
     return chars.join("");
   }).join(" ");
@@ -848,7 +775,7 @@ const strPropercase = (str: any): string =>
  */
 const strTitlecase = (str: any): string =>
   String(str).trim().split(" ").map(function (value: string) {
-    let chars = from(value).map( (c: string): string => c.toLowerCase() );
+    let chars = Array.from(value).map( (c: string): string => c.toLowerCase() );
     if (chars.length) { chars[0] = chars[0].toUpperCase(); }
     return chars.join("");
   }).join(" ");
@@ -900,7 +827,7 @@ function strDownFirst (str: any): string {
  * @returns {string} The reversed string.
  */
 const strReverse = (str: unknown): string =>
-  from(String(str)).reverse().join("");
+  Array.from(String(str)).reverse().join("");
 
 
 /**
@@ -910,7 +837,7 @@ const strReverse = (str: unknown): string =>
  * @returns {number[]} An array of Unicode code points.
  */
 const strCodePoints = (str: any): any[] =>
-  from(String(str), (value: string): number | undefined =>
+  Array.from(String(str), (value: string): number | undefined =>
     value.codePointAt(0));
 
 
@@ -931,7 +858,7 @@ const strFromCodePoints = ([...array]: Iterable<number>): string =>
  * @param {number} index - The index of the character to get or set.
  */
 function strAt (str: string, index: number, newChar?: string): string {
-  let chars: string[] = from(String(str));
+  let chars: string[] = Array.from(String(str));
   if (newChar == null) { return chars.at(index) || ""; }
   index = index < 0 ? chars.length + index : index;
   if (index > chars.length) { return chars.join(""); }
@@ -950,7 +877,7 @@ function strAt (str: string, index: number, newChar?: string): string {
  * @returns {string} The spliced string.
  */
 const strSplice = (str: string, index: number,count: number, ...add: any[]): string =>
-  from(str).toSpliced(index, count, add.join("")).join("");
+  Array.from(str).toSpliced(index, count, add.join("")).join("");
 
 
 /**
@@ -1004,7 +931,7 @@ const strHTMLUnEscape = (str: string): string =>
  * @returns {any[]} An array of matching elements.
  */
 const qsa = (str: string, context: Document | HTMLElement = document): any[] =>
-    from(context.querySelectorAll(str));
+  Array.from(context.querySelectorAll(str));
 
 
 /**
@@ -1631,7 +1558,7 @@ const domScrollToElement = (element: Element, top: boolean = true): void =>
  */
 /* @ts-ignore */
 const domClear = (element: Element): void =>
-  from(element.children).forEach((item: Element): void => item.remove());
+  Array.from(element.children).forEach((item: Element): void => item.remove());
 
 
 /** Type API **/
@@ -1714,7 +1641,7 @@ function isTypedCollection (
   }
   /* Validate `expected` */
   if (!(["string", "function"].includes(typeof expectedType))
-    && !isArray(expectedType)) {
+    && !Array.isArray(expectedType)) {
     throw new TypeError(
       `[isTypedCollection] TypeError: expectedType must be string, function, array. Got ${typeOf(expectedType)}`
     );
@@ -1727,7 +1654,7 @@ function isTypedCollection (
   }
   /* Normalize expected to an array */
   let expectedArray: any[] =
-    isArray(expectedType) ? expectedType : [expectedType];
+    Array.isArray(expectedType) ? expectedType : [expectedType];
   /* Check values of iter against expected types or constructors */
   let matched: boolean = true;
   for (let value of iter as Iterable<any>) {
@@ -1773,7 +1700,7 @@ function is (
   Throw: boolean = false): string | Function | boolean {
   /* Validate `expected` */
   if (!(["string", "function", "undefined"].includes(typeof expectedType))
-    && !isArray(expectedType)) {
+    && !Array.isArray(expectedType)) {
     throw new TypeError(
       `[is] TypeError: expectedType must be string, function, array or undefined. Got ${typeOf(expectedType)}`
     );
@@ -1789,12 +1716,12 @@ function is (
   /* If no expected type provided, return type or constructor */
   if (expectedType == null) {
     return vType === "object"
-      ? getPrototypeOf(value)?.constructor ?? "object"
+      ? Object.getPrototypeOf(value)?.constructor ?? "object"
       : vType;
   }
   /* Normalize expected to an array */
   let expectedArray: Array<string | Function> =
-    isArray(expectedType) ? expectedType : [expectedType];
+    Array.isArray(expectedType) ? expectedType : [expectedType];
   /* Check against expected types or constructors */
   let matched: boolean = expectedArray.some(
     function (item: string | Function) {
@@ -1884,17 +1811,17 @@ function toSafeString (value: unknown): string {
     .includes(typeOf(value))) {
     return String(value);
   }
-  if (isArray(value)) {
+  if (Array.isArray(value)) {
     return `[${value.map(v => toSafeString(v)).join(", ")}]`;
   }
   if (ArrayBuffer.isView(value) && !(value instanceof DataView)) {
     return `[${[...(value as any)].map(v => toSafeString(v)).join(", ")}]`;
   }
   if (value instanceof Map) {
-    return `Map(${value.size}){${from(value.entries()).map(([k, v]): string => `${toSafeString(k)} => ${toSafeString(v)}`).join(", ")}}`;
+    return `Map(${value.size}){${Array.from(value.entries()).map(([k, v]): string => `${toSafeString(k)} => ${toSafeString(v)}`).join(", ")}}`;
   }
   if (value instanceof Set) {
-    return `Set(${value.size}){${from(value.values()).map(v => toSafeString(v)).join(", ")}}`;
+    return `Set(${value.size}){${Array.from(value.values()).map(v => toSafeString(v)).join(", ")}}`;
   }
   try {
     return JSON.stringify(value, replacer) ?? String(value);
@@ -2061,8 +1988,8 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
     /* objects / same memory adress */
     if (Object.is(value1, value2)) { return true; }
     /* objects / not same constructor */
-    if (getPrototypeOf(value1).constructor !==
-      getPrototypeOf(value2).constructor
+    if (Object.getPrototypeOf(value1).constructor !==
+      Object.getPrototypeOf(value2).constructor
     ) {
       return false;
     }
@@ -2080,7 +2007,7 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
       return Object.is(value1.valueOf(), value2.valueOf());
     }
     /* objects / Array */
-    if (isArray(value1) && isArray(value2)) {
+    if (Array.isArray(value1) && Array.isArray(value2)) {
       if (value1.length !== value2.length) { return false; }
       if (value1.length === 0) { return true; }
       return value1.every((value: unknown, index: any): boolean =>
@@ -2194,7 +2121,7 @@ function isEmpty (value: any): boolean {
   /* Check undefined, null, NaN */
   if (value == null || Number.isNaN(value)) { return true; }
   /* Check Array, TypedArrays, string, String */
-  if (isArray(value)
+  if (Array.isArray(value)
     || (ArrayBuffer.isView(value) && !(value instanceof DataView))
     || typeof value === "string"
     || value instanceof String) {
@@ -2254,8 +2181,8 @@ const isProxy = (value: any): boolean =>
  * @returns True if the value is an Async Generator Function, false otherwise.
  */
 const isAsyncGeneratorFunction = (value: unknown): value is AsyncGeneratorFunction =>
-  getPrototypeOf(value).constructor ===
-    getPrototypeOf(async function*() {}).constructor;
+  Object.getPrototypeOf(value).constructor ===
+    Object.getPrototypeOf(async function*() {}).constructor;
 
 
 /**
@@ -2264,10 +2191,11 @@ const isAsyncGeneratorFunction = (value: unknown): value is AsyncGeneratorFuncti
  * @param {unknown} value - The value to check.
  * @returns True if the value is a plain object, false otherwise.
  */
-const isPlainObject = (value: unknown): boolean =>
-  typeOf(value) === "object"
-    && (getPrototypeOf(value) === Object.prototype
-      || getPrototypeOf(value) === null);
+function isPlainObject (value: unknown): boolean {
+  if (value === null || typeof value !== "object") { return false; }
+  const proto = Object.getPrototypeOf(value);
+  return proto === Object.prototype || proto === null;
+}
 
 
 /**
@@ -2277,7 +2205,7 @@ const isPlainObject = (value: unknown): boolean =>
  * @returns True if the value is a object, false otherwise.
  */
 const isObject = (value: unknown): value is object =>
-  value != null && typeof value === "object";
+  value !== null && typeof value === "object";
 
 
 /**
@@ -2417,8 +2345,8 @@ const isTypedArray = (value: unknown): value is TypedArray =>
  * @returns True if the value is a Generator Function, false otherwise.
  */
 const isGeneratorFunction = (value: unknown): value is GeneratorFunction =>
-  getPrototypeOf(value).constructor ===
-    getPrototypeOf(function*(){}).constructor;
+  Object.getPrototypeOf(value).constructor ===
+    Object.getPrototypeOf(function*(){}).constructor;
 
 
 /**
@@ -2428,8 +2356,8 @@ const isGeneratorFunction = (value: unknown): value is GeneratorFunction =>
  * @returns True if the value is an Async Function, false otherwise.
  */
 const isAsyncFunction = <T,>(value: unknown): value is AsyncFunction<T> =>
-  getPrototypeOf(value).constructor ===
-    getPrototypeOf(async function(){}).constructor;
+  Object.getPrototypeOf(value).constructor ===
+    Object.getPrototypeOf(async function(){}).constructor;
 
 
 /** Cookie API **/
@@ -2636,7 +2564,7 @@ function clearCookies (
  * @returns {any[]} An array wrapping the value, or the original array if already one.
  */
 const castArray = (value: unknown): any[] =>
-  typeof value === "undefined" ? [] : (isArray(value) ? value : [value]);
+  typeof value === "undefined" ? [] : (Array.isArray(value) ? value : [value]);
 
 
 /**
@@ -2646,7 +2574,7 @@ const castArray = (value: unknown): any[] =>
  * @returns any[]
  */
 const compact = (iter: IterableLikeAndArrayLike): any[] =>
-  from(iter as Iterable<any> | ArrayLike<any>).filter(
+  Array.from(iter as Iterable<any> | ArrayLike<any>).filter(
     (value: unknown): boolean => value != null
   );
 
@@ -2663,7 +2591,7 @@ function unique (
   resolver?: string | Function | null | undefined): any[] | void {
   if (resolver == null) { return [...new Set(iter as Iterable<any>)]; }
   if (typeof resolver === "string") {
-    return from(iter as Iterable<any>).reduce(function (acc: any[], item: any) {
+    return Array.from(iter as Iterable<any>).reduce(function (acc: any[], item: any) {
       if (acc.every((item2: any): boolean =>
         item2[resolver] !== item[resolver])) { acc.push(item); }
       return acc;
@@ -2705,7 +2633,7 @@ function count (iter: IterableLike, callback: Function): number {
  */
 function arrayDeepClone ([...array]: any[]): any[] {
   const _ADC = (value: unknown): any =>
-    isArray(value) ? from(value, _ADC) : value;
+    Array.isArray(value) ? Array.from(value, _ADC) : value;
   return _ADC(array);
 }
 
@@ -2804,8 +2732,7 @@ const arrayCycle = ([...array]: any[], num: number = 100): any[] =>
 const arrayRange = (
   start: number = 0,
   end: number = 99,
-  step: number = 1): any[] =>
-  from(
+  step: number = 1): any[] => Array.from(
     {length: (end - start) / step + 1},
     (_v, i: number): number => start + (i * step)
   );
@@ -2819,8 +2746,8 @@ const arrayRange = (
  */
 function zip (...args: any[]): any[] {
   args = args.map((value: IterableLike): any =>
-    from(value as Iterable<any>));
-  return from({length: Math.min(...args.map(v => v.length))})
+    Array.from(value as Iterable<any>));
+  return Array.from({length: Math.min(...args.map(v => v.length))})
     .map((_, i: number): any[] => args.map(v => v[i]));
 }
 
@@ -2832,10 +2759,10 @@ function zip (...args: any[]): any[] {
  * @returns {any[][]} An array of arrays containing elements from the input tuples.
  */
 const unzip = ([...array]: any[]): any[] =>
-  array.map((iter: IterableLike): any[] => from(iter as Iterable<any>))
+  array.map((iter: IterableLike): any[] => Array.from(iter as Iterable<any>))
     .reduce(function (acc, value): any[] {
       value.forEach(function (item, index): void {
-        if (!isArray(acc[index])) { acc[index] = []; }
+        if (!Array.isArray(acc[index])) { acc[index] = []; }
         acc[index].push(item);
       });
       return acc;
@@ -3288,7 +3215,7 @@ function nth <T>(iter: IterableLike, pos: number): T | undefined {
  */
 function size (value: any): number {
   /* Check Array */
-  if (isArray(value)) { return value.length; }
+  if (Array.isArray(value)) { return value.length; }
   /* Check Map and Set */
   if (value instanceof Map || value instanceof Set) { return value.size; }
   /* Check ArrayBuffer and DataView */
@@ -4422,7 +4349,7 @@ export default {
   randomBoolean,
   getUrlVars,
   obj2string,
-  extend,
+  deepAssign,
   sizeIn,
   unBind,
   bind,
@@ -4671,7 +4598,7 @@ export {
   randomBoolean,
   getUrlVars,
   obj2string,
-  extend,
+  deepAssign,
   sizeIn,
   unBind,
   bind,

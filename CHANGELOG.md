@@ -1,15 +1,17 @@
 
 # Celestra version history
 
-## Celestra v6.7.0
+## Celestra v6.7.0 Laika
 
-1. Documentation, pdf and code fixes.
-2. Add 2 new pages about the JS data types in the __js-cheatsheet.odt__ and __js-cheatsheet.pdf__.
-3. Add 3 new files: __js-data-types.odt__, __js-data-types.pdf__, __js-data-types.png__
-4. Rewrite the __Cookie API__ without breaking changes.
-5. Fix these functions: `compact();`, `isObject();`
-6. Deprecate _(stability 1)_ these functions: `getUrlVars();`, `obj2string();`
-7. Remove these functions: `createPolyfillMethod();`, `createPolyfillProperty();`
+1. __From this version (v6.7.0 Laika) the use of _inner calls_ are enabled. The functions don't have to be standalone.__
+2. Documentation, pdf and code fixes.
+3. Add 2 new pages about the JS data types in the __js-cheatsheet.odt__ and __js-cheatsheet.pdf__.
+4. Add 3 new files: __js-data-types.odt__, __js-data-types.pdf__, __js-data-types.png__
+5. Rewrite the __Cookie API__ without breaking changes.
+6. Fix these functions: `compact();`, `isObject();`
+7. Replace the function `extend();` with `deepAssign();`.
+8. Deprecate _(stability 1)_ these functions: `getUrlVars();`, `obj2string();`
+9. Remove these functions: `createPolyfillMethod();`, `createPolyfillProperty();`
 
 ## Celestra v6.6.0 Angelo
 

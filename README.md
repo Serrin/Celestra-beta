@@ -14,7 +14,7 @@ __A helper JavaScript library with useful functions and polyfills and zero depen
 
 Latest version: 6.7.0
 
-Date: 2026-04-12T17:53:15.967Z
+Date: 2026-05-01T18:23:03.185Z
 
 __Tested on these environments:__
 
@@ -235,8 +235,8 @@ Name|Description
 `compose(function1 [, functionN]);`|__Stability: 4 - Stable.__<BR>Compose functions right to left. At least one function parameter is mandatory.
 `constant(value);`|__Stability: 4 - Stable.__<BR>A one time assignment function to create a constant value in ES5. This returns a function, which returns the given value. (In math: `f(x)=x`)
 `curry(function);`|__Stability: 4 - Stable.__<BR>Curries a function, allowing it to be called with a single argument at a time and returning a new function that takes the next argument. The function parameter is mandatory.
+`deepAssign(target,source1[,sourceN]);`|__Stability: 4 - Stable.__<BR>__Old name before v6.7.0: `extend();`__<BR>This is an enhanced version of the `Object.assign` method and uses the [structuredClone();](https://developer.mozilla.org/en-US/docs/Web/API/Window/structuredClone) global function to deep clone the objects. If there is only one argument, then this argument will be deep cloned with the [structuredClone();](https://developer.mozilla.org/en-US/docs/Web/API/Window/structuredClone).<BR>__Examples:__<BR>`let result = CEL.deepAssign([], [1, 2, 3,{"a": 4, "b": new Set([5, 6])}]);`<BR>_-> deep clone of the_ `[1, 2, 3,{"a": 4, "b": new Set([5, 6])}]);`<BR>`let o1 = {"a": 1, "b": 2};`<BR>`CEL.deepAssign(o1, [3, 4, 6, {"a": 7, "b": 8}], {"c": 9});`<BR>`console.log(JSON.stringify(o1));`<BR>_->_ `{"0":3,"1":4,"2":6,"3":{"a":7,"b":8},"a":1,"b":2,"c":9}`
 `delay(ms).then(callback);`|__Stability: 4 - Stable.__<BR>A promise based delay function. The ms (milliseconds) parameter is mandatory and have to be an integer.<BR>__Sample:__<BR>`CEL.sleep(5000).then(() => alert("5 seconds")).catch(console.log.bind(console)).finally(() => alert("done"));`
-`extend([deep,]target,source1[,sourceN]);`|__Stability: 4 - Stable.__<BR>This is an enhanced version of the `Object.assign` method. The deep parameter (boolean) is optional and sets the deep copy (recursive) of the sources.
 `eq(value1, value2);`|__Stability: 4 - Stable.__<BR>SameValueZero equality (like `Object.is();`, but `+0 === -0`). All of the parameters are mandatory and can be any type. The return value is boolean.
 `F();`|__Stability: 4 - Stable.__<BR>This function returns false.
 `getUrlVars([str=location.search]);`|__Stability: 1 - Deprecated and will be removed.__<BR>Get the values of the url variables in an object from the `location.search` _(default value)_ or another given url. The str parameter name is optional and can be a string. Example: `"?showall=true&order_by=updated&o=asc"` -> `Object { showall: "true", order_by: "updated", o: "asc" }`
