@@ -10,14 +10,14 @@
 
 /**
  * @name Celestra
- * @version 6.7.0 node
+ * @version 6.7.1 node
  * @author Ferenc Czigler
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
 
 
-const VERSION = "Celestra v6.7.0 node";
+const VERSION = "Celestra v6.7.1 node";
 
 
 /** TS browser and NodeJS common types **/
@@ -131,8 +131,7 @@ type TypedArray = Exclude<ArrayBufferView, DataView>;
 
 /* Math.sumPrecise(); */
 if (!("sumPrecise" in Math)) {
-  /* @ts-ignore */
-  Math.sumPrecise = function sumPrecise ([...array]): number {
+  (Math as ObjectLike).sumPrecise = function sumPrecise ([...array]): number {
     /* empty iterator */
     if (array.length === 0) { return -0; }
     /* iterator with items */
@@ -156,7 +155,6 @@ if (!("sumPrecise" in Math)) {
         let y = item - c; let t = lo + y; c = (t - lo) - y; lo = t;
       }
       /* return sum values */
-      /*
       if (lo === 0 && hi !== 0) { return hi; }
       if (lo > 0 && hi > 0) { return hi; }
       if (lo < 0 && hi < 0) { return hi; }
@@ -164,12 +162,6 @@ if (!("sumPrecise" in Math)) {
       if (lo < 0 && hi > 0) { return lo + hi; }
       if (lo === 0 && hi === 0) { return lo; }
       if (lo !== 0 && hi === 0) { return lo; }
-      */
-      if ((lo === 0 && hi !== 0) || (lo > 0 && hi > 0) || (lo < 0 && hi < 0)) {
-        return hi;
-      }
-      if ((lo > 0 && hi < 0) || (lo < 0 && hi > 0)) { return lo + hi; }
-      return lo;
     }
     /* not number items -> TypeError */
     throw new TypeError("values passed to Math.sumPrecise must be numbers");
@@ -179,8 +171,7 @@ if (!("sumPrecise" in Math)) {
 
 /* Error.isError(); */
 if (!("isError" in Error)) {
-  /* @ts-ignore */
-  Error.isError = function isError (value: unknown) {
+  (Error as ObjectLike).isError = function isError (value: unknown) {
     let className =
       Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
     return (className === "error" || className === "domexception");
@@ -190,8 +181,7 @@ if (!("isError" in Error)) {
 
 /* crypto.randomUUID(); */
 if (("crypto" in globalThis) && !("randomUUID" in globalThis.crypto)) {
-  /* @ts-ignore */
-  globalThis.crypto.randomUUID = function randomUUID () {
+  (globalThis.crypto as ObjectLike).randomUUID = function randomUUID () {
     /* @ts-ignore */
     return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,
       (c: any): any =>
@@ -202,28 +192,22 @@ if (("crypto" in globalThis) && !("randomUUID" in globalThis.crypto)) {
 
 
 /* globalThis.GeneratorFunction; */
-/* @ts-ignore */
-if (!globalThis.GeneratorFunction) {
-  /* @ts-ignore */
-  globalThis.GeneratorFunction =
+if (!(globalThis as ObjectLike).GeneratorFunction) {
+  (globalThis as ObjectLike).GeneratorFunction =
     Object.getPrototypeOf(function*(){}).constructor;
 }
 
 
 /* globalThis.AsyncFunction; */
-/* @ts-ignore */
-if (!globalThis.AsyncFunction) {
-  /* @ts-ignore */
-  globalThis.AsyncFunction =
+if (!(globalThis as ObjectLike).AsyncFunction) {
+  (globalThis as ObjectLike).AsyncFunction =
     Object.getPrototypeOf(async function(){}).constructor;
 }
 
 
 /* globalThis.AsyncGeneratorFunction; */
-/* @ts-ignore */
-if (!globalThis.AsyncGeneratorFunction) {
-  /* @ts-ignore */
-  globalThis.AsyncGeneratorFunction =
+if (!(globalThis as ObjectLike).AsyncGeneratorFunction) {
+  (globalThis as ObjectLike).AsyncGeneratorFunction =
     Object.getPrototypeOf(async function* () {}).constructor;
 }
 
@@ -400,7 +384,6 @@ const pick = (obj: ObjectLike, keys: string[]): ObjectLike =>
  */
 const omit = (obj: ObjectLike, keys: string[]): ObjectLike =>
   Object.keys(obj).reduce(function (acc: ObjectLike, key: string) {
-    /* @ts-ignore */
     if (!keys.includes(key)) { acc[key] = obj[key]; }
     return acc;
   }, {});
@@ -422,7 +405,6 @@ const assoc = (obj: ObjectLike, key: string, value: unknown): ObjectLike =>
  *
  * @returns {Promise<void>}
  */
-/* @ts-ignore */
 async function asyncNoop (): Promise<void> {
   return new Promise(function (resolve: Function) { resolve(); });
 }
@@ -470,21 +452,25 @@ async function asyncIdentity (value: unknown): Promise<any> { return value; }
  * @param {boolean} [v4=false] - If true, generates a UUID version 4; otherwise, generates version 7.
  * @returns {string} A randomly generated UUID string.
  */
-function randomUUIDv7 (v4: boolean = false): string {
-  let ts = Date.now().toString(16).padStart(12,"0") + (v4 ? "4" : "7");
-  /* @ts-ignore */
-  let uuid = Array.from(([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,
-    (c: number): any =>
-      (c^crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-  ));
-  let index: number = 0;
-  let pos: number = 0;
-  while (index < 13) {
-    if (pos === 8 || pos === 13) { pos++; }
-    uuid[pos] = ts[index];
-    pos++;
-    index++;
+function randomUUIDv7(v4: boolean = false): string {
+  const version = v4 ? "4" : "7";
+  /* 12 hex timestamp digits + 1 version char = 13, but UUID positions 0-7, 9-12 = 12 slots */
+  /* So keep ts as 12 chars and write version explicitly into position 14 */
+  const timestamp = Date.now().toString(16).padStart(12, "0");
+  const uuid: string[] = Array.from(
+    "10000000-1000-4000-8000-100000000000".replace(/[018]/g, (c: string): string => {
+      const n = parseInt(c, 10);
+      return (n ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (n / 4)))).toString(16);
+    })
+  );
+  /* Write 12 timestamp chars into positions 0-7, 9-12 (skipping dash at 8) */
+  let timestampIndex = 0;
+  for (let pos = 0; timestampIndex < 12; pos++) {
+    if (pos === 8) continue; // skip dash
+    uuid[pos] = timestamp[timestampIndex++];
   }
+  /* Write version into position 14 (after second dash) */
+  uuid[14] = version;
   return uuid.join("");
 }
 
@@ -514,9 +500,7 @@ const randomBoolean = (): boolean => !Math.round(Math.random());
  * @returns {Object} An object containing the parsed query parameters as key-value pairs.
  */
 const getUrlVars = (str: string = location.search): Object =>
-  [...new URLSearchParams(str).entries()]
-    /* @ts-ignore */
-    .reduce(function (obj, item) { obj[item[0]] = item[1]; return obj; }, {});
+  Object.fromEntries([...new URLSearchParams(str).entries()]);
 
 
 /**
@@ -535,23 +519,19 @@ const obj2string = (obj: any): string => Object.keys(obj).reduce(
 /**
  * @description Deep assign of an object (Object, Array, etc.)
  *
- * @returns any
+ * @returns {any}
  */
 function deepAssign <T extends object, U extends object>(target: T, source: U): T & U;
 function deepAssign <T extends object, U extends object, V extends object>(target: T, s1: U, s2: V): T & U & V;
 function deepAssign <T extends object>(target: T, ...sources: any[]): T;
 function deepAssign <T extends object>(target: T, ...sources: any[]): T;
 function deepAssign (target: object, ...sources: any[]): object;
-function deepAssign(target: any, ...sources: any): any {
+function deepAssign (target: any, ...sources: any): any {
   function _deepClone(value: any) {
     try { return structuredClone(value); } catch { return value; }
   }
-  if (!sources.length) {
-    return target == null ? target : _deepClone(target);
-  }
-  for (let source of sources) {
-    Object.assign(target, _deepClone(source));
-  }
+  if (!sources.length) { return target == null ? target : _deepClone(target); }
+  for (let source of sources) { Object.assign(target, _deepClone(source)); }
   return target;
 }
 
@@ -634,18 +614,30 @@ const F = (): boolean => false;
  * @param {number} [size=21] - The length of the generated ID.
  * @param {string} [alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"] - The set of characters to use for generating the ID.
  */
-function nanoid (
+function nanoid(
   size: number = 21,
-  alphabet: string =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"
-  ): string {
-  let result: string = "";
-  let dl: number = alphabet.length;
-  let pos: number;
-  let index: number = size;
+  alphabet: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"
+): string {
+  if (!Number.isSafeInteger(size) || size < 1 || size > 255) {
+    throw new RangeError(
+      "[nanoid] Size should be an integer between 1 and 255."
+    );
+  }
+  if (typeof alphabet !== "string"
+    || !alphabet.length
+    || alphabet.length > 255) {
+    throw new TypeError(
+      "[nanoid] Alphabet should be a non-empty string with maximum length 255."
+    );
+  }
+  const mask = (2 << (31 - Math.clz32(alphabet.length - 1))) - 1;
+  let result = "";
+  let index = size;
   while (index--) {
-    do { pos = crypto.getRandomValues(new Uint8Array(1))[0]; } while
-      (pos >= dl);
+    let pos: number;
+    do {
+      pos = crypto.getRandomValues(new Uint8Array(1))[0] & mask;
+    } while (pos >= alphabet.length);
     result += alphabet[pos];
   }
   return result;
@@ -656,24 +648,29 @@ function nanoid (
  * @description Generates a timestamp-based string ID of specified size using the provided alphabet.
  *
  * @param {number} [size=21] - The total length of the generated ID, including the timestamp.
- * @param {string} [alphabet="123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"] - The set of characters to use for generating the ID.
+ * @param {string} [alphabet="23456789CFGHJMPQRVWXcfghjmpqvwx"] - The set of characters to use for generating the ID.
  * @returns {string} The generated timestamp-based ID.
  */
 function timestampID (
   size: number = 21,
-  alphabet: string =
-    "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
+  alphabet: string = "23456789CFGHJMPQRVWXcfghjmpqvwx"
   ): string {
-  let result: string = Date.now().toString(36).padStart(10, "0") + "-";
-  let dl: number = alphabet.length;
-  let pos: number;
-  let index: number = ((size > 11) ? size : 12) - 11;
-  while (index--) {
-    do { pos = crypto.getRandomValues(new Uint8Array(1))[0]; } while
-      (pos >= dl);
-    result += alphabet[pos];
+  if (!Number.isSafeInteger(size)
+    || size < 11
+    || alphabet.length > 255) {
+    throw new RangeError(
+      "[timestampID] Size should be an integer in between 11 and 255."
+    );
   }
-  return result;
+  if (typeof alphabet !== "string"
+    || !alphabet.length
+    || alphabet.length > 255) {
+    throw new TypeError(
+      "[timestampID] Alphabet should be a non-empty string with maximum length 255."
+    );
+  }
+  return Date.now().toString(36).padStart(10, "0")
+    + (size > 11 ? "-" + nanoid(size - 11, alphabet) : "-")
 }
 
 
@@ -931,7 +928,7 @@ const isNonNullable = (value: unknown): value is NonNullable<unknown> =>
  */
 const isNonNullablePrimitive =
   (value: unknown): value is NonNullablePrimitive =>
-    value != null && typeof value !== "object" && typeof value !== "function";
+    value != null && typeOf(value) !== "object" && typeof value !== "function";
 
 
 /**
@@ -989,7 +986,7 @@ function isTypedCollection (
     );
   }
   /* Validate `expected` */
-  if (!(["string", "function"].includes(typeof expectedType))
+  if (!(["string", "function"].includes(typeOf(expectedType)))
     && !Array.isArray(expectedType)) {
     throw new TypeError(
       `[isTypedCollection] TypeError: expectedType must be string, function, array. Got ${typeOf(expectedType)}`
@@ -1016,7 +1013,7 @@ function isTypedCollection (
         }
         /* validate expected array elements */
         throw new TypeError(
-          `[isTypedCollection] TypeError: expectedType array elements have to be a string or function. Got ${typeof item}`
+          `[isTypedCollection] TypeError: expectedType array elements have to be a string or function. Got ${typeOf(item)}`
         );
       }
     );
@@ -1048,7 +1045,7 @@ function is (
   expectedType?: string | Function | Array<string | Function> | undefined,
   Throw: boolean = false): string | Function | boolean {
   /* Validate `expected` */
-  if (!(["string", "function", "undefined"].includes(typeof expectedType))
+  if (!(["string", "function", "undefined"].includes(typeOf(expectedType)))
     && !Array.isArray(expectedType)) {
     throw new TypeError(
       `[is] TypeError: expectedType must be string, function, array or undefined. Got ${typeOf(expectedType)}`
@@ -1089,7 +1086,7 @@ function is (
     let vName: string =
       value.toString ? value.toString() : Object.prototype.toString.call(value);
     let eNames: string = expectedArray.map((item: any): string =>
-      (typeof item === "string" ? item.toString() : item.name ?? "anonymous")
+      (typeof item  === "string" ? item.toString() : item.name ?? "anonymous")
     ).join(", ");
     throw new TypeError(
       `[is] TypeError: ${vName} is not one of these: ${eNames}`
@@ -1108,9 +1105,9 @@ function is (
  */
 function toObject (value: unknown): Object | symbol | Function {
   if (value == null) {
-    throw new TypeError(`[toObject] error: ${value}`);
+    throw new TypeError(`[toObject] error: value is ${value}`);
   }
-  return (["object", "function"].includes(typeof value))
+  return (["object", "function"].includes(typeOf(value)))
     ? value
     : Object(value);
 }
@@ -1124,7 +1121,7 @@ function toObject (value: unknown): Object | symbol | Function {
  * @returns {any} The primitive value or the original object if not a wrapper.
  */
 function toPrimitive (value: unknown): any {
-  if (value == null || typeof value !== "object") { return value; }
+  if (value == null || typeOf(value) !== "object") { return value; }
   const vType = Object.prototype.toString.call(value).slice(8, -1);
   if (["Boolean", "BigInt", "Number", "String", "Symbol"].includes(vType)) {
     return value.valueOf();
@@ -1150,7 +1147,7 @@ function toSafeString (value: unknown): string {
     if (value instanceof Error) {
       return `${value.name}: ${value.message}, ${value.stack ?? ""}`;
     }
-    if (value && typeof value === "object") {
+    if (value && typeOf(value) === "object") {
       if (seen.has(value)) { return "[Circular]" };
       seen.add(value);
     }
@@ -1310,27 +1307,27 @@ function isCoercedObject (value: unknown): Function | boolean {
  */
 function isDeepStrictEqual (value1: any, value2: any): boolean {
   /* helper functions */
-  const _deepTypeOf = (value: any): string =>
-    (value === null) ? "null" : (value !== value) ? "NaN" : (typeof value);
+  const _typeOfOrNaN = (value: any): string =>
+    value !== value ? "NaN" : typeOf(value);
   const _classOf = (value: any): string =>
     Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
   /* primitives: Boolean, Number, BigInt, String + Function + Symbol */
   if (Object.is(value1, value2)) { return true; }
   /* Object Wrappers (Boolean, Number, BigInt, String) */
-  if (_deepTypeOf(value1) === "object"
+  if (typeOf(value1) === "object"
     && isPrimitive(value2)
-    && _classOf(value1) === typeof value2) {
+    && _classOf(value1) === typeOf(value2)) {
     return Object.is(value1.valueOf(), value2);
   }
   if (isPrimitive(value1)
-    && _deepTypeOf(value2) === "object"
-    && typeof value1 === _classOf(value2)) {
+    && typeOf(value2) === "object"
+    && typeOf(value1) === _classOf(value2)) {
     return Object.is(value1, value2.valueOf());
   }
   /* type (primitives, object, null, NaN) */
-  if (_deepTypeOf(value1) !== _deepTypeOf(value2)) { return false; }
+  if (_typeOfOrNaN(value1) !== _typeOfOrNaN(value2)) { return false; }
   /* objects */
-  if (_deepTypeOf(value1) === "object" && _deepTypeOf(value2) === "object") {
+  if (typeOf(value1) === "object" && typeOf(value2) === "object") {
     /* objects / same memory adress */
     if (Object.is(value1, value2)) { return true; }
     /* objects / not same constructor */
@@ -1537,7 +1534,7 @@ const isAsyncGeneratorFunction = (value: unknown): value is AsyncGeneratorFuncti
  * @returns True if the value is a plain object, false otherwise.
  */
 function isPlainObject (value: unknown): boolean {
-  if (value === null || typeof value !== "object") { return false; }
+  if (value === null || typeOf(value) !== "object") { return false; }
   const proto = Object.getPrototypeOf(value);
   return proto === Object.prototype || proto === null;
 }
@@ -1572,7 +1569,7 @@ const isFunction = (value: unknown): value is Function =>
  */
 function isArraylike <T>(value: unknown): value is ArrayLike<T> {
   if (value == null
-    || (typeof value !== "object" && typeof value !== "string")) {
+    || (typeOf(value) !== "object" && typeof value !== "string")) {
     return false;
   }
   const maybe = value as { length?: unknown };
@@ -1631,7 +1628,8 @@ const isPrimitive = (value: unknown): value is Primitive =>
 const isIterator = (value: unknown): value is Iterator<any> =>
   "Iterator" in globalThis
     ? value instanceof Iterator
-    : (typeOf(value) === "object" && typeof (value as any).next === "function");
+    : (typeOf(value) === "object"
+      && typeof (value as any).next === "function");
 
 
 /**
@@ -1819,12 +1817,14 @@ function shuffle ([...array]: any[]): unknown[] {
  * @description Splits an iterable into two arrays based on a predicate function.
  *
  * @param {IterableLike} iter - The iterable to partition.
- * @param {Function} callback - The predicate function to test each element.
+ * @param {(value: any, index: number, obj: any[]) => unknown} callback - The predicate function to test each element.
  * @returns {any[][]} An array containing two arrays: the first with elements that satisfy the predicate, and the second with elements that do not.
  */
-const partition = ([...array]: any[], callback: Function): any[] =>
-  /* @ts-ignore */
-  [array.filter(callback), array.filter((value, index, a): boolean => !(callback(value, index, a)))];
+const partition = (
+  [...array]: any[],
+  callback: (value: any, index: number, obj: any[]) => unknown): any[] =>
+  [array.filter(callback), array.filter((value, index, array): boolean =>
+    !(callback(value, index, array)))];
 
 
 /**
@@ -1989,23 +1989,20 @@ function arrayRemove (
  * @description Removes elements from an array that satisfy a given condition. If `all` is true, removes all occurrences that satisfy the condition.
  *
  * @param {any[]} array - The array to remove elements from.
- * @param {Function} callback - The callback function that tests each element.
+ * @param {(value: any, index: number, obj: any[]) => unknown} callback - The callback function that tests each element.
  * @param {boolean} [all=false] - Whether to remove all occurrences that satisfy the condition.
  * @returns {boolean} True if any elements were removed, false otherwise.
  */
 function arrayRemoveBy (
   array: any[],
-  callback: Function,
+  callback: (value: any, index: number, obj: any[]) => unknown,
   all: boolean = false): boolean {
-  /* @ts-ignore */
   let found: boolean = array.findIndex(callback) > -1;
   if (!all) {
-    /* @ts-ignore */
     let pos = array.findIndex(callback);
     if (pos > -1) { array.splice(pos, 1); }
   } else {
     let pos = -1;
-    /* @ts-ignore */
     while ((pos = array.findIndex(callback)) > -1) { array.splice(pos, 1); }
   }
   return found;
@@ -2478,7 +2475,7 @@ function includes (
   /* Comparator Validation - has to be a function or undefined. */
     if (comparator !== undefined && typeof comparator !== "function") {
     throw new TypeError(
-      `[includes] TypeError: comparator is not a function or undefined. Got ${typeof comparator}`
+      `[includes] TypeError: comparator is not a function or undefined. Got ${typeOf(comparator)}`
     );
   }
   /* helper functions */
@@ -2726,7 +2723,7 @@ function* flat (iter: IterableLike): GeneratorLike {
     if (typeof item[Symbol.iterator] === "function" ||
       ("Iterator" in globalThis
         ? (item instanceof Iterator)
-        : (typeof item === "object" && typeof item.next === "function")
+        : (typeOf(item) === "object" && typeof item.next === "function")
       )
     ) {
       yield* item;
@@ -2777,17 +2774,15 @@ const withOut = ([...array], [...filterValues]): any[] =>
 function add (value1: number, value2: number): number;
 function add (value1: bigint, value2: bigint): bigint;
 function add (value1: Numeric, value2: Numeric): Numeric {
-  if (typeof value1 !== typeof value2
-    || (typeof value1 !== "number" && typeof value1 !== "bigint")) {
-    throw new TypeError(
-      `[add] value1 and value2 must be of the same type and either number or bigint. Got: ${typeof value1} and ${typeof value2}`
-    );
-  }
   if (typeof value1 === "number" && typeof value2 === "number") {
-    /* @ts-ignore */
-    return Math.sumPrecise([value1, value2]);
+    return (Math as ObjectLike).sumPrecise([value1, value2]);
   }
-  return (value1 as bigint) + (value2 as bigint);
+  if (typeof value1 === "bigint" && typeof value2 === "bigint") {
+    return value1 + value2;
+  }
+  throw new TypeError(
+    `[add] value1 and value2 must be of the same type and either number or bigint. Got: ${typeOf(value1)} and ${typeOf(value2)}`
+  );
 }
 
 
@@ -2802,17 +2797,15 @@ function add (value1: Numeric, value2: Numeric): Numeric {
 function sub (value1: number, value2: number): number;
 function sub (value1: bigint, value2: bigint): bigint;
 function sub (value1: Numeric, value2: Numeric): Numeric {
-  if (typeof value1 !== typeof value2
-    || (typeof value1 !== "number" && typeof value1 !== "bigint")) {
-    throw new TypeError(
-      `[sub] value1 and value2 must be of the same type and either number or bigint. Got: ${typeof value1} and ${typeof value2}`
-    );
-  }
   if (typeof value1 === "number" && typeof value2 === "number") {
-    /* @ts-ignore */
-    Math.sumPrecise([value1, -value2]);
+    return (Math as ObjectLike).sumPrecise([value1, -value2]);
   }
-  return (value1 as bigint) - (value2 as bigint);
+  if (typeof value1 === "bigint" && typeof value2 === "bigint") {
+    return value1 - value2;
+  }
+  throw new TypeError(
+    `[add] value1 and value2 must be of the same type and either number or bigint. Got: ${typeOf(value1)} and ${typeOf(value2)}`
+  );
 }
 
 
@@ -2827,16 +2820,15 @@ function sub (value1: Numeric, value2: Numeric): Numeric {
 function mul (value1: number, value2: number): number;
 function mul (value1: bigint, value2: bigint): bigint;
 function mul (value1: Numeric, value2: Numeric): Numeric {
-  if (typeof value1 !== typeof value2
-    || (typeof value1 !== "number" && typeof value1 !== "bigint")) {
-    throw new TypeError(
-      `[mul] value1 and value2 must be of the same type and either number or bigint. Got: ${typeof value1} and ${typeof value2}`
-    );
-  }
   if (typeof value1 === "number" && typeof value2 === "number") {
     return value1 * value2;
   }
-  return (value1 as bigint) * (value2 as bigint);
+  if (typeof value1 === "bigint" && typeof value2 === "bigint") {
+    return value1 * value2;
+  }
+  throw new TypeError(
+    `[mul] value1 and value2 must be of the same type and either number or bigint. Got: ${typeOf(value1)} and ${typeOf(value2)}`
+  );
 }
 
 
@@ -2852,19 +2844,19 @@ function mul (value1: Numeric, value2: Numeric): Numeric {
 function div (value1: number, value2: number): number;
 function div (value1: bigint, value2: bigint): bigint;
 function div (value1: Numeric, value2: Numeric): Numeric {
-  if (typeof value1 !== typeof value2
-    || (typeof value1 !== "number" && typeof value1 !== "bigint")) {
-    throw new TypeError(
-      `[div] value1 and value2 must be of the same type and either number or bigint. Got: ${typeof value1} and ${typeof value2}`
-    );
-  }
-  if (value2 === 0 || value2 === 0n) {
+  if ((typeof value1 === "number" && value2 === 0)
+    || (typeof value1 === "bigint" && value2 === 0n)) {
     throw new RangeError("[div] Cannot divide by zero");
   }
   if (typeof value1 === "number" && typeof value2 === "number") {
     return value1 / value2;
   }
-  return (value1 as bigint) / (value2 as bigint);
+  if (typeof value1 === "bigint" && typeof value2 === "bigint") {
+    return value1 / value2;
+  }
+  throw new TypeError(
+    `[div] value1 and value2 must be of the same type and either number or bigint. Got: ${typeOf(value1)} and ${typeOf(value2)}`
+  );
 }
 
 
@@ -2880,19 +2872,19 @@ function div (value1: Numeric, value2: Numeric): Numeric {
 function divMod (value1: number, value2: number): number;
 function divMod (value1: bigint, value2: bigint): bigint;
 function divMod (value1: Numeric, value2: Numeric): Numeric {
-  if (typeof value1 !== typeof value2
-    || (typeof value1 !== "number" && typeof value1 !== "bigint")) {
-    throw new TypeError(
-      `[divMod] value1 and value2 must be of the same type and either number or bigint. Got: ${typeof value1} and ${typeof value2}`
-    );
-  }
-  if (value2 === 0 || value2 === 0n) {
+  if ((typeof value1 === "number" && value2 === 0)
+    || (typeof value1 === "bigint" && value2 === 0n)) {
     throw new RangeError("[divMod] Cannot divide by zero");
   }
   if (typeof value1 === "number" && typeof value2 === "number") {
     return Math.trunc(value1 / value2);
   }
-  return (value1 as bigint) / (value2 as bigint);
+  if (typeof value1 === "bigint" && typeof value2 === "bigint") {
+    return value1 / value2;
+  }
+  throw new TypeError(
+    `[divMod] value1 and value2 must be of the same type and either number or bigint. Got: ${typeOf(value1)} and ${typeOf(value2)}`
+  );
 }
 
 
@@ -2908,19 +2900,19 @@ function divMod (value1: Numeric, value2: Numeric): Numeric {
 function mod (value1: number, value2: number): number;
 function mod (value1: bigint, value2: bigint): bigint;
 function mod (value1: Numeric, value2: Numeric): Numeric {
-  if (typeof value1 !== typeof value2
-    || (typeof value1 !== "number" && typeof value1 !== "bigint")) {
-    throw new TypeError(
-      `[mod] value1 and value2 must be of the same type and either number or bigint. Got: ${typeof value1} and ${typeof value2}`
-    );
-  }
-  if (value2 === 0 || value2 === 0n) {
+  if ((typeof value1 === "number" && value2 === 0)
+    || (typeof value1 === "bigint" && value2 === 0n)) {
     throw new RangeError("[mod] Cannot divide by zero");
   }
   if (typeof value1 === "number" && typeof value2 === "number") {
     return Math.trunc(value1 % value2);
   }
-  return (value1 as bigint) % (value2 as bigint);
+  if (typeof value1 === "bigint" && typeof value2 === "bigint") {
+    return value1 % value2;
+  }
+  throw new TypeError(
+    `[mod] value1 and value2 must be of the same type and either number or bigint. Got: ${typeOf(value1)} and ${typeOf(value2)}`
+  );
 }
 
 
@@ -2981,8 +2973,7 @@ function sum (...args: any[]): any {
     );
   }
   return args.every((value: unknown): boolean => typeof value === "number")
-    /* @ts-ignore */
-    ? Math.sumPrecise(args)
+    ? (Math as ObjectLike).sumPrecise(args)
     : args.slice(1).reduce((acc: any, value: any): any => acc + value, args[0]);
 }
 
@@ -2993,8 +2984,8 @@ function sum (...args: any[]): any {
  * @param {...number} args - The numbers to average.
  * @returns {number} The average of the numbers.
  */
-/* @ts-ignore */
-const avg = (...args: number[]): number => Math.sumPrecise(args) / args.length;
+const avg = (...args: number[]): number =>
+  (Math as ObjectLike).sumPrecise(args) / args.length;
 
 
 /**
@@ -3026,7 +3017,7 @@ function product (first: Numeric, ...args: Numeric[]): Numeric {
 function pow (base: number, power: number): number;
 function pow (base: bigint, power: bigint): bigint;
 function pow (base: Numeric, power: Numeric): Numeric {
-  if (typeOf(base) !== typeOf(power)
+  if (typeof base !== typeof power
     || (typeof base !== "number" && typeof base !== "bigint")
   ) {
     throw new TypeError(
@@ -3248,8 +3239,8 @@ const toBigInt64 = (value: any | bigint): bigint =>
   BigInt(typeof value === "bigint"
     ? (value > Math.pow(2,63) -1 ? Math.pow(2, 63) -1 : value < Math.pow(-2, 63)
       ? Math.pow(-2, 63) : value)
-  : ((value = Math.min(Math.max(Math.pow(-2, 63), Math.trunc(Number(value))),
-    Math.pow(2, 63) - 1)) === value ) ? value : 0);
+    : ((value = Math.min(Math.max(Math.pow(-2, 63), Math.trunc(Number(value))),
+      Math.pow(2, 63) - 1)) === value ) ? value : 0);
 
 
 /**

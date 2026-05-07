@@ -10,14 +10,14 @@
 
 /**
  * @name Celestra
- * @version 6.7.0 browser
+ * @version 6.7.1 browser
  * @author Ferenc Czigler
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
 
 
-const VERSION = "Celestra v6.7.0 browser";
+const VERSION = "Celestra v6.7.1 browser";
 
 
 /** TS browser and NodeJS common types **/
@@ -144,9 +144,7 @@ type ClearCookiesOptions = {
 
 /* Math.sumPrecise(); */
 if (!("sumPrecise" in Math)) {
-  /* @ts-ignore */
-  Math.sumPrecise = function sumPrecise ([...array]): number {
-    /* empty iterator */
+  (Math as ObjectLike).sumPrecise = function sumPrecise ([...array]): number {
     if (array.length === 0) { return -0; }
     /* iterator with items */
     if (array.every((value: unknown): boolean => typeof value === "number")) {
@@ -169,7 +167,6 @@ if (!("sumPrecise" in Math)) {
         let y = item - c; let t = lo + y; c = (t - lo) - y; lo = t;
       }
       /* return sum values */
-      /*
       if (lo === 0 && hi !== 0) { return hi; }
       if (lo > 0 && hi > 0) { return hi; }
       if (lo < 0 && hi < 0) { return hi; }
@@ -177,12 +174,6 @@ if (!("sumPrecise" in Math)) {
       if (lo < 0 && hi > 0) { return lo + hi; }
       if (lo === 0 && hi === 0) { return lo; }
       if (lo !== 0 && hi === 0) { return lo; }
-      */
-      if ((lo === 0 && hi !== 0) || (lo > 0 && hi > 0) || (lo < 0 && hi < 0)) {
-        return hi;
-      }
-      if ((lo > 0 && hi < 0) || (lo < 0 && hi > 0)) { return lo + hi; }
-      return lo;
     }
     /* not number items -> TypeError */
     throw new TypeError("values passed to Math.sumPrecise must be numbers");
@@ -192,8 +183,7 @@ if (!("sumPrecise" in Math)) {
 
 /* Error.isError(); */
 if (!("isError" in Error)) {
-  /* @ts-ignore */
-  Error.isError = function isError (value: unknown) {
+  (Error as ObjectLike).isError = function isError (value: unknown) {
     let className =
       Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
     return (className === "error" || className === "domexception");
@@ -203,8 +193,7 @@ if (!("isError" in Error)) {
 
 /* crypto.randomUUID(); */
 if (("crypto" in globalThis) && !("randomUUID" in globalThis.crypto)) {
-  /* @ts-ignore */
-  globalThis.crypto.randomUUID = function randomUUID () {
+  (globalThis.crypto as ObjectLike).randomUUID = function randomUUID () {
     /* @ts-ignore */
     return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,
       (c: any): any =>
@@ -215,28 +204,22 @@ if (("crypto" in globalThis) && !("randomUUID" in globalThis.crypto)) {
 
 
 /* globalThis.GeneratorFunction; */
-/* @ts-ignore */
-if (!globalThis.GeneratorFunction) {
-  /* @ts-ignore */
-  globalThis.GeneratorFunction =
+if (!(globalThis as ObjectLike).GeneratorFunction) {
+  (globalThis as ObjectLike).GeneratorFunction =
     Object.getPrototypeOf(function*(){}).constructor;
 }
 
 
 /* globalThis.AsyncFunction; */
-/* @ts-ignore */
-if (!globalThis.AsyncFunction) {
-  /* @ts-ignore */
-  globalThis.AsyncFunction =
+if (!(globalThis as ObjectLike).AsyncFunction) {
+  (globalThis as ObjectLike).AsyncFunction =
     Object.getPrototypeOf(async function(){}).constructor;
 }
 
 
 /* globalThis.AsyncGeneratorFunction; */
-/* @ts-ignore */
-if (!globalThis.AsyncGeneratorFunction) {
-  /* @ts-ignore */
-  globalThis.AsyncGeneratorFunction =
+if (!(globalThis as ObjectLike).AsyncGeneratorFunction) {
+  (globalThis as ObjectLike).AsyncGeneratorFunction =
     Object.getPrototypeOf(async function* () {}).constructor;
 }
 
@@ -415,7 +398,6 @@ const pick = (obj: ObjectLike, keys: string[]): ObjectLike =>
  */
 const omit = (obj: ObjectLike, keys: string[]): ObjectLike =>
   Object.keys(obj).reduce(function (acc: ObjectLike, key: string) {
-    /* @ts-ignore */
     if (!keys.includes(key)) { acc[key] = obj[key]; }
     return acc;
   }, {});
@@ -437,7 +419,6 @@ const assoc = (obj: ObjectLike, key: string, value: unknown): ObjectLike =>
  *
  * @returns {Promise<void>}
  */
-/* @ts-ignore */
 async function asyncNoop (): Promise<void> {
   return new Promise(function (resolve: Function) { resolve(); });
 }
@@ -485,21 +466,25 @@ async function asyncIdentity (value: unknown): Promise<any> { return value; }
  * @param {boolean} [v4=false] - If true, generates a UUID version 4; otherwise, generates version 7.
  * @returns {string} A randomly generated UUID string.
  */
-function randomUUIDv7 (v4: boolean = false): string {
-  let ts = Date.now().toString(16).padStart(12,"0") + (v4 ? "4" : "7");
-  /* @ts-ignore */
-  let uuid = Array.from(([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,
-    (c: number): any =>
-      (c^crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-  ));
-  let index: number = 0;
-  let pos: number = 0;
-  while (index < 13) {
-    if (pos === 8 || pos === 13) { pos++; }
-    uuid[pos] = ts[index];
-    pos++;
-    index++;
+function randomUUIDv7(v4: boolean = false): string {
+  const version = v4 ? "4" : "7";
+  /* 12 hex timestamp digits + 1 version char = 13, but UUID positions 0-7, 9-12 = 12 slots */
+  /* So keep ts as 12 chars and write version explicitly into position 14 */
+  const timestamp = Date.now().toString(16).padStart(12, "0");
+  const uuid: string[] = Array.from(
+    "10000000-1000-4000-8000-100000000000".replace(/[018]/g, (c: string): string => {
+      const n = parseInt(c, 10);
+      return (n ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (n / 4)))).toString(16);
+    })
+  );
+  /* Write 12 timestamp chars into positions 0-7, 9-12 (skipping dash at 8) */
+  let timestampIndex = 0;
+  for (let pos = 0; timestampIndex < 12; pos++) {
+    if (pos === 8) continue; // skip dash
+    uuid[pos] = timestamp[timestampIndex++];
   }
+  /* Write version into position 14 (after second dash) */
+  uuid[14] = version;
   return uuid.join("");
 }
 
@@ -529,9 +514,7 @@ const randomBoolean = (): boolean => !Math.round(Math.random());
  * @returns {Object} An object containing the parsed query parameters as key-value pairs.
  */
 const getUrlVars = (str: string = location.search): Object =>
-  [...new URLSearchParams(str).entries()]
-    /* @ts-ignore */
-    .reduce(function (obj, item) { obj[item[0]] = item[1]; return obj; }, {});
+  Object.fromEntries([...new URLSearchParams(str).entries()]);
 
 
 /**
@@ -547,21 +530,22 @@ const obj2string = (obj: any): string => Object.keys(obj).reduce(
   ).slice(0, -1);
 
 
+/**
+ * @description Deep assign of an object (Object, Array, etc.)
+ *
+ * @returns {any}
+ */
 function deepAssign <T extends object, U extends object>(target: T, source: U): T & U;
 function deepAssign <T extends object, U extends object, V extends object>(target: T, s1: U, s2: V): T & U & V;
 function deepAssign <T extends object>(target: T, ...sources: any[]): T;
 function deepAssign <T extends object>(target: T, ...sources: any[]): T;
 function deepAssign (target: object, ...sources: any[]): object;
-function deepAssign(target: any, ...sources: any): any {
+function deepAssign (target: any, ...sources: any): any {
   function _deepClone(value: any) {
     try { return structuredClone(value); } catch { return value; }
   }
-  if (!sources.length) {
-    return target == null ? target : _deepClone(target);
-  }
-  for (let source of sources) {
-    Object.assign(target, _deepClone(source));
-  }
+  if (!sources.length) { return target == null ? target : _deepClone(target); }
+  for (let source of sources) { Object.assign(target, _deepClone(source)); }
   return target;
 }
 
@@ -644,18 +628,30 @@ const F = (): boolean => false;
  * @param {number} [size=21] - The length of the generated ID.
  * @param {string} [alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"] - The set of characters to use for generating the ID.
  */
-function nanoid (
+function nanoid(
   size: number = 21,
-  alphabet: string =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"
-  ): string {
-  let result: string = "";
-  let dl: number = alphabet.length;
-  let pos: number;
-  let index: number = size;
+  alphabet: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"
+): string {
+  if (!Number.isSafeInteger(size) || size < 1 || size > 255) {
+    throw new RangeError(
+      "[nanoid] Size should be an integer between 1 and 255."
+    );
+  }
+  if (typeof alphabet !== "string"
+    || !alphabet.length
+    || alphabet.length > 255) {
+    throw new TypeError(
+      "[nanoid] Alphabet should be a non-empty string with maximum length 255."
+    );
+  }
+  const mask = (2 << (31 - Math.clz32(alphabet.length - 1))) - 1;
+  let result = "";
+  let index = size;
   while (index--) {
-    do { pos = crypto.getRandomValues(new Uint8Array(1))[0]; } while
-      (pos >= dl);
+    let pos: number;
+    do {
+      pos = crypto.getRandomValues(new Uint8Array(1))[0] & mask;
+    } while (pos >= alphabet.length);
     result += alphabet[pos];
   }
   return result;
@@ -666,24 +662,29 @@ function nanoid (
  * @description Generates a timestamp-based string ID of specified size using the provided alphabet.
  *
  * @param {number} [size=21] - The total length of the generated ID, including the timestamp.
- * @param {string} [alphabet="123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"] - The set of characters to use for generating the ID.
+ * @param {string} [alphabet="23456789CFGHJMPQRVWXcfghjmpqvwx"] - The set of characters to use for generating the ID.
  * @returns {string} The generated timestamp-based ID.
  */
 function timestampID (
   size: number = 21,
-  alphabet: string =
-    "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
+  alphabet: string = "23456789CFGHJMPQRVWXcfghjmpqvwx"
   ): string {
-  let result: string = Date.now().toString(36).padStart(10, "0") + "-";
-  let dl: number = alphabet.length;
-  let pos: number;
-  let index: number = ((size > 11) ? size : 12) - 11;
-  while (index--) {
-    do { pos = crypto.getRandomValues(new Uint8Array(1))[0]; } while
-      (pos >= dl);
-    result += alphabet[pos];
+  if (!Number.isSafeInteger(size)
+    || size < 11
+    || alphabet.length > 255) {
+    throw new RangeError(
+      "[timestampID] Size should be an integer in between 11 and 255."
+    );
   }
-  return result;
+  if (typeof alphabet !== "string"
+    || !alphabet.length
+    || alphabet.length > 255) {
+    throw new TypeError(
+      "[timestampID] Alphabet should be a non-empty string with maximum length 255."
+    );
+  }
+  return Date.now().toString(36).padStart(10, "0")
+    + (size > 11 ? "-" + nanoid(size - 11, alphabet) : "-")
 }
 
 
@@ -941,7 +942,7 @@ const qsa = (str: string, context: Document | HTMLElement = document): any[] =>
  * @param {Document | HTMLElement} [context=document] - The context in which to search for the element.
  * @returns {HTMLElement | null} The first matching element, or null if no match is found.
  */
-const qs = (str: string, context: Document | Element = document): HTMLElement | null =>
+const qs = (str: string, context: Document | HTMLElement = document): HTMLElement | null =>
     context.querySelector(str);
 
 
@@ -962,7 +963,7 @@ function domReady (callback: Function): void {
 
 /* domCreate(type: string[, properties: object[, innerHTML: string]]):
   element */
-/* domCreate(element descriptive object): element */
+/* domCreate(element descriptive object): HTMLelement */
 /**
  * @description Creates a new DOM element with specified properties and inner HTML.
  *
@@ -975,13 +976,13 @@ function domCreate (
   elementType: string | ObjectLike,
   properties: object,
   innerHTML: string): HTMLElement {
-  if (arguments.length === 1 && typeof elementType === "object") {
+  if (arguments.length === 1 && typeof elementType  === "object") {
     let obj = elementType;
     elementType = obj.elementType;
     properties = {};
     for (const [key, value] of Object.entries(obj)) {
-      /* @ts-ignore */
-      if (key !== "elementType") { properties[key] = value; }
+
+      if (key !== "elementType") {(globalThis as ObjectLike)[key] = value; }
     }
   }
   let element: HTMLElement = document.createElement(elementType as string);
@@ -1015,14 +1016,17 @@ function domToElement (str: string): Element | null {
 /**
  * @description Gets the computed CSS property value of a DOM element.
  *
- * @param {Element} element - The DOM element to retrieve the CSS property from.
+ * @param {HTMLElement} element - The DOM element to retrieve the CSS property from.
  * @param {string | number} [property] - The CSS property name to retrieve. If omitted, returns the full CSSStyleDeclaration.
  * @returns {string | CSSStyleDeclaration} The computed CSS property value or the full CSSStyleDeclaration.
  */
-const domGetCSS = (element: Element, property: string | number): string | CSSStyleDeclaration =>
-  /* @ts-ignore */
-  (property ? globalThis.getComputedStyle(element, null)[property] :
-    globalThis.getComputedStyle(element, null));
+const domGetCSS = (
+  element: HTMLElement,
+  property: string | number): string | CSSStyleDeclaration =>
+  (property
+    ? (globalThis.getComputedStyle(element, null) as ObjectLike)[property]
+    : globalThis.getComputedStyle(element, null)
+  );
 
 
 /* domSetCSS(element, property: string, value: string): undefined */
@@ -1063,13 +1067,16 @@ function domFadeIn (
   element: HTMLElement,
   duration: number,
   display: string): void {
-  let s = element.style;
+  let style = element.style;
   let step: number = 25/(duration || 500);
-  s.opacity = (s.opacity ?? 0);
-  s.display = (display || "");
+  style.opacity = (style.opacity ?? 0);
+  style.display = (display || "");
   (function fade () {
     /* @ts-ignore */
-    (s.opacity=parseFloat(s.opacity)+step)>1 ? s.opacity=1 :setTimeout(fade,25);
+    (style.opacity = parseFloat(style.opacity) + step ) > 1
+      /* @ts-ignore */
+      ? style.opacity = 1
+      : setTimeout(fade,25);
   })();
 }
 
@@ -1088,7 +1095,7 @@ function domFadeOut (
   /* @ts-ignore */
   style.opacity = (style.opacity || 1);
   (function fade () {
-     /* @ts-ignore */
+    /* @ts-ignore */
     (style.opacity -= step) < 0 ? style.display = "none" : setTimeout(fade, 25);
   })();
 }
@@ -1104,26 +1111,10 @@ function domFadeOut (
  */
 function domFadeToggle (
   element: HTMLElement, duration: number, display: string = ""): void {
-  if (globalThis.getComputedStyle(element, null).display === "none") {
-    /* same as domFadeIn(); */
-    let style = element.style;
-    let step: number = 25/(duration || 500);
-    style.opacity = (style.opacity ?? 0);
-    style.display = (display || "");
-    (function fade () {
-      /* @ts-ignore */
-      (style.opacity = parseFloat(style.opacity) + step) > 1 ? style.opacity = 1 :
-        setTimeout(fade, 25);
-    })();
+  if (getComputedStyle(element, null).display === "none") {
+    domFadeIn(element, duration, display);
   } else {
-    /* same as domFadeOut(); */
-    let style = element.style;
-    let step: number = 25/(duration || 500);
-    style.opacity = (style.opacity ?? 1);
-    (function fade () {
-      /* @ts-ignore */
-      (style.opacity -= step) < 0 ? style.display = "none" : setTimeout(fade, 25);
-    })();
+    domFadeOut(element, duration);
   }
 }
 
@@ -1131,7 +1122,7 @@ function domFadeToggle (
 /**
  * @description Hides a DOM element by setting its display style to "none".
  *
- * @param {HTMLElement} element - The DOM element to hide.
+ * @param {element} element - The DOM element to hide.
  * @returns {void}
  */
 const domHide = (element: HTMLElement): any => element.style.display = "none";
@@ -1151,7 +1142,7 @@ const domShow = (element: HTMLElement, display: string = ""): any =>
 /**
  * @description Toggles the visibility of a DOM element by changing its display style.
  *
- * @param {HTMLElement} element - The DOM element to toggle.
+ * @param {Element} HTMLelement - The DOM element to toggle.
  * @param {string} [display=""] - The CSS display value to set when showing the element.
  * @returns {void}
  */
@@ -1167,10 +1158,10 @@ function domToggle (element: HTMLElement, display: string = ""): void {
 /**
  * @description Checks if a DOM element is hidden (i.e., has display style set to "none").
  *
- * @param {Element} element - The DOM element to check.
+ * @param {HTMLElement} element - The DOM element to check.
  * @returns {boolean} True if the element is hidden, false otherwise.
  */
-const domIsHidden = (element: Element): boolean =>
+const domIsHidden = (element: HTMLElement): boolean =>
   globalThis.getComputedStyle(element, null).display === "none";
 
 
@@ -1180,11 +1171,13 @@ const domIsHidden = (element: Element): boolean =>
  * @param {Element} element - The DOM element whose siblings are to be retrieved.
  * @returns {Element[]} An array of sibling elements.
  */
-const domSiblings = (element: Element): Element[] =>
-  /* @ts-ignore */
-  Array.prototype.filter.call(element.parentNode.children,
-    (item: Element): boolean => (item !== element)
+function domSiblings (element: Element): Element[] {
+  let parent = element.parentNode;
+  if (!parent) { return []; }
+  return Array.prototype.filter.call(parent.children,
+    (item: HTMLElement): boolean => (item !== element)
   );
+}
 
 
 /**
@@ -1193,14 +1186,12 @@ const domSiblings = (element: Element): Element[] =>
  * @param {Element} element - The DOM element whose previous siblings are to be retrieved.
  * @returns {Element[]} An array of previous sibling elements.
  */
-const domSiblingsPrev = (element: Element): Element[] =>
-  Array.prototype.slice.call(
-    /* @ts-ignore */
-    element.parentNode.children,
-    0,
-    /* @ts-ignore */
-    Array.prototype.indexOf.call(element.parentNode.children, element)
-  );
+function domSiblingsPrev (element: Element): Element[] {
+  let parent = element.parentNode;
+  if (!parent) { return []; }
+  let siblings = Array.from((parent as Element).children);
+  return siblings.slice(0, siblings.indexOf(element));
+}
 
 
 /**
@@ -1209,14 +1200,12 @@ const domSiblingsPrev = (element: Element): Element[] =>
  * @param {Element} element - The DOM element whose left siblings are to be retrieved.
  * @returns {Element[]} An array of left sibling elements.
  */
-const domSiblingsLeft = (element: Element): Element[] =>
-  Array.prototype.slice.call(
-    /* @ts-ignore */
-    element.parentNode.children,
-    0,
-    /* @ts-ignore */
-    Array.prototype.indexOf.call(element.parentNode.children, element)
-  );
+function domSiblingsLeft (element: Element): Element[] {
+  let parent = element.parentNode;
+  if (!parent) { return []; }
+  let siblings = Array.from((parent as Element).children);
+  return siblings.slice(0, siblings.indexOf(element));
+}
 
 
 /**
@@ -1225,15 +1214,12 @@ const domSiblingsLeft = (element: Element): Element[] =>
  * @param {Element} element - The DOM element whose next siblings are to be retrieved.
  * @returns {Element[]} An array of next sibling elements.
  */
-const domSiblingsNext = (element: Element): Element[] =>
-  Array.prototype.slice.call(
-    /* @ts-ignore */
-    element.parentNode.children,
-    /* @ts-ignore */
-    Array.prototype.indexOf.call(element.parentNode.children, element) + 1,
-    /* @ts-ignore */
-    element.parentNode.children.length
-  );
+function domSiblingsNext (element: Element): Element[] {
+  let parent = element.parentNode;
+  if (!parent) { return []; }
+  let siblings = Array.from((parent as Element).children);
+  return siblings.slice(siblings.indexOf(element) + 1, parent.children.length);
+}
 
 
 /**
@@ -1242,15 +1228,12 @@ const domSiblingsNext = (element: Element): Element[] =>
  * @param {Element} element - The DOM element whose right siblings are to be retrieved.
  * @returns {Element[]} An array of right sibling elements.
  */
-const domSiblingsRight = (element: HTMLElement): Element[] =>
-  Array.prototype.slice.call(
-    /* @ts-ignore */
-    element.parentNode.children,
-    /* @ts-ignore */
-    Array.prototype.indexOf.call(element.parentNode.children, element) + 1,
-    /* @ts-ignore */
-    element.parentNode.children.length
-  );
+function domSiblingsRight (element: Element): Element[] {
+  let parent = element.parentNode;
+  if (!parent) { return []; }
+  let siblings = Array.from((parent as Element).children);
+  return siblings.slice(siblings.indexOf(element) + 1, parent.children.length);
+}
 
 
 /**
@@ -1264,11 +1247,13 @@ function importScript (...scripts: string[]): void {
     let element: HTMLScriptElement = document.createElement("script");
     element.type = "text\/javascript";
     element.src = item;
-    /* @ts-ignore */
-    element.onerror = function (error: Error): void {
+    element.onerror = function (error: Event | string): void {
+      let source = "";
+      if (typeOf(error) === "object") {
+        source = ((error as ObjectLike).target as ObjectLike).src || "";
+      }
       throw new URIError(
-        /* @ts-ignore */
-        `[importScript] Loading failed for the script with source ${error.target.src}`
+        `[importScript] Loading failed${source ? ` for the script with source ${source}` : ""}`
       );
     };
     (document.head||document.getElementsByTagName("head")[0])
@@ -1295,7 +1280,7 @@ function importStyle (...styles: string[]): void {
         `[importStyle] Loading failed for the style with source ${error.target.href}`
       );
     };
-    (document.head ||document.getElementsByTagName("head")[0])
+    (document.head||document.getElementsByTagName("head")[0])
       .appendChild(element);
   }
 }
@@ -1310,7 +1295,7 @@ function importStyle (...styles: string[]): void {
 function form2array (form: HTMLFormElement): object[] {
   let field: any;
   let result = Array<object>();
-  if (typeof form === "object" && form.nodeName.toLowerCase() === "form") {
+  if (typeOf(form) === "object" && form.nodeName.toLowerCase() === "form") {
     for (let index = 0, length = form.elements.length; index < length; index++) {
       field = form.elements[index];
       if (field.name && !field.disabled
@@ -1319,8 +1304,7 @@ function form2array (form: HTMLFormElement): object[] {
         && field.type !== "submit"
         && field.type !== "button") {
         if (field.type === "select-multiple") {
-          /* @ts-ignore */
-          for (let j = 0, l = form.elements[index].options.length; j < l; j++) {
+          for (let j = 0, l = ((form.elements[index] as ObjectLike).options as ObjectLike).length; j < l; j++) {
             if(field.options[j].selected) {
               result.push({
                 "name": encodeURIComponent(field.name),
@@ -1352,7 +1336,7 @@ function form2array (form: HTMLFormElement): object[] {
 function form2string (form: HTMLFormElement): string {
   let field: any;
   let result: string[] = [];
-  if (typeof form === "object" && form.nodeName.toLowerCase() === "form") {
+  if (typeOf(form) === "object" && form.nodeName.toLowerCase() === "form") {
     for (let index = 0, length = form.elements.length; index < length; index++) {
       field = form.elements[index];
       if (field.name && !field.disabled
@@ -1395,18 +1379,27 @@ const getDoNotTrack = (): boolean =>
 /**
  * @description Retrieves the current geographical location of the user.
  *
- * @param {Function} successCallback - The callback function to execute on successful retrieval of location.
- * @param {Function} [errorCallback] - The callback function to execute on error.
+ * @param {PositionCallback} successCallback - The callback function to execute on successful retrieval of location.
+ * @param {PositionErrorCallback} [errorCallback] - The callback function to execute on error.
  * @returns {void}
  */
 function getLocation (
-  successCallback: Function,
-  errorCallback: Function = console.error): void {
+  successCallback: PositionCallback,
+  errorCallback: PositionErrorCallback = console.error): void {
   function getError (error: any) {
-    errorCallback(`ERROR(${error.code}): ${error.message}`);
+    if (typeof error === "string") {
+      errorCallback({
+        code: 0,
+        message: error,
+        PERMISSION_DENIED: 1,
+        POSITION_UNAVAILABLE: 2,
+        TIMEOUT: 3
+      } as GeolocationPositionError);
+    } else {
+      errorCallback(error);
+    }
   }
   if (navigator.geolocation) {
-    /* @ts-ignore */
     navigator.geolocation.getCurrentPosition(successCallback, getError);
   } else {
     getError("Geolocation is not supported in this browser.");
@@ -1425,38 +1418,32 @@ function getLocation (
 function createFile (
   filename: string,
   content: string,
-  dataType: string): void {
-  let length = arguments.length;
-  if (length > 1) {
-    if (length === 2) { dataType = "text/plain"; }
-    let blob = new Blob([content], {type: dataType});
-    let el = globalThis.document.createElement("a");
-    el.href = globalThis.URL.createObjectURL(blob);
-    el.download = filename;
-    document.body.appendChild(el);
-    el.click();
-    document.body.removeChild(el);
-    globalThis.URL.revokeObjectURL(el.href);
-  } else {
-    throw new Error("Celestra createFile error: too few parameters.");
-  }
+  dataType: string = "text/plain"): void {
+  let blob = new Blob([content], {type: dataType});
+  let el = document.createElement("a");
+  el.href = globalThis.URL.createObjectURL(blob);
+  el.download = filename;
+  document.body.appendChild(el);
+  el.click();
+  document.body.removeChild(el);
+  globalThis.URL.revokeObjectURL(el.href);
 }
 
 
 /**
  * @description Retrieves the current fullscreen element, if any.
  *
- * @returns {Document | HTMLElement | undefined} The fullscreen element or undefined if not in fullscreen mode.
+ * @returns {Document | Element | undefined} The fullscreen element or undefined if not in fullscreen mode.
  */
-const getFullscreen = (): Document | HTMLElement | undefined => (
+const getFullscreen = (): Document | Element | undefined => (
   document.fullscreenElement
-  /* @ts-ignore */
-  || document.mozFullScreenElement
-  /* @ts-ignore */
-  || document.webkitFullscreenElement
-  /* @ts-ignore */
-  || document.msFullscreenElement
-  || undefined
+    /* @ts-ignore */
+    || document.mozFullScreenElement
+    /* @ts-ignore */
+    || document.webkitFullscreenElement
+    /* @ts-ignore */
+    || document.msFullscreenElement
+    || undefined
 );
 
 
@@ -1467,11 +1454,10 @@ const getFullscreen = (): Document | HTMLElement | undefined => (
  * @returns {void}
  */
 function setFullscreenOn (element: HTMLElement | string): void {
-  let elem: HTMLElement | null;
+  let elem: HTMLElement | null = null;
   if (typeof element === "string") { elem = document.querySelector(element); }
-    else if (typeof element === "object") { elem = element; }
-  /* @ts-ignore */
-  if (elem.requestFullscreen) { elem.requestFullscreen(); }
+    else if (element && typeof element === "object") { elem = element; }
+  if (elem && elem.requestFullscreen) { elem.requestFullscreen(); }
     /* @ts-ignore */
     else if (elem.mozRequestFullScreen) { elem.mozRequestFullScreen(); }
     /* @ts-ignore */
@@ -1542,11 +1528,11 @@ const domScrollToBottom = (): void =>
 /**
  * @description Scrolls the document to bring a specified element into view.
  *
- * @param {Element} element - The DOM element to scroll to.
+ * @param {HTMLElement} element - The DOM element to scroll to.
  * @param {boolean} [top=true] - If true, aligns the element to the top of the viewport; if false, aligns it to the bottom.
  * @returns {void}
  */
-const domScrollToElement = (element: Element, top: boolean = true): void =>
+const domScrollToElement = (element: HTMLElement, top: boolean = true): void =>
   element.scrollIntoView(top);
 
 
@@ -1556,7 +1542,6 @@ const domScrollToElement = (element: Element, top: boolean = true): void =>
  * @param {Element} element - The DOM element to clear.
  * @returns {void}
  */
-/* @ts-ignore */
 const domClear = (element: Element): void =>
   Array.from(element.children).forEach((item: Element): void => item.remove());
 
@@ -1647,7 +1632,7 @@ function isTypedCollection (
     );
   }
   /* Validate `Throw` */
-  if (typeof Throw !== "boolean") {
+  if (typeOf(Throw) !== "boolean") {
     throw new TypeError(
       `[isTypedCollection] TypeError: Throw has to be a boolean. Got ${typeOf(Throw)}`
     );
@@ -1667,7 +1652,7 @@ function isTypedCollection (
         }
         /* validate expected array elements */
         throw new TypeError(
-          `[isTypedCollection] TypeError: expectedType array elements have to be a string or function. Got ${typeof item}`
+          `[isTypedCollection] TypeError: expectedType array elements have to be a string or function. Got ${typeOf(item)}`
         );
       }
     );
@@ -1759,7 +1744,7 @@ function is (
  */
 function toObject (value: unknown): Object | symbol | Function {
   if (value == null) {
-    throw new TypeError(`[toObject] error: ${value}`);
+    throw new TypeError(`[toObject] error: value is ${value}`);
   }
   return (["object", "function"].includes(typeof value))
     ? value
@@ -1801,7 +1786,7 @@ function toSafeString (value: unknown): string {
     if (value instanceof Error) {
       return `${value.name}: ${value.message}, ${value.stack ?? ""}`;
     }
-    if (value && typeof value === "object") {
+    if (value && typeOf(value) === "object") {
       if (seen.has(value)) { return "[Circular]" };
       seen.add(value);
     }
@@ -1964,27 +1949,27 @@ function isCoercedObject (value: unknown): Function | boolean {
  */
 function isDeepStrictEqual (value1: any, value2: any): boolean {
   /* helper functions */
-  const _deepTypeOf = (value: any): string =>
-    (value === null) ? "null" : (value !== value) ? "NaN" : (typeof value);
+  const _typeOfOrNaN = (value: any): string =>
+    value !== value ? "NaN" : typeOf(value);
   const _classOf = (value: any): string =>
     Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
   /* primitives: Boolean, Number, BigInt, String + Function + Symbol */
   if (Object.is(value1, value2)) { return true; }
   /* Object Wrappers (Boolean, Number, BigInt, String) */
-  if (_deepTypeOf(value1) === "object"
+  if (typeOf(value1) === "object"
     && isPrimitive(value2)
-    && _classOf(value1) === typeof value2) {
+    && _classOf(value1) === typeOf(value2)) {
     return Object.is(value1.valueOf(), value2);
   }
   if (isPrimitive(value1)
-    && _deepTypeOf(value2) === "object"
-    && typeof value1 === _classOf(value2)) {
+    && typeOf(value2) === "object"
+    && typeOf(value1) === _classOf(value2)) {
     return Object.is(value1, value2.valueOf());
   }
   /* type (primitives, object, null, NaN) */
-  if (_deepTypeOf(value1) !== _deepTypeOf(value2)) { return false; }
+  if (_typeOfOrNaN(value1) !== _typeOfOrNaN(value2)) { return false; }
   /* objects */
-  if (_deepTypeOf(value1) === "object" && _deepTypeOf(value2) === "object") {
+  if (typeOf(value1) === "object" && typeOf(value2) === "object") {
     /* objects / same memory adress */
     if (Object.is(value1, value2)) { return true; }
     /* objects / not same constructor */
@@ -2192,7 +2177,7 @@ const isAsyncGeneratorFunction = (value: unknown): value is AsyncGeneratorFuncti
  * @returns True if the value is a plain object, false otherwise.
  */
 function isPlainObject (value: unknown): boolean {
-  if (value === null || typeof value !== "object") { return false; }
+  if (value === null || typeOf(value) !== "object") { return false; }
   const proto = Object.getPrototypeOf(value);
   return proto === Object.prototype || proto === null;
 }
@@ -2205,7 +2190,7 @@ function isPlainObject (value: unknown): boolean {
  * @returns True if the value is a object, false otherwise.
  */
 const isObject = (value: unknown): value is object =>
-  value !== null && typeof value === "object";
+  value !== null && typeOf(value) === "object";
 
 
 /**
@@ -2227,7 +2212,7 @@ const isFunction = (value: unknown): value is Function =>
  */
 function isArraylike <T>(value: unknown): value is ArrayLike<T> {
   if (value == null
-    || (typeof value !== "object" && typeof value !== "string")) {
+    || (typeOf(value) !== "object" && typeof value !== "string")) {
     return false;
   }
   const maybe = value as { length?: unknown };
@@ -2273,7 +2258,7 @@ const isNullish = (value: unknown): value is Nullish => value == null;
  * @returns True if the value is Primitive, false otherwise.
  */
 const isPrimitive = (value: unknown): value is Primitive =>
-  value == null || (typeof value !== "object" && typeof value !== "function");
+  value == null || (typeOf(value) !== "object" && typeof value !== "function");
 
 
 /**
@@ -2285,7 +2270,8 @@ const isPrimitive = (value: unknown): value is Primitive =>
 const isIterator = <T>(value: unknown): value is Iterator<T> =>
   "Iterator" in globalThis
     ? value instanceof Iterator
-    : (typeOf(value) === "object" && typeof (value as any).next === "function");
+    : (typeOf(value) === "object"
+      && typeof (value as any).next === "function");
 
 
 /**
@@ -2407,7 +2393,10 @@ function setCookie (
     + "; path=" + path
     + (domain ? "; domain=" + domain : "")
     + (secure ? "; secure" : "")
-    + (typeof SameSite==="string" && SameSite.length ?"; SameSite="+SameSite:"")
+    + (typeof SameSite==="string" && SameSite.length
+      ? "; SameSite=" + SameSite
+      : ""
+    )
     + (HttpOnly ? "; HttpOnly" : "")
     + ";";
 }
@@ -2477,7 +2466,7 @@ function removeCookie (
   HttpOnly: boolean): boolean {
   /* if no cookies -> return false */
   if (!document.cookie.length) { return false; }
-  if (typeof name === "object") {
+  if (name && typeof name === "object") {
     let settings = name;
     name = settings.name;
     path = settings.path || "/";
@@ -2529,7 +2518,7 @@ function clearCookies (
   secure?: boolean,
   SameSite: string | undefined = "Lax",
   HttpOnly?: boolean): void {
-  if (typeof path === "object") {
+  if (path && typeof path === "object") {
     let settings = path;
     path = settings.path ?? "/";
     domain = settings.domain;
@@ -2666,12 +2655,14 @@ function shuffle ([...array]: any[]): unknown[] {
  * @description Splits an iterable into two arrays based on a predicate function.
  *
  * @param {IterableLike} iter - The iterable to partition.
- * @param {Function} callback - The predicate function to test each element.
+ * @param {(value: any, index: number, obj: any[]) => unknown} callback - The predicate function to test each element.
  * @returns {any[][]} An array containing two arrays: the first with elements that satisfy the predicate, and the second with elements that do not.
  */
-const partition = ([...array]: any[], callback: Function): any[] =>
-  /* @ts-ignore */
-  [array.filter(callback), array.filter((value, index, a): boolean => !(callback(value, index, a)))];
+const partition = (
+  [...array]: any[],
+  callback: (value: any, index: number, obj: any[]) => unknown): any[] =>
+  [array.filter(callback), array.filter((value, index, array): boolean =>
+    !(callback(value, index, array)))];
 
 
 /**
@@ -2836,23 +2827,20 @@ function arrayRemove (
  * @description Removes elements from an array that satisfy a given condition. If `all` is true, removes all occurrences that satisfy the condition.
  *
  * @param {any[]} array - The array to remove elements from.
- * @param {Function} callback - The callback function that tests each element.
+ * @param {(value: any, index: number, obj: any[]) => unknown} callback - The callback function that tests each element.
  * @param {boolean} [all=false] - Whether to remove all occurrences that satisfy the condition.
  * @returns {boolean} True if any elements were removed, false otherwise.
  */
 function arrayRemoveBy (
   array: any[],
-  callback: Function,
+  callback: (value: any, index: number, obj: any[]) => unknown,
   all: boolean = false): boolean {
-  /* @ts-ignore */
   let found: boolean = array.findIndex(callback) > -1;
   if (!all) {
-    /* @ts-ignore */
     let pos = array.findIndex(callback);
     if (pos > -1) { array.splice(pos, 1); }
   } else {
     let pos = -1;
-    /* @ts-ignore */
     while ((pos = array.findIndex(callback)) > -1) { array.splice(pos, 1); }
   }
   return found;
@@ -3325,7 +3313,7 @@ function includes (
   /* Comparator Validation - has to be a function or undefined. */
     if (comparator !== undefined && typeof comparator !== "function") {
     throw new TypeError(
-      `[includes] TypeError: comparator is not a function or undefined. Got ${typeof comparator}`
+      `[includes] TypeError: comparator is not a function or undefined. Got ${typeOf(comparator)}`
     );
   }
   /* helper functions */
@@ -3513,7 +3501,7 @@ function* concat (...args: any[]): GeneratorLike {
   for (let item of args) {
     if (typeof item[Symbol.iterator] === "function" ||
       ("Iterator" in globalThis ? (item instanceof Iterator)
-        : (typeof item === "object" && typeof item.next === "function")
+        : (typeOf(item) === "object" && typeof item.next === "function")
       )
     ) {
       yield* item;
@@ -3624,17 +3612,15 @@ const withOut = ([...array]: any[], [...filterValues]: any[]): any[] =>
 function add (value1: number, value2: number): number;
 function add (value1: bigint, value2: bigint): bigint;
 function add (value1: Numeric, value2: Numeric): Numeric {
-  if (typeof value1 !== typeof value2
-    || (typeof value1 !== "number" && typeof value1 !== "bigint")) {
-    throw new TypeError(
-      `[add] value1 and value2 must be of the same type and either number or bigint. Got: ${typeof value1} and ${typeof value2}`
-    );
-  }
   if (typeof value1 === "number" && typeof value2 === "number") {
-    /* @ts-ignore */
-    return Math.sumPrecise([value1, value2]);
+    return (Math as ObjectLike).sumPrecise([value1, value2]);
   }
-  return (value1 as bigint) + (value2 as bigint);
+  if (typeof value1 === "bigint" && typeof value2 === "bigint") {
+    return value1 + value2;
+  }
+  throw new TypeError(
+    `[add] value1 and value2 must be of the same type and either number or bigint. Got: ${typeOf(value1)} and ${typeOf(value2)}`
+  );
 }
 
 
@@ -3649,17 +3635,15 @@ function add (value1: Numeric, value2: Numeric): Numeric {
 function sub (value1: number, value2: number): number;
 function sub (value1: bigint, value2: bigint): bigint;
 function sub (value1: Numeric, value2: Numeric): Numeric {
-  if (typeof value1 !== typeof value2
-    || (typeof value1 !== "number" && typeof value1 !== "bigint")) {
-    throw new TypeError(
-      `[sub] value1 and value2 must be of the same type and either number or bigint. Got: ${typeof value1} and ${typeof value2}`
-    );
-  }
   if (typeof value1 === "number" && typeof value2 === "number") {
-    /* @ts-ignore */
-    Math.sumPrecise([value1, -value2]);
+    return (Math as ObjectLike).sumPrecise([value1, -value2]);
   }
-  return (value1 as bigint) - (value2 as bigint);
+  if (typeof value1 === "bigint" && typeof value2 === "bigint") {
+    return value1 - value2;
+  }
+  throw new TypeError(
+    `[add] value1 and value2 must be of the same type and either number or bigint. Got: ${typeOf(value1)} and ${typeOf(value2)}`
+  );
 }
 
 
@@ -3674,16 +3658,15 @@ function sub (value1: Numeric, value2: Numeric): Numeric {
 function mul (value1: number, value2: number): number;
 function mul (value1: bigint, value2: bigint): bigint;
 function mul(value1: Numeric, value2: Numeric): Numeric {
-  if (typeof value1 !== typeof value2
-    || (typeof value1 !== "number" && typeof value1 !== "bigint")) {
-    throw new TypeError(
-      `[mul] value1 and value2 must be of the same type and either number or bigint. Got: ${typeof value1} and ${typeof value2}`
-    );
-  }
   if (typeof value1 === "number" && typeof value2 === "number") {
     return value1 * value2;
   }
-  return (value1 as bigint) * (value2 as bigint);
+  if (typeof value1 === "bigint" && typeof value2 === "bigint") {
+    return value1 * value2;
+  }
+  throw new TypeError(
+    `[mul] value1 and value2 must be of the same type and either number or bigint. Got: ${typeOf(value1)} and ${typeOf(value2)}`
+  );
 }
 
 
@@ -3699,19 +3682,19 @@ function mul(value1: Numeric, value2: Numeric): Numeric {
 function div (value1: number, value2: number): number;
 function div (value1: bigint, value2: bigint): bigint;
 function div (value1: Numeric, value2: Numeric): Numeric {
-  if (typeof value1 !== typeof value2
-    || (typeof value1 !== "number" && typeof value1 !== "bigint")) {
-    throw new TypeError(
-      `[div] value1 and value2 must be of the same type and either number or bigint. Got: ${typeof value1} and ${typeof value2}`
-    );
-  }
-  if (value2 === 0 || value2 === 0n) {
+  if ((typeof value1 === "number" && value2 === 0)
+    || (typeof value1 === "bigint" && value2 === 0n)) {
     throw new RangeError("[div] Cannot divide by zero");
   }
   if (typeof value1 === "number" && typeof value2 === "number") {
     return value1 / value2;
   }
-  return (value1 as bigint) / (value2 as bigint);
+  if (typeof value1 === "bigint" && typeof value2 === "bigint") {
+    return value1 / value2;
+  }
+  throw new TypeError(
+    `[div] value1 and value2 must be of the same type and either number or bigint. Got: ${typeOf(value1)} and ${typeOf(value2)}`
+  );
 }
 
 
@@ -3727,19 +3710,19 @@ function div (value1: Numeric, value2: Numeric): Numeric {
 function divMod (value1: number, value2: number): number;
 function divMod (value1: bigint, value2: bigint): bigint;
 function divMod (value1: Numeric, value2: Numeric): Numeric {
-  if (typeof value1 !== typeof value2
-    || (typeof value1 !== "number" && typeof value1 !== "bigint")) {
-    throw new TypeError(
-      `[divMod] value1 and value2 must be of the same type and either number or bigint. Got: ${typeof value1} and ${typeof value2}`
-    );
-  }
-  if (value2 === 0 || value2 === 0n) {
+  if ((typeof value1 === "number" && value2 === 0)
+    || (typeof value1 === "bigint" && value2 === 0n)) {
     throw new RangeError("[divMod] Cannot divide by zero");
   }
   if (typeof value1 === "number" && typeof value2 === "number") {
     return Math.trunc(value1 / value2);
   }
-  return (value1 as bigint) / (value2 as bigint);
+  if (typeof value1 === "bigint" && typeof value2 === "bigint") {
+    return value1 / value2;
+  }
+  throw new TypeError(
+    `[divMod] value1 and value2 must be of the same type and either number or bigint. Got: ${typeOf(value1)} and ${typeOf(value2)}`
+  );
 }
 
 
@@ -3755,19 +3738,19 @@ function divMod (value1: Numeric, value2: Numeric): Numeric {
 function mod (value1: number, value2: number): number;
 function mod (value1: bigint, value2: bigint): bigint;
 function mod (value1: Numeric, value2: Numeric): Numeric {
-  if (typeof value1 !== typeof value2
-    || (typeof value1 !== "number" && typeof value1 !== "bigint")) {
-    throw new TypeError(
-      `[mod] value1 and value2 must be of the same type and either number or bigint. Got: ${typeof value1} and ${typeof value2}`
-    );
-  }
-  if (value2 === 0 || value2 === 0n) {
+  if ((typeof value1 === "number" && value2 === 0)
+    || (typeof value1 === "bigint" && value2 === 0n)) {
     throw new RangeError("[mod] Cannot divide by zero");
   }
   if (typeof value1 === "number" && typeof value2 === "number") {
     return Math.trunc(value1 % value2);
   }
-  return (value1 as bigint) % (value2 as bigint);
+  if (typeof value1 === "bigint" && typeof value2 === "bigint") {
+    return value1 % value2;
+  }
+  throw new TypeError(
+    `[mod] value1 and value2 must be of the same type and either number or bigint. Got: ${typeOf(value1)} and ${typeOf(value2)}`
+  );
 }
 
 
@@ -3823,12 +3806,11 @@ function sum (...args: any[]): any {
     && !args.every((value: unknown): boolean => typeof value === "bigint")
   ) {
     throw new TypeError(
-      `[sum] all arguments must be of the same type and either number or bigint. Got: ${args.map((v) => typeof v).join(", ")}`
+      `[sum] all arguments must be of the same type and either number or bigint. Got: ${args.map((v) => typeOf(v)).join(", ")}`
     );
   }
   return args.every((value: unknown): boolean => typeof value === "number")
-    /* @ts-ignore */
-    ? Math.sumPrecise(args)
+    ? (Math as ObjectLike).sumPrecise(args)
     : args.slice(1).reduce((acc: any, value: any): any => acc + value, args[0]);
 }
 
@@ -3876,7 +3858,7 @@ function pow (base: Numeric, power: Numeric): Numeric {
     || (typeof base !== "number" && typeof base !== "bigint")
   ) {
     throw new TypeError(
-      `[pow] base and power must be of the same type and either number or bigint. Got: ${typeof base} and ${typeof power}`
+      `[pow] base and power must be of the same type and either number or bigint. Got: ${typeOf(base)} and ${typeOf(power)}`
     );
   }
   if (typeof base === "bigint" && typeof power === "bigint") {
@@ -3911,8 +3893,8 @@ function clamp (
     return value;
   }
   if (typeof value !== "bigint"
-    && typeof min !== "bigint"
-    && typeof min !== "bigint") {
+    && typeof value !== "bigint"
+    && typeof value !== "bigint") {
     value = _numberNormalize(value);
     min = _numberNormalize(min);
     max = _numberNormalize(max);
@@ -4097,8 +4079,8 @@ const toBigInt64 = (value: any | bigint): bigint =>
   BigInt(typeof value === "bigint"
     ? (value > Math.pow(2,63) -1 ? Math.pow(2, 63) -1 : value < Math.pow(-2, 63)
       ? Math.pow(-2, 63) : value)
-  : ((value = Math.min(Math.max(Math.pow(-2, 63), Math.trunc(Number(value))),
-    Math.pow(2, 63) - 1)) === value ) ? value : 0);
+    : ((value = Math.min(Math.max(Math.pow(-2, 63), Math.trunc(Number(value))),
+      Math.pow(2, 63) - 1)) === value ) ? value : 0);
 
 
 /**
@@ -4216,7 +4198,8 @@ const isBigUInt64 = (value: unknown | Numeric): boolean =>
  */
 const toFloat16 = (value: unknown): number =>
   ((value = Math.min(Math.max(-65504, Number(value)), 65504)) === value )
-    ? value as number : 0;
+    ? value as number
+    : 0;
 
 
 /**
