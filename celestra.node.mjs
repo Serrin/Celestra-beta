@@ -71,9 +71,10 @@ if (!("isError" in Error)) {
         return (className === "error" || className === "domexception");
     };
 }
-if (("crypto" in globalThis) && !("randomUUID" in globalThis.crypto)) {
+if ("crypto" in globalThis && !("randomUUID" in globalThis.crypto)) {
     globalThis.crypto.randomUUID = function randomUUID() {
-        return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) => (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16));
+        return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, (c) => (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> c / 4)))
+            .toString(16));
     };
 }
 if (!globalThis.GeneratorFunction) {
@@ -151,11 +152,13 @@ function asyncConstant(value) {
 }
 async function asyncIdentity(value) { return value; }
 function randomUUIDv7(v4 = false) {
-    const version = v4 ? "4" : "7";
-    const timestamp = Date.now().toString(16).padStart(12, "0");
-    const uuid = Array.from("10000000-1000-4000-8000-100000000000".replace(/[018]/g, (c) => {
-        const n = parseInt(c, 10);
-        return (n ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (n / 4)))).toString(16);
+    let version = v4 ? "4" : "7";
+    let timestamp = Date.now().toString(16).padStart(12, "0");
+    let uuid = Array.from("10000000-1000-4000-8000-100000000000"
+        .replace(/[018]/g, (c) => {
+        let n = parseInt(c, 10);
+        return (n ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (n / 4))))
+            .toString(16);
     }));
     let timestampIndex = 0;
     for (let pos = 0; timestampIndex < 12; pos++) {
@@ -205,7 +208,7 @@ function nanoid(size = 21, alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmno
         || alphabet.length > 255) {
         throw new TypeError("[nanoid] Alphabet should be a non-empty string with maximum length 255.");
     }
-    const mask = (2 << (31 - Math.clz32(alphabet.length - 1))) - 1;
+    let mask = (2 << (31 - Math.clz32(alphabet.length - 1))) - 1;
     let result = "";
     let index = size;
     while (index--) {
@@ -233,7 +236,7 @@ function timestampID(size = 21, alphabet = "23456789CFGHJMPQRVWXcfghjmpqvwx") {
 }
 function b64Encode(str) {
     return btoa(encodeURIComponent(String(str)).replace(/%([0-9A-F]{2})/g, function toSolidBytes(_match, p1) {
-        return String.fromCharCode("0x" + p1);
+        return String.fromCharCode(parseInt(p1, 16));
     }));
 }
 function b64Decode(str) {
@@ -352,7 +355,7 @@ function isTypedCollection(iter, expectedType, Throw = false) {
     let expectedArray = Array.isArray(expectedType) ? expectedType : [expectedType];
     let matched = true;
     for (let value of iter) {
-        const valueType = typeOf(value);
+        let valueType = typeOf(value);
         matched = expectedArray.some(function (item) {
             if (typeof item === "string") {
                 return valueType === item;
@@ -380,7 +383,7 @@ function is(value, expectedType, Throw = false) {
     if (typeof Throw !== "boolean") {
         throw new TypeError(`[is] TypeError: Throw has to be a boolean. Got ${typeOf(Throw)}`);
     }
-    const vType = typeOf(value);
+    let vType = typeOf(value);
     if (expectedType == null) {
         return vType === "object"
             ? Object.getPrototypeOf(value)?.constructor ?? "object"
@@ -415,14 +418,14 @@ function toPrimitive(value) {
     if (value == null || typeOf(value) !== "object") {
         return value;
     }
-    const vType = Object.prototype.toString.call(value).slice(8, -1);
+    let vType = Object.prototype.toString.call(value).slice(8, -1);
     if (["Boolean", "BigInt", "Number", "String", "Symbol"].includes(vType)) {
         return value.valueOf();
     }
     return value;
 }
 function toSafeString(value) {
-    const seen = new WeakSet();
+    let seen = new WeakSet();
     function replacer(_key, value) {
         if (typeof value === "function") {
             return `[Function: ${value.name || "anonymous"}]`;
@@ -469,11 +472,9 @@ const isPropertyKey = (value) => typeof value === "string" || typeof value === "
 const toPropertyKey = (value) => typeof value === "symbol" ? value : String(value);
 const isIndex = (value) => Number.isSafeInteger(value)
     && value >= 0
-    && value <= Number.MAX_SAFE_INTEGER
     && 1 / value !== 1 / -0;
 const isLength = (value) => Number.isSafeInteger(value)
     && value >= 0
-    && value <= Number.MAX_SAFE_INTEGER
     && 1 / value !== 1 / -0;
 function toIndex(value) {
     value = ((value = Math.trunc(+value)) !== value || value === 0) ? 0 : value;
@@ -618,8 +619,7 @@ function isDeepStrictEqual(value1, value2) {
                 .reduce(function (acc, k) {
                 acc[k] = value1[k];
                 return acc;
-            }, {}), Object.getOwnPropertyNames(value2)
-                .reduce(function (acc, k) {
+            }, {}), Object.getOwnPropertyNames(value2).reduce(function (acc, k) {
                 acc[k] = value2[k];
                 return acc;
             }, {}));
@@ -656,7 +656,7 @@ function isEmpty(value) {
         return value.byteLength === 0;
     }
     if (typeof value[Symbol.iterator] === "function") {
-        const it = value[Symbol.iterator]();
+        let it = value[Symbol.iterator]();
         return it.next().done;
     }
     if ("Iterator" in globalThis ? (value instanceof Iterator)
@@ -670,7 +670,7 @@ function isEmpty(value) {
         catch { }
     }
     if (typeOf(value) === "object") {
-        const keys = Reflect.ownKeys(value);
+        let keys = Reflect.ownKeys(value);
         if (keys.length === 0) {
             return true;
         }
@@ -686,10 +686,10 @@ const isProxy = (value) => Boolean(value != null && value.__isProxy);
 const isAsyncGeneratorFunction = (value) => Object.getPrototypeOf(value).constructor ===
     Object.getPrototypeOf(async function* () { }).constructor;
 function isPlainObject(value) {
-    if (value === null || typeOf(value) !== "object") {
+    if (typeOf(value) !== "object") {
         return false;
     }
-    const proto = Object.getPrototypeOf(value);
+    let proto = Object.getPrototypeOf(value);
     return proto === Object.prototype || proto === null;
 }
 const isObject = (value) => value !== null && typeof value === "object";
@@ -699,11 +699,11 @@ function isArraylike(value) {
         || (typeOf(value) !== "object" && typeof value !== "string")) {
         return false;
     }
-    const maybe = value;
+    let maybe = value;
     if (typeof maybe.length !== "number") {
         return false;
     }
-    const len = maybe.length;
+    let len = maybe.length;
     return len >= 0 && Number.isFinite(len);
 }
 const isNull = (value) => value === null;
@@ -1018,7 +1018,7 @@ function* tail(input) {
     else {
         iterator = input[Symbol.iterator]();
     }
-    const first = iterator.next();
+    let first = iterator.next();
     if (first.done) {
         return;
     }
@@ -1110,7 +1110,7 @@ function first(input) {
     else {
         iterator = input[Symbol.iterator]();
     }
-    const result = iterator.next();
+    let result = iterator.next();
     return result.done ? undefined : result.value;
 }
 function head(input) {
@@ -1121,7 +1121,7 @@ function head(input) {
     else {
         iterator = input[Symbol.iterator]();
     }
-    const result = iterator?.next() ?? { value: undefined, done: true };
+    let result = iterator?.next() ?? { value: undefined, done: true };
     return result.done ? undefined : result.value;
 }
 const last = ([...array]) => array[array.length - 1];
@@ -1131,14 +1131,15 @@ function* reverse([...array]) {
         yield array[index];
     }
 }
-const sort = ([...array], numbers = false) => array.sort(numbers ? (value1, value2) => value1 - value2 : undefined);
+const sort = ([...array], numbers = false) => array.sort(numbers
+    ? (value1, value2) => value1 - value2
+    : undefined);
 function includes(collection, value, comparator) {
     if (comparator !== undefined && typeof comparator !== "function") {
         throw new TypeError(`[includes] TypeError: comparator is not a function or undefined. Got ${typeOf(comparator)}`);
     }
-    const _isEqual = comparator ??
-        ((value1, value2) => value1 === value2 || (value1 !== value1 && value2 !== value2));
-    const cType = (typeOf(collection));
+    let _isEqual = comparator ?? eq;
+    let cType = (typeOf(collection));
     if (collection == null
         || !(["object", "function", "string"].includes(cType))
         || collection instanceof WeakMap
@@ -1149,16 +1150,19 @@ function includes(collection, value, comparator) {
         return collection.includes(String(value));
     }
     if (collection instanceof Map) {
-        if ([...collection.keys()].findIndex((item) => _isEqual(item, value)) > -1) {
+        if ([...collection.keys()]
+            .findIndex((item) => _isEqual(item, value)) > -1) {
             return true;
         }
-        if ([...collection.values()].findIndex((item) => _isEqual(item, value)) > -1) {
+        if ([...collection.values()]
+            .findIndex((item) => _isEqual(item, value)) > -1) {
             return true;
         }
         return false;
     }
     if (isIterator(collection) || isIterable(collection)) {
-        if ([...collection].findIndex((item) => _isEqual(item, value)) > -1) {
+        if ([...collection]
+            .findIndex((item) => _isEqual(item, value)) > -1) {
             return true;
         }
         return false;
@@ -1218,16 +1222,9 @@ function* dropRightWhile([...array], callback) {
         }
     }
 }
-function* concat(...args) {
-    for (let item of args) {
-        if (typeof item[Symbol.iterator] === "function" ||
-            ("Iterator" in globalThis ? (item instanceof Iterator)
-                : (typeOf(item) === "object" && typeof item.next === "function"))) {
-            yield* item;
-        }
-        else {
-            yield item;
-        }
+function* concat(...iterables) {
+    for (const iterable of iterables) {
+        yield* iterable;
     }
 }
 function reduce(iter, callback, initialvalue) {

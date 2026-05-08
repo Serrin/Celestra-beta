@@ -212,7 +212,7 @@ declare const takeRight: ([...array]: any[], num?: number) => any[];
 declare function takeRightWhile([...array]: any[], callback: Function): GeneratorLike;
 declare const dropRight: ([...array]: any[], num?: number) => any[];
 declare function dropRightWhile([...array]: any[], callback: Function): GeneratorLike;
-declare function concat(...args: any[]): GeneratorLike;
+declare function concat(...iterables: any[]): GeneratorLike;
 declare function reduce(iter: IterableLike, callback: Function, initialvalue?: any): any;
 declare function enumerate(iter: IterableLike, offset?: number): GeneratorLike;
 declare function flat(iter: IterableLike): GeneratorLike;

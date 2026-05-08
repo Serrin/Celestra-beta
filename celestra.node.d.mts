@@ -141,7 +141,7 @@ declare function dropWhile<T>(iter: IterableLike, callback: Function): Generator
 declare function take<T>(iter: IterableLike, num?: number): GeneratorLike;
 declare function drop<T>(iter: IterableLike, num?: number): GeneratorLike;
 declare function forEach(iter: IterableLike, callback: Function): void;
-declare function forEachRight([...array]: Iterable<any, void, undefined>, callback: Function): void;
+declare function forEachRight([...array]: any[], callback: Function): void;
 declare function map(iter: IterableLike, callback: Function): GeneratorLike;
 declare function filter(iter: IterableLike, callback: Function): GeneratorLike;
 declare function reject(iter: IterableLike, callback: Function): GeneratorLike;
@@ -165,7 +165,7 @@ declare const takeRight: ([...array]: any[], num?: number) => any[];
 declare function takeRightWhile([...array]: any[], callback: Function): GeneratorLike;
 declare const dropRight: ([...array]: any[], num?: number) => any[];
 declare function dropRightWhile([...array]: any[], callback: Function): GeneratorLike;
-declare function concat(...args: any[]): GeneratorLike;
+declare function concat(...iterables: any[]): GeneratorLike;
 declare function reduce(iter: IterableLike, callback: Function, initialvalue?: any): any;
 declare function enumerate(iter: IterableLike, offset?: number): GeneratorLike;
 declare function flat(iter: IterableLike): GeneratorLike;

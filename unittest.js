@@ -1748,9 +1748,8 @@ CUT.isEqual("dropRightWhile(); 03", token2, 72);
 CUT.isEqual("concat(); 01", "[4,5,6]",
   JSON.stringify([...CEL.concat([4, 5, 6])])
 );
-CUT.isEqual("concat(); 02", "[\"1\",\"2\",\"3\",4,5,6,7,8,9,10]",
-  JSON.stringify([...CEL.concat("123", [4, 5, 6].values(),
-  new Set([7, 8, 9]), 10)])
+CUT.isEqual("concat(); 02", "[4,5,6,7,8,9]",
+  JSON.stringify([...CEL.concat([4, 5, 6], new Set([7, 8, 9]))])
 );
 
 
