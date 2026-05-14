@@ -530,12 +530,12 @@ function deepAssign (target: any, ...sources: any): any {
 
 /**
  * @description Returns the number of own properties (including symbols) of an object.
- * @param {object} obj
+ * @param {object} object
  * @returns {number}
  */
-const sizeIn = (obj: object): number =>
-  Object.getOwnPropertyNames(obj).length
-    + Object.getOwnPropertySymbols(obj).length;
+const sizeIn = (object: object): number =>
+  Object.getOwnPropertyNames(object).length
+    + Object.getOwnPropertySymbols(object).length;
 
 
 /**
@@ -582,14 +582,14 @@ function noop (): void {}
  * @description Always returns true.
  * @returns {true}
  */
-const T = (): boolean => true;
+const T = (): true => true;
 
 
 /**
  * @description Always returns false.
  * @returns {false}
  */
-const F = (): boolean => false;
+const F = (): false => false;
 
 
 /**

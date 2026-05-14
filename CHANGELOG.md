@@ -1,6 +1,12 @@
 
 # Celestra version history
 
+## Celestra v6.7.1
+
+1. Documentation, pdf and code fixes.
+2. Rewrite these functions: `nanoid();`, `timestampID();`, `randomUUIDv7();`
+3. Harmonyze the result of the function `concat();` with the `Iterator.concat();`
+
 ## Celestra v6.7.0 Laika
 
 1. __From this version (v6.7.0 Laika) the use of _inner calls_ are enabled. The functions don't have to be standalone.__
