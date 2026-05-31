@@ -1,5 +1,15 @@
 
+
 # Celestra version history
+
+## Celestra v6.8.0
+
+1. Documentation, pdf and code fixes.
+2. Documentation change: Remove the ASCII logo in the __celestra.html__ and __readme.md__.
+3. Remove these functions: `getUrlVars();`, `obj2string();`.
+4. Rename the __celestra.node.mts__ to __celestra.node.ts__ and __celestra.node.mjs__ to __celestra.node.js__.
+5. Add this function: `constuctorOf();`
+
 
 ## Celestra v6.7.1
 

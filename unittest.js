@@ -15,7 +15,7 @@ try {
 
 /* Celestra unit tester */
 
-CUT.VERSION = "Celestra Unit Tester (CUT) v6.7.1 for browser (ESM)";
+CUT.VERSION = "Celestra Unit Tester (CUT) v6.8.0 for browser (ESM)";
 
 CUT.__results__ = document.querySelector("#results");
 CUT.__resultsFailed__ = document.querySelector("#resultsFailed");
@@ -299,7 +299,7 @@ var /** @type any */ token12, /** @type any */ token13;
 var /** @type any */ token14, /** @type any */ token15;
 
 
-/* Celestra v6.7.1 testcases */
+/* Celestra v6.8.0 testcases */
 
 
 /** Not auto tested functions **/
@@ -797,26 +797,6 @@ CUT.isTrue("deepAssign(); 30", token2[0].b.c[0].size === 2);
 CUT.isFalse("deepAssign(); 31", token1[0].b.c[1] === token2[0].b.c[1]);
 CUT.isTrue("deepAssign(); 32", token1[0].b.c[1].d === token2[0].b.c[1].d);
 /* deepAssign(); end */
-
-
-/* obj2string(); deprecated */
-CUT.isEqual("obj2string();",
-  CEL.obj2string({str:"éáűőúöüóíÉÁŰŐÚÖÜÓÍ", bool:true, pi:3.141592653589793}),
-  "str=%C3%A9%C3%A1%C5%B1%C5%91%C3%BA%C3%B6%C3%BC%C3%B3%C3%AD%C3%89%C3%81%C5%B0%C5%90%C3%9A%C3%96%C3%9C%C3%93%C3%8D&bool=true&pi=3.141592653589793"
-);
-
-
-/* getUrlVars(); deprecated */
-CUT.isEqual(
-  'getUrlVars(); prop order_by from <code>"?showall=true&order_by=updated&o=asc"</code>',
-  "updated", CEL.getUrlVars("?showall=true&order_by=updated&o=asc")["order_by"]
-);
-CUT.isEqual("getUrlVars(); prop not found - undefined", undefined,
-  CEL.getUrlVars("?showall=true&order_by=updated&o=asc")["order_by2"]
-);
-CUT.isEqual("getUrlVars(); empty object", "{}",
-  JSON.stringify(CEL.getUrlVars("?"))
-);
 
 
 // @ts-ignore
@@ -3221,6 +3201,34 @@ CUT.isTrue("typeOf();",
     && CEL.typeOf(42) === "number"
     && CEL.typeOf("42") === "string"
     && CEL.typeOf(true) === "boolean"
+);
+
+
+/* constructorOf(); */
+token1 = function Foo () {};
+token2 = Object.getPrototypeOf(function*(){}).constructor;
+token3 = Object.getPrototypeOf(async function(){}).constructor;
+token4 = Object.getPrototypeOf(async function*(){}).constructor;
+CUT.isTrue("constructorOf();",
+  CEL.constructorOf([]) === Array
+    && CEL.constructorOf({}) === Object
+    && CEL.constructorOf(new Date()) === Date
+    && CEL.constructorOf("x") === String
+    && CEL.constructorOf(new String("x")) === String
+    && CEL.constructorOf(42) === Number
+    && CEL.constructorOf(new Number(42)) === Number
+    && CEL.constructorOf(null) === undefined
+    && CEL.constructorOf(undefined) === undefined
+    && CEL.constructorOf(Object.create(null)) === undefined
+    && CEL.constructorOf() === undefined
+    && CEL.constructorOf(new token1()) === token1
+    && CEL.constructorOf(new (function () {})).name === ""
+    && CEL.constructorOf(function (){}) === Function
+    && CEL.constructorOf(() => 42) === Function
+    && CEL.constructorOf(function* (){}) === token2
+    && CEL.constructorOf(async function (){}) === token3
+    && CEL.constructorOf(async () => 42) === token3
+    && CEL.constructorOf(async function* (){}) === token4
 );
 
 

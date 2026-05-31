@@ -1,5 +1,5 @@
 "use strict";
-const VERSION = "Celestra v6.8.0 browser";
+const VERSION = "Celestra v6.8.0 node";
 (function (global) {
     if (!global.globalThis) {
         if (Object.defineProperty) {
@@ -320,311 +320,9 @@ const strHTMLUnEscape = (str) => String(str).trim()
     .replace(/&gt;/g, ">").replace(/&#62;/g, ">")
     .replace(/&quot;/g, '"').replace(/&#34;/g, '"')
     .replace(/&apos;/g, "'").replace(/&#39;/g, "'");
-const qsa = (str, context = document) => Array.from(context.querySelectorAll(str));
-const qs = (str, context = document) => context.querySelector(str);
-function domReady(callback) {
-    if (document.readyState !== "loading") {
-        callback();
-    }
-    else {
-        document.addEventListener("DOMContentLoaded", function (_event) { callback(); });
-    }
-}
-function domCreate(elementType, properties, innerHTML) {
-    if (arguments.length === 1 && typeof elementType === "object") {
-        let obj = elementType;
-        elementType = obj.elementType;
-        properties = {};
-        for (const [key, value] of Object.entries(obj)) {
-            if (key !== "elementType") {
-                globalThis[key] = value;
-            }
-        }
-    }
-    let element = document.createElement(elementType);
-    if (properties) {
-        for (let [key, value] of Object.entries(properties)) {
-            if (key !== "style" || typeof value === "string") {
-                element[key] = value;
-            }
-            else {
-                Object.assign(element.style, value);
-            }
-        }
-    }
-    if (innerHTML) {
-        element.innerHTML = innerHTML;
-    }
-    return element;
-}
-function domToElement(str) {
-    let element = document.createElement("div");
-    element.innerHTML = str;
-    return element.firstElementChild;
-}
-const domGetCSS = (element, property) => (property
-    ? globalThis.getComputedStyle(element, null)[property]
-    : globalThis.getComputedStyle(element, null));
-function domSetCSS(element, property, value) {
-    if (typeof property === "string") {
-        element.style[property] = value;
-    }
-    else if (typeof property === "object") {
-        Object.keys(property).forEach((key) => element.style[key] = property[key]);
-    }
-}
-function domFadeIn(element, duration, display) {
-    let style = element.style;
-    let step = 25 / (duration || 500);
-    style.opacity = (style.opacity ?? 0);
-    style.display = (display || "");
-    (function fade() {
-        (style.opacity = parseFloat(style.opacity) + step) > 1
-            ? style.opacity = 1
-            : setTimeout(fade, 25);
-    })();
-}
-function domFadeOut(element, duration) {
-    let style = element.style;
-    let step = 25 / (duration || 500);
-    style.opacity = (style.opacity || 1);
-    (function fade() {
-        (style.opacity -= step) < 0 ? style.display = "none" : setTimeout(fade, 25);
-    })();
-}
-function domFadeToggle(element, duration, display = "") {
-    if (getComputedStyle(element, null).display === "none") {
-        domFadeIn(element, duration, display);
-    }
-    else {
-        domFadeOut(element, duration);
-    }
-}
-const domHide = (element) => element.style.display = "none";
-const domShow = (element, display = "") => element.style.display = display;
-function domToggle(element, display = "") {
-    if (globalThis.getComputedStyle(element, null).display === "none") {
-        element.style.display = display;
-    }
-    else {
-        element.style.display = "none";
-    }
-}
-const domIsHidden = (element) => globalThis.getComputedStyle(element, null).display === "none";
-function domSiblings(element) {
-    let parent = element.parentNode;
-    if (!parent) {
-        return [];
-    }
-    return Array.prototype.filter.call(parent.children, (item) => (item !== element));
-}
-function domSiblingsPrev(element) {
-    let parent = element.parentNode;
-    if (!parent) {
-        return [];
-    }
-    let siblings = Array.from(parent.children);
-    return siblings.slice(0, siblings.indexOf(element));
-}
-function domSiblingsLeft(element) {
-    let parent = element.parentNode;
-    if (!parent) {
-        return [];
-    }
-    let siblings = Array.from(parent.children);
-    return siblings.slice(0, siblings.indexOf(element));
-}
-function domSiblingsNext(element) {
-    let parent = element.parentNode;
-    if (!parent) {
-        return [];
-    }
-    let siblings = Array.from(parent.children);
-    return siblings.slice(siblings.indexOf(element) + 1, parent.children.length);
-}
-function domSiblingsRight(element) {
-    let parent = element.parentNode;
-    if (!parent) {
-        return [];
-    }
-    let siblings = Array.from(parent.children);
-    return siblings.slice(siblings.indexOf(element) + 1, parent.children.length);
-}
-function importScript(...scripts) {
-    for (let item of scripts) {
-        let element = document.createElement("script");
-        element.type = "text\/javascript";
-        element.src = item;
-        element.onerror = function (error) {
-            let source = "";
-            if (typeOf(error) === "object") {
-                source = error.target.src || "";
-            }
-            throw new URIError(`[importScript] Loading failed${source ? ` for the script with source ${source}` : ""}`);
-        };
-        (document.head || document.getElementsByTagName("head")[0])
-            .appendChild(element);
-    }
-}
-function importStyle(...styles) {
-    for (let item of styles) {
-        let element = document.createElement("link");
-        element.rel = "stylesheet";
-        element.type = "text\/css";
-        element.href = item;
-        element.onerror = function (error) {
-            throw new URIError(`[importStyle] Loading failed for the style with source ${error.target.href}`);
-        };
-        (document.head || document.getElementsByTagName("head")[0])
-            .appendChild(element);
-    }
-}
-function form2array(form) {
-    let field;
-    let result = Array();
-    if (typeOf(form) === "object" && form.nodeName.toLowerCase() === "form") {
-        for (let index = 0, length = form.elements.length; index < length; index++) {
-            field = form.elements[index];
-            if (field.name && !field.disabled
-                && field.type !== "file"
-                && field.type !== "reset"
-                && field.type !== "submit"
-                && field.type !== "button") {
-                if (field.type === "select-multiple") {
-                    for (let j = 0, l = form.elements[index].options.length; j < l; j++) {
-                        if (field.options[j].selected) {
-                            result.push({
-                                "name": encodeURIComponent(field.name),
-                                "value": encodeURIComponent(field.options[j].value)
-                            });
-                        }
-                    }
-                }
-                else if ((field.type !== "checkbox" && field.type !== "radio")
-                    || field.checked) {
-                    result.push({
-                        "name": encodeURIComponent(field.name),
-                        "value": encodeURIComponent(field.value)
-                    });
-                }
-            }
-        }
-    }
-    return result;
-}
-function form2string(form) {
-    let field;
-    let result = [];
-    if (typeOf(form) === "object" && form.nodeName.toLowerCase() === "form") {
-        for (let index = 0, length = form.elements.length; index < length; index++) {
-            field = form.elements[index];
-            if (field.name && !field.disabled
-                && field.type !== "file"
-                && field.type !== "reset"
-                && field.type !== "submit"
-                && field.type !== "button") {
-                if (field.type === "select-multiple") {
-                    for (let j = 0, l = form.elements[index].options.length; j < l; j++) {
-                        if (field.options[j].selected) {
-                            result.push(encodeURIComponent(field.name)
-                                + "=" + encodeURIComponent(field.options[j].value));
-                        }
-                    }
-                }
-                else if ((field.type !== "checkbox" && field.type !== "radio")
-                    || field.checked) {
-                    result.push(encodeURIComponent(field.name)
-                        + "=" + encodeURIComponent(field.value));
-                }
-            }
-        }
-    }
-    return result.join("&").replace(/%20/g, "+");
-}
-const getDoNotTrack = () => [navigator.doNotTrack, globalThis.doNotTrack, navigator.msDoNotTrack]
-    .some((item) => item === true || item === 1 || item === "1");
-function getLocation(successCallback, errorCallback = console.error) {
-    function getError(error) {
-        if (typeof error === "string") {
-            errorCallback({
-                code: 0,
-                message: error,
-                PERMISSION_DENIED: 1,
-                POSITION_UNAVAILABLE: 2,
-                TIMEOUT: 3
-            });
-        }
-        else {
-            errorCallback(error);
-        }
-    }
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(successCallback, getError);
-    }
-    else {
-        getError("Geolocation is not supported in this browser.");
-    }
-}
-function createFile(filename, content, dataType = "text/plain") {
-    let blob = new Blob([content], { type: dataType });
-    let el = document.createElement("a");
-    el.href = globalThis.URL.createObjectURL(blob);
-    el.download = filename;
-    document.body.appendChild(el);
-    el.click();
-    document.body.removeChild(el);
-    globalThis.URL.revokeObjectURL(el.href);
-}
-const getFullscreen = () => document.fullscreenElement
-    ?? document.mozFullScreenElement
-    ?? document.webkitFullscreenElement
-    ?? document.msFullscreenElement
-    ?? undefined;
-function setFullscreenOn(element) {
-    let elem = null;
-    if (typeof element === "string") {
-        elem = document.querySelector(element);
-    }
-    else if (element && typeof element === "object") {
-        elem = element;
-    }
-    if (elem && elem.requestFullscreen) {
-        elem.requestFullscreen();
-    }
-    else if (elem.mozRequestFullScreen) {
-        elem.mozRequestFullScreen();
-    }
-    else if (elem.webkitRequestFullscreen) {
-        elem.webkitRequestFullscreen();
-    }
-    else if (elem.msRequestFullscreen) {
-        elem.msRequestFullscreen();
-    }
-}
-function setFullscreenOff() {
-    if (document.exitFullscreen) {
-        document.exitFullscreen();
-    }
-    else if (document.mozCancelFullScreen) {
-        document.mozCancelFullScreen();
-    }
-    else if (document.webkitExitFullscreen) {
-        document.webkitExitFullscreen();
-    }
-    else if (document.msExitFullscreen) {
-        document.msExitFullscreen();
-    }
-}
-const domGetCSSVar = (name) => getComputedStyle(document.documentElement)
-    .getPropertyValue(name[0] === "-" ? name : "--" + name);
-const domSetCSSVar = (name, value) => document.documentElement.style.setProperty((name[0] === "-" ? name : "--" + name), value);
-const domScrollToTop = () => globalThis.scrollTo(0, 0);
-const domScrollToBottom = () => globalThis.scrollTo(0, document.body.scrollHeight);
-const domScrollToElement = (element, top = true) => element.scrollIntoView(top);
-const domClear = (element) => Array.from(element.children).forEach((item) => item.remove());
 const constructorOf = (value) => (value)?.constructor;
 const isNonNullable = (value) => value != null;
-const isNonNullablePrimitive = (value) => value != null && typeof value !== "object" && typeof value !== "function";
+const isNonNullablePrimitive = (value) => value != null && typeOf(value) !== "object" && typeof value !== "function";
 function isArrowFunction(value) {
     if (typeof value !== "function"
         || ("prototype" in value && value.prototype !== undefined)
@@ -646,11 +344,11 @@ function isTypedCollection(iter, expectedType, Throw = false) {
     if (!isIterator(iter) && !isIterable(iter)) {
         throw new TypeError(`[isTypedCollection] TypeError: iter must be iterable or iterator. Got ${typeOf(iter)}`);
     }
-    if (!(["string", "function"].includes(typeof expectedType))
+    if (!(["string", "function"].includes(typeOf(expectedType)))
         && !Array.isArray(expectedType)) {
         throw new TypeError(`[isTypedCollection] TypeError: expectedType must be string, function, array. Got ${typeOf(expectedType)}`);
     }
-    if (typeOf(Throw) !== "boolean") {
+    if (typeof Throw !== "boolean") {
         throw new TypeError(`[isTypedCollection] TypeError: Throw has to be a boolean. Got ${typeOf(Throw)}`);
     }
     let expectedArray = Array.isArray(expectedType) ? expectedType : [expectedType];
@@ -677,7 +375,7 @@ function isTypedCollection(iter, expectedType, Throw = false) {
     return matched;
 }
 function is(value, expectedType, Throw = false) {
-    if (!(["string", "function", "undefined"].includes(typeof expectedType))
+    if (!(["string", "function", "undefined"].includes(typeOf(expectedType)))
         && !Array.isArray(expectedType)) {
         throw new TypeError(`[is] TypeError: expectedType must be string, function, array or undefined. Got ${typeOf(expectedType)}`);
     }
@@ -711,12 +409,12 @@ function toObject(value) {
     if (value == null) {
         throw new TypeError(`[toObject] error: value is ${value}`);
     }
-    return (["object", "function"].includes(typeof value))
+    return (["object", "function"].includes(typeOf(value)))
         ? value
         : Object(value);
 }
 function toPrimitive(value) {
-    if (value == null || typeof value !== "object") {
+    if (value == null || typeOf(value) !== "object") {
         return value;
     }
     let vType = Object.prototype.toString.call(value).slice(8, -1);
@@ -755,9 +453,6 @@ function toSafeString(value) {
     }
     if (Array.isArray(value)) {
         return `[${value.map(v => toSafeString(v)).join(", ")}]`;
-    }
-    if (ArrayBuffer.isView(value) && !(value instanceof DataView)) {
-        return `[${[...value].map(v => toSafeString(v)).join(", ")}]`;
     }
     if (value instanceof Map) {
         return `Map(${value.size}){${Array.from(value.entries()).map(([k, v]) => `${toSafeString(k)} => ${toSafeString(v)}`).join(", ")}}`;
@@ -1027,110 +722,6 @@ const isGeneratorFunction = (value) => Object.getPrototypeOf(value).constructor 
     Object.getPrototypeOf(function* () { }).constructor;
 const isAsyncFunction = (value) => Object.getPrototypeOf(value).constructor ===
     Object.getPrototypeOf(async function () { }).constructor;
-function setCookie(name, value, hours = 8760, path = "/", domain, secure, SameSite = "Lax", HttpOnly) {
-    if (typeOf(name) === "object") {
-        let settings = name;
-        name = settings.name;
-        value = settings.value;
-        hours = settings.hours || 8760;
-        path = settings.path || "/";
-        domain = settings.domain;
-        secure = settings.secure;
-        SameSite = settings.SameSite || "Lax";
-        HttpOnly = settings.HttpOnly;
-    }
-    let expire = new Date();
-    expire.setTime(expire.getTime() + (Math.round(hours * 60 * 60 * 1000)));
-    document.cookie = encodeURIComponent(name)
-        + "=" + encodeURIComponent(value)
-        + "; expires=" + expire.toUTCString()
-        + "; path=" + path
-        + (domain ? "; domain=" + domain : "")
-        + (secure ? "; secure" : "")
-        + (typeof SameSite === "string" && SameSite.length
-            ? "; SameSite=" + SameSite
-            : "")
-        + (HttpOnly ? "; HttpOnly" : "")
-        + ";";
-}
-function getCookie(name) {
-    if (!document.cookie.length) {
-        return typeof name === "string" ? null : {};
-    }
-    let cookieObject = {};
-    for (let cookie of document.cookie.split(";")) {
-        let [cookieName, value] = cookie.trim().split("=");
-        cookieObject[decodeURIComponent(cookieName)] = decodeURIComponent(value);
-    }
-    return typeof name === "string" ? (cookieObject[name] ?? null) : cookieObject;
-}
-function hasCookie(name) {
-    if (!document.cookie.length) {
-        return false;
-    }
-    for (let cookie of document.cookie.split(";")) {
-        if (decodeURIComponent(cookie.trim().split("=")[0]) === name) {
-            return true;
-        }
-    }
-    return false;
-}
-function removeCookie(name, path = "/", domain, secure, SameSite = "Lax", HttpOnly) {
-    if (!document.cookie.length) {
-        return false;
-    }
-    if (name && typeof name === "object") {
-        let settings = name;
-        name = settings.name;
-        path = settings.path || "/";
-        domain = settings.domain;
-        secure = settings.secure;
-        SameSite = settings.SameSite || "Lax";
-        HttpOnly = settings.HttpOnly;
-    }
-    let result = false;
-    for (let cookie of document.cookie.split(";")) {
-        if (decodeURIComponent(cookie.trim().split("=")[0]) === name) {
-            result = true;
-            break;
-        }
-    }
-    if (result) {
-        document.cookie = encodeURIComponent(name)
-            + "=; expires=Thu, 01 Jan 1970 00:00:01 GMT"
-            + "; path=" + path
-            + (domain ? "; domain=" + domain : "")
-            + (secure ? "; secure" : "")
-            + (typeof SameSite === "string" && SameSite.length ?
-                "; SameSite=" + SameSite : "")
-            + (HttpOnly ? "; HttpOnly" : "")
-            + ";";
-    }
-    return result;
-}
-function clearCookies(path = "/", domain, secure, SameSite = "Lax", HttpOnly) {
-    if (path && typeof path === "object") {
-        let settings = path;
-        path = settings.path ?? "/";
-        domain = settings.domain;
-        secure = settings.secure;
-        SameSite = settings.SameSite ?? "Lax";
-        HttpOnly = settings.HttpOnly;
-    }
-    if (document.cookie.length) {
-        for (let item of document.cookie.split(";")) {
-            document.cookie = encodeURIComponent(item.trim().split("=")[0])
-                + "=; expires=Thu, 01 Jan 1970 00:00:01 GMT"
-                + "; path=" + path
-                + (domain ? "; domain=" + domain : "")
-                + (secure ? "; secure" : "")
-                + (typeof SameSite === "string" && SameSite.length ?
-                    "; SameSite=" + SameSite : "")
-                + (HttpOnly ? "; HttpOnly" : "")
-                + ";";
-        }
-    }
-}
 const castArray = (value) => typeof value === "undefined" ? [] : (Array.isArray(value) ? value : [value]);
 const compact = (iter) => Array.from(iter).filter((value) => value != null);
 function unique(iter, resolver) {
@@ -1321,6 +912,7 @@ function* take(iter, num = 1) {
         if (done) {
             break;
         }
+        ;
         yield value;
     }
 }
@@ -1343,12 +935,14 @@ function* drop(iter, num = 1) {
         if (done) {
             return;
         }
+        ;
     }
     while (true) {
         const { value, done } = iterator.next();
         if (done) {
             break;
         }
+        ;
         yield value;
     }
 }
@@ -1544,7 +1138,7 @@ function includes(collection, value, comparator) {
         throw new TypeError(`[includes] TypeError: comparator is not a function or undefined. Got ${typeOf(comparator)}`);
     }
     let _isEqual = comparator ?? eq;
-    let cType = typeOf(collection);
+    let cType = (typeOf(collection));
     if (collection == null
         || !(["object", "function", "string"].includes(cType))
         || collection instanceof WeakMap
@@ -1741,9 +1335,10 @@ function mod(value1, value2) {
 }
 const isFloat = (value) => typeof value === "number" && value === value && Boolean(value % 1);
 function toInteger(value) {
-    value = ((value = Math.trunc(Number(value))) !== value || value === 0)
-        ? 0
-        : value;
+    value =
+        ((value = Math.trunc(Number(value))) !== value || value === 0)
+            ? 0
+            : value;
     return Math.min(Math.max(value, Number.MIN_SAFE_INTEGER), Number.MAX_SAFE_INTEGER);
 }
 const toIntegerOrInfinity = (value) => ((value = Math.trunc(Number(value))) !== value || value === 0)
@@ -1794,8 +1389,8 @@ function clamp(value, min = Number.MIN_SAFE_INTEGER, max = Number.MAX_SAFE_INTEG
         return value;
     }
     if (typeof value !== "bigint"
-        && typeof value !== "bigint"
-        && typeof value !== "bigint") {
+        && typeof min !== "bigint"
+        && typeof min !== "bigint") {
         value = _numberNormalize(value);
         min = _numberNormalize(min);
         max = _numberNormalize(max);
@@ -1900,8 +1495,7 @@ const isBigInt64 = (value) => typeof value === "bigint"
     && value <= Math.pow(2, 63) - 1;
 const isBigUInt64 = (value) => typeof value === "bigint" && value >= 0 && value <= Math.pow(2, 64) - 1;
 const toFloat16 = (value) => ((value = Math.min(Math.max(-65504, Number(value)), 65504)) === value)
-    ? value
-    : 0;
+    ? value : 0;
 const isFloat16 = (value) => typeof value === "number"
     && value === value
     && value >= -65504
@@ -1995,41 +1589,6 @@ export default {
     strHTMLRemoveTags,
     strHTMLEscape,
     strHTMLUnEscape,
-    qsa,
-    qs,
-    domReady,
-    domCreate,
-    domToElement,
-    domGetCSS,
-    domSetCSS,
-    domFadeIn,
-    domFadeOut,
-    domFadeToggle,
-    domHide,
-    domShow,
-    domToggle,
-    domIsHidden,
-    domSiblings,
-    domSiblingsPrev,
-    domSiblingsLeft,
-    domSiblingsNext,
-    domSiblingsRight,
-    importScript,
-    importStyle,
-    form2array,
-    form2string,
-    getDoNotTrack,
-    getLocation,
-    createFile,
-    getFullscreen,
-    setFullscreenOn,
-    setFullscreenOff,
-    domGetCSSVar,
-    domSetCSSVar,
-    domScrollToTop,
-    domScrollToBottom,
-    domScrollToElement,
-    domClear,
     constructorOf,
     isNonNullable,
     isNonNullablePrimitive,
@@ -2070,11 +1629,6 @@ export default {
     isTypedArray,
     isGeneratorFunction,
     isAsyncFunction,
-    setCookie,
-    getCookie,
-    hasCookie,
-    removeCookie,
-    clearCookies,
     castArray,
     compact,
     unique,
@@ -2175,4 +1729,4 @@ export default {
     randomFloat,
     inRange
 };
-export { VERSION, BASE16, BASE32, BASE36, BASE58, BASE62, WORDSAFEALPHABET, assert, eq, gt, gte, lt, lte, tap, once, curry, pipe, compose, pick, omit, assoc, asyncNoop, asyncT, asyncF, asyncConstant, asyncIdentity, randomUUIDv7, delay, randomBoolean, deepAssign, sizeIn, unBind, bind, constant, identity, noop, T, F, nanoid, timestampID, b64Encode, b64Decode, strCount, strTruncate, strPropercase, strTitlecase, strCapitalize, strUpFirst, strDownFirst, strReverse, strCodePoints, strFromCodePoints, strAt, strSplice, strHTMLRemoveTags, strHTMLEscape, strHTMLUnEscape, qsa, qs, domReady, domCreate, domToElement, domGetCSS, domSetCSS, domFadeIn, domFadeOut, domFadeToggle, domHide, domShow, domToggle, domIsHidden, domSiblings, domSiblingsPrev, domSiblingsLeft, domSiblingsNext, domSiblingsRight, importScript, importStyle, form2array, form2string, getDoNotTrack, getLocation, createFile, getFullscreen, setFullscreenOn, setFullscreenOff, domGetCSSVar, domSetCSSVar, domScrollToTop, domScrollToBottom, domScrollToElement, domClear, constructorOf, isNonNullable, isNonNullablePrimitive, isArrowFunction, isAsyncIterator, isTypedCollection, is, toObject, toPrimitive, toSafeString, isPropertyKey, toPropertyKey, isIndex, isLength, toIndex, toLength, typeOf, isSameType, isSameInstance, isCoercedObject, isDeepStrictEqual, isEmpty, isProxy, isAsyncGeneratorFunction, isPlainObject, isObject, isFunction, isArraylike, isNull, isUndefined, isNullish, isPrimitive, isIterator, isRegexp, isElement, isIterable, isAsyncIterable, isTypedArray, isGeneratorFunction, isAsyncFunction, setCookie, getCookie, hasCookie, removeCookie, clearCookies, castArray, compact, unique, count, arrayDeepClone, initial, shuffle, partition, min, max, arrayRepeat, arrayCycle, arrayRange, zip, unzip, zipObj, arrayAdd, arrayClear, arrayRemove, arrayRemoveBy, arrayMerge, iterRange, iterCycle, iterRepeat, takeWhile, dropWhile, take, drop, forEach, forEachRight, map, filter, reject, slice, tail, item, nth, size, first, head, last, reverse, sort, includes, find, findLast, every, some, none, takeRight, takeRightWhile, dropRight, dropRightWhile, concat, reduce, enumerate, flat, join, withOut, add, sub, mul, div, divMod, mod, isFloat, toInteger, toIntegerOrInfinity, sum, avg, product, pow, clamp, minmax, isEven, isOdd, toInt8, toUInt8, toInt16, toUInt16, toInt32, toUInt32, toBigInt64, toBigUInt64, toFloat32, isInt8, isUInt8, isInt16, isUInt16, isInt32, isUInt32, isBigInt64, isBigUInt64, toFloat16, isFloat16, signbit, randomInt, randomFloat, inRange };
+export { VERSION, BASE16, BASE32, BASE36, BASE58, BASE62, WORDSAFEALPHABET, assert, eq, gt, gte, lt, lte, tap, once, curry, pipe, compose, pick, omit, assoc, asyncNoop, asyncT, asyncF, asyncConstant, asyncIdentity, randomUUIDv7, delay, randomBoolean, deepAssign, sizeIn, unBind, bind, constant, identity, noop, T, F, nanoid, timestampID, b64Encode, b64Decode, strCount, strTruncate, strPropercase, strTitlecase, strCapitalize, strUpFirst, strDownFirst, strReverse, strCodePoints, strFromCodePoints, strAt, strSplice, strHTMLRemoveTags, strHTMLEscape, strHTMLUnEscape, constructorOf, isNonNullable, isNonNullablePrimitive, isArrowFunction, isAsyncIterator, isTypedCollection, is, toObject, toPrimitive, toSafeString, isPropertyKey, toPropertyKey, isIndex, isLength, toIndex, toLength, typeOf, isSameType, isSameInstance, isCoercedObject, isDeepStrictEqual, isEmpty, isProxy, isAsyncGeneratorFunction, isPlainObject, isObject, isFunction, isArraylike, isNull, isUndefined, isNullish, isPrimitive, isIterator, isRegexp, isElement, isIterable, isAsyncIterable, isTypedArray, isGeneratorFunction, isAsyncFunction, castArray, compact, unique, count, arrayDeepClone, initial, shuffle, partition, min, max, arrayRepeat, arrayCycle, arrayRange, zip, unzip, zipObj, arrayAdd, arrayClear, arrayRemove, arrayRemoveBy, arrayMerge, iterRange, iterCycle, iterRepeat, takeWhile, dropWhile, take, drop, forEach, forEachRight, map, filter, reject, slice, tail, item, nth, size, first, head, last, reverse, sort, includes, find, findLast, every, some, none, takeRight, takeRightWhile, dropRight, dropRightWhile, concat, reduce, enumerate, flat, join, withOut, add, sub, mul, div, divMod, mod, isFloat, toInteger, toIntegerOrInfinity, sum, avg, product, pow, clamp, minmax, isEven, isOdd, toInt8, toUInt8, toInt16, toUInt16, toInt32, toUInt32, toBigInt64, toBigUInt64, toFloat32, isInt8, isUInt8, isInt16, isUInt16, isInt32, isUInt32, isBigInt64, isBigUInt64, toFloat16, isFloat16, signbit, randomInt, randomFloat, inRange };

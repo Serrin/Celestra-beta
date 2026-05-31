@@ -26,20 +26,6 @@ html, body { overflow: hidden; }
 
 #fsdiv { padding: 20px; }
 
-header {
-  padding: 1rem;
-  /*background-color: #222;*/
-  color: white;
-  /*background-image: url("erik-ringsmuth-2000.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  /*background-attachment: fixed;*/
-  /*background-size: contain;*/
-  background: linear-gradient(27deg, #151515 5px, transparent 5px) 0 5px, linear-gradient(207deg, #151515 5px, transparent 5px) 10px 0px, linear-gradient(27deg, #222 5px, transparent 5px) 0px 10px, linear-gradient(207deg, #222 5px, transparent 5px) 10px 5px, linear-gradient(90deg, #1b1b1b 10px, transparent 10px), linear-gradient(#1d1d1d 25%, #1a1a1a 25%, #1a1a1a 50%, transparent 50%, transparent 75%, #242424 75%, #242424);
-  background-size: 20px 20px;
-  background-color: #131313;
-}
-
 footer a, footer a:link, footer a:visited, footer a:active, footer a:hover,
 nav a, nav a:visited, nav a:active, nav a:hover {
   color: white !important; /* u87 v0.9.13 */
@@ -126,7 +112,6 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <p><a href="#FN-delay();">delay();</a></p>
       <p><a href="#FN-eq();">eq();</a></p>
       <p><a href="#FN-F();">F();</a></p>
-      <p><a href="#FN-getUrlVars();">getUrlVars();</a></p>
       <p><a href="#FN-gt();">gt();</a></p>
       <p><a href="#FN-gte();">gte();</a></p>
       <p><a href="#FN-identity();">identity();</a></p>
@@ -134,7 +119,6 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <p><a href="#FN-lte();">lte();</a></p>
       <p><a href="#FN-nanoid();">nanoid();</a></p>
       <p><a href="#FN-noop();">noop();</a></p>
-      <p><a href="#FN-obj2string();">obj2string();</a></p>
       <p><a href="#FN-omit();">omit();</a></p>
       <p><a href="#FN-once();">once();</a></p>
       <p><a href="#FN-pick();">pick();</a></p>
@@ -213,6 +197,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
     <hr/>
     <details open>
       <summary><strong>Type API</strong></summary>
+      <p><a href="#FN-constructorOf();">constructorOf();</a></p>
       <p><a href="#FN-is();">is();</a></p>
       <p><a href="#FN-isTypedCollection();">isTypedCollection();</a></p>
       <p><a href="#FN-isArraylike();">isArraylike();</a></p>
@@ -389,56 +374,9 @@ nav a, nav a:visited, nav a:active, nav a:hover {
 
 <div id="right-panel-content">
 
-<header class="center">
-  <pre class="center b font-l" style="background-color: transparent;/*black*/ color: white; line-height: 1.2;">
-  ___  ____  __    ____  ___  ____  ____    __
- / __)( ___)(  )  ( ___)/ __)(_  _)(  _ \  /__\
-( (__  )__)  )(__  )__) \__ \  )(   )   / /(__)\
- \___)(____)(____)(____)(___/ (__) (_)\_)(__)(__)
-                                                 </pre>
-  <!--<h1 class="heading-d">Celestra</h1>-->
-  <nav><strong>
-    <a href="#download" class="nobr">Download</a>
-    &nbsp;//&nbsp;
-    <a href="#functions" class="nobr">Functions</a>
-    &nbsp;//&nbsp;
-    <a href="#samples" class="nobr">Samples</a>
-    &nbsp;//&nbsp;
-    <a href="#license" class="nobr">License</a>
-    &nbsp;//&nbsp;
-    <a href="#footer" class="nobr">Contact</a>
-    &nbsp;//&nbsp;
-    <a href="#" onclick=" CEL.importStyle('u87-dark.css'); " class="nobr"><em>Dark</em></a>
-    &nbsp;/&nbsp;
-    <a href="#" onclick=" CEL.importStyle('u87-blue.css'); " class="nobr"><em>Blue</em></a>
-    &nbsp;/&nbsp;
-    <a href="#" onclick=" CEL.importStyle('u87-light.css'); " class="nobr"><em>Light</em></a>
-  </strong></nav>
-  <div class="center">
-    <br/>
-    <a href="#FNcoreAPI" style="color: white !important">Core API</a>
-    &nbsp;//&nbsp;
-    <a href="#FNdomAPI" style="color: white !important">DOM API</a>
-    &nbsp;//&nbsp;
-    <a href="#FNstringAPI" style="color: white !important">String API</a>
-    &nbsp;//&nbsp;
-    <a href="#FNassertionAPI" style="color: white !important">Legacy Assertion API</a>
-    &nbsp;//&nbsp;
-    <a href="#FNajaxAPI" style="color: white !important">Legacy AJAX API</a>
-    <br/>
-    <a href="#FNcookieAPI" style="color: white !important">Cookie API</a>
-    &nbsp;//&nbsp;
-    <a href="#FNcollectionsAPI" style="color: white !important">Collections API</a>
-    &nbsp;//&nbsp;
-    <a href="#FNtypecheckingAPI" style="color: white !important">Type API</a>
-    &nbsp;//&nbsp;
-    <a href="#FNmathAPI" style="color: white !important">Math API</a>
-    &nbsp;//&nbsp;
-    <a href="#FNpolyfillsAPI" style="color: white !important">Polyfills</a>
-  </div>
-</header>
 <main class="container">
 
+<h1 class="center">Celestra</h1>
 
 <h2 id="download">Download</h2>
 
@@ -499,8 +437,8 @@ nav a, nav a:visited, nav a:active, nav a:hover {
   </tr>
   <tr>
     <td>Node.js and Deno module</td>
-    <td><a href="celestra.node.mjs" target="_blank">celestra.node.mjs</a></td>
-    <td><a href="celestra.node.mts" target="_blank">celestra.node.mts</a></td>
+    <td><a href="celestra.node.js" target="_blank">celestra.node.js</a></td>
+    <td><a href="celestra.node.ts" target="_blank">celestra.node.ts</a></td>
   </tr>
   <tr>
     <td>Celestra Unit Tester (CUT)</td>
@@ -597,22 +535,22 @@ globalThis.celestra = defaultExport;
 globalThis.CEL = defaultExport;
 
 // import with default with name
-import { default as celestra } from "./celestra.nodejs.mjs";
+import { default as celestra } from "./celestra.nodejs.js";
 globalThis.celestra = celestra;
 globalThis.CEL = celestra;
 
 // import all into a new celestra object
-import * as celestra from "./celestra.nodejs.mjs";
+import * as celestra from "./celestra.nodejs.js";
 globalThis.celestra = celestra;
 globalThis.CEL = celestra;
 
 // import some functions
-import { first, map } from "./celestra.nodejs.mjs";
+import { first, map } from "./celestra.nodejs.js";
 globalThis.first = first;
 globalThis.map = map;
 
 // dynamic import
-const celestra = await import("./celestra.node.mjs");
+const celestra = await import("./celestra.node.js");
 globalThis.celestra = celestra;
 globalThis.CEL = celestra;
 </pre>
@@ -729,6 +667,12 @@ globalThis.CEL = celestra;
   <li>Firefox 115 (Windows 7 and 8.1) and iOS 16 support has been removed.</li>
   <li>Many functions have been renamed.</li>
   <li>Many polyfills have been moved to <strong>celestra-polyfills.dev.js</strong> and <strong>celestra-polyfills.min.js</strong>.</li>
+</ul>
+
+<h3>Celestra v6.8.0 changes</h3>
+
+<ul>
+  <li>These files have been renamed: <strong>celestra.node.mts</strong> to <strong>celestra.node.ts</strong> and <strong>celestra.node.mjs</strong> to <strong>celestra.node.js</strong>.</li>
 </ul>
 
 <hr/>
@@ -855,11 +799,6 @@ CEL.delay(5000)
       <td><code>F();</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns false.</td>
     </tr>
-    <tr id="FN-getUrlVars();">
-      <td><code>getUrlVars([str=location.search]);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>Get the values of the url variables in an <code>object</code> from the <code>location.search</code> <strong>(default value)</strong> or another given url. The str parameter name is optional and can be a <code>string</code>.
-      <br/>Example: <code>"?showall=true&amp;order_by=updated&amp;o=asc"</code> -> <code>Object { showall: "true", order_by: "updated", o: "asc" }</code></td>
-    </tr>
     <tr id="FN-gt();">
       <td><code>gt(value1, value2);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>Strict type greater than. All of the parameters are mandatory and can be <code>number</code>, <code>bigint</code>, <code>string</code> or <code>boolean</code>, but the values have to be same type. If the type of the values are not the same, then return value is false. The return value is <code>boolean</code>.</td>
@@ -887,10 +826,6 @@ CEL.delay(5000)
     <tr id="FN-noop();">
       <td><code>noop();</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>It's an empty function (no operation) that returns <code>undefined</code> and usable for optional callback arguments.</td>
-    </tr>
-    <tr id="FN-obj2string();">
-      <td><code>obj2string(object);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>Convert object to a querystring. The return value is the <code>string</code>. The object parameter is mandatory.</td>
     </tr>
     <tr id="FN-omit();">
       <td><code>omit(object, keys);</code></td>
@@ -1232,8 +1167,12 @@ CEL.delay(5000)
       <td style="width: auto; min-width: 33%;"><strong>Name</strong></td>
       <td><strong>Description</strong></td>
     </tr>
+    <tr id="FN-constructorOf();">
+      <td><code>constructorOf(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns the constructor property of value, using optional chaining to avoid throwing if value is <code>null</code> or <code>undefined</code>.</td>
+    </tr>
     <tr id="FN-is();">
-      <td><code>is(value[,expectedType[,Throw=false]];</code></td>
+      <td><code>is(value[,expectedType[,Throw=false]]);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value type or class is the given expectedType. The expectedType can be a type <code>string</code>, constructor function or an array of the type strings and constructors. If the Throw is true and the value is not matched with the expectedType, then a TypeError will be thrown with detailed error message. The return value is <code>boolean</code> or the type or constructor of the value.</td>
     </tr>
     <tr id="FN-isTypedCollection();">

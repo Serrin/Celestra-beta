@@ -1,10 +1,3 @@
-```text
-        ___  ____  __    ____  ___  ____  ____    __
-       / __)( ___)(  )  ( ___)/ __)(_  _)(  _ \  /__\
-      ( (__  )__)  )(__  )__) \__ \  )(   )   / /(__)\
-       \___)(____)(____)(____)(___/ (__) (_)\_)(__)(__)
-
-```
 
 # Celestra
 
@@ -12,7 +5,7 @@
 
 __A helper JavaScript library with useful functions and polyfills and zero dependencies.__
 
-Latest version: 6.7.1
+Latest version: 6.8.0
 
 Date: 2026-05-13T19:00:44.841Z
 
@@ -41,7 +34,7 @@ Beta repository|__[https://github.com/Serrin/Celestra-beta](https://github.com/S
 Edition|Javascript or documentation
 -------|-----------------------------
 Browser module|__celestra.browser.js__<BR>__celestra.browser.ts__
-Node.js and Deno module|__celestra.node.mjs__<BR>__celestra.node.mts__
+Node.js and Deno module|__celestra.node.js__<BR>__celestra.node.ts__
 Celestra Unit Tester (CUT)|__unittest.html__
 Celestra cheatsheet|__celestra-cheatsheet.odt__<BR>__celestra-cheatsheet.pdf__
 JavaScript cheatsheet|__js-cheatsheet.odt__<BR>__js-cheatsheet.pdf__
@@ -93,27 +86,27 @@ globalThis.CEL = celestra;
 
 ````javascript
 // import the defaultExport object
-import defaultExport from "./celestra.nodejs.mjs";
+import defaultExport from "./celestra.nodejs.js";
 globalThis.celestra = defaultExport;
 globalThis.CEL = defaultExport;
 
 // import with default with name
-import { default as celestra } from "./celestra.nodejs.mjs";
+import { default as celestra } from "./celestra.nodejs.js";
 globalThis.celestra = celestra;
 globalThis.CEL = celestra;
 
 // import all into a new celestra object
-import * as celestra from "./celestra.nodejs.mjs";
+import * as celestra from "./celestra.nodejs.js";
 globalThis.celestra = celestra;
 globalThis.CEL = celestra;
 
 // import some functions
-import { first, map } from "./celestra.nodejs.mjs";
+import { first, map } from "./celestra.nodejs.js";
 globalThis.first = first;
 globalThis.map = map;
 
 // dynamic import
-const celestra = await import("./celestra.node.mjs");
+const celestra = await import("./celestra.node.js");
 globalThis.celestra = celestra;
 globalThis.CEL = celestra;
 ````
@@ -199,6 +192,11 @@ __Cookie API__|`getCookie();`<BR>`hasCookie();`<BR>`setCookie();`<BR>`removeCook
 4. Many functions have been renamed.
 5. Many polyfills have been moved to __celestra-polyfills.dev.js__ and __celestra-polyfills.min.js__.
 
+### Celestra v6.8.0 changes
+
+1. New documentation.
+2. These files have been renamed: __celestra.node.mts__ to __celestra.node.ts__ and __celestra.node.mjs__ to __celestra.node.js__.
+
 -----
 
 ## Functions
@@ -239,7 +237,6 @@ Name|Description
 `delay(ms).then(callback);`|__Stability: 4 - Stable.__<BR>A promise based delay function. The ms (milliseconds) parameter is mandatory and have to be an integer.<BR>__Sample:__<BR>`CEL.sleep(5000).then(() => alert("5 seconds")).catch(console.log.bind(console)).finally(() => alert("done"));`
 `eq(value1, value2);`|__Stability: 4 - Stable.__<BR>SameValueZero equality (like `Object.is();`, but `+0 === -0`). All of the parameters are mandatory and can be any type. The return value is boolean.
 `F();`|__Stability: 4 - Stable.__<BR>This function returns false.
-`getUrlVars([str=location.search]);`|__Stability: 1 - Deprecated and will be removed.__<BR>Get the values of the url variables in an object from the `location.search` _(default value)_ or another given url. The str parameter name is optional and can be a string. Example: `"?showall=true&order_by=updated&o=asc"` -> `Object { showall: "true", order_by: "updated", o: "asc" }`
 `gt(value1, value2);`|__Stability: 4 - Stable.__<BR>Strict type greater than. All of the parameters are mandatory and can be number, bigint, string or boolean, but the values have to be same type. If the type of the values are not the same, then return value is false. The return value is boolean.
 `gte(value1, value2);`|__Stability: 4 - Stable.__<BR>Strict type greater than or equal (SameValueZero). All of the parameters are mandatory and can be number, bigint, string or boolean, but the values have to be same type. If the type of the values are not the same, then return value is false. The return value is boolean.
 `identity(value);`|__Stability: 4 - Stable.__<BR>Return the given value. (In math: `f(x)=x`)
@@ -247,7 +244,6 @@ Name|Description
 `lte(value1, value2);`|__Stability: 4 - Stable.__<BR>Strict type less than or equal (SameValueZero). All of the parameters are mandatory and can be number, bigint, string or boolean, but the values have to be same type. If the type of the values are not the same, then return value is false. The return value is boolean.
 `nanoid([size=21[,alphabet= "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"]]);`|__Stability: 4 - Stable.__<BR>Generate a nanoid. The size parameter is optional and the default value is 21. The alphabet parameter is optional and the default value is "A-Za-z0-9_-". The return value is the generated nanoid (string).
 `noop();`|__Stability: 4 - Stable.__<BR>It's an empty function (no operation) that returns undefined and usable for optional callback arguments.
-`obj2string(object);`|__Stability: 1 - Deprecated and will be removed.__<BR>Convert object to a querystring. The return value is the string. The object parameter is mandatory.
 `omit(object, keys);`|__Stability: 4 - Stable.__<BR>Exclude (filter) keys from an object and return these keys and values in a new object (immutably). All of the parameters are mandatory and the keys has to be an array.
 `once(functions);`|__Stability: 4 - Stable.__<BR>Ensures a function is only called once. The return value is a new function. The function parameter is mandatory.
 `pick(object, keys);`|__Stability: 4 - Stable.__<BR>Select (filter) keys from an object and return these keys and values in a new object (immutably). All of the parameters are mandatory and the keys has to be an array.
@@ -336,7 +332,8 @@ __These functions have been removed in v6.3.0. It's recommend to use the [Fetch 
 
 Name|Description
 ----|-----------
-`is(value[,expectedType[,Throw=false]];`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value type or class is the given expectedType. The expectedType can be a type string, constructor function or an array of the type strings and constructors. If the Throw is true and the value is not matched with the expectedType, then a TypeError will be thrown with detailed error message. The return value is boolean or the type or constructor of the value.
+`constructorOf(value);`|__Stability: 4 - Stable.__<BR>This function returns the constructor property of value, using optional chaining to avoid throwing if value is `null` or `undefined`.
+`is(value[,expectedType[,Throw=false]]);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value type or class is the given expectedType. The expectedType can be a type string, constructor function or an array of the type strings and constructors. If the Throw is true and the value is not matched with the expectedType, then a TypeError will be thrown with detailed error message. The return value is boolean or the type or constructor of the value.
 `isTypedCollection(iter, expectedType, Throw = false);`|__Stability: 4 - Stable.__<BR>This function determines whether values of the provided iterable or iterator are the given expectedType. The expectedType is mandatory and can be a type string, constructor function or an array of the type strings and constructors. If the Throw is true and the values are not matched with the expectedType, then a TypeError will be thrown with detailed error message. The return value is boolean.
 `isArraylike(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is an arraylike object. The return value is boolean.
 `isArrowFunction(value);`|__Stability: 4 - Stable.__<BR>__Old name before v6.5.0: `isArrowFn();`.__<BR>This function determines whether the provided value is an arrow function. The return value is boolean.

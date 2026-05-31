@@ -14,9 +14,9 @@ call tsc celestra.browser.ts --strict --declaration --declarationMap --allowJs -
 echo.
 pause
 echo.
-echo tsc celestra.node.mts --strict --declaration --declarationMap --allowJs --checkJs --pretty --ignoreConfig --diagnostics --removeComments --target ESNEXT --lib ESNEXT,DOM,DOM.iterable,DOM.asynciterable,ESNext.Iterator,webworker.importscripts
+echo tsc celestra.node.ts --strict --declaration --declarationMap --allowJs --checkJs --pretty --ignoreConfig --diagnostics --removeComments --target ESNEXT --lib ESNEXT,DOM,DOM.iterable,DOM.asynciterable,ESNext.Iterator,webworker.importscripts
 echo.
-call tsc celestra.node.mts --strict --declaration --declarationMap --allowJs --checkJs --pretty --ignoreConfig --diagnostics --removeComments --target ESNEXT --lib ESNEXT,DOM,DOM.iterable,DOM.asynciterable,ESNext.Iterator,webworker.importscripts
+call tsc celestra.node.ts --strict --declaration --declarationMap --allowJs --checkJs --pretty --ignoreConfig --diagnostics --removeComments --target ESNEXT --lib ESNEXT,DOM,DOM.iterable,DOM.asynciterable,ESNext.Iterator,webworker.importscripts
 echo.
 pause
 

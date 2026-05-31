@@ -55,14 +55,14 @@
     // Removing this would place the .d.ts files next to the .js files
     "outDir": "."
   },
-  "files": ["./celestra.browser.ts", "./celestra.node.mts"],
+  "files": ["./celestra.browser.ts", "./celestra.node.ts"],
   //"include": ["src/**/*"],
   "include": ["./*.ts"],
   /*
   "exclude": [
     "./celestra.esm.js",
     "./celestra.min.js",
-    "./celestra.node.mjs",
+    "./celestra.node.js",
     "./celestra-assert-plugin.dev.js",
     "./celestra-assert-plugin.min.js",
     "./celestra-polyfills.dev.js",

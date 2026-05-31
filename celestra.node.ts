@@ -10,14 +10,14 @@
 
 /**
  * @name Celestra
- * @version 6.8.0 browser
+ * @version 6.8.0 node
  * @author Ferenc Czigler
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
 
 
-const VERSION = "Celestra v6.8.0 browser";
+const VERSION = "Celestra v6.8.0 node";
 
 
 /** TS browser and NodeJS common types **/
@@ -111,19 +111,6 @@ type ArrowFunction<Args extends any[] = any[], R = any> =
 type TypedArray = Exclude<ArrayBufferView, DataView>;
 
 
-/** TS browser only types **/
-
-
-/** * @description ClearCookiesOptions object type. * @private */
-type ClearCookiesOptions = {
-  path?: string | undefined;
-  domain?: string | undefined;
-  secure?: boolean | undefined;
-  SameSite?: string | undefined;
-  HttpOnly?: boolean | undefined;
-};
-
-
 /** polyfills **/
 
 
@@ -144,6 +131,7 @@ type ClearCookiesOptions = {
 /* Math.sumPrecise(); */
 if (!("sumPrecise" in Math)) {
   (Math as ObjectLike).sumPrecise = function sumPrecise ([...array]): number {
+    /* empty iterator */
     if (array.length === 0) { return -0; }
     /* iterator with items */
     if (array.every((value: unknown): boolean => typeof value === "number")) {
@@ -358,10 +346,8 @@ const pipe = (...functions: Function[]): Function =>
  * @returns {Function}
  */
 const compose = (...functions: Function[]): Function =>
-  (first: any): any => functions.reduceRight(
-    (value, callback): any => callback(value),
-    first
-  );
+  (first: any): any => functions.reduceRight((value, callback): any =>
+    callback(value), first);
 
 
 /**
@@ -445,6 +431,11 @@ async function asyncIdentity (value: unknown): Promise<any> { return value; }
  * @param {boolean} [v4=false] - If true, generates a UUID version 4; otherwise, generates version 7.
  * @returns {string} A randomly generated UUID string.
  */
+/**
+ * @description Generates a random UUID version 7 or UUID version 7 with version 4 ID.
+ * @param {boolean} [v4=false] - If true, generates a UUID version 4; otherwise, generates version 7.
+ * @returns {string} A randomly generated UUID string.
+ */
 function randomUUIDv7(v4: boolean = false): string {
   let version = v4 ? "4" : "7";
   /* 12 hex timestamp digits + 1 version char = 13, but UUID positions 0-7, 9-12 = 12 slots */
@@ -473,7 +464,7 @@ function randomUUIDv7(v4: boolean = false): string {
 
 /**
  * @description Returns a Promise that resolves after a specified delay in milliseconds.
- * @param {number} milisec - The delay duration in milliseconds.
+ ** @param {number} milisec - The delay duration in milliseconds.
  * @returns {Promise<void>} A Promise that resolves after the specified delay.
  */
 const delay = (milisec: number): Promise<void> =>
@@ -482,7 +473,6 @@ const delay = (milisec: number): Promise<void> =>
 
 /**
  * @description Generates a random boolean value.
-
  * @returns {boolean} A randomly generated boolean value.
  */
 const randomBoolean = (): boolean => !Math.round(Math.random());
@@ -539,7 +529,7 @@ const bind = Function.prototype.call.bind(Function.prototype.bind);
  * @param {unknown} value
  * @returns {unknown}
  */
-const constant = <T>(value: T): (() => T) => () => value;
+const constant = <T,>(value: T): (() => T) => () => value;
 
 
 /**
@@ -547,7 +537,7 @@ const constant = <T>(value: T): (() => T) => () => value;
  * @param {unknown} value
  * @returns {unknown}
  */
-const identity = <T,> (value: T): T => value;
+const identity = <T,>(value: T): T => value;
 
 
 /**
@@ -763,7 +753,7 @@ function strDownFirst (str: any): string {
  * @param {any} str - The string to reverse.
  * @returns {string} The reversed string.
  */
-const strReverse = (str: unknown): string =>
+const strReverse = (str: any): string =>
   Array.from(String(str)).reverse().join("");
 
 
@@ -782,7 +772,7 @@ const strCodePoints = (str: any): any[] =>
  * @param {Iterable<number>} iterator - An array or iterable of Unicode code points.
  * @returns {string} The constructed string.
  */
-const strFromCodePoints = ([...array]: Iterable<number>): string =>
+const strFromCodePoints = ([...array]): string =>
   String.fromCodePoint(...array);
 
 
@@ -852,600 +842,6 @@ const strHTMLUnEscape = (str: string): string => String(str).trim()
   .replace(/&apos;/g, "'").replace(/&#39;/g, "'");
 
 
-/** DOM API **/
-
-
-/**
- * @description Selects all elements matching the specified CSS selector within the given context.
- * @param {string} str - The CSS selector to match.
- * @param {Document | HTMLElement} [context=document] - The context in which to search for elements.
- * @returns {any[]} An array of matching elements.
- */
-const qsa = (str: string, context: Document | HTMLElement = document): any[] =>
-  Array.from(context.querySelectorAll(str));
-
-
-/**
- * @description Selects the first element matching the specified CSS selector within the given context.
- * @param {string} str - The CSS selector to match.
- * @param {Document | HTMLElement} [context=document] - The context in which to search for the element.
- * @returns {HTMLElement | null} The first matching element, or null if no match is found.
- */
-const qs = (
-  str: string,
-  context: Document | HTMLElement = document): HTMLElement | null =>
-    context.querySelector(str);
-
-
-/**
- * @description Executes a callback function when the DOM is fully loaded.
- * @param {Function} callback - The callback function to execute.
- * @returns {void}
- */
-function domReady (callback: Function): void {
-  if (document.readyState !== "loading") {
-    callback();
-  } else {
-    document.addEventListener(
-      "DOMContentLoaded",
-      function (_event) { callback(); }
-    );
-  }
-}
-
-
-/* domCreate(type: string[, properties: object[, innerHTML: string]]):
-  element */
-/* domCreate(element descriptive object): HTMLelement */
-/**
- * @description Creates a new DOM element with specified properties and inner HTML.
- * @param {string | object} elementType - The type of element to create or an object describing the element.
- * @param {object} [properties] - An object containing properties to set on the element.
- * @param {string} [innerHTML] - The inner HTML content to set for the element.
- * @returns {HTMLElement} The newly created DOM element.
- */
-function domCreate (
-  elementType: string | ObjectLike,
-  properties: object,
-  innerHTML: string): HTMLElement {
-  if (arguments.length === 1 && typeof elementType  === "object") {
-    let obj = elementType;
-    elementType = obj.elementType;
-    properties = {};
-    for (const [key, value] of Object.entries(obj)) {
-
-      if (key !== "elementType") {(globalThis as ObjectLike)[key] = value; }
-    }
-  }
-  let element: HTMLElement = document.createElement(elementType as string);
-  if (properties) {
-    for (let [key, value] of Object.entries(properties)) {
-      if (key !== "style" || typeof value === "string") {
-        (element as ObjectLike)[key] = value;
-      } else {
-        Object.assign(element.style, value);
-      }
-    }
-  }
-  if (innerHTML) { element.innerHTML = innerHTML; }
-  return element;
-}
-
-
-/**
- * @description Converts an HTML string to a DOM element.
- * @param {string} str - The HTML string to convert.
- * @returns {Element | null} The resulting DOM element, or null if conversion fails.
- */
-function domToElement (str: string): Element | null {
-  let element: HTMLElement = document.createElement("div");
-  element.innerHTML = str;
-  return element.firstElementChild;
-}
-
-
-/**
- * @description Gets the computed CSS property value of a DOM element.
- * @param {HTMLElement} element - The DOM element to retrieve the CSS property from.
- * @param {string | number} [property] - The CSS property name to retrieve. If omitted, returns the full CSSStyleDeclaration.
- * @returns {string | CSSStyleDeclaration} The computed CSS property value or the full CSSStyleDeclaration.
- */
-const domGetCSS = (
-  element: HTMLElement,
-  property: string | number): string | CSSStyleDeclaration =>
-  (property
-    ? (globalThis.getComputedStyle(element, null) as ObjectLike)[property]
-    : globalThis.getComputedStyle(element, null)
-  );
-
-
-/* domSetCSS(element, property: string, value: string): undefined */
-/* domSetCSS(element, properties: object): undefined */
-/**
- * @description Sets CSS property values on a DOM element.
- * @param {HTMLElement} element - The DOM element to set the CSS properties on.
- * @param {string | object} property - The CSS property name to set or an object containing multiple properties and their values.
- * @param {string} [value] - The value to set for the specified CSS property (if `property` is a string).
- * @returns {void}
- */
-function domSetCSS (
-  element: HTMLElement,
-  property: string | object,
-  value: string): void {
-  if (typeof property === "string") {
-    /* @ts-ignore */
-    element.style[property] = value;
-  } else if (typeof property === "object") {
-    Object.keys(property).forEach((key: string): void =>
-      /* @ts-ignore */
-      element.style[key] = property[key]
-    );
-  }
-}
-
-
-/**
- * @description Fades in a DOM element over a specified duration.
- * @param {HTMLElement} element - The DOM element to fade in.
- * @param {number} [duration=500] - The duration of the fade-in effect in milliseconds.
- * @param {string} [display=""] - The CSS display value to set when the element is shown.
- * @returns {void}
- */
-function domFadeIn (
-  element: HTMLElement,
-  duration: number,
-  display: string): void {
-  let style = element.style;
-  let step: number = 25/(duration || 500);
-  style.opacity = (style.opacity ?? 0);
-  style.display = (display || "");
-  (function fade () {
-    /* @ts-ignore */
-    (style.opacity = parseFloat(style.opacity) + step) > 1
-      /* @ts-ignore */
-      ? style.opacity = 1
-      : setTimeout(fade,25);
-  })();
-}
-
-
-/**
- * @description Fades out a DOM element over a specified duration.
- * @param {HTMLElement} element - The DOM element to fade out.
- * @param {number} [duration=500] - The duration of the fade-out effect in milliseconds.
- * @returns {void}
- */
-function domFadeOut (
-  element: HTMLElement, duration: number): void {
-  let style = element.style;
-  let step: number = 25/(duration || 500);
-  /* @ts-ignore */
-  style.opacity = (style.opacity || 1);
-  (function fade () {
-    /* @ts-ignore */
-    (style.opacity -= step) < 0 ? style.display = "none" : setTimeout(fade, 25);
-  })();
-}
-
-
-/**
- * @description Toggles the fade in/out effect of a DOM element over a specified duration.
- * @param {HTMLElement} element - The DOM element to toggle fade effect on.
- * @param {number} [duration=500] - The duration of the fade effect in milliseconds.
- * @param {string} [display=""] - The CSS display value to set when the element is shown.
- * @returns {void}
- */
-function domFadeToggle (
-  element: HTMLElement, duration: number, display: string = ""): void {
-  if (getComputedStyle(element, null).display === "none") {
-    domFadeIn(element, duration, display);
-  } else {
-    domFadeOut(element, duration);
-  }
-}
-
-
-/**
- * @description Hides a DOM element by setting its display style to "none".
- * @param {element} element - The DOM element to hide.
- * @returns {void}
- */
-const domHide = (element: HTMLElement): any => element.style.display = "none";
-
-
-/**
- * @description Shows a DOM element by setting its display style.
- * @param {HTMLElement} element - The DOM element to show.
- * @param {string} [display=""] - The CSS display value to set when showing the element.
- * @returns {void}
- */
-const domShow = (element: HTMLElement, display: string = ""): any =>
-  element.style.display = display;
-
-
-/**
- * @description Toggles the visibility of a DOM element by changing its display style.
- * @param {HTMLElement} element
- * @param {string} [display] - The CSS display value to set when showing the element.
- * @returns {void}
- */
-function domToggle (element: HTMLElement, display: string = ""): void {
-  if (globalThis.getComputedStyle(element, null).display === "none") {
-    element.style.display = display;
-  } else {
-    element.style.display = "none";
-  }
-}
-
-
-/**
- * @description Checks if a DOM element is hidden (i.e., has display style set to "none").
- * @param {HTMLElement} element - The DOM element to check.
- * @returns {boolean} True if the element is hidden, false otherwise.
- */
-const domIsHidden = (element: HTMLElement): boolean =>
-  globalThis.getComputedStyle(element, null).display === "none";
-
-
-/**
- * @description Retrieves all sibling elements of a given DOM element.
- * @param {Element} element - The DOM element whose siblings are to be retrieved.
- * @returns {Element[]} An array of sibling elements.
- */
-function domSiblings (element: Element): Element[] {
-  let parent = element.parentNode;
-  if (!parent) { return []; }
-  return Array.prototype.filter.call(parent.children,
-    (item: HTMLElement): boolean => (item !== element)
-  );
-}
-
-
-/**
- * @description Retrieves all sibling elements before a given DOM element.
- * @param {Element} element - The DOM element whose previous siblings are to be retrieved.
- * @returns {Element[]} An array of previous sibling elements.
- */
-function domSiblingsPrev (element: Element): Element[] {
-  let parent = element.parentNode;
-  if (!parent) { return []; }
-  let siblings = Array.from((parent as Element).children);
-  return siblings.slice(0, siblings.indexOf(element));
-}
-
-
-/**
- * @description Retrieves all sibling elements to the left of a given DOM element.
- * @param {Element} element - The DOM element whose left siblings are to be retrieved.
- * @returns {Element[]} An array of left sibling elements.
- */
-function domSiblingsLeft (element: Element): Element[] {
-  let parent = element.parentNode;
-  if (!parent) { return []; }
-  let siblings = Array.from((parent as Element).children);
-  return siblings.slice(0, siblings.indexOf(element));
-}
-
-
-/**
- * @description Retrieves all sibling elements after a given DOM element.
- * @param {Element} element - The DOM element whose next siblings are to be retrieved.
- * @returns {Element[]} An array of next sibling elements.
- */
-function domSiblingsNext (element: Element): Element[] {
-  let parent = element.parentNode;
-  if (!parent) { return []; }
-  let siblings = Array.from((parent as Element).children);
-  return siblings.slice(siblings.indexOf(element) + 1, parent.children.length);
-}
-
-
-/**
- * @description Retrieves all sibling elements to the right of a given DOM element.
- * @param {Element} element - The DOM element whose right siblings are to be retrieved.
- * @returns {Element[]} An array of right sibling elements.
- */
-function domSiblingsRight (element: Element): Element[] {
-  let parent = element.parentNode;
-  if (!parent) { return []; }
-  let siblings = Array.from((parent as Element).children);
-  return siblings.slice(siblings.indexOf(element) + 1, parent.children.length);
-}
-
-
-/**
- * @description Dynamically imports one or more JavaScript files into the document.
- * @param {string[]} scripts - The URLs of the JavaScript files to import.
- * @returns {void}
- */
-function importScript (...scripts: string[]): void {
-  for (let item of scripts) {
-    let element: HTMLScriptElement = document.createElement("script");
-    element.type = "text\/javascript";
-    element.src = item;
-    element.onerror = function (error: Event | string): void {
-      let source = "";
-      if (typeOf(error) === "object") {
-        source = ((error as ObjectLike).target as ObjectLike).src || "";
-      }
-      throw new URIError(
-        `[importScript] Loading failed${source ? ` for the script with source ${source}` : ""}`
-      );
-    };
-    (document.head||document.getElementsByTagName("head")[0])
-      .appendChild(element);
-  }
-}
-
-
-/**
- * @description Dynamically imports one or more CSS stylesheets into the document.
- * @param {string[]} styles - The URLs of the CSS stylesheets to import.
- * @returns {void}
- */
-function importStyle (...styles: string[]): void {
-  for (let item of styles) {
-    let element: HTMLLinkElement = document.createElement("link");
-    element.rel = "stylesheet";
-    element.type = "text\/css";
-    element.href = item;
-    element.onerror = function (error) {
-      throw new URIError(
-        /* @ts-ignore */
-        `[importStyle] Loading failed for the style with source ${error.target.href}`
-      );
-    };
-    (document.head||document.getElementsByTagName("head")[0])
-      .appendChild(element);
-  }
-}
-
-
-/**
- * @description Converts a form element into an array of key-value pairs.
- * @param {HTMLFormElement} form - The form element to convert.
- * @returns {object[]} An array of objects representing the form data.
- */
-function form2array (form: HTMLFormElement): object[] {
-  let field: any;
-  let result = Array<object>();
-  if (typeOf(form) === "object" && form.nodeName.toLowerCase() === "form") {
-    for (let index = 0, length = form.elements.length; index < length; index++) {
-      field = form.elements[index];
-      if (field.name && !field.disabled
-        && field.type !== "file"
-        && field.type !== "reset"
-        && field.type !== "submit"
-        && field.type !== "button") {
-        if (field.type === "select-multiple") {
-          for (let j = 0, l = ((form.elements[index] as ObjectLike).options as ObjectLike).length; j < l; j++) {
-            if(field.options[j].selected) {
-              result.push({
-                "name": encodeURIComponent(field.name),
-                "value": encodeURIComponent(field.options[j].value)
-              });
-            }
-          }
-        } else if ((field.type!=="checkbox" && field.type!=="radio")
-            ||field.checked
-          ) {
-          result.push({
-            "name": encodeURIComponent(field.name),
-            "value": encodeURIComponent(field.value)
-          });
-        }
-      }
-    }
-  }
-  return result;
-}
-
-
-/**
- * @description Converts a form element into a URL-encoded query string.
- * @param {HTMLFormElement} form - The form element to convert.
- * @returns {string} A URL-encoded query string representing the form data.
- */
-function form2string (form: HTMLFormElement): string {
-  let field: any;
-  let result: string[] = [];
-  if (typeOf(form) === "object" && form.nodeName.toLowerCase() === "form") {
-    for (let index = 0, length = form.elements.length; index < length; index++) {
-      field = form.elements[index];
-      if (field.name && !field.disabled
-        && field.type !== "file"
-        && field.type !== "reset"
-        && field.type !== "submit"
-        && field.type !== "button") {
-        if (field.type === "select-multiple") {
-          /* @ts-ignore */
-          for (let j = 0, l = form.elements[index].options.length; j < l; j++) {
-            if(field.options[j].selected) {
-              result.push(encodeURIComponent(field.name)
-                + "=" + encodeURIComponent(field.options[j].value));
-            }
-          }
-        } else if ((field.type!=="checkbox" && field.type!=="radio")
-          || field.checked) {
-          result.push(encodeURIComponent(field.name)
-            + "=" + encodeURIComponent(field.value)
-          );
-        }
-      }
-    }
-  }
-  return result.join("&").replace(/%20/g, "+");
-}
-
-
-/**
- * @description Checks if the Do Not Track setting is enabled in the browser.
- * @returns {boolean} True if Do Not Track is enabled, false otherwise.
- */
-const getDoNotTrack = (): boolean =>
-  /* @ts-ignore */
-  [navigator.doNotTrack, globalThis.doNotTrack, navigator.msDoNotTrack]
-    .some((item: any): boolean => item === true || item === 1 || item === "1");
-
-
-/**
- * @description Retrieves the current geographical location of the user.
- * @param {PositionCallback} successCallback - The callback function to execute on successful retrieval of location.
- * @param {PositionErrorCallback} [errorCallback] - The callback function to execute on error.
- * @returns {void}
- */
-function getLocation (
-  successCallback: PositionCallback,
-  errorCallback: PositionErrorCallback = console.error): void {
-  function getError (error: any) {
-    if (typeof error === "string") {
-      errorCallback({
-        code: 0,
-        message: error,
-        PERMISSION_DENIED: 1,
-        POSITION_UNAVAILABLE: 2,
-        TIMEOUT: 3
-      } as GeolocationPositionError);
-    } else {
-      errorCallback(error);
-    }
-  }
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(successCallback, getError);
-  } else {
-    getError("Geolocation is not supported in this browser.");
-  }
-}
-
-
-/**
- * @description Creates and triggers a download of a file with specified content and data type.
- * @param {string} filename - The name of the file to be created.
- * @param {string} content - The content to be included in the file.
- * @param {string} [dataType="text/plain"] - The MIME type of the file content.
- * @returns {void}
- */
-function createFile (
-  filename: string,
-  content: string,
-  dataType: string = "text/plain"): void {
-  let blob = new Blob([content], {type: dataType});
-  let el = document.createElement("a");
-  el.href = globalThis.URL.createObjectURL(blob);
-  el.download = filename;
-  document.body.appendChild(el);
-  el.click();
-  document.body.removeChild(el);
-  globalThis.URL.revokeObjectURL(el.href);
-}
-
-
-/**
- * @description Retrieves the current fullscreen element, if any.
- * @returns {Document | Element | undefined} The fullscreen element or undefined if not in fullscreen mode.
- */
-const getFullscreen = (): Document | Element | undefined =>
-  document.fullscreenElement
-    /* @ts-ignore */
-    ?? document.mozFullScreenElement
-    /* @ts-ignore */
-    ?? document.webkitFullscreenElement
-    /* @ts-ignore */
-    ?? document.msFullscreenElement
-    ?? undefined;
-
-
-/**
- * @description Sets the specified element to fullscreen mode.
- * @param {HTMLElement | string} element - The DOM element or CSS selector of the element to set to fullscreen.
- * @returns {void}
- */
-function setFullscreenOn (element: HTMLElement | string): void {
-  let elem: HTMLElement | null = null;
-  if (typeof element === "string") { elem = document.querySelector(element); }
-    else if (element && typeof element === "object") { elem = element; }
-  if (elem && elem.requestFullscreen) { elem.requestFullscreen(); }
-    /* @ts-ignore */
-    else if (elem.mozRequestFullScreen) { elem.mozRequestFullScreen(); }
-    /* @ts-ignore */
-    else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); }
-    /* @ts-ignore */
-    else if (elem.msRequestFullscreen) { elem.msRequestFullscreen(); }
-}
-
-
-/**
- * @description Exits fullscreen mode.
- * @returns {void}
- */
-function setFullscreenOff (): void {
-  if (document.exitFullscreen) { document.exitFullscreen(); }
-    /* @ts-ignore */
-    else if (document.mozCancelFullScreen) { document.mozCancelFullScreen(); }
-    /* @ts-ignore */
-    else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); }
-    /* @ts-ignore */
-    else if (document.msExitFullscreen) { document.msExitFullscreen(); }
-}
-
-
-/**
- * @description Gets the value of a CSS variable from the root element.
- * @param {string} name - The name of the CSS variable to retrieve.
- * @returns {string} The value of the CSS variable.
- */
-const domGetCSSVar = (name: string): string =>
-  getComputedStyle(document.documentElement)
-    .getPropertyValue(name[0] === "-" ? name : "--" + name);
-
-
-/**
- * @description Sets the value of a CSS variable on the root element.
- * @param {string} name - The name of the CSS variable to set.
- * @param {string | null} value - The value to set for the CSS variable.
- * @returns {void}
- */
-const domSetCSSVar = (name: string, value: string | null): void =>
-  document.documentElement.style.setProperty(
-    (name[0] === "-" ? name : "--" + name),
-    value
-  );
-
-
-/**
- * @description Scrolls the document to the top.
- * @returns {void}
- */
-const domScrollToTop = (): void => globalThis.scrollTo(0,0);
-
-
-/**
- * @description Scrolls the document to the bottom.
- * @returns {void}
- */
-const domScrollToBottom = (): void =>
-  globalThis.scrollTo(0, document.body.scrollHeight);
-
-
-/**
- * @description Scrolls the document to bring a specified element into view.
- * @param {HTMLElement} element - The DOM element to scroll to.
- * @param {boolean} [top=true] - If true, aligns the element to the top of the viewport; if false, aligns it to the bottom.
- * @returns {void}
- */
-const domScrollToElement = (element: HTMLElement, top: boolean = true): void =>
-  element.scrollIntoView(top);
-
-
-/**
- * @description Removes all child elements from a given DOM element.
- * @param {Element} element - The DOM element to clear.
- * @returns {void}
- */
-const domClear = (element: Element): void =>
-  Array.from(element.children).forEach((item: Element): void => item.remove());
-
-
 /** Type API **/
 
 
@@ -1475,12 +871,12 @@ const isNonNullable = (value: unknown): value is NonNullable<unknown> =>
  */
 const isNonNullablePrimitive =
   (value: unknown): value is NonNullablePrimitive =>
-    value != null && typeof value !== "object" && typeof value !== "function";
+    value != null && typeOf(value) !== "object" && typeof value !== "function";
 
 
 /**
  * @description Checks if a value is an arrow function.
- * @note There is no built-in type for ArrowFunction
+ * @note There is no built-in type for ArrowFunction.
  * @param {unknown} value
  * @returns {boolean} true if the value is an arrow function, false otherwise.
  */
@@ -1532,14 +928,14 @@ function isTypedCollection (
     );
   }
   /* Validate `expected` */
-  if (!(["string", "function"].includes(typeof expectedType))
+  if (!(["string", "function"].includes(typeOf(expectedType)))
     && !Array.isArray(expectedType)) {
     throw new TypeError(
       `[isTypedCollection] TypeError: expectedType must be string, function, array. Got ${typeOf(expectedType)}`
     );
   }
   /* Validate `Throw` */
-  if (typeOf(Throw) !== "boolean") {
+  if (typeof Throw !== "boolean") {
     throw new TypeError(
       `[isTypedCollection] TypeError: Throw has to be a boolean. Got ${typeOf(Throw)}`
     );
@@ -1590,7 +986,7 @@ function is (
   expectedType?: string | Function | Array<string | Function> | undefined,
   Throw: boolean = false): string | Function | boolean {
   /* Validate `expected` */
-  if (!(["string", "function", "undefined"].includes(typeof expectedType))
+  if (!(["string", "function", "undefined"].includes(typeOf(expectedType)))
     && !Array.isArray(expectedType)) {
     throw new TypeError(
       `[is] TypeError: expectedType must be string, function, array or undefined. Got ${typeOf(expectedType)}`
@@ -1631,7 +1027,7 @@ function is (
     let vName: string =
       value.toString ? value.toString() : Object.prototype.toString.call(value);
     let eNames: string = expectedArray.map((item: any): string =>
-      (typeof item === "string" ? item.toString() : item.name ?? "anonymous")
+      (typeof item  === "string" ? item.toString() : item.name ?? "anonymous")
     ).join(", ");
     throw new TypeError(
       `[is] TypeError: ${vName} is not one of these: ${eNames}`
@@ -1651,7 +1047,7 @@ function toObject (value: unknown): Object | symbol | Function {
   if (value == null) {
     throw new TypeError(`[toObject] error: value is ${value}`);
   }
-  return (["object", "function"].includes(typeof value))
+  return (["object", "function"].includes(typeOf(value)))
     ? value
     : Object(value);
 }
@@ -1664,7 +1060,7 @@ function toObject (value: unknown): Object | symbol | Function {
  * @returns {any} The primitive value or the original object if not a wrapper.
  */
 function toPrimitive (value: unknown): any {
-  if (value == null || typeof value !== "object") { return value; }
+  if (value == null || typeOf(value) !== "object") { return value; }
   let vType = Object.prototype.toString.call(value).slice(8, -1);
   if (["Boolean", "BigInt", "Number", "String", "Symbol"].includes(vType)) {
     return value.valueOf();
@@ -1701,9 +1097,6 @@ function toSafeString (value: unknown): string {
   }
   if (Array.isArray(value)) {
     return `[${value.map(v => toSafeString(v)).join(", ")}]`;
-  }
-  if (ArrayBuffer.isView(value) && !(value instanceof DataView)) {
-    return `[${[...(value as any)].map(v => toSafeString(v)).join(", ")}]`;
   }
   if (value instanceof Map) {
     return `Map(${value.size}){${Array.from(value.entries()).map(([k, v]): string => `${toSafeString(k)} => ${toSafeString(v)}`).join(", ")}}`;
@@ -1742,15 +1135,16 @@ const toPropertyKey = (value: unknown): PropertyKey =>
  * @param value - The value to check.
  * @returns True if the value is a valid array index, otherwise false.
  */
-const isIndex = (value: unknown): value is number => Number.isSafeInteger(value)
-  && (value as number) >= 0
-  && 1 / (value as number) !== 1 / -0;
+const isIndex = (value: unknown): value is number =>
+  Number.isSafeInteger(value)
+    && (value as number) >= 0
+    && 1 / (value as number) !== 1 / -0;
 
 
 /**
- * @descriptionChecks if a value is a valid array index (integer between 0 and Number.MAX_SAFE_INTEGER).
+ * Checks if a value is a valid array length (integer between 0 and Number.MAX_SAFE_INTEGER).
  * @param value - The value to check.
- * @returns True if the value is a valid array index, otherwise false.
+ * @returns True if the value is a valid array length, otherwise false.
  */
 const isLength = (value: unknown): value is number =>
   Number.isSafeInteger(value)
@@ -1810,7 +1204,8 @@ const isSameType = (value1: any, value2: any): boolean =>
  */
 const isSameInstance = (
   value1: any,
-  value2: any, Contructor: Function): boolean =>
+  value2: any,
+  Contructor: Function): boolean =>
   value1 instanceof Contructor && value2 instanceof Contructor;
 
 
@@ -1897,8 +1292,7 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
       if ((value1 as any).length !== (value2 as any).length) { return false; }
       if ((value1 as any).length === 0) { return true; }
       return (value1 as any).every((value: unknown, index: any): boolean =>
-        Object.is(value, (value2 as any)[index])
-      );
+        Object.is(value, (value2 as any)[index]));
     }
     /* objects / ArrayBuffer */
     if (isSameInstance(value1, value2, ArrayBuffer)) {
@@ -1930,9 +1324,8 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
     if (isSameInstance(value1, value2, Set)) {
       if (value1.size !== value2.size) { return false; }
       if (value1.size === 0) { return true; }
-      return [...value1.keys()].every(
-        (value: unknown): boolean => value2.has(value)
-      );
+      return [...value1.keys()].every((value: unknown): boolean =>
+        value2.has(value));
     }
     /* objects / RegExp */
     if (isSameInstance(value1, value2, RegExp)) {
@@ -1954,7 +1347,8 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
         Object.getOwnPropertyNames(value2).reduce(
           function (acc: any, k: any): object {
             acc[k] = value2[k];
-            return acc; },
+            return acc;
+          },
           {}
         )
       );
@@ -2047,7 +1441,7 @@ const isProxy = (value: any): boolean =>
 
 /**
  * @description Checks if the given value is an Async Generator Function.
- * @note AsyncGeneratorFunction -> builtin TS type  in lib.es2018.asyncgenerator.ts
+ * @note AsyncGeneratorFunction -> builtin TS type in lib.es2018.asyncgenerator.ts
  * @param {unknown} value - The value to check.
  * @returns True if the value is an Async Generator Function, false otherwise.
  */
@@ -2144,8 +1538,9 @@ const isPrimitive = (value: unknown): value is Primitive =>
  * @description Tests whether a value is an Iterator.
  * @param {unknown} value The value to check.
  * @returns {boolean} Return true if value is an Iterator, false if not.
+ * @private
  */
-const isIterator = <T>(value: unknown): value is Iterator<T> =>
+const isIterator = (value: unknown): value is Iterator<any> =>
   "Iterator" in globalThis
     ? value instanceof Iterator
     : (typeOf(value) === "object"
@@ -2173,6 +1568,7 @@ const isElement = (value: any): boolean =>
  * @description Tests whether a value is an Iterable.
  * @param {unknown} value The value to check.
  * @returns {boolean} Return true if value is an Iterable, false if not.
+ * @private
  */
 const isIterable = (value: unknown): value is Iterable<any> =>
   value != null && typeof (value as any)[Symbol.iterator] === "function";
@@ -2183,7 +1579,7 @@ const isIterable = (value: unknown): value is Iterable<any> =>
  * @param {unknown} value The value to check.
  * @returns {boolean} Return true if value is an Async Iterable, false if not.
  */
-const isAsyncIterable = <T>(value: unknown): value is AsyncIterable<T> =>
+const isAsyncIterable = (value: unknown): boolean =>
   value != null && typeof (value as any)[Symbol.asyncIterator] === "function";
 
 
@@ -2217,203 +1613,11 @@ const isAsyncFunction = <T,>(value: unknown): value is AsyncFunction<T> =>
     Object.getPrototypeOf(async function(){}).constructor;
 
 
-/** Cookie API **/
-
-
-/* setCookie(Options object): undefined */
-/* setCookie(name: string, value: string [, hours = 8760 [, path = "/" [, domain
-  [, secure [, SameSite = "Lax" [, HttpOnly]]]]]]): undefined */
-/**
- * @description Set a cookie.
- * @param {string | ObjectLike} name - The name of the cookie or an options object.
- * @param {string} value - The value of the cookie.
- * @param {number} [hours=8760] - The expiration time in hours (default is 1 year).
- * @param {string} [path="/"] - The path where the cookie is valid.
- * @param {string} [domain] - The domain where the cookie is valid.
- * @param {boolean} [secure] - Whether the cookie is only sent over secure connections.
- * @param {string} [SameSite="Lax"] - The SameSite attribute of the cookie.
- * @param {boolean} [HttpOnly] - Whether the cookie is inaccessible to JavaScript.
- * @returns {void}
- */
-function setCookie (
-  name: string | ObjectLike,
-  value: string,
-  hours: number = 8760,
-  path: string = "/",
-  domain: string,
-  secure: boolean,
-  SameSite: string = "Lax",
-  HttpOnly: boolean): void {
-  if (typeOf(name) === "object") {
-    let settings = name;
-    name = (settings as ObjectLike).name;
-    value = (settings as ObjectLike).value;
-    hours = (settings as ObjectLike).hours || 8760;
-    path = (settings as ObjectLike).path || "/";
-    domain = (settings as ObjectLike).domain;
-    secure = (settings as ObjectLike).secure;
-    SameSite = (settings as ObjectLike).SameSite || "Lax";
-    HttpOnly = (settings as ObjectLike).HttpOnly;
-  }
-  let expire = new Date();
-  expire.setTime(expire.getTime() + (Math.round(hours * 60 * 60 * 1000)));
-  document.cookie = encodeURIComponent(name as string)
-    + "=" + encodeURIComponent(value)
-    + "; expires=" + expire.toUTCString()
-    + "; path=" + path
-    + (domain ? "; domain=" + domain : "")
-    + (secure ? "; secure" : "")
-    + (typeof SameSite==="string" && SameSite.length
-      ? "; SameSite=" + SameSite
-      : ""
-    )
-    + (HttpOnly ? "; HttpOnly" : "")
-    + ";";
-}
-
-
-/* getCookie(): object | string | null */
-/* getCookie([name: string]): object | string | null */
-/**
- * @description Get a cookie by name or all cookies as an object.
- * @param {string} [name] - The name of the cookie to retrieve.
- * @returns {object | string | null} An object with all cookies, the value of the specified cookie, or null if not found.
- */
-function getCookie (name: string): string | null | ObjectLike {
-  /* if no cookies -> return null or empty object */
-  if (!document.cookie.length) { return typeof name === "string" ? null : {}; }
-   /* create cookieObject with names and values */
-  let cookieObject: ObjectLike = {};
-  for (let cookie of document.cookie.split(";")) {
-    let [cookieName, value] = cookie.trim().split("=");
-    cookieObject[decodeURIComponent(cookieName)] = decodeURIComponent(value);
-  }
-  /* return the value of a cookie or the cookieObject */
-  return typeof name === "string" ? (cookieObject[name] ?? null) : cookieObject;
-}
-
-
-/**
- * @description Checks if a cookie with the given name exists.
- * @param {string} name - The name of the cookie to check.
- * @returns {boolean} True if the cookie exists, false otherwise.
- */
-function hasCookie (name: string): boolean {
-  /* if no cookies -> return false */
-  if (!document.cookie.length) { return false; }
-  /* check the existing of the cookie with name */
-  for (let cookie of document.cookie.split(";")) {
-    if (decodeURIComponent(cookie.trim().split("=")[0]) === name) {
-      return true;
-    }
-  }
-  return false;
-}
-
-
-/* removeCookie(Options object);: boolean */
-/* removeCookie(name: string [, path = "/"
-  [, domain [, secure [, SameSite = "Lax" [, HttpOnly ]]]]]): boolean */
-/**
- * @description Removes a cookie by name.
- * @param {string | ObjectLike} name - The name of the cookie to remove or an options object.
- * @param {string} [path="/"] - The path where the cookie is valid.
- * @param {string} [domain] - The domain where the cookie is valid.
- * @param {boolean} [secure] - Whether the cookie is only sent over secure connections.
- * @param {string} [SameSite="Lax"] - The SameSite attribute of the cookie.
- * @param {boolean} [HttpOnly] - Whether the cookie is inaccessible to JavaScript.
- * @returns {boolean} True if the cookie existed and was removed, false otherwise.
- */
-function removeCookie (
-  name: string | ObjectLike,
-  path: string = "/",
-  domain: string,
-  secure: boolean,
-  SameSite: string = "Lax",
-  HttpOnly: boolean): boolean {
-  /* if no cookies -> return false */
-  if (!document.cookie.length) { return false; }
-  if (name && typeof name === "object") {
-    let settings = name;
-    name = settings.name;
-    path = settings.path || "/";
-    domain = settings.domain;
-    secure = settings.secure;
-    SameSite = settings.SameSite || "Lax";
-    HttpOnly = settings.HttpOnly;
-  }
-  /* check the existing of the cookie with name */
-  let result: boolean = false;
-  for (let cookie of document.cookie.split(";")) {
-    if (decodeURIComponent(cookie.trim().split("=")[0]) === name) {
-      result = true;
-      break;
-    }
-  }
-  /* if cookie doesn't exists -> return false */
-  if (result) {
-    document.cookie = encodeURIComponent(name as string)
-      + "=; expires=Thu, 01 Jan 1970 00:00:01 GMT"
-      + "; path=" + path
-      + (domain ? "; domain=" + domain : "")
-      + (secure ? "; secure" : "")
-      + (typeof SameSite === "string" && SameSite.length ?
-        "; SameSite=" + SameSite : "")
-      + (HttpOnly ? "; HttpOnly" : "")
-      + ";";
-  }
-  return result;
-}
-
-
-/* clearCookies(Options object): undefined */
-/* clearCookies([path = "/"
-  [, domain [, secure [, SameSite = "Lax" [, HttpOnly ]]]]]): undefined */
-/**
- * @description Clears all cookies.
- * @param {string | ClearCookiesOptions} [path="/"] - The path where the cookies are valid or an options object.
- * @param {string} [domain] - The domain where the cookies are valid.
- * @param {boolean} [secure] - Whether the cookies are only sent over secure connections.
- * @param {string} [SameSite="Lax"] - The SameSite attribute of the cookies.
- * @param {boolean} [HttpOnly] - Whether the cookies are inaccessible to JavaScript.
- * @returns {void}
- */
-function clearCookies (
-  path: string | ClearCookiesOptions = "/",
-  domain?: string,
-  secure?: boolean,
-  SameSite: string | undefined = "Lax",
-  HttpOnly?: boolean): void {
-  if (path && typeof path === "object") {
-    let settings = path;
-    path = settings.path ?? "/";
-    domain = settings.domain;
-    secure = settings.secure;
-    SameSite = settings.SameSite ?? "Lax";
-    HttpOnly = settings.HttpOnly;
-  }
-  if (document.cookie.length) {
-    /* get the cookie names */
-    for(let item of document.cookie.split(";")) {
-      document.cookie = encodeURIComponent(item.trim().split("=")[0])
-        + "=; expires=Thu, 01 Jan 1970 00:00:01 GMT"
-        + "; path=" + path
-        + (domain ? "; domain=" + domain : "")
-        + (secure ? "; secure" : "")
-        + (typeof SameSite === "string" && SameSite.length ?
-          "; SameSite=" + SameSite : "")
-        + (HttpOnly ? "; HttpOnly" : "")
-        + ";";
-    }
-  }
-}
-
-
 /** Collections API **/
 
 
 /**
- * Returns an array wrapping the value, or the original array if already one.
+ * @description Returns an array wrapping the value, or the original array if already one.
  * @param {unknown} value
  * @returns {any[]} An array wrapping the value, or the original array if already one.
  */
@@ -2749,7 +1953,7 @@ function* iterRepeat (value: unknown, num: number = Infinity): GeneratorLike {
 
 /**
  * @description Takes the elements from an iterable or iterator and returns a new iterator while the checking function returns true.
- * @param iter - An iterable or iterator to take elements from.
+ * @param {IterableLike} iter - An iterable or iterator to take elements from.
  * @param callback - Number of elements to take (default: 1).
  * @yields The next element in the taken iterator.
  */
@@ -2772,7 +1976,7 @@ function* takeWhile <T>(
 
 /**
  * @description Take the elements from an iterable or iterator and returns a new iterator after the checking function returns false.
- * @param iter - An iterable or iterator to take elements from.
+ * @param {IterableLike} iter - An iterable or iterator to take elements from.
  * @param callback - Number of elements to take (default: 1).
  * @yields The next element in the dropped iterator.
  */
@@ -2795,7 +1999,7 @@ function* dropWhile <T>(iter: IterableLike, callback: Function): GeneratorLike {
 
 /**
  * @description Takes up to `num` elements from an iterable or iterator and returns a new iterator.
- * @param iter - An iterable or iterator to take elements from.
+ * @param {IterableLike} iter - An iterable or iterator to take elements from.
  * @param num - Number of elements to take (default: 1).
  * @yields The next element in the taken iterator.
  */
@@ -2809,7 +2013,7 @@ function* take <T>(iter: IterableLike, num: number = 1): GeneratorLike {
   }
   for (let index = 0; index < num; index++) {
     const { value, done } = iterator.next();
-    if (done) { break; }
+    if (done) { break };
     yield value;
   }
 }
@@ -2817,7 +2021,7 @@ function* take <T>(iter: IterableLike, num: number = 1): GeneratorLike {
 
 /**
  * @description Skips the first `num` elements from an iterable or iterator and yields the rest.
- * @param iter - An iterable or iterator to drop elements from.
+ * @param {IterableLike} iter - An iterable or iterator to drop elements from.
  * @param num - Number of elements to skip (default: 1).
  * @yields The next element in the dropped iterator.
  */
@@ -2838,12 +2042,12 @@ function* drop <T>(iter: IterableLike, num: number = 1): GeneratorLike {
   /* Drop the first `num` elements */
   for (let index = 0; index < num; index++) {
     const { done } = iterator.next();
-    if (done) { return; }
+    if (done) { return };
   }
   /* Yield the rest */
   while (true) {
     const { value, done } = iterator.next();
-    if (done) { break; }
+    if (done) { break };
     yield value;
   }
 }
@@ -2915,7 +2119,7 @@ function* reject (iter: IterableLike, callback: Function): GeneratorLike {
 
 /**
  * @description Yields elements from `begin` (inclusive) up to `end` (exclusive) from an iterable or iterator. Works similarly to Array.prototype.slice.
- * @param iter - Iterable or iterator to slice.
+ * @param {IterableLike} iter - Iterable or iterator to slice.
  * @param begin - Start index (inclusive, default: 0).
  * @param end - End index (exclusive, default: Infinity).
  * @yields The elements from the specified slice of the input iterable or iterator.
@@ -2946,7 +2150,7 @@ function* slice <T>(
 /**
  * @description Yields all elements of an iterable or iterator except the first one. Similar to Array.prototype.slice(1).
  * @param input - Iterable or iterator to process.
- * @yields The elements of the input iterable or iterator, excluding the first one.
+ * @yields The next element in the tail iterator.
  */
 function* tail <T>(input: IterableLike): GeneratorLike {
   let iterator: Iterator<T>;
@@ -2969,7 +2173,7 @@ function* tail <T>(input: IterableLike): GeneratorLike {
 
 /**
  * @description Returns the element at a specific position from an iterable or iterator. If the position is out of range, returns undefined.
- * @param iter - Iterable or iterator to extract from.
+ * @param {IterableLike} iter - Iterable or iterator to extract from.
  * @param pos - Zero-based index of the desired element.
  * @returns The element at the specified position, or undefined if out of range.
  */
@@ -2993,7 +2197,7 @@ function item <T>(iter: IterableLike, pos: number): T | undefined {
 
 /**
  * @description Returns the element at a specific position from an iterable or iterator. If the position is out of range, returns undefined.
- * @param iter - Iterable or iterator to extract from.
+ * @param {IterableLike} iter - Iterable or iterator to extract from.
  * @param pos - Zero-based index of the desired element.
  * @returns The element at the specified position, or undefined if out of range.
  */
@@ -3046,7 +2250,6 @@ function size (value: any): number {
 
 /**
  * @description Returns the first element from an iterable or iterator. If the iterable is empty, returns undefined.
-
  * @param input - Iterable or iterator to extract from.
  * @returns The first element, or undefined if the iterable is empty.
  */
@@ -3081,7 +2284,6 @@ function head <T>(input: IterableLike): T | undefined {
 
 /**
  * @description Returns the last element from an iterable or iterator. If the iterable is empty, returns undefined.
-
  * @param {any[]} array - Iterable or iterator to extract from.
  * @returns {any} The last element, or undefined if the iterable is empty.
  */
@@ -3101,7 +2303,7 @@ function* reverse ([...array]: any[]): GeneratorLike {
 
 /**
  * @description Returns a new array with the elements of the input iterable sorted.
- * @param iter - The iterable to sort.
+ * @param {IterableLike} iter - The iterable to sort.
  * @param numbers - Whether to sort the elements as numbers.
  * @returns A new array with the sorted elements.
  */
@@ -3131,7 +2333,7 @@ function includes (
   /* helper functions */
   let _isEqual = comparator ?? eq; /* SameValueZero */
   /* Collection: Primitives, WeakMap, WeakSet */
-  let cType = typeOf(collection);
+  let cType = (typeOf(collection));
   if (collection == null
     || !(["object", "function", "string"].includes(cType))
     || collection instanceof WeakMap
@@ -3156,7 +2358,7 @@ function includes (
   }
   /* Iterator or Iterables (Array, Set, TypedArrays, other Iterables, etc.) */
   if (isIterator(collection) || isIterable(collection)) {
-    if ([...(collection as any)]
+    if ([...collection as any]
       .findIndex((item) => _isEqual(item, value)) > -1) {
       return true;
     }
@@ -3199,7 +2401,7 @@ const find = ([...array]: any[], callback: Function): unknown =>
  * @param {Function} callback - The function to test each element.
  * @returns {any} The last element that satisfies the testing function, or undefined if none do.
  */
-const findLast = ([...array]: any[], callback: Function): unknown =>
+const findLast = ([...array], callback: Function): unknown =>
   array.findLast((value, index) => callback(value, index));
 
 
@@ -3216,7 +2418,7 @@ const every = ([...array]: any[], callback: Function): boolean => array.length
 
 /**
  * @description Tests whether at least one element in the iterable passes the test implemented by the provided function.
- * @param {any} array - The iterable to test.
+ * @param {any[]} array - The iterable to test.
  * @param {Function} callback - The function to test each element.
  * @returns {boolean} True if at least one element passes the test, false otherwise.
  */
@@ -3266,7 +2468,7 @@ function* takeRightWhile (
 
 /**
  * @description Returns a new array with the last `num` elements removed from the input iterable.
- * @param {IterableLike} iter - The iterable to drop elements from.
+ * @param {any[]} array - The iterable to drop elements from.
  * @param {number} [num=1] - The number of elements to drop from the end.
  * @returns {any[]} A new array with the last `num` elements removed.
  */
@@ -3381,7 +2583,7 @@ function join (iter: IterableLike, separator: string = ","): string {
  * @param {any[]} filterValues - The iterable containing values to exclude.
  * @returns {any[]} A new array with the filtered elements.
  */
-const withOut = ([...array]: any[], [...filterValues]: any[]): any[] =>
+const withOut = ([...array], [...filterValues]): any[] =>
   array.filter((value: unknown): boolean => !filterValues.includes(value));
 
 
@@ -3441,7 +2643,7 @@ function sub (value1: Numeric, value2: Numeric): Numeric {
  */
 function mul (value1: number, value2: number): number;
 function mul (value1: bigint, value2: bigint): bigint;
-function mul(value1: Numeric, value2: Numeric): Numeric {
+function mul (value1: Numeric, value2: Numeric): Numeric {
   if (typeof value1 === "number" && typeof value2 === "number") {
     return value1 * value2;
   }
@@ -3550,13 +2752,14 @@ const isFloat = (value: unknown): boolean =>
  * @returns {number} The converted integer.
  */
 function toInteger (value: any): number {
-  value = ((value = Math.trunc(Number(value))) !== value || value === 0)
-    ? 0
-    : value;
+  value =
+    ((value = Math.trunc(Number(value))) !== value || value === 0)
+      ? 0
+      : value;
   return Math.min(
     Math.max(value, Number.MIN_SAFE_INTEGER),
-    Number.MAX_SAFE_INTEGER
-  );
+      Number.MAX_SAFE_INTEGER
+    );
 }
 
 
@@ -3666,8 +2869,8 @@ function clamp (
     return value;
   }
   if (typeof value !== "bigint"
-    && typeof value !== "bigint"
-    && typeof value !== "bigint") {
+    && typeof min !== "bigint"
+    && typeof min !== "bigint") {
     value = _numberNormalize(value);
     min = _numberNormalize(min);
     max = _numberNormalize(max);
@@ -3690,7 +2893,6 @@ function clamp (
 }
 
 
-
 /**
  * @description Clamps a value between a minimum and maximum.
  * @param {Numeric} value - The value to clamp.
@@ -3698,9 +2900,7 @@ function clamp (
  * @param {Numeric} max - The maximum value.
  * @returns {Numeric} The clamped value.
  */
-function minmax (value: number, min: number, max: number): number;
-function minmax (value: bigint, min: bigint, max: bigint): bigint;
-function minmax (
+function minmax(
   value: Numeric,
   min: Numeric = Number.MIN_SAFE_INTEGER,
   max: Numeric = Number.MAX_SAFE_INTEGER): Numeric {
@@ -3931,7 +3131,7 @@ const isUInt32 = (value: unknown | number): boolean => Number.isInteger(value)
  */
 const isBigInt64 = (value: unknown): boolean => typeof value === "bigint"
   && value >= Math.pow(-2, 63)
-  && value <= Math.pow(2, 63) - 1;
+  && value <= Math.pow(2, 63)-1;
 
 
 /**
@@ -3949,8 +3149,7 @@ const isBigUInt64 = (value: unknown | Numeric): boolean =>
  */
 const toFloat16 = (value: unknown): number =>
   ((value = Math.min(Math.max(-65504, Number(value)), 65504)) === value )
-    ? value as number
-    : 0;
+    ? value as number : 0;
 
 
 /**
@@ -4104,42 +3303,6 @@ export default {
   strHTMLRemoveTags,
   strHTMLEscape,
   strHTMLUnEscape,
-  /** DOM API **/
-  qsa,
-  qs,
-  domReady,
-  domCreate,
-  domToElement,
-  domGetCSS,
-  domSetCSS,
-  domFadeIn,
-  domFadeOut,
-  domFadeToggle,
-  domHide,
-  domShow,
-  domToggle,
-  domIsHidden,
-  domSiblings,
-  domSiblingsPrev,
-  domSiblingsLeft,
-  domSiblingsNext,
-  domSiblingsRight,
-  importScript,
-  importStyle,
-  form2array,
-  form2string,
-  getDoNotTrack,
-  getLocation,
-  createFile,
-  getFullscreen,
-  setFullscreenOn,
-  setFullscreenOff,
-  domGetCSSVar,
-  domSetCSSVar,
-  domScrollToTop,
-  domScrollToBottom,
-  domScrollToElement,
-  domClear,
   /** Type API **/
   constructorOf,
   isNonNullable,
@@ -4181,12 +3344,6 @@ export default {
   isTypedArray,
   isGeneratorFunction,
   isAsyncFunction,
-  /** Cookie API **/
-  setCookie,
-  getCookie,
-  hasCookie,
-  removeCookie,
-  clearCookies,
   /** Collections API **/
   castArray,
   compact,
@@ -4352,42 +3509,6 @@ export {
   strHTMLRemoveTags,
   strHTMLEscape,
   strHTMLUnEscape,
-  /** DOM API **/
-  qsa,
-  qs,
-  domReady,
-  domCreate,
-  domToElement,
-  domGetCSS,
-  domSetCSS,
-  domFadeIn,
-  domFadeOut,
-  domFadeToggle,
-  domHide,
-  domShow,
-  domToggle,
-  domIsHidden,
-  domSiblings,
-  domSiblingsPrev,
-  domSiblingsLeft,
-  domSiblingsNext,
-  domSiblingsRight,
-  importScript,
-  importStyle,
-  form2array,
-  form2string,
-  getDoNotTrack,
-  getLocation,
-  createFile,
-  getFullscreen,
-  setFullscreenOn,
-  setFullscreenOff,
-  domGetCSSVar,
-  domSetCSSVar,
-  domScrollToTop,
-  domScrollToBottom,
-  domScrollToElement,
-  domClear,
   /** Type API **/
   constructorOf,
   isNonNullable,
@@ -4429,12 +3550,6 @@ export {
   isTypedArray,
   isGeneratorFunction,
   isAsyncFunction,
-  /** Cookie API **/
-  setCookie,
-  getCookie,
-  hasCookie,
-  removeCookie,
-  clearCookies,
   /** Collections API **/
   castArray,
   compact,
