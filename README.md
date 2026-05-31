@@ -15,6 +15,10 @@ __Tested on these environments:__
 - Windows Chrome
 - Windows Edge
 - Windows Samsung Browser
+- macOS Safari
+- macOS Firefox
+- macOS Chrome
+- macOS Edge
 - iOS Safari
 - iOS Firefox
 - iOS Chrome
