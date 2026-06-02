@@ -198,8 +198,7 @@ __Cookie API__|`getCookie();`<BR>`hasCookie();`<BR>`setCookie();`<BR>`removeCook
 
 ### Celestra v6.8.0 changes
 
-1. New documentation.
-2. These files have been renamed: __celestra.node.mts__ to __celestra.node.ts__ and __celestra.node.mjs__ to __celestra.node.js__.
+1. These files have been renamed: __celestra.node.mts__ to __celestra.node.ts__ and __celestra.node.mjs__ to __celestra.node.js__.
 
 -----
 

@@ -15,6 +15,7 @@ node --version
 echo ""
 node unittest.node.js
 echo ""
+read -r -n 1 -s -p $'Press any key to continue...\n'
 echo "========================================================================"
 echo ""
 echo "Deno Version:"
@@ -23,3 +24,4 @@ echo ""
 deno unittest.node.js
 echo ""
 echo "========================================================================"
+read -r -n 1 -s -p $'Press any key to continue...\n'

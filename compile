@@ -12,11 +12,13 @@ echo "tsc celestra.browser.ts --strict --declaration --declarationMap --allowJs 
 echo ""
 tsc celestra.browser.ts --strict --declaration --declarationMap --allowJs --checkJs --pretty --diagnostics --removeComments --ignoreConfig --target ESNEXT --lib ESNEXT,DOM,DOM.iterable,DOM.asynciterable,ESNext.Iterator,webworker.importscripts
 echo ""
+read -r -n 1 -s -p $'Press any key to continue...\n'
 echo ""
 echo "tsc celestra.node.ts --strict --declaration --declarationMap --allowJs --checkJs --pretty --diagnostics --removeComments --ignoreConfig --target ESNEXT --lib ESNEXT,DOM,DOM.iterable,DOM.asynciterable,ESNext.Iterator,webworker.importscripts"
 echo ""
 tsc celestra.node.ts --strict --declaration --declarationMap --allowJs --checkJs --pretty --diagnostics --removeComments --ignoreConfig --target ESNEXT --lib ESNEXT,DOM,DOM.iterable,DOM.asynciterable,ESNext.Iterator,webworker.importscripts
 echo ""
+read -r -n 1 -s -p $'Press any key to continue...\n'
 
 # from https://www.typescriptlang.org/tsconfig/
 # es2015, es2016, es2017, es2018, es2019, es2020, es2021, es2022, es2023, 
