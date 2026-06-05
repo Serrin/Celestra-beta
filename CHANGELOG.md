@@ -1,6 +1,33 @@
 
-
 # Celestra version history
+
+## Celestra v6.8.0.1
+
+1. Only documentation changes and no code changes.
+2. Deprecate _(stability 1)_ these functions:
+
+- `drop();`
+- `dropRight();`
+- `dropRightWhile();`
+- `dropWhile();`
+- `enumerate();`
+- `every();`
+- `filter();`
+- `find();`
+- `forEach();`
+- `forEachRight();`
+- `flat();`
+- `map();`
+- `none();`
+- `partition();`
+- `reduce();`
+- `reject();`
+- `some();`
+- `take();`
+- `takeRight();`
+- `takeRightWhile();`
+- `takeWhile();`
+- `withOut();`
 
 ## Celestra v6.8.0
 
