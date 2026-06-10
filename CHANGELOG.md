@@ -1,6 +1,36 @@
 
 # Celestra version history
 
+## Celestra v6.9.0 McCoy
+
+1. Documentation, pdf and code fixes.
+2. Replace the function `isSameType();` with the new version from the __assert.js__
+3. Remove _(stability 0)_ these functions:
+
+- `drop();`
+- `dropRight();`
+- `dropRightWhile();`
+- `dropWhile();`
+- `enumerate();`
+- `every();`
+- `filter();`
+- `find();`
+- `forEach();`
+- `forEachRight();`
+- `flat();`
+- `map();`
+- `none();`
+- `partition();`
+- `reduce();`
+- `reject();`
+- `some();`
+- `take();`
+- `takeRight();`
+- `takeRightWhile();`
+- `takeWhile();`
+- `withOut();`
+
+
 ## Celestra v6.8.0.1
 
 1. Only documentation changes and no code changes.

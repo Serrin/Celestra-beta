@@ -10,14 +10,14 @@
 
 /**
  * @name Celestra
- * @version 6.8.0 browser
+ * @version 6.9.0 browser
  * @author Ferenc Czigler
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
 
 
-const VERSION = "Celestra v6.8.0 browser";
+const VERSION = "Celestra v6.9.0 browser";
 
 
 /** TS browser and NodeJS common types **/
@@ -1794,12 +1794,15 @@ const typeOf = (value: unknown): string =>
 
 /**
  * @description Checks if two values are the same type.
- * @param {any} value1 - The first value to compare.
- * @param {any} value2 - The second value to compare.
- * @returns {boolean} True if both values are of the same type, false otherwise.
+ * @param {any} value1
+ * @param {any} value2
+ * @param {string} [type]
+ * @returns {boolean}
  */
-const isSameType = (value1: any, value2: any): boolean =>
-  typeOf(value1) === typeOf(value2);
+const isSameType = (value1: unknown, value2: unknown, type?: string): boolean =>
+  typeof type === "string"
+    ? typeOf(value1) === type && typeOf(value2) === type
+    : typeOf(value1) === typeOf(value2);
 
 
 /**
@@ -2512,19 +2515,6 @@ function shuffle ([...array]: any[]): unknown[] {
 
 
 /**
- * @description Splits an iterable into two arrays based on a predicate function.
- * @param {IterableLike} iter - The iterable to partition.
- * @param {(value: any, index: number, obj: any[]) => unknown} callback - The predicate function to test each element.
- * @returns {any[][]} An array containing two arrays: the first with elements that satisfy the predicate, and the second with elements that do not.
- */
-const partition = (
-  [...array]: any[],
-  callback: (value: any, index: number, obj: any[]) => unknown): any[] =>
-  [array.filter(callback), array.filter((value, index, array): boolean =>
-    !(callback(value, index, array)))];
-
-
-/**
  * @description Returns the minimum value from the provided arguments.
  * @param {...any} args - The values to compare.
  * @returns {any} The minimum value among the provided arguments.
@@ -2748,108 +2738,6 @@ function* iterRepeat (value: unknown, num: number = Infinity): GeneratorLike {
 
 
 /**
- * @description Takes the elements from an iterable or iterator and returns a new iterator while the checking function returns true.
- * @param iter - An iterable or iterator to take elements from.
- * @param callback - Number of elements to take (default: 1).
- * @yields The next element in the taken iterator.
- */
-function* takeWhile <T>(
-  iter: IterableLike,
-  callback: Function): GeneratorLike {
-  let iterator: Iterator<T>;
-  if (typeof (iter as Iterator<T>).next === "function") {
-    iterator = iter as Iterator<T>;
-  } else {
-    iterator = (iter as Iterable<T>)[Symbol.iterator]();
-  }
-  while (true) {
-    const { value, done } = iterator.next();
-    if (done || !callback(value)) { break; }
-    yield value;
-  }
-}
-
-
-/**
- * @description Take the elements from an iterable or iterator and returns a new iterator after the checking function returns false.
- * @param iter - An iterable or iterator to take elements from.
- * @param callback - Number of elements to take (default: 1).
- * @yields The next element in the dropped iterator.
- */
-function* dropWhile <T>(iter: IterableLike, callback: Function): GeneratorLike {
-  let iterator: Iterator<T>;
-  if (typeof (iter as Iterator<T>).next === "function") {
-    iterator = iter as Iterator<T>;
-  } else {
-    iterator = (iter as Iterable<T>)[Symbol.iterator]();
-  }
-  let skip = true;
-  while (true) {
-    const { value, done } = iterator.next();
-    if (done) { break; }
-    if (skip) { skip = callback(value); }
-    if (!skip) { yield value; }
-  }
-}
-
-
-/**
- * @description Takes up to `num` elements from an iterable or iterator and returns a new iterator.
- * @param iter - An iterable or iterator to take elements from.
- * @param num - Number of elements to take (default: 1).
- * @yields The next element in the taken iterator.
- */
-function* take <T>(iter: IterableLike, num: number = 1): GeneratorLike {
-  if (num <= 0) { return; }
-  let iterator: Iterator<T>;
-  if (typeof (iter as Iterator<T>).next === "function") {
-    iterator = iter as Iterator<T>;
-  } else {
-    iterator = (iter as Iterable<T>)[Symbol.iterator]();
-  }
-  for (let index = 0; index < num; index++) {
-    const { value, done } = iterator.next();
-    if (done) { break; }
-    yield value;
-  }
-}
-
-
-/**
- * @description Skips the first `num` elements from an iterable or iterator and yields the rest.
- * @param iter - An iterable or iterator to drop elements from.
- * @param num - Number of elements to skip (default: 1).
- * @yields The next element in the dropped iterator.
- */
-function* drop <T>(iter: IterableLike, num: number = 1): GeneratorLike {
-  if (num <= 0) {
-    /* If nothing to drop, just yield everything */
-    yield* (typeof (iter as Iterator<T>).next === "function"
-      ? { [Symbol.iterator]: () => iter as Iterator<T> }
-      : (iter as Iterable<T>));
-    return;
-  }
-  let iterator: Iterator<T>;
-  if (typeof (iter as Iterator<T>).next === "function") {
-    iterator = iter as Iterator<T>;
-  } else {
-    iterator = (iter as Iterable<T>)[Symbol.iterator]();
-  }
-  /* Drop the first `num` elements */
-  for (let index = 0; index < num; index++) {
-    const { done } = iterator.next();
-    if (done) { return; }
-  }
-  /* Yield the rest */
-  while (true) {
-    const { value, done } = iterator.next();
-    if (done) { break; }
-    yield value;
-  }
-}
-
-
-/**
  * @description Executes a provided function once for each element in an iterable.
  * @param {IterableLike} iter - The iterable to iterate over.
  * @param {Function} callback - The function to call for each element.
@@ -2858,18 +2746,6 @@ function* drop <T>(iter: IterableLike, num: number = 1): GeneratorLike {
 function forEach (iter: IterableLike, callback: Function): void {
   let index: number = 0;
   for (let item of iter as Iterable<any>) { callback(item, index++); }
-}
-
-
-/**
- * @description Executes a provided function once for each element in an iterable, in reverse order.
- * @param {any[]} iter - The iterable to iterate over.
- * @param {Function} callback - The function to call for each element.
- * @returns {void}
- */
-function forEachRight ([...array]: any[], callback: Function): void {
-  let index: number = array.length;
-  while (index--) { callback(array[index], index); }
 }
 
 
@@ -2895,20 +2771,6 @@ function* filter (iter: IterableLike, callback: Function): GeneratorLike {
   let index: number = 0;
   for (let item of iter as Iterable<any>) {
     if (callback(item, index++)) { yield item; }
-  }
-}
-
-
-/**
- * @description Creates a new iterator with all elements that do not pass the test implemented by the provided function.
- * @param {IterableLike} iter - The iterable to reject from.
- * @param {Function} callback - The function to test each element.
- * @returns {Iterator} A new iterator with the rejected values.
- */
-function* reject (iter: IterableLike, callback: Function): GeneratorLike {
-  let index: number = 0;
-  for (let item of iter as Iterable<any>) {
-    if (!callback(item, index++)) { yield item; }
   }
 }
 
@@ -3215,17 +3077,6 @@ const every = ([...array]: any[], callback: Function): boolean => array.length
 
 
 /**
- * @description Tests whether at least one element in the iterable passes the test implemented by the provided function.
- * @param {any} array - The iterable to test.
- * @param {Function} callback - The function to test each element.
- * @returns {boolean} True if at least one element passes the test, false otherwise.
- */
-const some = ([...array]: any[], callback: Function): boolean => array.length
-  ? array.some((value, index) => callback(value, index))
-  : false;
-
-
-/**
  * @description Tests whether no elements in the iterable pass the test implemented by the provided function.
  * @param {any[]} array - The iterable to test.
  * @param {Function} callback - The function to test each element.
@@ -3233,65 +3084,6 @@ const some = ([...array]: any[], callback: Function): boolean => array.length
  */
 const none = ([...array]: any[], callback: Function): boolean =>
   !array.some((value, index) => callback(value, index));
-
-
-/**
- * @description Returns the last `num` elements from an iterable as an array.
- * @param {any[]} array - The iterable to take elements from.
- * @param {number} [num=1] - The number of elements to take from the end.
- * @returns {any[]} An array containing the last `num` elements.
- */
-const takeRight = ([...array]: any[], num: number = 1): any[] =>
-  array.reverse().slice(0, num);
-
-
-/**
- * @description Yields elements from the end of an iterable while the provided function returns true.
- * @param {any[]} array - The iterable to take elements from.
- * @param {Function} callback - The function to test each element.
- * @yields The elements from the end of the iterable that satisfy the testing function.
- */
-function* takeRightWhile (
-  [...array]: any[],
-  callback: Function): GeneratorLike {
-  if (!array.length) { return; }
-  let index = array.length;
-  while (index--) {
-    let item = array[index];
-    if (!callback(item, index)) { break; }
-    yield item;
-  }
-}
-
-
-/**
- * @description Returns a new array with the last `num` elements removed from the input iterable.
- * @param {IterableLike} iter - The iterable to drop elements from.
- * @param {number} [num=1] - The number of elements to drop from the end.
- * @returns {any[]} A new array with the last `num` elements removed.
- */
-const dropRight = ([...array]: any[], num: number = 1): any[] =>
-  array.reverse().slice(num);
-
-
-/**
- * @description Yields elements from the end of an iterable after the provided function returns false.
- * @param {any[]} array - The iterable to drop elements from.
- * @param {Function} callback - The function to test each element.
- * @yields The elements from the end of the iterable after the testing function returns false.
- */
-function* dropRightWhile (
-  [...array]: any[],
-  callback: Function): GeneratorLike {
-  if (!array.length) { return; }
-  let index = array.length;
-  let skip = true;
-  while (index--) {
-    let item = array[index];
-    if (skip) { skip = callback(item, index); }
-    if (!skip) { yield item; }
-  }
-}
 
 
 /**
@@ -3329,18 +3121,6 @@ function reduce (
 
 
 /**
- * @description Yields pairs of index and element from an iterable, starting from the specified offset.
- * @param {IterableLike} iter - The iterable to enumerate.
- * @param {number} [offset=0] - The starting index for enumeration.
- * @yields {[number, any]} Pairs of index and element from the iterable.
- */
-function* enumerate (iter: IterableLike, offset: number = 0): GeneratorLike {
-  let index: number = offset;
-  for (let item of iter as Iterable<any>) { yield [index++, item]; }
-}
-
-
-/**
  * @description Flattens a nested iterable structure into a single-level iterator.
  * @param {IterableLike} iter - The nested iterable to flatten.
  * @yields The elements from the flattened iterable.
@@ -3373,16 +3153,6 @@ function join (iter: IterableLike, separator: string = ","): string {
   for (let item of iter as Iterable<any>) { result += separator + item; }
   return result.slice(separator.length);
 }
-
-
-/**
- * @description Returns a new array with elements from the input iterable that are not present in the filter iterable.
- * @param {any[]} array - The iterable to filter.
- * @param {any[]} filterValues - The iterable containing values to exclude.
- * @returns {any[]} A new array with the filtered elements.
- */
-const withOut = ([...array]: any[], [...filterValues]: any[]): any[] =>
-  array.filter((value: unknown): boolean => !filterValues.includes(value));
 
 
 /** Math API **/
@@ -4195,7 +3965,6 @@ export default {
   arrayDeepClone,
   initial,
   shuffle,
-  partition,
   min,
   max,
   arrayRepeat,
@@ -4212,15 +3981,9 @@ export default {
   iterRange,
   iterCycle,
   iterRepeat,
-  takeWhile,
-  dropWhile,
-  take,
-  drop,
   forEach,
-  forEachRight,
   map,
   filter,
-  reject,
   slice,
   tail,
   item,
@@ -4235,18 +3998,11 @@ export default {
   find,
   findLast,
   every,
-  some,
   none,
-  takeRight,
-  takeRightWhile,
-  dropRight,
-  dropRightWhile,
   concat,
   reduce,
-  enumerate,
   flat,
   join,
-  withOut,
   /** Math API **/
   add,
   sub,
@@ -4443,7 +4199,6 @@ export {
   arrayDeepClone,
   initial,
   shuffle,
-  partition,
   min,
   max,
   arrayRepeat,
@@ -4460,15 +4215,9 @@ export {
   iterRange,
   iterCycle,
   iterRepeat,
-  takeWhile,
-  dropWhile,
-  take,
-  drop,
   forEach,
-  forEachRight,
   map,
   filter,
-  reject,
   slice,
   tail,
   item,
@@ -4483,18 +4232,11 @@ export {
   find,
   findLast,
   every,
-  some,
   none,
-  takeRight,
-  takeRightWhile,
-  dropRight,
-  dropRightWhile,
   concat,
   reduce,
-  enumerate,
   flat,
   join,
-  withOut,
   /** Math API **/
   add,
   sub,

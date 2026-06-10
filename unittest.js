@@ -15,7 +15,7 @@ try {
 
 /* Celestra unit tester */
 
-CUT.VERSION = "Celestra Unit Tester (CUT) v6.8.0 for browser (ESM)";
+CUT.VERSION = "Celestra Unit Tester (CUT) v6.9.0 for browser (ESM)";
 
 CUT.__results__ = document.querySelector("#results");
 CUT.__resultsFailed__ = document.querySelector("#resultsFailed");
@@ -299,7 +299,7 @@ var /** @type any */ token12, /** @type any */ token13;
 var /** @type any */ token14, /** @type any */ token15;
 
 
-/* Celestra v6.8.0 testcases */
+/* Celestra v6.9.0 testcases */
 
 
 /** Not auto tested functions **/
@@ -1313,18 +1313,6 @@ CUT.isTrue("arrayDeepClone();",
 );
 
 
-/* withOut(); */
-CUT.isEqual("withOut();", "[\"a\",\"c\"]",
-  JSON.stringify(CEL.withOut(["a", "b", "c", "d"], ["b", "d"]))
-);
-
-
-/* partition(); */
-CUT.isEqual("partition();", "[[2,7,34],[-5,-9]]",
-  JSON.stringify(CEL.partition([-5, 2, -9, 7, 34], (e) => (e > 0)))
-);
-
-
 /* initial(); */
 CUT.isTrue("initial();",
   CEL.isDeepStrictEqual(CEL.initial(["a", "b", "c", "d"]), ["a", "b", "c"])
@@ -1364,103 +1352,6 @@ CUT.isEqual("iterRepeat(); 02", "AB AB AB AB AB",
 );
 
 
-/* forEach(); */
-token1 = "";
-CEL.forEach([1, 2, 3], function (e) { token1 += (e * 2); });
-CUT.isEqual("forEach(); 01", "246", token1);
-token1 = "";
-CEL.forEach("cat, dog, pig", function (e) { token1 += e.toUpperCase(); });
-CUT.isEqual("forEach(); 02", "CAT, DOG, PIG", token1);
-token1 = 0;
-CEL.forEach(document.querySelectorAll("h3"), function (_e) { token1++; });
-CUT.isEqual("forEach(); 03", token1, document.querySelectorAll("h3").length);
-token1 = "";
-// @ts-ignore
-CEL.forEach(new Map([ ["foo", 3.14], ["bar", 42], ["baz", "Wilson"] ]),
-  function (e,i) { token1 += i + "-" + e + "-"; }
-);
-CUT.isEqual("forEach(); 05", "0-foo,3.14-1-bar,42-2-baz,Wilson-",token1);
-token1 = 0;
-CEL.forEach(new Set([4, 5, 6]), function (e) { token1 += (e * 3); });
-CUT.isEqual("forEach(); 06", 45, token1);
-token1 = 0;
-CEL.forEach((new Set([4,5,6])).values(), function (e) { token1+=(e * 3); });
-CUT.isEqual("forEach(); 07", 45, token1);
-
-
-/* forEachRight(); */
-token1 = "";
-CEL.forEachRight([1, 2, 3], function (e) { token1 += (e * 2); });
-CUT.isEqual("forEachRight();", "642", token1);
-
-
-/* map(); */
-// @ts-ignore
-CUT.isEqual("map(); 01", "2 4 6", CUT.join(CEL.map([1, 2, 3], (e) => e * 2)));
-CUT.isEqual("map(); 02", "CAT, DOG, PIG",
-  // @ts-ignore
-  CUT.join(CEL.map("cat, dog, pig", (e) => e.toUpperCase()), "")
-);
-// @ts-ignore
-token1 = [...CEL.map(document.querySelectorAll("h3"), (e) => e)];
-CUT.isTrue("map(); 03",
-  Array.isArray(token1) && token1.every((e) => CEL.isElement(e))
-);
-token1 = "";
-// @ts-ignore
-for (let item of CEL.map(
-  new Map([ ["foo", 1], ["bar", 2], ["baz", 3] ]), (e) => [e[0], e[1] * 2])) {
-  token1 += item[0] + item[1];
-}
-CUT.isEqual("map(); 04", "foo2bar4baz6", token1);
-CUT.isEqual("map(); 05", "2 4 6",
-  // @ts-ignore
-  CUT.join(CEL.map(new Set([1, 2, 3]), (e) => e * 2))
-);
-CUT.isEqual("map(); 06", "3 6 9",
-  // @ts-ignore
-  CUT.join(CEL.map((new Set([1, 2, 3])).values(), (e) => e * 3))
-);
-
-
-/* take(); */
-token1 = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
-// @ts-ignore
-CUT.isEqual("take(); 01", "", CUT.join(CEL.take(token1, 0)));
-// @ts-ignore
-CUT.isEqual("take(); 02", "A B C D E F G", CUT.join(CEL.take(token1, 7)));
-// @ts-ignore
-CUT.isEqual("take(); 03", "A B C D E F G H I J", CUT.join(CEL.take(token1, 12)));
-// @ts-ignore
-CUT.isEqual("take(); 04 - default 1", "A", CUT.join(CEL.take(token1)));
-
-
-/* drop(); */
-token1 = ["A", "B" , "C", "D", "E", "F", "G", "H", "I", "J"];
-// @ts-ignore
-CUT.isEqual("drop(); 01", "A B C D E F G H I J", CUT.join(CEL.drop(token1, 0)));
-// @ts-ignore
-CUT.isEqual("drop(); 02", "H I J", CUT.join(CEL.drop(token1, 7)));
-// @ts-ignore
-CUT.isEqual("drop(); 03", "", CUT.join(CEL.drop(token1, 12)));
-// @ts-ignore
-CUT.isEqual("drop(); 04", "B C D E F G H I J", CUT.join(CEL.drop(token1)));
-
-
-/* filter(); */
-CUT.isEqual("filter();", "4 5 6 7 8",
-  // @ts-ignore
-  CUT.join(CEL.filter([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], (v) => (v > 3 && v < 9)))
-);
-
-
-/* reject(); */
-CUT.isEqual("reject();", "1 2 3 9 10",
-  // @ts-ignore
-  CUT.join(CEL.reject([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], (v) => (v > 3 && v < 9)))
-);
-
-
 /* slice(); */
 token1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 // @ts-ignore
@@ -1476,32 +1367,6 @@ CUT.isEqual("slice(); 04", "1 2 3 4 5 6 7 8 9 10", CUT.join(CEL.slice(token1)));
 /* tail(); */
 // @ts-ignore
 CUT.isEqual("tail();", "2 3 4 5 6", CUT.join(CEL.tail([1, 2, 3, 4, 5, 6])));
-
-
-/* takeWhile(); */
-token1 = [0, 2, 4, 6, 8, 10, 12, 14, 16];
-token2 = 0;
-for (let item of CEL.takeWhile(token1, (e) => e < 10)) { token2 += item; }
-CUT.isEqual("takeWhile(); 01", token2, 20);
-token2 = 0;
-for (let item of CEL.takeWhile(token1, (e) => e < 0)) { token2 += item; }
-CUT.isEqual("takeWhile(); 02", token2, 0);
-token2 = 0;
-for (let item of CEL.takeWhile(token1, (e) => e < 30)) { token2 += item; }
-CUT.isEqual("takeWhile(); 03", token2, 72);
-
-
-/* dropWhile(); */
-token1 = [0, 2, 4, 6, 8, 10, 12, 14, 16];
-token2 = 0;
-for (let item of CEL.dropWhile(token1, (e) => e < 10)) { token2 += item; }
-CUT.isEqual("dropWhile(); 01", token2, 52);
-token2 = 0;
-for (let item of CEL.dropWhile(token1, (e) => e < 30)) { token2 += item; }
-CUT.isEqual("dropWhile(); 02", token2, 0);
-token2 = 0;
-for (let item of CEL.dropWhile(token1, (e) => e < 0)) { token2 += item; }
-CUT.isEqual("dropWhile(); 03", token2, 72);
 
 
 /* item(); */
@@ -1641,87 +1506,11 @@ CUT.isTrue("includes(); 01",
 CUT.isError("includes(); 02 error", () => CEL.includes([], 2, 2));
 
 
-/* find(); */
-CUT.isEqual("find(); 01", 6, CEL.find([4, 5, 6, 7, 8, 9], (v) => (v > 5)));
-CUT.isEqual("find(); 02", undefined, CEL.find([4, 5, 6, 7, 8, 9],(v) => (v>11)));
-
-
 /* findLast(); */
 CUT.isTrue("findLast();",
   CEL.findLast([4, 1, 7, 2, 9], (v) => v < 5) === 2
     && CEL.findLast([4, 1, 7, 2, 9], (v) => v > 10) === undefined
 );
-
-
-/* every(); */
-CUT.isTrue("every(); 01", CEL.every([2, 9, 3, 5, 8], (v) => v > 1));
-CUT.isFalse("every(); 02", CEL.every([2, 9, 3, 5, 8], (v)=> v > 3));
-CUT.isFalse("every(); 03", CEL.every([2, 9, 3, 5, 8], (v) =>v < 0));
-CUT.isFalse("every(); 04",CEL.every([], (v) => v > 3));
-
-
-/* some(); */
-CUT.isTrue("some(); 01", CEL.some([2, 9, 3, 5, 8], (v) => v > 3));
-CUT.isFalse("some(); 02", CEL.some([2, 9, 3, 5, 8], (v) => v < 0));
-CUT.isFalse("some(); 03", CEL.some([], (v) => v < 0));
-
-
-/* none(); */
-CUT.isTrue("none(); 01", CEL.none([2, 9, 3, 5, 8], (v) => v < 0));
-CUT.isFalse("none(); 02", CEL.none([2, 9, 3, 5, 8], (v) => v > 1));
-CUT.isFalse("none(); 03", CEL.none([2, 9, 3, 5, 8], (v) => v > 3));
-CUT.isTrue("none(); 04", CEL.none([], (v) => v > 3));
-
-
-/* takeRight(); */
-token1 = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
-CUT.isEqual("takeRight(); 01", "", CUT.join(CEL.takeRight(token1, 0)));
-CUT.isEqual("takeRight(); 02", "J I H G F E D",
-  CUT.join(CEL.takeRight(token1, 7))
-);
-CUT.isEqual("takeRight(); 03", "J I H G F E D C B A",
-  CUT.join(CEL.takeRight(token1, 12))
-);
-CUT.isEqual("takeRight(); 04", "J", CUT.join(CEL.takeRight(token1)));
-
-
-/* dropRight(); */
-token1 = ["J", "I", "H", "G", "F", "E", "D", "C", "B", "A"];
-CUT.isEqual("dropRight(); 01", "A B C D E F G H I J",
-  CUT.join(CEL.dropRight(token1, 0))
-);
-CUT.isEqual("dropRight(); 02", "H I J", CUT.join(CEL.dropRight(token1, 7)));
-CUT.isEqual("dropRight(); 03", "", CUT.join(CEL.dropRight(token1, 12)));
-CUT.isEqual("dropRight(); 04", "B C D E F G H I J",
-  CUT.join(CEL.dropRight(token1))
-);
-
-
-/* takeRightWhile(); */
-token1 = [16, 14, 12, 10, 8, 6, 4, 2, 0];
-token2 = 0;
-// @ts-ignore
-for (let item of CEL.takeRightWhile(token1, (e) => e < 10)) { token2 += item; }
-CUT.isEqual("takeRightWhile(); 01", token2, 20);
-token2 = 0;
-for (let item of CEL.takeRightWhile(token1, (e) => e < 0)) { token2 += item; }
-CUT.isEqual("takeRightWhile(); 02", token2, 0);
-token2 = 0;
-for (let item of CEL.takeRightWhile(token1, (e) => e < 30)) { token2 += item; }
-CUT.isEqual("takeRightWhile(); 03", token2, 72);
-
-
-/* dropRightWhile(); */
-token1 = [16, 14, 12, 10, 8, 6, 4, 2, 0];
-token2 = 0;
-for (let item of CEL.dropRightWhile(token1, (e) => e < 10)) { token2 += item; }
-CUT.isEqual("dropRightWhile(); 01", token2, 52);
-token2 = 0;
-for (let item of CEL.dropRightWhile(token1, (e) => e < 30)) { token2 += item; }
-CUT.isEqual("dropRightWhile(); 02", token2, 0);
-token2 = 0;
-for (let item of CEL.dropRightWhile(token1, (e) => e < 0)) { token2 += item; }
-CUT.isEqual("dropRightWhile(); 03", token2, 72);
 
 
 /* concat(); */
@@ -1730,33 +1519,6 @@ CUT.isEqual("concat(); 01", "[4,5,6]",
 );
 CUT.isEqual("concat(); 02", "[4,5,6,7,8,9]",
   JSON.stringify([...CEL.concat([4, 5, 6], new Set([7, 8, 9]))])
-);
-
-
-/* reduce(); */
-CUT.isEqual("reduce(); 01", 39,
-  CEL.reduce([4, 5, 6, 7, 8, 9].values(), (acc, v, _i) => acc + v, 0)
-);
-CUT.isEqual("reduce(); 02", 39,
-  CEL.reduce([4, 5, 6, 7, 8, 9].values(), (acc, v, _i) => acc + v)
-);
-
-
-/* enumerate(); */
-CUT.isEqual("enumerate(); 01",
-  JSON.stringify([...CEL.enumerate(["Picard", "Riker", "Data"])]),
-  "[[0,\"Picard\"],[1,\"Riker\"],[2,\"Data\"]]"
-);
-CUT.isEqual("enumerate(); 02",
-  JSON.stringify([...CEL.enumerate(["Picard", "Riker", "Data"], 2)]),
-  "[[2,\"Picard\"],[3,\"Riker\"],[4,\"Data\"]]"
-);
-
-
-/* flat(); */
-CUT.isEqual("flat();", "[1,2,3,4,5,6,7,8,9,10]",
-  JSON.stringify([...CEL.flat([[1, 2, 3].values(),
-  new Set([4, 5, 6, 6, 7, 7, 4]), [8, 9], 10])])
 );
 
 
@@ -2327,6 +2089,9 @@ CUT.isTrue("isSameType();",
   && !CEL.isSameType(42, "42")
   && !CEL.isSameType(null, {})
   && !CEL.isSameType({}, null)
+  &&  CEL.isSameType(null, null, "null")
+  &&  CEL.isSameType("x", "y", "string")
+  && !CEL.isSameType(42, "y", "number")
 );
 
 
