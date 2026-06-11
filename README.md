@@ -73,9 +73,9 @@ globalThis.CEL = celestra;
 
 <script type="module">
 // import some functions
-import { first, map } from "./celestra.browser.js";
+import { first, last } from "./celestra.browser.js";
 globalThis.first = first;
-globalThis.map = map;
+globalThis.map = last;
 </script>
 
 <script type="module">
@@ -105,9 +105,9 @@ globalThis.celestra = celestra;
 globalThis.CEL = celestra;
 
 // import some functions
-import { first, map } from "./celestra.nodejs.js";
+import { first, last } from "./celestra.nodejs.js";
 globalThis.first = first;
-globalThis.map = map;
+globalThis.map = last;
 
 // dynamic import
 const celestra = await import("./celestra.node.js");
@@ -124,64 +124,19 @@ __Cookie API__|`getCookie();`<BR>`hasCookie();`<BR>`setCookie();`<BR>`removeCook
 
 ### Celestra v3.0.0 (Hera) changes
 
-- Only modern browsers (ES6+) are supported. The Internet Explorer 11 and W10M Edge have been removed from the supported browsers.
-
-- If you would like to use Celestra with older browsers, then you can download the latest v2.x version here: [https://github.com/Serrin/Celestra/releases](https://github.com/Serrin/Celestra/releases)
-
-- The library sources have been merged and all of the ES6E functions are available in the __celestra.dev.js__ and __celestra.min.js__.
-
-- Many functions have been deprecated or removed.
-
-### Celestra v3.6.0 (Galactica) changes
-
-- CommonJS and AMD module compatibility have been removed.
-
-- In the ESM (ECMAScript 6 module) edition only the whole celestra object is exported as default export and as standalone object.
-
-- Many functions have been deprecated or removed.
+- Only modern browsers (ES6+) are supported. The Internet Explorer 11 and W10M Edge have been removed from the supported browsers. If you would like to use Celestra with older browsers, then you can download the last v2.x version here: [https://github.com/Serrin/Celestra/releases](https://github.com/Serrin/Celestra/releases)
 
 ### Celestra v5.0.0 (Defiant) changes
 
 - The underscore `_` short object name has been changed to `CEL` to avoid the compatibility issues.
 
-### Celestra v5.5.0 changes
-
-- The Math functions are available in the main code files (dev, min, esm) instead of the Math plugins.
-
-### Celestra v5.6.0 (Razorback) changes
-
-- 21 polyfills have been removed.
-
-### Celestra v5.7.0 (Nostromo) changes
-
-- The module edition (__celestra.esm.js__) import has been changed.
-- Added __Assert API v3__ and the old assert functions have been removed.
-- The `getText();` and `getJson();` functions have been modified to standalone function.
-
-### Celestra v5.8.0 (Uhura) changes
-
-- 50 functions have been removed.
-
-### Celestra v5.9.0 (Final five) changes
-
-- 12 functions and a polyfill have been removed.
-
 ### Celestra v6.0.0 (David) changes
 
-- The Node.js and Deno support has been added.
+- Node.js and Deno support has been added.
 
 ### Celestra v6.1.0 (Sulaco) changes
 
-- Please read in the documentation about the new files and import methods for the browser edition!
-- The __celestra.dev.js__ has been replaced with the __celestra.browser.ts__.
-- The __celestra.min.js__ has been replaced with the __celestra.browser.js__.
-- The __celestra.node.mjs__ has been remained and added the __celestra.node.mts__.
-- The `isNil();` function has been renamed to `isNullish();`.
-- The `assertIsNil();` function has been renamed to `assertIsNullish();`.
-- The `assertIsNotNil();` function has been renamed to `assertIsNotNullish();`.
-- The `type();` function has been renamed to `typeOf();`.
-- The `celestra.noConflict();` function has been removed.
-- Some deprecated functions have been removed.
+- TypeScript source files have been added.
 
 ### Celestra v6.3.0 (Bishop) changes
 
@@ -190,19 +145,15 @@ __Cookie API__|`getCookie();`<BR>`hasCookie();`<BR>`setCookie();`<BR>`removeCook
 
 ### Celestra v6.5.0 (Andromeda) changes
 
-1. Documentation, pdf and code fixes.
-2. From this version the version of the CUT is same as the Celestra version.
-3. Firefox 115 (Windows 7 and 8.1) and iOS 16 support has been removed.
-4. Many functions have been removed.
-5. Many polyfills have been moved to __celestra-polyfills.dev.js__ and __celestra-polyfills.min.js__.
+- Firefox 115 (Windows 7 and 8.1) and iOS 16 support has been removed.
 
 ### Celestra v6.8.0 changes
 
-1. These files have been renamed: __celestra.node.mts__ to __celestra.node.ts__ and __celestra.node.mjs__ to __celestra.node.js__.
+- These files have been renamed: __celestra.node.mts__ to __celestra.node.ts__ and __celestra.node.mjs__ to __celestra.node.js__.
 
 ### Celestra v6.9.0 (McCoy) changes
 
-1. Many functions have been removed.
+- Many functions from the __Collections API__ have been removed.
 
 -----
 
@@ -331,10 +282,6 @@ Name|Description
 `qs(selector[,context]);`|__Stability: 4 - Stable.__<BR>Get the first matched HTML element. The context is optional and can be an element.
 `qsa(selector[,context]);`|__Stability: 4 - Stable.__<BR>Get matched HTML elements in an array. The context is optional and can be an element.
 
-### Legacy AJAX API
-
-__These functions have been removed in v6.3.0. It's recommend to use the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API), because this is [supported](https://caniuse.com/?search=fetch) in every modern browsers.__
-
 ### Type API
 
 Name|Description
@@ -418,7 +365,7 @@ Name|Description
 `findLast(iterator,callback);`|__Stability: 4 - Stable.__<BR>This function returns the value of the last element in the iterator that satisfies the provided testing function. Otherwise undefined is returned. All of the parameters are mandatory.
 `first(iterator);`|__Stability: 4 - Stable.__<BR>This function returns the first element of the given iterator. The iterator parameter is mandatory.
 `head(iterator);`|__Stability: 4 - Stable.__<BR>This is an alias of the `first(iterator);`.
-`includes(iterator,value);`|__Stability: 4 - Stable.__<BR>This function determines whether a collection includes a certain value among its entries, returning true or false as appropriate. The collection and the value of the parameters are mandatory and the comparator is optional.<BR>The default comparasion is SameValueZero algorithm, but with the comparator (function) can be other solution. (e.g.: Object.is, which uses the SameValue algorithm).<BR>The collection can be: _String_ (uses the String#includes method), _String object_ (uses the String#includes method), _Map_, _Iterables_ (Array, Set, TypedArrays, other Iterables), _plain objects_, _functions_ (as object).<BR>The own keys, values, symbols are compared, example: `CEL.includes({"lorem": "ipsum","1": 0}, -0);` returns true.
+`includes(iterator,value[,comparator]);`|__Stability: 4 - Stable.__<BR>This function determines whether a collection includes a certain value among its entries, returning true or false as appropriate. The collection and the value of the parameters are mandatory and the comparator is optional.<BR>The default comparasion is SameValueZero algorithm, but with the comparator (function) can be other solution. (e.g.: Object.is, which uses the SameValue algorithm).<BR>The collection can be: _String_ (uses the String#includes method), _String object_ (uses the String#includes method), _Map_, _Iterables_ (Array, Set, TypedArrays, other Iterables), _plain objects_, _functions_ (as object).<BR>The own keys, values, symbols are compared, example: `CEL.includes({"lorem": "ipsum","1": 0}, -0);` returns true.
 `initial(iterator);`|__Stability: 4 - Stable.__<BR>Returns an array with the values of the given iterator, but without the last value.<BR>__Example:__<BR>`CEL.initial([-5, 2, -9, 7, 34]);`<BR>-><BR>`[-5, 2, -9, 7]`
 `item(iterator,index);`|__Stability: 4 - Stable.__<BR>TThis function returns the item from the given iterator on the given index. The iterator parameter is mandatory and has to be an iterator/iterable. The index is mandatory and can be a positive integer (examples: 0 = the first item, 1 = the second item, 2 = the third item, etc.) Compatible with the Unicode strings.
 `iterCycle(iter[,n=Infinity]);`|__Stability: 4 - Stable.__<BR>Yield the items of an iterator over and over. The iter parameter is mandatory and the n parameter is optional and can be an integer. Default parameter value: n = Infinity __Note: PLease don't use with infinite iterators!__
@@ -439,10 +386,6 @@ Name|Description
 `unzip(iterator);`|__Stability: 4 - Stable.__<BR>Returns the array of arrays of unpaired values. In the modern browsers compatible with finite iterators.<BR>__Example:__<BR>`CEL.unzip([ [ "a", 3 ], [ "b", 4 ], [ "c", 5 ], [ "d", 6 ] ]);`<BR>-><BR>`Array (2) [ ["a","b","c","d"], [3,4,5,6] ]`
 `zip(iterator1[,iteratorN]);`|__Stability: 4 - Stable.__<BR>Returns the array of paired values of the given iterators. In the modern browsers compatible with finite iterators. The return value is an Array.<BR>__Example:__<BR>`CEL.zip(["a","b","c","d"], [3,4,5,6,7,8,9]);`<BR>-><BR>`Array (4) [ [ "a", 3 ], [ "b", 4 ], [ "c", 5 ], [ "d", 6 ] ]`
 `zipObj(iterator1, iterator2);`|__Stability: 4 - Stable.__<BR>Returns an object, whose properties are from the first iterator and its values are from the second iterator. The two iterators must be the same size. In the modern browsers compatible with finite iterators.<BR>__Example:__<BR>`zipObj(["a","b","c"],[1,2,3])`<BR>-><BR>`{"a":1,"b":2,"c":3}`
-
-### Abstract API
-
-The Ecmascript abstract functions are available in the [Zephyr library](https://github.com/Serrin/Zephyr).
 
 ### Math API
 

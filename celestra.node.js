@@ -232,16 +232,8 @@ function timestampID(size = 21, alphabet = "23456789CFGHJMPQRVWXcfghjmpqvwx") {
     return Date.now().toString(36).padStart(10, "0")
         + (size > 11 ? "-" + nanoid(size - 11, alphabet) : "-");
 }
-function b64Encode(str) {
-    return btoa(encodeURIComponent(String(str)).replace(/%([0-9A-F]{2})/g, function toSolidBytes(_match, p1) {
-        return String.fromCharCode(parseInt(p1, 16));
-    }));
-}
-function b64Decode(str) {
-    return decodeURIComponent(atob(String(str)).split("").map(function (c) {
-        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(""));
-}
+const b64Encode = (str) => btoa(encodeURIComponent(String(str)).replace(/%([0-9A-F]{2})/g, (_match, p1) => String.fromCharCode(parseInt(p1, 16))));
+const b64Decode = (str) => decodeURIComponent(atob(String(str)).split("").map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2)).join(""));
 function strCount(str, substr) {
     let count = (String(str)?.split(String(substr)) ?? []).length - 1;
     return count < 0 ? 0 : count;
@@ -263,13 +255,7 @@ const strPropercase = (str) => String(str).trim().split(" ").map(function (value
     }
     return chars.join("");
 }).join(" ");
-const strTitlecase = (str) => String(str).trim().split(" ").map(function (value) {
-    let chars = Array.from(value).map((c) => c.toLowerCase());
-    if (chars.length) {
-        chars[0] = chars[0].toUpperCase();
-    }
-    return chars.join("");
-}).join(" ");
+const strTitlecase = strPropercase;
 function strCapitalize(str) {
     let chars = [...String(str).trim().toLowerCase()];
     if (chars.length) {
@@ -472,9 +458,7 @@ const toPropertyKey = (value) => typeof value === "symbol" ? value : String(valu
 const isIndex = (value) => Number.isSafeInteger(value)
     && value >= 0
     && 1 / value !== 1 / -0;
-const isLength = (value) => Number.isSafeInteger(value)
-    && value >= 0
-    && 1 / value !== 1 / -0;
+const isLength = isIndex;
 function toIndex(value) {
     value = ((value = Math.trunc(+value)) !== value || value === 0) ? 0 : value;
     if (value < 0 || value > Number.MAX_SAFE_INTEGER) {
@@ -859,26 +843,6 @@ function* iterRepeat(value, num = Infinity) {
         yield value;
     }
 }
-function forEach(iter, callback) {
-    let index = 0;
-    for (let item of iter) {
-        callback(item, index++);
-    }
-}
-function* map(iter, callback) {
-    let index = 0;
-    for (let item of iter) {
-        yield callback(item, index++);
-    }
-}
-function* filter(iter, callback) {
-    let index = 0;
-    for (let item of iter) {
-        if (callback(item, index++)) {
-            yield item;
-        }
-    }
-}
 function* slice(iter, begin = 0, end = Infinity) {
     if (begin < 0) {
         begin = 0;
@@ -886,13 +850,7 @@ function* slice(iter, begin = 0, end = Infinity) {
     if (end <= begin) {
         return;
     }
-    let iterator;
-    if (typeof iter.next === "function") {
-        iterator = iter;
-    }
-    else {
-        iterator = iter[Symbol.iterator]();
-    }
+    let iterator = Iterator.from(iter);
     let index = 0;
     while (true) {
         const { value, done } = iterator.next();
@@ -908,37 +866,14 @@ function* slice(iter, begin = 0, end = Infinity) {
         index++;
     }
 }
-function* tail(input) {
-    let iterator;
-    if (typeof input.next === "function") {
-        iterator = input;
-    }
-    else {
-        iterator = input[Symbol.iterator]();
-    }
-    let first = iterator.next();
-    if (first.done) {
-        return;
-    }
-    while (true) {
-        const { value, done } = iterator.next();
-        if (done) {
-            break;
-        }
-        yield value;
-    }
+function* tail(iter) {
+    yield* Iterator.from(iter).drop(1);
 }
 function item(iter, pos) {
     if (pos < 0) {
         return undefined;
     }
-    let iterator;
-    if (typeof iter.next === "function") {
-        iterator = iter;
-    }
-    else {
-        iterator = iter[Symbol.iterator]();
-    }
+    let iterator = Iterator.from(iter);
     let index = 0;
     while (true) {
         const { value, done } = iterator.next();
@@ -951,29 +886,7 @@ function item(iter, pos) {
         index++;
     }
 }
-function nth(iter, pos) {
-    if (pos < 0) {
-        return undefined;
-    }
-    let iterator;
-    if (typeof iter.next === "function") {
-        iterator = iter;
-    }
-    else {
-        iterator = iter[Symbol.iterator]();
-    }
-    let index = 0;
-    while (true) {
-        const { value, done } = iterator.next();
-        if (done) {
-            return undefined;
-        }
-        if (index === pos) {
-            return value;
-        }
-        index++;
-    }
-}
+const nth = item;
 function size(value) {
     if (Array.isArray(value)) {
         return value.length;
@@ -987,41 +900,17 @@ function size(value) {
     if (typeof value.size === "number") {
         return value.size;
     }
-    let iterator;
-    if (typeof value.next === "function") {
-        iterator = value;
-    }
-    else {
-        iterator = value[Symbol.iterator]();
-    }
     let index = 0;
-    for (let _item of iterator) {
+    for (let _item of Iterator.from(value)) {
         index++;
     }
     return index;
 }
-function first(input) {
-    let iterator;
-    if (typeof input.next === "function") {
-        iterator = input;
-    }
-    else {
-        iterator = input[Symbol.iterator]();
-    }
-    let result = iterator.next();
+function first(iter) {
+    let result = Iterator.from(iter).next();
     return result.done ? undefined : result.value;
 }
-function head(input) {
-    let iterator;
-    if (typeof input.next === "function") {
-        iterator = input;
-    }
-    else {
-        iterator = input[Symbol.iterator]();
-    }
-    let result = iterator?.next() ?? { value: undefined, done: true };
-    return result.done ? undefined : result.value;
-}
+const head = first;
 const last = ([...array]) => array[array.length - 1];
 function* reverse([...array]) {
     let index = array.length;
@@ -1081,38 +970,9 @@ function includes(collection, value, comparator) {
     return false;
 }
 const findLast = ([...array], callback) => array.findLast((value, index) => callback(value, index));
-const every = ([...array], callback) => array.length
-    ? array.every((value, index) => callback(value, index))
-    : false;
 function* concat(...iterables) {
     for (const iterable of iterables) {
         yield* iterable;
-    }
-}
-function reduce(iter, callback, initialvalue) {
-    let acc = initialvalue;
-    let index = 0;
-    for (let item of iter) {
-        if (index === 0 && acc === undefined) {
-            acc = item;
-        }
-        else {
-            acc = callback(acc, item, index++);
-        }
-    }
-    return acc;
-}
-function* flat(iter) {
-    for (let item of iter) {
-        if (typeof item[Symbol.iterator] === "function" ||
-            ("Iterator" in globalThis
-                ? (item instanceof Iterator)
-                : (typeOf(item) === "object" && typeof item.next === "function"))) {
-            yield* item;
-        }
-        else {
-            yield item;
-        }
     }
 }
 function join(iter, separator = ",") {
@@ -1508,8 +1368,6 @@ export default {
     iterRange,
     iterCycle,
     iterRepeat,
-    map,
-    filter,
     slice,
     tail,
     item,
@@ -1522,10 +1380,7 @@ export default {
     sort,
     includes,
     findLast,
-    every,
     concat,
-    reduce,
-    flat,
     join,
     add,
     sub,
@@ -1568,4 +1423,4 @@ export default {
     randomFloat,
     inRange
 };
-export { VERSION, BASE16, BASE32, BASE36, BASE58, BASE62, WORDSAFEALPHABET, assert, eq, gt, gte, lt, lte, tap, once, curry, pipe, compose, pick, omit, assoc, asyncNoop, asyncT, asyncF, asyncConstant, asyncIdentity, randomUUIDv7, delay, randomBoolean, deepAssign, sizeIn, unBind, bind, constant, identity, noop, T, F, nanoid, timestampID, b64Encode, b64Decode, strCount, strTruncate, strPropercase, strTitlecase, strCapitalize, strUpFirst, strDownFirst, strReverse, strCodePoints, strFromCodePoints, strAt, strSplice, strHTMLRemoveTags, strHTMLEscape, strHTMLUnEscape, constructorOf, isNonNullable, isNonNullablePrimitive, isArrowFunction, isAsyncIterator, isTypedCollection, is, toObject, toPrimitive, toSafeString, isPropertyKey, toPropertyKey, isIndex, isLength, toIndex, toLength, typeOf, isSameType, isSameInstance, isCoercedObject, isDeepStrictEqual, isEmpty, isProxy, isAsyncGeneratorFunction, isPlainObject, isObject, isFunction, isArraylike, isNull, isUndefined, isNullish, isPrimitive, isIterator, isRegexp, isElement, isIterable, isAsyncIterable, isTypedArray, isGeneratorFunction, isAsyncFunction, castArray, compact, unique, count, arrayDeepClone, initial, shuffle, min, max, arrayRepeat, arrayCycle, arrayRange, zip, unzip, zipObj, arrayAdd, arrayClear, arrayRemove, arrayRemoveBy, arrayMerge, iterRange, iterCycle, iterRepeat, forEach, map, filter, slice, tail, item, nth, size, first, head, last, reverse, sort, includes, findLast, every, concat, reduce, flat, join, add, sub, mul, div, divMod, mod, isFloat, toInteger, toIntegerOrInfinity, sum, avg, product, pow, clamp, minmax, isEven, isOdd, toInt8, toUInt8, toInt16, toUInt16, toInt32, toUInt32, toBigInt64, toBigUInt64, toFloat32, isInt8, isUInt8, isInt16, isUInt16, isInt32, isUInt32, isBigInt64, isBigUInt64, toFloat16, isFloat16, signbit, randomInt, randomFloat, inRange };
+export { VERSION, BASE16, BASE32, BASE36, BASE58, BASE62, WORDSAFEALPHABET, assert, eq, gt, gte, lt, lte, tap, once, curry, pipe, compose, pick, omit, assoc, asyncNoop, asyncT, asyncF, asyncConstant, asyncIdentity, randomUUIDv7, delay, randomBoolean, deepAssign, sizeIn, unBind, bind, constant, identity, noop, T, F, nanoid, timestampID, b64Encode, b64Decode, strCount, strTruncate, strPropercase, strTitlecase, strCapitalize, strUpFirst, strDownFirst, strReverse, strCodePoints, strFromCodePoints, strAt, strSplice, strHTMLRemoveTags, strHTMLEscape, strHTMLUnEscape, constructorOf, isNonNullable, isNonNullablePrimitive, isArrowFunction, isAsyncIterator, isTypedCollection, is, toObject, toPrimitive, toSafeString, isPropertyKey, toPropertyKey, isIndex, isLength, toIndex, toLength, typeOf, isSameType, isSameInstance, isCoercedObject, isDeepStrictEqual, isEmpty, isProxy, isAsyncGeneratorFunction, isPlainObject, isObject, isFunction, isArraylike, isNull, isUndefined, isNullish, isPrimitive, isIterator, isRegexp, isElement, isIterable, isAsyncIterable, isTypedArray, isGeneratorFunction, isAsyncFunction, castArray, compact, unique, count, arrayDeepClone, initial, shuffle, min, max, arrayRepeat, arrayCycle, arrayRange, zip, unzip, zipObj, arrayAdd, arrayClear, arrayRemove, arrayRemoveBy, arrayMerge, iterRange, iterCycle, iterRepeat, slice, tail, item, nth, size, first, head, last, reverse, sort, includes, findLast, concat, join, add, sub, mul, div, divMod, mod, isFloat, toInteger, toIntegerOrInfinity, sum, avg, product, pow, clamp, minmax, isEven, isOdd, toInt8, toUInt8, toInt16, toUInt16, toInt32, toUInt32, toBigInt64, toBigUInt64, toFloat32, isInt8, isUInt8, isInt16, isUInt16, isInt32, isUInt32, isBigInt64, isBigUInt64, toFloat16, isFloat16, signbit, randomInt, randomFloat, inRange };

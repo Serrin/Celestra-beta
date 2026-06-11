@@ -494,9 +494,9 @@ globalThis.CEL = celestra;
 
 &#60;script type="module"&#62;
 // import some functions
-import { first, map } from "./celestra.browser.js";
+import { first, last } from "./celestra.browser.js";
 globalThis.first = first;
-globalThis.map = map;
+globalThis.map = last;
 &#60;/script&#62;
 
 &#60;script type="module"&#62;
@@ -527,9 +527,9 @@ globalThis.celestra = celestra;
 globalThis.CEL = celestra;
 
 // import some functions
-import { first, map } from "./celestra.nodejs.js";
+import { first, last } from "./celestra.nodejs.js";
 globalThis.first = first;
-globalThis.map = map;
+globalThis.map = last;
 
 // dynamic import
 const celestra = await import("./celestra.node.js");
@@ -561,18 +561,7 @@ globalThis.CEL = celestra;
 <h3>Celestra v3.0.0 (Hera) changes</h3>
 
 <ul>
-  <li>Only modern browsers (ES6+) are supported. The Internet Explorer 11 and W10M Edge have been removed from the supported browsers.</li>
-  <li>If you would like to use Celestra with older browsers, then you can download the latest v2.x version here: <a href="https://github.com/Serrin/Celestra/releases" target="_blank">https://github.com/Serrin/Celestra/releases</a></li>
-  <li>The library sources have been merged and all of the ES6E functions are available in the <strong>celestra.dev.js</strong> and <strong>celestra.min.js</strong></li>
-  <li>Many functions have been deprecated or removed.</li>
-</ul>
-
-<h3>Celestra v3.6.0 (Galactica) changes</h3>
-
-<ul>
-  <li>CommonJS and AMD module compatibility have been removed.</li>
-  <li>In the ESM (ECMAScript 6 module) edition only the whole celestra object is exported as default export and as standalone object.</li>
-  <li>Many functions have been deprecated or removed.</li>
+  <li>Only modern browsers (ES6+) are supported. The Internet Explorer 11 and W10M Edge have been removed from the supported browsers. If you would like to use Celestra with older browsers, then you can download the last v2.x version here: <a href="https://github.com/Serrin/Celestra/releases" target="_blank">https://github.com/Serrin/Celestra/releases</a></li>
 </ul>
 
 <h3>Celestra v5.0.0 (Defiant) changes</h3>
@@ -581,57 +570,16 @@ globalThis.CEL = celestra;
   <li>The underscore <code>_</code> short object name has been changed to <code>CEL</code> to avoid the compatibility issues.</li>
 </ul>
 
-<h3>Celestra v5.5.0 changes</h3>
-
-<ul>
-  <li>The Math functions are available in the main code files (dev, min, esm) instead of the Math plugins.</li>
-</ul>
-
-<h3>Celestra v5.6.0 (Razorback) changes</h3>
-
-<ul>
-  <li>21 polyfills have been removed.</li>
-</ul>
-
-<h3>Celestra v5.7.0 (Nostromo) changes</h3>
-
-<ul>
-  <li>The module edition (<strong>celestra.esm.js</strong>) import has been changed.</li>
-  <li>Added <strong>Assert API v3</strong> and the old assert functions have been removed.</li>
-  <li>The <code>getText();</code> and <code>getJson();</code> functions have been modified to standalone function.</li>
-</ul>
-
-<h3>Celestra v5.8.0 (Uhura) changes</h3>
-
-<ul>
-  <li>50 functions have been removed.</li>
-</ul>
-
-<h3>Celestra v5.9.0 (Final five) changes</h3>
-
-<ul>
-  <li>12 functions and a polyfill have been removed.</li>
-</ul>
-
 <h3>Celestra v6.0.0 (David) changes</h3>
 
 <ul>
-  <li>The Node.js and Deno support has been added.</li>
+  <li>Node.js and Deno support has been added.</li>
 </ul>
 
 <h3>Celestra v6.1.0 (Sulaco) changes</h3>
 
 <ul>
-  <li>Please read in the documentation about the new files and import methods for the browser edition!</li>
-  <li>The <strong>celestra.dev.js</strong> has been replaced with the <strong>celestra.browser.ts</strong>.</li>
-  <li>The <strong>celestra.min.js</strong> has been replaced with the <strong>celestra.browser.js</strong>.</li>
-  <li>The <strong>celestra.node.mjs</strong> has been remained and added the <strong>celestra.node.mts</strong>.</li>
-  <li>The <code>isNil();</code> function has been renamed to <code>isNullish();</code>.</li>
-  <li>The <code>assertIsNil();</code> function has been renamed to <code>assertIsNullish();</code>.</li>
-  <li>The <code>assertIsNotNil();</code> function has been renamed to <code>assertIsNotNullish();</code>.</li>
-  <li>The <code>type();</code> function has been renamed to <code>typeOf();</code>.</li>
-  <li>The <code>celestra.noConflict();</code> function has been removed.</li>
-  <li>Some deprecated functions have been removed.</li>
+  <li>TypeScript source files have been added.</li>
 </ul>
 
 <h3>Celestra v6.3.0 (Bishop) changes</h3>
@@ -644,11 +592,7 @@ globalThis.CEL = celestra;
 <h3>Celestra v6.5.0 (Andromeda) changes</h3>
 
 <ul>
-  <li>Documentation, pdf and code fixes.</li>
-  <li>From this version the version of the CUT is same as the Celestra version.</li>
   <li>Firefox 115 (Windows 7 and 8.1) and iOS 16 support has been removed.</li>
-  <li>Many functions have been removed.</li>
-  <li>Many polyfills have been moved to <strong>celestra-polyfills.dev.js</strong> and <strong>celestra-polyfills.min.js</strong>.</li>
 </ul>
 
 <h3>Celestra v6.8.0 changes</h3>
@@ -660,7 +604,7 @@ globalThis.CEL = celestra;
 <h3>Celestra v6.9.0 (McCoy) changes</h3>
 
 <ul>
-  <li>Many functions have been removed.</li>
+  <li>Many functions from the <strong>Collections API</strong> have been removed.</li>
 </ul>
 
 <hr/>
@@ -684,7 +628,7 @@ globalThis.CEL = celestra;
 <div>
   <table class="table-responsive table-striped">
     <tr>
-      <td style="width: auto; min-width: 33%;"><strong>Name</strong></td>
+      <td style="width: auto; min-width: 30%;"><strong>Name</strong></td>
       <td><strong>Description</strong></td>
     </tr>
     <tr id="FN-VERSION">
@@ -777,7 +721,7 @@ CEL.delay(5000)
   .then(() => alert("5 seconds"))
   .catch(console.log.bind(console))
   .finally(() => alert("done"));</pre>
-	    </td>
+      </td>
     </tr>
     <tr id="FN-eq();">
       <td><code>eq(value1, value2);</code></td>
@@ -868,7 +812,7 @@ CEL.delay(5000)
 <div>
   <table class="table-responsive table-striped">
     <tr>
-      <td style="width: auto; min-width: 33%;"><strong>Name</strong></td>
+      <td style="width: auto; min-width: 30%;"><strong>Name</strong></td>
       <td><strong>Description</strong></td>
     </tr>
     <tr id="FN-b64Decode();">
@@ -962,7 +906,7 @@ CEL.delay(5000)
 <div>
   <table class="table-responsive table-striped">
     <tr>
-      <td style="width: auto; min-width: 33%;"><strong>Name</strong></td>
+      <td style="width: auto; min-width: 30%;"><strong>Name</strong></td>
       <td><strong>Description</strong></td>
     </tr>
     <tr id="FN-createFile();">
@@ -1143,16 +1087,12 @@ CEL.delay(5000)
   </table>
 </div>
 
-<h3 id="FNajaxAPI">Legacy AJAX API</h3>
-
-<p class="info">These functions have been removed in v6.3.0. It's recommend to use the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API" target="_blank">Fetch API</a>, because this is <a href="https://caniuse.com/?search=fetch" target="_blank">supported</a> in every modern browsers.</p>
-
 <h3 id="FNtypecheckingAPI">Type API</h3>
 
 <div>
   <table class="table-responsive table-striped">
     <tr>
-      <td style="width: auto; min-width: 33%;"><strong>Name</strong></td>
+      <td style="width: auto; min-width: 30%;"><strong>Name</strong></td>
       <td><strong>Description</strong></td>
     </tr>
     <tr id="FN-constructorOf();">
@@ -1340,7 +1280,7 @@ CEL.delay(5000)
 <div>
   <table class="table-responsive table-striped">
     <tr">
-      <td style="width: auto; min-width: 33%;"><strong>Name</strong></td>
+      <td style="width: auto; min-width: 30%;"><strong>Name</strong></td>
       <td><strong>Description</strong></td>
     </tr>
     <tr id="FN-clearCookies();">
@@ -1425,7 +1365,7 @@ CEL.delay(5000)
 <div>
   <table class="table-responsive table-striped">
     <tr">
-      <td style="width: auto; min-width: 33%;"><strong>Name</strong></td>
+      <td style="width: auto; min-width: 30%;"><strong>Name</strong></td>
       <td><strong>Description</strong></td>
     </tr>
     <tr id="FN-arrayAdd();">
@@ -1496,7 +1436,7 @@ CEL.delay(5000)
       <td><span class="info">Stability: 4 - Stable.</span><br/>This is an alias of the <code>first(iterator);</code>.</td>
     </tr>
     <tr id="FN-includes();">
-      <td><code>includes(iterator,value);</code></td>
+      <td><code>includes(iterator,value[,comparator]);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether a collection includes a certain value among its entries, returning true or false as appropriate. The collection and the value of the parameters are mandatory and the comparator is optional.<BR>The default comparasion is SameValueZero algorithm, but with the comparator (function) can be other solution. (e.g.: Object.is, which uses the SameValue algorithm).<br/>The collection can be: <i>String</i> (uses the String#includes method), <i>String object</i> (uses the String#includes method), <i>Map</i>, <i>Iterables</i> (Array, Set, TypedArrays, other Iterables), <i>plain objects</i>, <i>functions</i> (as object).<br/>The own keys, values, symbols are compared, example: <code>CEL.includes({"lorem": "ipsum","1": 0}, -0);</code> returns true.</td>
     </tr>
     <tr id="FN-initial();">
@@ -1631,18 +1571,12 @@ JSON.stringify( CEL.unique(array, (v) => v.rank) );
   </table>
 </div>
 
-
-<h3 id="FNabstractAPI">Abstract API</h3>
-
-<p>The Ecmascript abstract functions are available in the <a href="https://github.com/Serrin/Zephyr" target="_blank">Zephyr library</a>.</p>
-
-
 <h3 id="FNmathAPI">Math API</h3>
 
 <div>
   <table class="table-responsive table-striped">
     <tr>
-      <td style="width: auto; min-width: 33%;"><strong>Name</strong></td>
+      <td style="width: auto; min-width: 30%;"><strong>Name</strong></td>
       <td><strong>Description</strong></td>
     </tr>
     <tr id="FN-add();">
@@ -1829,7 +1763,7 @@ Otherwise, the result is false.</pre>
 <div>
   <table class="table-responsive table-striped">
     <tr>
-      <td style="width: auto; min-width: 33%;"><strong>Name</strong></td>
+      <td style="width: auto; min-width: 30%;"><strong>Name</strong></td>
       <td><strong>Description</strong></td>
     </tr>
     <tr id="FN-crypto.randomUUID();">

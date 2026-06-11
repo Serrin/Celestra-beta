@@ -263,9 +263,9 @@ const _preCel = {
     scrTag.type = "module";
     scrTag.innerHTML = `
       // import 2 functions
-      import { assert, map } from "./celestra.browser.js";
+      import { assert, last } from "./celestra.browser.js";
       preCelLog("import 2 functions - "
-        + (typeof assert === "function" && typeof map === "function" ? "passed" : "failed")
+        + (typeof assert === "function" && typeof last === "function" ? "passed" : "failed")
       );
 
       // import all into a new celestra object

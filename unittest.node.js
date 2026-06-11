@@ -24,7 +24,7 @@ globalThis.celestra = celestra;
 globalThis.CEL = celestra;
 //*/
 
-/* import method 3 - import *  as celestra */
+/* import method 3 - import * as celestra */
 /*
 console.log("import method 3 - import * as celestra");
 import * as celestra from "./celestra.node.js";

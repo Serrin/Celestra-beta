@@ -30,7 +30,6 @@
 - `takeWhile();`
 - `withOut();`
 
-
 ## Celestra v6.8.0.1
 
 1. Only documentation changes and no code changes.
