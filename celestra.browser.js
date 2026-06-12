@@ -1239,27 +1239,8 @@ function* iterRepeat(value, num = Infinity) {
     }
 }
 function* slice(iter, begin = 0, end = Infinity) {
-    if (begin < 0) {
-        begin = 0;
-    }
-    if (end <= begin) {
-        return;
-    }
-    let iterator = Iterator.from(iter);
-    let index = 0;
-    while (true) {
-        const { value, done } = iterator.next();
-        if (done) {
-            break;
-        }
-        ;
-        if (index >= begin && index <= end) {
-            yield value;
-        }
-        if (index > end - 1)
-            break;
-        index++;
-    }
+    let length = end - begin;
+    yield* Iterator.from(iter).drop(begin).take(length < 0 ? 0 : length);
 }
 function* tail(iter) {
     yield* Iterator.from(iter).drop(1);
@@ -1372,11 +1353,8 @@ function* concat(...iterables) {
 }
 function join(iter, separator = ",") {
     separator = String(separator);
-    let result = "";
-    for (let item of iter) {
-        result += separator + item;
-    }
-    return result.slice(separator.length);
+    return Iterator.from(iter).reduce((acc, item) => acc + separator + item, "")
+        .slice(separator.length);
 }
 function add(value1, value2) {
     if (typeof value1 === "number" && typeof value2 === "number") {

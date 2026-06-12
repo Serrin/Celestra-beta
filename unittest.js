@@ -1355,11 +1355,11 @@ CUT.isEqual("iterRepeat(); 02", "AB AB AB AB AB",
 /* slice(); */
 token1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 // @ts-ignore
-CUT.isEqual("slice(); 01", "1 2 3 4 5", CUT.join(CEL.slice(token1, 0, 4)));
+CUT.isEqual("slice(); 01", "1 2 3 4", CUT.join(CEL.slice(token1, 0, 4)));
 // @ts-ignore
 CUT.isEqual("slice(); 02", "6 7 8 9 10", CUT.join(CEL.slice(token1, 5)));
 // @ts-ignore
-CUT.isEqual("slice(); 03", "5 6 7 8 9", CUT.join(CEL.slice(token1, 4, 8)));
+CUT.isEqual("slice(); 03", "5 6 7 8", CUT.join(CEL.slice(token1, 4, 8)));
 // @ts-ignore
 CUT.isEqual("slice(); 04", "1 2 3 4 5 6 7 8 9 10", CUT.join(CEL.slice(token1)));
 

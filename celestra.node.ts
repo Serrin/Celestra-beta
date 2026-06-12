@@ -1928,17 +1928,8 @@ function* slice (
   iter: IterableLike,
   begin: number = 0,
   end: number = Infinity): GeneratorLike {
-  if (begin < 0) { begin = 0; }
-  if (end <= begin) { return; }
-  let iterator = Iterator.from(iter);
-  let index = 0;
-  while (true) {
-    const { value, done } = iterator.next();
-    if (done) { break };
-    if (index >= begin && index <= end) { yield value; }
-    if (index > end - 1) break;
-    index++;
-  }
+  let length = end - begin;
+  yield* Iterator.from(iter).drop(begin).take(length < 0 ? 0 : length);
 }
 
 
@@ -2141,9 +2132,8 @@ function* concat (...iterables: any[]): GeneratorLike {
  */
 function join (iter: IterableLike, separator: string = ","): string {
   separator = String(separator);
-  let result = "";
-  for (let item of iter as Iterable<any>) { result += separator + item; }
-  return result.slice(separator.length);
+  return Iterator.from(iter).reduce((acc, item) => acc + separator + item, "")
+    .slice(separator.length);
 }
 
 

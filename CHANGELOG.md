@@ -4,8 +4,9 @@
 ## Celestra v6.9.0 McCoy
 
 1. Documentation, pdf and code fixes.
-2. Replace the function `isSameType();` with the new version from the __assert.js__
-3. Remove _(stability 0)_ these functions:
+2. Replace the function `isSameType();` with the new version from the __assert.js__.
+3. Fix the function `slice();` to harmonize to `Array.prototype.slice();`.
+4. Remove _(stability 0)_ these functions:
 
 - `drop();`
 - `dropRight();`
