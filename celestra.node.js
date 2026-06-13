@@ -1,5 +1,7 @@
 "use strict";
 const VERSION = "Celestra v6.9.0 node";
+const { getPrototypeOf, getOwnPropertyNames, getOwnPropertySymbols } = Object;
+const { isArray } = Array;
 (function (global) {
     if (!global.globalThis) {
         if (Object.defineProperty) {
@@ -79,15 +81,15 @@ if ("crypto" in globalThis && !("randomUUID" in globalThis.crypto)) {
 }
 if (!globalThis.GeneratorFunction) {
     globalThis.GeneratorFunction =
-        Object.getPrototypeOf(function* () { }).constructor;
+        getPrototypeOf(function* () { }).constructor;
 }
 if (!globalThis.AsyncFunction) {
     globalThis.AsyncFunction =
-        Object.getPrototypeOf(async function () { }).constructor;
+        getPrototypeOf(async function () { }).constructor;
 }
 if (!globalThis.AsyncGeneratorFunction) {
     globalThis.AsyncGeneratorFunction =
-        Object.getPrototypeOf(async function* () { }).constructor;
+        getPrototypeOf(async function* () { }).constructor;
 }
 const BASE16 = "0123456789ABCDEF";
 const BASE32 = "234567ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -188,8 +190,7 @@ function deepAssign(target, ...sources) {
     }
     return target;
 }
-const sizeIn = (object) => Object.getOwnPropertyNames(object).length
-    + Object.getOwnPropertySymbols(object).length;
+const sizeIn = (object) => getOwnPropertyNames(object).length + getOwnPropertySymbols(object).length;
 const unBind = (callback) => Function.prototype.call.bind(callback);
 const bind = Function.prototype.call.bind(Function.prototype.bind);
 const constant = (value) => () => value;
@@ -331,13 +332,13 @@ function isTypedCollection(iter, expectedType, Throw = false) {
         throw new TypeError(`[isTypedCollection] TypeError: iter must be iterable or iterator. Got ${typeOf(iter)}`);
     }
     if (!(["string", "function"].includes(typeOf(expectedType)))
-        && !Array.isArray(expectedType)) {
+        && !isArray(expectedType)) {
         throw new TypeError(`[isTypedCollection] TypeError: expectedType must be string, function, array. Got ${typeOf(expectedType)}`);
     }
     if (typeof Throw !== "boolean") {
         throw new TypeError(`[isTypedCollection] TypeError: Throw has to be a boolean. Got ${typeOf(Throw)}`);
     }
-    let expectedArray = Array.isArray(expectedType) ? expectedType : [expectedType];
+    let expectedArray = isArray(expectedType) ? expectedType : [expectedType];
     let matched = true;
     for (let value of iter) {
         let valueType = typeOf(value);
@@ -362,7 +363,7 @@ function isTypedCollection(iter, expectedType, Throw = false) {
 }
 function is(value, expectedType, Throw = false) {
     if (!(["string", "function", "undefined"].includes(typeOf(expectedType)))
-        && !Array.isArray(expectedType)) {
+        && !isArray(expectedType)) {
         throw new TypeError(`[is] TypeError: expectedType must be string, function, array or undefined. Got ${typeOf(expectedType)}`);
     }
     if (typeof Throw !== "boolean") {
@@ -371,10 +372,10 @@ function is(value, expectedType, Throw = false) {
     let vType = typeOf(value);
     if (expectedType == null) {
         return vType === "object"
-            ? Object.getPrototypeOf(value)?.constructor ?? "object"
+            ? getPrototypeOf(value)?.constructor ?? "object"
             : vType;
     }
-    let expectedArray = Array.isArray(expectedType) ? expectedType : [expectedType];
+    let expectedArray = isArray(expectedType) ? expectedType : [expectedType];
     let matched = expectedArray.some(function (item) {
         if (typeof item === "string") {
             return vType === item;
@@ -437,7 +438,7 @@ function toSafeString(value) {
         .includes(typeOf(value))) {
         return String(value);
     }
-    if (Array.isArray(value)) {
+    if (isArray(value)) {
         return `[${value.map(v => toSafeString(v)).join(", ")}]`;
     }
     if (value instanceof Map) {
@@ -518,8 +519,8 @@ function isDeepStrictEqual(value1, value2) {
         if (Object.is(value1, value2)) {
             return true;
         }
-        if (Object.getPrototypeOf(value1).constructor !==
-            Object.getPrototypeOf(value2).constructor) {
+        if (getPrototypeOf(value1).constructor !==
+            getPrototypeOf(value2).constructor) {
             return false;
         }
         if (isSameInstance(value1, value2, WeakMap)
@@ -532,7 +533,7 @@ function isDeepStrictEqual(value1, value2) {
             || isSameInstance(value1, value2, BigInt)) {
             return Object.is(value1.valueOf(), value2.valueOf());
         }
-        if (Array.isArray(value1) && Array.isArray(value2)) {
+        if (isArray(value1) && isArray(value2)) {
             if (value1.length !== value2.length) {
                 return false;
             }
@@ -600,11 +601,11 @@ function isDeepStrictEqual(value1, value2) {
                 && Object.is(value1.source, value2.source);
         }
         if (isSameInstance(value1, value2, Error)) {
-            return isDeepStrictEqual(Object.getOwnPropertyNames(value1)
+            return isDeepStrictEqual(getOwnPropertyNames(value1)
                 .reduce(function (acc, k) {
                 acc[k] = value1[k];
                 return acc;
-            }, {}), Object.getOwnPropertyNames(value2).reduce(function (acc, k) {
+            }, {}), getOwnPropertyNames(value2).reduce(function (acc, k) {
                 acc[k] = value2[k];
                 return acc;
             }, {}));
@@ -628,7 +629,7 @@ function isEmpty(value) {
     if (value == null || Number.isNaN(value)) {
         return true;
     }
-    if (Array.isArray(value)
+    if (isArray(value)
         || (ArrayBuffer.isView(value) && !(value instanceof DataView))
         || typeof value === "string"
         || value instanceof String) {
@@ -668,13 +669,13 @@ function isEmpty(value) {
     return false;
 }
 const isProxy = (value) => Boolean(value != null && value.__isProxy);
-const isAsyncGeneratorFunction = (value) => Object.getPrototypeOf(value).constructor ===
-    Object.getPrototypeOf(async function* () { }).constructor;
+const isAsyncGeneratorFunction = (value) => getPrototypeOf(value).constructor ===
+    getPrototypeOf(async function* () { }).constructor;
 function isPlainObject(value) {
     if (typeOf(value) !== "object") {
         return false;
     }
-    let proto = Object.getPrototypeOf(value);
+    let proto = getPrototypeOf(value);
     return proto === Object.prototype || proto === null;
 }
 const isObject = (value) => value !== null && typeof value === "object";
@@ -704,11 +705,11 @@ const isElement = (value) => typeOf(value) === "object" && value.nodeType === 1;
 const isIterable = (value) => value != null && typeof value[Symbol.iterator] === "function";
 const isAsyncIterable = (value) => value != null && typeof value[Symbol.asyncIterator] === "function";
 const isTypedArray = (value) => ArrayBuffer.isView(value) && !(value instanceof DataView);
-const isGeneratorFunction = (value) => Object.getPrototypeOf(value).constructor ===
-    Object.getPrototypeOf(function* () { }).constructor;
-const isAsyncFunction = (value) => Object.getPrototypeOf(value).constructor ===
-    Object.getPrototypeOf(async function () { }).constructor;
-const castArray = (value) => typeof value === "undefined" ? [] : (Array.isArray(value) ? value : [value]);
+const isGeneratorFunction = (value) => getPrototypeOf(value).constructor ===
+    getPrototypeOf(function* () { }).constructor;
+const isAsyncFunction = (value) => getPrototypeOf(value).constructor ===
+    getPrototypeOf(async function () { }).constructor;
+const castArray = (value) => typeof value === "undefined" ? [] : (isArray(value) ? value : [value]);
 const compact = (iter) => Array.from(iter).filter((value) => value != null);
 function unique(iter, resolver) {
     if (resolver == null) {
@@ -744,7 +745,7 @@ function count(iter, callback) {
     return result;
 }
 function arrayDeepClone([...array]) {
-    const _ADC = (value) => Array.isArray(value) ? Array.from(value, _ADC) : value;
+    const _ADC = (value) => isArray(value) ? Array.from(value, _ADC) : value;
     return _ADC(array);
 }
 const initial = ([...array]) => array.slice(0, -1);
@@ -768,7 +769,7 @@ function zip(...args) {
 const unzip = ([...array]) => array.map((iter) => Array.from(iter))
     .reduce(function (acc, value) {
     value.forEach(function (item, index) {
-        if (!Array.isArray(acc[index])) {
+        if (!isArray(acc[index])) {
             acc[index] = [];
         }
         acc[index].push(item);
@@ -869,7 +870,7 @@ function item(iter, pos) {
 }
 const nth = item;
 function size(value) {
-    if (Array.isArray(value)) {
+    if (isArray(value)) {
         return value.length;
     }
     if (value instanceof Map || value instanceof Set) {
@@ -906,8 +907,8 @@ function includes(collection, value, comparator) {
     if (comparator !== undefined && typeof comparator !== "function") {
         throw new TypeError(`[includes] TypeError: comparator is not a function or undefined. Got ${typeOf(comparator)}`);
     }
-    let _isEqual = comparator ?? eq;
-    let cType = (typeOf(collection));
+    const _eq = comparator ?? eq;
+    let cType = typeOf(collection);
     if (collection == null
         || !(["object", "function", "string"].includes(cType))
         || collection instanceof WeakMap
@@ -918,32 +919,29 @@ function includes(collection, value, comparator) {
         return collection.includes(String(value));
     }
     if (collection instanceof Map) {
-        if ([...collection.keys()]
-            .findIndex((item) => _isEqual(item, value)) > -1) {
+        if ([...collection.keys()].findIndex((item) => _eq(item, value)) > -1) {
             return true;
         }
-        if ([...collection.values()]
-            .findIndex((item) => _isEqual(item, value)) > -1) {
+        if ([...collection.values()].findIndex((item) => _eq(item, value)) > -1) {
             return true;
         }
         return false;
     }
     if (isIterator(collection) || isIterable(collection)) {
-        if ([...collection]
-            .findIndex((item) => _isEqual(item, value)) > -1) {
+        if ([...collection].findIndex((item) => _eq(item, value)) > -1) {
             return true;
         }
         return false;
     }
     if (["object", "function"].includes(cType)) {
-        if (Object.keys(collection).findIndex((item) => _isEqual(item, value)) > -1) {
+        if (Object.keys(collection).findIndex((item) => _eq(item, value)) > -1) {
             return true;
         }
-        if (Object.values(collection).findIndex((item) => _isEqual(item, value)) > -1) {
+        if (Object.values(collection).findIndex((item) => _eq(item, value)) > -1) {
             return true;
         }
-        if (Object.getOwnPropertySymbols(collection)
-            .findIndex((item) => _isEqual(item, value)) > -1) {
+        if (getOwnPropertySymbols(collection)
+            .findIndex((item) => _eq(item, value)) > -1) {
             return true;
         }
         return false;
@@ -957,9 +955,9 @@ function* concat(...iterables) {
     }
 }
 function join(iter, separator = ",") {
-    separator = String(separator);
-    return Iterator.from(iter).reduce((acc, item) => acc + separator + item, "")
-        .slice(separator.length);
+    let sep = String(separator);
+    return Iterator.from(iter).reduce((acc, item) => acc + sep + item, "")
+        .slice(sep.length);
 }
 function add(value1, value2) {
     if (typeof value1 === "number" && typeof value2 === "number") {
@@ -1084,7 +1082,7 @@ function clamp(value, min = Number.MIN_SAFE_INTEGER, max = Number.MAX_SAFE_INTEG
     }
     if (typeof value !== "bigint"
         && typeof min !== "bigint"
-        && typeof min !== "bigint") {
+        && typeof max !== "bigint") {
         value = _numberNormalize(value);
         min = _numberNormalize(min);
         max = _numberNormalize(max);

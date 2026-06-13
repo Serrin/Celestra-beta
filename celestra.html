@@ -496,7 +496,7 @@ globalThis.CEL = celestra;
 // import some functions
 import { first, last } from "./celestra.browser.js";
 globalThis.first = first;
-globalThis.map = last;
+globalThis.last = last;
 &#60;/script&#62;
 
 &#60;script type="module"&#62;
@@ -529,7 +529,7 @@ globalThis.CEL = celestra;
 // import some functions
 import { first, last } from "./celestra.nodejs.js";
 globalThis.first = first;
-globalThis.map = last;
+globalThis.last = last;
 
 // dynamic import
 const celestra = await import("./celestra.node.js");
