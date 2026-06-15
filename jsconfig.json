@@ -55,7 +55,7 @@
     // Removing this would place the .d.ts files next to the .js files
     "outDir": "."
   },
-  "files": ["./celestra.browser.js", "./celestra.node.js"],
+  "files": ["./celestra.js"],
   //"include": ["src/**/*"],
   "include": ["./*.ts"],
   /*

@@ -11,7 +11,7 @@ console.log("\x1b[40m\x1b[37m"); /* black - white */
 /* import method 1 - defaultExport */
 // /*
 console.log("import method 1 - defaultExport");
-import defaultExport from "./celestra.node.js";
+import defaultExport from "./celestra.js";
 globalThis.celestra = defaultExport;
 globalThis.CEL = defaultExport;
 // */
@@ -19,7 +19,7 @@ globalThis.CEL = defaultExport;
 /* import method 2 - default as celestra */
 /*
 console.log("import method 2 - default as celestra");
-import { default as celestra } from "./celestra.node.js";
+import { default as celestra } from "./celestra.js";
 globalThis.celestra = celestra;
 globalThis.CEL = celestra;
 //*/
@@ -27,7 +27,7 @@ globalThis.CEL = celestra;
 /* import method 3 - import * as celestra */
 /*
 console.log("import method 3 - import * as celestra");
-import * as celestra from "./celestra.node.js";
+import * as celestra from "./celestra.js";
 globalThis.celestra = celestra;
 globalThis.CEL = celestra;
 // */
@@ -35,7 +35,7 @@ globalThis.CEL = celestra;
 
 const CUT = {};
 
-CUT.VERSION = "Celestra Unit Tester (CUT) v6.9.0 for Node.js";
+CUT.VERSION = "Celestra Unit Tester (CUT) v7.0.0 for Node.js";
 
 /* __addTest__(<step: string>, <expected>, <expression>); */
 /* __addTest__(<step: string>, <expected>, <expression>[, strict: boolean]); */

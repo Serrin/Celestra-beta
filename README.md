@@ -5,7 +5,7 @@
 
 __A helper JavaScript library with useful functions and polyfills and zero dependencies.__
 
-Latest version: 6.9.0
+Latest version: 7.0.0
 
 Date: 2026-06-14T17:36:41.957Z
 
@@ -37,8 +37,7 @@ Beta repository|__[https://github.com/Serrin/Celestra-beta](https://github.com/S
 
 Edition|Javascript or documentation
 -------|-----------------------------
-Browser module|__celestra.browser.js__<BR>__celestra.browser.ts__
-Node.js and Deno module|__celestra.node.js__<BR>__celestra.node.ts__
+Celestra module|__celestra.js__<BR>__celestra.ts__
 Celestra Unit Tester (CUT)|__unittest.html__
 Celestra cheatsheet|__celestra-cheatsheet.odt__<BR>__celestra-cheatsheet.pdf__
 JavaScript cheatsheet|__js-cheatsheet.odt__<BR>__js-cheatsheet.pdf__
@@ -51,38 +50,17 @@ RPG dice roller|__testgame.html__
 
 ````html
 <script type="module">
-// import the defaultExport object
-import defaultExport from "./celestra.browser.js";
-globalThis.celestra = defaultExport;
-globalThis.CEL = defaultExport;
-</script>
-
-<script type="module">
-// import with default with name
-import { default as celestra } from "./celestra.browser.js";
-globalThis.celestra = celestra;
-globalThis.CEL = celestra;
-</script>
-
-<script type="module">
 // import all into a new celestra object
-import * as celestra from "./celestra.browser.js";
+import * as celestra from "./celestra.js";
 globalThis.celestra = celestra;
 globalThis.CEL = celestra;
 </script>
 
 <script type="module">
 // import some functions
-import { first, last } from "./celestra.browser.js";
+import { first, last } from "./celestra.js";
 globalThis.first = first;
-globalThis.map = last;
-</script>
-
-<script type="module">
-// dynamic import
-const celestra = await import("./celestra.browser.js");
-globalThis.celestra = celestra;
-globalThis.CEL = celestra;
+globalThis.last = last;
 </script>
 ````
 
@@ -90,32 +68,28 @@ globalThis.CEL = celestra;
 
 ````javascript
 // import the defaultExport object
-import defaultExport from "./celestra.nodejs.js";
+import defaultExport from "./celestra.js";
 globalThis.celestra = defaultExport;
 globalThis.CEL = defaultExport;
 
 // import with default with name
-import { default as celestra } from "./celestra.nodejs.js";
+import { default as celestra } from "./celestra.js";
 globalThis.celestra = celestra;
 globalThis.CEL = celestra;
 
 // import all into a new celestra object
-import * as celestra from "./celestra.nodejs.js";
+// includes the DOM API and Cookie API
+import * as celestra from "./celestra.js";
 globalThis.celestra = celestra;
 globalThis.CEL = celestra;
 
 // import some functions
-import { first, last } from "./celestra.nodejs.js";
+import { first, last } from "./celestra.js";
 globalThis.first = first;
-globalThis.map = last;
-
-// dynamic import
-const celestra = await import("./celestra.node.js");
-globalThis.celestra = celestra;
-globalThis.CEL = celestra;
+globalThis.last = last;
 ````
 
-### Removed functions in the Node.js edition
+### Removed functions in the defaultExport
 
 API|Function
 ----|-----------
@@ -154,6 +128,27 @@ __Cookie API__|`getCookie();`<BR>`hasCookie();`<BR>`setCookie();`<BR>`removeCook
 ### Celestra v6.9.0 (McCoy) changes
 
 - Many functions from the __Collections API__ have been removed.
+
+### Celestra v7.0.0 (Spock) changes
+
+- No API changes. 
+- The 2 editions (Browser and Node.js) have been merged into new files: __celestra.ts__ and __celestra.js__. 
+- The import methods of the library have been changed.
+
+### Migrating from v6 to v7
+
+The v7.0.0 has the same API as v6.9.0, but the imports have been changed.
+
+v6.9.0|v7.0.0
+-|-
+`// import the defaultExport object`<BR>`import defaultExport from "./celestra.browser.js";`<BR>`globalThis.celestra = defaultExport;`<BR>`globalThis.CEL = defaultExport;`|`// import all into a new celestra object`<BR>`import * as celestra from "./celestra.js";`<BR>`globalThis.celestra = celestra;`<BR>`globalThis.CEL = celestra;`
+`// import with default with name`<BR>`import { default as celestra } from "./celestra.browser.js";`<BR>`globalThis.celestra = celestra;`<BR>`globalThis.CEL = celestra;`|`// import all into a new celestra object`<BR>`import * as celestra from "./celestra.js";`<BR>`globalThis.celestra = celestra;`<BR>`globalThis.CEL = celestra;`
+`// import all into a new celestra object`<BR>`import * as celestra from "./celestra.browser.js";`<BR>`globalThis.celestra = celestra;`<BR>`globalThis.CEL = celestra;`|`// import all into a new celestra object`<BR>`import * as celestra from "./celestra.js";`<BR>`globalThis.celestra = celestra;`<BR>`globalThis.CEL = celestra;`
+`// import some functions`<BR>`import { first, last } from "./celestra.browser.js";`<BR>`globalThis.first = first;`<BR>`globalThis.last = last;`|`// import some functions`<BR>`import { first, last } from "./celestra.js";`<BR>`globalThis.first = first;`<BR>`globalThis.last = last;`
+`// import the defaultExport object`<BR>`import defaultExport from "./celestra.node.js";`<BR>`globalThis.celestra = defaultExport;`<BR>`globalThis.CEL = defaultExport;`|`// import the defaultExport object`<BR>`import defaultExport from "./celestra.js";`<BR>`globalThis.celestra = defaultExport;`<BR>`globalThis.CEL = defaultExport;`
+`// import with default with name`<BR>`import { default as celestra } from "./celestra.node.js";`<BR>`globalThis.celestra = celestra;`<BR>`globalThis.CEL = celestra;`|`// import with default with name`<BR>`import { default as celestra } from "./celestra.js";`<BR>`globalThis.celestra = celestra;`<BR>`globalThis.CEL = celestra;`
+`// import all into a new celestra object`<BR>`import * as celestra from "./celestra.node.js";`<BR>`globalThis.celestra = celestra;`<BR>`globalThis.CEL = celestra;`|`// import with default with name`<BR>`import { default as celestra } from "./celestra.js";`<BR>`globalThis.celestra = celestra;`<BR>`globalThis.CEL = celestra;`
+`// import some functions`<BR>`import { first, last } from "./celestra.node.js";`<BR>`globalThis.first = first;`<BR>`globalThis.last = last;`|`// import some functions`<BR>`import { first, last } from "./celestra.js";`<BR>`globalThis.first = first;`<BR>`globalThis.last = last;`
 
 -----
 

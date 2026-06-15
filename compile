@@ -8,15 +8,9 @@ echo ""
 echo "current directory: "
 pwd
 echo ""
-echo "tsc celestra.browser.ts --strict --declaration --declarationMap --allowJs --checkJs --pretty --diagnostics --removeComments --ignoreConfig --target ESNEXT --lib ESNEXT,DOM,DOM.iterable,DOM.asynciterable,ESNext.Iterator,webworker.importscripts"
+echo "tsc celestra.ts --strict --declaration --declarationMap --allowJs --checkJs --pretty --diagnostics --removeComments --ignoreConfig --target ESNEXT --lib ESNEXT,DOM,DOM.iterable,DOM.asynciterable,ESNext.Iterator,webworker.importscripts"
 echo ""
-tsc celestra.browser.ts --strict --declaration --declarationMap --allowJs --checkJs --pretty --diagnostics --removeComments --ignoreConfig --target ESNEXT --lib ESNEXT,DOM,DOM.iterable,DOM.asynciterable,ESNext.Iterator,webworker.importscripts
-echo ""
-read -r -n 1 -s -p $'Press any key to continue...\n'
-echo ""
-echo "tsc celestra.node.ts --strict --declaration --declarationMap --allowJs --checkJs --pretty --diagnostics --removeComments --ignoreConfig --target ESNEXT --lib ESNEXT,DOM,DOM.iterable,DOM.asynciterable,ESNext.Iterator,webworker.importscripts"
-echo ""
-tsc celestra.node.ts --strict --declaration --declarationMap --allowJs --checkJs --pretty --diagnostics --removeComments --ignoreConfig --target ESNEXT --lib ESNEXT,DOM,DOM.iterable,DOM.asynciterable,ESNext.Iterator,webworker.importscripts
+tsc celestra.ts --strict --declaration --declarationMap --allowJs --checkJs --pretty --diagnostics --removeComments --ignoreConfig --target ESNEXT --lib ESNEXT,DOM,DOM.iterable,DOM.asynciterable,ESNext.Iterator,webworker.importscripts
 echo ""
 read -r -n 1 -s -p $'Press any key to continue...\n'
 

@@ -95,9 +95,9 @@ input:hover, input:focus, button:hover {
 
 <script type="module">
 
-import defaultExport from "./celestra.browser.js";
-globalThis.celestra = defaultExport;
-globalThis.CEL = defaultExport;
+import * as celestra from "./celestra.js";
+globalThis.celestra = celestra;
+globalThis.CEL = celestra;
 
 CEL.domReady(function () {
 

@@ -86,11 +86,8 @@ textarea, #preCelLog { border-radius: 0px; }
 <table class="table-responsive noborder">
   <tr>
     <td class="noborder">
-      <p><button onclick=" _preCel.importESM1(); preCelLog('load <b>celestra.browser.js</b> 1'); ">
-        load celestra.browser.js 1
-      </button></p>
-      <p><button onclick=" _preCel.importESM2(); preCelLog('load <b>celestra.browser.js</b> 2'); ">
-        load celestra.browser.js 2
+      <p><button onclick=" _preCel.importESM(); preCelLog('load <b>celestra.js</b>'); ">
+        load celestra.js
       </button></p>
     </td>
     <td class="noborder">
@@ -236,40 +233,18 @@ const _preCel = {
     }
   },
 
-  importESM1: function importESM1 () {
-    let scrTag = document.createElement("script");
-    scrTag.type = "module";
-    scrTag.innerHTML = `
-      import defaultExport from "./celestra.browser.js";
-      //globalThis.celestra = defaultExport;
-      //globalThis.CEL = defaultExport;
-      preCelLog("\\nimport with defaultExport - "
-        + (typeof defaultExport.qsa === "function" ? "passed" : "failed")
-      );
-      // import with default with name
-      import { default as celestra } from "./celestra.browser.js";
-      globalThis.celestra = celestra;
-      globalThis.CEL = celestra;
-      preCelLog("import with default with name - "
-        + (typeof celestra.qsa === "function" ? "passed" : "failed")
-      );
-    `;
-    console.log(scrTag);
-    document.body.append(scrTag);
-  },
-
-  importESM2: function importESM2 () {
+  importESM: function importESM2 () {
     let scrTag = document.createElement("script");
     scrTag.type = "module";
     scrTag.innerHTML = `
       // import 2 functions
-      import { assert, last } from "./celestra.browser.js";
+      import { assert, last } from "./celestra.js";
       preCelLog("import 2 functions - "
         + (typeof assert === "function" && typeof last === "function" ? "passed" : "failed")
       );
 
       // import all into a new celestra object
-      import * as celestra from "./celestra.browser.js";
+      import * as celestra from "./celestra.js";
       globalThis.celestra = celestra;
       globalThis.CEL = celestra;
       preCelLog("import all into a new celestra object - "
