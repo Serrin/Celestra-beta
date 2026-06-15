@@ -11,10 +11,10 @@
 <!--<link rel="icon" href="favicon.ico" type="image/x-icon" />-->
 <script> var CEL = { VERSION: "This is another sample library." }; </script>
 <script type="module">
-  // import the defaultExport object
-  import defaultExport from "./celestra.browser.js";
-  globalThis.celestra = defaultExport;
-  globalThis.CEL = defaultExport;
+// import all into a new celestra object
+import * as celestra from "./celestra.js";
+globalThis.celestra = celestra;
+globalThis.CEL = celestra;
 </script>
 
 
@@ -360,7 +360,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
 
 <p><strong>A helper JavaScript library with useful functions and polyfills and zero dependencies.</strong></p>
 
-<p>Latest version: 6.9.0</p>
+<p>Latest version: 7.0.0</p>
 <p>Date: 2026-06-14T17:36:41.957Z</p>
 
 <p><strong>Tested on these environments:</strong></p>
@@ -413,14 +413,9 @@ nav a, nav a:visited, nav a:active, nav a:hover {
     <td class="center"><strong>Typescript</strong></td>
   </tr>
   <tr>
-    <td>Browser module</td>
-    <td><a href="celestra.browser.js" target="_blank">celestra.browser.js</a></td>
-    <td><a href="celestra.browser.ts" target="_blank">celestra.browser.ts</a></td>
-  </tr>
-  <tr>
-    <td>Node.js and Deno module</td>
-    <td><a href="celestra.node.js" target="_blank">celestra.node.js</a></td>
-    <td><a href="celestra.node.ts" target="_blank">celestra.node.ts</a></td>
+    <td>Celestra module</td>
+    <td><a href="celestra.js" target="_blank">celestra.js</a></td>
+    <td><a href="celestra.ts" target="_blank">celestra.ts</a></td>
   </tr>
   <tr>
     <td>Celestra Unit Tester (CUT)</td>
@@ -472,38 +467,17 @@ nav a, nav a:visited, nav a:active, nav a:hover {
 
 <pre>
 &#60;script type="module"&#62;
-// import the defaultExport object
-import defaultExport from "./celestra.browser.js";
-globalThis.celestra = defaultExport;
-globalThis.CEL = defaultExport;
-&#60;/script&#62;
-
-&#60;script type="module"&#62;
-// import with default with name
-import { default as celestra } from "./celestra.browser.js";
-globalThis.celestra = celestra;
-globalThis.CEL = celestra;
-&#60;/script&#62;
-
-&#60;script type="module"&#62;
 // import all into a new celestra object
-import * as celestra from "./celestra.browser.js";
+import * as celestra from "./celestra.js";
 globalThis.celestra = celestra;
 globalThis.CEL = celestra;
 &#60;/script&#62;
 
-&#60;script type="module"&#62;
+&#60;script type="module">
 // import some functions
-import { first, last } from "./celestra.browser.js";
+import { first, last } from "./celestra.js";
 globalThis.first = first;
 globalThis.last = last;
-&#60;/script&#62;
-
-&#60;script type="module"&#62;
-// dynamic import
-const celestra = await import("./celestra.browser.js");
-globalThis.celestra = celestra;
-globalThis.CEL = celestra;
 &#60;/script&#62;
 </pre>
 
@@ -512,33 +486,29 @@ globalThis.CEL = celestra;
 
 <pre>
 // import the defaultExport object
-import defaultExport from "./celestra.nodejs.mjs";
+import defaultExport from "./celestra.js";
 globalThis.celestra = defaultExport;
 globalThis.CEL = defaultExport;
 
 // import with default with name
-import { default as celestra } from "./celestra.nodejs.js";
+import { default as celestra } from "./celestra.js";
 globalThis.celestra = celestra;
 globalThis.CEL = celestra;
 
 // import all into a new celestra object
-import * as celestra from "./celestra.nodejs.js";
+// includes the DOM API and Cookie API
+import * as celestra from "./celestra.js";
 globalThis.celestra = celestra;
 globalThis.CEL = celestra;
 
 // import some functions
-import { first, last } from "./celestra.nodejs.js";
+import { first, last } from "./celestra.js";
 globalThis.first = first;
 globalThis.last = last;
-
-// dynamic import
-const celestra = await import("./celestra.node.js");
-globalThis.celestra = celestra;
-globalThis.CEL = celestra;
 </pre>
 
 
-<h3>Removed functions in the Node.js edition</h3>
+<h3>Removed functions in the defaultExport</h3>
 
 <div>
   <table class="table-responsive table-striped">
@@ -606,6 +576,106 @@ globalThis.CEL = celestra;
 <ul>
   <li>Many functions from the <strong>Collections API</strong> have been removed.</li>
 </ul>
+
+<h3>Celestra v7.0.0 (Spock) changes</h3>
+
+<ul>
+  <li>No API changes.</li>
+  <li>The 2 editions (Browser and Node.js) have been merged into new files: <strong>celestra.ts</strong> and <strong>celestra.js</strong>.</li>
+  <li>The import methods of the library have been changed.</li>
+</ul>
+
+<h3>Migrating from v6 to v7</h3>
+
+<p>The v7.0.0 has the same API as v6.9.0, but the imports have been changed.</p>
+
+<table>
+  <tr>
+    <td><strong>v6.9.0</strong></td>
+    <td><strong>v7.0.0</strong></td>
+  </tr>
+  <tr>
+    <td><pre>// import the defaultExport object
+import defaultExport from "./celestra.browser.js";
+globalThis.celestra = defaultExport;
+globalThis.CEL = defaultExport;</pre></td>
+    <td><pre>// import all into a new celestra object
+import * as celestra from "./celestra.js";
+globalThis.celestra = celestra;
+globalThis.CEL = celestra;
+</pre></td>
+  </tr>
+  <tr>
+    <td><pre>// import with default with name
+import { default as celestra } from "./celestra.browser.js";
+globalThis.celestra = celestra;
+globalThis.CEL = celestra;</pre></td>
+    <td><pre>// import all into a new celestra object
+import * as celestra from "./celestra.js";
+globalThis.celestra = celestra;
+globalThis.CEL = celestra;</pre></td>
+  </tr>
+  <tr>
+    <td><pre>// import all into a new celestra object
+import * as celestra from "./celestra.browser.js";
+globalThis.celestra = celestra;
+globalThis.CEL = celestra;</pre></td>
+    <td><pre>// import all into a new celestra object
+import * as celestra from "./celestra.js";
+globalThis.celestra = celestra;
+globalThis.CEL = celestra;</pre></td>
+  </tr>
+  <tr>
+    <td><pre>// import some functions
+import { first, last } from "./celestra.browser.js";
+globalThis.first = first;
+globalThis.last = last;</pre></td>
+    <td><pre>// import some functions
+import { first, last } from "./celestra.js";
+globalThis.first = first;
+globalThis.last = last;</pre></td>
+  </tr>
+  <tr>
+    <td><pre>// import the defaultExport object
+import defaultExport from "./celestra.node.js";
+globalThis.celestra = defaultExport;
+globalThis.CEL = defaultExport;</pre></td>
+    <td><pre>// import the defaultExport object
+import defaultExport from "./celestra.js";
+globalThis.celestra = defaultExport;
+globalThis.CEL = defaultExport;</pre></td>
+  </tr>
+  <tr>
+    <td><pre>// import with default with name
+import { default as celestra } from "./celestra.node.js";
+globalThis.celestra = celestra;
+globalThis.CEL = celestra;</pre></td>
+    <td><pre>// import with default with name
+import { default as celestra } from "./celestra.js";
+globalThis.celestra = celestra;
+globalThis.CEL = celestra;</pre></td>
+  </tr>
+  <tr>
+    <td><pre>// import all into a new celestra object
+import * as celestra from "./celestra.node.js";
+globalThis.celestra = celestra;
+globalThis.CEL = celestra;</pre></td>
+    <td><pre>// import with default with name
+import { default as celestra } from "./celestra.js";
+globalThis.celestra = celestra;
+globalThis.CEL = celestra;</pre></td>
+  </tr>
+  <tr>
+    <td><pre>// import some functions
+import { first, last } from "./celestra.node.js";
+globalThis.first = first;
+globalThis.last = last;</pre></td>
+    <td><pre>// import some functions
+import { first, last } from "./celestra.js";
+globalThis.first = first;
+`globalThis.last = last;</pre></td>
+  </tr>
+</table>
 
 <hr/>
 <h2 id="functions">Functions</h2>
