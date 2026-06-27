@@ -10,14 +10,14 @@
 
 /**
  * @name Celestra
- * @version 7.0.0
+ * @version 7.0.1
  * @author Ferenc Czigler
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
 
 
-const VERSION = "Celestra v7.0.0";
+const VERSION = "Celestra v7.0.1";
 const VERSION_NODE = VERSION + " node";
 
 
@@ -67,6 +67,7 @@ type SymbolLike = symbol | Symbol;
 type IterableLike = Iterable<any> | Iterator<any> | IterableIterator<any>;
 
 /** * @description Any iterable, iterator or array-like objects. * @private */
+/* @ts-ignore */
 type IterableLikeAndArrayLike =
   Iterable<any> | Iterator<any> | IterableIterator<any> | ArrayLike<any>;
 
@@ -465,7 +466,7 @@ function randomUUIDv7(v4: boolean = false): string {
   /* So keep ts as 12 chars and write version explicitly into position 14 */
   let timestamp = Date.now().toString(16).padStart(12, "0");
   let uuid: string[] = Array.from(
-    "10000000-1000-4000-8000-100000000000"
+    "99999999-9999-4000-8000-100000000000"
       .replace(/[018]/g, (c: string): string => {
         let n = parseInt(c, 10);
         return (n ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (n / 4))))
@@ -589,7 +590,7 @@ const F = (): false => false;
  * @param {number} [size=21] - The length of the generated ID.
  * @param {string} [alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"] - The set of characters to use for generating the ID.
  */
-function nanoid(
+function _nanoid(
   size: number = 21,
   alphabet: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"
   ): string {
@@ -629,6 +630,27 @@ function timestampID (
   size: number = 21,
   alphabet: string = "23456789CFGHJMPQRVWXcfghjmpqvwx"
   ): string {
+  /**
+   * @description Generates a random string ID of specified size using the provided alphabet.
+   * @param {number} [size=10] - The length of the generated ID.
+   * @param {string} [alphabet="23456789CFGHJMPQRVWXcfghjmpqvwx"] - The set of characters to use for generating the ID.
+   */
+  function _innerID (
+    size: number = 10,
+    alphabet: string = "23456789CFGHJMPQRVWXcfghjmpqvwx"
+    ): string {
+    let mask = (2 << (31 - Math.clz32(alphabet.length - 1))) - 1;
+    let result = "";
+    let index = size;
+    while (index--) {
+      let pos: number;
+      do {
+        pos = crypto.getRandomValues(new Uint8Array(1))[0] & mask;
+      } while (pos >= alphabet.length);
+      result += alphabet[pos];
+    }
+    return result;
+  }
   if (!Number.isSafeInteger(size)
     || size < 11
     || alphabet.length > 255) {
@@ -644,7 +666,7 @@ function timestampID (
     );
   }
   return Date.now().toString(36).padStart(10, "0")
-    + (size > 11 ? "-" + nanoid(size - 11, alphabet) : "-")
+    + (size > 11 ? "-" + _innerID(size - 11, alphabet) : "-")
 }
 
 
@@ -2393,14 +2415,12 @@ const castArray = (value: unknown): any[] =>
 
 
 /**
- * @description Returns an array with not `null` and `undefined` values from the given Iterable or ArrayLike object.
- * @param {IterableAndIteratorAndArrayLike} iter
- * @returns any[]
+ * @description Returns an iterator with not `null` and `undefined` values from the given Iterable or ArrayLike object.
+ * @param {IterableLike} iter
+ * @returns {Iterator<any>}
  */
-const compact = (iter: IterableLikeAndArrayLike): any[] =>
-  Array.from(iter as Iterable<any> | ArrayLike<any>).filter(
-    (value: unknown): boolean => value != null
-  );
+const compact = (iter: IterableLike): Iterator<any> =>
+  Iterator.from(iter).filter((value: unknown): boolean => value != null);
 
 
 /**
@@ -2440,15 +2460,11 @@ function unique (
  * @param {Function} callback - The callback function that tests each element.
  * @returns {number} The count of elements that satisfy the condition.
  */
-function count (iter: IterableLike, callback: Function): number {
-  let index = 0;
-  let result = 0;
-  for (let item of iter as Iterable<any>) {
-    if (callback(item, index++)) { result++; }
-  }
-  return result;
-}
-
+const count = (iter: IterableLike, callback: Function): number =>
+  Iterator.from(iter).reduce(
+    (acc, value, index) => callback(value, index) ? ++acc : acc,
+    0
+  );
 
 /**
  * @description Creates a deep clone of an array, including nested arrays.
@@ -2465,9 +2481,18 @@ function arrayDeepClone ([...array]: any[]): any[] {
 /**
  * @description Returns all elements of an iterable except the last one.
  * @param {IterableLike} iter - The iterable to process.
- * @returns {any[]} An array containing all elements except the last one.
+ * @returns {Iterable<any>} An array containing all elements except the last one.
  */
-const initial = ([...array]: any[]): unknown[] => array.slice(0, -1);
+function* initial (iter: IterableLike): Iterable<any> {
+  let iterator = Iterator.from(iter);
+  let lastValue = iterator.next().value;
+  let nextResult = iterator.next();
+  while (!nextResult.done) {
+    yield lastValue;
+    lastValue = nextResult.value;
+    nextResult = iterator.next();
+  }
+}
 
 
 /**
@@ -2793,11 +2818,11 @@ const head = first;
 /**
  * @description Returns the last element from an iterable or iterator. If the iterable is empty, returns undefined.
 
- * @param {any[]} array - Iterable or iterator to extract from.
+ * @param {IterableLike} iter - Iterable or iterator to extract from.
  * @returns {any} The last element, or undefined if the iterable is empty.
  */
-const last = ([...array]: any[]): any => array[array.length - 1];
-
+const last = (iter: IterableLike): any =>
+  Iterator.from(iter).reduce((_acc, value) => value);
 
 /**
  * @description Yields the elements of an iterable or iterator in reverse order.
@@ -2896,8 +2921,11 @@ function includes (
  * @param {Function} callback - The function to test each element.
  * @returns {any} The last element that satisfies the testing function, or undefined if none do.
  */
-const findLast = ([...array]: any[], callback: Function): unknown =>
-  array.findLast((value, index) => callback(value, index));
+const findLast = (iter: IterableLike, callback: Function): unknown =>
+  Iterator.from(iter).reduce(
+    (acc, value, index) => callback(value, index) ? value : acc,
+    undefined
+  );
 
 
 /**
@@ -3576,7 +3604,7 @@ export default {
   noop,
   T,
   F,
-  nanoid,
+  nanoid: _nanoid,
   timestampID,
   /** String API **/
   b64Encode,
@@ -3760,7 +3788,7 @@ export {
   noop,
   T,
   F,
-  nanoid,
+  _nanoid as nanoid,
   timestampID,
   /** String API **/
   b64Encode,

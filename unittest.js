@@ -15,7 +15,7 @@ try {
 
 /* Celestra unit tester */
 
-CUT.VERSION = "Celestra Unit Tester (CUT) v7.0.0 for browser (ESM)";
+CUT.VERSION = "Celestra Unit Tester (CUT) v7.0.1 for browser (ESM)";
 
 CUT.__results__ = document.querySelector("#results");
 CUT.__resultsFailed__ = document.querySelector("#resultsFailed");
@@ -299,7 +299,7 @@ var /** @type any */ token12, /** @type any */ token13;
 var /** @type any */ token14, /** @type any */ token15;
 
 
-/* Celestra v7.0.0 testcases */
+/* Celestra v7.0.1 testcases */
 
 
 /** Not auto tested functions **/
@@ -1315,7 +1315,7 @@ CUT.isTrue("arrayDeepClone();",
 
 /* initial(); */
 CUT.isTrue("initial();",
-  CEL.isDeepStrictEqual(CEL.initial(["a", "b", "c", "d"]), ["a", "b", "c"])
+  CEL.isDeepStrictEqual([...CEL.initial(["a", "b", "c", "d"])], ["a", "b", "c"])
 );
 
 
@@ -1556,12 +1556,12 @@ CUT.isEqual("castArray(); 05", JSON.stringify(CEL.castArray(null)), "[null]");
 
 
 /* compact(); */
-CUT.isEqual("compact(); 01", JSON.stringify(CEL.compact([])), "[]");
+CUT.isEqual("compact(); 01", JSON.stringify([...CEL.compact([])]), "[]");
 CUT.isEqual("compact(); 02",
   JSON.stringify(
-    CEL.compact(
+    [...CEL.compact(
       [0, 1, false, 2, "", 3, null, 4, undefined, 5, NaN, "dsfsd", true, 0n]
-    ),
+    )],
     (_, v) => typeof v === "bigint" ? v.toString()+"n" : v
   ),
   "[0,1,false,2,\"\",3,4,5,null,\"dsfsd\",true,\"0n\"]"

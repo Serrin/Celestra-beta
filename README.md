@@ -5,7 +5,7 @@
 
 __A helper JavaScript library with useful functions and polyfills and zero dependencies.__
 
-Latest version: 7.0.0
+Latest version: 7.0.1
 
 Date: 2026-06-14T17:36:41.957Z
 
@@ -131,8 +131,8 @@ __Cookie API__|`getCookie();`<BR>`hasCookie();`<BR>`setCookie();`<BR>`removeCook
 
 ### Celestra v7.0.0 (Spock) changes
 
-- No API changes. 
-- The 2 editions (Browser and Node.js) have been merged into new files: __celestra.ts__ and __celestra.js__. 
+- No API changes.
+- The 2 editions (Browser and Node.js) have been merged into new files: __celestra.ts__ and __celestra.js__.
 - The import methods of the library have been changed.
 
 ### Migrating from v6 to v7
@@ -141,14 +141,14 @@ The v7.0.0 has the same API as v6.9.0, but the imports have been changed.
 
 v6.9.0|v7.0.0
 -|-
-`// import the defaultExport object`<BR>`import defaultExport from "./celestra.browser.js";`<BR>`globalThis.celestra = defaultExport;`<BR>`globalThis.CEL = defaultExport;`|`// import all into a new celestra object`<BR>`import * as celestra from "./celestra.js";`<BR>`globalThis.celestra = celestra;`<BR>`globalThis.CEL = celestra;`
-`// import with default with name`<BR>`import { default as celestra } from "./celestra.browser.js";`<BR>`globalThis.celestra = celestra;`<BR>`globalThis.CEL = celestra;`|`// import all into a new celestra object`<BR>`import * as celestra from "./celestra.js";`<BR>`globalThis.celestra = celestra;`<BR>`globalThis.CEL = celestra;`
-`// import all into a new celestra object`<BR>`import * as celestra from "./celestra.browser.js";`<BR>`globalThis.celestra = celestra;`<BR>`globalThis.CEL = celestra;`|`// import all into a new celestra object`<BR>`import * as celestra from "./celestra.js";`<BR>`globalThis.celestra = celestra;`<BR>`globalThis.CEL = celestra;`
-`// import some functions`<BR>`import { first, last } from "./celestra.browser.js";`<BR>`globalThis.first = first;`<BR>`globalThis.last = last;`|`// import some functions`<BR>`import { first, last } from "./celestra.js";`<BR>`globalThis.first = first;`<BR>`globalThis.last = last;`
-`// import the defaultExport object`<BR>`import defaultExport from "./celestra.node.js";`<BR>`globalThis.celestra = defaultExport;`<BR>`globalThis.CEL = defaultExport;`|`// import the defaultExport object`<BR>`import defaultExport from "./celestra.js";`<BR>`globalThis.celestra = defaultExport;`<BR>`globalThis.CEL = defaultExport;`
-`// import with default with name`<BR>`import { default as celestra } from "./celestra.node.js";`<BR>`globalThis.celestra = celestra;`<BR>`globalThis.CEL = celestra;`|`// import with default with name`<BR>`import { default as celestra } from "./celestra.js";`<BR>`globalThis.celestra = celestra;`<BR>`globalThis.CEL = celestra;`
-`// import all into a new celestra object`<BR>`import * as celestra from "./celestra.node.js";`<BR>`globalThis.celestra = celestra;`<BR>`globalThis.CEL = celestra;`|`// import with default with name`<BR>`import { default as celestra } from "./celestra.js";`<BR>`globalThis.celestra = celestra;`<BR>`globalThis.CEL = celestra;`
-`// import some functions`<BR>`import { first, last } from "./celestra.node.js";`<BR>`globalThis.first = first;`<BR>`globalThis.last = last;`|`// import some functions`<BR>`import { first, last } from "./celestra.js";`<BR>`globalThis.first = first;`<BR>`globalThis.last = last;`
+`// import the defaultExport object`<BR>`import defaultExport from "./celestra.browser.js";`|`// import all into a new celestra object`<BR>`import * as celestra from "./celestra.js";`
+`// import with default with name`<BR>`import { default as celestra } from "./celestra.browser.js";`|`// import all into a new celestra object`<BR>`import * as celestra from "./celestra.js";`
+`// import all into a new celestra object`<BR>`import * as celestra from "./celestra.browser.js";`|`// import all into a new celestra object`<BR>`import * as celestra from "./celestra.js";`
+`// import some functions`<BR>`import { first, last } from "./celestra.browser.js";`|`// import some functions`<BR>`import { first, last } from "./celestra.js";`
+`// import the defaultExport object`<BR>`import defaultExport from "./celestra.node.js";`|`// import the defaultExport object`<BR>`import defaultExport from "./celestra.js";`
+`// import with default with name`<BR>`import { default as celestra } from "./celestra.node.js";`|`// import with default with name`<BR>`import { default as celestra } from "./celestra.js";`
+`// import all into a new celestra object`<BR>`import * as celestra from "./celestra.node.js";`|`// import with default with name`<BR>`import { default as celestra } from "./celestra.js";`
+`// import some functions`<BR>`import { first, last } from "./celestra.node.js";`|`// import some functions`<BR>`import { first, last } from "./celestra.js";`
 
 -----
 
@@ -195,7 +195,7 @@ Name|Description
 `identity(value);`|__Stability: 4 - Stable.__<BR>Return the given value. (In math: `f(x)=x`)
 `lt(value1, value2);`|__Stability: 4 - Stable.__<BR>Strict type less than. All of the parameters are mandatory and can be number, bigint, string or boolean, but the values have to be same type. If the type of the values are not the same, then return value is false. The return value is boolean.
 `lte(value1, value2);`|__Stability: 4 - Stable.__<BR>Strict type less than or equal (SameValueZero). All of the parameters are mandatory and can be number, bigint, string or boolean, but the values have to be same type. If the type of the values are not the same, then return value is false. The return value is boolean.
-`nanoid([size=21[,alphabet= "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"]]);`|__Stability: 4 - Stable.__<BR>Generate a nanoid. The size parameter is optional and the default value is 21. The alphabet parameter is optional and the default value is "A-Za-z0-9_-". The return value is the generated nanoid (string).
+`nanoid([size=21[,alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"]]);`|__Stability: 1 - Deprecated and will be removed.__<BR>Generate a nanoid. The size parameter is optional and the default value is 21. The alphabet parameter is optional and the default value is "A-Za-z0-9_-". The return value is the generated nanoid (string).
 `noop();`|__Stability: 4 - Stable.__<BR>It's an empty function (no operation) that returns undefined and usable for optional callback arguments.
 `omit(object, keys);`|__Stability: 4 - Stable.__<BR>Exclude (filter) keys from an object and return these keys and values in a new object (immutably). All of the parameters are mandatory and the keys has to be an array.
 `once(functions);`|__Stability: 4 - Stable.__<BR>Ensures a function is only called once. The return value is a new function. The function parameter is mandatory.
@@ -206,7 +206,7 @@ Name|Description
 `sizeIn(object);`|__Stability: 4 - Stable.__<BR>Returns the count of the owned properties and symbols of the given object. The object parameter is mandatory. The return value is an integer.
 `T();`|__Stability: 4 - Stable.__<BR>This function returns true.
 `tap(function): function(value);`|__Stability: 4 - Stable.__<BR>This functions returns a new function, which runs the given function with the value parameter, then returns the value. Usable for testing and logging. All of the parameters are mandatory.
-`timestampID([size=21[,alphabet= "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"]]);`|__Stability: 4 - Stable.__<BR>Generate a timestamp based sortable ID. The size parameter is optional and the default value is 21, but if the given value smaller than 12, then the value will be 12. The alphabet parameter is optional and the default value is `"123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"`, same as BASE58. The return value is the generated id (string).<BR>Example ID:`"00lirtqi4e-wgGn8vGPyY"`
+`timestampID([size=21[,alphabet="23456789CFGHJMPQRVWXcfghjmpqvwx"]]);`|__Stability: 4 - Stable.__<BR>Generate a timestamp based sortable ID. The size parameter is optional and the default value is 21, but if the given value smaller than 12, then the value will be 12. The alphabet parameter is optional and the default value is `"23456789CFGHJMPQRVWXcfghjmpqvwx"`, same as WORDSAFEALPHABET. The return value is the generated id (string).<BR>Example ID:`"00lirtqi4e-wgGn8vGPyY"`
 `unBind(function);`|__Stability: 4 - Stable.__<BR>__Old name before v5.4.1:__ `toFunction`.<BR>Returns an unbinded function from an object method. The function parameter is mandatory.
 
 ### String API
@@ -354,14 +354,14 @@ Name|Description
 `arrayRemoveBy(array,callback[,all=false]);`|__Stability: 4 - Stable.__<BR>Remove the first or all values from the array with which the given function returns true. Returns true, when the value was found and false when not found. The array and value parameters are mandatory. The all parameter is optional and has to be a boolean.
 `arrayRepeat(value);`|__Stability: 4 - Stable.__<BR>Returns an array with same repeatedly elements. The value parameter is mandatory and the n parameter is optional and can be an integer. Default parameter value: n = 100.
 `castArray([value]);`|__Stability: 4 - Stable.__<BR>This function returns the original value if this is an array or value a new array. If there is no given value, then the return value is an empty array.
-`compact(collection);`|__Stability: 4 - Stable.__<BR>This function filters out `null` and `undefined` values (but keeps other falsy values) from the given Iterable or ArrayLike object. The collection parameter is mandatory.
+`compact(iterator);`|__Stability: 4 - Stable.__<BR>This function filters out `null` and `undefined`  values (but keeps other falsy values) from the given iterator and returns an iterator. The collection parameter is mandatory.
 `concat(iterator1[,iteratorN]);`|__Stability: 4 - Stable.__<BR>This function merges the iterators and yields the elements of the merged iterator. At least one iterator has to been given.
 `count(iterator,callback);`|__Stability: 4 - Stable.__<BR>This function executes a counter function (that you provide) on each element of the iterator, returning in a single output value. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a function.
 `findLast(iterator,callback);`|__Stability: 4 - Stable.__<BR>This function returns the value of the last element in the iterator that satisfies the provided testing function. Otherwise undefined is returned. All of the parameters are mandatory.
 `first(iterator);`|__Stability: 4 - Stable.__<BR>This function returns the first element of the given iterator. The iterator parameter is mandatory.
 `head(iterator);`|__Stability: 4 - Stable.__<BR>This is an alias of the `first(iterator);`.
 `includes(iterator,value[,comparator]);`|__Stability: 4 - Stable.__<BR>This function determines whether a collection includes a certain value among its entries, returning true or false as appropriate. The collection and the value of the parameters are mandatory and the comparator is optional.<BR>The default comparasion is SameValueZero algorithm, but with the comparator (function) can be other solution. (e.g.: Object.is, which uses the SameValue algorithm).<BR>The collection can be: _String_ (uses the String#includes method), _String object_ (uses the String#includes method), _Map_, _Iterables_ (Array, Set, TypedArrays, other Iterables), _plain objects_, _functions_ (as object).<BR>The own keys, values, symbols are compared, example: `CEL.includes({"lorem": "ipsum","1": 0}, -0);` returns true.
-`initial(iterator);`|__Stability: 4 - Stable.__<BR>Returns an array with the values of the given iterator, but without the last value.<BR>__Example:__<BR>`CEL.initial([-5, 2, -9, 7, 34]);`<BR>-><BR>`[-5, 2, -9, 7]`
+`initial(iterator);`|__Stability: 4 - Stable.__<BR>Returns an Iterator with the values of the given iterator, but without the last value.<BR>__Example:__<BR>`>[...CEL.initial([-5, 2, -9, 7, 34])`<BR>-><BR>`[-5, 2, -9, 7]`
 `item(iterator,index);`|__Stability: 4 - Stable.__<BR>TThis function returns the item from the given iterator on the given index. The iterator parameter is mandatory and has to be an iterator/iterable. The index is mandatory and can be a positive integer (examples: 0 = the first item, 1 = the second item, 2 = the third item, etc.) Compatible with the Unicode strings.
 `iterCycle(iter[,n=Infinity]);`|__Stability: 4 - Stable.__<BR>Yield the items of an iterator over and over. The iter parameter is mandatory and the n parameter is optional and can be an integer. Default parameter value: n = Infinity __Note: PLease don't use with infinite iterators!__
 `iterRange([start=0[,step=1[,end=Infinity]]]);`|__Stability: 4 - Stable.__<BR>Yield a range (counter) iterator. All of the parameters are optional. Default parameter values: start = 0, step = 1, end = Infinity.

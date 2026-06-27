@@ -35,7 +35,7 @@ globalThis.CEL = celestra;
 
 const CUT = {};
 
-CUT.VERSION = "Celestra Unit Tester (CUT) v7.0.0 for Node.js";
+CUT.VERSION = "Celestra Unit Tester (CUT) v7.0.1 for Node.js";
 
 /* __addTest__(<step: string>, <expected>, <expression>); */
 /* __addTest__(<step: string>, <expected>, <expression>[, strict: boolean]); */
@@ -952,7 +952,7 @@ CUT.isTrue("arrayDeepClone();",
 
 /* initial(); */
 CUT.isTrue("initial();",
-  CEL.isDeepStrictEqual(CEL.initial(["a", "b", "c", "d"]), ["a", "b", "c"])
+  CEL.isDeepStrictEqual([...CEL.initial(["a", "b", "c", "d"])], ["a", "b", "c"])
 );
 
 
@@ -1196,12 +1196,12 @@ CUT.isEqual("castArray(); 05", JSON.stringify(CEL.castArray(null)), "[null]");
 
 
 /* compact(); */
-CUT.isEqual("compact(); 01", JSON.stringify(CEL.compact([])), "[]");
+CUT.isEqual("compact(); 01", JSON.stringify([...CEL.compact([])]), "[]");
 CUT.isEqual("compact(); 02",
   JSON.stringify(
-    CEL.compact(
+    [...CEL.compact(
       [0, 1, false, 2, "", 3, null, 4, undefined, 5, NaN, "dsfsd", true, 0n]
-    ),
+    )],
     (_, v) => typeof v === "bigint" ? v.toString()+"n" : v
   ),
   "[0,1,false,2,\"\",3,4,5,null,\"dsfsd\",true,\"0n\"]"

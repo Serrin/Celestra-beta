@@ -1,6 +1,25 @@
 
 # Celestra version history
 
+## Celestra v7.0.1
+
+1. Documentation, pdf and code fixes.
+2. Deprecate _(stability 0)_ the function `nanoid();`
+3. Fix these functions:
+
+- `compact()`
+- `count();`
+- `findLast();`
+- `initial();`
+- `last();`
+- `randomUUIDv7();`
+
+## Celestra v7.0.0 Spock
+
+1. No API changes.
+2. The 2 editions (Browser and Node.js) have been merged into new files: __celestra.ts__ and __celestra.js__.
+3. The import methods of the library have been changed.
+
 ## Celestra v6.9.0 McCoy
 
 1. Documentation, pdf and code fixes.

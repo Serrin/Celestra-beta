@@ -1,5 +1,5 @@
 "use strict";
-const VERSION = "Celestra v7.0.0";
+const VERSION = "Celestra v7.0.1";
 const VERSION_NODE = VERSION + " node";
 const { getPrototypeOf, getOwnPropertyNames, getOwnPropertySymbols } = Object;
 const { isArray } = Array;
@@ -157,7 +157,7 @@ async function asyncIdentity(value) { return value; }
 function randomUUIDv7(v4 = false) {
     let version = v4 ? "4" : "7";
     let timestamp = Date.now().toString(16).padStart(12, "0");
-    let uuid = Array.from("10000000-1000-4000-8000-100000000000"
+    let uuid = Array.from("99999999-9999-4000-8000-100000000000"
         .replace(/[018]/g, (c) => {
         let n = parseInt(c, 10);
         return (n ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (n / 4))))
@@ -199,7 +199,7 @@ const identity = (value) => value;
 function noop() { }
 const T = () => true;
 const F = () => false;
-function nanoid(size = 21, alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-") {
+function _nanoid(size = 21, alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-") {
     if (!Number.isSafeInteger(size) || size < 1 || size > 255) {
         throw new RangeError("[nanoid] Size should be an integer between 1 and 255.");
     }
@@ -221,6 +221,19 @@ function nanoid(size = 21, alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmno
     return result;
 }
 function timestampID(size = 21, alphabet = "23456789CFGHJMPQRVWXcfghjmpqvwx") {
+    function _innerID(size = 10, alphabet = "23456789CFGHJMPQRVWXcfghjmpqvwx") {
+        let mask = (2 << (31 - Math.clz32(alphabet.length - 1))) - 1;
+        let result = "";
+        let index = size;
+        while (index--) {
+            let pos;
+            do {
+                pos = crypto.getRandomValues(new Uint8Array(1))[0] & mask;
+            } while (pos >= alphabet.length);
+            result += alphabet[pos];
+        }
+        return result;
+    }
     if (!Number.isSafeInteger(size)
         || size < 11
         || alphabet.length > 255) {
@@ -232,7 +245,7 @@ function timestampID(size = 21, alphabet = "23456789CFGHJMPQRVWXcfghjmpqvwx") {
         throw new TypeError("[timestampID] Alphabet should be a non-empty string with maximum length 255.");
     }
     return Date.now().toString(36).padStart(10, "0")
-        + (size > 11 ? "-" + nanoid(size - 11, alphabet) : "-");
+        + (size > 11 ? "-" + _innerID(size - 11, alphabet) : "-");
 }
 const b64Encode = (str) => btoa(encodeURIComponent(String(str)).replace(/%([0-9A-F]{2})/g, (_match, p1) => String.fromCharCode(parseInt(p1, 16))));
 const b64Decode = (str) => decodeURIComponent(atob(String(str)).split("").map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2)).join(""));
@@ -1106,7 +1119,7 @@ function clearCookies(path = "/", domain, secure, SameSite = "Lax", HttpOnly) {
     }
 }
 const castArray = (value) => typeof value === "undefined" ? [] : (isArray(value) ? value : [value]);
-const compact = (iter) => Array.from(iter).filter((value) => value != null);
+const compact = (iter) => Iterator.from(iter).filter((value) => value != null);
 function unique(iter, resolver) {
     if (resolver == null) {
         return [...new Set(iter)];
@@ -1130,21 +1143,21 @@ function unique(iter, resolver) {
         return [...cache.values()];
     }
 }
-function count(iter, callback) {
-    let index = 0;
-    let result = 0;
-    for (let item of iter) {
-        if (callback(item, index++)) {
-            result++;
-        }
-    }
-    return result;
-}
+const count = (iter, callback) => Iterator.from(iter).reduce((acc, value, index) => callback(value, index) ? ++acc : acc, 0);
 function arrayDeepClone([...array]) {
     const _ADC = (value) => isArray(value) ? Array.from(value, _ADC) : value;
     return _ADC(array);
 }
-const initial = ([...array]) => array.slice(0, -1);
+function* initial(iter) {
+    let iterator = Iterator.from(iter);
+    let lastValue = iterator.next().value;
+    let nextResult = iterator.next();
+    while (!nextResult.done) {
+        yield lastValue;
+        lastValue = nextResult.value;
+        nextResult = iterator.next();
+    }
+}
 function shuffle([...array]) {
     for (let index = array.length - 1; index > 0; index--) {
         let pos = Math.floor(Math.random() * (index + 1));
@@ -1289,7 +1302,7 @@ function first(iter) {
     return result.done ? undefined : result.value;
 }
 const head = first;
-const last = ([...array]) => array[array.length - 1];
+const last = (iter) => Iterator.from(iter).reduce((_acc, value) => value);
 function* reverse([...array]) {
     let index = array.length;
     while (index--) {
@@ -1344,7 +1357,7 @@ function includes(collection, value, comparator) {
     }
     return false;
 }
-const findLast = ([...array], callback) => array.findLast((value, index) => callback(value, index));
+const findLast = (iter, callback) => Iterator.from(iter).reduce((acc, value, index) => callback(value, index) ? value : acc, undefined);
 function* concat(...iterables) {
     for (const iterable of iterables) {
         yield* iterable;
@@ -1625,7 +1638,7 @@ export default {
     noop,
     T,
     F,
-    nanoid,
+    nanoid: _nanoid,
     timestampID,
     b64Encode,
     b64Decode,
@@ -1762,4 +1775,4 @@ export default {
     randomFloat,
     inRange
 };
-export { VERSION, BASE16, BASE32, BASE36, BASE58, BASE62, WORDSAFEALPHABET, assert, eq, gt, gte, lt, lte, tap, once, curry, pipe, compose, pick, omit, assoc, asyncNoop, asyncT, asyncF, asyncConstant, asyncIdentity, randomUUIDv7, delay, randomBoolean, deepAssign, sizeIn, unBind, bind, constant, identity, noop, T, F, nanoid, timestampID, b64Encode, b64Decode, strCount, strTruncate, strPropercase, strTitlecase, strCapitalize, strUpFirst, strDownFirst, strReverse, strCodePoints, strFromCodePoints, strAt, strSplice, strHTMLRemoveTags, strHTMLEscape, strHTMLUnEscape, qsa, qs, domReady, domCreate, domToElement, domGetCSS, domSetCSS, domFadeIn, domFadeOut, domFadeToggle, domHide, domShow, domToggle, domIsHidden, domSiblings, domSiblingsPrev, domSiblingsLeft, domSiblingsNext, domSiblingsRight, importScript, importStyle, form2array, form2string, getDoNotTrack, getLocation, createFile, getFullscreen, setFullscreenOn, setFullscreenOff, domGetCSSVar, domSetCSSVar, domScrollToTop, domScrollToBottom, domScrollToElement, domClear, constructorOf, isNonNullable, isNonNullablePrimitive, isArrowFunction, isAsyncIterator, isTypedCollection, is, toObject, toPrimitive, toSafeString, isPropertyKey, toPropertyKey, isIndex, isLength, toIndex, toLength, typeOf, isSameType, isSameInstance, isCoercedObject, isDeepStrictEqual, isEmpty, isProxy, isAsyncGeneratorFunction, isPlainObject, isObject, isFunction, isArraylike, isNull, isUndefined, isNullish, isPrimitive, isIterator, isRegexp, isElement, isIterable, isAsyncIterable, isTypedArray, isGeneratorFunction, isAsyncFunction, setCookie, getCookie, hasCookie, removeCookie, clearCookies, castArray, compact, unique, count, arrayDeepClone, initial, shuffle, min, max, arrayRepeat, arrayCycle, arrayRange, zip, unzip, zipObj, arrayAdd, arrayClear, arrayRemove, arrayRemoveBy, arrayMerge, iterRange, iterCycle, iterRepeat, slice, tail, item, nth, size, first, head, last, reverse, sort, includes, findLast, concat, join, add, sub, mul, div, divMod, mod, isFloat, toInteger, toIntegerOrInfinity, sum, avg, product, pow, clamp, minmax, isEven, isOdd, toInt8, toUInt8, toInt16, toUInt16, toInt32, toUInt32, toBigInt64, toBigUInt64, toFloat32, isInt8, isUInt8, isInt16, isUInt16, isInt32, isUInt32, isBigInt64, isBigUInt64, toFloat16, isFloat16, signbit, randomInt, randomFloat, inRange };
+export { VERSION, BASE16, BASE32, BASE36, BASE58, BASE62, WORDSAFEALPHABET, assert, eq, gt, gte, lt, lte, tap, once, curry, pipe, compose, pick, omit, assoc, asyncNoop, asyncT, asyncF, asyncConstant, asyncIdentity, randomUUIDv7, delay, randomBoolean, deepAssign, sizeIn, unBind, bind, constant, identity, noop, T, F, _nanoid as nanoid, timestampID, b64Encode, b64Decode, strCount, strTruncate, strPropercase, strTitlecase, strCapitalize, strUpFirst, strDownFirst, strReverse, strCodePoints, strFromCodePoints, strAt, strSplice, strHTMLRemoveTags, strHTMLEscape, strHTMLUnEscape, qsa, qs, domReady, domCreate, domToElement, domGetCSS, domSetCSS, domFadeIn, domFadeOut, domFadeToggle, domHide, domShow, domToggle, domIsHidden, domSiblings, domSiblingsPrev, domSiblingsLeft, domSiblingsNext, domSiblingsRight, importScript, importStyle, form2array, form2string, getDoNotTrack, getLocation, createFile, getFullscreen, setFullscreenOn, setFullscreenOff, domGetCSSVar, domSetCSSVar, domScrollToTop, domScrollToBottom, domScrollToElement, domClear, constructorOf, isNonNullable, isNonNullablePrimitive, isArrowFunction, isAsyncIterator, isTypedCollection, is, toObject, toPrimitive, toSafeString, isPropertyKey, toPropertyKey, isIndex, isLength, toIndex, toLength, typeOf, isSameType, isSameInstance, isCoercedObject, isDeepStrictEqual, isEmpty, isProxy, isAsyncGeneratorFunction, isPlainObject, isObject, isFunction, isArraylike, isNull, isUndefined, isNullish, isPrimitive, isIterator, isRegexp, isElement, isIterable, isAsyncIterable, isTypedArray, isGeneratorFunction, isAsyncFunction, setCookie, getCookie, hasCookie, removeCookie, clearCookies, castArray, compact, unique, count, arrayDeepClone, initial, shuffle, min, max, arrayRepeat, arrayCycle, arrayRange, zip, unzip, zipObj, arrayAdd, arrayClear, arrayRemove, arrayRemoveBy, arrayMerge, iterRange, iterCycle, iterRepeat, slice, tail, item, nth, size, first, head, last, reverse, sort, includes, findLast, concat, join, add, sub, mul, div, divMod, mod, isFloat, toInteger, toIntegerOrInfinity, sum, avg, product, pow, clamp, minmax, isEven, isOdd, toInt8, toUInt8, toInt16, toUInt16, toInt32, toUInt32, toBigInt64, toBigUInt64, toFloat32, isInt8, isUInt8, isInt16, isUInt16, isInt32, isUInt32, isBigInt64, isBigUInt64, toFloat16, isFloat16, signbit, randomInt, randomFloat, inRange };

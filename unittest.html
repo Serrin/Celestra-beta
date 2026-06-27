@@ -87,11 +87,10 @@ textarea, #preCelLog { border-radius: 0px; }
   <tr>
     <td class="noborder">
       <p><button onclick=" _preCel.importESM(); preCelLog('load <b>celestra.js</b>'); ">
-        load celestra.js
-      </button></p>
+        load celestra.js</button></p>
+      <p><button onclick=" CEL.importScript('unittest.js'); preCelLog('load <b>unittest.js</b>'); ">load unittest.js</button></p>
     </td>
     <td class="noborder">
-      <p><button onclick=" CEL.importScript('unittest.js'); preCelLog('load <b>unittest.js</b>'); ">load unittest.js</button></p>
       <p><button onclick=" globalThis.location.reload(true); ">reset</button></p>
       <p><button onclick=" saveResults(); ">save result in HTML</button></p>
     </td>

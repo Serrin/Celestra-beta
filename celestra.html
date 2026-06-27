@@ -360,7 +360,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
 
 <p><strong>A helper JavaScript library with useful functions and polyfills and zero dependencies.</strong></p>
 
-<p>Latest version: 7.0.0</p>
+<p>Latest version: 7.0.1</p>
 <p>Date: 2026-06-14T17:36:41.957Z</p>
 
 <p><strong>Tested on these environments:</strong></p>
@@ -591,89 +591,57 @@ globalThis.last = last;
 
 <table>
   <tr>
-    <td><strong>v6.9.0</strong></td>
-    <td><strong>v7.0.0</strong></td>
+    <td class="center"><strong>v6.9.0</strong></td>
+    <td class="center"><strong>v7.0.0</strong></td>
   </tr>
   <tr>
     <td><pre>// import the defaultExport object
-import defaultExport from "./celestra.browser.js";
-globalThis.celestra = defaultExport;
-globalThis.CEL = defaultExport;</pre></td>
+import defaultExport from "./celestra.browser.js";</pre></td>
     <td><pre>// import all into a new celestra object
 import * as celestra from "./celestra.js";
-globalThis.celestra = celestra;
-globalThis.CEL = celestra;
 </pre></td>
   </tr>
   <tr>
     <td><pre>// import with default with name
-import { default as celestra } from "./celestra.browser.js";
-globalThis.celestra = celestra;
-globalThis.CEL = celestra;</pre></td>
+import { default as celestra } from "./celestra.browser.js";</pre></td>
     <td><pre>// import all into a new celestra object
-import * as celestra from "./celestra.js";
-globalThis.celestra = celestra;
-globalThis.CEL = celestra;</pre></td>
+import * as celestra from "./celestra.js";;</pre></td>
   </tr>
   <tr>
     <td><pre>// import all into a new celestra object
-import * as celestra from "./celestra.browser.js";
-globalThis.celestra = celestra;
-globalThis.CEL = celestra;</pre></td>
+import * as celestra from "./celestra.browser.js";</pre></td>
     <td><pre>// import all into a new celestra object
-import * as celestra from "./celestra.js";
-globalThis.celestra = celestra;
-globalThis.CEL = celestra;</pre></td>
+import * as celestra from "./celestra.js";</pre></td>
   </tr>
   <tr>
     <td><pre>// import some functions
-import { first, last } from "./celestra.browser.js";
-globalThis.first = first;
-globalThis.last = last;</pre></td>
+import { first, last } from "./celestra.browser.js";</pre></td>
     <td><pre>// import some functions
-import { first, last } from "./celestra.js";
-globalThis.first = first;
-globalThis.last = last;</pre></td>
+import { first, last } from "./celestra.js";</pre></td>
   </tr>
   <tr>
     <td><pre>// import the defaultExport object
-import defaultExport from "./celestra.node.js";
-globalThis.celestra = defaultExport;
-globalThis.CEL = defaultExport;</pre></td>
+import defaultExport from "./celestra.node.js";</pre></td>
     <td><pre>// import the defaultExport object
-import defaultExport from "./celestra.js";
-globalThis.celestra = defaultExport;
-globalThis.CEL = defaultExport;</pre></td>
+import defaultExport from "./celestra.js";</pre></td>
   </tr>
   <tr>
     <td><pre>// import with default with name
-import { default as celestra } from "./celestra.node.js";
-globalThis.celestra = celestra;
-globalThis.CEL = celestra;</pre></td>
+import { default as celestra } from "./celestra.node.js";</pre></td>
     <td><pre>// import with default with name
-import { default as celestra } from "./celestra.js";
-globalThis.celestra = celestra;
-globalThis.CEL = celestra;</pre></td>
+import { default as celestra } from "./celestra.js";</pre></td>
   </tr>
   <tr>
     <td><pre>// import all into a new celestra object
-import * as celestra from "./celestra.node.js";
-globalThis.celestra = celestra;
-globalThis.CEL = celestra;</pre></td>
+import * as celestra from "./celestra.node.js";</pre></td>
     <td><pre>// import with default with name
-import { default as celestra } from "./celestra.js";
-globalThis.celestra = celestra;
-globalThis.CEL = celestra;</pre></td>
+import { default as celestra } from "./celestra.js";</pre></td>
   </tr>
   <tr>
     <td><pre>// import some functions
-import { first, last } from "./celestra.node.js";
-globalThis.first = first;
-globalThis.last = last;</pre></td>
+import { first, last } from "./celestra.node.js";</pre></td>
     <td><pre>// import some functions
-import { first, last } from "./celestra.js";
-globalThis.first = first;
-`globalThis.last = last;</pre></td>
+import { first, last } from "./celestra.js";</pre></td>
   </tr>
 </table>
 
@@ -823,7 +791,7 @@ CEL.delay(5000)
     </tr>
     <tr id="FN-nanoid();">
       <td><code>nanoid([size=21[, alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"]]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Generate a nanoid. The size parameter is optional and the default value is 21. The alphabet parameter is optional and the default value is "A-Za-z0-9_-". The return value is the generated nanoid (<code>string</td>code>).<br>Example ID: <code>"QsZA2VVTgFIF3D-qFk5oc"</code></td>
+      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span></li>is the generated nanoid (<code>string</td>code>).<br>Example ID: <code>"QsZA2VVTgFIF3D-qFk5oc"</code></td>
     </tr>
     <tr id="FN-noop();">
       <td><code>noop();</code></td>
@@ -866,8 +834,8 @@ CEL.delay(5000)
       <td><span class="info">Stability: 4 - Stable.</span><br/>This functions returns a new function, which runs the given function with the value parameter, then returns the value. Usable for testing and logging. All of the parameters are mandatory.</td>
     </tr>
     <tr id="FN-timestampID();">
-      <td><code>timestampID([size=21[,alphabet="123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"]]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>Generate a timestamp based sortable ID. The size parameter is optional and the default value is 21, but if the given value smaller than 12, then the value will be 12. The alphabet parameter is optional and the default value is <code>"123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"</code>, same as BASE58. The return value is the generated id (<code>string</code>).<br/>Example ID: <code>"00lirtqi4e-wgGn8vGPyY"</code></td>
+      <td><code>timestampID([size=21[,alphabet="23456789CFGHJMPQRVWXcfghjmpqvwx"]]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Generate a timestamp based sortable ID. The size parameter is optional and the default value is 21, but if the given value smaller than 12, then the value will be 12. The alphabet parameter is optional and the default value is <code>"23456789CFGHJMPQRVWXcfghjmpqvwx"</code>, same as WORDSAFEALPHABET. The return value is the generated id (<code>string</code>).<br/>Example ID: <code>"00lirtqi4e-wgGn8vGPyY"</code></td>
     </tr>
     <tr id="FN-unBind();">
       <td><code>unBind(function);</code></td>
@@ -1486,8 +1454,8 @@ CEL.delay(5000)
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function merges the iterators and yields the elements of the merged iterator. The given iterators will be not changed. At least one iterator has to been given.</td>
     </tr>
     <tr id="FN-compact();">
-      <td><code>compact(collection);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function filters out <code>null</code> and <code>undefined</code> values (but keeps other falsy values) from the given Iterable or ArrayLike object. The collection parameter is mandatory.</td>
+      <td><code>compact(iterator);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function filters out <code>null</code> and <code>undefined</code> values (but keeps other falsy values) from the given iterator and returns an iterator. The collection parameter is mandatory.</td>
     </tr>
     <tr id="FN-count();">
       <td><code>count((iterator,callback););</code></td>
@@ -1513,10 +1481,10 @@ CEL.delay(5000)
       <td><code>initial(iterator);</code></td>
       <td>
         <span class="info">Stability: 4 - Stable.</span><br/>
-        <p>Returns an array with the values of the given iterator, but without the last value.</p>
+        <p>Returns an iterator with the values of the given iterator, but without the last value.</p>
         <p>
           <strong>Example:</strong>
-          <br/><code>CEL.initial([-5, 2, -9, 7, 34]);</code>
+          <br/><code>[...CEL.initial([-5, 2, -9, 7, 34])]</code>
           <br/>->
           <br/><code>[-5, 2, -9, 7]</code>
         </p>
