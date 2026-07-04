@@ -1,4 +1,3 @@
-// @ts-check
 /// <reference lib="esnext" />
 /// <reference lib="esnext.iterator" />
 /// <reference lib="dom" />
@@ -136,6 +135,8 @@ const {
   getOwnPropertySymbols
 } = Object;
 
+const _oIs = Object.is;
+
 const { isArray } = Array;
 
 
@@ -259,9 +260,9 @@ const WORDSAFEALPHABET = "23456789CFGHJMPQRVWXcfghjmpqvwx"; /* 31 characters */
 function assert (condition: unknown, message?: unknown): asserts condition {
   if (!condition) {
     if (Error.isError(message)) { throw message; }
-    let errorMessage =
+    let msg =
       `[assert] Assertion failed: ${condition} should be truly${message ? ` - ${message}` : ""}`;
-    throw new Error(errorMessage, {cause: errorMessage});
+    throw new Error(msg, {cause: msg});
   }
 }
 
@@ -933,7 +934,6 @@ function domCreate (
     elementType = obj.elementType;
     properties = {};
     for (const [key, value] of Object.entries(obj)) {
-
       if (key !== "elementType") {(globalThis as ObjectLike)[key] = value; }
     }
   }
@@ -1492,7 +1492,7 @@ function isArrowFunction (value: unknown): value is ArrowFunction {
   }
   /* Arrow functions cannot be used as constructors, so this will throw an error if it's an arrow function */
   try {
-    /* @ts-expect-error */
+    /* @ts-ignore */
     new value();
     return false;
   } catch (error) {
@@ -1544,7 +1544,7 @@ function isTypedCollection (
     );
   }
   /* Normalize expected to an array */
-  let expectedArray: any[] =
+  let expectedArray =
     isArray(expectedType) ? expectedType : [expectedType];
   /* Check values of iter against expected types or constructors */
   let matched = true;
@@ -1647,9 +1647,7 @@ function is (
  * @throws {TypeError} If the value is null or undefined.
  */
 function toObject (value: unknown): Object | symbol | Function {
-  if (value == null) {
-    throw new TypeError(`[toObject] error: value is ${value}`);
-  }
+  if (value == null) { throw new TypeError(`[toObject] value is ${value}`); }
   return (["object", "function"].includes(typeof value))
     ? value
     : Object(value);
@@ -1837,24 +1835,24 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
   const _classOf = (value: any): string =>
     Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
   /* primitives: Boolean, Number, BigInt, String + Function + Symbol */
-  if (Object.is(value1, value2)) { return true; }
+  if (_oIs(value1, value2)) { return true; }
   /* Object Wrappers (Boolean, Number, BigInt, String) */
   if (typeOf(value1) === "object"
     && isPrimitive(value2)
     && _classOf(value1) === typeOf(value2)) {
-    return Object.is(value1.valueOf(), value2);
+    return _oIs(value1.valueOf(), value2);
   }
   if (isPrimitive(value1)
     && typeOf(value2) === "object"
     && typeOf(value1) === _classOf(value2)) {
-    return Object.is(value1, value2.valueOf());
+    return _oIs(value1, value2.valueOf());
   }
   /* type (primitives, object, null, NaN) */
   if (_typeOfOrNaN(value1) !== _typeOfOrNaN(value2)) { return false; }
   /* objects */
   if (typeOf(value1) === "object" && typeOf(value2) === "object") {
     /* objects / same memory adress */
-    if (Object.is(value1, value2)) { return true; }
+    if (_oIs(value1, value2)) { return true; }
     /* objects / not same constructor */
     if (getPrototypeOf(value1).constructor !==
       getPrototypeOf(value2).constructor
@@ -1864,7 +1862,7 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
     /* objects / WeakMap + WeakSet */
     if (isSameInstance(value1, value2, WeakMap)
       || isSameInstance(value1, value2, WeakSet)) {
-      return Object.is(value1, value2);
+      return _oIs(value1, value2);
     }
     /* objects / Wrapper objects: Number, Boolean, String, BigInt */
     if (isSameInstance(value1, value2, Number)
@@ -1872,7 +1870,7 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
       || isSameInstance(value1, value2, String)
       || isSameInstance(value1, value2, BigInt)
     ) {
-      return Object.is(value1.valueOf(), value2.valueOf());
+      return _oIs(value1.valueOf(), value2.valueOf());
     }
     /* objects / Array */
     if (isArray(value1) && isArray(value2)) {
@@ -1890,7 +1888,7 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
       if ((value1 as any).length !== (value2 as any).length) { return false; }
       if ((value1 as any).length === 0) { return true; }
       return (value1 as any).every((value: unknown, index: any): boolean =>
-        Object.is(value, (value2 as any)[index])
+        _oIs(value, (value2 as any)[index])
       );
     }
     /* objects / ArrayBuffer */
@@ -1899,14 +1897,14 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
       if (value1.byteLength === 0) { return true; }
       let xTA = new Int8Array(value1), yTA = new Int8Array(value2);
       return xTA.every((value: unknown, index: any): boolean =>
-        Object.is(value, yTA[index]));
+        _oIs(value, yTA[index]));
     }
     /* objects / DataView */
     if (isSameInstance(value1, value2, DataView)) {
       if (value1.byteLength !== value2.byteLength) { return false; }
       if (value1.byteLength === 0) { return true; }
       for (let index = 0; index < value1.byteLength; index++) {
-        if (!Object.is(value1.getUint8(index), value2.getUint8(index))) {
+        if (!_oIs(value1.getUint8(index), value2.getUint8(index))) {
           return false;
         }
       }
@@ -1929,9 +1927,9 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
     }
     /* objects / RegExp */
     if (isSameInstance(value1, value2, RegExp)) {
-      return Object.is(value1.lastIndex, value2.lastIndex)
-        && Object.is(value1.flags, value2.flags)
-        && Object.is(value1.source, value2.source);
+      return _oIs(value1.lastIndex, value2.lastIndex)
+        && _oIs(value1.flags, value2.flags)
+        && _oIs(value1.source, value2.source);
     }
     /* objects / Error */
     if (isSameInstance(value1, value2, Error)) {
@@ -1953,13 +1951,11 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
       );
     }
     /* objects / Date */
-    if (isSameInstance(value1, value2, Date)) {
-      return Object.is(+value1, +value2);
-    }
+    if (isSameInstance(value1, value2, Date)) { return _oIs(+value1, +value2); }
     /* objects / Proxy -> not detectable */
     /* objects / Objects */
-    let value1Keys: any[] = Reflect.ownKeys(value1);
-    let value2Keys: any[] = Reflect.ownKeys(value2);
+    let value1Keys = Reflect.ownKeys(value1);
+    let value2Keys = Reflect.ownKeys(value2);
     if (value1Keys.length !== value2Keys.length) { return false; }
     if (value1Keys.length === 0) { return true; }
     return value1Keys.every((key: any): boolean =>
@@ -2015,7 +2011,7 @@ function isEmpty (value: any): boolean {
   }
   /* Other objects - check own properties (including symbols) */
   if (typeOf(value) === "object") {
-    let keys: any[] = Reflect.ownKeys(value);
+    let keys = Reflect.ownKeys(value);
     if (keys.length === 0) { return true; }
     /* Special case: object with single "length" property that is 0 */
     if (keys.length === 1
@@ -2278,7 +2274,7 @@ function getCookie (name: string): string | null | ObjectLike {
    /* create cookieObject with names and values */
   let cookieObject: ObjectLike = {};
   for (let cookie of document.cookie.split(";")) {
-    let [cookieName, value] = cookie.trim().split("=");
+    const [cookieName, value] = cookie.trim().split("=");
     cookieObject[decodeURIComponent(cookieName)] = decodeURIComponent(value);
   }
   /* return the value of a cookie or the cookieObject */
@@ -2785,17 +2781,17 @@ const nth = item;
  * @returns {number} The size of the given value.
  */
 function size (value: any): number {
-  /* Check Array */
+  /* Array */
   if (isArray(value)) { return value.length; }
-  /* Check Map and Set */
+  /* Map and Set */
   if (value instanceof Map || value instanceof Set) { return value.size; }
-  /* Check ArrayBuffer and DataView */
+  /* ArrayBuffer and DataView */
   if (value instanceof ArrayBuffer || value instanceof DataView) {
     return value.byteLength;
   }
-  /* Other objects with size property */
+  /* Objects with size property */
   if (typeof value.size === "number") { return value.size; }
-  /* Check Iterable objects */
+  /* Iterable objects */
   let index = 0;
   for (let _item of Iterator.from(value) as any) { index++; }
   return index;
@@ -3493,7 +3489,7 @@ const isFloat16 = (value: unknown | Numeric): boolean =>
 const signbit = (value: unknown | Numeric): boolean =>
   ((value = Number(value)) !== value)
     ? false
-    : (Object.is(value, -0) || (
+    : (_oIs(value, -0) || (
         typeof value === "number" && value < 0
           || typeof value === "bigint" && value < 0n
       )

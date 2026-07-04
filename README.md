@@ -393,17 +393,17 @@ Name|Description
 `divMod(value1,value2);`|__Stability: 4 - Stable.__<BR>Performs integer division type safely. Works for both `number` and `bigint` values. All of the parameter is mandatory and can be both number or both bigint. The return value is `number` or `bigint`.
 `inRange(value,min,max);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is between the min and max values. All of the parameters are mandatory and have to be number or bigint. The return value is boolean.
 `isEven(value);`|__Stability: 4 - Stable.__<BR>Checks if a number is a safe integer and even. Supports number and bigint types. The return value is boolean.
-`isBigInt64(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is a BigInt (Int64) value between -2^63 and 2^63 - 1. The return value is boolean.
-`isBigUInt64(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is a BigInt (Int64) value between 0 and 2^64 - 1. The return value is boolean.
+`isBigInt64(value);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value is a BigInt (Int64) value between -2^63 and 2^63 - 1. The return value is boolean.
+`isBigUInt64(value);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value is a BigInt (Int64) value between 0 and 2^64 - 1. The return value is boolean.
 `isFloat(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is a float number. The return value is boolean.
-`isInt8(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is an integer between -128 and 127. The return value is boolean.
-`isInt16(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is an integer between -32768 and 32767. The return value is boolean.
-`isInt32(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is an integer between -2147483648 and 2147483647. The return value is boolean.
+`isInt8(value);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value is an integer between -128 and 127. The return value is boolean.
+`isInt16(value);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value is an integer between -32768 and 32767. The return value is boolean.
+`isInt32(value);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value is an integer between -2147483648 and 2147483647. The return value is boolean.
 `isOdd(value);`|__Stability: 4 - Stable.__<BR>Checks if a number is a safe integer and odd. Supports number and bigint types. The return value is boolean.
-`isUInt8(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is an integer between 0 and 255. The return value is boolean.
-`isUInt16(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is an integer between 0 and 65535. The return value is boolean.
-`isUInt32(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is an integer between 0 and 4294967295. The return value is boolean.
-`isFloat16(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is a number between -65504 and 65504. The return value is boolean.
+`isUInt8(value);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value is an integer between 0 and 255. The return value is boolean.
+`isUInt16(value);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value is an integer between 0 and 65535. The return value is boolean.
+`isUInt32(value);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value is an integer between 0 and 4294967295. The return value is boolean.
+`isFloat16(value);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function determines whether the provided value is a number between -65504 and 65504. The return value is boolean.
 `minmax(value,min,max);`|__Stability: 4 - Stable.__<BR>This is an alias of the `clamp(value,min,max);`.
 `mod(value1,value2);`|__Stability: 4 - Stable.__<BR>Computes the integer remainder (modulus) type safely. Works for both `number` and `bigint` values. All of the parameter is mandatory and can be both number or both bigint. The return value is `number` or `bigint`.
 `mul(value1,value2);`|__Stability: 4 - Stable.__<BR>Performs multiplication type safely. Works for both `number` and `bigint` values. All of the parameter is mandatory and can be both number or both bigint. The return value is `number` or `bigint`.
@@ -416,18 +416,18 @@ Name|Description
 `signbit(value);`|__Stability: 4 - Stable.__<BR>This function is based on this proposal:<BR>[https://github.com/tc39/proposal-Math.signbit](https://github.com/tc39/proposal-Math.signbit)<BR>`Returns whether the sign bit of x is set.`<BR>`If n is NaN, the result is false.`<BR>`If n is -0, the result is true.`<BR>`If n is negative, the result is true.`<BR>`Otherwise, the result is false.`<BR>The value parameter is mandatory.
 `sub(value1,value2);`|__Stability: 4 - Stable.__<BR>Performs subtraction type safely. Works for both `number` and `bigint` values. All of the parameter is mandatory and can be both number or both bigint. The return value is `number` or `bigint`. `bigint` values.
 `sum(value1[,valueN]);`|__Stability: 4 - Stable.__<BR>This function returns the sum value from the parameter values.
-`toBigInt64(value);`|__Stability: 4 - Stable.__<BR>This function clamps ("minmax") the given value to BigInt (Int64) value (-2^63 to 2^63 - 1).
-`toBigUInt64(value);`|__Stability: 4 - Stable.__<BR>This function clamps ("minmax") the given value to unsigned BigInt (Int64) value (0 to 2^64 - 1).
-`toFloat16(value);`|__Stability: 4 - Stable.__<BR>This function clamps ("minmax") the given value to float 16 value (-65504 to 65504).
-`toFloat32(value);`|__Stability: 4 - Stable.__<BR>This function clamps ("minmax") the given value to float 32 value (-3.4e38 to 3.4e38).
-`toInt8(value);`|__Stability: 4 - Stable.__<BR>This function clamps ("minmax") the given value to integer 8 value (-127 to 128).
-`toInt16(value);`|__Stability: 4 - Stable.__<BR>This function clamps ("minmax") the given value to integer 16 value (-32768 to 32767).
-`toInt32(value);`|__Stability: 4 - Stable.__<BR>This function clamps ("minmax") the given value to integer 32 value (-2147483648 to 2147483647).
+`toBigInt64(value);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function clamps ("minmax") the given value to BigInt (Int64) value (-2^63 to 2^63 - 1).
+`toBigUInt64(value);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function clamps ("minmax") the given value to unsigned BigInt (Int64) value (0 to 2^64 - 1).
+`toFloat16(value);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function clamps ("minmax") the given value to float 16 value (-65504 to 65504).
+`toFloat32(value);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function clamps ("minmax") the given value to float 32 value (-3.4e38 to 3.4e38).
+`toInt8(value);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function clamps ("minmax") the given value to integer 8 value (-127 to 128).
+`toInt16(value);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function clamps ("minmax") the given value to integer 16 value (-32768 to 32767).
+`toInt32(value);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function clamps ("minmax") the given value to integer 32 value (-2147483648 to 2147483647).
 `toInteger(value);`|__Stability: 4 - Stable.__<BR>This function always converts the provided value to an integer. If the value cannot be converted to an integer, then the return value is 0.
 `toIntegerOrInfinity(value);`|__Stability: 4 - Stable.__<BR>This function always converts the provided value to an integer or Infitiy or -Infinity. If the value cannot be converted to an integer, then the return value is 0.
-`toUInt8(value);`|__Stability: 4 - Stable.__<BR>This function clamps ("minmax") the given value to unsigned integer 8 value (0 to 255).
-`toUInt16(value);`|__Stability: 4 - Stable.__<BR>This function clamps ("minmax") the given value to unsigned integer 16 value (0 to 65535).
-`toUInt32(value);`|__Stability: 4 - Stable.__<BR>This function clamps ("minmax") the given value to unsigned integer 32 value (0 to 4294967295).
+`toUInt8(value);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function clamps ("minmax") the given value to unsigned integer 8 value (0 to 255).
+`toUInt16(value);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function clamps ("minmax") the given value to unsigned integer 16 value (0 to 65535).
+`toUInt32(value);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function clamps ("minmax") the given value to unsigned integer 32 value (0 to 4294967295).
 
 ### Polyfills
 

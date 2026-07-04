@@ -4,8 +4,7 @@
 ## Celestra v7.0.1
 
 1. Documentation, pdf and code fixes.
-2. Deprecate _(stability 0)_ the function `nanoid();`
-3. Fix these functions:
+2. Fix these functions: 
 
 - `compact()`
 - `count();`
@@ -13,6 +12,29 @@
 - `initial();`
 - `last();`
 - `randomUUIDv7();`
+
+3. Deprecate _(stability 1)_ these functions: 
+
+- `isInt8(value);`
+- `isInt16(value);`
+- `isInt32(value);`
+- `isUInt32(value);`
+- `isUInt8(value);`
+- `isUInt16(value);`
+- `isBigInt64(value);`
+- `isBigUInt64(value);`
+- `isFloat16(value);`
+- `nanoid();`
+- `toInt8(value);`
+- `toInt16(value);`
+- `toInt32(value);`
+- `toUInt8(value);`
+- `toUInt16(value);`
+- `toUInt32(value;`
+- `toBigInt64(value);`
+- `toBigUInt64(value);`
+- `toFloat16(value);`
+- `toFloat32(value);`
 
 ## Celestra v7.0.0 Spock
 
