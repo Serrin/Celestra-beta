@@ -2,6 +2,7 @@
 const VERSION = "Celestra v7.0.1";
 const VERSION_NODE = VERSION + " node";
 const { getPrototypeOf, getOwnPropertyNames, getOwnPropertySymbols } = Object;
+const _oIs = Object.is;
 const { isArray } = Array;
 (function (global) {
     if (!global.globalThis) {
@@ -103,8 +104,8 @@ function assert(condition, message) {
         if (Error.isError(message)) {
             throw message;
         }
-        let errorMessage = `[assert] Assertion failed: ${condition} should be truly${message ? ` - ${message}` : ""}`;
-        throw new Error(errorMessage, { cause: errorMessage });
+        let msg = `[assert] Assertion failed: ${condition} should be truly${message ? ` - ${message}` : ""}`;
+        throw new Error(msg, { cause: msg });
     }
 }
 const eq = (value1, value2) => value1 === value2 || (value1 !== value1 && value2 !== value2);
@@ -155,7 +156,6 @@ function asyncConstant(value) {
 }
 async function asyncIdentity(value) { return value; }
 function randomUUIDv7(v4 = false) {
-    let version = v4 ? "4" : "7";
     let timestamp = Date.now().toString(16).padStart(12, "0");
     let uuid = Array.from("99999999-9999-4000-8000-100000000000"
         .replace(/[018]/g, (c) => {
@@ -163,13 +163,14 @@ function randomUUIDv7(v4 = false) {
         return (n ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (n / 4))))
             .toString(16);
     }));
-    let timestampIndex = 0;
-    for (let pos = 0; timestampIndex < 12; pos++) {
-        if (pos === 8)
+    let index = 0;
+    for (let pos = 0; index < 12; pos++) {
+        if (pos === 8) {
             continue;
-        uuid[pos] = timestamp[timestampIndex++];
+        }
+        uuid[pos] = timestamp[index++];
     }
-    uuid[14] = version;
+    uuid[14] = v4 ? "4" : "7";
     return uuid.join("");
 }
 const delay = (milisec) => new Promise(resolve => setTimeout(resolve, milisec));
@@ -390,7 +391,9 @@ function domFadeOut(element, duration) {
     let step = 25 / (duration || 500);
     style.opacity = (style.opacity || 1);
     (function fade() {
-        (style.opacity -= step) < 0 ? style.display = "none" : setTimeout(fade, 25);
+        (style.opacity -= step) < 0
+            ? style.display = "none"
+            : setTimeout(fade, 25);
     })();
 }
 function domFadeToggle(element, duration, display = "") {
@@ -528,8 +531,11 @@ function form2string(form) {
     }
     return result.join("&").replace(/%20/g, "+");
 }
-const getDoNotTrack = () => [navigator.doNotTrack, globalThis.doNotTrack, navigator.msDoNotTrack]
-    .some((item) => item === true || item === 1 || item === "1");
+const getDoNotTrack = () => [
+    navigator.doNotTrack,
+    globalThis.doNotTrack,
+    navigator.msDoNotTrack
+].some((item) => item === true || item === 1 || item === "1");
 function getLocation(successCallback, errorCallback = console.error) {
     function getError(error) {
         if (typeof error === "string") {
@@ -696,7 +702,7 @@ function is(value, expectedType, Throw = false) {
 }
 function toObject(value) {
     if (value == null) {
-        throw new TypeError(`[toObject] error: value is ${value}`);
+        throw new TypeError(`[toObject] value is ${value}`);
     }
     return (["object", "function"].includes(typeof value))
         ? value
@@ -804,24 +810,24 @@ function isCoercedObject(value) {
 function isDeepStrictEqual(value1, value2) {
     const _typeOfOrNaN = (value) => value !== value ? "NaN" : typeOf(value);
     const _classOf = (value) => Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
-    if (Object.is(value1, value2)) {
+    if (_oIs(value1, value2)) {
         return true;
     }
     if (typeOf(value1) === "object"
         && isPrimitive(value2)
         && _classOf(value1) === typeOf(value2)) {
-        return Object.is(value1.valueOf(), value2);
+        return _oIs(value1.valueOf(), value2);
     }
     if (isPrimitive(value1)
         && typeOf(value2) === "object"
         && typeOf(value1) === _classOf(value2)) {
-        return Object.is(value1, value2.valueOf());
+        return _oIs(value1, value2.valueOf());
     }
     if (_typeOfOrNaN(value1) !== _typeOfOrNaN(value2)) {
         return false;
     }
     if (typeOf(value1) === "object" && typeOf(value2) === "object") {
-        if (Object.is(value1, value2)) {
+        if (_oIs(value1, value2)) {
             return true;
         }
         if (getPrototypeOf(value1).constructor !==
@@ -830,13 +836,13 @@ function isDeepStrictEqual(value1, value2) {
         }
         if (isSameInstance(value1, value2, WeakMap)
             || isSameInstance(value1, value2, WeakSet)) {
-            return Object.is(value1, value2);
+            return _oIs(value1, value2);
         }
         if (isSameInstance(value1, value2, Number)
             || isSameInstance(value1, value2, Boolean)
             || isSameInstance(value1, value2, String)
             || isSameInstance(value1, value2, BigInt)) {
-            return Object.is(value1.valueOf(), value2.valueOf());
+            return _oIs(value1.valueOf(), value2.valueOf());
         }
         if (isArray(value1) && isArray(value2)) {
             if (value1.length !== value2.length) {
@@ -856,7 +862,7 @@ function isDeepStrictEqual(value1, value2) {
             if (value1.length === 0) {
                 return true;
             }
-            return value1.every((value, index) => Object.is(value, value2[index]));
+            return value1.every((value, index) => _oIs(value, value2[index]));
         }
         if (isSameInstance(value1, value2, ArrayBuffer)) {
             if (value1.byteLength !== value2.byteLength) {
@@ -866,7 +872,7 @@ function isDeepStrictEqual(value1, value2) {
                 return true;
             }
             let xTA = new Int8Array(value1), yTA = new Int8Array(value2);
-            return xTA.every((value, index) => Object.is(value, yTA[index]));
+            return xTA.every((value, index) => _oIs(value, yTA[index]));
         }
         if (isSameInstance(value1, value2, DataView)) {
             if (value1.byteLength !== value2.byteLength) {
@@ -876,7 +882,7 @@ function isDeepStrictEqual(value1, value2) {
                 return true;
             }
             for (let index = 0; index < value1.byteLength; index++) {
-                if (!Object.is(value1.getUint8(index), value2.getUint8(index))) {
+                if (!_oIs(value1.getUint8(index), value2.getUint8(index))) {
                     return false;
                 }
             }
@@ -901,9 +907,9 @@ function isDeepStrictEqual(value1, value2) {
             return [...value1.keys()].every((value) => value2.has(value));
         }
         if (isSameInstance(value1, value2, RegExp)) {
-            return Object.is(value1.lastIndex, value2.lastIndex)
-                && Object.is(value1.flags, value2.flags)
-                && Object.is(value1.source, value2.source);
+            return _oIs(value1.lastIndex, value2.lastIndex)
+                && _oIs(value1.flags, value2.flags)
+                && _oIs(value1.source, value2.source);
         }
         if (isSameInstance(value1, value2, Error)) {
             return isDeepStrictEqual(getOwnPropertyNames(value1)
@@ -916,7 +922,7 @@ function isDeepStrictEqual(value1, value2) {
             }, {}));
         }
         if (isSameInstance(value1, value2, Date)) {
-            return Object.is(+value1, +value2);
+            return _oIs(+value1, +value2);
         }
         let value1Keys = Reflect.ownKeys(value1);
         let value2Keys = Reflect.ownKeys(value2);
@@ -1003,8 +1009,7 @@ const isNullish = (value) => value == null;
 const isPrimitive = (value) => value == null || (typeof value !== "object" && typeof value !== "function");
 const isIterator = (value) => "Iterator" in globalThis
     ? value instanceof Iterator
-    : (typeOf(value) === "object"
-        && typeof value.next === "function");
+    : (typeOf(value) === "object" && typeof value.next === "function");
 const isRegexp = (value) => value instanceof RegExp;
 const isElement = (value) => typeOf(value) === "object" && value.nodeType === 1;
 const isIterable = (value) => value != null && typeof value[Symbol.iterator] === "function";
@@ -1046,7 +1051,7 @@ function getCookie(name) {
     }
     let cookieObject = {};
     for (let cookie of document.cookie.split(";")) {
-        let [cookieName, value] = cookie.trim().split("=");
+        const [cookieName, value] = cookie.trim().split("=");
         cookieObject[decodeURIComponent(cookieName)] = decodeURIComponent(value);
     }
     return typeof name === "string" ? (cookieObject[name] ?? null) : cookieObject;
@@ -1279,17 +1284,14 @@ function item(iter, pos) {
 }
 const nth = item;
 function size(value) {
-    if (isArray(value)) {
-        return value.length;
-    }
-    if (value instanceof Map || value instanceof Set) {
+    if (typeof value.size === "number") {
         return value.size;
+    }
+    if (isArray(value) || isTypedArray(value)) {
+        return value.length;
     }
     if (value instanceof ArrayBuffer || value instanceof DataView) {
         return value.byteLength;
-    }
-    if (typeof value.size === "number") {
-        return value.size;
     }
     let index = 0;
     for (let _item of Iterator.from(value)) {
@@ -1570,7 +1572,7 @@ const isFloat16 = (value) => typeof value === "number"
     && value <= 65504;
 const signbit = (value) => ((value = Number(value)) !== value)
     ? false
-    : (Object.is(value, -0) || (typeof value === "number" && value < 0
+    : (_oIs(value, -0) || (typeof value === "number" && value < 0
         || typeof value === "bigint" && value < 0n));
 function randomInt(min = 100, max) {
     if (max == null) {
