@@ -4,16 +4,17 @@
 ## Celestra v7.0.1
 
 1. Documentation, pdf and code fixes.
-2. Fix these functions: 
+2. TypeScript 7.0 compatibility
+3. Fix these functions:
 
-- `compact()`
+- `compact();`
 - `count();`
 - `findLast();`
 - `initial();`
 - `last();`
 - `randomUUIDv7();`
 
-3. Deprecate _(stability 1)_ these functions: 
+4. Deprecate _(stability 1)_ these functions:
 
 - `isInt8(value);`
 - `isInt16(value);`
