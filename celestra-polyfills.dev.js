@@ -3,7 +3,7 @@
 
 /**
  * @name Celestra Removed Polyfills
- * @version 7.0.1 dev
+ * @version 7.1.0 dev
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */

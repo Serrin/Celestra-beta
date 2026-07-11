@@ -117,7 +117,6 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <p><a href="#FN-identity();">identity();</a></p>
       <p><a href="#FN-lt();">lt();</a></p>
       <p><a href="#FN-lte();">lte();</a></p>
-      <p><a href="#FN-nanoid();">nanoid();</a></p>
       <p><a href="#FN-noop();">noop();</a></p>
       <p><a href="#FN-omit();">omit();</a></p>
       <p><a href="#FN-once();">once();</a></p>
@@ -300,17 +299,8 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <p><a href="#FN-divMod();">divMod();</a></p>
       <p><a href="#FN-inRange();">inRange();</a></p>
       <p><a href="#FN-isEven();">isEven();</a></p>
-      <p><a href="#FN-isBigInt64();">isBigInt64();</a></p>
-      <p><a href="#FN-isBigUInt64();">isBigUInt64();</a></p>
       <p><a href="#FN-isFloat();">isFloat();</a></p>
-      <p><a href="#FN-isInt8();">isInt8();</a></p>
-      <p><a href="#FN-isUInt16();">isUInt16();</a></p>
-      <p><a href="#FN-isInt32();">isInt32();</a></p>
       <p><a href="#FN-isOdd();">isOdd();</a></p>
-      <p><a href="#FN-isUInt8();">isUInt8();</a></p>
-      <p><a href="#FN-isInt16();">isInt16();</a></p>
-      <p><a href="#FN-isUInt32();">isUInt32();</a></p>
-      <p><a href="#FN-isFloat16();">isFloat16();</a></p>
       <p><a href="#FN-minmax();">minmax();</a></p>
       <p><a href="#FN-mod();">mod();</a></p>
       <p><a href="#FN-mul();">mul();</a></p>
@@ -321,17 +311,8 @@ nav a, nav a:visited, nav a:active, nav a:hover {
       <p><a href="#FN-signbit();">signbit();</a></p>
       <p><a href="#FN-pow();">pow();</a></p>
       <p><a href="#FN-sub();">sub();</a></p>
-      <p><a href="#FN-toBigInt64();">toBigInt64();</a></p>
-      <p><a href="#FN-toBigUInt64();">toBigUInt64();</a></p>
-      <p><a href="#FN-toFloat16();">toFloat16();</a></p>
-      <p><a href="#FN-toFloat32();">toFloat32();</a></p>
-      <p><a href="#FN-toInt8();">toInt8();</a></p>
-      <p><a href="#FN-toInt32();">toInt32();</a></p>
       <p><a href="#FN-toInteger();">toInteger();</a></p>
       <p><a href="#FN-toIntegerOrInfinity();">toIntegerOrInfinity();</a></p>
-      <p><a href="#FN-toUInt8();">toUInt8();</a></p>
-      <p><a href="#FN-toUInt16();">toUInt16();</a></p>
-      <p><a href="#FN-toUInt32();">toUInt32();</a></p>
     </details>
     <!-- Polyfills -->
     <hr/>
@@ -360,7 +341,7 @@ nav a, nav a:visited, nav a:active, nav a:hover {
 
 <p><strong>A helper JavaScript library with useful functions and polyfills and zero dependencies.</strong></p>
 
-<p>Latest version: 7.0.1</p>
+<p>Latest version: 7.1.0</p>
 <p>Date: 2026-07-11T15:37:46.594Z</p>
 
 <p><strong>Tested on these environments:</strong></p>
@@ -788,10 +769,6 @@ CEL.delay(5000)
     <tr id="FN-lte();">
       <td><code>lte(value1, value2);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>Strict type less than or equal (SameValueZero). All of the parameters are mandatory and can be <code>number</code>, <code>bigint</code>, <code>string</code> or <code>boolean</code>, but the values have to be same type. If the type of the values are not the same, then return value is false. The return value is <code>boolean</code>.</td>
-    </tr>
-    <tr id="FN-nanoid();">
-      <td><code>nanoid([size=21[, alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"]]);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>is the generated nanoid (<code>string</td>code>).<br>Example ID: <code>"QsZA2VVTgFIF3D-qFk5oc"</code></td>
     </tr>
     <tr id="FN-noop();">
       <td><code>noop();</code></td>
@@ -1645,49 +1622,13 @@ JSON.stringify( CEL.unique(array, (v) => v.rank) );
       <td><code>isEven(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>Checks if a <code>number</code> is a safe integer and even. Supports <code>number</code> and <code>bigint</code> types. The return value is <code>boolean</code>.</td>
     </tr>
-    <tr id="FN-isBigInt64();">
-      <td><code>isBigInt64(value);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided value is a <code>BigInt</code> (Int64) value between -2^63 and 2^63 - 1. The return value is <code>boolean</code>.</td>
-    </tr>
-    <tr id="FN-isBigUInt64();">
-      <td><code>isBigUInt64(value);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided value is a <code>BigInt</code> (Int64) value between 0 and 2^64 - 1. The return value is <code>boolean</code>.</td>
-    </tr>
     <tr id="FN-isFloat();">
       <td><code>isFloat(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a float <code>number</code>. The return value is <code>boolean</code>.</td>
     </tr>
-    <tr id="FN-isInt8();">
-      <td><code>isInt8(value);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided value is an integer between -128 and 127. The return value is <code>boolean</code>.</td>
-    </tr>
-    <tr id="FN-isUInt16();">
-      <td><code>isUInt16(value);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided value is an integer between 0 and 65535. The return value is <code>boolean</code>.</td>
-    </tr>
-    <tr id="FN-isInt32();">
-      <td><code>isInt32(value);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided value is an integer between -2147483648 and 2147483647. The return value is <code>boolean</code>.</td>
-    </tr>
     <tr id="FN-isOdd();">
       <td><code>isOdd(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>Checks if a <code>number</code> is a safe integer and odd. Supports <code>number</code> and <code>bigint</code> types. The return value is <code>boolean</code>.</td>
-    </tr>
-    <tr id="FN-isUInt8();">
-      <td><code>isUInt8(value);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided value is an integer between 0 and 255. The return value is <code>boolean</code>.</td>
-    </tr>
-    <tr id="FN-isInt16();">
-      <td><code>isInt16(value);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided value is an integer between -32768 and 32767. The return value is <code>boolean</code>.</td>
-    </tr>
-    <tr id="FN-isUInt32();">
-      <td><code>isUInt32(value);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided value is an integer between 0 and 4294967295. The return value is <code>boolean</code>.</td>
-    </tr>
-    <tr id="FN-isFloat16();">
-      <td><code>isFloat16(value);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function determines whether the provided value is a <code>number</code> between -65504 and 65504. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-minmax();">
       <td><code>minmax(value,min,max);</code></td>
@@ -1748,30 +1689,6 @@ Otherwise, the result is false.</pre>
       <td><code>sub(value1,value2);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>Performs subtraction type safely. Works for both <code>number</code> and <code>bigint</code> values. All of the parameter is mandatory and can be both <code>number</code> or both <code>bigint</code>. The return value is <code>number</code> or <code>bigint</code>.</td>
     </tr>
-    <tr id="FN-toBigInt64();">
-      <td><code>toBigInt64(value);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function clamps ("minmax") the given value to <code>bigint</code> (Int64) value (-2^63 to 2^63 - 1).</td>
-    </tr>
-    <tr id="FN-toBigUInt64();">
-      <td><code>toBigUInt64(value);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function clamps ("minmax") the given value to unsigned <code>BigInt</code> (Int64) value (0 to 2^64 - 1).</td>
-    </tr>
-    <tr id="FN-toFloat16();">
-      <td><code>toFloat16(value);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function clamps ("minmax") the given value to float 16 value (-65504 to 65504).</td>
-    </tr>
-    <tr id="FN-toFloat32();">
-      <td><code>toFloat32(value);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function clamps ("minmax") the given value to float 32 value (-3.4e38 to 3.4e38).</td>
-    </tr>
-    <tr id="FN-toInt8();">
-      <td><code>toInt8(value);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function clamps ("minmax") the given value to integer 8 value (-127 to 128).</td>
-    </tr>
-    <tr id="FN-toInt32();">
-      <td><code>toInt32(value);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function clamps ("minmax") the given value to integer 32 value (-2147483648 to 2147483647).</td>
-    </tr>
     <tr id="FN-toInteger();">
       <td><code>toInteger(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function always converts the provided value to an integer. If the value cannot be converted to an integer, then the return value is 0.</td>
@@ -1779,18 +1696,6 @@ Otherwise, the result is false.</pre>
     <tr id="FN-toIntegerOrInfinity();">
       <td><code>toIntegerOrInfinity(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function always converts the provided value to an integer or Infitiy or -Infinity. If the value cannot be converted to an integer, then the return value is 0.</td>
-    </tr>
-    <tr id="FN-toUInt8();">
-      <td><code>toUInt8(value);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function clamps ("minmax") the given value to unsigned integer 8 value (0 to 255).</td>
-    </tr>
-    <tr id="FN-toUInt16();">
-      <td><code>toUInt16(value);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function clamps ("minmax") the given value to unsigned integer 16 value (0 to 65535).</td>
-    </tr>
-    <tr id="FN-toUInt32();">
-      <td><code>toUInt32(value);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function clamps ("minmax") the given value to unsigned integer 32 value (0 to 4294967295).</td>
     </tr>
   </table>
 </div>

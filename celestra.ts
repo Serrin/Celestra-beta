@@ -9,14 +9,14 @@
 
 /**
  * @name Celestra
- * @version 7.0.1
+ * @version 7.1.0
  * @author Ferenc Czigler
  * @see https://github.com/Serrin/Celestra/
  * @license MIT https://opensource.org/licenses/MIT
  */
 
 
-const VERSION = "Celestra v7.0.1";
+const VERSION = "Celestra v7.1.0";
 const VERSION_NODE = VERSION + " node";
 
 
@@ -570,41 +570,6 @@ const T = (): true => true;
 
 /** * @description Always returns false. * @returns {false} */
 const F = (): false => false;
-
-
-/**
- * @description Generates a random string ID of specified size using the provided alphabet.
- * @param {number} [size=21] - The length of the generated ID.
- * @param {string} [alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"] - The set of characters to use for generating the ID.
- */
-function _nanoid(
-  size: number = 21,
-  alphabet: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"
-  ): string {
-  if (!Number.isSafeInteger(size) || size < 1 || size > 255) {
-    throw new RangeError(
-      "[nanoid] Size should be an integer between 1 and 255."
-    );
-  }
-  if (typeof alphabet !== "string"
-    || !alphabet.length
-    || alphabet.length > 255) {
-    throw new TypeError(
-      "[nanoid] Alphabet should be a non-empty string with maximum length 255."
-    );
-  }
-  let mask = (2 << (31 - Math.clz32(alphabet.length - 1))) - 1;
-  let result = "";
-  let index = size;
-  while (index--) {
-    let pos: number;
-    do {
-      pos = crypto.getRandomValues(new Uint8Array(1))[0] & mask;
-    } while (pos >= alphabet.length);
-    result += alphabet[pos];
-  }
-  return result;
-}
 
 
 /**
@@ -3256,204 +3221,6 @@ function isOdd (value: unknown): boolean {
 }
 
 
-/* toInt8(value: unknown): integer -127..128 */
-/**
- * @description Converts a value to an 8-bit signed integer.
- * @param {unknown} value
- * @returns {number}
- */
-const toInt8 = (value: unknown): number =>
-  ((value = Math.min(Math.max(-128, Math.trunc(Number(value))), 127)) === value)
-    ? value as number : 0;
-
-
-/* toUInt8(value: unknown): integer 0..255 */
-/**
- * @description Converts a value to an 8-bit unsigned integer.
- * @param {unknown} value
- * @returns {number}
- */
-const toUInt8 = (value: unknown): number =>
-  ((value = Math.min(Math.max(0, Math.trunc(Number(value))), 255)) === value)
-    ? value as number : 0;
-
-
-/* toInt16(value: unknown): integer -32768..32767 */
-/**
- * @description Converts a value to a 16-bit signed integer.
- * @param {unknown} value
- * @returns {number}
- */
-const toInt16 = (value: unknown): number =>
-  ((value = Math.min(Math.max(-32768, Math.trunc(Number(value))), 32767))
-    === value) ? value as number : 0;
-
-
-/* toUInt16(value: unknown) integer 0..65535 */
-/**
- * @description Converts a value to a 16-bit unsigned integer.
- * @param {unknown} value
- * @returns {number}
- */
-const toUInt16 = (value: unknown): number =>
-  ((value = Math.min(Math.max(0, Math.trunc(Number(value))), 65535)) === value)
-    ? value as number : 0;
-
-
-/* toInt32(value: unknown): integer -2147483648..2147483647 */
-/**
- * @description Converts a value to a 32-bit signed integer.
- * @param {unknown} value
- * @returns {number}
- */
-const toInt32 = (value: unknown): number =>
-  ((value = Math.min(Math.max(-2147483648, Math.trunc(Number(value))),
-    2147483647)) === value) ? value as number : 0;
-
-
-/* toUInt32(value: unknown): integer 0..4294967295 */
-/**
- * @description Converts a value to a 32-bit unsigned integer.
- * @param {unknown} value
- * @returns {number}
- */
-const toUInt32 = (value: unknown): number =>
-  ((value = Math.min(Math.max(0, Math.trunc(Number(value))), 4294967295))
-    === value) ? value as number : 0;
-
-
-/**
- * @description Converts a value to a 64-bit signed bigint.
- * @param {unknown} value
- * @returns {bigint}
- */
-const toBigInt64 = (value: any | bigint): bigint =>
-  BigInt(typeof value === "bigint"
-    ? (value > Math.pow(2,63) -1 ? Math.pow(2, 63) -1 : value < Math.pow(-2, 63)
-      ? Math.pow(-2, 63) : value)
-    : ((value = Math.min(Math.max(Math.pow(-2, 63), Math.trunc(Number(value))),
-      Math.pow(2, 63) - 1)) === value ) ? value : 0);
-
-
-/**
- * @description Converts a value to a 64-bit unsigned bigint.
- * @param {unknown} value
- * @returns {bigint}
- */
-const toBigUInt64 = (value: unknown): bigint => BigInt(typeof value === "bigint"
-  ? (value > Math.pow(2, 64) - 1 ? Math.pow(2,64) - 1 : value < 0 ? 0 : value)
-  : ((value = Math.min(Math.max(0, Math.trunc(Number(value))),
-    Math.pow(2, 64) -1)) === value) ? value as bigint : 0);
-
-
-/**
- * @description Converts a value to a 32-bit floating-point number.
- * @param {unknown} value
- * @returns {number}
- */
-const toFloat32 = (value: unknown): number =>
-  ((value = Math.min(Math.max(-3.4e38, Number(value)), 3.4e38)) === value)
-    ? value as number : 0;
-
-
-/**
- * @description Checks if a value is an 8-bit signed integer.
- * @param {unknown} value
- * @returns {boolean}
- */
-const isInt8 = (value: unknown | number): boolean =>
-  Number.isInteger(value) && value as number >= -128 && value as number <= 127;
-
-
-/**
- * @description Checks if a value is an 8-bit unsigned integer.
- * @param {unknown} value
- * @returns {boolean}
- */
-const isUInt8 = (value: unknown | number): boolean =>
-  Number.isInteger(value) && value as number >= 0 && value as number <= 255;
-
-
-/**
- * @description Checks if a value is a 16-bit signed integer.
- * @param {unknown} value
- * @returns {boolean}
- */
-const isInt16 = (value: unknown): boolean => Number.isInteger(value)
-  && value as number >= -32768
-  && value as number <= 32767;
-
-
-/**
- * @description Checks if a value is a 16-bit unsigned integer.
- * @param {unknown} value
- * @returns {boolean}
- */
-const isUInt16 = (value: unknown): boolean =>
-  Number.isInteger(value) && value as number >= 0 && value as number <= 65535;
-
-
-/**
- * @description Checks if a value is a 32-bit signed integer.
- * @param {unknown} value
- * @returns {boolean}
- */
-const isInt32 = (value: unknown): boolean => Number.isInteger(value)
-  && value as number >= -2147483648
-  && value as number <= 2147483647;
-
-
-/**
- * @description Checks if a value is a 32-bit unsigned integer.
- * @param {unknown} value
- * @returns {boolean}
- */
-const isUInt32 = (value: unknown | number): boolean => Number.isInteger(value)
-  && value as number >= 0
-  && value as number <= 4294967295;
-
-
-/**
- * @description Checks if a value is a 64-bit signed integer.
- * @param {unknown} value
- * @returns {boolean}
- */
-const isBigInt64 = (value: unknown): boolean => typeof value === "bigint"
-  && value >= Math.pow(-2, 63)
-  && value <= Math.pow(2, 63) - 1;
-
-
-/**
- * @description Checks if a value is a 64-bit unsigned integer.
- * @param {unknown} value
- * @returns {boolean}
- */
-const isBigUInt64 = (value: unknown | Numeric): boolean =>
-  typeof value === "bigint" && value >= 0 && value <= Math.pow(2, 64) - 1;
-
-
-/**
- * @description Converts a value to a 16-bit floating-point number.
- * @param {unknown} value
- */
-const toFloat16 = (value: unknown): number =>
-  ((value = Math.min(Math.max(-65504, Number(value)), 65504)) === value)
-    ? value as number
-    : 0;
-
-
-/**
- * @description Checks if a value is a 16-bit floating-point number.
- * @param {unknown | Numeric} value
- * @returns {boolean}
- */
-const isFloat16 = (value: unknown | Numeric): boolean =>
-  typeof value === "number"
-    && value === value
-    && value >= -65504
-    && value <= 65504;
-
-
 /**
  * @description Checks if the sign bit of a number or bigint is set (i.e., if the value is negative).
  * @param {unknown | Numeric} value
@@ -3573,7 +3340,6 @@ export default {
   noop,
   T,
   F,
-  nanoid: _nanoid,
   timestampID,
   /** String API **/
   b64Encode,
@@ -3690,25 +3456,6 @@ export default {
   minmax,
   isEven,
   isOdd,
-  toInt8,
-  toUInt8,
-  toInt16,
-  toUInt16,
-  toInt32,
-  toUInt32,
-  toBigInt64,
-  toBigUInt64,
-  toFloat32,
-  isInt8,
-  isUInt8,
-  isInt16,
-  isUInt16,
-  isInt32,
-  isUInt32,
-  isBigInt64,
-  isBigUInt64,
-  toFloat16,
-  isFloat16,
   signbit,
   randomInt,
   randomFloat,
@@ -3757,7 +3504,6 @@ export {
   noop,
   T,
   F,
-  _nanoid as nanoid,
   timestampID,
   /** String API **/
   b64Encode,
@@ -3916,25 +3662,6 @@ export {
   minmax,
   isEven,
   isOdd,
-  toInt8,
-  toUInt8,
-  toInt16,
-  toUInt16,
-  toInt32,
-  toUInt32,
-  toBigInt64,
-  toBigUInt64,
-  toFloat32,
-  isInt8,
-  isUInt8,
-  isInt16,
-  isUInt16,
-  isInt32,
-  isUInt32,
-  isBigInt64,
-  isBigUInt64,
-  toFloat16,
-  isFloat16,
   signbit,
   randomInt,
   randomFloat,
