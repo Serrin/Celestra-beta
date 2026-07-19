@@ -17,7 +17,6 @@
 
 
 const VERSION = "Celestra v7.1.0";
-const VERSION_NODE = VERSION + " node";
 
 
 /** TS browser and NodeJS common types **/
@@ -106,7 +105,7 @@ type Comparable = number | bigint | string | boolean | Date;
 type AsyncFunction<T> = (...args: ReadonlyArray<any>) => Promise<T>;
 
 /** * @description ArrowFunction. * @private */
-type ArrowFunction<Args extends any[] = any[], R = any> =
+type ArrowFunction<Args extends any[] = [], R = any> =
   (this: void, ...args: Args) => R;
 
 /** * @description TypedArray types. * @private */
@@ -212,8 +211,8 @@ if (!("isError" in Error)) {
 if ("crypto" in globalThis && !("randomUUID" in globalThis.crypto)) {
   (globalThis.crypto as ObjectLike).randomUUID = function randomUUID () {
     return "10000000-1000-4000-8000-100000000000".replace(/[018]/g,
-      (c: any): any =>
-        (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> c/4)))
+      (c: string): string =>
+        (Number(c) ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (Number(c) / 4))))
           .toString(16)
     );
   };
@@ -324,8 +323,8 @@ const lte = (value1: Comparable, value2: Comparable): boolean =>
  * @param {Function} callback
  * @returns {Function}
  */
-const tap = (callback: Function): any =>
-  function (value: unknown): any { callback(value); return value; };
+const tap = (callback: Function): Function =>
+  function (value: unknown): unknown { callback(value); return value; };
 
 
 /**
@@ -336,7 +335,7 @@ const tap = (callback: Function): any =>
 function once (callback: Function): Function {
   let called = false;
   let result: unknown;
-  return function (...args: any[]): any {
+  return function (...args: unknown[]): unknown {
     if (!called) {
       called = true;
       result = callback(...args);
@@ -352,9 +351,10 @@ function once (callback: Function): Function {
  * @returns {Function}
  */
 function curry (callback: Function): Function {
-  const curried = (...args: any[]): any => args.length >= callback.length
-    ? callback(...args)
-    : (...rest: any[]): any => curried(...args, ...rest);
+  const curried = (...args: unknown[]): unknown =>
+    args.length >= callback.length
+      ? callback(...args)
+      : (...rest: unknown[]): unknown => curried(...args, ...rest);
   return curried;
 }
 
@@ -365,8 +365,8 @@ function curry (callback: Function): Function {
  * @returns {Function}
  */
 const pipe = (...functions: Function[]): Function =>
-  (first: any): any => functions.reduce(
-    (value: unknown, callback: Function): any => callback(value),
+  (first: unknown): unknown => functions.reduce(
+    (value: unknown, callback: Function): unknown => callback(value),
     first
   );
 
@@ -377,8 +377,8 @@ const pipe = (...functions: Function[]): Function =>
  * @returns {Function}
  */
 const compose = (...functions: Function[]): Function =>
-  (first: any): any => functions.reduceRight(
-    (value, callback): any => callback(value),
+  (first: unknown): unknown => functions.reduceRight(
+    (value, callback): unknown => callback(value),
     first
   );
 
@@ -454,9 +454,11 @@ function asyncConstant <T>(value: T): AsyncFunction<T> {
 /**
  * @description Asynchronous identity function that returns a resolved Promise with the given value.
  * @param {unknown} value
- * @returns {Promise<any>}
+ * @returns {Promise<unknown>}
  */
-async function asyncIdentity (value: unknown): Promise<any> { return value; }
+async function asyncIdentity (value: unknown): Promise<unknown> {
+  return value;
+}
 
 
 /**
@@ -506,14 +508,14 @@ const randomBoolean = (): boolean => !Math.round(Math.random());
 
 /**
  * @description Deep assign of an object (Object, Array, etc.)
- * @returns {any}
+ * @returns {unknown}
  */
-function deepAssign (target: any, ...sources: any): any {
-  function _deepClone(value: any) {
+function deepAssign (target: unknown, ...sources: unknown[]): unknown {
+  function _deepClone(value: unknown) {
     try { return structuredClone(value); } catch { return value; }
   }
   if (!sources.length) { return target == null ? target : _deepClone(target); }
-  for (let source of sources) { Object.assign(target, _deepClone(source)); }
+  for (let source of sources) { Object.assign((target as ObjectLike), _deepClone(source)); }
   return target;
 }
 
@@ -627,10 +629,10 @@ function timestampID (
 
 /**
  * @description Encodes a string to Base64 format.
- * @param {any} str
+ * @param {unknown} str
  * @returns {string}
  */
-const b64Encode = (str: any): string =>
+const b64Encode = (str: unknown): string =>
   btoa(encodeURIComponent(String(str)).replace(/%([0-9A-F]{2})/g,
     (_match, p1): string => String.fromCharCode(parseInt(p1, 16))
   ));
@@ -638,10 +640,10 @@ const b64Encode = (str: any): string =>
 
 /**
  * @description Decodes a Base64 encoded string.
- * @param {string} str
+ * @param {unknown} str
  * @returns {string}
  */
-const b64Decode = (str: any): string =>
+const b64Decode = (str: unknown): string =>
   decodeURIComponent(atob(String(str)).split("").map((c) =>
     "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2)
   ).join(""));
@@ -667,7 +669,7 @@ function strCount (str: unknown, substr: unknown): number {
  * @returns {string}
  */
 function strTruncate (
-  str: any,
+  str: string,
   newLength: number,
   omission: string = ""): string {
   str = String(str);
@@ -681,10 +683,10 @@ function strTruncate (
 
 /**
  * @description Converts the first character of each word in a string to uppercase and the rest to lowercase.
- * @param {any} str
+ * @param {unknown} str
  * @returns {string}
  */
-const strPropercase = (str: any): string =>
+const strPropercase = (str: unknown): string =>
   String(str).trim().split(" ").map(function (value: string) {
     let chars = Array.from(value).map((c: string): string => c.toLowerCase());
     if (chars.length) { chars[0] = chars[0].toUpperCase(); }
@@ -696,10 +698,10 @@ const strTitlecase = strPropercase;
 
 /**
  * @description Capitalizes the first character of a string and converts the rest to lowercase.
- * @param {any} str
+ * @param {unknown} str
  * @returns {string}
  */
-function strCapitalize (str: any): string {
+function strCapitalize (str: unknown): string {
   let chars = [...String(str).trim().toLowerCase()];
   if (chars.length) { chars[0] = chars[0].toUpperCase(); }
   return chars.join("");
@@ -708,10 +710,10 @@ function strCapitalize (str: any): string {
 
 /**
  * @description Converts the first character of a string to uppercase.
- * @param {any} str
+ * @param {unknown} str
  * @returns {string}
  */
-function strUpFirst (str: any): string {
+function strUpFirst (str: unknown): string {
   let chars = [...String(str).trim()];
   if (chars.length) { chars[0] = chars[0].toUpperCase(); }
   return chars.join("");
@@ -720,10 +722,10 @@ function strUpFirst (str: any): string {
 
 /**
  * @description Converts the first character of a string to lowercase.
- * @param {any} str
+ * @param {unknown} str
  * @returns {string}
  */
-function strDownFirst (str: any): string {
+function strDownFirst (str: unknown): string {
   let chars = [...String(str).trim()];
   if (chars.length) { chars[0] = chars[0].toLowerCase(); }
   return chars.join("");
@@ -732,7 +734,7 @@ function strDownFirst (str: any): string {
 
 /**
  * @description Reverses the characters in a string.
- * @param {any} str
+ * @param {unknown} str
  * @returns {string}
  */
 const strReverse = (str: unknown): string =>
@@ -741,10 +743,10 @@ const strReverse = (str: unknown): string =>
 
 /**
  * @description Returns an array of Unicode code points for each character in a string.
- * @param {any} str
- * @returns {number[]}
+ * @param {unknown} str
+ * @returns {Array<number | undefined>}
  */
-const strCodePoints = (str: any): any[] =>
+const strCodePoints = (str: unknown): Array<number | undefined> =>
   Array.from(String(str), (value: string): number | undefined =>
     value.codePointAt(0));
 
@@ -786,25 +788,25 @@ const strSplice = (
   str: string,
   index: number,
   count: number,
-  ...add: any[]): string =>
+  ...add: string[]): string =>
   Array.from(str).toSpliced(index, count, add.join("")).join("");
 
 
 /**
  * @description Removes HTML tags from a string.
- * @param {any} str
+ * @param {unknown} str
  * @returns {string}
  */
-const strHTMLRemoveTags = (str: any): string =>
+const strHTMLRemoveTags = (str: unknown): string =>
   String(str).trim().replace(/<[^>]*>/g, " ").replace(/\s{2,}/g, " ").trim();
 
 
 /**
  * @description Escapes special HTML characters in a string.
- * @param {any} str
+ * @param {unknown} str
  * @returns {string}
  */
-const strHTMLEscape = (str: any): string => String(str).trim()
+const strHTMLEscape = (str: unknown): string => String(str).trim()
   .replace(/&/g, "&amp;")
   .replace(/</g, "&lt;")
   .replace(/>/g, "&gt;")
@@ -814,10 +816,10 @@ const strHTMLEscape = (str: any): string => String(str).trim()
 
 /**
  * @description Unescapes special HTML characters in a string.
- * @param {any} str
+ * @param {unknown} str
  * @returns {string}
  */
-const strHTMLUnEscape = (str: string): string => String(str).trim()
+const strHTMLUnEscape = (str: unknown): string => String(str).trim()
   .replace(/&amp;/g, "&").replace(/&#38;/g, "&")
   .replace(/&lt;/g, "<").replace(/&#60;/g, "<")
   .replace(/&gt;/g, ">").replace(/&#62;/g, ">")
@@ -832,9 +834,9 @@ const strHTMLUnEscape = (str: string): string => String(str).trim()
  * @description Selects all elements matching the specified CSS selector within the given context.
  * @param {string} str - The CSS selector to match.
  * @param {Document | HTMLElement} [context=document] - The context in which to search for elements.
- * @returns {any[]} An array of matching elements.
+ * @returns {HTMLElement[]} An array of matching elements.
  */
-const qsa = (str: string, context: Document | HTMLElement = document): any[] =>
+const qsa = (str: string, context: Document | HTMLElement = document): HTMLElement[] =>
   Array.from(context.querySelectorAll(str));
 
 
@@ -1019,7 +1021,8 @@ function domFadeToggle (
  * @param {element} element
  * @returns {void}
  */
-const domHide = (element: HTMLElement): any => element.style.display = "none";
+const domHide = (element: HTMLElement): void =>
+  void(element.style.display = "none");
 
 
 /**
@@ -1028,8 +1031,8 @@ const domHide = (element: HTMLElement): any => element.style.display = "none";
  * @param {string} [display=""] - The CSS display value to set when showing the element.
  * @returns {void}
  */
-const domShow = (element: HTMLElement, display: string = ""): any =>
-  element.style.display = display;
+const domShow = (element: HTMLElement, display: string = ""): void =>
+  void(element.style.display = display);
 
 
 /**
@@ -1153,12 +1156,13 @@ function importStyle (...styles: string[]): void {
  * @returns {object[]} An array of objects representing the form data.
  */
 function form2array (form: HTMLFormElement): object[] {
-  let field: any;
+  let field: ObjectLike;
   let result = Array<object>();
   if (typeOf(form) === "object" && form.nodeName.toLowerCase() === "form") {
     for (let index = 0, length = form.elements.length; index < length; index++) {
       field = form.elements[index];
-      if (field.name && !field.disabled
+      if (field.name
+        && !field.disabled
         && field.type !== "file"
         && field.type !== "reset"
         && field.type !== "submit"
@@ -1172,8 +1176,9 @@ function form2array (form: HTMLFormElement): object[] {
               });
             }
           }
-        } else if ((field.type!=="checkbox" && field.type!=="radio")
-            ||field.checked
+        } else if ((field.type!=="checkbox"
+          && field.type!=="radio")
+            || field.checked
           ) {
           result.push({
             "name": encodeURIComponent(field.name),
@@ -1193,7 +1198,7 @@ function form2array (form: HTMLFormElement): object[] {
  * @returns {string} A URL-encoded query string representing the form data.
  */
 function form2string (form: HTMLFormElement): string {
-  let field: any;
+  let field: ObjectLike;
   let result: string[] = [];
   if (typeOf(form) === "object" && form.nodeName.toLowerCase() === "form") {
     for (let index = 0, length = form.elements.length; index < length; index++) {
@@ -1231,7 +1236,7 @@ const getDoNotTrack = (): boolean => [
     navigator.doNotTrack,
     (globalThis as ObjectLike).doNotTrack,
     (navigator as ObjectLike).msDoNotTrack
-  ].some((item: any): boolean => item === true || item === 1 || item === "1");
+  ].some((item: unknown): boolean => item === true || item === 1 || item === "1");
 
 
 /**
@@ -1243,7 +1248,7 @@ const getDoNotTrack = (): boolean => [
 function getLocation (
   successCallback: PositionCallback,
   errorCallback: PositionErrorCallback = console.error): void {
-  function getError (error: any) {
+  function getError (error: unknown) {
     if (typeof error === "string") {
       errorCallback({
         code: 0,
@@ -1253,7 +1258,7 @@ function getLocation (
         TIMEOUT: 3
       } as GeolocationPositionError);
     } else {
-      errorCallback(error);
+      errorCallback(error as GeolocationPositionError);
     }
   }
   if (navigator.geolocation) {
@@ -1287,8 +1292,8 @@ function createFile (
 
 
 /**
- * @description Retrieves the current fullscreen element, if any.
- * @returns {Document | Element | undefined} The fullscreen element or undefined if not in fullscreen mode.
+ * @description Retrieves the current fullscreen element or undefined if not in fullscreen mode.
+ * @returns {Document | Element | undefined}
  */
 const getFullscreen = (): Document | Element | undefined =>
   document.fullscreenElement
@@ -1430,7 +1435,7 @@ function isArrowFunction (value: unknown): value is ArrowFunction {
   }
   /* This will throw an error if it's an arrow function */
   try {
-    new (value as new (...args: any[]) => unknown)();
+    new (value as new (...args: unknown[]) => unknown)();
     return false;
   } catch (error) {
     return true;
@@ -1440,13 +1445,13 @@ function isArrowFunction (value: unknown): value is ArrowFunction {
 
 /**
  * @description Checks if a value is an async iterator.
- * @param {any} value
+ * @param {unknown} value
  * @returns {boolean}
  */
-const isAsyncIterator = (value: any): value is AsyncIterator<unknown> =>
+const isAsyncIterator = (value: unknown): value is AsyncIterator<unknown> =>
   value != null
-    && typeof value.next === "function"
-    && typeof value[Symbol.asyncIterator] === "function";
+    && typeof (value as ObjectLike).next === "function"
+    && typeof (value as ObjectLike)[Symbol.asyncIterator] === "function";
 
 
 /**
@@ -1485,7 +1490,7 @@ function isTypedCollection (
     isArray(expectedType) ? expectedType : [expectedType];
   /* Check values of iter against expected types or constructors */
   let matched = true;
-  for (let value of iter as Iterable<any>) {
+  for (let value of iter as Iterable<unknown>) {
     let valueType = typeOf(value);
     matched = expectedArray.some(
       function (item: string | Function): boolean {
@@ -1503,8 +1508,11 @@ function isTypedCollection (
   }
   /* Throw error if mismatch and `Throw` is true */
   if (Throw && !matched) {
-    let eNames = expectedArray.map((item: any): string =>
-      (typeof item === "string" ? item.toString() : item.name ?? "anonymous")
+    let eNames = expectedArray.map((item: unknown): string =>
+      (typeof item === "string"
+        ? item.toString()
+        : (item as ObjectLike).name ?? "anonymous"
+      )
     ).join(", ");
     throw new TypeError(
       `[isTypedCollection] TypeError: one or more items are not ${eNames}`
@@ -1516,13 +1524,13 @@ function isTypedCollection (
 
 /**
  * @description Checks if a value matches the expected type(s) or constructor(s).
- * @param {any} value
+ * @param {unknown} value
  * @param {string | Function | Array<string | Function> | undefined} expectedType - The expected type(s) or constructor(s).
  * @param {boolean} Throw
  * @returns {string | Function | boolean}
  */
 function is (
-  value: any,
+  value: unknown,
   expectedType?: string | Function | Array<string | Function> | undefined,
   Throw: boolean = false): string | Function | boolean {
   /* Validate `expected` */
@@ -1565,9 +1573,13 @@ function is (
   /* Throw error if mismatch and `Throw` is true */
   if (Throw && !matched) {
     let vName =
-      value.toString ? value.toString() : Object.prototype.toString.call(value);
-    let eNames = expectedArray.map((item: any): string =>
-      (typeof item === "string" ? item.toString() : item.name ?? "anonymous")
+      (value as ObjectLike).toString
+        ? (value as ObjectLike).toString()
+        : Object.prototype.toString.call(value);
+    let eNames = expectedArray.map((item: unknown): string =>
+      (typeof item === "string"
+        ? item.toString()
+        : (item as Function).name ?? "anonymous")
     ).join(", ");
     throw new TypeError(
       `[is] TypeError: ${vName} is not one of these: ${eNames}`
@@ -1595,9 +1607,9 @@ function toObject (value: unknown): Object | symbol | Function {
 /**
  * @description Converts wrapper objects to their corresponding primitive values.
  * @param {unknown} value
- * @returns {any} The primitive value or the original object if value isn't not a wrapper.
+ * @returns {unknown} The primitive value or the original object if value isn't not a wrapper.
  */
-function toPrimitive (value: unknown): any {
+function toPrimitive (value: unknown): unknown {
   if (value == null || typeof value !== "object") { return value; }
   let vType = Object.prototype.toString.call(value).slice(8, -1);
   if (["Boolean", "BigInt", "Number", "String", "Symbol"].includes(vType)) {
@@ -1614,7 +1626,7 @@ function toPrimitive (value: unknown): any {
  */
 function toSafeString (value: unknown): string {
   let seen = new WeakSet<object>();
-  function replacer (_key: string, value: unknown): any {
+  function replacer (_key: string, value: unknown): unknown {
     if (typeof value === "function") {
       return `[Function: ${value.name || "anonymous"}]`;
     }
@@ -1637,7 +1649,8 @@ function toSafeString (value: unknown): string {
     return `[${value.map(v => toSafeString(v)).join(", ")}]`;
   }
   if (ArrayBuffer.isView(value) && !(value instanceof DataView)) {
-    return `[${[...(value as any)].map(v => toSafeString(v)).join(", ")}]`;
+    // ArrayBuffer views (typed arrays) are iterable; cast to any to satisfy TS
+    return `[${Array.from(value as any).map(v => toSafeString(v)).join(", ")}]`;
   }
   if (value instanceof Map) {
     return `Map(${value.size}){${Array.from(value.entries()).map(([k, v]): string => `${toSafeString(k)} => ${toSafeString(v)}`).join(", ")}}`;
@@ -1685,10 +1698,10 @@ const isLength = isIndex;
 
 /**
  * @description Converts a value to a valid array index (unsigned integer).
- * @param {unknown} value
+ * @param {number} value
  * @returns {number}
  */
-function toIndex (value: any): number {
+function toIndex (value: number): number {
   value = ((value = Math.trunc(+value)) !== value || value === 0) ? 0 : value;
   if (value < 0 || value > Number.MAX_SAFE_INTEGER) {
     throw new RangeError(`[toIndex] RangeError: ${value}`);
@@ -1699,10 +1712,10 @@ function toIndex (value: any): number {
 
 /**
  * @description Converts a value to a valid length (unsigned integer).
- * @param {unknown} value
+ * @param {number} value
  * @returns {number}
  */
-function toLength (value: any): number {
+function toLength (value: number): number {
   value = ((value = Math.trunc(+value)) !== value || value === 0) ? 0 : value;
   return Math.min(Math.max(value, 0), Number.MAX_SAFE_INTEGER);
 }
@@ -1762,15 +1775,15 @@ function isCoercedObject (value: unknown): Function | boolean {
 
 /**
  * @description Performs a deep strict equality check between two values.
- * @param {any} value1
- * @param {any} value2
+ * @param {unknown} value1
+ * @param {unknown} value2
  * @returns {boolean}
  */
-function isDeepStrictEqual (value1: any, value2: any): boolean {
+function isDeepStrictEqual (value1: unknown, value2: unknown): boolean {
   /* helper functions */
-  const _typeOfOrNaN = (value: any): string =>
+  const _typeOfOrNaN = (value: unknown): string =>
     value !== value ? "NaN" : typeOf(value);
-  const _classOf = (value: any): string =>
+  const _classOf = (value: unknown): string =>
     Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
   /* primitives: Boolean, Number, BigInt, String + Function + Symbol */
   if (_oIs(value1, value2)) { return true; }
@@ -1778,12 +1791,12 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
   if (typeOf(value1) === "object"
     && isPrimitive(value2)
     && _classOf(value1) === typeOf(value2)) {
-    return _oIs(value1.valueOf(), value2);
+    return _oIs((value1 as ObjectLike).valueOf(), value2);
   }
   if (isPrimitive(value1)
     && typeOf(value2) === "object"
     && typeOf(value1) === _classOf(value2)) {
-    return _oIs(value1, value2.valueOf());
+    return _oIs(value1, (value2 as ObjectLike).valueOf());
   }
   /* type (primitives, object, null, NaN) */
   if (_typeOfOrNaN(value1) !== _typeOfOrNaN(value2)) { return false; }
@@ -1808,13 +1821,16 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
       || isSameInstance(value1, value2, String)
       || isSameInstance(value1, value2, BigInt)
     ) {
-      return _oIs(value1.valueOf(), value2.valueOf());
+      return _oIs(
+        (value1 as ObjectLike).valueOf(),
+        (value2 as ObjectLike).valueOf()
+      );
     }
     /* objects / Array */
     if (isArray(value1) && isArray(value2)) {
       if (value1.length !== value2.length) { return false; }
       if (value1.length === 0) { return true; }
-      return value1.every((value: unknown, index: any): boolean =>
+      return value1.every((value: unknown, index: number): boolean =>
         isDeepStrictEqual(value, value2[index])
       );
     }
@@ -1828,24 +1844,32 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
       }
       if ((value1 as ObjectLike).length === 0) { return true; }
       return (value1 as ObjectLike).every(
-        (value: unknown, index: any): boolean =>
+        (value: unknown, index: number): boolean =>
           _oIs(value, (value2 as ObjectLike)[index])
       );
     }
     /* objects / ArrayBuffer */
     if (isSameInstance(value1, value2, ArrayBuffer)) {
-      if (value1.byteLength !== value2.byteLength) { return false; }
-      if (value1.byteLength === 0) { return true; }
-      let xTA = new Int8Array(value1), yTA = new Int8Array(value2);
-      return xTA.every((value: unknown, index: any): boolean =>
+      if ((value1 as ObjectLike).byteLength !==
+        (value2 as ObjectLike).byteLength) {
+        return false;
+      }
+      if ((value1 as ObjectLike).byteLength === 0) { return true; }
+      let xTA = new Int8Array(value1 as Iterable<number>);
+      let yTA = new Int8Array(value2 as Iterable<number>);
+      return xTA.every((value: unknown, index: number): boolean =>
         _oIs(value, yTA[index]));
     }
     /* objects / DataView */
     if (isSameInstance(value1, value2, DataView)) {
-      if (value1.byteLength !== value2.byteLength) { return false; }
-      if (value1.byteLength === 0) { return true; }
-      for (let index = 0; index < value1.byteLength; index++) {
-        if (!_oIs(value1.getUint8(index), value2.getUint8(index))) {
+      if ((value1 as ObjectLike).byteLength !== (value2 as ObjectLike).byteLength) {
+        return false;
+      }
+      if ((value1 as ObjectLike).byteLength === 0) { return true; }
+      for (let index = 0; index < (value1 as ObjectLike).byteLength; index++) {
+        if (!_oIs(
+          (value1 as ObjectLike).getUint8(index),
+          (value2 as ObjectLike).getUint8(index))) {
           return false;
         }
       }
@@ -1853,54 +1877,61 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
     }
     /* objects / Map */
     if (isSameInstance(value1, value2, Map)) {
-      if (value1.size !== value2.size) { return false; }
-      if (value1.size === 0) { return true; }
-      return [...value1.keys()].every((value: unknown): boolean =>
-        isDeepStrictEqual(value1.get(value), value2.get(value)));
+      if ((value1 as ObjectLike).size !== (value2 as ObjectLike).size) {
+        return false;
+      }
+      if ((value1 as ObjectLike).size === 0) { return true; }
+      return [...(value1 as ObjectLike).keys()].every((value: unknown): boolean =>
+        isDeepStrictEqual((value1 as ObjectLike).get(value), (value2 as ObjectLike).get(value)));
     }
     /* objects / Set */
     if (isSameInstance(value1, value2, Set)) {
-      if (value1.size !== value2.size) { return false; }
-      if (value1.size === 0) { return true; }
-      return [...value1.keys()].every(
-        (value: unknown): boolean => value2.has(value)
+      if ((value1 as ObjectLike).size !== (value2 as ObjectLike).size) { return false; }
+      if ((value1 as ObjectLike).size === 0) { return true; }
+      return [...(value1 as ObjectLike).keys()].every(
+        (value: unknown): boolean => (value2 as ObjectLike).has(value)
       );
     }
     /* objects / RegExp */
     if (isSameInstance(value1, value2, RegExp)) {
-      return _oIs(value1.lastIndex, value2.lastIndex)
-        && _oIs(value1.flags, value2.flags)
-        && _oIs(value1.source, value2.source);
+      return _oIs((value1 as RegExp).lastIndex, (value2 as RegExp).lastIndex)
+        && _oIs((value1 as RegExp).flags, (value2 as RegExp).flags)
+        && _oIs((value1 as RegExp).source, (value2 as RegExp).source);
     }
     /* objects / Error */
     if (isSameInstance(value1, value2, Error)) {
       return isDeepStrictEqual(
         getOwnPropertyNames(value1)
           .reduce(
-            function (acc: any, k: any): object {
-              acc[k] = value1[k];
+            function (acc: object, k: PropertyKey): object {
+              (acc as ObjectLike)[k] = (value1 as ObjectLike)[k];
               return acc;
             },
             {}
           ),
         getOwnPropertyNames(value2).reduce(
-          function (acc: any, k: any): object {
-            acc[k] = value2[k];
+          function (acc: object, k: PropertyKey): object {
+            (acc as ObjectLike)[k] = (value2 as ObjectLike)[k];
             return acc; },
           {}
         )
       );
     }
     /* objects / Date */
-    if (isSameInstance(value1, value2, Date)) { return _oIs(+value1, +value2); }
+    if (isSameInstance(value1, value2, Date)) {
+      return _oIs(+(value1 as Date), +(value2 as Date));
+    }
     /* objects / Proxy -> not detectable */
     /* objects / Objects */
-    let value1Keys = Reflect.ownKeys(value1);
-    let value2Keys = Reflect.ownKeys(value2);
+    let value1Keys = Reflect.ownKeys(value1 as ObjectLike);
+    let value2Keys = Reflect.ownKeys(value2 as ObjectLike);
     if (value1Keys.length !== value2Keys.length) { return false; }
     if (value1Keys.length === 0) { return true; }
-    return value1Keys.every((key: any): boolean =>
-      isDeepStrictEqual(value1[key], value2[key])
+    return value1Keys.every((key: PropertyKey): boolean =>
+      isDeepStrictEqual(
+        (value1 as ObjectLike)[key],
+        (value2 as ObjectLike)[key]
+      )
     );
   }
   /* default return false */
@@ -1917,10 +1948,10 @@ function isDeepStrictEqual (value1: any, value2: any): boolean {
  * - Iterable objects are empty if they have no elements.
  * - Plain objects are empty if they have no own properties.
  *
- * @param {any} value
+ * @param {unknown} value
  * @returns boolean
  */
-function isEmpty (value: any): boolean {
+function isEmpty (value: unknown): boolean {
   /* Check undefined, null, NaN */
   if (value == null || Number.isNaN(value)) { return true; }
   /* Check Array, TypedArrays, string, String */
@@ -1937,16 +1968,17 @@ function isEmpty (value: any): boolean {
     return value.byteLength === 0;
   }
   /* Check Iterable objects */
-  if (typeof value[Symbol.iterator] === "function") {
-    let it = value[Symbol.iterator]();
+  if (typeof (value as ObjectLike)[Symbol.iterator] === "function") {
+    let it = (value as ObjectLike)[Symbol.iterator]();
     return it.next().done; /* avoids consuming entire iterator */
   }
   /* Check Iterator objects */
   if ("Iterator" in globalThis ? (value instanceof Iterator)
-    : (typeOf(value) === "object" && typeof value.next === "function")) {
+    : (typeOf(value) === "object"
+      && typeof (value as ObjectLike).next === "function")) {
     try {
       /* Has at least one element */
-      for (let _item of value) { return false; }
+      for (let _item of value as Iterable<unknown>) { return false; }
       return true;
     } catch { /* Not iterable */ }
   }
@@ -1971,8 +2003,8 @@ function isEmpty (value: any): boolean {
  * @param {unknown} value
  * @returns {boolean}
  */
-const isProxy = (value: any): boolean =>
-  Boolean(value != null && value.__isProxy);
+const isProxy = (value: unknown): boolean =>
+  Boolean(value != null && (value as ObjectLike).__isProxy);
 
 
 /**
@@ -2071,13 +2103,13 @@ const isPrimitive = (value: unknown): value is Primitive =>
 
 /**
  * @description Tests whether a value is an Iterator.
- * @param {any} value
+ * @param {unknown} value
  * @returns {boolean}
  */
-const isIterator = <T>(value: any): value is Iterator<T> =>
+const isIterator = <T>(value: unknown): value is Iterator<T> =>
   "Iterator" in globalThis
     ? value instanceof Iterator
-    : (typeOf(value) === "object" && typeof value.next === "function");
+    : (typeOf(value) === "object" && typeof (value as ObjectLike).next === "function");
 
 
 /**
@@ -2093,26 +2125,27 @@ const isRegexp = (value: unknown): value is RegExp => value instanceof RegExp;
  * @param {unknown} value
  * @returns {boolean}
  */
-const isElement = (value: any): boolean =>
-  typeOf(value) === "object" && value.nodeType === 1;
+const isElement = (value: unknown): boolean =>
+  typeOf(value) === "object" && (value as ObjectLike).nodeType === 1;
 
 
 /**
  * @description Tests whether a value is an Iterable.
- * @param {any} value
+ * @param {unknown} value
  * @returns {boolean}
  */
-const isIterable = (value: any): value is Iterable<any> =>
-  value != null && typeof value[Symbol.iterator] === "function";
+const isIterable = (value: unknown): value is Iterable<unknown> =>
+  value != null && typeof (value as ObjectLike)[Symbol.iterator] === "function";
 
 
 /**
  * @description Tests whether a value is an Async Iterable.
- * @param {any} value
+ * @param {unknown} value
  * @returns {boolean}
  */
-const isAsyncIterable = <T>(value: any): value is AsyncIterable<T> =>
-  value != null && typeof value[Symbol.asyncIterator] === "function";
+const isAsyncIterable = <T>(value: unknown): value is AsyncIterable<T> =>
+  value != null
+    && typeof (value as ObjectLike)[Symbol.asyncIterator] === "function";
 
 
 /**
@@ -2343,18 +2376,18 @@ function clearCookies (
 /**
  * Returns an array wrapping the value, or the original array if already one.
  * @param {unknown} value
- * @returns {any[]} An array wrapping the value, or the original array if already one.
+ * @returns {unknown[]} An array wrapping the value, or the original array if already one.
  */
-const castArray = (value: unknown): any[] =>
+const castArray = (value: unknown): unknown[] =>
   typeof value === "undefined" ? [] : (isArray(value) ? value : [value]);
 
 
 /**
  * @description Returns an iterator with not `null` and `undefined` values from the given Iterable or ArrayLike object.
  * @param {IterableLike} iter
- * @returns {Iterator<any>}
+ * @returns {Iterator<unknown>}
  */
-const compact = (iter: IterableLike): Iterator<any> =>
+const compact = (iter: IterableLike): Iterator<unknown> =>
   Iterator.from(iter).filter((value: unknown): boolean => value != null);
 
 
@@ -2362,17 +2395,17 @@ const compact = (iter: IterableLike): Iterator<any> =>
  * @description Returns an array with unique values from the given Iterable.
  * @param {IterableLike} iter - The iterable to process.
  * @param {string | Function} [resolver] - A property name or function to determine uniqueness.
- * @returns {any[] | void} An array with unique values, or void if no iterable is provided.
+ * @returns {unknown[] | void} An array with unique values, or void if no iterable is provided.
  */
 function unique (
   iter: IterableLike,
-  resolver?: string | Function | null | undefined): any[] | void {
-  if (resolver == null) { return [...new Set(iter as Iterable<any>)]; }
+  resolver?: string | Function | null | undefined): unknown[] | void {
+  if (resolver == null) { return [...new Set(iter as Iterable<unknown>)]; }
   if (typeof resolver === "string") {
-    return Array.from(iter as Iterable<any>).reduce(
-      function (acc: any[], item: any) {
-        if (acc.every((item2: any): boolean =>
-          item2[resolver] !== item[resolver])) {
+    return Array.from(iter as Iterable<unknown>).reduce(
+      function (acc: unknown[], item: unknown) {
+        if (acc.every((item2: unknown): boolean =>
+          (item2 as ObjectLike)[resolver] !== (item as ObjectLike)[resolver])) {
           acc.push(item);
         }
         return acc;
@@ -2380,7 +2413,7 @@ function unique (
   }
   if (typeof resolver === "function") {
     let cache = new Map();
-    for (let item of iter as Iterable<any>) {
+    for (let item of iter as Iterable<unknown>) {
       let key = resolver(item);
       if (!cache.has(key)) { cache.set(key, item); }
     }
@@ -2403,12 +2436,12 @@ const count = (iter: IterableLike, callback: Function): number =>
 
 /**
  * @description Creates a deep clone of an array, including nested arrays.
- * @param {any[]} array - The array to clone.
- * @returns {any[]} A deep clone of the input array.
+ * @param {unknown[]} array - The array to clone.
+ * @returns {unknown[]} A deep clone of the input array.
  */
-function arrayDeepClone ([...array]: any[]): any[] {
-  const _ADC = (value: unknown): any =>
-    isArray(value) ? Array.from(value, _ADC) : value;
+function arrayDeepClone ([...array]: unknown[]): unknown[] {
+  const _ADC = (value: unknown): unknown[] =>
+    isArray(value) ? Array.from(value, _ADC) : (value as unknown[]);
   return _ADC(array);
 }
 
@@ -2416,9 +2449,9 @@ function arrayDeepClone ([...array]: any[]): any[] {
 /**
  * @description Returns all elements of an iterable except the last one.
  * @param {IterableLike} iter - The iterable to process.
- * @returns {Iterable<any>} An array containing all elements except the last one.
+ * @returns {Iterable<unknown>} An array containing all elements except the last one.
  */
-function* initial (iter: IterableLike): Iterable<any> {
+function* initial (iter: IterableLike): Iterable<unknown> {
   let iterator = Iterator.from(iter);
   let lastValue = iterator.next().value;
   let nextResult = iterator.next();
@@ -2433,9 +2466,9 @@ function* initial (iter: IterableLike): Iterable<any> {
 /**
  * @description Returns a new array with the elements of the input iterable shuffled randomly.
  * @param {IterableLike} iter - The iterable to shuffle.
- * @returns {any[]} A new array with the elements shuffled.
+ * @returns {unknown[]} A new array with the elements shuffled.
  */
-function shuffle ([...array]: any[]): unknown[] {
+function shuffle ([...array]: unknown[]): unknown[] {
   for (let index = array.length - 1; index > 0; index--) {
     let pos = Math.floor(Math.random() * (index + 1));
     [array[index], array[pos]] = [array[pos], array[index]];
@@ -2446,22 +2479,22 @@ function shuffle ([...array]: any[]): unknown[] {
 
 /**
  * @description Returns the minimum value from the provided arguments.
- * @param {...any} args - The values to compare.
- * @returns {any} The minimum value among the provided arguments.
+ * @param {...unknown} args - The values to compare.
+ * @returns {unknown} The minimum value among the provided arguments.
  */
-const min = (...args: any[]): any => args.reduce(
-    (acc: any, value: any): any => (value < acc ? value : acc),
+const min = (...args: unknown[]): unknown => args.reduce(
+    (acc: any, value: any): unknown => value < acc ? value : acc,
     args[0]
   );
 
 
 /**
  * @description Returns the maximum value from the provided arguments.
- * @param {...any} args - The values to compare.
- * @returns {any} The maximum value among the provided arguments.
+ * @param {...unknown} args - The values to compare.
+ * @returns {unknown} The maximum value among the provided arguments.
  */
-const max = (...args: any[]): any => args.reduce(
-    (acc: any, value: any): any => (value > acc ? value : acc),
+const max = (...args: unknown[]): unknown => args.reduce(
+    (acc: any, value: any): unknown => value > acc ? value : acc,
     args[0]
   );
 
@@ -2470,8 +2503,9 @@ const max = (...args: any[]): any => args.reduce(
  * @description Returns an array with the given value repeated n times.
  * @param {unknown} value
  * @param {number} [num=100] - The number of times to repeat the value.
+ * @returns {unknown[]}
  */
-const arrayRepeat = (value: unknown, num: number = 100): any[] =>
+const arrayRepeat = (value: unknown, num: number = 100): unknown[] =>
   Array(num).fill(value);
 
 
@@ -2479,9 +2513,9 @@ const arrayRepeat = (value: unknown, num: number = 100): any[] =>
  * @description Returns an array by cycling through the elements of the input iterable n times.
  * @param {IterableLike} iter - The iterable to cycle through.
  * @param {number} [num=100] - The number of times to cycle through the iterable.
- * @returns {any[]} An array containing the cycled elements.
+ * @returns {unknown[]} An array containing the cycled elements.
  */
-const arrayCycle = ([...array]: any[], num: number = 100): any[] =>
+const arrayCycle = ([...array]: unknown[], num: number = 100): unknown[] =>
   Array(num).fill(array).flat();
 
 
@@ -2490,12 +2524,12 @@ const arrayCycle = ([...array]: any[], num: number = 100): any[] =>
  * @param {number} [start=0] - The starting number of the range.
  * @param {number} [end=99] - The ending number of the range.
  * @param {number} [step=1] - The step between each number in the range.
- * @returns {any[]} An array representing the range of numbers.
+ * @returns {unknown[]} An array representing the range of numbers.
  */
 const arrayRange = (
   start: number = 0,
   end: number = 99,
-  step: number = 1): any[] => Array.from(
+  step: number = 1): unknown[] => Array.from(
     {length: (end - start) / step + 1},
     (_v, i: number): number => start + (i * step)
   );
@@ -2504,27 +2538,28 @@ const arrayRange = (
 /**
  * @description Merges multiple iterables into an array of tuples, where each tuple contains elements from the input iterables at the same index.
  * @param {...IterableLike} args - The iterables to zip together.
- * @returns {any[][]} An array of tuples containing elements from the input iterables.
+ * @returns {unknown[][]} An array of tuples containing elements from the input iterables.
  */
-function zip (...args: any[]): any[] {
-  args = args.map((value: IterableLike): any =>
-    Array.from(value as Iterable<any>));
-  return Array.from({length: Math.min(...args.map(v => v.length))})
-    .map((_, i: number): any[] => args.map(v => v[i]));
+function zip (...args: unknown[]): unknown[] {
+  args = args.map((value: unknown): unknown =>
+    Array.from(value as Iterable<unknown>));
+  return Array.from(
+      {length: Math.min(...args.map(v => (v as ObjectLike).length))}
+    ).map((_, i: number): unknown[] => args.map(v => (v as ObjectLike)[i]));
 }
 
 
 /**
  * @description Splits an array of tuples into multiple arrays, where each array contains elements from the input tuples at the same index.
  * @param {IterableLike} iter - The iterable of tuples to unzip.
- * @returns {any[][]} An array of arrays containing elements from the input tuples.
+ * @returns {unknown[]} An array of arrays containing elements from the input tuples.
  */
-const unzip = ([...array]: any[]): any[] =>
-  array.map((iter: IterableLike): any[] => Array.from(iter as Iterable<any>))
-    .reduce(function (acc, value): any[] {
+const unzip = ([...array]: unknown[]): unknown[] =>
+  array.map((iter: unknown): unknown[] => Array.from(iter as Iterable<unknown>))
+    .reduce(function (acc, value): unknown[] {
       value.forEach(function (item, index): void {
         if (!isArray(acc[index])) { acc[index] = []; }
-        acc[index].push(item);
+        (acc as ObjectLike)[index].push(item);
       });
       return acc;
     }, []);
@@ -2536,11 +2571,11 @@ const unzip = ([...array]: any[]): any[] =>
  * @param {IterableLike} array2 - The iterable to use as values.
  * @returns {object} An object containing key-value pairs from the input iterables.
  */
-function zipObj ([...array1]: any[], [...array2]: any[]): ObjectLike {
+function zipObj ([...array1]: unknown[], [...array2]: unknown[]): ObjectLike {
   let result: ObjectLike = {};
   let length = Math.min(array1.length, array2.length);
   for (let index = 0; index < length; index++) {
-    result[array1[index]] = array2[index];
+    (result as ObjectLike)[(array1 as ObjectLike)[index]] = array2[index];
   }
   return result;
 }
@@ -2548,20 +2583,20 @@ function zipObj ([...array1]: any[], [...array2]: any[]): ObjectLike {
 
 /**
  * @description Adds a value to an array if it does not already exist in the array.
- * @param {any[]} array - The array to add the value to.
+ * @param {unknown[]} array - The array to add the value to.
  * @param {unknown} value - The value to add to the array.
  * @returns {boolean} True if the value was added, false if it already existed.
  */
-const arrayAdd = (array: any[], value: unknown): boolean =>
+const arrayAdd = (array: unknown[], value: unknown): boolean =>
   !array.includes(value) ? !!array.push(value) : false;
 
 
 /**
  * @description Clears all elements from an array.
- * @param {any[]} array
- * @returns {any[]}
+ * @param {unknown[]} array
+ * @returns {unknown[]}
  */
-function arrayClear (array: any[]): any[] {
+function arrayClear (array: unknown[]): unknown[] {
   array.length = 0;
   return array;
 }
@@ -2569,13 +2604,13 @@ function arrayClear (array: any[]): any[] {
 
 /**
  * @description Removes a value from an array. If `all` is true, removes all occurrences of the value.
- * @param {any[]} array - The array to remove the value from.
+ * @param {unknown[]} array - The array to remove the value from.
  * @param {unknown} value - The value to remove from the array.
  * @param {boolean} [all=false] - Whether to remove all occurrences of the value.
  * @returns {boolean}
  */
 function arrayRemove (
-  array: any[],
+  array: unknown[],
   value: unknown,
   all: boolean = false): boolean {
   let found = array.indexOf(value) > -1;
@@ -2592,14 +2627,14 @@ function arrayRemove (
 
 /**
  * @description Removes elements from an array that satisfy a given condition. If `all` is true, removes all occurrences that satisfy the condition.
- * @param {any[]} array - The array to remove elements from.
- * @param {(value: any, index: number, obj: any[]) => unknown} callback - The callback function that tests each element.
+ * @param {unknown[]} array - The array to remove elements from.
+ * @param {(value: unknown, index: number, obj: unknown[]) => unknown} callback - The callback function that tests each element.
  * @param {boolean} [all=false] - Whether to remove all occurrences that satisfy the condition.
  * @returns {boolean} True if any elements were removed, false otherwise.
  */
 function arrayRemoveBy (
-  array: any[],
-  callback: (value: any, index: number, obj: any[]) => unknown,
+  array: unknown[],
+  callback: (value: unknown, index: number, obj: unknown[]) => unknown,
   all: boolean = false): boolean {
   let found = array.findIndex(callback) > -1;
   if (!all) {
@@ -2615,12 +2650,18 @@ function arrayRemoveBy (
 
 /**
  * @description Merges multiple arrays or values into the target array.
- * @param {any[]} target - The array to merge into.
- * @param {...any} sources - The arrays or values to merge into the target array.
- * @returns {any[]} The merged array.
+ * @param {unknown[]} target - The array to merge into.
+ * @param {...unknown} sources - The arrays or values to merge into the target array.
+ * @returns {unknown[]} The merged array.
  */
-function arrayMerge (target: any[], ...sources: any[]): any[] {
-  target.push(...[].concat(...sources));
+function arrayMerge (target: unknown[], ...sources: unknown[]): unknown[] {
+  for (const source of sources) {
+    if (Array.isArray(source)) {
+      target.push(...source);
+    } else {
+      target.push(source);
+    }
+  }
   return target;
 }
 
@@ -2646,11 +2687,13 @@ function* iterRange (
 
 /**
  * @description Cycles through the elements of the input iterable a specified number of times.
- * @param {any[]} array - The iterable to cycle through.
+ * @param {unknown[]} array - The iterable to cycle through.
  * @param {number} [num=Infinity] - The number of times to cycle through the iterable.
  * @yields The next element in the cycled iterable.
  */
-function* iterCycle ([...array]: any[], num: number = Infinity): Iterator<any> {
+function* iterCycle (
+  [...array]: unknown[],
+  num: number = Infinity): Iterator<unknown> {
   let index = 0;
   while (index++ < num) { yield* array; }
 }
@@ -2662,7 +2705,7 @@ function* iterCycle ([...array]: any[], num: number = Infinity): Iterator<any> {
  * @param {number} [num=Infinity] - The number of times to repeat the value.
  * @yields The next repeated value.
  */
-function* iterRepeat (value: unknown, num: number = Infinity): Iterator<any> {
+function* iterRepeat (value: unknown, num: number = Infinity): Iterator<unknown> {
   let index = 0;
   while (index++ < num) { yield value; }
 }
@@ -2678,7 +2721,7 @@ function* iterRepeat (value: unknown, num: number = Infinity): Iterator<any> {
 function* slice (
   iter: IterableLike,
   begin: number = 0,
-  end: number = Infinity): Iterator<any> {
+  end: number = Infinity): Iterator<unknown> {
   let length = end - begin;
   yield* Iterator.from(iter).drop(begin).take(length < 0 ? 0 : length);
 }
@@ -2689,7 +2732,7 @@ function* slice (
  * @param iter - Iterable or iterator to process.
  * @yields The next element in the tail iterator.
  */
-function* tail (iter: IterableLike): Iterator<any> {
+function* tail (iter: IterableLike): Iterator<unknown> {
   yield* Iterator.from(iter).drop(1);
 }
 
@@ -2720,18 +2763,20 @@ const nth = item;
  * @param {unknown} value
  * @returns {number}
  */
-function size (value: any): number {
+function size (value: unknown): number {
   /* Map + Set + Objects with size property */
-  if (typeof value.size === "number") { return value.size; }
+  if (typeof (value as ObjectLike).size === "number") {
+    return  (value as ObjectLike).size;
+  }
   /* Array + TypedArray*/
-  if (isArray(value) || isTypedArray(value)) { return (value as any).length; }
+  if (isArray(value) || isTypedArray(value)) { return (value as ObjectLike).length; }
   /* ArrayBuffer + DataView */
   if (value instanceof ArrayBuffer || value instanceof DataView) {
     return value.byteLength;
   }
   /* Iterable objects */
   let index = 0;
-  for (let _item of Iterator.from(value) as any) { index++; }
+  for (let _item of Iterator.from(value as IterableLike)) { index++; }
   return index;
 }
 
@@ -2752,18 +2797,18 @@ const head = first;
 /**
  * @description Returns the last element from an iterable or iterator. If the iterable is empty, returns undefined.
  * @param {IterableLike} iter - Iterable or iterator to extract from.
- * @returns {any} The last element, or undefined if the iterable is empty.
+ * @returns {unknown} The last element, or undefined if the iterable is empty.
  */
-const last = (iter: IterableLike): any =>
+const last = (iter: IterableLike): unknown =>
   Iterator.from(iter).reduce((_acc, value) => value);
 
 
 /**
  * @description Yields the elements of an iterable or iterator in reverse order.
- * @param {any[]} array
+ * @param {unknown[]} array
  * @yields The elements of the input iterable or iterator in reverse order.
  */
-function* reverse ([...array]: any[]): Iterator<any> {
+function* reverse ([...array]: unknown[]): Iterator<unknown> {
   let index = array.length;
   while (index--) { yield array[index]; }
 }
@@ -2771,27 +2816,27 @@ function* reverse ([...array]: any[]): Iterator<any> {
 
 /**
  * @description Returns a new array with the elements of the input iterable sorted.
- * @param {any[]} array
+ * @param {unknown[]} array
  * @param {boolean} numbers - Whether to sort the elements as numbers.
- * @returns {any[]} A new array with the sorted elements.
+ * @returns {unknown[]} A new array with the sorted elements.
  */
-const sort = ([...array]: any[], numbers: boolean = false): any[] =>
+const sort = ([...array]: unknown[], numbers: boolean = false): unknown[] =>
   array.sort(numbers
-    ? (value1: number, value2: number): number => value1 - value2
+    ? (a: unknown, b: unknown): number => Number(a) - Number(b)
     : undefined
   );
 
 
 /**
- * @param {any} collection - The collection to search through.
- * @param {any} value - The value to look for.
+ * @param {unknown} collection - The collection to search through.
+ * @param {unknown} value - The value to look for.
  * @param {undefined | Function} [comparator] - Optional comparator for equality check.
  * @returns {boolean} - Whether the value was found.
  * @throws {TypeError} - If comparator is not a Function or undefined.
  */
 function includes (
-  collection: any,
-  value: any,
+  collection: unknown,
+  value: unknown,
   comparator?: Function): boolean {
   /* Comparator Validation - has to be a function or undefined. */
     if (comparator !== undefined && typeof comparator !== "function") {
@@ -2825,7 +2870,7 @@ function includes (
   }
   /* Iterator or Iterables (Array, Set, TypedArrays, other Iterables, etc.) */
   if (isIterator(collection) || isIterable(collection)) {
-    if ([...(collection as any)].findIndex((item) => _eq(item, value)) > -1) {
+    if ([...(collection as Iterable<unknown>)].findIndex((item) => _eq(item, value)) > -1) {
       return true;
     }
     return false;
@@ -2853,7 +2898,7 @@ function includes (
  * @description Returns the last element in an iterable that satisfies the provided testing function.
  * @param {IterableLike} iter - The iterable to search through.
  * @param {Function} callback - The function to test each element.
- * @returns {any} The last element that satisfies the testing function, or undefined if none do.
+ * @returns {unknown} The last element that satisfies the testing function, or undefined if none do.
  */
 const findLast = (iter: IterableLike, callback: Function): unknown =>
   Iterator.from(iter).reduce(
@@ -2864,11 +2909,11 @@ const findLast = (iter: IterableLike, callback: Function): unknown =>
 
 /**
  * @description Concatenates multiple iterables or values into a single iterator.
- * @param {any[]} ...args - The iterables or values to concatenate.
+ * @param {unknown[]} ...args - The iterables or values to concatenate.
  * @yields The elements from the concatenated iterables or values.
  */
-function* concat (...iterables: any[]): Iterator<any> {
-  for (const iterable of iterables) { yield* iterable; }
+function* concat (...iterables: unknown[]): Iterator<unknown> {
+  for (const iterable of iterables) { yield* (iterable as Iterable<unknown>); }
 }
 
 
@@ -3049,12 +3094,12 @@ const isFloat = (value: unknown): boolean =>
  * @param {unknown} value
  * @returns {number}
  */
-function toInteger (value: any): number {
+function toInteger (value: unknown): number {
   value = ((value = Math.trunc(Number(value))) !== value || value === 0)
     ? 0
     : value;
   return Math.min(
-    Math.max(value, Number.MIN_SAFE_INTEGER),
+    Math.max(value as number, Number.MIN_SAFE_INTEGER),
     Number.MAX_SAFE_INTEGER
   );
 }
@@ -3074,11 +3119,11 @@ const toIntegerOrInfinity = (value: unknown): number =>
 
 /**
  * @description Sums multiple values, using precise addition for numbers.
- * @param {...any} args - The values to sum.
- * @returns {any} The sum of the values.
+ * @param {...Numeric} args - The values to sum.
+ * @returns {Numeric} The sum of the values.
  * @throws {TypeError} If all parameter are not number or bigint.
  */
-function sum (...args: any[]): any {
+function sum (...args: Numeric[]): Numeric {
   if (!args.every((value: unknown): boolean => typeof value === "number")
     && !args.every((value: unknown): boolean => typeof value === "bigint")
   ) {
@@ -3088,7 +3133,9 @@ function sum (...args: any[]): any {
   }
   return args.every((value: unknown): boolean => typeof value === "number")
     ? (Math as ObjectLike).sumPrecise(args)
-    : args.slice(1).reduce((acc: any, value: any): any => acc + value, args[0]);
+    : args.slice(1).reduce((acc: Numeric, value: Numeric): Numeric =>
+      (acc as bigint) + (value as bigint), args[0] as Numeric
+    );
 }
 
 
@@ -3157,14 +3204,14 @@ function clamp (
   min: Numeric = Number.MIN_SAFE_INTEGER,
   max: Numeric = Number.MAX_SAFE_INTEGER): Numeric {
   /* normalize */
-  function _numberNormalize (value: any): Numeric {
+  function _numberNormalize (value: unknown): Numeric {
     if (typeof value !== "bigint" && typeof value !== "number") {
       value = Number(value);
     }
     if (value === -Infinity) { return Number.MIN_SAFE_INTEGER; }
     if (value === Infinity) { return Number.MAX_SAFE_INTEGER; }
     if (value === 0) { return 0; }
-    return value;
+    return value as Numeric;
   }
   if (typeof value !== "bigint"
     && typeof min !== "bigint"
@@ -3301,7 +3348,7 @@ function inRange (value: Numeric, min: Numeric, max: Numeric): boolean {
 
 export default {
   /** object header **/
-  VERSION: VERSION_NODE,
+  VERSION: `${VERSION} node"`,
   /** Core API **/
   BASE16,
   BASE32,

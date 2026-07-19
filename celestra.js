@@ -1,6 +1,5 @@
 "use strict";
 const VERSION = "Celestra v7.1.0";
-const VERSION_NODE = VERSION + " node";
 const { getPrototypeOf, getOwnPropertyNames, getOwnPropertySymbols } = Object;
 const _oIs = Object.is;
 const { isArray } = Array;
@@ -77,7 +76,7 @@ if (!("isError" in Error)) {
 }
 if ("crypto" in globalThis && !("randomUUID" in globalThis.crypto)) {
     globalThis.crypto.randomUUID = function randomUUID() {
-        return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, (c) => (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> c / 4)))
+        return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, (c) => (Number(c) ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (Number(c) / 4))))
             .toString(16));
     };
 }
@@ -154,7 +153,9 @@ async function asyncF() { return false; }
 function asyncConstant(value) {
     return async function () { return value; };
 }
-async function asyncIdentity(value) { return value; }
+async function asyncIdentity(value) {
+    return value;
+}
 function randomUUIDv7(v4 = false) {
     let timestamp = Date.now().toString(16).padStart(12, "0");
     let uuid = Array.from("99999999-9999-4000-8000-100000000000"
@@ -383,8 +384,8 @@ function domFadeToggle(element, duration, display = "") {
         domFadeOut(element, duration);
     }
 }
-const domHide = (element) => element.style.display = "none";
-const domShow = (element, display = "") => element.style.display = display;
+const domHide = (element) => void (element.style.display = "none");
+const domShow = (element, display = "") => void (element.style.display = display);
 function domToggle(element, display = "") {
     if (globalThis.getComputedStyle(element, null).display === "none") {
         element.style.display = display;
@@ -454,7 +455,8 @@ function form2array(form) {
     if (typeOf(form) === "object" && form.nodeName.toLowerCase() === "form") {
         for (let index = 0, length = form.elements.length; index < length; index++) {
             field = form.elements[index];
-            if (field.name && !field.disabled
+            if (field.name
+                && !field.disabled
                 && field.type !== "file"
                 && field.type !== "reset"
                 && field.type !== "submit"
@@ -469,7 +471,8 @@ function form2array(form) {
                         }
                     }
                 }
-                else if ((field.type !== "checkbox" && field.type !== "radio")
+                else if ((field.type !== "checkbox"
+                    && field.type !== "radio")
                     || field.checked) {
                     result.push({
                         "name": encodeURIComponent(field.name),
@@ -643,7 +646,9 @@ function isTypedCollection(iter, expectedType, Throw = false) {
         }
     }
     if (Throw && !matched) {
-        let eNames = expectedArray.map((item) => (typeof item === "string" ? item.toString() : item.name ?? "anonymous")).join(", ");
+        let eNames = expectedArray.map((item) => (typeof item === "string"
+            ? item.toString()
+            : item.name ?? "anonymous")).join(", ");
         throw new TypeError(`[isTypedCollection] TypeError: one or more items are not ${eNames}`);
     }
     return matched;
@@ -673,8 +678,12 @@ function is(value, expectedType, Throw = false) {
         throw new TypeError(`[is] TypeError: expectedType array elements have to be a string or function. Got ${typeOf(item)}`);
     });
     if (Throw && !matched) {
-        let vName = value.toString ? value.toString() : Object.prototype.toString.call(value);
-        let eNames = expectedArray.map((item) => (typeof item === "string" ? item.toString() : item.name ?? "anonymous")).join(", ");
+        let vName = value.toString
+            ? value.toString()
+            : Object.prototype.toString.call(value);
+        let eNames = expectedArray.map((item) => (typeof item === "string"
+            ? item.toString()
+            : item.name ?? "anonymous")).join(", ");
         throw new TypeError(`[is] TypeError: ${vName} is not one of these: ${eNames}`);
     }
     return matched;
@@ -729,7 +738,7 @@ function toSafeString(value) {
         return `[${value.map(v => toSafeString(v)).join(", ")}]`;
     }
     if (ArrayBuffer.isView(value) && !(value instanceof DataView)) {
-        return `[${[...value].map(v => toSafeString(v)).join(", ")}]`;
+        return `[${Array.from(value).map(v => toSafeString(v)).join(", ")}]`;
     }
     if (value instanceof Map) {
         return `Map(${value.size}){${Array.from(value.entries()).map(([k, v]) => `${toSafeString(k)} => ${toSafeString(v)}`).join(", ")}}`;
@@ -844,13 +853,15 @@ function isDeepStrictEqual(value1, value2) {
             return value1.every((value, index) => _oIs(value, value2[index]));
         }
         if (isSameInstance(value1, value2, ArrayBuffer)) {
-            if (value1.byteLength !== value2.byteLength) {
+            if (value1.byteLength !==
+                value2.byteLength) {
                 return false;
             }
             if (value1.byteLength === 0) {
                 return true;
             }
-            let xTA = new Int8Array(value1), yTA = new Int8Array(value2);
+            let xTA = new Int8Array(value1);
+            let yTA = new Int8Array(value2);
             return xTA.every((value, index) => _oIs(value, yTA[index]));
         }
         if (isSameInstance(value1, value2, DataView)) {
@@ -936,7 +947,8 @@ function isEmpty(value) {
         return it.next().done;
     }
     if ("Iterator" in globalThis ? (value instanceof Iterator)
-        : (typeOf(value) === "object" && typeof value.next === "function")) {
+        : (typeOf(value) === "object"
+            && typeof value.next === "function")) {
         try {
             for (let _item of value) {
                 return false;
@@ -992,7 +1004,8 @@ const isIterator = (value) => "Iterator" in globalThis
 const isRegexp = (value) => value instanceof RegExp;
 const isElement = (value) => typeOf(value) === "object" && value.nodeType === 1;
 const isIterable = (value) => value != null && typeof value[Symbol.iterator] === "function";
-const isAsyncIterable = (value) => value != null && typeof value[Symbol.asyncIterator] === "function";
+const isAsyncIterable = (value) => value != null
+    && typeof value[Symbol.asyncIterator] === "function";
 const isTypedArray = (value) => ArrayBuffer.isView(value) && !(value instanceof DataView);
 const isGeneratorFunction = (value) => getPrototypeOf(value).constructor ===
     getPrototypeOf(function* () { }).constructor;
@@ -1149,15 +1162,14 @@ function shuffle([...array]) {
     }
     return array;
 }
-const min = (...args) => args.reduce((acc, value) => (value < acc ? value : acc), args[0]);
-const max = (...args) => args.reduce((acc, value) => (value > acc ? value : acc), args[0]);
+const min = (...args) => args.reduce((acc, value) => value < acc ? value : acc, args[0]);
+const max = (...args) => args.reduce((acc, value) => value > acc ? value : acc, args[0]);
 const arrayRepeat = (value, num = 100) => Array(num).fill(value);
 const arrayCycle = ([...array], num = 100) => Array(num).fill(array).flat();
 const arrayRange = (start = 0, end = 99, step = 1) => Array.from({ length: (end - start) / step + 1 }, (_v, i) => start + (i * step));
 function zip(...args) {
     args = args.map((value) => Array.from(value));
-    return Array.from({ length: Math.min(...args.map(v => v.length)) })
-        .map((_, i) => args.map(v => v[i]));
+    return Array.from({ length: Math.min(...args.map(v => v.length)) }).map((_, i) => args.map(v => v[i]));
 }
 const unzip = ([...array]) => array.map((iter) => Array.from(iter))
     .reduce(function (acc, value) {
@@ -1215,7 +1227,14 @@ function arrayRemoveBy(array, callback, all = false) {
     return found;
 }
 function arrayMerge(target, ...sources) {
-    target.push(...[].concat(...sources));
+    for (const source of sources) {
+        if (Array.isArray(source)) {
+            target.push(...source);
+        }
+        else {
+            target.push(source);
+        }
+    }
     return target;
 }
 function* iterRange(start = 0, step = 1, end = Infinity) {
@@ -1291,7 +1310,7 @@ function* reverse([...array]) {
     }
 }
 const sort = ([...array], numbers = false) => array.sort(numbers
-    ? (value1, value2) => value1 - value2
+    ? (a, b) => Number(a) - Number(b)
     : undefined);
 function includes(collection, value, comparator) {
     if (comparator !== undefined && typeof comparator !== "function") {
@@ -1538,7 +1557,7 @@ function inRange(value, min, max) {
     return false;
 }
 export default {
-    VERSION: VERSION_NODE,
+    VERSION: `${VERSION} node"`,
     BASE16,
     BASE32,
     BASE36,
