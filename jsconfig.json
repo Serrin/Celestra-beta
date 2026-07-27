@@ -2,7 +2,7 @@
   "compilerOptions": {
     "rootDir": ".",
     "rootDirs": ["."],
-    "lib": ["ESNext", "DOM", "DOM.iterable", "DOM.asynciterable", "ESNext.Iterator", "webworker.importscripts", "scripthost"],
+    "lib": ["esnext", "dom", "scripthost", "webworker.importscripts"],
     // TS6: "ES2025" - default
     // TS6: "DOM", "DOM.iterable", "DOM.asynciterable" -> merged into "DOM"
     // full list: https://github.com/microsoft/TypeScript/tree/main/src/lib

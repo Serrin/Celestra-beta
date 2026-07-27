@@ -1,5 +1,6 @@
 "use strict";
 const VERSION = "Celestra v7.1.0";
+const _isNan = Number.isNaN;
 const { getPrototypeOf, getOwnPropertyNames, getOwnPropertySymbols } = Object;
 const _oIs = Object.is;
 const { isArray } = Array;
@@ -23,8 +24,7 @@ if (!("sumPrecise" in Math)) {
         if (array.every((value) => typeof value === "number")) {
             let inf = array.indexOf(Infinity) > -1;
             let negInf = array.indexOf(-Infinity) > -1;
-            if (array.some((value) => value !== value)
-                || (inf && negInf)) {
+            if (array.some(_isNan) || (inf && negInf)) {
                 return NaN;
             }
             if (inf) {
@@ -107,7 +107,7 @@ function assert(condition, message) {
         throw new Error(msg, { cause: msg });
     }
 }
-const eq = (value1, value2) => value1 === value2 || (value1 !== value1 && value2 !== value2);
+const eq = (value1, value2) => value1 === value2 || (_isNan(value1) && _isNan(value2));
 const gt = (value1, value2) => typeOf(value1) === typeOf(value2) && value1 > value2;
 const gte = (value1, value2) => gt(value1, value2) || eq(value1, value2);
 const lt = (value1, value2) => typeOf(value1) === typeOf(value2) && value1 < value2;
@@ -471,8 +471,7 @@ function form2array(form) {
                         }
                     }
                 }
-                else if ((field.type !== "checkbox"
-                    && field.type !== "radio")
+                else if ((field.type !== "checkbox" && field.type !== "radio")
                     || field.checked) {
                     result.push({
                         "name": encodeURIComponent(field.name),
@@ -796,7 +795,7 @@ function isCoercedObject(value) {
     return false;
 }
 function isDeepStrictEqual(value1, value2) {
-    const _typeOfOrNaN = (value) => value !== value ? "NaN" : typeOf(value);
+    const _typeOfOrNaN = (value) => _isNan(value) ? "NaN" : typeOf(value);
     const _classOf = (value) => Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
     if (_oIs(value1, value2)) {
         return true;
@@ -865,7 +864,8 @@ function isDeepStrictEqual(value1, value2) {
             return xTA.every((value, index) => _oIs(value, yTA[index]));
         }
         if (isSameInstance(value1, value2, DataView)) {
-            if (value1.byteLength !== value2.byteLength) {
+            if (value1.byteLength !==
+                value2.byteLength) {
                 return false;
             }
             if (value1.byteLength === 0) {
@@ -927,7 +927,7 @@ function isDeepStrictEqual(value1, value2) {
     return false;
 }
 function isEmpty(value) {
-    if (value == null || Number.isNaN(value)) {
+    if (value == null || _isNan(value)) {
         return true;
     }
     if (isArray(value)
@@ -983,8 +983,8 @@ function isPlainObject(value) {
 const isObject = (value) => value !== null && typeof value === "object";
 const isFunction = (value) => typeof value === "function";
 function isArraylike(value) {
-    if (value == null
-        || (typeOf(value) !== "object" && typeof value !== "string")) {
+    let tValue = typeOf(value);
+    if (value == null || (tValue !== "object" && tValue !== "string")) {
         return false;
     }
     let maybe = value;
@@ -1000,7 +1000,8 @@ const isNullish = (value) => value == null;
 const isPrimitive = (value) => value == null || (typeof value !== "object" && typeof value !== "function");
 const isIterator = (value) => "Iterator" in globalThis
     ? value instanceof Iterator
-    : (typeOf(value) === "object" && typeof value.next === "function");
+    : (typeOf(value) === "object"
+        && typeof value.next === "function");
 const isRegexp = (value) => value instanceof RegExp;
 const isElement = (value) => typeOf(value) === "object" && value.nodeType === 1;
 const isIterable = (value) => value != null && typeof value[Symbol.iterator] === "function";
@@ -1369,72 +1370,84 @@ function join(iter, separator = ",") {
         .slice(sep.length);
 }
 function add(value1, value2) {
-    if (typeof value1 === "number" && typeof value2 === "number") {
+    let tValue1 = typeOf(value1);
+    let tValue2 = typeOf(value2);
+    if (tValue1 === "number" && tValue2 === "number") {
         return Math.sumPrecise([value1, value2]);
     }
-    if (typeof value1 === "bigint" && typeof value2 === "bigint") {
+    if (tValue1 === "bigint" && tValue2 === "bigint") {
         return value1 + value2;
     }
-    throw new TypeError(`[add] value1 and value2 must be of the same type and either number or bigint. Got: ${typeOf(value1)} and ${typeOf(value2)}`);
+    throw new TypeError(`[add] value1 and value2 must be of the same type and either number or bigint. Got: ${tValue1} and ${tValue2}`);
 }
 function sub(value1, value2) {
-    if (typeof value1 === "number" && typeof value2 === "number") {
+    let tValue1 = typeOf(value1);
+    let tValue2 = typeOf(value2);
+    if (tValue1 === "number" && tValue2 === "number") {
         return Math.sumPrecise([value1, -value2]);
     }
-    if (typeof value1 === "bigint" && typeof value2 === "bigint") {
+    if (tValue1 === "bigint" && tValue2 === "bigint") {
         return value1 - value2;
     }
-    throw new TypeError(`[add] value1 and value2 must be of the same type and either number or bigint. Got: ${typeOf(value1)} and ${typeOf(value2)}`);
+    throw new TypeError(`[add] value1 and value2 must be of the same type and either number or bigint. Got: ${tValue1} and ${tValue2}`);
 }
 function mul(value1, value2) {
-    if (typeof value1 === "number" && typeof value2 === "number") {
+    let tValue1 = typeOf(value1);
+    let tValue2 = typeOf(value2);
+    if (tValue1 === "number" && tValue2 === "number") {
         return value1 * value2;
     }
-    if (typeof value1 === "bigint" && typeof value2 === "bigint") {
+    if (tValue1 === "bigint" && tValue2 === "bigint") {
         return value1 * value2;
     }
-    throw new TypeError(`[mul] value1 and value2 must be of the same type and either number or bigint. Got: ${typeOf(value1)} and ${typeOf(value2)}`);
+    throw new TypeError(`[mul] value1 and value2 must be of the same type and either number or bigint. Got: ${tValue1} and ${tValue2}`);
 }
 function div(value1, value2) {
-    if ((typeof value1 === "number" && value2 === 0)
-        || (typeof value1 === "bigint" && value2 === 0n)) {
+    let tValue1 = typeOf(value1);
+    let tValue2 = typeOf(value2);
+    if ((tValue1 === "number" && value2 === 0)
+        || (tValue1 === "bigint" && value2 === 0n)) {
         throw new RangeError("[div] Cannot divide by zero");
     }
-    if (typeof value1 === "number" && typeof value2 === "number") {
+    if (tValue1 === "number" && tValue2 === "number") {
         return value1 / value2;
     }
-    if (typeof value1 === "bigint" && typeof value2 === "bigint") {
+    if (tValue1 === "bigint" && tValue2 === "bigint") {
         return value1 / value2;
     }
-    throw new TypeError(`[div] value1 and value2 must be of the same type and either number or bigint. Got: ${typeOf(value1)} and ${typeOf(value2)}`);
+    throw new TypeError(`[div] value1 and value2 must be of the same type and either number or bigint. Got: ${tValue1} and ${tValue2}`);
 }
 function divMod(value1, value2) {
-    if ((typeof value1 === "number" && value2 === 0)
-        || (typeof value1 === "bigint" && value2 === 0n)) {
+    let tValue1 = typeOf(value1);
+    let tValue2 = typeOf(value2);
+    if ((tValue1 === "number" && value2 === 0)
+        || (tValue1 === "bigint" && value2 === 0n)) {
         throw new RangeError("[divMod] Cannot divide by zero");
     }
-    if (typeof value1 === "number" && typeof value2 === "number") {
+    if (tValue1 === "number" && tValue2 === "number") {
         return Math.trunc(value1 / value2);
     }
-    if (typeof value1 === "bigint" && typeof value2 === "bigint") {
+    if (tValue1 === "bigint" && tValue2 === "bigint") {
         return value1 / value2;
     }
-    throw new TypeError(`[divMod] value1 and value2 must be of the same type and either number or bigint. Got: ${typeOf(value1)} and ${typeOf(value2)}`);
+    throw new TypeError(`[divMod] value1 and value2 must be of the same type and either number or bigint. Got: ${tValue1} and ${tValue2}`);
 }
 function mod(value1, value2) {
-    if ((typeof value1 === "number" && value2 === 0)
-        || (typeof value1 === "bigint" && value2 === 0n)) {
+    let tValue1 = typeOf(value1);
+    let tValue2 = typeOf(value2);
+    if ((tValue1 === "number" && value2 === 0)
+        || (tValue1 === "bigint" && value2 === 0n)) {
         throw new RangeError("[mod] Cannot divide by zero");
     }
-    if (typeof value1 === "number" && typeof value2 === "number") {
+    if (tValue1 === "number" && tValue2 === "number") {
         return Math.trunc(value1 % value2);
     }
-    if (typeof value1 === "bigint" && typeof value2 === "bigint") {
+    if (tValue1 === "bigint" && tValue2 === "bigint") {
         return value1 % value2;
     }
-    throw new TypeError(`[mod] value1 and value2 must be of the same type and either number or bigint. Got: ${typeOf(value1)} and ${typeOf(value2)}`);
+    throw new TypeError(`[mod] value1 and value2 must be of the same type and either number or bigint. Got: ${tValue1} and ${tValue2}`);
 }
-const isFloat = (value) => typeof value === "number" && value === value && Boolean(value % 1);
+const isFloat = (value) => typeof value === "number" && value === value && !Number.isInteger(value);
 function toInteger(value) {
     value = ((value = Math.trunc(Number(value))) !== value || value === 0)
         ? 0
@@ -1445,48 +1458,42 @@ const toIntegerOrInfinity = (value) => ((value = Math.trunc(Number(value))) !== 
     ? 0
     : value;
 function sum(...args) {
-    if (!args.every((value) => typeof value === "number")
-        && !args.every((value) => typeof value === "bigint")) {
-        throw new TypeError(`[sum] all arguments must be of the same type and either number or bigint. Got: ${args.map((v) => typeOf(v)).join(", ")}`);
+    if (args.every((value) => typeof value === "number")) {
+        return Math.sumPrecise(args);
     }
-    return args.every((value) => typeof value === "number")
-        ? Math.sumPrecise(args)
-        : args.slice(1).reduce((acc, value) => acc + value, args[0]);
+    if (args.every((value) => typeof value === "bigint")) {
+        return args.slice(1).reduce((acc, value) => acc + value, args[0]);
+    }
+    throw new TypeError(`[sum] all arguments must be of the same type and either number or bigint. Got: ${args.map((v) => typeOf(v)).join(", ")}`);
 }
 const avg = (...args) => Math.sumPrecise(args) / args.length;
 function product(first, ...args) {
-    if (typeof first === "bigint") {
-        return args
+    return (typeof first === "bigint")
+        ? args
+            .reduce((acc, v) => acc * v, first)
+        : args
             .reduce((acc, v) => acc * v, first);
-    }
-    return args
-        .reduce((acc, v) => acc * v, first);
 }
 function pow(base, power) {
-    if (typeof base !== typeof power
-        || (typeof base !== "number" && typeof base !== "bigint")) {
-        throw new TypeError(`[pow] base and power must be of the same type and either number or bigint. Got: ${typeOf(base)} and ${typeOf(power)}`);
+    let tBase = typeOf(base);
+    let tPower = typeOf(power);
+    if (tBase !== tPower || (tBase !== "number" && tBase !== "bigint")) {
+        throw new TypeError(`[pow] base and power must be of the same type and either number or bigint. Got: ${tBase} and ${tPower}`);
     }
-    if (typeof base === "bigint" && typeof power === "bigint") {
-        return base ** power;
-    }
-    return Math.pow(base, power);
+    return (tBase === "bigint" && tPower === "bigint")
+        ? base ** power
+        : base ** power;
 }
 function clamp(value, min = Number.MIN_SAFE_INTEGER, max = Number.MAX_SAFE_INTEGER) {
     function _numberNormalize(value) {
-        if (typeof value !== "bigint" && typeof value !== "number") {
+        let tValue = typeof value;
+        if (tValue !== "bigint" && tValue !== "number") {
             value = Number(value);
         }
-        if (value === -Infinity) {
-            return Number.MIN_SAFE_INTEGER;
-        }
-        if (value === Infinity) {
-            return Number.MAX_SAFE_INTEGER;
-        }
-        if (value === 0) {
-            return 0;
-        }
-        return value;
+        return value === -Infinity ? Number.MIN_SAFE_INTEGER
+            : value === Infinity ? Number.MAX_SAFE_INTEGER
+                : value === 0 ? 0
+                    : value;
     }
     if (typeof value !== "bigint"
         && typeof min !== "bigint"
@@ -1495,10 +1502,10 @@ function clamp(value, min = Number.MIN_SAFE_INTEGER, max = Number.MAX_SAFE_INTEG
         min = _numberNormalize(min);
         max = _numberNormalize(max);
     }
-    if (value !== value) {
+    if (_isNan(value)) {
         return value;
     }
-    if (min !== min || max !== max) {
+    if (_isNan(min) || _isNan(max)) {
         throw new RangeError("[clamp] RangeError: minimum and maximum should not to be NaN");
     }
     if (min > max) {
@@ -1507,28 +1514,16 @@ function clamp(value, min = Number.MIN_SAFE_INTEGER, max = Number.MAX_SAFE_INTEG
     return (value < min) ? min : ((value > max) ? max : value);
 }
 const minmax = clamp;
-function isEven(value) {
-    if (typeof value === "number" && Number.isSafeInteger(value)) {
-        return value % 2 === 0;
-    }
-    if (typeof value === "bigint") {
-        return value % 2n === 0n;
-    }
-    return false;
-}
-function isOdd(value) {
-    if (typeof value === "number" && Number.isSafeInteger(value)) {
-        return value % 2 !== 0;
-    }
-    if (typeof value === "bigint") {
-        return value % 2n !== 0n;
-    }
-    return false;
-}
+const isEven = (value) => (typeof value === "number" && Number.isSafeInteger(value)) ? value % 2 === 0
+    : (typeof value === "bigint") ? value % 2n === 0n
+        : false;
+const isOdd = (value) => (typeof value === "number" && Number.isSafeInteger(value)) ? value % 2 !== 0
+    : (typeof value === "bigint") ? value % 2n !== 0n
+        : false;
 const signbit = (value) => ((value = Number(value)) !== value)
     ? false
-    : (_oIs(value, -0) || (typeof value === "number" && value < 0
-        || typeof value === "bigint" && value < 0n));
+    : (_oIs(value, -0) || ((typeof value === "number" && value < 0)
+        || (typeof value === "bigint" && value < 0n)));
 function randomInt(min = 100, max) {
     if (max == null) {
         max = min;
@@ -1546,12 +1541,11 @@ function randomFloat(min = 100, max) {
     return result > max ? max : result;
 }
 function inRange(value, min, max) {
-    if ((typeof value === "number"
-        && typeof min === "number"
-        && typeof max === "number")
-        || (typeof value === "bigint"
-            && typeof min === "bigint"
-            && typeof max === "bigint")) {
+    let tValue = typeof value;
+    let tMin = typeof min;
+    let tMax = typeof max;
+    if ((tValue === "number" && tMin === "number" && tMax === "number")
+        || (tValue === "bigint" && tMin === "bigint" && tMax === "bigint")) {
         return value >= min && value <= max;
     }
     return false;

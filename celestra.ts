@@ -1,9 +1,11 @@
 /// <reference lib="esnext" />
-/// <reference lib="esnext.iterator" />
 /// <reference lib="dom" />
-/// <reference lib="dom.iterable" />
-/// <reference lib="dom.asynciterable" />
 /// <reference lib="webworker.importscripts" />
+/// <reference lib="scripthost" />
+/*
+https://github.com/microsoft/TypeScript/blob/main/src/lib/esnext.full.d.ts
+https://github.com/microsoft/TypeScript/blob/main/src/compiler/commandLineParser.ts
+*/
 "use strict";
 
 
@@ -52,7 +54,7 @@ type BigIntLike = bigint | BigInt;
 /** * @description Number-like object. * @private */
 type Numeric = number | bigint;
 
-/** * @description Number and BigInt-like object. * @private */
+/** * @description Number-like and BigInt-like object. * @private */
 type NumericLike = NumberLike | BigIntLike;
 
 /** * @description String-like object. * @private */
@@ -66,13 +68,11 @@ type IterableLike = Iterable<any> | Iterator<any> | IterableIterator<any>;
 
 /** * @description Any iterable, iterator or array-like objects. * @private */
 /* @ts-ignore */
-type IterableLikeAndArrayLike =
-  Iterable<any> | Iterator<any> | IterableIterator<any> | ArrayLike<any>;
+type IterableLikeAndArrayLike = IterableLike | ArrayLike<any>;
 
 /** * @description Iterable and Iterator and Generator types. * @private */
 /* @ts-ignore */
-type GeneratorLike =
-  Iterable<any> | Iterator<any> | Generator<any, void, unknown>;
+type GeneratorLike = IterableLike | Generator<any, void, unknown>;
 
 /** * @description Type for undefined and null values. * @private */
 type Nullish = undefined | null;
@@ -117,16 +117,17 @@ type TypedArray = Exclude<ArrayBufferView, DataView>;
 
 /** * @description ClearCookiesOptions object type. * @private */
 type ClearCookiesOptions = {
-  path?: string | undefined;
-  domain?: string | undefined;
-  secure?: boolean | undefined;
-  SameSite?: string | undefined;
-  HttpOnly?: boolean | undefined;
+  path?: string;
+  domain?: string;
+  secure?: boolean;
+  SameSite?: string;
+  HttpOnly?: boolean;
 };
 
 
 /** Standard helpers **/
 
+const _isNan = Number.isNaN;
 
 const {
   getPrototypeOf,
@@ -165,10 +166,7 @@ if (!("sumPrecise" in Math)) {
       /* return NaN + Infinity + -Infinity */
       let inf = array.indexOf(Infinity) >- 1;
       let negInf = array.indexOf(-Infinity) > -1;
-      if (array.some((value: unknown): boolean => value !== value)
-        || (inf && negInf)) {
-        return NaN;
-      }
+      if (array.some(_isNan) || (inf && negInf)) { return NaN; }
       if (inf) { return Infinity; }
       if (negInf) { return -Infinity; }
       /* sum hi */
@@ -275,7 +273,7 @@ function assert (condition: unknown, message?: unknown): asserts condition {
  * @returns {boolean}
  */
 const eq = (value1: unknown, value2: unknown): boolean =>
-  value1 === value2 || (value1 !== value1 && value2 !== value2);
+  value1 === value2 || (_isNan(value1) && _isNan(value2));
 
 
 /**
@@ -515,7 +513,9 @@ function deepAssign (target: unknown, ...sources: unknown[]): unknown {
     try { return structuredClone(value); } catch { return value; }
   }
   if (!sources.length) { return target == null ? target : _deepClone(target); }
-  for (let source of sources) { Object.assign((target as ObjectLike), _deepClone(source)); }
+  for (let source of sources) {
+    Object.assign((target as ObjectLike), _deepClone(source));
+  }
   return target;
 }
 
@@ -748,7 +748,8 @@ const strReverse = (str: unknown): string =>
  */
 const strCodePoints = (str: unknown): Array<number | undefined> =>
   Array.from(String(str), (value: string): number | undefined =>
-    value.codePointAt(0));
+    value.codePointAt(0)
+  );
 
 
 /**
@@ -836,7 +837,9 @@ const strHTMLUnEscape = (str: unknown): string => String(str).trim()
  * @param {Document | HTMLElement} [context=document] - The context in which to search for elements.
  * @returns {HTMLElement[]} An array of matching elements.
  */
-const qsa = (str: string, context: Document | HTMLElement = document): HTMLElement[] =>
+const qsa = (
+  str: string,
+  context: Document | HTMLElement = document): HTMLElement[] =>
   Array.from(context.querySelectorAll(str));
 
 
@@ -1176,10 +1179,8 @@ function form2array (form: HTMLFormElement): object[] {
               });
             }
           }
-        } else if ((field.type!=="checkbox"
-          && field.type!=="radio")
-            || field.checked
-          ) {
+        } else if ((field.type!=="checkbox" && field.type!=="radio")
+          || field.checked) {
           result.push({
             "name": encodeURIComponent(field.name),
             "value": encodeURIComponent(field.value)
@@ -1310,16 +1311,20 @@ const getFullscreen = (): Document | Element | undefined =>
  */
 function setFullscreenOn (element: HTMLElement | string): void {
   let elem: HTMLElement | null = null;
-  if (typeof element === "string") { elem = document.querySelector(element); }
-    else if (element && typeof element === "object") { elem = element; }
-  if (elem && elem.requestFullscreen) { elem.requestFullscreen(); }
-    else if ((elem as ObjectLike).mozRequestFullScreen) {
-      (elem as ObjectLike).mozRequestFullScreen();
-    } else if ((elem as ObjectLike).webkitRequestFullscreen) {
-      (elem as ObjectLike).webkitRequestFullscreen();
-    } else if ((elem as ObjectLike).msRequestFullscreen) {
-      (elem as ObjectLike).msRequestFullscreen();
-    }
+  if (typeof element === "string") {
+    elem = document.querySelector(element);
+  } else if (element && typeof element === "object") {
+    elem = element;
+  }
+  if (elem && elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if ((elem as ObjectLike).mozRequestFullScreen) {
+    (elem as ObjectLike).mozRequestFullScreen();
+  } else if ((elem as ObjectLike).webkitRequestFullscreen) {
+    (elem as ObjectLike).webkitRequestFullscreen();
+  } else if ((elem as ObjectLike).msRequestFullscreen) {
+    (elem as ObjectLike).msRequestFullscreen();
+  }
 }
 
 
@@ -1328,14 +1333,15 @@ function setFullscreenOn (element: HTMLElement | string): void {
  * @returns {void}
  */
 function setFullscreenOff (): void {
-  if (document.exitFullscreen) { document.exitFullscreen(); }
-    else if ((document as ObjectLike).mozCancelFullScreen) {
-      (document as ObjectLike).mozCancelFullScreen();
-    } else if ((document as ObjectLike).webkitExitFullscreen) {
-      (document as ObjectLike).webkitExitFullscreen();
-    } else if ((document as ObjectLike).msExitFullscreen) {
-      (document as ObjectLike).msExitFullscreen();
-    }
+  if (document.exitFullscreen) {
+    document.exitFullscreen();
+  } else if ((document as ObjectLike).mozCancelFullScreen) {
+    (document as ObjectLike).mozCancelFullScreen();
+  } else if ((document as ObjectLike).webkitExitFullscreen) {
+    (document as ObjectLike).webkitExitFullscreen();
+  } else if ((document as ObjectLike).msExitFullscreen) {
+    (document as ObjectLike).msExitFullscreen();
+  }
 }
 
 
@@ -1429,8 +1435,7 @@ const isNonNullablePrimitive =
 function isArrowFunction (value: unknown): value is ArrowFunction {
   if (typeof value !== "function"
     || ("prototype" in value && value.prototype !== undefined)
-    || !(value.toString().includes("=>"))
-  ) {
+    || !(value.toString().includes("=>"))) {
     return false;
   }
   /* This will throw an error if it's an arrow function */
@@ -1572,10 +1577,9 @@ function is (
   );
   /* Throw error if mismatch and `Throw` is true */
   if (Throw && !matched) {
-    let vName =
-      (value as ObjectLike).toString
-        ? (value as ObjectLike).toString()
-        : Object.prototype.toString.call(value);
+    let vName = (value as ObjectLike).toString
+      ? (value as ObjectLike).toString()
+      : Object.prototype.toString.call(value);
     let eNames = expectedArray.map((item: unknown): string =>
       (typeof item === "string"
         ? item.toString()
@@ -1752,7 +1756,8 @@ const isSameType = (value1: unknown, value2: unknown, type?: string): boolean =>
  */
 const isSameInstance = (
   value1: unknown,
-  value2: unknown, Contructor: Function): boolean =>
+  value2: unknown,
+  Contructor: Function): boolean =>
   value1 instanceof Contructor && value2 instanceof Contructor;
 
 
@@ -1782,7 +1787,7 @@ function isCoercedObject (value: unknown): Function | boolean {
 function isDeepStrictEqual (value1: unknown, value2: unknown): boolean {
   /* helper functions */
   const _typeOfOrNaN = (value: unknown): string =>
-    value !== value ? "NaN" : typeOf(value);
+    _isNan(value) ? "NaN" : typeOf(value);
   const _classOf = (value: unknown): string =>
     Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
   /* primitives: Boolean, Number, BigInt, String + Function + Symbol */
@@ -1806,8 +1811,7 @@ function isDeepStrictEqual (value1: unknown, value2: unknown): boolean {
     if (_oIs(value1, value2)) { return true; }
     /* objects / not same constructor */
     if (getPrototypeOf(value1).constructor !==
-      getPrototypeOf(value2).constructor
-    ) {
+      getPrototypeOf(value2).constructor) {
       return false;
     }
     /* objects / WeakMap + WeakSet */
@@ -1819,8 +1823,7 @@ function isDeepStrictEqual (value1: unknown, value2: unknown): boolean {
     if (isSameInstance(value1, value2, Number)
       || isSameInstance(value1, value2, Boolean)
       || isSameInstance(value1, value2, String)
-      || isSameInstance(value1, value2, BigInt)
-    ) {
+      || isSameInstance(value1, value2, BigInt)) {
       return _oIs(
         (value1 as ObjectLike).valueOf(),
         (value2 as ObjectLike).valueOf()
@@ -1837,8 +1840,7 @@ function isDeepStrictEqual (value1: unknown, value2: unknown): boolean {
     /* objects / TypedArrays */
     if ((ArrayBuffer.isView(value1) && !(value1 instanceof DataView))
       && (ArrayBuffer.isView(value2) && !(value2 instanceof DataView))
-      && _classOf(value1) === _classOf(value2)
-    ) {
+      && _classOf(value1) === _classOf(value2)) {
       if ((value1 as ObjectLike).length !== (value2 as ObjectLike).length) {
         return false;
       }
@@ -1862,7 +1864,8 @@ function isDeepStrictEqual (value1: unknown, value2: unknown): boolean {
     }
     /* objects / DataView */
     if (isSameInstance(value1, value2, DataView)) {
-      if ((value1 as ObjectLike).byteLength !== (value2 as ObjectLike).byteLength) {
+      if ((value1 as ObjectLike).byteLength !==
+      (value2 as ObjectLike).byteLength) {
         return false;
       }
       if ((value1 as ObjectLike).byteLength === 0) { return true; }
@@ -1882,11 +1885,16 @@ function isDeepStrictEqual (value1: unknown, value2: unknown): boolean {
       }
       if ((value1 as ObjectLike).size === 0) { return true; }
       return [...(value1 as ObjectLike).keys()].every((value: unknown): boolean =>
-        isDeepStrictEqual((value1 as ObjectLike).get(value), (value2 as ObjectLike).get(value)));
+        isDeepStrictEqual(
+          (value1 as ObjectLike).get(value),
+          (value2 as ObjectLike).get(value))
+        );
     }
     /* objects / Set */
     if (isSameInstance(value1, value2, Set)) {
-      if ((value1 as ObjectLike).size !== (value2 as ObjectLike).size) { return false; }
+      if ((value1 as ObjectLike).size !== (value2 as ObjectLike).size) {
+        return false;
+      }
       if ((value1 as ObjectLike).size === 0) { return true; }
       return [...(value1 as ObjectLike).keys()].every(
         (value: unknown): boolean => (value2 as ObjectLike).has(value)
@@ -1927,12 +1935,10 @@ function isDeepStrictEqual (value1: unknown, value2: unknown): boolean {
     let value2Keys = Reflect.ownKeys(value2 as ObjectLike);
     if (value1Keys.length !== value2Keys.length) { return false; }
     if (value1Keys.length === 0) { return true; }
-    return value1Keys.every((key: PropertyKey): boolean =>
-      isDeepStrictEqual(
-        (value1 as ObjectLike)[key],
-        (value2 as ObjectLike)[key]
-      )
-    );
+    return value1Keys.every((key: PropertyKey): boolean => isDeepStrictEqual(
+      (value1 as ObjectLike)[key],
+      (value2 as ObjectLike)[key]
+    ));
   }
   /* default return false */
   return false;
@@ -1953,7 +1959,7 @@ function isDeepStrictEqual (value1: unknown, value2: unknown): boolean {
  */
 function isEmpty (value: unknown): boolean {
   /* Check undefined, null, NaN */
-  if (value == null || Number.isNaN(value)) { return true; }
+  if (value == null || _isNan(value)) { return true; }
   /* Check Array, TypedArrays, string, String */
   if (isArray(value)
     || (ArrayBuffer.isView(value) && !(value instanceof DataView))
@@ -2055,8 +2061,8 @@ const isFunction = (value: unknown): value is Function =>
  * @returns {boolean}
  */
 function isArraylike <T>(value: unknown): value is ArrayLike<T> {
-  if (value == null
-    || (typeOf(value) !== "object" && typeof value !== "string")) {
+  let tValue = typeOf(value);
+  if (value == null || (tValue !== "object" && tValue !== "string")) {
     return false;
   }
   let maybe = value as { length?: unknown };
@@ -2109,7 +2115,8 @@ const isPrimitive = (value: unknown): value is Primitive =>
 const isIterator = <T>(value: unknown): value is Iterator<T> =>
   "Iterator" in globalThis
     ? value instanceof Iterator
-    : (typeOf(value) === "object" && typeof (value as ObjectLike).next === "function");
+    : (typeOf(value) === "object"
+      && typeof (value as ObjectLike).next === "function");
 
 
 /**
@@ -2769,7 +2776,9 @@ function size (value: unknown): number {
     return  (value as ObjectLike).size;
   }
   /* Array + TypedArray*/
-  if (isArray(value) || isTypedArray(value)) { return (value as ObjectLike).length; }
+  if (isArray(value) || isTypedArray(value)) {
+    return (value as ObjectLike).length;
+  }
   /* ArrayBuffer + DataView */
   if (value instanceof ArrayBuffer || value instanceof DataView) {
     return value.byteLength;
@@ -2870,7 +2879,8 @@ function includes (
   }
   /* Iterator or Iterables (Array, Set, TypedArrays, other Iterables, etc.) */
   if (isIterator(collection) || isIterable(collection)) {
-    if ([...(collection as Iterable<unknown>)].findIndex((item) => _eq(item, value)) > -1) {
+    if ([...(collection as Iterable<unknown>)].findIndex((item) =>
+      _eq(item, value)) > -1) {
       return true;
     }
     return false;
@@ -2938,19 +2948,21 @@ function join (iter: IterableLike, separator: string = ","): string {
  * @param {Numeric} value1
  * @param {Numeric} value2
  * @returns {Numeric} The result of the operation.
- * @throws {TypeError} If x and y are of mixed types.
+ * @throws {TypeError} If value1 and value2 are of mixed types.
  */
 function add (value1: number, value2: number): number;
 function add (value1: bigint, value2: bigint): bigint;
 function add (value1: Numeric, value2: Numeric): Numeric {
-  if (typeof value1 === "number" && typeof value2 === "number") {
+  let tValue1 = typeOf(value1);
+  let tValue2 = typeOf(value2);
+  if (tValue1 === "number" && tValue2 === "number") {
     return (Math as ObjectLike).sumPrecise([value1, value2]);
   }
-  if (typeof value1 === "bigint" && typeof value2 === "bigint") {
-    return value1 + value2;
+  if (tValue1 === "bigint" && tValue2 === "bigint") {
+    return (value1 as number) + (value2 as number);
   }
   throw new TypeError(
-    `[add] value1 and value2 must be of the same type and either number or bigint. Got: ${typeOf(value1)} and ${typeOf(value2)}`
+    `[add] value1 and value2 must be of the same type and either number or bigint. Got: ${tValue1} and ${tValue2}`
   );
 }
 
@@ -2960,19 +2972,21 @@ function add (value1: Numeric, value2: Numeric): Numeric {
  * @param {Numeric} value1
  * @param {Numeric} value2
  * @returns {Numeric} The result of the operation.
- * @throws {TypeError} If x and y are of mixed types.
+ * @throws {TypeError} If value1 and value2 are of mixed types.
  */
 function sub (value1: number, value2: number): number;
 function sub (value1: bigint, value2: bigint): bigint;
 function sub (value1: Numeric, value2: Numeric): Numeric {
-  if (typeof value1 === "number" && typeof value2 === "number") {
+  let tValue1 = typeOf(value1);
+  let tValue2 = typeOf(value2);
+  if (tValue1 === "number" && tValue2 === "number") {
     return (Math as ObjectLike).sumPrecise([value1, -value2]);
   }
-  if (typeof value1 === "bigint" && typeof value2 === "bigint") {
-    return value1 - value2;
+  if (tValue1 === "bigint" && tValue2 === "bigint") {
+    return (value1 as bigint) - (value2 as bigint);
   }
   throw new TypeError(
-    `[add] value1 and value2 must be of the same type and either number or bigint. Got: ${typeOf(value1)} and ${typeOf(value2)}`
+    `[add] value1 and value2 must be of the same type and either number or bigint. Got: ${tValue1} and ${tValue2}`
   );
 }
 
@@ -2982,19 +2996,21 @@ function sub (value1: Numeric, value2: Numeric): Numeric {
  * @param {Numeric} value1
  * @param {Numeric} value2
  * @returns {Numeric} The result of the operation.
- * @throws {TypeError} If x and y are of mixed types.
+ * @throws {TypeError} If value1 and value2 are of mixed types.
  */
 function mul (value1: number, value2: number): number;
 function mul (value1: bigint, value2: bigint): bigint;
 function mul (value1: Numeric, value2: Numeric): Numeric {
-  if (typeof value1 === "number" && typeof value2 === "number") {
-    return value1 * value2;
+  let tValue1 = typeOf(value1);
+  let tValue2 = typeOf(value2);
+  if (tValue1 === "number" && tValue2 === "number") {
+    return (value1 as number) * (value2 as number);
   }
-  if (typeof value1 === "bigint" && typeof value2 === "bigint") {
-    return value1 * value2;
+  if (tValue1 === "bigint" && tValue2 === "bigint") {
+    return (value1 as bigint) * (value2 as bigint);
   }
   throw new TypeError(
-    `[mul] value1 and value2 must be of the same type and either number or bigint. Got: ${typeOf(value1)} and ${typeOf(value2)}`
+    `[mul] value1 and value2 must be of the same type and either number or bigint. Got: ${tValue1} and ${tValue2}`
   );
 }
 
@@ -3004,24 +3020,26 @@ function mul (value1: Numeric, value2: Numeric): Numeric {
  * @param {Numeric} value1
  * @param {Numeric} value2
  * @returns {Numeric} The result of the operation.
- * @throws {RangeError} If y is zero.
- * @throws {TypeError} If x and y are of mixed types.
+ * @throws {RangeError} If value2 is zero.
+ * @throws {TypeError} If value1 and value2 are of mixed types.
  */
 function div (value1: number, value2: number): number;
 function div (value1: bigint, value2: bigint): bigint;
 function div (value1: Numeric, value2: Numeric): Numeric {
-  if ((typeof value1 === "number" && value2 === 0)
-    || (typeof value1 === "bigint" && value2 === 0n)) {
+  let tValue1 = typeOf(value1);
+  let tValue2 = typeOf(value2);
+  if ((tValue1 === "number" && value2 === 0)
+    || (tValue1 === "bigint" && value2 === 0n)) {
     throw new RangeError("[div] Cannot divide by zero");
   }
-  if (typeof value1 === "number" && typeof value2 === "number") {
-    return value1 / value2;
+  if (tValue1 === "number" && tValue2 === "number") {
+    return (value1 as number) / (value2 as number);
   }
-  if (typeof value1 === "bigint" && typeof value2 === "bigint") {
-    return value1 / value2;
+  if (tValue1 === "bigint" && tValue2 === "bigint") {
+    return (value1 as bigint) /(value2 as bigint);
   }
   throw new TypeError(
-    `[div] value1 and value2 must be of the same type and either number or bigint. Got: ${typeOf(value1)} and ${typeOf(value2)}`
+    `[div] value1 and value2 must be of the same type and either number or bigint. Got: ${tValue1} and ${tValue2}`
   );
 }
 
@@ -3031,24 +3049,26 @@ function div (value1: Numeric, value2: Numeric): Numeric {
  * @param {Numeric} value1
  * @param {Numeric} value2
  * @returns {Numeric} The result of the operation.
- * @throws {RangeError} If y is zero.
- * @throws {TypeError} If x and y are of mixed types.
+ * @throws {RangeError} If value2 is zero.
+ * @throws {TypeError} If value1 and value2 are of mixed types.
  */
 function divMod (value1: number, value2: number): number;
 function divMod (value1: bigint, value2: bigint): bigint;
 function divMod (value1: Numeric, value2: Numeric): Numeric {
-  if ((typeof value1 === "number" && value2 === 0)
-    || (typeof value1 === "bigint" && value2 === 0n)) {
+  let tValue1 = typeOf(value1);
+  let tValue2 = typeOf(value2);
+  if ((tValue1 === "number" && value2 === 0)
+    || (tValue1 === "bigint" && value2 === 0n)) {
     throw new RangeError("[divMod] Cannot divide by zero");
   }
-  if (typeof value1 === "number" && typeof value2 === "number") {
-    return Math.trunc(value1 / value2);
+  if (tValue1 === "number" && tValue2 === "number") {
+    return Math.trunc((value1 as number) / (value2 as number));
   }
-  if (typeof value1 === "bigint" && typeof value2 === "bigint") {
-    return value1 / value2;
+  if (tValue1 === "bigint" && tValue2 === "bigint") {
+    return (value1 as bigint) / (value2 as bigint);
   }
   throw new TypeError(
-    `[divMod] value1 and value2 must be of the same type and either number or bigint. Got: ${typeOf(value1)} and ${typeOf(value2)}`
+    `[divMod] value1 and value2 must be of the same type and either number or bigint. Got: ${tValue1} and ${tValue2}`
   );
 }
 
@@ -3058,24 +3078,26 @@ function divMod (value1: Numeric, value2: Numeric): Numeric {
  * @param {Numeric} value1
  * @param {Numeric} value2
  * @returns {Numeric} The result of the operation.
- * @throws {RangeError} If y is zero.
- * @throws {TypeError} If x and y are of mixed types.
+ * @throws {RangeError} If value2 is zero.
+ * @throws {TypeError} If value1 and value2 are of mixed types.
  */
 function mod (value1: number, value2: number): number;
 function mod (value1: bigint, value2: bigint): bigint;
 function mod (value1: Numeric, value2: Numeric): Numeric {
-  if ((typeof value1 === "number" && value2 === 0)
-    || (typeof value1 === "bigint" && value2 === 0n)) {
+  let tValue1 = typeOf(value1);
+  let tValue2 = typeOf(value2);
+  if ((tValue1 === "number" && value2 === 0)
+    || (tValue1 === "bigint" && value2 === 0n)) {
     throw new RangeError("[mod] Cannot divide by zero");
   }
-  if (typeof value1 === "number" && typeof value2 === "number") {
-    return Math.trunc(value1 % value2);
+  if (tValue1 === "number" && tValue2 === "number") {
+    return Math.trunc((value1 as number) % (value2 as number));
   }
-  if (typeof value1 === "bigint" && typeof value2 === "bigint") {
-    return value1 % value2;
+  if (tValue1 === "bigint" && tValue2 === "bigint") {
+    return (value1 as bigint) % (value2 as bigint);
   }
   throw new TypeError(
-    `[mod] value1 and value2 must be of the same type and either number or bigint. Got: ${typeOf(value1)} and ${typeOf(value2)}`
+    `[mod] value1 and value2 must be of the same type and either number or bigint. Got: ${tValue1} and ${tValue2}`
   );
 }
 
@@ -3086,7 +3108,7 @@ function mod (value1: Numeric, value2: Numeric): Numeric {
  * @returns {boolean}
  */
 const isFloat = (value: unknown): boolean =>
-  typeof value === "number" && value === value && Boolean(value % 1);
+  typeof value === "number" && value === value && !Number.isInteger(value);
 
 
 /**
@@ -3124,18 +3146,16 @@ const toIntegerOrInfinity = (value: unknown): number =>
  * @throws {TypeError} If all parameter are not number or bigint.
  */
 function sum (...args: Numeric[]): Numeric {
-  if (!args.every((value: unknown): boolean => typeof value === "number")
-    && !args.every((value: unknown): boolean => typeof value === "bigint")
-  ) {
-    throw new TypeError(
-      `[sum] all arguments must be of the same type and either number or bigint. Got: ${args.map((v) => typeOf(v)).join(", ")}`
-    );
+  if (args.every((value: unknown): boolean => typeof value === "number")) {
+    return (Math as ObjectLike).sumPrecise(args);
   }
-  return args.every((value: unknown): boolean => typeof value === "number")
-    ? (Math as ObjectLike).sumPrecise(args)
-    : args.slice(1).reduce((acc: Numeric, value: Numeric): Numeric =>
-      (acc as bigint) + (value as bigint), args[0] as Numeric
-    );
+  if (args.every((value: unknown): boolean => typeof value === "bigint")) {
+    return args.slice(1).reduce((acc: bigint, value: Numeric): bigint =>
+      (acc as bigint) + (value as bigint), args[0] as bigint);
+  }
+  throw new TypeError(
+    `[sum] all arguments must be of the same type and either number or bigint. Got: ${args.map((v) => typeOf(v)).join(", ")}`
+  );
 }
 
 
@@ -3157,12 +3177,11 @@ const avg = (...args: number[]): number =>
 function product (first: number, ...args: number[]): number;
 function product (first: bigint, ...args: bigint[]): bigint;
 function product (first: Numeric, ...args: Numeric[]): Numeric {
-  if (typeof first === "bigint") {
-    return (args as bigint[])
-      .reduce((acc: bigint, v: bigint): bigint => acc * v, first as bigint);
-  }
-  return (args as number[])
-    .reduce((acc: number, v: number): number => acc * v, first as number);
+  return (typeof first === "bigint")
+    ? (args as bigint[])
+      .reduce((acc: bigint, v: bigint): bigint => acc * v, first as bigint)
+    : (args as number[])
+      .reduce((acc: number, v: number): number => acc * v, first as number);
 }
 
 
@@ -3176,17 +3195,16 @@ function product (first: Numeric, ...args: Numeric[]): Numeric {
 function pow (base: number, power: number): number;
 function pow (base: bigint, power: bigint): bigint;
 function pow (base: Numeric, power: Numeric): Numeric {
-  if (typeof base !== typeof power
-    || (typeof base !== "number" && typeof base !== "bigint")
-  ) {
+  let tBase = typeOf(base);
+  let tPower = typeOf(power);
+  if (tBase !== tPower || (tBase !== "number" && tBase !== "bigint")) {
     throw new TypeError(
-      `[pow] base and power must be of the same type and either number or bigint. Got: ${typeOf(base)} and ${typeOf(power)}`
+      `[pow] base and power must be of the same type and either number or bigint. Got: ${tBase} and ${tPower}`
     );
   }
-  if (typeof base === "bigint" && typeof power === "bigint") {
-    return (base as bigint) ** (power as bigint);
-  }
-  return Math.pow(base as number, power as number);
+  return (tBase === "bigint" && tPower === "bigint")
+    ? (base as bigint) ** (power as bigint)
+    : (base as number) ** (power as number);
 }
 
 
@@ -3205,13 +3223,12 @@ function clamp (
   max: Numeric = Number.MAX_SAFE_INTEGER): Numeric {
   /* normalize */
   function _numberNormalize (value: unknown): Numeric {
-    if (typeof value !== "bigint" && typeof value !== "number") {
-      value = Number(value);
-    }
-    if (value === -Infinity) { return Number.MIN_SAFE_INTEGER; }
-    if (value === Infinity) { return Number.MAX_SAFE_INTEGER; }
-    if (value === 0) { return 0; }
-    return value as Numeric;
+    let tValue = typeof value;
+    if (tValue !== "bigint" && tValue !== "number") { value = Number(value); }
+    return value === -Infinity ? Number.MIN_SAFE_INTEGER
+      : value === Infinity ? Number.MAX_SAFE_INTEGER
+      : value === 0 ? 0
+      : value as Numeric;
   }
   if (typeof value !== "bigint"
     && typeof min !== "bigint"
@@ -3221,8 +3238,8 @@ function clamp (
     max = _numberNormalize(max);
   }
   /* NaN: val, min, max */
-  if (value !== value) { return value; }
-  if (min !== min || max !== max) {
+  if (_isNan(value)) { return value; }
+  if (_isNan(min) || _isNan(max)) {
     throw new RangeError(
       "[clamp] RangeError: minimum and maximum should not to be NaN"
     );
@@ -3242,16 +3259,13 @@ const minmax = clamp;
 
 /**
  * @description Checks if a number is safe integer and even.
- * - The number to check.
+ * @param {unknown} value
  * @returns {boolean}
  */
-function isEven (value: unknown): boolean {
-  if (typeof value === "number" && Number.isSafeInteger(value)) {
-    return value % 2 === 0;
-  }
-  if (typeof value === "bigint") { return value % 2n === 0n; }
-  return false;
-}
+const isEven = (value: unknown): boolean =>
+  (typeof value === "number" && Number.isSafeInteger(value)) ? value % 2 === 0
+    : (typeof value === "bigint") ? value % 2n === 0n
+    : false;
 
 
 /**
@@ -3259,13 +3273,10 @@ function isEven (value: unknown): boolean {
  * @param {unknown} value
  * @returns {boolean}
  */
-function isOdd (value: unknown): boolean {
-  if (typeof value === "number" && Number.isSafeInteger(value)) {
-    return value % 2 !== 0;
-  }
-  if (typeof value === "bigint") { return value % 2n !== 0n; }
-  return false;
-}
+const isOdd = (value: unknown): boolean =>
+  (typeof value === "number" && Number.isSafeInteger(value)) ? value % 2 !== 0
+    : (typeof value === "bigint") ? value % 2n !== 0n
+    : false;
 
 
 /**
@@ -3277,8 +3288,8 @@ const signbit = (value: unknown | Numeric): boolean =>
   ((value = Number(value)) !== value)
     ? false
     : (_oIs(value, -0) || (
-        typeof value === "number" && value < 0
-          || typeof value === "bigint" && value < 0n
+        (typeof value === "number" && value < 0)
+          || (typeof value === "bigint" && value < 0n)
       )
     );
 
@@ -3333,13 +3344,11 @@ function randomFloat (
 function inRange (value: number, min: number, max: number): boolean;
 function inRange (value: bigint, min: bigint, max: number): boolean;
 function inRange (value: Numeric, min: Numeric, max: Numeric): boolean {
-  if ((typeof value === "number"
-      && typeof min === "number"
-      && typeof max === "number")
-    || (typeof value === "bigint"
-      && typeof min === "bigint"
-      && typeof max === "bigint")
-    ) {
+  let tValue = typeof value;
+  let tMin = typeof min;
+  let tMax = typeof max;
+  if ((tValue=== "number" && tMin === "number" && tMax === "number")
+    || (tValue === "bigint" && tMin === "bigint" && tMax === "bigint")) {
     return value >= min && value <= max;
   }
   return false;
