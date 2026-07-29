@@ -652,40 +652,33 @@ function isTypedCollection(iter, expectedType, Throw = false) {
     }
     return matched;
 }
-function is(value, expectedType, Throw = false) {
-    if (!(["string", "function", "undefined"].includes(typeof expectedType))
-        && !isArray(expectedType)) {
-        throw new TypeError(`[is] TypeError: expectedType must be string, function, array or undefined. Got ${typeOf(expectedType)}`);
-    }
-    if (typeof Throw !== "boolean") {
-        throw new TypeError(`[is] TypeError: Throw has to be a boolean. Got ${typeOf(Throw)}`);
-    }
-    let vType = typeOf(value);
-    if (expectedType == null) {
-        return vType === "object"
-            ? getPrototypeOf(value)?.constructor ?? "object"
-            : vType;
-    }
-    let expectedArray = isArray(expectedType) ? expectedType : [expectedType];
-    let matched = expectedArray.some(function (item) {
-        if (typeof item === "string") {
-            return vType === item;
+function is(value, expectedType) {
+    function _matches(value, expected) {
+        if (typeof expected === "string") {
+            return typeOf(value) === expected;
         }
-        if (typeof item === "function") {
-            return value != null && value instanceof item;
+        try {
+            return value instanceof expected;
         }
-        throw new TypeError(`[is] TypeError: expectedType array elements have to be a string or function. Got ${typeOf(item)}`);
-    });
-    if (Throw && !matched) {
-        let vName = value.toString
-            ? value.toString()
-            : Object.prototype.toString.call(value);
-        let eNames = expectedArray.map((item) => (typeof item === "string"
-            ? item.toString()
-            : item.name ?? "anonymous")).join(", ");
-        throw new TypeError(`[is] TypeError: ${vName} is not one of these: ${eNames}`);
+        catch (_error) {
+            return false;
+        }
     }
-    return matched;
+    if (typeof expectedType === "string" || typeof expectedType === "function") {
+        return _matches(value, expectedType);
+    }
+    if (Array.isArray(expectedType)) {
+        if (!expectedType.length) {
+            throw new RangeError(`[is] expectedType array must be not empty.`);
+        }
+        for (const item of expectedType) {
+            if (typeof item !== "string" && typeof item !== "function") {
+                throw new TypeError(`[is] TypeError: expectedType array elements must be string or function. Got ${typeOf(item)}`);
+            }
+        }
+        return expectedType.some((item) => _matches(value, item));
+    }
+    throw new TypeError(`[is] expectedType array elements must be strings or constructors. Got ${typeOf(expectedType)}`);
 }
 function toObject(value) {
     if (value == null) {

@@ -354,126 +354,55 @@ CUT.isEqual("WORDSAFEALPHABET;", CEL.WORDSAFEALPHABET,
 
 
 /* isTypedCollection(); begin */
-CUT.isTrue("is(); 01 true",
+CUT.isTrue("isTypedCollection(); 01 true",
   CEL.isTypedCollection([1,2,3], "number")
     && CEL.isTypedCollection([1,2,3], ["number"])
     && CEL.isTypedCollection([1,2,3], [Array, "number", Number])
     && CEL.isTypedCollection([1,{},3], [Array, "number", Object])
 );
-CUT.isFalse("is(); 02 false",
+CUT.isFalse("isTypedCollection(); 02 false",
   CEL.isTypedCollection([1,2,3], "string", false)
     && CEL.isTypedCollection([1,2,3], ["string"])
     && CEL.isTypedCollection([1,2,3], [Array, "string", Number], false)
     && CEL.isTypedCollection([1,{},3], [Array, "string", Map])
 );
-CUT.isError("is(); 03 error",
+CUT.isError("isTypedCollection(); 03 error",
   () => CEL.isTypedCollection([1,2,3], "string", true)
 );
-CUT.isError("is(); 04 error",
+CUT.isError("isTypedCollection(); 04 error",
   () => CEL.isTypedCollection([1,2,3], ["string"], true)
 );
-CUT.isError("is(); 05 error",
+CUT.isError("isTypedCollection(); 05 error",
   () => CEL.isTypedCollection([1,2,3], [Array, "string", Number], true)
 );
-CUT.isError("is(); 06 error",
+CUT.isError("isTypedCollection(); 06 error",
   () => CEL.isTypedCollection([1,{},3], [Array, "string", Map], true)
 );
-CUT.isError("is(); 07 parameter error - iter",
+CUT.isError("isTypedCollection(); 07 parameter error - iter",
   // @ts-ignore
   () => CEL.isTypedCollection(42, [Array, "number", Number])
 );
-CUT.isError("is(); 08 parameter error - expected",
+CUT.isError("isTypedCollection(); 08 parameter error - expected",
   // @ts-ignore
   () => CEL.isTypedCollection([1,2,3], 42)
 );
-CUT.isError("is(); 09 parameter error - Throw",
+CUT.isError("isTypedCollection(); 09 parameter error - Throw",
   // @ts-ignore
   () => CEL.isTypedCollection([1,2,3], [Array, "number", Number], 42)
 );
 /* isTypedCollection(); end */
 
 
-/* is(); begin */
-CUT.isTrue("is(); ES5 values",
-  CEL.is([1, 2, 3]) === Array
-    && CEL.is(1998) === "number"
-    && CEL.is("hello world") === "string"
-    && CEL.is({a:1,b:2}) === Object
-    && CEL.is(true) === "boolean"
-    && CEL.is(null) === "null"
-    && CEL.is(undefined) === "undefined"
-    && CEL.is(function () {}) === "function"
-    && CEL.is(new Date()) === Date
-    && CEL.is(/^\[object (.+)\]$/g) === RegExp
-);
-CUT.isTrue("is(); ES5 true",
-  CEL.is([1, 2, 3], "array")
-    || CEL.is(1998, "number")
-    || CEL.is("hello world", "string")
-    || CEL.is({ a: 1, b: 2}, Object)
-    || CEL.is(true, "boolean")
-    || CEL.is(null, "null")
-    || CEL.is(undefined, "undefined")
-    || CEL.is(function () {}, "function")
-    || CEL.is(new Date(), Date)
-    || CEL.is(/^\[object (.+)\]$/g, RegExp)
-);
-CUT.isFalse("is(); ES5 false",
-  CEL.is([1, 2, 3], "number")
-    || CEL.is(1998, "array")
-    || CEL.is("hello world", "object")
-    || CEL.is({ a: 1 , b: 2}, "string")
-    || CEL.is(null, "undefined")
-    || CEL.is(undefined, "null")
-    || CEL.is(function(){}, Array)
-    || CEL.is(new Date(), "array")
-    || CEL.is(/^\[object (.+)\]$/g, "string")
-);
-CUT.isTrue("is(); ES6 values",
-  CEL.is(new Map()) === Map
-    && CEL.is(new Set()) === Set
-    && CEL.is(new WeakMap()) === WeakMap
-    && CEL.is(new WeakSet()) === WeakSet
-);
-CUT.isTrue("is(); ES6 true",
-  CEL.is(new Map(), Map)
-    && CEL.is(new Set(), Set)
-    && CEL.is(new WeakMap(), WeakMap)
-    && CEL.is(new WeakSet(), WeakSet)
-);
-CUT.isTrue("is(); ES6 true object",
-  CEL.is(new Map(), "object")
-    || CEL.is(new Set(), "object")
-    || CEL.is(new WeakMap(), "object")
-    || CEL.is(new WeakSet(), "object")
-);
-// @ts-ignore
-if (globalThis.BigInt) {
-  CUT.isTrue("is(); ES6 bigint",
-    CEL.is(BigInt(456)) === "bigint"
-      &&  CEL.is(456n, "bigint")
-      && !CEL.is(456n, "object")
-  );
-}
-CUT.isTrue("is(); expectedTypes array",
-  CEL.is(BigInt(456), [Object, "bigint"])
-    &&  CEL.is([], ["string", Map, Array])
-    && !CEL.is([], ["string", Map])
-    &&  CEL.is(Object.create(null), [Object, "object"])
-    && !CEL.is(Object.create(null), [Object, "string"])
-);
-CUT.isError("is(); error 1", () => CEL.is(Object.create(null), Object, true));
-CUT.isError("is(); error 2", () => CEL.is([], ["number", Map], true));
-CUT.isError("is(); error 3", () => CEL.is({}, ["string", Map, Array], true));
-// @ts-ignore
-CUT.isError("is(); error 4", () => CEL.is({}, ["string", Map, 42], true));
-// @ts-ignore
-CUT.isError("is(); error 5", () => CEL.is("dsgds", 42));
-// @ts-ignore
-CUT.isError("is(); error 6", () => CEL.is("dsgds", "string", 42));
-CUT.isError("is(); error 7", () => CEL.is("fsdds", "number", true));
-CUT.isError("is(); error 8", () => CEL.is("fsdds", Map, true));
-/* is(); end */
+/* is(); */
+CUT.isTrue("is(); 01", CEL.is(42, "number"));
+CUT.isFalse("is(); 02", CEL.is(42, "Number"));
+CUT.isTrue("is(); 03", CEL.is(Object(42), Number));
+CUT.isFalse("is(); 04", CEL.is(Object(42), "Number"));
+CUT.isTrue("is(); 05", CEL.is(42, [Array, "string", "number"]));
+CUT.isFalse("is(); 06", CEL.is(42, [Array, "string", Number]));
+CUT.isError("is(); 07", () => CEL.is(42, 84));
+CUT.isError("is(); 08", () => CEL.is(42, []));
+CUT.isError("is(); 09", () => CEL.is(42, [Array, "string", "Number", 84]));
 
 
 /* toSafeString(); */
@@ -1491,7 +1420,7 @@ CUT.isError("Math.sumPrecise(); 32",
 CUT.isError("Math.sumPrecise(); 33",
   // @ts-ignore
   () => Math.sumPrecise(
-    [0.1,0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, BigInt(5)]
+    [0.1,0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 5n]
   )
 );
 CUT.isError("Math.sumPrecise(); 34",

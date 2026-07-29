@@ -1115,8 +1115,8 @@ CEL.delay(5000)
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns the constructor property of value, using optional chaining to avoid throwing if value is <code>null</code> or <code>undefined</code>.</td>
     </tr>
     <tr id="FN-is();">
-      <td><code>is(value[,expectedType[,Throw=false]]);</code></td>
-      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value type or class is the given expectedType. The expectedType can be a type <code>string</code>, constructor function or an array of the type strings and constructors. If the Throw is true and the value is not matched with the expectedType, then a TypeError will be thrown with detailed error message. The return value is <code>boolean</code> or the type or constructor of the value.</td>
+      <td><code>is(value, expectedType);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function checks if the given value is the given type(s). The expectedType can be a type <code>string</code>, constructor function or an array of the type strings and constructors. The return value is <code>boolean</code>.</td>
     </tr>
     <tr id="FN-isTypedCollection();">
       <td><code>isTypedCollection(iter, expectedType, Throw = false);</code></td>

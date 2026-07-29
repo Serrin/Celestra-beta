@@ -1528,68 +1528,50 @@ function isTypedCollection (
 
 
 /**
- * @description Checks if a value matches the expected type(s) or constructor(s).
+ * @description Checks if the given value is the given type(s).
  * @param {unknown} value
- * @param {string | Function | Array<string | Function> | undefined} expectedType - The expected type(s) or constructor(s).
- * @param {boolean} Throw
- * @returns {string | Function | boolean}
+ * @param {string | Function | (string | Function)[]} expectedType
+ * @returns {boolean}
+ * @throws {RangeError} If expectedType array is empty.
+ * @throws {TypeError} If elements of expectedType array are not a valid type.
+ * @throws {TypeError} If expectedType is not a valid type.
  */
 function is (
   value: unknown,
-  expectedType?: string | Function | Array<string | Function> | undefined,
-  Throw: boolean = false): string | Function | boolean {
-  /* Validate `expected` */
-  if (!(["string", "function", "undefined"].includes(typeof expectedType))
-    && !isArray(expectedType)) {
-    throw new TypeError(
-      `[is] TypeError: expectedType must be string, function, array or undefined. Got ${typeOf(expectedType)}`
-    );
-  }
-  /* Validate `Throw` */
-  if (typeof Throw !== "boolean") {
-    throw new TypeError(
-      `[is] TypeError: Throw has to be a boolean. Got ${typeOf(Throw)}`
-    );
-  }
-  /* Determine the type of `value` */
-  let vType = typeOf(value);
-  /* If no expected type provided, return type or constructor */
-  if (expectedType == null) {
-    return vType === "object"
-      ? getPrototypeOf(value)?.constructor ?? "object"
-      : vType;
-  }
-  /* Normalize expected to an array */
-  let expectedArray: Array<string | Function> =
-    isArray(expectedType) ? expectedType : [expectedType];
-  /* Check against expected types or constructors */
-  let matched = expectedArray.some(
-    function (item: string | Function) {
-      if (typeof item === "string") { return vType === item; }
-      if (typeof item === "function") {
-        return value != null && value instanceof item;
-      }
-      /* validate expected array elements */
-      throw new TypeError(
-        `[is] TypeError: expectedType array elements have to be a string or function. Got ${typeOf(item)}`
-      );
+  expectedType: string | Function | (string | Function)[]): boolean {
+  /* helper functions */
+  function _matches (value: unknown, expected: string | Function): boolean {
+    if (typeof expected === "string") { return typeOf(value) === expected; }
+    try {
+      return value instanceof expected;
+    } catch (_error) {
+      return false;
     }
-  );
-  /* Throw error if mismatch and `Throw` is true */
-  if (Throw && !matched) {
-    let vName = (value as ObjectLike).toString
-      ? (value as ObjectLike).toString()
-      : Object.prototype.toString.call(value);
-    let eNames = expectedArray.map((item: unknown): string =>
-      (typeof item === "string"
-        ? item.toString()
-        : (item as Function).name ?? "anonymous")
-    ).join(", ");
-    throw new TypeError(
-      `[is] TypeError: ${vName} is not one of these: ${eNames}`
-    );
   }
-  return matched;
+  /* expectedType is a `string` or `function` */
+  if (typeof expectedType === "string" || typeof expectedType  === "function") {
+    return _matches(value, expectedType);
+  }
+  /* expectedType is an `Array` */
+  if (Array.isArray(expectedType)) {
+    /* expectedType array is empty -> throw a `RangeError` */
+    if (!expectedType.length) {
+      throw new RangeError(`[is] expectedType array must be not empty.`);
+    }
+    for (const item of expectedType) {
+      if (typeof item !== "string" && typeof item !== "function") {
+        /* item of expectedType is not a string or function -> throw a TypeError */
+        throw new TypeError(
+          `[is] TypeError: expectedType array elements must be string or function. Got ${typeOf(item)}`
+        );
+      }
+    }
+    return expectedType.some((item) => _matches(value, item));
+  }
+  /* expectedType error -> throw a `TypeError` */
+  throw new TypeError(
+    `[is] expectedType array elements must be strings or constructors. Got ${typeOf(expectedType)}`
+  );
 }
 
 

@@ -112,7 +112,7 @@ declare const isNonNullablePrimitive: (value: unknown) => value is NonNullablePr
 declare function isArrowFunction(value: unknown): value is ArrowFunction;
 declare const isAsyncIterator: (value: unknown) => value is AsyncIterator<unknown>;
 declare function isTypedCollection(iter: IterableLike, expectedType: string | Function | Array<string | Function>, Throw?: boolean): boolean;
-declare function is(value: unknown, expectedType?: string | Function | Array<string | Function> | undefined, Throw?: boolean): string | Function | boolean;
+declare function is(value: unknown, expectedType: string | Function | (string | Function)[]): boolean;
 declare function toObject(value: unknown): Object | symbol | Function;
 declare function toPrimitive(value: unknown): unknown;
 declare function toSafeString(value: unknown): string;

@@ -4,7 +4,8 @@
 ## Celestra v7.1.0 Scotty
 
 1. Documentation, pdf and code fixes.
-2. Remove _(stability 0)_ these functions:
+2. Replace the function `is();` with the new version in the microlibrary.
+3. Remove _(stability 0)_ these functions:
 
 - `isInt8(value);`
 - `isInt16(value);`
