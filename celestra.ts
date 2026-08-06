@@ -127,16 +127,13 @@ type ClearCookiesOptions = {
 
 /** Standard helpers **/
 
+/** @private */
 const _isNan = Number.isNaN;
-
-const {
-  getPrototypeOf,
-  getOwnPropertyNames,
-  getOwnPropertySymbols
-} = Object;
-
+/** @private */
+const { getPrototypeOf, getOwnPropertyNames, getOwnPropertySymbols } = Object;
+/** @private */
 const _oIs = Object.is;
-
+/** @private */
 const { isArray } = Array;
 
 
@@ -1553,8 +1550,8 @@ function is (
     return _matches(value, expectedType);
   }
   /* expectedType is an `Array` */
-  if (Array.isArray(expectedType)) {
-    /* expectedType array is empty -> throw a `RangeError` */
+  if (isArray(expectedType)) {
+    /* expectedType array is empty -> throw a RangeError */
     if (!expectedType.length) {
       throw new RangeError(`[is] expectedType array must be not empty.`);
     }
@@ -1568,7 +1565,7 @@ function is (
     }
     return expectedType.some((item) => _matches(value, item));
   }
-  /* expectedType error -> throw a `TypeError` */
+  /* expectedType error -> throw a TypeError */
   throw new TypeError(
     `[is] expectedType array elements must be strings or constructors. Got ${typeOf(expectedType)}`
   );

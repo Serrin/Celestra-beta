@@ -7,7 +7,7 @@ __A helper JavaScript library with useful functions and polyfills and zero depen
 
 Latest version: 7.1.0
 
-Date: 2026-07-11T15:37:46.594Z
+Date: 2026-08-06T17:32:32.560Z
 
 __Tested on these environments:__
 
