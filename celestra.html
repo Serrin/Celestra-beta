@@ -1,0 +1,2238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Celestra</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="Author" content="Czigler Ferenc" />
+<meta name="Copyright" content="(C) Copyright Czigler Ferenc" />
+<link rel="stylesheet" href="u87.css" type="text/css" />
+<!--<link rel="icon" href="favicon.ico" type="image/x-icon" />-->
+<script> var CEL = { VERSION: "This is another sample library." }; </script>
+<script type="module">
+// import all into a new celestra object
+import * as celestra from "./celestra.js";
+globalThis.celestra = celestra;
+globalThis.CEL = celestra;
+</script>
+
+
+<style>
+
+html, body { font-size: 15px; }
+
+html, body { overflow: hidden; }
+
+#fsdiv { padding: 20px; }
+
+footer a, footer a:link, footer a:visited, footer a:active, footer a:hover,
+nav a, nav a:visited, nav a:active, nav a:hover {
+  color: white !important; /* u87 v0.9.13 */
+}
+
+/*@media (max-width: 575.98px) { td { display: block; width: 100% !important; } }*/
+
+#left-panel-content {
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 1rem;
+  position: sticky;
+  overflow-x: auto;
+  overflow-y: scroll;
+  /*background-color: #131313;
+  color: white;*/
+  scrollbar-color: #FFFFFF #888888 !important;
+}
+
+/*
+#left-panel-content a, #left-panel-content a:link, #left-panel-content a:visited, #left-panel-content a:active, #left-panel-content a:hover {
+  color: white !important; /* u87 v0.9.13 * /
+}
+*/
+
+#right-panel-content {
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  position: sticky;
+  overflow-x: auto;
+  overflow-y: scroll;
+  /*background-color: white;*/
+  scrollbar-color: #FFFFFF #888888 !important;
+}
+
+</style>
+</head>
+<body>
+
+<div id="panels-container" class="container-fluid" style="padding: 0; margin: 0;">
+
+<div id="panels" class="flex-md nogap" style="padding: 0; margin: 0;">
+
+<div id="left-panel" class="hide-on-mobile flex-w-md-15">
+  <div id="left-panel-content">
+    <!-- version -->
+    <p><strong>Celestra <v6 class="1 1"></v6></strong></p>
+    <!-- Download -->
+    <p><strong><a href="#download">Download</a></strong></p>
+    <!-- Samples -->
+    <p><strong><a href="#samples">Samples</a></strong></p>
+    <!-- License -->
+    <p><strong><a href="#license">License</a></strong></p>
+    <!-- Contact -->
+    <p><strong><a href="#footer">Contact</a></strong></p>
+    <!-- Functions -->
+    <p><strong><a href="#functions">Functions</a></strong></p>
+    <!-- Core API -->
+    <hr/>
+    <details open>
+      <summary><strong>Core API</strong></summary>
+      <p><a href="#FN-VERSION">VERSION</a></p>
+      <p><a href="#FN-BASE16;">BASE16;</a></p>
+      <p><a href="#FN-BASE32;">BASE32;</a></p>
+      <p><a href="#FN-BASE36;">BASE36;</a></p>
+      <p><a href="#FN-BASE58;">BASE58;</a></p>
+      <p><a href="#FN-BASE62;">BASE62;</a></p>
+      <p><a href="#FN-WORDSAFEALPHABET;">WORDSAFEALPHABET;</a></p>
+      <p><a href="#FN-assert();">assert();</a></p>
+      <p><a href="#FN-assoc();">assoc();</a></p>
+      <p><a href="#FN-asyncConstant();">asyncConstant();</a></p>
+      <p><a href="#FN-asyncIdentity();">asyncIdentity();</a></p>
+      <p><a href="#FN-asyncF();">asyncF();</a></p>
+      <p><a href="#FN-asyncNoop();">asyncNoop();</a></p>
+      <p><a href="#FN-asyncT();">asyncT();</a></p>
+      <p><a href="#FN-bind();">bind();</a></p>
+      <p><a href="#FN-compose();">compose();</a></p>
+      <p><a href="#FN-constant();">constant();</a></p>
+      <p><a href="#FN-curry();">curry();</a></p>
+      <p><a href="#FN-deepAssign();">deepAssign();</a></p>
+      <p><a href="#FN-delay();">delay();</a></p>
+      <p><a href="#FN-eq();">eq();</a></p>
+      <p><a href="#FN-F();">F();</a></p>
+      <p><a href="#FN-gt();">gt();</a></p>
+      <p><a href="#FN-gte();">gte();</a></p>
+      <p><a href="#FN-identity();">identity();</a></p>
+      <p><a href="#FN-lt();">lt();</a></p>
+      <p><a href="#FN-lte();">lte();</a></p>
+      <p><a href="#FN-noop();">noop();</a></p>
+      <p><a href="#FN-omit();">omit();</a></p>
+      <p><a href="#FN-once();">once();</a></p>
+      <p><a href="#FN-pick();">pick();</a></p>
+      <p><a href="#FN-pipe();">pipe();</a></p>
+      <p><a href="#FN-randomBoolean();">randomBoolean();</a></p>
+      <p><a href="#FN-randomUUIDv7();">randomUUIDv7();</a></p>
+      <p><a href="#FN-sizeIn();">sizeIn();</a></p>
+      <p><a href="#FN-T();">T();</a></p>
+      <p><a href="#FN-tap();">tap();</a></p>
+      <p><a href="#FN-timestampID();">timestampID();</a></p>
+      <p><a href="#FN-unBind();">unBind();</a></p>
+    </details>
+    <!-- String API -->
+    <hr/>
+    <details open>
+      <summary><strong>String API</strong></summary>
+      <p><a href="#FN-b64Decode();">b64Decode();</a></p>
+      <p><a href="#FN-b64Encode();">b64Encode();</a></p>
+      <p><a href="#FN-strAt();">strAt();</a></p>
+      <p><a href="#FN-strCapitalize();">strCapitalize();</a></p>
+      <p><a href="#FN-strCodePoints();">strCodePoints();</a></p>
+      <p><a href="#FN-strCount();">strCount();</a></p>
+      <p><a href="#FN-strDownFirst();">strDownFirst();</a></p>
+      <p><a href="#FN-strFromCodePoints();">strFromCodePoints();</a></p>
+      <p><a href="#FN-strHTMLEscape();">strHTMLEscape();</a></p>
+      <p><a href="#FN-strHTMLRemoveTags();">strHTMLRemoveTags();</a></p>
+      <p><a href="#FN-strUnHTMLEscape();">strUnHTMLEscape();</a></p>
+      <p><a href="#FN-strReverse();">strReverse();</a></p>
+      <p><a href="#FN-strPropercase();">strPropercase();</a></p>
+      <p><a href="#FN-strSplice();">strSplice();</a></p>
+      <p><a href="#FN-strTitlecase();">strTitlecase();</a></p>
+      <p><a href="#FN-strTruncate();">strTruncate();</a></p>
+      <p><a href="#FN-strUpFirst();">strUpFirst();</a></p>
+    </details>
+    <!-- DOM API -->
+    <hr/>
+    <details open>
+      <summary><strong>DOM API</strong></summary>
+      <p><a href="#FN-createFile();">createFile();</a></p>
+      <p><a href="#FN-domClear();">domClear();</a></p>
+      <p><a href="#FN-domCreate();">domCreate();</a></p>
+      <p><a href="#FN-domFadeIn();">domFadeIn();</a></p>
+      <p><a href="#FN-domFadeOut();">domFadeOut();</a></p>
+      <p><a href="#FN-domFadeToggle();">domFadeToggle();</a></p>
+      <p><a href="#FN-domGetCSS();">domGetCSS();</a></p>
+      <p><a href="#FN-domGetCSSVar();">domGetCSSVar();</a></p>
+      <p><a href="#FN-domHide();">domHide();</a></p>
+      <p><a href="#FN-domIsHidden();">domIsHidden();</a></p>
+      <p><a href="#FN-domReady();">domReady();</a></p>
+      <p><a href="#FN-domSetCSS();">domSetCSS();</a></p>
+      <p><a href="#FN-domSetCSSVar();">domSetCSSVar();</a></p>
+      <p><a href="#FN-domShow();">domShow();</a></p>
+      <p><a href="#FN-domScrollToBottom();">domScrollToBottom();</a></p>
+      <p><a href="#FN-domScrollToElement();">domScrollToElement();</a></p>
+      <p><a href="#FN-domScrollToTop();">domScrollToTop();</a></p>
+      <p><a href="#FN-domSiblings();">domSiblings();</a></p>
+      <p><a href="#FN-domSiblingsLeft();">domSiblingsLeft();</a></p>
+      <p><a href="#FN-domSiblingsNext();">domSiblingsNext();</a></p>
+      <p><a href="#FN-domSiblingsPrev();">domSiblingsPrev();</a></p>
+      <p><a href="#FN-domSiblingsRight();">domSiblingsRight();</a></p>
+      <p><a href="#FN-domToElement();">domToElement();</a></p>
+      <p><a href="#FN-domToggle();">domToggle();</a></p>
+      <p><a href="#FN-importScript();">importScript();</a></p>
+      <p><a href="#FN-importStyle();">importStyle();</a></p>
+      <p><a href="#FN-form2array();">form2array();</a></p>
+      <p><a href="#FN-form2string();">form2string();</a></p>
+      <p><a href="#FN-getDoNotTrack();">getDoNotTrack();</a></p>
+      <p><a href="#FN-getFullscreen();">getFullscreen();</a></p>
+      <p><a href="#FN-getLocation();">getLocation();</a></p>
+      <p><a href="#FN-setFullscreenOff();">setFullscreenOff();</a></p>
+      <p><a href="#FN-setFullscreenOn();">setFullscreenOn();</a></p>
+      <p><a href="#FN-qs();">qs();</a></p>
+      <p><a href="#FN-qsa();">qsa();</a></p>
+    </details>
+    <!-- Type API -->
+    <hr/>
+    <details open>
+      <summary><strong>Type API</strong></summary>
+      <p><a href="#FN-constructorOf();">constructorOf();</a></p>
+      <p><a href="#FN-is();">is();</a></p>
+      <p><a href="#FN-isTypedCollection();">isTypedCollection();</a></p>
+      <p><a href="#FN-isArraylike();">isArraylike();</a></p>
+      <p><a href="#FN-isArrowFunction();">isArrowFunction();</a></p>
+      <p><a href="#FN-isAsyncIterable();">isAsyncIterable();</a></p>
+      <p><a href="#FN-isAsyncIterator();">isAsyncIterator();</a></p>
+      <p><a href="#FN-isAsyncFunction();">isAsyncFunction();</a></p>
+      <p><a href="#FN-isAsyncGeneratorFunction();">isAsyncGeneratorFunction();</a></p>
+      <p><a href="#FN-isCoercedObject();">isCoercedObject();</a></p>
+      <p><a href="#FN-isDeepStrictEqual();">isDeepStrictEqual();</a></p>
+      <p><a href="#FN-isElement();">isElement();</a></p>
+      <p><a href="#FN-isEmpty();">isEmpty();</a></p>
+      <p><a href="#FN-isFunction();">isFunction();</a></p>
+      <p><a href="#FN-isGeneratorFunction();">isGeneratorFunction();</a></p>
+      <p><a href="#FN-isIndex();">isIndex();</a></p>
+      <p><a href="#FN-isIterable();">isIterable();</a></p>
+      <p><a href="#FN-isIterator();">isIterator();</a></p>
+      <p><a href="#FN-isLength();">isLength();</a></p>
+      <p><a href="#FN-isNonNullable();">isNonNullable();</a></p>
+      <p><a href="#FN-isNonNullablePrimitive();">isNonNullablePrimitive();();</a></p>
+      <p><a href="#FN-isNull();">isNull();</a></p>
+      <p><a href="#FN-isNullish();">isNullish();</a></p>
+      <p><a href="#FN-isObject();">isObject();</a></p>
+      <p><a href="#FN-isPlainObject();">isPlainObject();</a></p>
+      <p><a href="#FN-isPrimitive();">isPrimitive();</a></p>
+      <p><a href="#FN-isPropertyKey();">isPropertyKey();</a></p>
+      <p><a href="#FN-isProxy();">isProxy();</a></p>
+      <p><a href="#FN-isRegexp();">isRegexp();</a></p>
+      <p><a href="#FN-isSameInstance();">isSameInstance();</a></p>
+      <p><a href="#FN-isSameType();">isSameType();</a></p>
+      <p><a href="#FN-isTypedArray();">isTypedArray();</a></p>
+      <p><a href="#FN-isUndefined();">isUndefined();</a></p>
+      <p><a href="#FN-toIndex();">toIndex();</a></p>
+      <p><a href="#FN-toLength();">toLength();</a></p>
+      <p><a href="#FN-toObject();">toObject();</a></p>
+      <p><a href="#FN-toPrimitive();">toPrimitive();</a></p>
+      <p><a href="#FN-toPropertyKey();">toPropertyKey();</a></p>
+      <p><a href="#FN-toSafeString();">toSafeString();</a></p>
+      <p><a href="#FN-typeOf();">typeOf();</a></p>
+    </details>
+    <!-- Cookie API -->
+    <hr/>
+    <details open>
+      <summary><strong>Cookie API</strong></summary>
+      <p><a href="#FN-clearCookies();">clearCookies();</a></p>
+      <p><a href="#FN-getCookie();">getCookie();</a></p>
+      <p><a href="#FN-hasCookie();">hasCookie();</a></p>
+      <p><a href="#FN-removeCookie();">removeCookie();</a></p>
+    </details>
+    <!-- Collections API -->
+    <hr/>
+    <details open>
+      <summary><strong>Collections API</strong></summary>
+      <p><a href="#FN-arrayAdd();">arrayAdd();</a></p>
+      <p><a href="#FN-arrayClear();">arrayClear();</a></p>
+      <p><a href="#FN-arrayCycle();">arrayCycle();</a></p>
+      <p><a href="#FN-arrayDeepClone();">arrayDeepClone();</a></p>
+      <p><a href="#FN-arrayMerge();">arrayMerge();</a></p>
+      <p><a href="#FN-arrayRange();">arrayRange();</a></p>
+      <p><a href="#FN-arrayRemove();">arrayRemove();</a></p>
+      <p><a href="#FN-arrayRemoveBy();">arrayRemoveBy();</a></p>
+      <p><a href="#FN-arrayRepeat();">arrayRepeat();</a></p>
+      <p><a href="#FN-castArray();">castArray();</a></p>
+      <p><a href="#FN-compact();">compact();</a></p>
+      <p><a href="#FN-concat();">concat();</a></p>
+      <p><a href="#FN-count();">count();</a></p>
+      <p><a href="#FN-findLast();">findLast();</a></p>
+      <p><a href="#FN-first();">first();</a></p>
+      <p><a href="#FN-head();">head();</a></p>
+      <p><a href="#FN-includes();">includes();</a></p>
+      <p><a href="#FN-initial();">initial();</a></p>
+      <p><a href="#FN-item();">item();</a></p>
+      <p><a href="#FN-iterCycle();">iterCycle();</a></p>
+      <p><a href="#FN-iterRange();">iterRange();</a></p>
+      <p><a href="#FN-iterRepeat();">iterRepeat();</a></p>
+      <p><a href="#FN-join();">join();</a></p>
+      <p><a href="#FN-last();">last();</a></p>
+      <p><a href="#FN-max();">max();</a></p>
+      <p><a href="#FN-min();">min();</a></p>
+      <p><a href="#FN-nth();">nth();</a></p>
+      <p><a href="#FN-reverse();">reverse();</a></p>
+      <p><a href="#FN-size();">size();</a></p>
+      <p><a href="#FN-shuffle();">shuffle();</a></p>
+      <p><a href="#FN-slice();">slice();</a></p>
+      <p><a href="#FN-sort();">sort();</a></p>
+      <p><a href="#FN-tail();">tail();</a></p>
+      <p><a href="#FN-unique();">unique();</a></p>
+      <p><a href="#FN-unzip();">unzip();</a></p>
+      <p><a href="#FN-zip();">zip();</a></p>
+      <p><a href="#FN-zipObj();">zipObj();</a></p>
+    </details>
+    <!-- Math API -->
+    <hr/>
+    <details open>
+      <summary><strong>Math API</strong></summary>
+      <p><a href="#FN-add();">add();</a></p>
+      <p><a href="#FN-avg();">avg();</a></p>
+      <p><a href="#FN-clamp();">clamp();</a></p>
+      <p><a href="#FN-div();">div();</a></p>
+      <p><a href="#FN-divMod();">divMod();</a></p>
+      <p><a href="#FN-inRange();">inRange();</a></p>
+      <p><a href="#FN-isEven();">isEven();</a></p>
+      <p><a href="#FN-isFloat();">isFloat();</a></p>
+      <p><a href="#FN-isOdd();">isOdd();</a></p>
+      <p><a href="#FN-minmax();">minmax();</a></p>
+      <p><a href="#FN-mod();">mod();</a></p>
+      <p><a href="#FN-mul();">mul();</a></p>
+      <p><a href="#FN-pow();">pow();</a></p>
+      <p><a href="#FN-product();">product();</a></p>
+      <p><a href="#FN-randomFloat();">randomFloat();</a></p>
+      <p><a href="#FN-randomInt();">randomInt();</a></p>
+      <p><a href="#FN-signbit();">signbit();</a></p>
+      <p><a href="#FN-pow();">pow();</a></p>
+      <p><a href="#FN-sub();">sub();</a></p>
+      <p><a href="#FN-toInteger();">toInteger();</a></p>
+      <p><a href="#FN-toIntegerOrInfinity();">toIntegerOrInfinity();</a></p>
+    </details>
+    <!-- Polyfills -->
+    <hr/>
+    <details open>
+      <summary><strong>Polyfills</strong></summary>
+      <p><a href="#FN-crypto.randomUUID();">crypto.randomUUID();</a></p>
+      <p><a href="#FN-Error.isError();">Error.isError();</a></p>
+      <p><a href="#FN-globalThis;();">globalThis;();</a></p>
+      <p><a href="#FN-Math.sumPrecise();">Math.sumPrecise();</a></p>
+      <p><a href="#FN-globalThis.AsyncFunction();">globalThis.AsyncFunction();</a></p>
+      <p><a href="#FN-globalthis.AsyncGeneratorFunction();">globalthis.AsyncGeneratorFunction();</a></p>
+      <p><a href="#FN-globalThis.GeneratorFunction();">globalthis.GeneratorFunction();</a></p>
+    </details>
+  </div>
+</div>
+
+<div id="right-panel" class="flex-w-md-85" style="border: 1px solid black; padding: 0; margin: 0;">
+
+<div id="right-panel-content">
+
+<main class="container">
+
+<h1 class="center">Celestra</h1>
+
+<h2 id="download">Download</h2>
+
+<p><strong>A helper JavaScript library with useful functions and polyfills and zero dependencies.</strong></p>
+
+<p>Latest version: 7.1.0</p>
+<p>Date: 2026-08-06T17:32:32.560Z</p>
+
+<p><strong>Tested on these environments:</strong></p>
+
+<ul>
+  <li>Windows Firefox</li>
+  <li>Windows Chrome</li>
+  <li>Windows Edge</li>
+  <li>Windows Samsung Browser</li>
+  <li>macOS Safari</li>
+  <li>macOS Firefox</li>
+  <li>macOS Chrome</li>
+  <li>macOS Edge</li>
+  <li>iOS Safari</li>
+  <li>iOS Firefox</li>
+  <li>iOS Chrome</li>
+  <li>iOS Edge</li>
+  <li>Android Firefox</li>
+  <li>Android Chrome</li>
+  <li>Android Edge</li>
+  <li>Android Samsung Browser</li>
+  <li>Node.js (latest current, not LTS)</li>
+  <li>Deno (latest current, not LTS)</li>
+</ul>
+
+
+<p>The functions are available in the <code>celestra</code> and/or <code>CEL</code> object or any function can be imported.</p>
+
+
+<table class="table-responsive-sm table-striped">
+  <tr>
+    <td class="center"><strong>version</strong></td>
+    <td class="center"><strong>page link</strong></td>
+  </tr>
+  <tr>
+    <td>Stable repository</td>
+    <td><a href="https://github.com/Serrin/Celestra" target="_blank">https://github.com/Serrin/Celestra</a></td>
+  </tr>
+  <tr>
+    <td>Beta repository</td>
+    <td><a href="https://github.com/Serrin/Celestra-beta" target="_blank">https://github.com/Serrin/Celestra-beta</a></td>
+  </tr>
+</table>
+
+
+<table class="table-responsive-sm table-striped">
+  <tr>
+    <td class="center"><strong>Edition</strong></td>
+    <td class="center"><strong>Javascript or documentation</strong></td>
+    <td class="center"><strong>Typescript</strong></td>
+  </tr>
+  <tr>
+    <td>Celestra module</td>
+    <td><a href="celestra.js" target="_blank">celestra.js</a></td>
+    <td><a href="celestra.ts" target="_blank">celestra.ts</a></td>
+  </tr>
+  <tr>
+    <td>Celestra Unit Tester (CUT)</td>
+    <td><a href="unittest.html" target="_blank">unittest.html</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Celestra cheatsheet</td>
+    <td>
+      <a href="celestra-cheatsheet.odt" target="_blank">celestra-cheatsheet.odt</a>
+      <br/>
+      <a href="celestra-cheatsheet.pdf" target="_blank">celestra-cheatsheet.pdf</a>
+    </td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>JavaScript cheatsheet</td>
+    <td>
+      <a href="js-cheatsheet.odt" target="_blank">js-cheatsheet.odt</a>
+      <br/>
+      <a href="js-cheatsheet.pdf" target="_blank">js-cheatsheet.pdf</a>
+    </td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Version history</td>
+    <td><a href="CHANGELOG.md" target="_blank">CHANGELOG.md</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Removed polyfills (developer)</td>
+    <td><a href="celestra-polyfills.dev.js" target="_blank">celestra-polyfills.dev.js</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Removed polyfills (minified)</td>
+    <td><a href="celestra-polyfills.min.js" target="_blank">celestra-polyfills.min.js</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>RPG dice roller</td>
+    <td><a href="testgame.html" target="_blank">testgame.html</a></td>
+    <td></td>
+  </tr>
+</table>
+
+
+<h3>How to import the browser edition</h3>
+
+<pre>
+&#60;script type="module"&#62;
+// import all into a new celestra object
+import * as celestra from "./celestra.js";
+globalThis.celestra = celestra;
+globalThis.CEL = celestra;
+&#60;/script&#62;
+
+&#60;script type="module">
+// import some functions
+import { first, last } from "./celestra.js";
+globalThis.first = first;
+globalThis.last = last;
+&#60;/script&#62;
+</pre>
+
+
+<h3>How to import the Node.js edition</h3>
+
+<pre>
+// import the defaultExport object
+import defaultExport from "./celestra.js";
+globalThis.celestra = defaultExport;
+globalThis.CEL = defaultExport;
+
+// import with default with name
+import { default as celestra } from "./celestra.js";
+globalThis.celestra = celestra;
+globalThis.CEL = celestra;
+
+// import all into a new celestra object
+// includes the DOM API and Cookie API
+import * as celestra from "./celestra.js";
+globalThis.celestra = celestra;
+globalThis.CEL = celestra;
+
+// import some functions
+import { first, last } from "./celestra.js";
+globalThis.first = first;
+globalThis.last = last;
+</pre>
+
+
+<h3>Removed functions in the defaultExport</h3>
+
+<div>
+  <table class="table-responsive table-striped">
+    <tr>
+      <td style="width: auto;"><strong>API</strong></td>
+      <td><strong>Function</strong></td>
+    </tr>
+    <tr>
+      <td style="width: auto;"><strong>DOM API</strong></td>
+      <td><code>qsa();</code><br/><code>qs();</code><br/><code>domReady();</code><br/><code>domClear();</code><br/><code>domCreate();</code><br/><code>domToElement();</code><br/><code>domGetCSS();</code><br/><code>domSetCSS();</code><br/><code>domFadeIn();</code><br/><code>domFadeOut();</code><br/><code>domFadeToggle();</code><br/><code>domShow();</code><br/><code>domHide();</code><br/><code>domToggle();</code><br/><code>domIsHidden();</code><br/><code>domScrollToTop();</code><br/><code>domScrollToBottom();</code><br/><code>domScrollToElement();</code><br/><code>domSiblings();</code><br/><code>domSiblingsPrev();</code><br/><code>domSiblingsLeft();</code><br/><code>domSiblingsNext();</code><br/><code>domSiblingsRight();</code><br/><code>domGetCSSVar();</code><br/><code>domSetCSSVar();</code><br/><code>importScript();</code><br/><code>importStyle();</code><br/><code>setFullscreenOn();</code><br/><code>setFullscreenOn();</code><br/><code>setFullscreenOff();</code><br/><code>getFullscreen();</code><br/><code>form2array(form);</code><br/><code>form2string(form);</code><br/><code>getDoNotTrack();</code><br/><code>getLocation();</code><br/><code>createFile();</code></td>
+    </tr>
+    <tr>
+      <td style="width: auto;"><strong>Cookie API</strong></td>
+      <td><code>getCookie();</code><br/><code>hasCookie();</code><br/><code>setCookie();</code><br/><code>removeCookie();</code><br/><code>clearCookies();</code></td>
+    </tr>
+  </table>
+</div>
+
+
+<h3>Celestra v3.0.0 (Hera) changes</h3>
+
+<ul>
+  <li>Only modern browsers (ES6+) are supported. The Internet Explorer 11 and W10M Edge have been removed from the supported browsers. If you would like to use Celestra with older browsers, then you can download the last v2.x version here: <a href="https://github.com/Serrin/Celestra/releases" target="_blank">https://github.com/Serrin/Celestra/releases</a></li>
+</ul>
+
+<h3>Celestra v5.0.0 (Defiant) changes</h3>
+
+<ul>
+  <li>The underscore <code>_</code> short object name has been changed to <code>CEL</code> to avoid the compatibility issues.</li>
+</ul>
+
+<h3>Celestra v6.0.0 (David) changes</h3>
+
+<ul>
+  <li>Node.js and Deno support has been added.</li>
+</ul>
+
+<h3>Celestra v6.1.0 (Sulaco) changes</h3>
+
+<ul>
+  <li>TypeScript source files have been added.</li>
+</ul>
+
+<h3>Celestra v6.3.0 (Bishop) changes</h3>
+
+<ul>
+  <li>The <strong>Legacy AJAX API</strong> has been removed.</li>
+  <li>The <strong>Legacy Assertion API (Assert API v3)</strong> has been removed.</li>
+</ul>
+
+<h3>Celestra v6.5.0 (Andromeda) changes</h3>
+
+<ul>
+  <li>Firefox 115 (Windows 7 and 8.1) and iOS 16 support has been removed.</li>
+</ul>
+
+<h3>Celestra v6.8.0 changes</h3>
+
+<ul>
+  <li>These files have been renamed: <strong>celestra.node.mts</strong> to <strong>celestra.node.ts</strong> and <strong>celestra.node.mjs</strong> to <strong>celestra.node.js</strong>.</li>
+</ul>
+
+<h3>Celestra v6.9.0 (McCoy) changes</h3>
+
+<ul>
+  <li>Many functions from the <strong>Collections API</strong> have been removed.</li>
+</ul>
+
+<h3>Celestra v7.0.0 (Spock) changes</h3>
+
+<ul>
+  <li>No API changes.</li>
+  <li>The 2 editions (Browser and Node.js) have been merged into new files: <strong>celestra.ts</strong> and <strong>celestra.js</strong>.</li>
+  <li>The import methods of the library have been changed.</li>
+</ul>
+
+<h3>Migrating from v6 to v7</h3>
+
+<p>The v7.0.0 has the same API as v6.9.0, but the imports have been changed.</p>
+
+<table>
+  <tr>
+    <td class="center"><strong>v6.9.0</strong></td>
+    <td class="center"><strong>v7.0.0</strong></td>
+  </tr>
+  <tr>
+    <td><pre>// import the defaultExport object
+import defaultExport from "./celestra.browser.js";</pre></td>
+    <td><pre>// import all into a new celestra object
+import * as celestra from "./celestra.js";
+</pre></td>
+  </tr>
+  <tr>
+    <td><pre>// import with default with name
+import { default as celestra } from "./celestra.browser.js";</pre></td>
+    <td><pre>// import all into a new celestra object
+import * as celestra from "./celestra.js";;</pre></td>
+  </tr>
+  <tr>
+    <td><pre>// import all into a new celestra object
+import * as celestra from "./celestra.browser.js";</pre></td>
+    <td><pre>// import all into a new celestra object
+import * as celestra from "./celestra.js";</pre></td>
+  </tr>
+  <tr>
+    <td><pre>// import some functions
+import { first, last } from "./celestra.browser.js";</pre></td>
+    <td><pre>// import some functions
+import { first, last } from "./celestra.js";</pre></td>
+  </tr>
+  <tr>
+    <td><pre>// import the defaultExport object
+import defaultExport from "./celestra.node.js";</pre></td>
+    <td><pre>// import the defaultExport object
+import defaultExport from "./celestra.js";</pre></td>
+  </tr>
+  <tr>
+    <td><pre>// import with default with name
+import { default as celestra } from "./celestra.node.js";</pre></td>
+    <td><pre>// import with default with name
+import { default as celestra } from "./celestra.js";</pre></td>
+  </tr>
+  <tr>
+    <td><pre>// import all into a new celestra object
+import * as celestra from "./celestra.node.js";</pre></td>
+    <td><pre>// import with default with name
+import { default as celestra } from "./celestra.js";</pre></td>
+  </tr>
+  <tr>
+    <td><pre>// import some functions
+import { first, last } from "./celestra.node.js";</pre></td>
+    <td><pre>// import some functions
+import { first, last } from "./celestra.js";</pre></td>
+  </tr>
+</table>
+
+<hr/>
+<h2 id="functions">Functions</h2>
+
+<h3>Stabilities</h3>
+
+<ul>
+  <li><span class="removed">Stability: 0 - Removed.</span></li>
+  <li><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span></li>
+  <li><span class="deprecated">Stability: 2 - Deprecated.</span></li>
+  <li><span class="info">Stability: 3 - Legacy and can get only fixes.</span></li>
+  <li><span class="info">Stability: 4 - Stable.</span></li>
+</ul>
+
+<p><span class="removed">Removed</span> and <span class="deprecated">Deprecated</span>: Don't use these in production.</p>
+
+
+<h3 id="FNcoreAPI">Core API</h3>
+
+<div>
+  <table class="table-responsive table-striped">
+    <tr>
+      <td style="width: auto; min-width: 30%;"><strong>Name</strong></td>
+      <td><strong>Description</strong></td>
+    </tr>
+    <tr id="FN-VERSION">
+      <td><code>VERSION;</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>The library version.</td>
+    </tr>
+    <tr id="FN-BASE16;">
+      <td><code>BASE16;</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><code>"0123456789ABCDEF"</code><br/>Can be used with the ID generator functions.</td>
+    </tr>
+    <tr id="FN-BASE32;">
+      <td><code>BASE32;</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><code>"234567ABCDEFGHIJKLMNOPQRSTUVWXYZ"</code><br/>Can be used with the ID generator functions.</td>
+    </tr>
+    <tr id="FN-BASE36;">
+      <td><code>BASE36;</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><code>"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"</code><br/>Can be used with the ID generator functions.</td>
+    </tr>
+    <tr id="FN-BASE58;">
+      <td><code>BASE58;</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><code>"123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"</code><br/>Can be used with the ID generator functions.</td>
+    </tr>
+    <tr id="FN-BASE62;">
+      <td><code>BASE62;</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><code>"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"</code><br/>Can be used with the ID generator functions.</td>
+    </tr>
+    <tr id="FN-WORDSAFEALPHABET;">
+      <td><code>WORDSAFEALPHABET;</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><code>"23456789CFGHJMPQRVWXcfghjmpqvwx"</code><br/>Can be used with the ID generator functions.</td>
+    </tr>
+    <tr id="FN-assert();">
+      <td><code>assert(condition [, message | error]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function throws an error with the message if the condition is falsy. The message parameter is optional.
+    </tr>
+    <tr id="FN-assoc();">
+      <td><code>assoc(object, key, value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Clone the original object (immutably) and return this new object with original keys and values and the given key and value.</td>
+    </tr>
+    <tr id="FN-asyncConstant();">
+      <td><code>asyncConstant(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns an async function, which returns a promise with the given value.</td>
+    </tr>
+    <tr id="FN-asyncIdentity();">
+      <td><code>asyncIdentity(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This async function returns a promise with the given value.</td>
+    </tr>
+    <tr id="FN-asyncF();">
+      <td><code>asyncF();</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This async function returns a promise with false value.</td>
+    </tr>
+    <tr id="FN-asyncNoop();">
+      <td><code>asyncNoop();</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function does nothing and returns a resolved promise.</td>
+    </tr>
+    <tr id="FN-asyncT();">
+      <td><code>asyncT();</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This async function returns a promise with true value.</td>
+    </tr>
+    <tr id="FN-bind();">
+      <td><code>bind(function,context);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Returns a <code>function</code> that is bound to a context. Both of the parameters are mandatory.</td>
+    </tr>
+    <tr id="FN-compose();">
+      <td><code>compose(function1 [, functionN]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Compose functions right to left. At least one function parameter is mandatory.</td>
+    </tr>
+    <tr id="FN-constant();">
+      <td><code>constant(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>A one time assignment function to create a constant value in ES5. This returns a <code>function</code>, which returns the given value. (In math: <code>f(x)=x</code>)</td>
+    </tr>
+    <tr id="FN-curry();">
+      <td><code>curry(function);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Curries a <code>function</code>, allowing it to be called with a single argument at a time and returning a new function that takes the next argument. The function parameter is mandatory.</td>
+    </tr>
+    <tr id="FN-deepAssign();">
+      <td><code>deepAssign(target,source1[,sourceN]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v6.7.0: <code>extend();</code></span><br/>This is an enhanced version of the <code>Object.assign</code> method and uses the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/structuredClone" target="_blank">structuredClone();</a> global function to deep clone the objects. If there is only one argument, then this argument will be deep cloned with the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/structuredClone" target="_blank">structuredClone();</a>.<BR><strong>Examples:</strong><BR><pre>let result = CEL.deepAssign([], [1, 2, 3,{"a": 4, "b": new Set([5, 6])}]);</pre>-> deep clone of the <code>[1, 2, 3,{"a": 4, "b": new Set([5, 6])}]);</code><pre>let o1 = {"a": 1, "b": 2};
+CEL.deepAssign(o1, [3, 4, 6, {"a": 7, "b": 8}], {"c": 9});
+console.log(JSON.stringify(o1));</pre>-> <code>{"0":3,"1":4,"2":6,"3":{"a":7,"b":8},"a":1,"b":2,"c":9}</code></td>
+    </tr>
+    <tr id="FN-delay();">
+      <td><code>delay(ms).then(callback);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>
+        <p>A promise based delay function. The ms parameter is mandatory and have to be an integer (milliseconds).</p>
+        <p><strong>Sample:</strong></p>
+        <p><button onclick="CEL.delay(5000).then(() => alert('5 seconds')).catch(console.log.bind(console))	.finally(() => alert('done'));">try</button></p>
+        <pre>
+CEL.delay(5000)
+  .then(() => alert("5 seconds"))
+  .catch(console.log.bind(console))
+  .finally(() => alert("done"));</pre>
+      </td>
+    </tr>
+    <tr id="FN-eq();">
+      <td><code>eq(value1, value2);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>SameValueZero equality (like <code>Object.is();</code>, but <code>+0 === -0</code>). All of the parameters are mandatory and can be any type. The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-F();">
+      <td><code>F();</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns false.</td>
+    </tr>
+    <tr id="FN-gt();">
+      <td><code>gt(value1, value2);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Strict type greater than. All of the parameters are mandatory and can be <code>number</code>, <code>bigint</code>, <code>string</code> or <code>boolean</code>, but the values have to be same type. If the type of the values are not the same, then return value is false. The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-gte();">
+      <td><code>gte(value1, value2);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Strict type greater than or equal (SameValueZero). All of the parameters are mandatory and can be <code>number</code>, <code>bigint</code>, <code>string</code> or <code>boolean</code>, but the values have to be same type. If the type of the values are not the same, then return value is false. The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-identity();">
+      <td><code>identity(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Return the given value. (In math: <code>f(x)=x</code>)</td>
+    </tr>
+    <tr id="FN-lt();">
+      <td><code>lt(value1, value2);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Strict type less than. All of the parameters are mandatory and can be <code>number</code>, <code>bigint</code>, <code>string</code> or <code>boolean</code>, but the values have to be same type. If the type of the values are not the same, then return value is false. The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-lte();">
+      <td><code>lte(value1, value2);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Strict type less than or equal (SameValueZero). All of the parameters are mandatory and can be <code>number</code>, <code>bigint</code>, <code>string</code> or <code>boolean</code>, but the values have to be same type. If the type of the values are not the same, then return value is false. The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-noop();">
+      <td><code>noop();</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>It's an empty function (no operation) that returns <code>undefined</code> and usable for optional callback arguments.</td>
+    </tr>
+    <tr id="FN-omit();">
+      <td><code>omit(object, keys);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Exclude (filter) keys from an <code>object</code> and return these keys and values in a new object (immutably). All of the parameters are mandatory and the keys has to be an array.</td>
+    </tr>
+    <tr id="FN-once();">
+      <td><code>once(function);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Ensures a <code>function</code> is only called once. The return value is a new function. The function parameter is mandatory.</td>
+    </tr>
+    <tr id="FN-pick();">
+      <td><code>pick(object, keys);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Select (filter) keys from an <code>object</code> and return these keys and values in a new object (immutably). All of the parameters are mandatory and the keys has to be an array.</td>
+    </tr>
+    <tr id="FN-pipe();">
+      <td><code>pipe(function1 [, functionN]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Compose functions left to right. At least one function parameter is mandatory.</td>
+    </tr>
+    <tr id="FN-randomBoolean();">
+      <td><code>randomBoolean();</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Get a random <code>boolean</code> value. The return value is <code>true</code> or <code>false</code>.</td>
+    </tr>
+    <tr id="FN-randomUUIDv7();">
+      <td><code>randomUUIDv7(v4 = false);</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns a UUID v7, which cointains a timestamp too. For more information please read the <a href="https://www.rfc-editor.org/rfc/rfc9562.html#name-uuid-version-7" target="_blank">this page</a>!<br/>Example result: <code>"0195d74b-b8c8-7302-a7d3-919df45087f3"</code><br/>If the v4 parameter (optional) is <code>true</code>, then the version in the <code>string</code> will be 4.<br/>Example result: <code>"0195d74b-b8c8-4302-a7d3-919df45087f3"</code>.</td>
+    </tr>
+    <tr id="FN-sizeIn();">
+      <td><code>sizeIn(object);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Returns the count of the owned properties and symbols of the given object. The object parameter is mandatory. The return value is an integer.</td>
+    </tr>
+    <tr id="FN-T();">
+      <td><code>T();</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns true.</td>
+    </tr>
+    <tr id="FN-tap();">
+      <td><code>tap(function): function(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This functions returns a new function, which runs the given function with the value parameter, then returns the value. Usable for testing and logging. All of the parameters are mandatory.</td>
+    </tr>
+    <tr id="FN-timestampID();">
+      <td><code>timestampID([size=21[,alphabet="23456789CFGHJMPQRVWXcfghjmpqvwx"]]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Generate a timestamp based sortable ID. The size parameter is optional and the default value is 21, but if the given value smaller than 12, then the value will be 12. The alphabet parameter is optional and the default value is <code>"23456789CFGHJMPQRVWXcfghjmpqvwx"</code>, same as WORDSAFEALPHABET. The return value is the generated id (<code>string</code>).<br/>Example ID: <code>"00lirtqi4e-wgGn8vGPyY"</code></td>
+    </tr>
+    <tr id="FN-unBind();">
+      <td><code>unBind(function);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v5.4.1: <code>toFunction</code>.</span><br/>Returns an unbinded function from an <code>object</code> method. The function parameter is mandatory.</td>
+    </tr>
+  </table>
+</div>
+
+
+<h3 id="FNstringAPI">String API</h3>
+
+<div>
+  <table class="table-responsive table-striped">
+    <tr>
+      <td style="width: auto; min-width: 30%;"><strong>Name</strong></td>
+      <td><strong>Description</strong></td>
+    </tr>
+    <tr id="FN-b64Decode();">
+      <td><code>b64Decode(string);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Unicode compatible base64 to <code>string</code> converter. Return the original <code>string</code>.</td>
+    </tr>
+    <tr id="FN-b64Encode();">
+      <td><code>b64Encode(string);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Unicode compatible <code>string</code> to base64 converter. Return the encoded <code>string</code>.</td>
+    </tr>
+    <tr id="FN-strAt();">
+      <td><code>strAt(string,index[,newChar]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>
+        <p>If the newchar is <code>undefined</code>, then returns the unicode character, which has to be on the given index in the <code>string</code>. The index can be negative value (<code>-1 -> last</code>). If the index is out of the <code>string</code> length, then the return value is an empty <code>string</code>. All of the parameters are mandatory and index has to be an integer.</p>
+        <p>If the newChar is not <code>undefined</code>, then the indexed character will be replaced with the newChar and returns the modified <code>string</code>.</p>
+      </td>
+    </tr>
+    <tr id="FN-strCapitalize();">
+      <td><code>strCapitalize(string);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function is unicode compatible and converts the first character to uppercase and the other characters to lowercase. The <code>string</code> parameter is mandatory. The return value is a <code>string</code>.</td>
+    </tr>
+    <tr id="FN-strCodePoints();">
+      <td><code>strCodePoints(string);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Returns the array of the unicode codepoints of characters of the given <code>string</code>. The <code>string</code> parameter is mandatory.</td>
+    </tr>
+    <tr id="FN-strCount();">
+      <td><code>strCount(string, substring);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Counts the occurrences of a substring in a <code>string</code>. All of the parameters are mandatory and have to be <code>string</code>.</td>
+    </tr>
+    <tr id="FN-strDownFirst();">
+      <td><code>strDownFirst(string);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function is unicode compatible and converts the first character to lowercase. The <code>string</code> parameter is mandatory. The return value is a <code>string</code>.</td>
+    </tr>
+    <tr id="FN-strFromCodePoints();">
+      <td><code>strFromCodePoints(iterator);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Returns the joined <code>string</code> of the given unicode codepoints. The iterator parameter is mandatory.</td>
+    </tr>
+    <tr id="FN-strHTMLEscape();">
+      <td><code>strHTMLEscape(string);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function escapes these characters: <code>&#60;</code>, <code>&#62;</code>, <code>&amp;</code>, <code>"</code>, <code>'</code>. The <code>string</code> parameter is mandatory. The return value is the escaped <code>string</code>.</td>
+    </tr>
+    <tr id="FN-strHTMLRemoveTags();">
+      <td><code>strHTMLRemoveTags(string);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Remove HTML tags from the given <code>string</code>. The <code>string</code> parameter is mandatory. The return value is the new <code>string</code>.</td>
+    </tr>
+    <tr id="FN-strUnHTMLEscape();">
+      <td><code>strUnHTMLEscape(string);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function unescapes these characters: <code>&#60;</code>, <code>&#62;</code>, <code>&amp;</code>, <code>"</code>, <code>'</code>. The <code>string</code> parameter is mandatory. The return value is the unescaped <code>string</code>.</td>
+    </tr>
+    <tr id="FN-strReverse();">
+      <td><code>strReverse(string);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Returns the reversed variant of the given <code>string</code>. In the ES6 compatible browsers the result will be unicode compatible. The <code>string</code> parameter is mandatory.</td>
+    </tr>
+    <tr id="FN-strPropercase();">
+      <td><code>strPropercase(string);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function is unicode compatible and capitalizes every word of the given <code>string</code>. The <code>string</code> parameter is mandatory. The return value is a <code>string</code>.<br/><strong>Example:</strong><br/><code>CEL.strPropercase("arthur conan doyle");</code><br/>-><br/><code>"Arthur Conan Doyle"</code></td>
+    </tr>
+    <tr id="FN-strSplice();">
+      <td><code>strSplice(strin,index,count[,add]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function works like the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice" target="_blank">Array.prototype.splice();</a> and can remove characters on the index or replace with other <code>string</code>. The return value is the modified <code>string</code>.</td>
+    </tr>
+    <tr id="FN-strTitlecase();">
+      <td><code>strTitlecase(string);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Alias of the <code>strPropercase(string);</code>.</td>
+    </tr>
+    <tr id="FN-strTruncate();">
+      <td><code>strTruncate(string, newLength[,omission = ""]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span>
+        <br/>This function truncats the given <code>string</code> to the new length. If the new length is bigger than the original length, then the return value is the original <code>string</code>. The omission parameter is optional.
+        <BR><strong>Samples:</strong>
+        <br/><code>CEL.strTruncate("Arthur Dent", 6);</code> -> <code>"Arthur"</code>
+        <br/><code>CEL.strTruncate("Arthur Dent", 6, "...");</code> -> <code>"Art..."</code>
+        <br/><code>CEL.strTruncate("Arthur Dent", 20, "...");</code> -> <code>"Arthur Dent"</code>
+      </td>
+    </tr>
+    <tr id="FN-strUpFirst();">
+      <td><code>strUpFirst(string);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function is unicode compatible and converts the first character to uppercase. The <code>string</code> parameter is mandatory. The return value is a <code>string</code>.</td>
+    </tr>
+  </table>
+</div>
+
+<h3 id="FNassertionAPI">Legacy Assertion API</h3>
+
+<p><span class="info">These functions have been removed in v6.3.0, because the first stable version of the <a href="https://github.com/Serrin/assert.js" target="_blank">assert.js</a> library has been published.</span></p>
+
+<h3 id="FNdomAPI">DOM API</h3>
+
+<div>
+  <table class="table-responsive table-striped">
+    <tr>
+      <td style="width: auto; min-width: 30%;"><strong>Name</strong></td>
+      <td><strong>Description</strong></td>
+    </tr>
+    <tr id="FN-createFile();">
+      <td><code>createFile(filename,content[,dataType]);</code></td>
+      <td>
+        <p><span class="info">Stability: 4 - Stable.</span><br/>Create and save file without a server. The filename and content parameters are mandatory and have to be a <code>string</code>. The dataType parameter is optional and can be a <code>string</code>.  The default value of the dataType parameter is <code>text/plain</code>.</p>
+        <p><span class="info">Doesn't work in iOS browsers (Safari, Firefox and Chrome) and W10M Edge 14.</span></p>
+      </td>
+    </tr>
+    <tr id="FN-domClear();">
+      <td><code>domClear(element);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>Remove all child element of the given element. The parameter is mandatory.
+      </td>
+    </tr>
+    <tr id="FN-domCreate();">
+      <td><code>domCreate(type[,properties[,innerHTML]]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Create a new HTML element. The type is mandatory and has to be a <code>string</code>. The properties object is optional and sets the element properties. (class, style object/string, data-*, etc.) The innerHTML is optional and can be a <code>string</code>.</td>
+    </tr>
+    <tr id="FN-domCreate();">
+      <td><code>domCreate(element descriptive object);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>
+        <p>Since v2.0.5, a new element can be created with an <code>object</code>. In this case the element descriptive object is mandatory. The <code>style</code> can be a subobject or a <code>string</code>.</p>
+        <p><strong>Sample code:</strong></p>
+        <pre>CEL.domCreate({
+  elementType: "a",
+  href: "https://developer.mozilla.org/en-US/",
+  target: "_blank",
+  style: {
+    "background-color": "red",
+    "color": "white"
+  },
+  innerHTML: "MDN Sample url"
+});</pre>
+      </td>
+    </tr>
+    <tr id="FN-domFadeIn();">
+      <td><code>domFadeIn(element [,duration [,display]]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Fade in and show animation for an element. The element is mandatory and has to be a HTML element. The duration parameter is optional and sets the animation time in milisec (the default is 500ms). The display is optional and can be a <code>string</code> (CSS display property values).</td>
+    </tr>
+    <tr id="FN-domFadeOut();">
+      <td><code>domFadeOut(element [,duration]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Fade out and hide animation for an element. The element is mandatory and has to be a HTML element. The duration parameter is optional and sets the animation time in milisec (the default is 500ms).</td>
+    </tr>
+    <tr id="FN-domFadeToggle();">
+      <td><code>domFadeToggle(element [,duration [,display]]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Fade in or fade out animation which depends on the state of the element. The element is mandatory and has to be a HTML element. The duration parameter is optional and sets the animation time in millisecond (the default is 500ms). The display is optional and can be a <code>string</code> (CSS display property values).</td>
+    </tr>
+    <tr id="FN-domGetCSS();">
+      <td><code>domGetCSS(element [,property]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Get a CSS property value of an element or all of the css properties in an <code>object</code>. The element is mandatory and has to be a HTML element. The property is optional and can be a <code>string</code>.</td>
+    </tr>
+    <tr id="FN-domGetCSSVar();">
+      <td><code>domGetCSSVar(name);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns a value of a CSS variable or an empty <code>string</code>, if the variable is unset. The name parameter is mandatory and has to be a <code>string</code>. If the "--" characters are missing at the begin of the variable name, then the function will add these.</td>
+    </tr>
+    <tr id="FN-domHide();">
+      <td><code>domHide(element);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Hide an element. The element is mandatory and has to be a HTML element.</td>
+    </tr>
+    <tr id="FN-domIsHidden();">
+      <td><code>domIsHidden(element);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the element is hidden. The element is mandatory and has to be a HTML element. The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-domReady();">
+      <td><code>domReady(callback);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Set the document ready (content fully loaded) event.</td>
+    </tr>
+    <tr id="FN-domSetCSS();">
+      <td><code>domSetCSS(element, property,value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Set a CSS property value of an element. The element is mandatory and has to be a HTML element. The property is mandatory and has to be a <code>string</code>. The value is mandatory and has to be a <code>string</code>.</td>
+    </tr>
+    <tr>
+      <td><code>domSetCSS(element, properties);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Set CSS property values of an element. The element is mandatory and has to be a HTML element. The properties object is mandatory. The object properties can be the CSS properties and the property values will be applied to the element.</td>
+    </tr>
+    <tr id="FN-domSetCSSVar();">
+      <td><code>domSetCSSVar(name,value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function set a value of a CSS variable. Both of the parameters are mandatory and have to be a <code>string</code>. If the "--" characters are missing at the begin of the variable name, then the function will add these.</td>
+    </tr>
+    <tr id="FN-domShow();">
+      <td><code>domShow(element [,display]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Show an element. The element is mandatory and has to be a HTML element. The display is optional and can be a <code>string</code> (CSS display values).</td>
+    </tr>
+    <tr id="FN-domScrollToBottom();">
+      <td><code>domScrollToBottom();</code></td>
+      <td><span class="info">Old name before v5.5.4: <code>domToBottom</code>.</span><br/>This function is scrolling to the bottom of the page.</td>
+    </tr>
+    <tr id="FN-domScrollToElement();">
+      <td><code>domScrollToElement(element [,top=true]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function is scrolling to top or the bottom of element. The element parameter is mandatory and the top parameter is optional and can be <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-domScrollToTop();">
+      <td><code>domScrollToTop();</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v5.5.4: <code>domToTop</code>.</span><br/>This function is scrolling to the top of the page.</td>
+    </tr>
+    <tr id="FN-domSiblings();">
+      <td><code>domSiblings(element);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Get the siblings of an element. The element parameter is mandatory and the return value is the array.</td>
+    </tr>
+    <tr id="FN-domSiblingsLeft();">
+      <td><code>domSiblingsLeft(element);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Alias of the <code>domSiblingsPrev(element);</code>.</td>
+    </tr>
+    <tr id="FN-domSiblingsNext();">
+      <td><code>domSiblingsNext(element);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Get the next siblings of an element. The element parameter is mandatory and the return value is the array.</td>
+    </tr>
+    <tr id="FN-domSiblingsPrev();">
+      <td><code>domSiblingsPrev(element);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Get the previous siblings of an element. The element parameter is mandatory and the return value is the array.</td>
+    </tr>
+    <tr id="FN-domSiblingsRight();">
+      <td><code>domSiblingsRight(element);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Alias of the <code>domSiblingsNext(element);</code>.</td>
+    </tr>
+    <tr id="FN-domToElement();">
+      <td><code>domToElement(htmlString);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns a HTML element which is created from the htmlString parameter. The htmlString parameter is mandatory and has to be a <code>string</code>.</td>
+    </tr>
+    <tr id="FN-domToggle();">
+      <td><code>domToggle(element [,display]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Show or hide an element. The element is mandatory and has to be a HTML element. The display is optional and can be a <code>string</code> (CSS display values).</td>
+    </tr>
+    <tr id="FN-importScript();">
+      <td><code>importScript(script1[,scriptN]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>
+        <p>Load JavaScript files. The first parameter is mandatory and has to be a <code>string</code>. The other parameters are optional and can be a <code>string</code>.</p>
+        <p><strong>Tip:</strong><br/>To prevent the caching of a js/css file use versioning in the file url. Example: <code>mylib.js?version=1.10.0</code></p>
+      </td>
+    </tr>
+    <tr id="FN-importStyle();">
+      <td><code>importStyle(style1[,styleN]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Load CSS files. The first parameter is mandatory and has to be a <code>string</code>. The other parameters are optional and can be a <code>string</code>.</td>
+    </tr>
+    <tr id="FN-form2array();">
+      <td><code>form2array(form);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Convert (serialize) form input tag names and values to an array with object elements (name and value properties). The return value is the array. The form parameter is mandatory and has to be a html form element.</td>
+    </tr>
+    <tr id="FN-form2string();">
+      <td><code>form2string(form);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Convert (serialize) form input tag names and values to a query <code>string</code>. The return value is the <code>string</code>. The form parameter is mandatory and has to be a html form element.</td>
+    </tr>
+    <tr id="FN-getDoNotTrack();">
+      <td><code>getDoNotTrack();</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Return the DoNotTrack setting (boolean) of the browser.</td>
+    </tr>
+    <tr id="FN-getFullscreen();">
+      <td><code>getFullscreen();</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>
+        Get the fullscreen element. If this isn't set, then the return value is <code>undefined</code>.
+        <br/>Please check the incompatibility issues on the <a href="http://caniuse.com/#search=fullscreen" target="_blank">http://caniuse.com/#search=fullscreen</a> page.
+      </td>
+    </tr>
+    <tr id="FN-getLocation();">
+      <td><code>getLocation(success[,error]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Get the current location as an <code>object</code> with the coordinates. The success is mandatory and has to be a <code>function</code>. The error is optional and can be a <code>function</code>.</td>
+    </tr>
+    <tr id="FN-setFullscreenOff();">
+      <td><code>setFullscreenOff();</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Set off the fullscreen.</td>
+    </tr>
+    <tr id="FN-setFullscreenOn();">
+      <td><code>setFullscreenOn(selector);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Set the fullscreen element. The selector can be a css selector <code>string</code> or an element.</td>
+    </tr>
+    <tr id="FN-qs();">
+      <td><code>qs(selector[,context]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Get the first matched HTML element. The context is optional and can be an element.</td>
+    </tr>
+    <tr id="FN-qsa();">
+      <td><code>qsa(selector[,context]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Get matched HTML elements in an array. The context is optional and can be an element.</td>
+    </tr>
+  </table>
+</div>
+
+<h3 id="FNtypecheckingAPI">Type API</h3>
+
+<div>
+  <table class="table-responsive table-striped">
+    <tr>
+      <td style="width: auto; min-width: 30%;"><strong>Name</strong></td>
+      <td><strong>Description</strong></td>
+    </tr>
+    <tr id="FN-constructorOf();">
+      <td><code>constructorOf(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns the constructor property of value, using optional chaining to avoid throwing if value is <code>null</code> or <code>undefined</code>.</td>
+    </tr>
+    <tr id="FN-is();">
+      <td><code>is(value, expectedType);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function checks if the given value is the given type(s). The expectedType can be a type <code>string</code>, constructor function or an array of the type strings and constructors. The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-isTypedCollection();">
+      <td><code>isTypedCollection(iter, expectedType, Throw = false);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether values of the provided iterable or iterator are the given expectedType. The expectedType is mandatory and can be a type <code>string</code>, constructor function or an array of the type strings and constructors. If the Throw is true and the values are not matched with the expectedType, then a TypeError will be thrown with detailed error message. The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-isArraylike();">
+      <td><code>isArraylike(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an arraylike object. The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-isArrowFunction();">
+      <td><code>isArrowFunction(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v6.5.0: <code>isArrowFn();</code></span><br/>This function determines whether the provided value is an arrow function. The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-isAsyncIterable();">
+      <td><code>isAsyncIterable(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an async iterable object. The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-isAsyncIterator();">
+      <td><code>isAsyncIterator(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an async iterator object. The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-isAsyncFunction();">
+      <td><code>isAsyncFunction(value);</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v6.5.0: <code>isAsyncFn();</code></span><br/>This function determines whether the provided value is an async function. The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-isAsyncGeneratorFunction();">
+      <td><code>isAsyncGeneratorFunction(value);</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v6.5.0: <code>isAsyncGeneratorFn();</code></span><br/>This function determines whether the provided value is an async generator function. The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-isCoercedObject();">
+      <td><code>isCoercedObject(object);</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>If the given object is a coerced object (<code>Number</code>, <code>BigInt</code>, <code>String</code>, <code>Boolean</code>, <code>Symbol</code> objects), then the return value is the constructor function. In any other cases retuns false. The object parameter is mandatory.</td>
+    </tr>
+    <tr id="FN-isDeepStrictEqual();">
+      <td><code>isDeepStrictEqual(value1, value2);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided values are deep equals. (<em>Deep strict equality + NaN equality: primitives (SameValue - Object.is()), Array, TypedArray, Plain Object, Map, Set, WeakMap (only reference), WeakSet (only reference), Object wrappers (primitives), Function (only reference), RegExp, Error, Date, DataView, ArrayBuffer</em>) The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-isElement();">
+      <td><code>isElement(value);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>
+        This function determines whether the provided value is a HTML element. The return value is <code>boolean</code>.
+        <p>
+          For other node types (document, text, comment, etc.) checking please read this MDN page:
+          <br/><a href=" https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType" target="_blank"> https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType</a>
+        </p>
+      </td>
+    </tr>
+    <tr id="FN-isEmpty();">
+      <td><code>isEmpty(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v6.6.0: <code>isEmptyValue();</code></span><br/>This function determines whether the provided value is an empty value. Returns true in these cases: <code>null</code>, <code>undefined</code>, <code>NaN</code>, <code>array</code>, <code>typedarray</code>, <code>arraybuffer</code>, <code>dataview</code>, <code>object</code>, arraylike object, <code>map</code>, <code>set</code>, <code>iterator</code>, <code>iterable</code>. The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-isFunction();">
+      <td><code>isFunction(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a <code>function</code>. The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-isGeneratorFunction();">
+      <td><code>isGeneratorFunction(value);</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v6.5.0: <code>isGeneratorFn();</code></span><br/>This function determines whether the provided value is a generator function. The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-isIndex();">
+      <td><code>isIndex(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a valid arraylike index <code>number</code>. The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-isIterable();">
+      <td><code>isIterable(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an iterable object. The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-isIterator();">
+      <td><code>isIterator(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an iterator. The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-isLength();">
+      <td><code>isLength(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Alias of <code>isIndex(value);</code>.</td>
+    </tr>
+    <tr id="FN-isNonNullable();">
+      <td><code>isNonNullable(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Checks if the given value is NonNullable (not <code>null</code> or <code>undefined</code>). The value parameter is mandatory and can be any type. The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-isNonNullablePrimitive();">
+      <td><code>isNonNullablePrimitive(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Checks if the given value is NonNullable (not <code>null</code>, <code>undefined</code>, object or function). The value parameter is mandatory and can be any type. The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-isNull();">
+      <td><code>isNull(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is <code>null</code>. The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-isNullish();">
+      <td><code>isNullish(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v6.1.0: <code>isNil();</code>.</span><br/>This function determines whether the provided value is <code>null</code> or <code>undefined</code>. The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-isObject();">
+      <td><code>isObject(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an <code>object</code> and not <code>null</code>. The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-isPlainObject();">
+      <td><code>isPlainObject(value);</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an <code>object</code>, which own prototype is the Object.prototype or <code>null</code>. The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-isPrimitive();">
+      <td><code>isPrimitive(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is not <code>null</code>, not object and not function. The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-isPropertyKey();">
+      <td><code>isPropertyKey(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a valid propertx key (<code>string</code> or <code>symbol</code>). The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-isProxy();">
+      <td><code>isProxy(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a proxy. The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-isRegexp();">
+      <td><code>isRegexp(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a regexp. The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-isSameInstance();">
+      <td><code>isSameInstance(value1, value2,Contructor);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns true if the values are same class and uses the <code>instanceof</code> operator. The parameters are mandatory. The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-isSameType();">
+      <td><code>isSameType(value1, value2 [,type]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns true if the values are same type or both are <code>null</code> or both are <code>undefined</code>. The value1 and value2 parameters are mandatory. The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-isTypedArray();">
+      <td><code>isTypedArray(value);</td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a typedarray. The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-isUndefined();">
+      <td><code>isUndefined(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is <code>undefined</code>. The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-toIndex();">
+      <td><code>toIndex(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function converts the provided value to a valid arraylike index <code>number</code>. The return value is an unsigned integer (number). If the value is out of integer range, then a RangeError will be thrown.</td>
+    </tr>
+    <tr id="FN-toLength();">
+      <td><code>toLength(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function converts the provided value to a valid arraylike length <code>number</code>. The return value is an unsigned integer (number).</td>
+    </tr>
+    <tr id="FN-toObject();">
+      <td><code>toObject(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>If the given value is not <code>null</code> or <code>undefined</code>, then the return value is an <code>object</code>, which has been converted from the value, else a <code>TypeError()</code> will be throwned.<br/>If the given value is an <code>object</code>, <code>function</code> or <code>symbol</code>, then the original value will return.</td>
+    </tr>
+    <tr id="FN-toPrimitive();">
+      <td><code>toPrimitive(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v6.5.0: <code>toPrimitiveValue();</code></span><br/>
+        If the given value is a primitive value (null, <code>undefined</code>, <code>string</code>, <code>number</code>, <code>bigint</code>, <code>boolean</code>, <code>symbol</code>), then the original value will return.<br/>
+        If the given value is an <code>object</code>, which can be converted to a primitive variable, then the return value is a primitive variable.<br/>
+        If the given value is a not convertable <code>object</code> (<code>array</code>, <code>map</code>, <code>set</code>, etc.), <code>function</code> or <code>symbol</code>, then the original value will return.
+      </td>
+    </tr>
+    <tr id="FN-toPropertyKey();">
+      <td><code>toPropertyKey(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function convert the given value to a valid property key. If the value is not <code>symbol</code>, then will be converted to <code>string</code>, else the <code>symbol</code> will be returned.</td>
+    </tr>
+    <tr id="FN-toSafeString();">
+      <td><code>toSafeString(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function is a general purpose, type safe, predictable stringifier. The value parameter is mandatory and can be any type. The return value is a <code>string</code>.</td>
+    </tr>
+    <tr id="FN-typeOf();">
+      <td><code>typeOf(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/><span class="info">Old name before v6.1.0: <code>type();</code>.</span><br/>This function returns the typeof operator result of the given value, except the <code>null</code> object (<code>"null"</code> instead of <code>"object"</code>).</td>
+    </tr>
+  </table>
+</div>
+
+<h3 id="FNcookieAPI">Cookie API</h3>
+
+<p>
+  Cookie values help:
+  <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie" target="_blank">MDN</a>,
+  <a href="https://web.dev/samesite-cookies-explained" target="_blank">web.dev</a>
+</p>
+
+<div>
+  <table class="table-responsive table-striped">
+    <tr">
+      <td style="width: auto; min-width: 30%;"><strong>Name</strong></td>
+      <td><strong>Description</strong></td>
+    </tr>
+    <tr id="FN-clearCookies();">
+      <td><code>clearCookies([path="/"[, domain[, secure[, SameSite="Lax"[, HttpOnly]]]]]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>
+        <p>Clear all of the cookies. The return value (boolean) is determines whether the cookie was set with the name before the removing.</p>
+        <p><strong>Function parameters:</strong></p>
+        <ul>
+          <li>The path is optional and can be a <code>string</code>. <em>(Default value: "/")</em> To the local path set the <code>""</code> value!</li>
+          <li>The domain is optional and can be a <code>string</code>.</li>
+          <li>The secure is optional and can be a <code>boolean</code>.</li>
+          <li>The SameSite is optional and can be a <code>string</code>. <em>("Lax", "Strict", "None", default value: "Lax")</em></li>
+          <li>The HttpOnly is optional and can be a <code>boolean</code>.</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td><code>clearCookies(Options object);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>In this case the names of object properties are the same as the function arguments and the default values are the same too.</td>
+    </tr>
+    <tr id="FN-getCookie();">
+      <td><code>getCookie([name]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>
+        Get the value of a cookie or all cookies in an <code>object</code>.
+        <br/>With the name parameter (string) the return value is the current cookie value or <code>null</code>. <br/>Without the parameter the return value is an <code>object</code> with the values or an empty object.
+      </td>
+    </tr>
+    <tr id="FN-hasCookie();">
+      <td><code>hasCookie(name);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the cookie is set with the name parameter. The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-removeCookie();">
+      <td><code>removeCookie(name[, path="/"[, domain[, secure[, SameSite="Lax"[, HttpOnly]]]]]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>
+        <p>Remove a cookie. The return value (boolean) is determines whether the cookie was set with the name before the removing.</p>
+        <p><strong>Function parameters:</strong></p>
+        <ul>
+          <li>The name is mandatory and has to be a <code>string</code>.</li>
+          <li>The path is optional and can be a <code>string</code>. <em>(Default value: "/")</em> To the local path set the <code>""</code> value!</li>
+          <li>The domain is optional and can be a <code>string</code>.</li>
+          <li>The secure is optional and can be a <code>boolean</code>.</li>
+          <li>The SameSite is optional and can be a <code>string</code>. <em>("Lax", "Strict", "None", default value: "Lax")</em></li>
+          <li>The HttpOnly is optional and can be a <code>boolean</code>.</li>
+        </ul>
+        <p>The return value (boolean) is determines whether the cookie was set with the name before the removing.</p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>removeCookie(Options object);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>In this case the names of object properties are the same as the function arguments and the default values are the same too.</td>
+    </tr>
+    <tr id="FN-setCookie();">
+      <td><code>setCookie(name, value[, hours="8760"[, path="/"[, domain[, secure[, SameSite="Lax"[, HttpOnly]]]]]]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>
+        <p>Set a cookie.</p>
+        <p><strong>Function parameters:</strong></p>
+        <ul>
+          <li>The name is mandatory and has to be a <code>string</code>.</li>
+          <li>The value is mandatory and has to be a <code>string</code>.</li>
+          <li>The hours is the expire value and optional and can be a <code>number</code>. <em>(Default value: 8760 = 1 year)</em></li>
+          <li>The path is optional and can be a <code>string</code>. <em>(Default value: "/")</em> To the local path set the <code>""</code> value!</li>
+          <li>The domain is optional and can be a <code>string</code>.</li>
+          <li>The secure is optional and can be a <code>boolean</code>.</li>
+          <li>The SameSite is optional and can be a <code>string</code>. <em>("Lax", "Strict", "None", default value: "Lax")</em></li>
+          <li>The HttpOnly is optional and can be a <code>boolean</code>.</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td><code>setCookie(Options object);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>In this case the names of object properties are the same as the function arguments and the default values are the same too.</td>
+    </tr>
+  </table>
+</div>
+
+<h3 id="FNcollectionsAPI">Collections API</h3>
+
+<div>
+  <table class="table-responsive table-striped">
+    <tr">
+      <td style="width: auto; min-width: 30%;"><strong>Name</strong></td>
+      <td><strong>Description</strong></td>
+    </tr>
+    <tr id="FN-arrayAdd();">
+      <td><code>arrayAdd(array,value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Push the value to the array if the array doesn't contain the value. The return value is true, when the value is added and false, when not added.</td>
+    </tr>
+    <tr id="FN-arrayClear();">
+      <td><code>arrayClear(array);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Clear the array and returns the empty array. The array parameter is mandatory.</td>
+    </tr>
+    <tr id="FN-arrayCycle();">
+      <td><code>arrayCycle(iterator[,n=100]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Cycle the given iterator and returns an array with these elements. The iterator parameter is mandatory. The n parameter is optional and can be an integer. Default parameter value: n = 100.</td>
+    </tr>
+    <tr id="FN-arrayDeepClone();">
+      <td><code>arrayDeepClone(array);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function deeply (recursively) clones an array. The return value is the cloned array.</td>
+    </tr>
+    <tr id="FN-arrayMerge();">
+      <td><code>arrayMerge(target,source1[,sourceN]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Merge two or more arrays or push any values in the target array. The return value is the target array.</td>
+    </tr>
+    <tr id="FN-arrayRange();">
+      <td><code>arrayRange([start=0[,end=99[,step=1]]]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>Returns the array of values between the start and end parameters. All of the parameters are mandatory and have to be a <code>number</code>. Default parameter values: start = 0, end = 99, step = 1.
+        <br/><strong>Example:</strong><br/><code>CEL.arrayRange("A".codePointAt(0),"Z".codePointAt(0)).map((v)=>String.fromCodePoint(v));</code><br/>-><br/><code>code>Array(26) [ "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" ]</code>
+      </td>
+    </tr>
+    <tr id="FN-arrayRemove();">
+      <td><code>arrayRemove(array,value[,all=false]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Remove the first or all equivalent values from the array. Returns true, when the value was found and false when not found. The array and value parameters are mandatory. The all parameter is optional and has to be a <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-arrayRemoveBy();">
+      <td><code>arrayRemoveBy(array,callback[,all=false]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Remove the first or all values from the array with which the given function returns true. Returns true, when the value was found and false when not found. The array and callback parameters are mandatory. The all parameter is optional and has to be a <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-arrayRepeat();">
+      <td><code>arrayRepeat(value[,step=100]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Returns an array with same repeatedly elements. The value parameter is mandatory and the n parameter is optional and can be an integer. Default parameter value: n = 100.</td>
+    </tr>
+    <tr id="FN-castArray();">
+      <td><code>castArray([value]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns the original value if this is an array or value a new array. If there is no given value, then the return value is an empty array.</td>
+    </tr>
+    <tr id="FN-concat();">
+      <td><code>concat(iterator1[,iteratorN]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function merges the iterators and yields the elements of the merged iterator. The given iterators will be not changed. At least one iterator has to been given.</td>
+    </tr>
+    <tr id="FN-compact();">
+      <td><code>compact(iterator);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function filters out <code>null</code> and <code>undefined</code> values (but keeps other falsy values) from the given iterator and returns an iterator. The collection parameter is mandatory.</td>
+    </tr>
+    <tr id="FN-count();">
+      <td><code>count((iterator,callback););</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function executes a counter function (that you provide) on each element of the iterator, returning in a single output value. The iterator parameter is mandatory. The callback parameter is mandatory and has to be a <code>function</code>.</td>
+    </tr>
+    <tr id="FN-findLast();">
+      <td><code>findLast(iterator,callback);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns the value of the last element in the iterator that satisfies the provided testing function. Otherwise <code>undefined</code> is returned. All of the parameters are mandatory.</td>
+    </tr>
+    <tr id="FN-first();">
+      <td><code>first(iterator);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns the first element of the given iterator. The iterator parameter is mandatory.</td>
+    </tr>
+    <tr id="FN-head();">
+      <td><code>head(iterator);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This is an alias of the <code>first(iterator);</code>.</td>
+    </tr>
+    <tr id="FN-includes();">
+      <td><code>includes(iterator,value[,comparator]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether a collection includes a certain value among its entries, returning true or false as appropriate. The collection and the value of the parameters are mandatory and the comparator is optional.<BR>The default comparasion is SameValueZero algorithm, but with the comparator (function) can be other solution. (e.g.: Object.is, which uses the SameValue algorithm).<br/>The collection can be: <i>String</i> (uses the String#includes method), <i>String object</i> (uses the String#includes method), <i>Map</i>, <i>Iterables</i> (Array, Set, TypedArrays, other Iterables), <i>plain objects</i>, <i>functions</i> (as object).<br/>The own keys, values, symbols are compared, example: <code>CEL.includes({"lorem": "ipsum","1": 0}, -0);</code> returns true.</td>
+    </tr>
+    <tr id="FN-initial();">
+      <td><code>initial(iterator);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>
+        <p>Returns an iterator with the values of the given iterator, but without the last value.</p>
+        <p>
+          <strong>Example:</strong>
+          <br/><code>[...CEL.initial([-5, 2, -9, 7, 34])]</code>
+          <br/>->
+          <br/><code>[-5, 2, -9, 7]</code>
+        </p>
+      </td>
+    </tr>
+    <tr id="FN-item();">
+      <td><code>item(iterator,index);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns the item from the given iterator on the given index. The iterator parameter is mandatory and has to be an iterator/iterable. The index is mandatory and can be a positive integer (examples: 0 = the first item, 1 = the second item, 2 = the third item, etc.) Compatible with the Unicode strings.</td>
+    </tr>
+    <tr id="FN-iterCycle();">
+      <td><code>iterCycle(iter[,n=Infinity]);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>
+        <p>Yield the items of an iterator over and over. The iter parameter is mandatory and the n parameter is optional and can be an integer. Default parameter value: n = Infinity</p>
+        <p><code>Note: PLease don't use with infinite iterators!</code></p>
+      </td>
+    </tr>
+    <tr id="FN-iterRange();">
+      <td><code>iterRange([start=0[,step=1[,end=Infinity]]]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Yield a range (counter) iterator. All of the parameters are optional. Default parameter values: start = 0, step = 1, end = Infinity.</td>
+    </tr>
+    <tr id="FN-iterRepeat();">
+      <td><code>iterRepeat(value[,n=Infinity]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Yield a value over and over. The value parameter is mandatory and the n parameter is optional and can be an integer. Default parameter value: n = Infinity</td>
+    </tr>
+    <tr id="FN-join();">
+      <td><code>join(iterator[,separator=","]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function creates and returns a new <code>string</code> by concatenating all of the elements in an iterator, separated by commas or a specified separator <code>string</code>. The separator is converted to a <code>string</code> if necessary. If the iterator has only one item, then that item will be returned without using the separator. The iterator parameter is mandatory.</td>
+    </tr>
+    <tr id="FN-last();">
+      <td><code>last(iterator);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns the last element of the given iterator. The iterator parameter is mandatory.</td>
+    </tr>
+    <tr id="FN-max();">
+      <td><code>max(value1[,valueN]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Returns the maximum value of the given values. The first value parameter is mandatory and can be any type. Works with any type of values, not only with numbers.</td>
+    </tr>
+    <tr id="FN-min();">
+      <td><code>min(value1[,valueN]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Returns the minimum value of the given values. The first value parameter is mandatory and can be any type. Works with any type of values, not only with numbers.</td>
+    </tr>
+    <tr id="FN-nth();">
+      <td><code>nth(iterator,index);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This is an alias of the <code>item(iterator,index);</code>.<td>
+    </tr>
+    <tr id="FN-reverse();">
+      <td><code>reverse(iterator);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns an iterator with values of the given iterator in reverse order. The iterator parameter is mandatory.</td>
+    </tr>
+    <tr id="FN-size();">
+      <td><code>size(iterator);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns the count of the elements in the given iterator. The iterator parameter is mandatory. The return value is an integer.</td>
+    </tr>
+    <tr id="FN-shuffle();">
+      <td><code>shuffle(iterator);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>
+        <p>Returns an array with the values of the given iterator, but in shuffled order.</p>
+        <p>
+          <strong>Example:</strong>
+          <br/><code>CEL.shuffle(["first",4,5,6,7,8,9,"last"]);</code>
+          <br/>->
+          <br/><code>[4,8,5,6,"last",9,7,"first"]</code>
+        </p>
+      </td>
+    </tr>
+    <tr id="FN-slice();">
+      <td><code>slice(iterator[,begin=0[,end=Infinity]]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Take a slice of an iterator and yield the elements. The iterator parameter is mandatory. The begin parameter is optional and can be a <code>number</code> and the default value is 0. The end parameter is optional and can be a <code>number</code> and the default value is Infinity.</td>
+    </tr>
+    <tr id="FN-sort();">
+      <td><code>sort(iterator[,numbers=false]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function sorts the values of the given iterator. The iterator parameter is mandatory. The numbers paramater is optional (boolean) and set true, if the iterator contains only numbers. The return value is an array.</td>
+    </tr>
+    <tr id="FN-tail();">
+      <td><code>tail(iterator);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Yield the values of an iterator but without the first value. The iterator parameter is mandatory.</td>
+    </tr>
+    <tr id="FN-unique();">
+      <td><code>unique(iterator[, resolver]);</code></td>
+      <td>
+        <p><span class="info">Stability: 4 - Stable.</span></p>
+        <p>This function returns a new iterator with unique values. The iterator parameter is mandatory.</p>
+        <p>The resolver parameter can be an <code>object</code> field name or function.</p>
+        <p><strong>Examples</strong></p>
+        <p>Without resolver:</p>
+        <pre>
+JSON.stringify( CEL.unique( [1, 2, 2, 3] ) );
+// '[1,2,3]'
+        </pre>
+        <p>With resolver:</p>
+        <pre>
+let array = [
+  { "name": "Picard", "rank": "captain" },
+  { "name": "Riker", "rank": "captain" },
+  { "name": "Data", "rank": "commander" },
+  { "name": "Troi", "rank": "commander" }
+];
+
+// key resolver
+JSON.stringify( CEL.unique(array, "rank") );
+// '[{"name":"Picard","rank":"captain"},{"name":"Data","rank":"commander"}]'
+
+// function resolver
+JSON.stringify( CEL.unique(array, (v) => v.rank) );
+// '[{"name":"Picard","rank":"captain"},{"name":"Data","rank":"commander"}]'
+        </pre>
+      </td>
+    </tr>
+    <tr id="FN-unzip();">
+      <td><code>unzip(iterator);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Returns the array of arrays of unpaired values. In the modern browsers compatible with finite iterators. <br/><strong>Example:</strong><br/><code>CEL.unzip([ [ "a", 3 ], [ "b", 4 ], [ "c", 5 ], [ "d", 6 ] ]);</code><br/>-><br/><code>Array (2) [ ["a","b","c","d"], [3,4,5,6] ]</code></td>
+    </tr>
+    <tr id="FN-zip();">
+      <td><code>zip(iterator1[,iteratorN]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Returns the array of paired values of the given iterators. In the modern browsers compatible with finite iterators. <br/><strong>Example:</strong><br/><code>CEL.zip(["a","b","c","d"], [3,4,5,6,7,8,9]);</code><br/>-><br/><code>Array (4) [ [ "a", 3 ], [ "b", 4 ], [ "c", 5 ], [ "d", 6 ] ]</code></td>
+    </tr>
+    <tr id="FN-zipObj();">
+      <td><code>zipObj(iterator1, iterator2);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Returns an <code>object</code>, whose properties are from the first iterator and its values are from the second iterator. The two iterators must be the same size. In the modern browsers compatible with finite iterators.<br/><strong>Example:</strong><br/><code>zipObj(["a","b","c"],[1,2,3])</code><br/>-><br/><code>{"a":1,"b":2,"c":3}</code></td>
+    </tr>
+  </table>
+</div>
+
+<h3 id="FNmathAPI">Math API</h3>
+
+<div>
+  <table class="table-responsive table-striped">
+    <tr>
+      <td style="width: auto; min-width: 30%;"><strong>Name</strong></td>
+      <td><strong>Description</strong></td>
+    </tr>
+    <tr id="FN-add();">
+      <td><code>add(value1,value2);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Performs addition type safely. Works for both <code>number</code> and <code>bigint</code> values. All of the parameter is mandatory and can be both <code>number</code> or both <code>bigint</code>. The return value is <code>number</code> or <code>bigint</code>. </td>
+    </tr>
+    <tr id="FN-avg();">
+      <td><code>avg(value1[,valueN]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns the average value from the parameter values.</td>
+    </tr>
+    <tr id="FN-clamp();">
+      <td><code>clamp(value,min,max);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>If the given value is between the min and max values, then this function returns the value. If smaller then the min value, then the return value is the min. If greater then the max value, then the return value is the max. All of the parameters are mandatory and can be <code>number</code> or <code>bigint</code> and if not these types, then will be converted to <code>number</code>. The return value is <code>number</code> or <code>bigint</code> or throw a rangeerror, if the parameters are invalid.</td>
+    </tr>
+    <tr id="FN-div();">
+      <td><code>div(value1,value2);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Performs integer division type safely. Works for both <code>number</code> and <code>bigint</code> values. All of the parameter is mandatory and can be both <code>number</code> or both <code>bigint</code>. The return value is <code>number</code> or <code>bigint</code>.</td>
+    </tr>
+    <tr id="FN-divMod();">
+      <td><code>divMod(value1,value2);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Performs integer division type safely. Works for both <code>number</code> and <code>bigint</code> values. All of the parameter is mandatory and can be both <code>number</code> or both <code>bigint</code>. The return value is <code>number</code> or <code>bigint</code>.</td>
+    </tr>
+    <tr id="FN-inRange();">
+      <td><code>inRange(value,min,max);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is between the min and max values. All of the parameters are mandatory and have to be <code>number</code> or <code>bigint</code>. The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-isEven();">
+      <td><code>isEven(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Checks if a <code>number</code> is a safe integer and even. Supports <code>number</code> and <code>bigint</code> types. The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-isFloat();">
+      <td><code>isFloat(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is a float <code>number</code>. The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-isOdd();">
+      <td><code>isOdd(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Checks if a <code>number</code> is a safe integer and odd. Supports <code>number</code> and <code>bigint</code> types. The return value is <code>boolean</code>.</td>
+    </tr>
+    <tr id="FN-minmax();">
+      <td><code>minmax(value,min,max);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This is an alias of the <code>clamp(value,min,max);</code>.</td>
+    </tr>
+    <tr id="FN-mod();">
+      <td><code>mod(value1,value2);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Computes the integer remainder (modulus) type safely. Works for both <code>number</code> and <code>bigint</code> values. All of the parameter is mandatory and can be both <code>number</code> or both <code>bigint</code>. The return value is <code>number</code> or <code>bigint</code>.</td>
+    </tr>
+    <tr id="FN-mul();">
+      <td><code>mul(value1,value2);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Performs multiplication type safely. Works for both <code>number</code> and <code>bigint</code> values. All of the parameter is mandatory and can be both <code>number</code> or both <code>bigint</code>. The return value is <code>number</code> or <code>bigint</code>.</td>
+    </tr>
+    <tr id="FN-pow();">
+      <td><code>pow(base,power);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function returns the value of a base raised to a power. All of the parameters are mandatory and can be both <code>number</code> or <code>bigint</code>. The return value is <code>number</code> or <code>bigint</code>.</td>
+    </tr>
+    <tr id="FN-product();">
+      <td><code>product(value1[,valueN]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Performs multiplication type safely. Works for both <code>number</code> and <code>bigint</code> values. All of the parameter is mandatory and can be both <code>number</code> or both <code>bigint</code>. The return value is <code>number</code> or <code>bigint</code>.</td>
+    </tr>
+    <tr id="FN-randomFloat();">
+      <td><code>randomFloat([max]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Get a random float <code>number</code> value within 0 and max value. Without parameter the maximum value is 100.</td>
+    </tr>
+    <tr>
+      <td><code>randomFloat(min,max);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Get a random float <code>number</code> value within min and max value.</td>
+    </tr>
+    <tr id="FN-randomInt();">
+      <td><code>randomInt([max]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Get a random integer <code>number</code> value within 0 and max value. Without parameter the maximum value is 100.</td>
+    </tr>
+    <tr>
+      <td><code>randomInt(min,max);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Get a random integer <code>number</code> value within min and max value.</td>
+    </tr>
+    <tr id="FN-signbit();">
+      <td><code>signbit(value);</code></td>
+      <td>
+        <span class="info">Stability: 4 - Stable.</span><br/>
+        <p>This function is based on this proposal:
+          <br/><a href="https://github.com/tc39/proposal-Math.signbit" target="_blank">https://github.com/tc39/proposal-Math.signbit</a>
+        </p>
+        <pre>Returns whether the sign bit of x is set.
+If n is <code>NaN</code>, the result is false.
+If n is -0, the result is true.
+If n is negative, the result is true.
+Otherwise, the result is false.</pre>
+        <p>The value parameter is mandatory.</p>
+      </td>
+    </tr>
+    <tr id="FN-sum();">
+      <td><code>sum(value1[,valueN]);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Performs summary type safely. Works for both <code>number</code> and <code>bigint</code> values. All of the parameter is mandatory and can be both <code>number</code> or both <code>bigint</code>. The return value is <code>number</code> or <code>bigint</code>.</td>
+    </tr>
+    <tr id="FN-sub();">
+      <td><code>sub(value1,value2);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>Performs subtraction type safely. Works for both <code>number</code> and <code>bigint</code> values. All of the parameter is mandatory and can be both <code>number</code> or both <code>bigint</code>. The return value is <code>number</code> or <code>bigint</code>.</td>
+    </tr>
+    <tr id="FN-toInteger();">
+      <td><code>toInteger(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function always converts the provided value to an integer. If the value cannot be converted to an integer, then the return value is 0.</td>
+    </tr>
+    <tr id="FN-toIntegerOrInfinity();">
+      <td><code>toIntegerOrInfinity(value);</code></td>
+      <td><span class="info">Stability: 4 - Stable.</span><br/>This function always converts the provided value to an integer or Infitiy or -Infinity. If the value cannot be converted to an integer, then the return value is 0.</td>
+    </tr>
+  </table>
+</div>
+
+
+<h3 id="FNpolyfillsAPI">Polyfills</h3>
+
+<div>
+  <table class="table-responsive table-striped">
+    <tr>
+      <td style="width: auto; min-width: 30%;"><strong>Name</strong></td>
+      <td><strong>Description</strong></td>
+    </tr>
+    <tr id="FN-crypto.randomUUID();">
+      <td><code>crypto.randomUUID();</code></td>
+      <td>
+        The randomUUID() method of the Crypto interface is used to generate a v4 UUID using a cryptographically secure random <code>number</code> generator. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Crypto/randomUUID" target="_blank">MDN Article</a>!
+      </td>
+    </tr>
+    <tr id="FN-Error.isError();">
+      <td><code>Error.isError();</code></td>
+      <td>
+        The Error.isError() static method determines whether the passed value is an Error or DOMException. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/isError" target="_blank">MDN Article</a>!
+      </td>
+    </tr>
+    <tr id="FN-globalThis;();">
+      <td><code>globalThis;</code></td>
+      <td>The "global" property of the global object, a writable, configurable, non-enumerable alias of <code>window</code>/<code>self</code>. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/globalThis" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr id="FN-Math.sumPrecise();">
+      <td><code>Math.sumPrecise();</code></td>
+      <td>The Math.sumPrecise() static method takes an iterable of numbers and returns the sum of them. It is more precise than summing them up in a loop, because it avoids floating point precision loss in intermediate results. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/sumPrecise" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr id="FN-globalThis.AsyncFunction();">
+      <td><code>globalThis.AsyncFunction();</code></td>
+      <td>The AsyncFunction constructor creates a new async function object. In JavaScript, every asynchronous function is actually an AsyncFunction object. Note that AsyncFunction is not a global object, but in the Celestra this is available in the <code>globalThis</code> object. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncFunction" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr id="FN-globalthis.AsyncGeneratorFunction();">
+      <td><code>globalthis.AsyncGeneratorFunction();</code></td>
+      <td>The AsyncGeneratorFunction() constructor creates AsyncGeneratorFunction objects. Note that AsyncGeneratorFunction is not a global object, but in the Celestra this is available in the <code>globalThis</code> object. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncGeneratorFunction/AsyncGeneratorFunction" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr id="FN-globalThis.GeneratorFunction();">
+      <td><code>globalThis.GeneratorFunction();</code></td>
+      <td>The GeneratorFunction constructor creates a new generator function object. In JavaScript every generator function is actually a GeneratorFunction object. Note that GeneratorFunction is not a global object, but in the Celestra this is available in the <code>globalThis</code> object. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction" target="_blank">MDN Article</a>!</td>
+    </tr>
+    <tr>
+      <td>REMOVED polyfills in v3.1.0</td>
+      <td><code>Array.from();</code><br/><code>Array.of();</code><br/><code>Array.prototype.fill();</code><br/><code>Array.prototype.find();</code><br/><code>Array.prototype.findIndex();</code><br/><code>Object.create();</code><br/><code>String.prototype.startsWith();</code><br/><code>String.prototype.endsWith();</code><br/><code>Array.prototype.copyWithin();</code><br/><code>String.fromCodePoint();</code><br/><code>String.prototype.codePointAt();</code><br/><code>Number.EPSILON;</code><br/><code>Number.isNaN();</code><br/><code>isNaN();</code><br/><code>Number.isInteger();</code><br/><code>Number.isFinite();</code><br/><code>Number.isSafeInteger();</code><br/><code>Number.parseInt();</code><br/><code>Number.parseFloat();</code><br/><code>Math.acosh();</code><br/><code>Math.asinh();</code><br/><code>Math.atanh();</code><br/><code>Math.cbrt();</code><br/><code>Math.clz32();</code><br/><code>Math.cosh();</code><br/><code>Math.expm1();</code><br/><code>Math.fround();</code><br/><code>Math.hypot();</code><br/><code>Math.imul();</code><br/><code>Math.log1p();</code><br/><code>Math.log10();</code><br/><code>Math.log2();</code><br/><code>Math.sign();</code><br/><code>Math.sinh();</code><br/><code>Math.tanh();</code><br/><code>Math.trunc();</code></td>
+    </tr>
+    <tr>
+      <td>REMOVED polyfills in v3.8.0</td>
+      <td><code>Array.prototype.values();</code><br/><code>Array.prototype.includes();</code><br/><code>String.prototype.includes();</code><br/><code>String.prototype.repeat();</code><br/><code>String.prototype[Symbol.iterator]();</code><br/><code>Object.assign();</code><br/><code>Object.entries();</code><br/><code>Object.values();</code><br/><code>Object.getOwnPropertyDescriptors();</code><br/><code>RegExp.prototype.flags;</code><br/><code>NodeList.prototype.forEach();</code><br/><code>ChildNode.after();</code><br/><code>ChildNode.before();</code><br/><code>ChildNode.remove();</code><br/><code>ChildNode.replaceWith();</code><br/><code>ParentNode.append();</code><br/><code>ParentNode.prepend();</code><br/><code>Element.prototype.matches();</code><br/><code>Element.prototype.closest();</code><br/><code>Element.prototype.toggleAttribute();</code><br/><code>Element.prototype.getAttributeNames();</code><br/><code>window.screenLeft;</code><br/><code>window.screenTop;</code></td>
+    </tr>
+    <tr>
+      <td>REMOVED polyfills in v5.6.0</td>
+      <td><code>Array.prototype.at();</code><br/><code>Array.prototype.findLast();</code><br/><code>Array.prototype.findLastIndex();</code><br/><code>Array.prototype.flat();</code><br/><code>Array.prototype.flatMap();</code><br/><code>Number.MIN_SAFE_INTEGER;</code><br/><code>Number.MAX_SAFE_INTEGER;</code><br/><code>Object.fromEntries();</code><br/><code>Object.is();</code><br/><code>String.prototype.at();</code><br/><code>String.prototype.matchAll();</code><br/><code>String.prototype.padStart();</code><br/><code>String.prototype.padEnd();</code><br/><code>String.prototype.replaceAll();</code><br/><code>String.prototype.trimStart();</code><br/><code>String.prototype.trimLeft();</code><br/><code>String.prototype.trimEnd();</code><br/><code>String.prototype.trimRight();</code><br/><code>Typedarray.prototype.at();</code><br/><code>TypedArray.prototype.findLast();</code><br/><code>TypedArray.prototype.findLastIndex();</code></td>
+    </tr>
+    <tr>
+      <td>REMOVED polyfills in v5.9.0</td>
+      <td><code>BigInt.prototype.toJSON();</code></td>
+    </tr>
+    <tr>
+      <td>REMOVED polyfills in v6.5.0</td>
+      <td><code>Array.fromAsync();</code><br/><code>Array.prototype.toReversed();</code><br/><code>Array.prototype.toSorted();</code><br/><code>Array.prototype.toSpliced();</code><br/><code>Array.prototype.with();</code><br/><code>Map.groupBy();</code><br/><code>Object.groupBy();</code><br/><code>Object.hasOwn();</code><br/><code>TypedArray.prototype.toReversed();</code><br/><code>TypedArray.prototype.toSorted();</code><br/><code>TypedArray.prototype.with();</code></td>
+    </tr>
+  </table>
+</div>
+
+
+<hr/>
+<h2 id="samples">Samples</h2>
+
+<p class="big">There are more samples in the <a href="unittest.js" target="_blank">unittest.js</a>.</p>
+
+<div>
+  <table class="table-responsive table-striped">
+    <tr>
+      <td><strong>Object name: "celestra"</strong></td>
+      <td><button onclick='alert( celestra.randomInt(100,200) );'>Try</button></td>
+      <td><code>alert( celestra.randomInt(100,200) );</code></td>
+    </tr>
+    <tr>
+      <td><strong>Object name: "CEL"</strong></td>
+      <td><button onclick='alert( CEL.randomInt(100,200) );'>Try</button></td>
+      <td><code>alert( CEL.randomInt(100,200) );</code></td>
+    </tr>
+    <tr>
+      <td><strong>VERSION</strong></td>
+      <td><button onclick='alert( CEL.VERSION );'>Try</button></td>
+      <td><code>alert( CEL.VERSION );</code></td>
+    </tr>
+  </table>
+</div>
+
+<h3>domReady(fn) sample</h3>
+
+<pre>CEL.domReady(function(){
+  CEL.qsa("p",CEL.qs("#div1")).forEach(function fn(el,i) {
+    el.style.color="red";
+  });
+});</pre>
+
+<h3>Testarea</h3>
+
+<p id="p1">p1</p>
+<p id="p2">p2</p>
+
+<div id="div1">
+  <p id="div3">div1 p3</p>
+  <div>div1 divs1</div>
+  <div>div1 divs2</div>
+</div>
+
+<div id="div2">
+  <p id="div2p">div2</p>
+</div>
+
+<h3>Samples</h3>
+
+<div>
+  <table class="table-responsive table-striped">
+    <tr>
+      <td style="min-width: 25%;"><strong>domToElement(htmlString);</strong></td>
+      <td colspan="2">
+        <p><button onclick='CEL.qs("#div2").append( CEL.domToElement("<div>Hello world!</div>") );'>Try</button></p>
+        <p><code>CEL.qs("#div2").append( CEL.domToElement("divHello world!/div") );</code></p>
+        <p><button onclick='CEL.qs("#div2").append( CEL.domToElement("<p><span style=\"background-color: yellow; color: blue;\">Hello</span> <span style=\"background-color: blue; color: yellow;\">world</span>!</p>") );'>Try</button></p>
+        <p><code>CEL.qs("#div2").append( CEL.domToElement("pspan style=\"background-color: yellow; color: blue;\"Hello/span span style=\"background-color: blue; color: yellow;\"world/span!/p") );</code></p>
+      </td>
+    </tr>
+    <tr>
+      <td><strong>domCreate(type,properties,innerHTML); with style object</strong></td>
+      <td><button onclick='var el1 = CEL.domCreate("h3", {style: {"background-color": "lightblue", "font-weight": "bold"}}, "H3 Lorem ipsum with style object");  var el2 = CEL.domCreate("p", {}, "Sample created paragraph"); var el3 = CEL.domCreate("br");  var el4 = CEL.domCreate("a", {href: "https://developer.mozilla.org/en-US/", target: "_blank", style: { "background-color": "red", "color": "white"}}, "MDN Sample url"); CEL.qs("#div2").append(el1); el2.append(el3); el2.append(el4); CEL.qs("#div2").append(el2);'>Try</button></td>
+      <td><pre>var el1 = CEL.domCreate("h3", {style: {"background-color": "lightblue", "font-weight": "bold"}}, "H3 Lorem ipsum with style object");
+var el2 = CEL.domCreate("p", {}, "Sample created paragraph");
+var el3 = CEL.domCreate("br");
+var el4 = CEL.domCreate("a", {href: "https://developer.mozilla.org/en-US/", target: "_blank", style: { "background-color": "red", "color": "white"}}, "MDN Sample url");
+CEL.qs("#div2").append(el1);
+el2.append(el3);
+el2.append(el4);
+CEL.qs("#div2").append(el2);</pre></td>
+    </tr>
+    <tr>
+      <td><strong>domCreate(type,properties,innerHTML); with style <code>string</code></strong></td>
+      <td><button onclick='var el1 = CEL.domCreate("h3", {style: {"background-color": "lightblue", "font-weight": "bold"}}, "H3 Lorem ipsum with style string");  var el2 = CEL.domCreate("p", {}, "Sample created paragraph"); var el3 = CEL.domCreate("br");  var el4 = CEL.domCreate("a", {href: "https://developer.mozilla.org/en-US/", target: "_blank", style: "background-color: red; color: white;"}, "MDN Sample url"); CEL.qs("#div2").append(el1); el2.append(el3); el2.append(el4); CEL.qs("#div2").append(el2);'>Try</button></td>
+      <td><pre>var el1 = CEL.domCreate("h3", {style: {"background-color": "lightblue", "font-weight": "bold"}}, "H3 Lorem ipsum with style string");
+var el2 = CEL.domCreate("p", {}, "Sample created paragraph");
+var el3 = CEL.domCreate("br");
+var el4 = CEL.domCreate("a", {href: "https://developer.mozilla.org/en-US/", target: "_blank", style: "background-color: red; color: white;"}, "MDN Sample url");
+CEL.qs("#div2").append(el1);
+el2.append(el3);
+el2.append(el4);
+CEL.qs("#div2").append(el2);</pre></td>
+    </tr>
+    <tr>
+      <td><strong>domCreate(object); with style object</strong></td>
+      <td><button onclick='var el1 = CEL.domCreate({elementType: "h3", style: {"background-color": "lightblue", "font-weight": "bold"}, innerHTML: "H3 Lorem ipsum from object with style object"}); var el2 = CEL.domCreate({elementType: "p", innerHTML: "Sample created paragraph"}); var el3 = CEL.domCreate("br"); var el4 = CEL.domCreate({elementType: "a", href: "https://developer.mozilla.org/en-US/", target: "_blank", style: {"background-color": "red", "color": "white"}, innerHTML: "MDN Sample url"}); CEL.qs("#div2").append(el1); el2.append(el3); el2.append(el4); CEL.qs("#div2").append(el2);'>Try</button></td>
+      <td><pre>var el1 = CEL.domCreate({elementType: "h3", style: {"background-color": "lightblue", "font-weight": "bold"}, innerHTML: "H3 Lorem ipsum from object with style object"});
+var el2 = CEL.domCreate({elementType: "p", innerHTML: "Sample created paragraph"});
+var el3 = CEL.domCreate("br");
+var el4 = CEL.domCreate({elementType: "a", href: "https://developer.mozilla.org/en-US/", target: "_blank", style: {"background-color": "red", "color": "white"}, innerHTML: "MDN Sample url"});
+CEL.qs("#div2").append(el1);
+el2.append(el3);
+el2.append(el4);
+CEL.qs("#div2").append(el2);</pre></td>
+    </tr>
+    <tr>
+      <td><strong>domCreate(object); with styles <code>string</code></strong></td>
+      <td><button onclick='var el1 = CEL.domCreate({elementType: "h3", style: {"background-color": "lightblue", "font-weight": "bold"}, innerHTML: "H3 Lorem ipsum from object with style string"}); var el2 = CEL.domCreate({elementType: "p", innerHTML: "Sample created paragraph"}); var el3 = CEL.domCreate("br"); var el4 = CEL.domCreate({elementType: "a", href: "https://developer.mozilla.org/en-US/", target: "_blank", style: "background-color: red; color: white;", innerHTML: "MDN Sample url"}); CEL.qs("#div2").append(el1); el2.append(el3); el2.append(el4); CEL.qs("#div2").append(el2);'>Try</button></td>
+      <td><pre>var el1 = CEL.domCreate({elementType: "h3", style: {"background-color": "lightblue", "font-weight": "bold"}, innerHTML: "H3 Lorem ipsum from object with style string"});
+var el2 = CEL.domCreate({elementType: "p", innerHTML: "Sample created paragraph"});
+var el3 = CEL.domCreate("br");
+var el4 = CEL.domCreate({elementType: "a", href: "https://developer.mozilla.org/en-US/", target: "_blank", style: "background-color: red; color: white;", innerHTML: "MDN Sample url"});
+CEL.qs("#div2").append(el1);
+el2.append(el3);
+el2.append(el4);
+CEL.qs("#div2").append(el2);</pre></td>
+    </tr>
+    <tr>
+      <td><strong></strong></td>
+      <td></td>
+      <td>
+        <p><a href="?foo=fooValue%20Lorem%20Ipsum%202017%20%C3%A9%C3%A1%C5%B1%C5%91%C3%BA%C3%B6%C3%BC%C3%B3%C3%AD%20%C3%89%C3%81%C5%B0%C5%90%C3%9A%C3%96%C3%9C%C3%93%C3%8D&bar=barValue#url">Test page</a></p>
+      </td>
+    </tr>
+    <tr>
+      <td><strong>getDoNotTrack()</strong></td>
+      <td><button onclick='alert( CEL.getDoNotTrack() );'>Try</button></td>
+      <td><code>alert( CEL.getDoNotTrack() );</code></td>
+    </tr>
+<script>
+var txt = "✓ à \r\n\t árvíztűrő tükörfúrógép ÁRVÍZTŰRŐ TÜKÖRFÚRÓGÉP ,?;.:-_* ¤÷×¨¸´˙`˛°˘^ˇ~'+!%/=()|\\<>\"\'\/#&@{}[]€ÍÄíŁß 0123456789 asdfghjklqwertzuiopyxcvbnm ASDFGHJKLQWERTZUIOPYXCVBNM"
+</script>
+    <tr>
+      <td><strong>createFile(filename,content,dataType);</strong></td>
+      <td colspan="2">
+        <p>Please check the downloaded files in your download folder!</p>
+        <p><code>var txt = "✓ à \r\n\t árvíztűrő tükörfúrógép ÁRVÍZTŰRŐ TÜKÖRFÚRÓGÉP ,?;.:-_* ¤÷×¨¸´˙`˛°˘^ˇ~'+!%/=()|\\\"\'\/#&@{}[]€ÍÄíŁß 0123456789 asdfghjklqwertzuiopyxcvbnm ASDFGHJKLQWERTZUIOPYXCVBNM";</code></p>
+        <p>
+          <button onclick='CEL.createFile();'>no parameter</button>
+          <br/><code>CEL.createFile();</code>
+        </p>
+        <p>
+          <button onclick='CEL.createFile("test-createFile-error.txt");'>only filename</button>
+          <br/><code>CEL.createFile("test-createFile-error.txt");</code>
+        </p>
+        <p>
+          <button onclick='CEL.createFile("test-createFile.txt", txt);'>default type</button>
+          <br/><code>CEL.createFile("test-createFile.txt", txt);</code>
+        </p>
+        <p>
+          <button onclick='CEL.createFile("test-createFile.html", txt, "text/html");'>"text/html" type</button>
+          <br/><code>CEL.createFile("test-createFile.html", txt, "text/html");</code>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td><strong>getLocation()</strong></td>
+      <td colspan="2">
+        <p><button onclick='CEL.getLocation(function (loc){
+          CEL.qs("#location").innerHTML = "latitude: "+loc.coords.latitude+"<br/>longitude: "+loc.coords.longitude+"<br/>"+"<img src=\"https://maps.googleapis.com/maps/api/staticmap?center="+loc.coords.latitude + "," + loc.coords.longitude+"&zoom=14&size="+"400"+"x"+"400"+"&sensor=false\" alt=\"map\">";},function (errorMessage) { CEL.qs("#location").innerHTML = errorMessage; });'>Try</button></p>
+        <p><code>CEL.getLocation(<br/>function (loc){<br/>CEL.qs("#location").innerHTML = "latitude: "+loc.coords.latitude<br/>+"br/longitude: "+loc.coords.longitude<br/>+"br/"+"img src=\"https://maps.googleapis.com/maps/api/staticmap?center="<br/>+loc.coords.latitude + "," + loc.coords.longitude<br/>+"&#38;zoom=14&#38;size="+"400"+"x"+"400"+"&#38;sensor=false\" alt=\"map\"";},<br/>function (errorMessage) { CEL.qs("#location").innerHTML = errorMessage; }<br/>);</code></p>
+        <p id="location"></p>
+      </td>
+    </tr>
+    <tr>
+      <td><strong>Fullscreen functions</strong></td>
+      <td colspan="2">
+        <div id="fsdiv">
+          <p>
+            <button onclick='alert( CEL.getFullscreen() );'>getFullscreen</button>
+            <br/><code>alert( CEL.getFullscreen() );</code>
+          </p>
+          <p>
+            <button onclick='CEL.setFullscreenOn("#fsdiv");'>setFullscreen fsdiv <code>string</code></button>
+            <br/><code>CEL.setFullscreenOn("#fsdiv");</code>
+          </p>
+          <p>
+            <button onclick='CEL.setFullscreenOn( CEL.qs("#fsdiv") );'>setFullscreen fsdiv element</button>
+            <br/><code>CEL.setFullscreenOn( CEL.qs("#fsdiv") );</code>
+          </p>
+          <p>
+            <button onclick='CEL.setFullscreenOn(document.documentElement);'>setFullscreen document.documentElement</button>
+            <br/><code>CEL.setFullscreenOn(document.documentElement);</code>
+          </p>
+          <p>
+            <button onclick='CEL.setFullscreenOff();'>setFullscreenOff</button>
+            <br/><code>CEL.setFullscreenOff();</code>
+          </p>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td><strong>domFade functions</strong></td>
+      <td colspan="2">
+        <div>
+          <div id="domFadetest"><em>This is the fade test area.</em></div><span class="flex-f-1">This is a span.</span>
+          <hr/>
+          <p>
+            <button onclick='CEL.domFadeIn( CEL.qs("#domFadetest") );'>domFadeIn</button>
+            <code>CEL.domFadeIn( CEL.qs("#domFadetest") );</code>
+          </p>
+          <p>
+            <button onclick='CEL.domFadeIn( CEL.qs("#domFadetest"), 2000 );'>domFadeIn duration</button>
+            <code>CEL.domFadeIn( CEL.qs("#domFadetest"), 2000 );</code>
+          </p>
+          <p>
+            <button onclick='CEL.domFadeIn( CEL.qs("#domFadetest"), 2000, "inline-block" );'>domFadeIn duration display</button>
+            <code>CEL.domFadeIn( CEL.qs("#domFadetest"), 2000, "inline-block" );</code>
+          </p>
+          <p>
+            <button onclick='CEL.domFadeOut( CEL.qs("#domFadetest") );'>domFadeOut</button>
+            <code>CEL.domFadeOut( CEL.qs("#domFadetest") );</code>
+          </p>
+          <p>
+            <button onclick='CEL.domFadeOut( CEL.qs("#domFadetest"), 2000 );'>domFadeOut duration</button>
+            <code>CEL.domFadeOut( CEL.qs("#domFadetest"), 2000 );</code>
+          </p>
+          <p>
+            <button onclick='CEL.domFadeToggle( CEL.qs("#domFadetest") );'>domFadeToggle</button>
+            <code>CEL.domFadeToggle( CEL.qs("#domFadetest") );</code>
+          </p>
+          <p>
+            <button onclick='CEL.domFadeToggle( CEL.qs("#domFadetest"), 2000 );'>domFadeToggle duration</button>
+            <code>CEL.domFadeToggle( CEL.qs("#domFadetest"), 2000 );</code>
+          </p>
+          <p>
+            <button onclick='CEL.domFadeToggle( CEL.qs("#domFadetest"), 2000, "inline-block" );'>domFadeToggle duration display</button>
+            <code>CEL.domFadeToggle( CEL.qs("#domFadetest"), 2000, "inline-block" );</code>
+          </p>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td><strong>domHide/Show/Toggle functions</strong></td>
+      <td colspan="2">
+        <div id="domhidetest"><em>This is the hide/show/toggle test area.</em></div><span class="flex-f-1">This is a span.</span>
+        <hr/>
+        <p>
+          <button onclick='CEL.domShow( CEL.qs("#domhidetest") );'>domShow</button>
+          <code>CEL.domShow( CEL.qs("#domhidetest") );</code>
+        </p>
+        <p>
+          <button onclick='CEL.domShow( CEL.qs("#domhidetest"), "inline-block" );'>domShow display</button>
+          <code>CEL.domShow( CEL.qs("#domhidetest"), "inline-block" );</code>
+        </p>
+        <p>
+          <button onclick='CEL.domHide( CEL.qs("#domhidetest") );'>domHide</button>
+          <code>CEL.domHide( CEL.qs("#domhidetest") );</code>
+        </p>
+        <p>
+          <button onclick='CEL.domToggle( CEL.qs("#domhidetest") );'>domToggle</button>
+          <code>CEL.domToggle( CEL.qs("#domhidetest") );</code>
+        </p>
+        <p>
+          <button onclick='CEL.domToggle( CEL.qs("#domhidetest"), "inline-block" );'>domToggle display</button>
+          <code>CEL.domToggle( CEL.qs("#domhidetest"), "inline-block" );</code>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td><strong>domGetCSS and domSetCSS</strong></td>
+      <td colspan="2">
+        <div>
+          <p id="csstest1" style="color: red; border: 1px solid red;">Testarea</p>
+          <p>
+            <button onclick='alert( CEL.domGetCSS( CEL.qs("#csstest1"), "width" ) );'>domGetCSS</button>
+            <br/><code>alert( CEL.domGetCSS( CEL.qs("#csstest1"), "width" ) );</code>
+          </p>
+          <p>
+            <button onclick='CEL.domSetCSS( CEL.qs("#csstest1"), "width", "100px" );'>domSetCSS</button>
+            <br/><code>CEL.domSetCSS( CEL.qs("#csstest1"), "width", "100px" );</code>
+          </p>
+          <p>
+            <button onclick='CEL.domSetCSS( CEL.qs("#csstest1"), { color: "green", fontWeight: "bold" } );'>domSetCSS with object</button>
+            <br/><code>CEL.domSetCSS(<br/> CEL.qs("#csstest1"),<br/> { color: "green", fontWeight: "bold" }<br/>);</code>
+          </p>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td><strong>importStyle</strong></td>
+      <td colspan="2">
+        <div>
+          <p id="csstest2" style="color: braun; border: 1px solid braun;">Testarea</p>
+          <p>
+            <button onclick='CEL.importStyle("unittest-module1.css");'>importStyle 1</button>
+            <br/><code>CEL.importStyle("unittest-module1.css");</code>
+          </p>
+          <p>
+            <button onclick='CEL.importStyle("unittest-module2.css");'>importStyle 2</button>
+            <br/><code>CEL.importStyle("unittest-module2.css");</code>
+          </p>
+          <p>
+            <button onclick='CEL.importStyle("unittest-module1.css", "unittest-module2.css");'>importStyle 3</button>
+            <br/><code>CEL.importStyle("unittest-module1.css, "unittest-module2.css"");</code>
+          </p>
+          <p>
+            <button onclick='CEL.importStyle("testmodule-notExist.css");'>importStyle 4 error</button>
+            <br/><code>CEL.importStyle("testmodule-notExist.css");</code>
+          </p>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td><strong>Cookie</strong></td>
+      <td colspan="2">
+        <p>
+          setCookie();
+          <button onclick='CEL.setCookie("ctest3",cookieTestStr);'>try</button>
+          <code>CEL.setCookie("ctest3",cookieTestStr);</code>
+        </p>
+        <p>
+          hasCookie();
+          <button onclick='alert( CEL.hasCookie("ctest3") );'>try</button>
+          <code>alert( CEL.hasCookie("ctest3") );</code>
+        </p>
+        <p>
+          getCookie(name);
+          <button onclick='alert( CEL.getCookie("ctest3") );'>try</button>
+          <code>alert( CEL.getCookie("ctest3") );</code>
+        </p>
+        <p>
+          getCookie();
+          <button onclick='alert( JSON.stringify(CEL.getCookie()) );'>try</button>
+          <code>alert( JSON.stringify(CEL.getCookie()) );</code>
+        </p>
+        <p>
+          removeCookie();
+          <button onclick='alert( CEL.removeCookie("ctest3") );'>try</button>
+          <code>alert( CEL.removeCookie("ctest3") );</code>
+        </p>
+        <p>Test Code:</p>
+        <pre>var cookieTestStr = "✓ à \r\n\t árvíztűrő tükörfúrógép ÁRVÍZTŰRŐ TÜKÖRFÚRÓGÉP ,?;.:-_* ¤÷×¨¸´˙`˛°˘^ˇ~'+!%/=()|\\ \" \/ # & @{}[]€ ÍÄíŁß 0123456789 asdhjklqweuioyxcbnm ASDHJKLQWEUIOYXCBNM \u00E0\u00E8\u00EC\u00F2\u00F9";
+var cookiestr = "";
+
+cookiestr += "\ndocument.cookie: \""+document.cookie+"\"";
+CEL.setCookie("ctest1",cookieTestStr);
+CEL.setCookie("ctest2",cookieTestStr);
+cookiestr += "document.cookie: \""+document.cookie+"\"";
+cookiestr += "\n"+(CEL.getCookie("ctest1"))+" - (cookie value)"; // cookie value
+cookiestr += "\n"+(CEL.getCookie("ctest2"))+" - (cookie value)"; // cookie value
+cookiestr += "\n"+(CEL.getCookie())+" - (object)"; // object
+cookiestr += "\n"+(CEL.getCookie()["ctest1"])+" - (object value ctest1)"; // object value ctest1
+cookiestr += "\n"+(CEL.getCookie()["ctest2"])+" - (object value ctest2)"; // object value ctest2
+cookiestr += "\n"+(CEL.hasCookie("ctest1"))+" - (true)"; // true
+cookiestr += "\n"+(CEL.hasCookie("ctest2"))+" - (true)"; // true
+cookiestr += "\n"+(CEL.removeCookie("ctest1"))+" - (true)"; // true
+cookiestr += "\n"+(CEL.hasCookie("ctest1"))+" - (false)"; // false
+cookiestr += "\n"+(CEL.hasCookie("ctest2"))+" - (true)"; // true
+cookiestr += "\ndocument.cookie: \""+document.cookie+"\"";
+cookiestr += "\n"+(CEL.removeCookie("ctest1"))+" - (false)"; // false
+cookiestr += "\n"+(CEL.removeCookie("ctest2"))+" - (true)"; // true
+cookiestr += "\n"+(CEL.hasCookie("ctest1"))+" - (false)"; // false
+cookiestr += "\n"+(CEL.hasCookie("ctest2"))+" - (false)"; // false
+cookiestr += "\ndocument.cookie: \""+document.cookie+"\"";
+cookiestr += "\n"+(CEL.removeCookie("ctest1"))+" - (false)"; // false
+cookiestr += "\n"+(CEL.removeCookie("ctest2"))+" - (false)"; // false
+cookiestr += "\n"+(CEL.hasCookie("ctest1"))+" - (false)"; // false
+cookiestr += "\n"+(CEL.hasCookie("ctest2"))+" - (false)"; // false
+
+CEL.qs("#cookieresults").innerHTML = cookiestr;</pre>
+      <p>Test results:</p>
+      <pre id="cookieresults">cookieresults</pre>
+<script>
+var cookieTestStr = "✓ à \r\n\t árvíztűrő tükörfúrógép ÁRVÍZTŰRŐ TÜKÖRFÚRÓGÉP ,?;.:-_* ¤÷×¨¸´˙`˛°˘^ˇ~'+!%/=()|\\ \" \/ # & @{}[]€ ÍÄíŁß 0123456789 asdhjklqweuioyxcbnm ASDHJKLQWEUIOYXCBNM \u00E0\u00E8\u00EC\u00F2\u00F9";
+var cookiestr = "";
+
+cookiestr += "\ndocument.cookie: \""+document.cookie+"\"";
+CEL.setCookie("ctest1",cookieTestStr);
+CEL.setCookie("ctest2",cookieTestStr);
+cookiestr += "document.cookie: \""+document.cookie+"\"";
+cookiestr += "\n"+(CEL.getCookie("ctest1"))+" - (cookie value)"; // cookie value
+cookiestr += "\n"+(CEL.getCookie("ctest2"))+" - (cookie value)"; // cookie value
+cookiestr += "\n"+(CEL.getCookie())+" - (object)"; // object
+cookiestr += "\n"+(CEL.getCookie()["ctest1"])+" - (object value ctest1)"; // object value ctest1
+cookiestr += "\n"+(CEL.getCookie()["ctest2"])+" - (object value ctest2)"; // object value ctest2
+cookiestr += "\n"+(CEL.hasCookie("ctest1"))+" - (true)"; // true
+cookiestr += "\n"+(CEL.hasCookie("ctest2"))+" - (true)"; // true
+cookiestr += "\n"+(CEL.removeCookie("ctest1"))+" - (true)"; // true
+cookiestr += "\n"+(CEL.hasCookie("ctest1"))+" - (false)"; // false
+cookiestr += "\n"+(CEL.hasCookie("ctest2"))+" - (true)"; // true
+cookiestr += "\ndocument.cookie: \""+document.cookie+"\"";
+cookiestr += "\n"+(CEL.removeCookie("ctest1"))+" - (false)"; // false
+cookiestr += "\n"+(CEL.removeCookie("ctest2"))+" - (true)"; // true
+cookiestr += "\n"+(CEL.hasCookie("ctest1"))+" - (false)"; // false
+cookiestr += "\n"+(CEL.hasCookie("ctest2"))+" - (false)"; // false
+cookiestr += "\ndocument.cookie: \""+document.cookie+"\"";
+cookiestr += "\n"+(CEL.removeCookie("ctest1"))+" - (false)"; // false
+cookiestr += "\n"+(CEL.removeCookie("ctest2"))+" - (false)"; // false
+cookiestr += "\n"+(CEL.hasCookie("ctest1"))+" - (false)"; // false
+cookiestr += "\n"+(CEL.hasCookie("ctest2"))+" - (false)"; // false
+
+CEL.qs("#cookieresults").innerHTML = cookiestr;
+</script>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<script>
+var str = "✓ à \r\n\t árvíztűrő tükörfúrógép ÁRVÍZTŰRŐ TÜKÖRFÚRÓGÉP ,?;.:-_* ¤÷×¨¸´˙`˛°˘^ˇ~'+!%/=()|\\<> \" \/ #&@{}[]€ ÍÄíŁß 0123456789 asdfghjklqwertzuiopyxcvbnm ASDFGHJKLQWERTZUIOPYXCVBNM";
+</script>
+
+
+<hr/>
+<h2 id="license">License</h2>
+
+<div>
+  <p><a href="https://opensource.org/licenses/MIT" target="_blank">https://opensource.org/licenses/MIT</a></p>
+  <h3>MIT License</h3>
+  <p><strong>SPDX short identifier: MIT</strong></p>
+  <p>Copyright (c) 2017 Ferenc Czigler</p>
+  <p>Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:</p>
+  <p>The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.</p>
+  <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.</p>
+</div>
+
+<div class="margin center">
+  <a title="Fast For Good" rel="nofollow" target="_blank" href="https://www.mozilla.org/firefox/this-browser-comes-highly-recommended/?utm_source=devs-for.firefox.com&utm_medium=referral&utm_campaign=devs-for-firefox&utm_content=Fast-For-Good">
+    <img style="border:0 none;" alt="Fast For Good" srcset="https://code.cdn.mozilla.net/for-firefox/badges/assets/Fast-For-Good.png, https://code.cdn.mozilla.net/for-firefox/badges/assets/Fast-For-Good-2x.png 2x" src="https://code.cdn.mozilla.net/for-firefox/badges/assets/Fast-For-Good.png"/>
+  </a>
+</div>
+
+</main>
+
+<footer id="footer" class="container-fluid bg-black">
+  <div class="container">
+    <div class="flex nogap">
+      <div class="flex-w-33">
+        <p><a href="#download">Download</a></p>
+        <p><a href="#functions">Functions</a></p>
+        <p><a href="#samples">Samples</a></p>
+        <p><a href="#license">License</a></p>
+        <p><a href="http://github.com/Serrin" target="_blank">Contact</a></p>
+      </div>
+      <div class="flex-w-33">
+        <p><strong>Celestra Unit Tester</strong></p>
+        <p><a href="unittest.html" target="_blank">CUT</a></p>
+        <p><strong>Github pages</strong></p>
+        <p><a href="https://github.com/Serrin/Celestra" target="_blank">Stable</a></p>
+        <p><a href="https://github.com/Serrin/Celestra-beta" target="_blank">Beta</a></p>
+      </div>
+      <div class="flex-w-33">
+        <p><strong>Themes</strong></p>
+        <p><a href="#" onclick=" CEL.importStyle('u87-dark.css'); "><em>Dark</em></a></p>
+        <p><a href="#" onclick=" CEL.importStyle('u87-blue.css'); "><em>Blue</em></a></p>
+        <p><a href="#" onclick=" CEL.importStyle('u87-light.css'); "><em>Light</em></a></p>
+      </div>
+      <div class="flex-w-100">
+        <hr class="hide-on-mobile" />
+        <p>&copy; Copyright 2017 Ferenc Czigler</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+
+</html>
