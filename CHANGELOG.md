@@ -1,6 +1,18 @@
 
 # Celestra version history
 
+## Celestra v7.1.0.1
+
+1. Documentation and pdf fixes and no code changes.
+2. Deprecate _(stability 1)_ these functions:
+
+- `isLength();`
+- `toLength();`
+- `toObject();`
+- `toPrimitive();`
+
+<span class="deprecated">Stability: 1 - Deprecated and will be removed.</span>
+
 ## Celestra v7.1.0 Scotty
 
 1. Documentation, pdf and code fixes.
