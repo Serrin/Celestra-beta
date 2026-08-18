@@ -7,7 +7,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <meta name="Author" content="Czigler Ferenc" />
 <meta name="Copyright" content="(C) Copyright Czigler Ferenc" />
-<link rel="stylesheet" href="u87.css" type="text/css" />
+<link rel="stylesheet" href="bootstrap.min.css" type="text/css" />
+<script src="bootstrap.bundle.min.js"></script>
 <!--<link rel="icon" href="favicon.ico" type="image/x-icon" />-->
 <script> var CEL = { VERSION: "This is another sample library." }; </script>
 <script type="module">
@@ -20,62 +21,94 @@ globalThis.CEL = celestra;
 
 <style>
 
+*, *::after, *::before {
+-ms-word-break: break-all;
+  word-break: break-all;
+  word-break: break-word;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+pre, code { white-space: pre-wrap; }
+
 html, body { font-size: 15px; }
 
 html, body { overflow: hidden; }
 
+table, td { border: 1px solid black; }
+table { margin-top: 1rem; margin-bottom: 1rem; }
+td { padding: 0.5rem; }
+
 #fsdiv { padding: 20px; }
 
+footer { color: white; }
 footer a, footer a:link, footer a:visited, footer a:active, footer a:hover,
 nav a, nav a:visited, nav a:active, nav a:hover {
   color: white !important; /* u87 v0.9.13 */
 }
 
-/*@media (max-width: 575.98px) { td { display: block; width: 100% !important; } }*/
+pre, code {
+  background-color: slategrey;
+  color: #ffffff;
+  padding: 0.3rem;
+  border-radius: 4px;
+  margin: 0.5rem 0;
+  max-width: 100%;
+  width: auto;
+}
+code { display: inline-block; }
 
-#left-panel-content {
-  width: 100%;
-  height: 100vh;
-  margin: 0;
-  padding: 1rem;
-  position: sticky;
-  overflow-x: auto;
-  overflow-y: scroll;
-  /*background-color: #131313;
-  color: white;*/
-  scrollbar-color: #FFFFFF #888888 !important;
+button { display: inline-block; }
+
+.info, .deprecated, .removed {
+  display: inline-block;
+  padding: 4px;
+  border-radius: 4px;
+}
+.info { background-color: var(--bs-info-bg-subtle); color: black; }
+.deprecated { background-color: var(--bs-warning); color: black; }
+.removed { background-color: var(--bs-danger); color: white; }
+
+/* instead of ".table-responsive" */
+@media (max-width: 575.98px) {
+  table { border: none; }
+  td { display: block; width: 100% !important; border: none;}
 }
 
-/*
-#left-panel-content a, #left-panel-content a:link, #left-panel-content a:visited, #left-panel-content a:active, #left-panel-content a:hover {
-  color: white !important; /* u87 v0.9.13 * /
-}
-*/
-
-#right-panel-content {
-  width: 100%;
-  height: 100vh;
+#left-panel, #right-panel {
   margin: 0;
   padding: 0;
-  position: sticky;
+}
+
+#left-panel-content, #right-panel-content {
+  width: 100%;
+  height: 100vh !important;
+  max-height: 100vh !important;
+  margin: 0;
+  padding: 1rem;
+  position: sticky !important;
   overflow-x: auto;
   overflow-y: scroll;
-  /*background-color: white;*/
   scrollbar-color: #FFFFFF #888888 !important;
+  scrollbar-width: auto;
+  scrollbar-gutter: stable;
+  border: 1px solid black;
 }
 
 </style>
 </head>
 <body>
 
-<div id="panels-container" class="container-fluid" style="padding: 0; margin: 0;">
+<div class="container-fluid gap-0" style="padding: 0; margin: 0;">
 
-<div id="panels" class="flex-md nogap" style="padding: 0; margin: 0;">
+<div class="row">
 
-<div id="left-panel" class="hide-on-mobile flex-w-md-15">
+<!--div id="panels" class="container gap-0" style="padding: 0; margin: 0;"--->
+
+<div id="left-panel" class="d-none d-md-block col-md-2">
   <div id="left-panel-content">
     <!-- version -->
-    <p><strong>Celestra <v6 class="1 1"></v6></strong></p>
+    <p><strong>Celestra v7.1.0.2</strong></p>
     <!-- Download -->
     <p><strong><a href="#download">Download</a></strong></p>
     <!-- Samples -->
@@ -329,19 +362,19 @@ nav a, nav a:visited, nav a:active, nav a:hover {
   </div>
 </div>
 
-<div id="right-panel" class="flex-w-md-85" style="border: 1px solid black; padding: 0; margin: 0;">
+<div id="right-panel" class="d-block col-md-10">
 
 <div id="right-panel-content">
 
-<main class="container">
+<main>
 
-<h1 class="center">Celestra</h1>
+<h1 class="text-center">Celestra</h1>
 
 <h2 id="download">Download</h2>
 
 <p><strong>A helper JavaScript library with useful functions and polyfills and zero dependencies.</strong></p>
 
-<p>Latest version: 7.1.0.1</p>
+<p>Latest version: 7.1.0.2</p>
 <p>Date: 2026-08-16T19:32:44.274Z</p>
 
 <p><strong>Tested on these environments:</strong></p>
@@ -371,10 +404,10 @@ nav a, nav a:visited, nav a:active, nav a:hover {
 <p>The functions are available in the <code>celestra</code> and/or <code>CEL</code> object or any function can be imported.</p>
 
 
-<table class="table-responsive-sm table-striped">
+<table class="table table-striped">
   <tr>
-    <td class="center"><strong>version</strong></td>
-    <td class="center"><strong>page link</strong></td>
+    <td class="text-center" style="min-width: 30%;"><strong>version</strong></td>
+    <td class="text-center"><strong>page link</strong></td>
   </tr>
   <tr>
     <td>Stable repository</td>
@@ -387,11 +420,11 @@ nav a, nav a:visited, nav a:active, nav a:hover {
 </table>
 
 
-<table class="table-responsive-sm table-striped">
+<table class="table table-striped">
   <tr>
-    <td class="center"><strong>Edition</strong></td>
-    <td class="center"><strong>Javascript or documentation</strong></td>
-    <td class="center"><strong>Typescript</strong></td>
+    <td class="text-center" style="min-width: 30%;"><strong>Edition</strong></td>
+    <td class="text-center"><strong>Javascript or documentation</strong></td>
+    <td class="text-center"><strong>Typescript</strong></td>
   </tr>
   <tr>
     <td>Celestra module</td>
@@ -492,13 +525,13 @@ globalThis.last = last;
 <h3>Removed functions in the defaultExport</h3>
 
 <div>
-  <table class="table-responsive table-striped">
+  <table class="table table-striped">
     <tr>
-      <td style="width: auto;"><strong>API</strong></td>
+      <td style="min-width: 30%;"><strong>API</strong></td>
       <td><strong>Function</strong></td>
     </tr>
     <tr>
-      <td style="width: auto;"><strong>DOM API</strong></td>
+      <td style="min-width: 30%;"><strong>DOM API</strong></td>
       <td><code>qsa();</code><br/><code>qs();</code><br/><code>domReady();</code><br/><code>domClear();</code><br/><code>domCreate();</code><br/><code>domToElement();</code><br/><code>domGetCSS();</code><br/><code>domSetCSS();</code><br/><code>domFadeIn();</code><br/><code>domFadeOut();</code><br/><code>domFadeToggle();</code><br/><code>domShow();</code><br/><code>domHide();</code><br/><code>domToggle();</code><br/><code>domIsHidden();</code><br/><code>domScrollToTop();</code><br/><code>domScrollToBottom();</code><br/><code>domScrollToElement();</code><br/><code>domSiblings();</code><br/><code>domSiblingsPrev();</code><br/><code>domSiblingsLeft();</code><br/><code>domSiblingsNext();</code><br/><code>domSiblingsRight();</code><br/><code>domGetCSSVar();</code><br/><code>domSetCSSVar();</code><br/><code>importScript();</code><br/><code>importStyle();</code><br/><code>setFullscreenOn();</code><br/><code>setFullscreenOn();</code><br/><code>setFullscreenOff();</code><br/><code>getFullscreen();</code><br/><code>form2array(form);</code><br/><code>form2string(form);</code><br/><code>getDoNotTrack();</code><br/><code>getLocation();</code><br/><code>createFile();</code></td>
     </tr>
     <tr>
@@ -570,10 +603,10 @@ globalThis.last = last;
 
 <p>The v7.0.0 has the same API as v6.9.0, but the imports have been changed.</p>
 
-<table>
+<table class="table table-striped">
   <tr>
-    <td class="center"><strong>v6.9.0</strong></td>
-    <td class="center"><strong>v7.0.0</strong></td>
+    <td class="text-center" style="min-width: 30%;"><strong>v6.9.0</strong></td>
+    <td class="text-center"><strong>v7.0.0</strong></td>
   </tr>
   <tr>
     <td><pre>// import the defaultExport object
@@ -645,7 +678,7 @@ import { first, last } from "./celestra.js";</pre></td>
 <h3 id="FNcoreAPI">Core API</h3>
 
 <div>
-  <table class="table-responsive table-striped">
+  <table class="table table-striped">
     <tr>
       <td style="width: auto; min-width: 30%;"><strong>Name</strong></td>
       <td><strong>Description</strong></td>
@@ -825,7 +858,7 @@ CEL.delay(5000)
 <h3 id="FNstringAPI">String API</h3>
 
 <div>
-  <table class="table-responsive table-striped">
+  <table class="table table-striped">
     <tr>
       <td style="width: auto; min-width: 30%;"><strong>Name</strong></td>
       <td><strong>Description</strong></td>
@@ -919,7 +952,7 @@ CEL.delay(5000)
 <h3 id="FNdomAPI">DOM API</h3>
 
 <div>
-  <table class="table-responsive table-striped">
+  <table class="table table-striped">
     <tr>
       <td style="width: auto; min-width: 30%;"><strong>Name</strong></td>
       <td><strong>Description</strong></td>
@@ -1105,7 +1138,7 @@ CEL.delay(5000)
 <h3 id="FNtypecheckingAPI">Type API</h3>
 
 <div>
-  <table class="table-responsive table-striped">
+  <table class="table table-striped">
     <tr>
       <td style="width: auto; min-width: 30%;"><strong>Name</strong></td>
       <td><strong>Description</strong></td>
@@ -1293,7 +1326,7 @@ CEL.delay(5000)
 </p>
 
 <div>
-  <table class="table-responsive table-striped">
+  <table class="table table-striped">
     <tr">
       <td style="width: auto; min-width: 30%;"><strong>Name</strong></td>
       <td><strong>Description</strong></td>
@@ -1378,7 +1411,7 @@ CEL.delay(5000)
 <h3 id="FNcollectionsAPI">Collections API</h3>
 
 <div>
-  <table class="table-responsive table-striped">
+  <table class="table table-striped">
     <tr">
       <td style="width: auto; min-width: 30%;"><strong>Name</strong></td>
       <td><strong>Description</strong></td>
@@ -1589,7 +1622,7 @@ JSON.stringify( CEL.unique(array, (v) => v.rank) );
 <h3 id="FNmathAPI">Math API</h3>
 
 <div>
-  <table class="table-responsive table-striped">
+  <table class="table table-striped">
     <tr>
       <td style="width: auto; min-width: 30%;"><strong>Name</strong></td>
       <td><strong>Description</strong></td>
@@ -1704,7 +1737,7 @@ Otherwise, the result is false.</pre>
 <h3 id="FNpolyfillsAPI">Polyfills</h3>
 
 <div>
-  <table class="table-responsive table-striped">
+  <table class="table table-striped">
     <tr>
       <td style="width: auto; min-width: 30%;"><strong>Name</strong></td>
       <td><strong>Description</strong></td>
@@ -1771,9 +1804,9 @@ Otherwise, the result is false.</pre>
 <p class="big">There are more samples in the <a href="unittest.js" target="_blank">unittest.js</a>.</p>
 
 <div>
-  <table class="table-responsive table-striped">
+  <table class="table table-striped">
     <tr>
-      <td><strong>Object name: "celestra"</strong></td>
+      <td style="min-width: 30%;"><strong>Object name: "celestra"</strong></td>
       <td><button onclick='alert( celestra.randomInt(100,200) );'>Try</button></td>
       <td><code>alert( celestra.randomInt(100,200) );</code></td>
     </tr>
@@ -1816,9 +1849,9 @@ Otherwise, the result is false.</pre>
 <h3>Samples</h3>
 
 <div>
-  <table class="table-responsive table-striped">
+  <table class="table table-striped">
     <tr>
-      <td style="min-width: 25%;"><strong>domToElement(htmlString);</strong></td>
+      <td style="min-width: 30%;"><strong>domToElement(htmlString);</strong></td>
       <td colspan="2">
         <p><button onclick='CEL.qs("#div2").append( CEL.domToElement("<div>Hello world!</div>") );'>Try</button></p>
         <p><code>CEL.qs("#div2").append( CEL.domToElement("divHello world!/div") );</code></p>
@@ -2186,7 +2219,7 @@ var str = "✓ à \r\n\t árvíztűrő tükörfúrógép ÁRVÍZTŰRŐ TÜKÖRF�
   SOFTWARE.</p>
 </div>
 
-<div class="margin center">
+<div class="margin text-center" style="margin: 1rem 0;">
   <a title="Fast For Good" rel="nofollow" target="_blank" href="https://www.mozilla.org/firefox/this-browser-comes-highly-recommended/?utm_source=devs-for.firefox.com&utm_medium=referral&utm_campaign=devs-for-firefox&utm_content=Fast-For-Good">
     <img style="border:0 none;" alt="Fast For Good" srcset="https://code.cdn.mozilla.net/for-firefox/badges/assets/Fast-For-Good.png, https://code.cdn.mozilla.net/for-firefox/badges/assets/Fast-For-Good-2x.png 2x" src="https://code.cdn.mozilla.net/for-firefox/badges/assets/Fast-For-Good.png"/>
   </a>
@@ -2194,32 +2227,28 @@ var str = "✓ à \r\n\t árvíztűrő tükörfúrógép ÁRVÍZTŰRŐ TÜKÖRF�
 
 </main>
 
-<footer id="footer" class="container-fluid bg-black">
+<footer id="footer" class="container-fluid bg-black" style="padding: 1rem;">
   <div class="container">
-    <div class="flex nogap">
-      <div class="flex-w-33">
+    <div class="row">
+      <div class="col-6">
         <p><a href="#download">Download</a></p>
         <p><a href="#functions">Functions</a></p>
         <p><a href="#samples">Samples</a></p>
         <p><a href="#license">License</a></p>
         <p><a href="http://github.com/Serrin" target="_blank">Contact</a></p>
       </div>
-      <div class="flex-w-33">
+      <div class="col-6">
         <p><strong>Celestra Unit Tester</strong></p>
         <p><a href="unittest.html" target="_blank">CUT</a></p>
         <p><strong>Github pages</strong></p>
         <p><a href="https://github.com/Serrin/Celestra" target="_blank">Stable</a></p>
         <p><a href="https://github.com/Serrin/Celestra-beta" target="_blank">Beta</a></p>
       </div>
-      <div class="flex-w-33">
-        <p><strong>Themes</strong></p>
-        <p><a href="#" onclick=" CEL.importStyle('u87-dark.css'); "><em>Dark</em></a></p>
-        <p><a href="#" onclick=" CEL.importStyle('u87-blue.css'); "><em>Blue</em></a></p>
-        <p><a href="#" onclick=" CEL.importStyle('u87-light.css'); "><em>Light</em></a></p>
-      </div>
-      <div class="flex-w-100">
-        <hr class="hide-on-mobile" />
-        <p>&copy; Copyright 2017 Ferenc Czigler</p>
+      <div class="row">
+        <div class="col-12 text-center">
+          <hr class="hidden-xs" />
+          <p>&copy; Copyright 2017 Ferenc Czigler</p>
+        </div>
       </div>
     </div>
   </div>

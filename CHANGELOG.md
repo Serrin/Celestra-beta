@@ -1,6 +1,11 @@
 
 # Celestra version history
 
+## Celestra v7.1.0.2
+
+1. Documentation and pdf fixes and no code changes.
+2. Replace the __u87.css__ with the __Bootstrap__.
+
 ## Celestra v7.1.0.1
 
 1. Documentation and pdf fixes and no code changes.
