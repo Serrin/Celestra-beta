@@ -7,8 +7,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 <meta name="Author" content="Czigler Ferenc"/>
 <meta name="Copyright" content="(C) Copyright Czigler Ferenc"/>
-<link rel="stylesheet" href="u87.css" type="text/css"/>
-<link rel="stylesheet" href="u87-blue.css" type="text/css"/>
+<link rel="stylesheet" href="bootstrap.min.css" type="text/css" />
 <style>
 html, body { font-family: consolas, monospace !important; }
 .passed, .failed {
@@ -48,14 +47,27 @@ html, body { font-family: consolas, monospace !important; }
 #toplink { right: 20px; top: 20px; }
 #bottomlink { right: 20px; bottom: 20px; }
 button {
-  /*font-size: 0.9rem;*/
-  /*font-family: consolas, monospace;*/
+  font-size: 0.9rem;
+  font-family: consolas, monospace;
   text-align: center !important;
   border: 2px outset ThreeDLightShadow;
   border-radius: 0px;
   color: black;
 }
 textarea, #preCelLog { border-radius: 0px; }
+
+pre, code {
+  background-color: slategrey;
+  color: #ffffff;
+  padding: 0.3rem;
+  border-radius: 4px;
+  margin: 0.5rem 0;
+  max-width: 100%;
+  width: auto;
+}
+code { display: inline-block; }
+
+button { display: inline-block; }
 
 </style>
 </head>
@@ -66,18 +78,12 @@ textarea, #preCelLog { border-radius: 0px; }
 <div><a href="#bottom"><button id="bottomlink">&Downarrow;</button></a></div>
 -->
 
-<header class="center" id="top" name="top">
-  <h1>Celestra Unit Tester (CUT)</h1>
-  <nav><b>
+<header id="top" name="top">
+  <h1 class="text-center">Celestra Unit Tester (CUT)</h1>
+  <nav class="text-center"><b>
     <a href="#license">License</a>
     &nbsp;//&nbsp;
     <a href="#footer">Contact</a>
-    &nbsp;//&nbsp;
-    <a href="#" onclick=" CEL.importStyle('u87-dark.css'); "><i>Dark</i></a>
-    &nbsp;/&nbsp;
-    <a href="#" onclick=" CEL.importStyle('u87-blue.css'); "><i>Blue</i></a>
-    &nbsp;/&nbsp;
-    <a href="#" onclick=" CEL.importStyle('u87-light.css'); "><i>Light</i></a>
   </b></nav>
 </header>
 
@@ -95,7 +101,7 @@ textarea, #preCelLog { border-radius: 0px; }
       <p><button onclick=" saveResults(); ">save result in HTML</button></p>
     </td>
     <td class="noborder">
-      <div id="preCelLog" class="padding bg-black font-monospace border" style="min-height: 150px; min-width: 450px;"></div>
+      <div id="preCelLog" class="padding bg-black font-monospace border" style="min-height: 150px; min-width: 450px; color: white;"></div>
     </td>
   </tr>
 </table>
@@ -103,7 +109,7 @@ textarea, #preCelLog { border-radius: 0px; }
 <hr/>
 <div>
   <h2>Debug Console</h2>
-  <p><textarea id="consolejs" class="padding bg-black font-monospace border" style="max-width: 650px; width: 100%; height:100px;" placeholder="type here your code"></textarea></p>
+  <p><textarea id="consolejs" class="padding bg-black font-monospace border" style="max-width: 650px; width: 100%; height:100px; color: white;" placeholder="type here your code"></textarea></p>
   <p>
     <button onclick=" runConsoleJS(); ">run</button>
     &nbsp;
@@ -126,14 +132,6 @@ textarea, #preCelLog { border-radius: 0px; }
 <h2>Manual testcases</h2>
 
 <table class="table-responsive">
-  <tr>
-    <td><button onclick=" CEL.importStyle('u87-dark.css','u87-light.css'); ">importStyle 1</button></td>
-    <td>Have to be light ('u87-dark.css' then 'u87-light.css').</td>
-  </tr>
-  <tr>
-    <td><button onclick=" CEL.importStyle('u87-blue.css'); ">importStyle 2</button></td>
-    <td>Have to be blue.</td>
-  </tr>
   <tr>
     <td><button onclick=" CEL.delay(3000).then(() => alert('delay 3 seconds')).catch(console.log.bind(console)).finally(() => alert('delay finally')); ">delay();</button></td>
     <td>2x alert ("delay 3 seconds" + "delay finally")</td>
@@ -200,19 +198,13 @@ textarea, #preCelLog { border-radius: 0px; }
 
 <hr/>
 
-<footer id="footer" class="center"><small>
-  <p>
+<footer id="footer"><small>
+  <p class="text-center">
     <a href="#license">License</a>
     &nbsp;//&nbsp;
     <a href="http://github.com/Serrin" target="_blank">Github</a>
-    &nbsp;//&nbsp;
-    <a href="#" onclick=" CEL.importStyle('u87-dark.css'); "><i>Dark</i></a>
-    &nbsp;/&nbsp;
-    <a href="#" onclick=" CEL.importStyle('u87-blue.css'); "><i>Blue</i></a>
-    &nbsp;/&nbsp;
-    <a href="#" onclick=" CEL.importStyle('u87-light.css'); "><i>Light</i></a>
   </p>
-  <p id="bottom" name="bottom">&copy; Copyright 2018 Ferenc Czigler</p>
+  <p class="text-center" id="bottom" name="bottom">&copy; Copyright 2018 Ferenc Czigler</p>
 </small></footer>
 
 <script>
@@ -283,6 +275,8 @@ function saveConsoleJS () {
   document.body.style["zoom"] = "90%";
 //}
 </script>
+
+<script src="bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

@@ -16,8 +16,6 @@
 - `toObject();`
 - `toPrimitive();`
 
-<span class="deprecated">Stability: 1 - Deprecated and will be removed.</span>
-
 ## Celestra v7.1.0 Scotty
 
 1. Documentation, pdf and code fixes.
