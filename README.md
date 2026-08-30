@@ -7,7 +7,7 @@ __A helper JavaScript library with useful functions and polyfills and zero depen
 
 Latest version: 7.2.0
 
-Date: 2026-08-16T19:32:44.274Z
+Date: 2026-08-30T21:36:47.960Z
 
 __Tested on these environments:__
 
@@ -296,7 +296,6 @@ Name|Description
 `isIndex(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is a valid arraylike index number. The return value is boolean.
 `isIterable(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is an iterable object. The return value is boolean.
 `isIterator(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is an iterator. The return value is boolean.
-`isLength(value);`|__Stability: 1 - Deprecated and will be removed.__<BR>Alias of `isIndex(value);`.
 `isNonNullable(value);`|__Stability: 4 - Stable.__<BR>Checks if the given value is NonNullable (not null or undefined). The value parameter is mandatory and can be any type. The return value is boolean.
 `isNonNullablePrimitive(value);`|__Stability: 4 - Stable.__<BR>Checks if the given value is NonNullable (not null, undefined, object or function). The value parameter is mandatory and can be any type. The return value is boolean.
 `isNull(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is null. The return value is boolean.
@@ -312,9 +311,6 @@ Name|Description
 `isTypedArray(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is an typedarray. The return value is boolean.
 `isUndefined(value);`|__Stability: 4 - Stable.__<BR>This function determines whether the provided value is undefined. The return value is boolean.
 `toIndex(value);`|__Stability: 4 - Stable.__<BR>This function converts the provided value to a valid arraylike index number. The return value is an unsigned integer (number). If the value is out of integer range, then a RangeError will be thrown.
-`toLength(value);`|__Stability: 1 - Deprecated and will be removed.__<BR>This function converts the provided value to a valid arraylike length number. The return value is an unsigned integer (number).
-`toObject(value);`|__Stability: 1 - Deprecated and will be removed.__<BR>If the given value is not null or undefined, then the return value is an object, which has been converted from the value, else a `TypeError()` will be throwned.<BR>If the given value is an object, function or symbol, then the original value will return.
-`toPrimitive(value);`|__Stability: 1 - Deprecated and will be removed.__<BR>__Old name before v6.5.0: `toPrimitiveValue();`.__<BR>If the given value is a primitive value (null, undefined, string, number, bigint, boolean, symbol), then the original value will return.<BR>If the given value is an object, which can be converted to a primitive variable, then the return value is a primitive variable.<BR>If the given value is a not convertable object (array, map, set, etc.), function or symbol, then the original value will return.
 `toPropertyKey(value);`|__Stability: 4 - Stable.__<BR>This function convert the given value to a valid property key. If the value is not symbol, then will be converted to string, else the symbol will be returned.
 `toSafeString(value);`|__Stability: 4 - Stable.__<BR>This function is a general purpose, type safe, predictable stringifier. The value parameter is mandatory and can be any type. The return value is a string.
 `typeOf(value);`|__Stability: 4 - Stable.__<BR>__Old name before v6.1.0: `type();`.__<BR>This function returns the typeof operator result of the given value, except the null object (`"null"` instead of `"object"`).
