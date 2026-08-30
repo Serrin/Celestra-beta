@@ -107,7 +107,7 @@ button { display: inline-block; }
 <div id="left-panel" class="d-none d-md-block col-md-2">
   <div id="left-panel-content">
     <!-- version -->
-    <p><strong>Celestra v7.1.0.2</strong></p>
+    <p><strong>Celestra v7.2.0</strong></p>
     <!-- Download -->
     <p><strong><a href="#download">Download</a></strong></p>
     <!-- Samples -->
@@ -246,7 +246,6 @@ button { display: inline-block; }
       <p><a href="#FN-isIndex();">isIndex();</a></p>
       <p><a href="#FN-isIterable();">isIterable();</a></p>
       <p><a href="#FN-isIterator();">isIterator();</a></p>
-      <p><a href="#FN-isLength();">isLength();</a></p>
       <p><a href="#FN-isNonNullable();">isNonNullable();</a></p>
       <p><a href="#FN-isNonNullablePrimitive();">isNonNullablePrimitive();();</a></p>
       <p><a href="#FN-isNull();">isNull();</a></p>
@@ -262,9 +261,6 @@ button { display: inline-block; }
       <p><a href="#FN-isTypedArray();">isTypedArray();</a></p>
       <p><a href="#FN-isUndefined();">isUndefined();</a></p>
       <p><a href="#FN-toIndex();">toIndex();</a></p>
-      <p><a href="#FN-toLength();">toLength();</a></p>
-      <p><a href="#FN-toObject();">toObject();</a></p>
-      <p><a href="#FN-toPrimitive();">toPrimitive();</a></p>
       <p><a href="#FN-toPropertyKey();">toPropertyKey();</a></p>
       <p><a href="#FN-toSafeString();">toSafeString();</a></p>
       <p><a href="#FN-typeOf();">typeOf();</a></p>
@@ -373,7 +369,7 @@ button { display: inline-block; }
 
 <p><strong>A helper JavaScript library with useful functions and polyfills and zero dependencies.</strong></p>
 
-<p>Latest version: 7.1.0.2</p>
+<p>Latest version: 7.2.0</p>
 <p>Date: 2026-08-16T19:32:44.274Z</p>
 
 <p><strong>Tested on these environments:</strong></p>
@@ -456,16 +452,6 @@ button { display: inline-block; }
   <tr>
     <td>Version history</td>
     <td><a href="CHANGELOG.md" target="_blank">CHANGELOG.md</a></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>Removed polyfills (developer)</td>
-    <td><a href="celestra-polyfills.dev.js" target="_blank">celestra-polyfills.dev.js</a></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>Removed polyfills (minified)</td>
-    <td><a href="celestra-polyfills.min.js" target="_blank">celestra-polyfills.min.js</a></td>
     <td></td>
   </tr>
   <tr>
@@ -1221,10 +1207,6 @@ CEL.delay(5000)
       <td><code>isIterator(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function determines whether the provided value is an iterator. The return value is <code>boolean</code>.</td>
     </tr>
-    <tr id="FN-isLength();">
-      <td><code>isLength(value);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>Alias of <code>isIndex(value);</code>.</td>
-    </tr>
     <tr id="FN-isNonNullable();">
       <td><code>isNonNullable(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>Checks if the given value is NonNullable (not <code>null</code> or <code>undefined</code>). The value parameter is mandatory and can be any type. The return value is <code>boolean</code>.</td>
@@ -1284,22 +1266,6 @@ CEL.delay(5000)
     <tr id="FN-toIndex();">
       <td><code>toIndex(value);</code></td>
       <td><span class="info">Stability: 4 - Stable.</span><br/>This function converts the provided value to a valid arraylike index <code>number</code>. The return value is an unsigned integer (number). If the value is out of integer range, then a RangeError will be thrown.</td>
-    </tr>
-    <tr id="FN-toLength();">
-      <td><code>toLength(value);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>This function converts the provided value to a valid arraylike length <code>number</code>. The return value is an unsigned integer (number).</td>
-    </tr>
-    <tr id="FN-toObject();">
-      <td><code>toObject(value);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/>If the given value is not <code>null</code> or <code>undefined</code>, then the return value is an <code>object</code>, which has been converted from the value, else a <code>TypeError()</code> will be throwned.<br/>If the given value is an <code>object</code>, <code>function</code> or <code>symbol</code>, then the original value will return.</td>
-    </tr>
-    <tr id="FN-toPrimitive();">
-      <td><code>toPrimitive(value);</code></td>
-      <td><span class="deprecated">Stability: 1 - Deprecated and will be removed.</span><br/><span class="info">Old name before v6.5.0: <code>toPrimitiveValue();</code></span><br/>
-        If the given value is a primitive value (null, <code>undefined</code>, <code>string</code>, <code>number</code>, <code>bigint</code>, <code>boolean</code>, <code>symbol</code>), then the original value will return.<br/>
-        If the given value is an <code>object</code>, which can be converted to a primitive variable, then the return value is a primitive variable.<br/>
-        If the given value is a not convertable <code>object</code> (<code>array</code>, <code>map</code>, <code>set</code>, etc.), <code>function</code> or <code>symbol</code>, then the original value will return.
-      </td>
     </tr>
     <tr id="FN-toPropertyKey();">
       <td><code>toPropertyKey(value);</code></td>
@@ -1772,26 +1738,6 @@ Otherwise, the result is false.</pre>
     <tr id="FN-globalThis.GeneratorFunction();">
       <td><code>globalThis.GeneratorFunction();</code></td>
       <td>The GeneratorFunction constructor creates a new generator function object. In JavaScript every generator function is actually a GeneratorFunction object. Note that GeneratorFunction is not a global object, but in the Celestra this is available in the <code>globalThis</code> object. For more information please read the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction" target="_blank">MDN Article</a>!</td>
-    </tr>
-    <tr>
-      <td>REMOVED polyfills in v3.1.0</td>
-      <td><code>Array.from();</code><br/><code>Array.of();</code><br/><code>Array.prototype.fill();</code><br/><code>Array.prototype.find();</code><br/><code>Array.prototype.findIndex();</code><br/><code>Object.create();</code><br/><code>String.prototype.startsWith();</code><br/><code>String.prototype.endsWith();</code><br/><code>Array.prototype.copyWithin();</code><br/><code>String.fromCodePoint();</code><br/><code>String.prototype.codePointAt();</code><br/><code>Number.EPSILON;</code><br/><code>Number.isNaN();</code><br/><code>isNaN();</code><br/><code>Number.isInteger();</code><br/><code>Number.isFinite();</code><br/><code>Number.isSafeInteger();</code><br/><code>Number.parseInt();</code><br/><code>Number.parseFloat();</code><br/><code>Math.acosh();</code><br/><code>Math.asinh();</code><br/><code>Math.atanh();</code><br/><code>Math.cbrt();</code><br/><code>Math.clz32();</code><br/><code>Math.cosh();</code><br/><code>Math.expm1();</code><br/><code>Math.fround();</code><br/><code>Math.hypot();</code><br/><code>Math.imul();</code><br/><code>Math.log1p();</code><br/><code>Math.log10();</code><br/><code>Math.log2();</code><br/><code>Math.sign();</code><br/><code>Math.sinh();</code><br/><code>Math.tanh();</code><br/><code>Math.trunc();</code></td>
-    </tr>
-    <tr>
-      <td>REMOVED polyfills in v3.8.0</td>
-      <td><code>Array.prototype.values();</code><br/><code>Array.prototype.includes();</code><br/><code>String.prototype.includes();</code><br/><code>String.prototype.repeat();</code><br/><code>String.prototype[Symbol.iterator]();</code><br/><code>Object.assign();</code><br/><code>Object.entries();</code><br/><code>Object.values();</code><br/><code>Object.getOwnPropertyDescriptors();</code><br/><code>RegExp.prototype.flags;</code><br/><code>NodeList.prototype.forEach();</code><br/><code>ChildNode.after();</code><br/><code>ChildNode.before();</code><br/><code>ChildNode.remove();</code><br/><code>ChildNode.replaceWith();</code><br/><code>ParentNode.append();</code><br/><code>ParentNode.prepend();</code><br/><code>Element.prototype.matches();</code><br/><code>Element.prototype.closest();</code><br/><code>Element.prototype.toggleAttribute();</code><br/><code>Element.prototype.getAttributeNames();</code><br/><code>window.screenLeft;</code><br/><code>window.screenTop;</code></td>
-    </tr>
-    <tr>
-      <td>REMOVED polyfills in v5.6.0</td>
-      <td><code>Array.prototype.at();</code><br/><code>Array.prototype.findLast();</code><br/><code>Array.prototype.findLastIndex();</code><br/><code>Array.prototype.flat();</code><br/><code>Array.prototype.flatMap();</code><br/><code>Number.MIN_SAFE_INTEGER;</code><br/><code>Number.MAX_SAFE_INTEGER;</code><br/><code>Object.fromEntries();</code><br/><code>Object.is();</code><br/><code>String.prototype.at();</code><br/><code>String.prototype.matchAll();</code><br/><code>String.prototype.padStart();</code><br/><code>String.prototype.padEnd();</code><br/><code>String.prototype.replaceAll();</code><br/><code>String.prototype.trimStart();</code><br/><code>String.prototype.trimLeft();</code><br/><code>String.prototype.trimEnd();</code><br/><code>String.prototype.trimRight();</code><br/><code>Typedarray.prototype.at();</code><br/><code>TypedArray.prototype.findLast();</code><br/><code>TypedArray.prototype.findLastIndex();</code></td>
-    </tr>
-    <tr>
-      <td>REMOVED polyfills in v5.9.0</td>
-      <td><code>BigInt.prototype.toJSON();</code></td>
-    </tr>
-    <tr>
-      <td>REMOVED polyfills in v6.5.0</td>
-      <td><code>Array.fromAsync();</code><br/><code>Array.prototype.toReversed();</code><br/><code>Array.prototype.toSorted();</code><br/><code>Array.prototype.toSpliced();</code><br/><code>Array.prototype.with();</code><br/><code>Map.groupBy();</code><br/><code>Object.groupBy();</code><br/><code>Object.hasOwn();</code><br/><code>TypedArray.prototype.toReversed();</code><br/><code>TypedArray.prototype.toSorted();</code><br/><code>TypedArray.prototype.with();</code></td>
     </tr>
   </table>
 </div>

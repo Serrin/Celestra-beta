@@ -1,4 +1,4 @@
-declare const VERSION = "Celestra v7.1.0";
+declare const VERSION = "Celestra v7.2.0";
 type ObjectLike = Record<PropertyKey, any>;
 type Numeric = number | bigint;
 type IterableLike = Iterable<any> | Iterator<any> | IterableIterator<any>;
@@ -113,15 +113,11 @@ declare function isArrowFunction(value: unknown): value is ArrowFunction;
 declare const isAsyncIterator: (value: unknown) => value is AsyncIterator<unknown>;
 declare function isTypedCollection(iter: IterableLike, expectedType: string | Function | Array<string | Function>, Throw?: boolean): boolean;
 declare function is(value: unknown, expectedType: string | Function | (string | Function)[]): boolean;
-declare function toObject(value: unknown): Object | symbol | Function;
-declare function toPrimitive(value: unknown): unknown;
 declare function toSafeString(value: unknown): string;
 declare const isPropertyKey: (value: unknown) => value is PropertyKey;
 declare const toPropertyKey: (value: unknown) => PropertyKey;
 declare const isIndex: (value: unknown) => value is number;
-declare const isLength: typeof isIndex;
 declare function toIndex(value: number): number;
-declare function toLength(value: number): number;
 declare const typeOf: (value: unknown) => string;
 declare const isSameType: (value1: unknown, value2: unknown, type?: string) => boolean;
 declare const isSameInstance: (value1: unknown, value2: unknown, Contructor: Function) => boolean;
@@ -283,15 +279,11 @@ declare const _default: {
     isAsyncIterator: typeof isAsyncIterator;
     isTypedCollection: typeof isTypedCollection;
     is: typeof is;
-    toObject: typeof toObject;
-    toPrimitive: typeof toPrimitive;
     toSafeString: typeof toSafeString;
     isPropertyKey: typeof isPropertyKey;
     toPropertyKey: typeof toPropertyKey;
     isIndex: typeof isIndex;
-    isLength: typeof isIndex;
     toIndex: typeof toIndex;
-    toLength: typeof toLength;
     typeOf: typeof typeOf;
     isSameType: typeof isSameType;
     isSameInstance: typeof isSameInstance;
@@ -376,5 +368,5 @@ declare const _default: {
     inRange: typeof inRange;
 };
 export default _default;
-export { VERSION, BASE16, BASE32, BASE36, BASE58, BASE62, WORDSAFEALPHABET, assert, eq, gt, gte, lt, lte, tap, once, curry, pipe, compose, pick, omit, assoc, asyncNoop, asyncT, asyncF, asyncConstant, asyncIdentity, randomUUIDv7, delay, randomBoolean, deepAssign, sizeIn, unBind, bind, constant, identity, noop, T, F, timestampID, b64Encode, b64Decode, strCount, strTruncate, strPropercase, strTitlecase, strCapitalize, strUpFirst, strDownFirst, strReverse, strCodePoints, strFromCodePoints, strAt, strSplice, strHTMLRemoveTags, strHTMLEscape, strHTMLUnEscape, qsa, qs, domReady, domCreate, domToElement, domGetCSS, domSetCSS, domFadeIn, domFadeOut, domFadeToggle, domHide, domShow, domToggle, domIsHidden, domSiblings, domSiblingsPrev, domSiblingsLeft, domSiblingsNext, domSiblingsRight, importScript, importStyle, form2array, form2string, getDoNotTrack, getLocation, createFile, getFullscreen, setFullscreenOn, setFullscreenOff, domGetCSSVar, domSetCSSVar, domScrollToTop, domScrollToBottom, domScrollToElement, domClear, constructorOf, isNonNullable, isNonNullablePrimitive, isArrowFunction, isAsyncIterator, isTypedCollection, is, toObject, toPrimitive, toSafeString, isPropertyKey, toPropertyKey, isIndex, isLength, toIndex, toLength, typeOf, isSameType, isSameInstance, isCoercedObject, isDeepStrictEqual, isEmpty, isProxy, isAsyncGeneratorFunction, isPlainObject, isObject, isFunction, isArraylike, isNull, isUndefined, isNullish, isPrimitive, isIterator, isRegexp, isElement, isIterable, isAsyncIterable, isTypedArray, isGeneratorFunction, isAsyncFunction, setCookie, getCookie, hasCookie, removeCookie, clearCookies, castArray, compact, unique, count, arrayDeepClone, initial, shuffle, min, max, arrayRepeat, arrayCycle, arrayRange, zip, unzip, zipObj, arrayAdd, arrayClear, arrayRemove, arrayRemoveBy, arrayMerge, iterRange, iterCycle, iterRepeat, slice, tail, item, nth, size, first, head, last, reverse, sort, includes, findLast, concat, join, add, sub, mul, div, divMod, mod, isFloat, toInteger, toIntegerOrInfinity, sum, avg, product, pow, clamp, minmax, isEven, isOdd, signbit, randomInt, randomFloat, inRange };
+export { VERSION, BASE16, BASE32, BASE36, BASE58, BASE62, WORDSAFEALPHABET, assert, eq, gt, gte, lt, lte, tap, once, curry, pipe, compose, pick, omit, assoc, asyncNoop, asyncT, asyncF, asyncConstant, asyncIdentity, randomUUIDv7, delay, randomBoolean, deepAssign, sizeIn, unBind, bind, constant, identity, noop, T, F, timestampID, b64Encode, b64Decode, strCount, strTruncate, strPropercase, strTitlecase, strCapitalize, strUpFirst, strDownFirst, strReverse, strCodePoints, strFromCodePoints, strAt, strSplice, strHTMLRemoveTags, strHTMLEscape, strHTMLUnEscape, qsa, qs, domReady, domCreate, domToElement, domGetCSS, domSetCSS, domFadeIn, domFadeOut, domFadeToggle, domHide, domShow, domToggle, domIsHidden, domSiblings, domSiblingsPrev, domSiblingsLeft, domSiblingsNext, domSiblingsRight, importScript, importStyle, form2array, form2string, getDoNotTrack, getLocation, createFile, getFullscreen, setFullscreenOn, setFullscreenOff, domGetCSSVar, domSetCSSVar, domScrollToTop, domScrollToBottom, domScrollToElement, domClear, constructorOf, isNonNullable, isNonNullablePrimitive, isArrowFunction, isAsyncIterator, isTypedCollection, is, toSafeString, isPropertyKey, toPropertyKey, isIndex, toIndex, typeOf, isSameType, isSameInstance, isCoercedObject, isDeepStrictEqual, isEmpty, isProxy, isAsyncGeneratorFunction, isPlainObject, isObject, isFunction, isArraylike, isNull, isUndefined, isNullish, isPrimitive, isIterator, isRegexp, isElement, isIterable, isAsyncIterable, isTypedArray, isGeneratorFunction, isAsyncFunction, setCookie, getCookie, hasCookie, removeCookie, clearCookies, castArray, compact, unique, count, arrayDeepClone, initial, shuffle, min, max, arrayRepeat, arrayCycle, arrayRange, zip, unzip, zipObj, arrayAdd, arrayClear, arrayRemove, arrayRemoveBy, arrayMerge, iterRange, iterCycle, iterRepeat, slice, tail, item, nth, size, first, head, last, reverse, sort, includes, findLast, concat, join, add, sub, mul, div, divMod, mod, isFloat, toInteger, toIntegerOrInfinity, sum, avg, product, pow, clamp, minmax, isEven, isOdd, signbit, randomInt, randomFloat, inRange };
 //# sourceMappingURL=celestra.d.ts.map

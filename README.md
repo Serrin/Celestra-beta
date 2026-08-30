@@ -5,7 +5,7 @@
 
 __A helper JavaScript library with useful functions and polyfills and zero dependencies.__
 
-Latest version: 7.1.0.2
+Latest version: 7.2.0
 
 Date: 2026-08-16T19:32:44.274Z
 
@@ -42,8 +42,6 @@ Celestra Unit Tester (CUT)|__unittest.html__
 Celestra cheatsheet|__celestra-cheatsheet.odt__<BR>__celestra-cheatsheet.pdf__
 JavaScript cheatsheet|__js-cheatsheet.odt__<BR>__js-cheatsheet.pdf__
 Version history|__CHANGELOG.md__
-Removed polyfills (developer)|__celestra-polyfills.dev.js__
-Removed polyfills (minified)|__celestra-polyfills.min.js__
 RPG dice roller|__testgame.html__
 
 ### How to import the browser edition
@@ -420,11 +418,6 @@ Name|Description
 `globalThis.AsyncFunction();`|The AsyncFunction constructor creates a new async function object. In JavaScript, every asynchronous function is actually an AsyncFunction object. Note that AsyncFunction is not a global object, but in the Celestra this is available in the `globalThis` object. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncFunction)!
 `globalthis.AsyncGeneratorFunction();`|The AsyncGeneratorFunction() constructor creates AsyncGeneratorFunction objects. Note that AsyncGeneratorFunction is not a global object, but in the Celestra this is available in the `globalThis` object. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncGeneratorFunction/AsyncGeneratorFunction)!
 `globalThis.GeneratorFunction();`|The GeneratorFunction constructor creates a new generator function object. In JavaScript every generator function is actually a GeneratorFunction object. Note that GeneratorFunction is not a global object, but in the Celestra this is available in the `globalThis` object. For more information please read the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction)!
-REMOVED polyfills in v3.1.0|`Array.from();`<BR>`Array.of();`<BR>`Array.prototype.fill();`<BR>`Array.prototype.find();`<BR>`Array.prototype.findIndex();`<BR>`Object.create();`<BR>`String.prototype.startsWith();`<BR>`String.prototype.endsWith();`<BR>`Array.prototype.copyWithin();`<BR>`String.fromCodePoint();`<BR>`String.prototype.codePointAt();`<BR>`Number.EPSILON;`<BR>`Number.isNaN();`<BR>`isNaN();`<BR>`Number.isInteger();`<BR>`Number.isFinite();`<BR>`Number.isSafeInteger();`<BR>`Number.parseInt();`<BR>`Number.parseFloat();`<BR>`Math.acosh();`<BR>`Math.asinh();`<BR>`Math.atanh();`<BR>`Math.cbrt();`<BR>`Math.clz32();`<BR>`Math.cosh();`<BR>`Math.expm1();`<BR>`Math.fround();`<BR>`Math.hypot();`<BR>`Math.imul();`<BR>`Math.log1p();`<BR>`Math.log10();`<BR>`Math.log2();`<BR>`Math.sign();`<BR>`Math.sinh();`<BR>`Math.tanh();`<BR>`Math.trunc();`
-REMOVED polyfills in v3.8.0|`Array.prototype.values();`<BR>`Array.prototype.includes();`<BR>`String.prototype.includes();`<BR>`String.prototype.repeat();`<BR>`String.prototype[Symbol.iterator]();`<BR>`Object.assign();`<BR>`Object.entries();`<BR>`Object.values();`<BR>`Object.getOwnPropertyDescriptors();`<BR>`RegExp.prototype.flags;`<BR>`NodeList.prototype.forEach();`<BR>`ChildNode.after();`<BR>`ChildNode.before();`<BR>`ChildNode.remove();`<BR>`ChildNode.replaceWith();`<BR>`ParentNode.append();`<BR>`ParentNode.prepend();`<BR>`Element.prototype.matches();`<BR>`Element.prototype.closest();`<BR>`Element.prototype.toggleAttribute();`<BR>`Element.prototype.getAttributeNames();`<BR>`window.screenLeft;`<BR>`window.screenTop;`
-REMOVED polyfills in v5.6.0|`Array.prototype.at();`<BR>`Array.prototype.findLast();`<BR>`Array.prototype.findLastIndex();`<BR>`Array.prototype.flat();`<BR>`Array.prototype.flatMap();`<BR>`Number.MIN_SAFE_INTEGER;`<BR>`Number.MAX_SAFE_INTEGER;`<BR>`Object.fromEntries();`<BR>`Object.is();`<BR>`String.prototype.at();`<BR>`String.prototype.matchAll();`<BR>`String.prototype.padStart();`<BR>`String.prototype.padEnd();`<BR>`String.prototype.replaceAll();`<BR>`String.prototype.trimStart();`<BR>`String.prototype.trimLeft();`<BR>`String.prototype.trimEnd();`<BR>`String.prototype.trimRight();`<BR>`Typedarray.prototype.at();`<BR>`TypedArray.prototype.findLast();`<BR>`TypedArray.prototype.findLastIndex();`
-REMOVED polyfills in v5.9.0|`BigInt.prototype.toJSON();`
-REMOVED polyfills in v6.5.0|`Array.fromAsync();`<BR>`Array.prototype.toReversed();`<BR>`Array.prototype.toSorted();`<BR>`Array.prototype.toSpliced();`<BR>`Array.prototype.with();`<BR>`Map.groupBy();`<BR>`Object.groupBy();`<BR>`Object.hasOwn();`<BR>`TypedArray.prototype.toReversed();`<BR>`TypedArray.prototype.toSorted();`<BR>`TypedArray.prototype.with();`
 
 -----
 

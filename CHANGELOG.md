@@ -1,10 +1,17 @@
 
 # Celestra version history
 
-## Celestra v7.1.0.2
+## Celestra v7.2.0 Inara
 
-1. Documentation and pdf fixes and no code changes.
+1. Documentation and pdf fixes.
 2. Replace the __u87.css__ with the __Bootstrap__.
+3. Remove the __celestra-polyfills.dev.js__ and __celestra-polyfills.min.js__ files and the description of the removed polyfills from the documentation.
+4. Remove _(stability 0)_ these functions:
+
+- `isLength();`
+- `toLength();`
+- `toObject();`
+- `toPrimitive();`
 
 ## Celestra v7.1.0.1
 
